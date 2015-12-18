@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="zh-CN" class="no-js">
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<title>更新GitHub for Windows出错：git command could not be found &mdash; TypeCodes</title>
+		<meta name="author" content="vfhky">
+  		<link href="https://typecodes.com/atom.xml" type="application/atom+xml" rel="alternate" title="TypeCodes Atom Feed" />
+	  	<link href="https://typecodes.com/feed.xml" type="application/rss+xml" rel="alternate" title="TypeCodes RSS Feed" />
+		<meta name="HandheldFriendly" content="True">
+		<meta name="MobileOptimized" content="320">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="renderer" content="webkit">
+		<link rel="stylesheet" href="https://dn-vfhky.qbox.me/libs/css/pelican-vfhky.css">
+		<script>
+			var _hmt = _hmt || [];
+			(function() {
+			  var hm = document.createElement("script");
+			  hm.src = "//hm.baidu.com/hm.js?c15c4ab8e91ba9ac3d5a12293cc93359";
+			  var s = document.getElementsByTagName("script")[0]; 
+			  s.parentNode.insertBefore(hm, s);
+			})();
+		</script>
+	</head>
+	<body style>
+		<!--1. header navigation begin-->
+		<header role="banner" id="te-site-header">
+			<div class="container">
+				<a href="https://typecodes.com" class="te-site-logo" role="logo" target="_self"> TypeCodes</a>
+				<ul class="nav nav-pills" id="te-site-nav" role="navigation">
+					<li><a href="https://typecodes.com">Home</a></li><li><a href="https://typecodes.com/archives.html" title="Archives">Archives</a></li><li><a href="https://typecodes.com/about.html" title="About">About</a></li></ul>
+			</div>
+		</header>
+		<div class="te-headline">
+			<div class="container">
+				<h2 class="te-headline-title"> <a href="https://typecodes.com">TypeCodes</a></h2>
+			</div>
+		</div>
+		<div class="container">
+			<div class="row">
+		<!--2. left sider begin-->
+		<div class="col-md-9" id="blog-main" role="main">
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/mix/updategithubclienterr.html">更新GitHub for Windows出错：git command could not be found</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2013-11-10 00:15 | 分类：<a href="https://typecodes.com/mix/index.html">mix</a></li>
+</ul>
+<div class="post-content fmt">
+	<h5>1 更新Github for Windows</h5>
+<p>前天在用git shell时，发现有新版本。作为“版本控”的我，自然是不会放过了。在升级后，重新打开git shell，竟然显示两个warning：</p>
+<div class="highlight"><pre>警告: git command could not be found. Please create an alias or add it to yourPATH.
+警告: Could not find ssh-agent.
+</pre></div>
+
+
+
+
+<h5>2 解决方法</h5>
+<p>当时心里就在嘀咕，windows不至于这么弱吧。反复打开和关闭git shell，还是会出现这个问题。输入任何命令都报错“not recognized as the name of a cmdlet”。网上gg了一下，在Stack Overflow找到了答案。解决方法如下三个步骤：</p>
+<div class="highlight"><pre>在更新完Git Shell后，关闭该窗口；
+打开GitHub for Windows客户端，然后等待其Extracting更新的文件并进行一些后期安装（如下图所示）；
+等待GitHub for Windows后期安装完后，重新打开Git Shell即可。
+</pre></div>
+
+
+<p><img alt="GitHub for Windows客户端安装更新" src="https://dn-vfhky.qbox.me/2013/11/GitHub-for-Windows-extracting.jpg" title="GitHub for Windows客户端安装更新" /></p>
+<h5>3 扯点题外话</h5>
+<p>前段时间都没什么业余时间弄ty的主题，改了m4html几个小地方：站内搜索、评论框、侧栏和文章归档等。另有几个蛋疼的地方：界面调整（css和js的增改）、二级目录（ty遗憾不支持）、router设置、wp数据移植（貌似测试发现有点问题）。目前这个主题弄在bae上，大家可以上去看看提个建议神马的。好吧，估计主题要慢慢整了；另计划近期把之前这两个wp主题整理到github上。唉，先写到这里了。</p>
+		    	<p class="tags">
+					<div class="post-share">
+						<ul class="post-shareul clearfix">
+							<li class="post-shareli">
+								<a href="http://note.youdao.com/memory/?url=https://typecodes.com/mix/updategithubclienterr.html&title=更新GitHub for Windows出错：git command could not be found" class="post-sharea ydshare" target="_blank" rel="nofollow">有道云笔记</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://v.t.sina.com.cn/share/share.php?url=https://typecodes.com/mix/updategithubclienterr.html&title=更新GitHub for Windows出错：git command could not be found&source=https://typecodes.com" class="post-sharea wbshare" target="_blank" rel="nofollow">新浪微博</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://v.t.qq.com/share/share.php?title=更新GitHub for Windows出错：git command could not be found&url=https://typecodes.com/mix/updategithubclienterr.html&site=https://typecodes.com" class="post-sharea twbshare" target="_blank" rel="nofollow">腾讯微博</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=https://typecodes.com/mix/updategithubclienterr.html&title=更新GitHub for Windows出错：git command could not be found&content='utf-8'" class="post-sharea qzoneshare" target="_blank" rel="nofollow">QZone</a>
+							</li>
+						</ul>
+					</div>
+					<div>
+						Tags: <a href="https://typecodes.com/tag/github.html">github</a>					</div>
+				</p>
+			</article>
+			
+			<div id="comments">
+				<h4 class="num">Comments &raquo;</h4>
+		    	<div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript></div>
+		    </div>
+		</div>
+		<!--3. right sider begin-->
+<div class="col-md-3" id="blog-secondary" role="complementary">
+	<section class="widget">
+		<ul class="widget-list">
+			<form id="search" method="get" action="https://typecodes.com/search.html">
+				<input type="text" name="q" id="s" size="20" x-webkit-speech="" x-webkit-grammar="builtin:search" onwebkitspeechchange="this.value = this.value.replace(this.defaultValue, '')" value="Google...." onfocus="this.value = (this.value == this.defaultValue) ? '' : this.value" onblur="this.value = (this.value == '') ? this.defaultValue : this.value">
+			</form>
+		</ul>
+	</section>
+	<section class="widget">
+		<h3 class="widget-title">Categories</h3>
+		<ul class="widget-list">
+		      <li class="current">
+		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (26)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/csharp/index.html">Csharp</a> (6)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/database/index.html">Database</a> (11)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/java/index.html">Java</a> (1)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/linux/index.html">Linux</a> (16)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/mix/index.html">Mix</a> (53)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/web/index.html">Web</a> (88)
+		      </li>
+		</ul>
+	</section>
+	<section class="widget">
+		<h3 class="widget-title">Recent Posts</h3>
+		<ul class="widget-list">
+			<li class="post">
+				<a href="https://typecodes.com/mix/sucesstypechotopelican.html">成功将博客从Typecho迁移到Pelican</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/mix/begintypechotopelican.html">准备将博客从Typecho迁移到Pelican</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/tcpconnectiontimedout.html">Linux TCP连接Connection Refused和Connection timed out的问题</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/mysqlerrornospace.html">博客MySQL服务惊魂记：Linux磁盘空间不足(Core Dump文件引爆)</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/mix/synweibophpmarkdownimgurl.html">升级博客文章同步微博的插件：PHP正则提取Markdown的图片地址</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/cppgeneralmakefile.html">Linux C/C++工程中可生成ELF、动/静态库文件的通用Makefile</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/libraryundefinedref.html">解决make编译链接动态库错误：libxx.so: undefined reference to xx</a>
+			</li>
+		</ul>
+	</section>
+	<section class="widget widget-feed">
+		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
+	</section>
+</div>
+				</div>
+			</div>
+		</div>
+		<!--4. bottom begin-->
+		<footer id="te-site-footer"><div class="container">
+	<div class="row" role="contentinfo">
+		<section class="col-md-2 col-md-offset-1">
+			<h3>Links</h3>
+			<ul><li><a href="http://diaosbook.com/" title="">diaosbook</a></li></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul>
+				<li><a href="https://typecodes.com/links.html">More..</a></li>
+			</ul>
+		</section>
+		<section class="col-md-2">
+			<h3>Following</h3>
+			<ul>
+				<li><a href="https://github.com/vfhky" class="following github" target="_blank" rel="external nofollow">GitHub</a></li>
+				<li><a href="http://weibo.com/typecodes" class="following weibo" target="_blank" rel="external nofollow">Weibo</a></li>
+				<li><a href="http://vfhky.sinaapp.com/" class="following sae" target="_blank" rel="external nofollow">SAE</a></li>
+				<li><a href="http://www.dwz.cn/mYiwa" class="following qqgroup" target="_blank" rel="external nofollow">Group</a></li>
+			</ul>
+		</section>
+		<div class="col-md-12 copyright">
+			<a href="#top"><i class="i-logo-s">TOP</i></a>
+			<p>
+				&copy; 2012-<script language="JavaScript">var date = new Date(); document.write(date.getFullYear());</script>							<a href="https://typecodes.com">TypeCodes</a>. All Rights Reserved<br>Powered by <a href="http://getpelican.com" rel="external" target="_blank">Pelican</a>. <a href="http://www.miitbeian.gov.cn/" rel="external nofollow" target="_blank">粤ICP备14050695号</a>
+			</p>
+		</div>
+	</div>
+</div>
+</footer>
+<script type="text/javascript">
+	var disqus_shortname = 'typecodes';
+	var disqus_identifier = '/mix/updategithubclienterr.html';
+	var disqus_url = 'https://typecodes.com/mix/updategithubclienterr.html';
+	var disqus_title = '更新GitHub for Windows出错：git command could not be found';
+	(function() {
+		var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+		dsq.src = "//" + disqus_shortname + '.disqus.com/embed.js';
+		(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	 })();
+</script>
+	</body>
+</html>

@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="zh-CN" class="no-js">
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<title>从一段ASP代码分析HTML、CSS、ASP、SQL（一） &mdash; TypeCodes</title>
+		<meta name="author" content="vfhky">
+  		<link href="https://typecodes.com/atom.xml" type="application/atom+xml" rel="alternate" title="TypeCodes Atom Feed" />
+	  	<link href="https://typecodes.com/feed.xml" type="application/rss+xml" rel="alternate" title="TypeCodes RSS Feed" />
+		<meta name="HandheldFriendly" content="True">
+		<meta name="MobileOptimized" content="320">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="renderer" content="webkit">
+		<link rel="stylesheet" href="https://dn-vfhky.qbox.me/libs/css/pelican-vfhky.css">
+		<script>
+			var _hmt = _hmt || [];
+			(function() {
+			  var hm = document.createElement("script");
+			  hm.src = "//hm.baidu.com/hm.js?c15c4ab8e91ba9ac3d5a12293cc93359";
+			  var s = document.getElementsByTagName("script")[0]; 
+			  s.parentNode.insertBefore(hm, s);
+			})();
+		</script>
+	</head>
+	<body style>
+		<!--1. header navigation begin-->
+		<header role="banner" id="te-site-header">
+			<div class="container">
+				<a href="https://typecodes.com" class="te-site-logo" role="logo" target="_self"> TypeCodes</a>
+				<ul class="nav nav-pills" id="te-site-nav" role="navigation">
+					<li><a href="https://typecodes.com">Home</a></li><li><a href="https://typecodes.com/archives.html" title="Archives">Archives</a></li><li><a href="https://typecodes.com/about.html" title="About">About</a></li></ul>
+			</div>
+		</header>
+		<div class="te-headline">
+			<div class="container">
+				<h2 class="te-headline-title"> <a href="https://typecodes.com">TypeCodes</a></h2>
+			</div>
+		</div>
+		<div class="container">
+			<div class="row">
+		<!--2. left sider begin-->
+		<div class="col-md-9" id="blog-main" role="main">
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/web/talkajax.html">从一段ASP代码分析HTML、CSS、ASP、SQL（一）</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2012-06-30 01:30 | 分类：<a href="https://typecodes.com/web/index.html">web</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>为了避免繁重的Web空间服务器负荷，Ajax技术可以使得我们的服务器不再超负载工作了。Ajax全称是“Asynchronous JavaScript and XML”，也即异步JavaScript和XML。它通过JavaScript可使用其XMLHttpRequest对象来直接与服务器进行通信。通过这个对象，JavaScript可在不重载页面的情况与 Web 服务器交换数据。</p>
+<p>由于Ajax在客服端的浏览器与Web服务器端之间使用异步数据传输（HTTP 请求），这样就可使网页从服务器请求少量的信息，而不是整个页面，从而降低了负载。下面通过我自己建的一个ASP网站中的注册页面register.asp来说明：</p>
+
+
+<h5>1 新建register.asp文件</h5>
+<p>要点提示：在“用户名”的右边我添加了一个名叫“检测是否可用”的按钮，只要单击它就可以激活调用chkname.js文件中的chkname()函数，它的功能是检查用户要注册的用户名是否与数据库中的用户名相同。</p>
+<div class="highlight"><pre><span class="o">&lt;%</span><span class="p">@</span><span class="n">LANGUAGE</span><span class="o">=</span><span class="s">&quot;VBSCRIPT&quot;</span> <span class="n">CODEPAGE</span><span class="o">=</span><span class="s">&quot;936&quot;</span><span class="o">%&gt;&lt;!</span><span class="n">DOCTYPE</span> <span class="n">html</span> <span class="n">PUBLIC</span> <span class="s">&quot;-//W3C//DTD XHTML 1.0 Transitional//EN&quot;</span> <span class="s">&quot;http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd&quot;</span><span class="o">&gt;</span>
+<span class="o">&lt;</span><span class="n">html</span> <span class="n">xmlns</span><span class="o">=</span><span class="s">&quot;http://www.w3.org/1999/xhtml&quot;</span><span class="o">&gt;</span>
+    <span class="o">&lt;!--</span><span class="err">#</span><span class="n">include</span> <span class="n">file</span><span class="o">=</span><span class="s">&quot;Connection/conn.asp&quot;</span><span class="o">--&gt;</span>
+    <span class="o">&lt;</span><span class="n">head</span><span class="o">&gt;</span>
+        <span class="o">&lt;</span><span class="n">link</span> <span class="n">rel</span><span class="o">=</span><span class="s">&quot;stylesheet&quot;</span> <span class="n">href</span><span class="o">=</span><span class="s">&quot;css/register.css&quot;</span> <span class="n">type</span><span class="o">=</span><span class="s">&quot;text/css&quot;</span><span class="o">/&gt;</span>
+        <span class="o">&lt;</span><span class="n">title</span><span class="o">&gt;</span><span class="err">会员注册</span><span class="o">--</span><span class="n">TypeCodes</span><span class="o">&lt;/</span><span class="n">title</span><span class="o">&gt;</span>
+        <span class="o">&lt;</span><span class="n">script</span> <span class="n">type</span><span class="o">=</span><span class="s">&quot;text/javascript&quot;</span> <span class="n">src</span><span class="o">=</span><span class="s">&quot;js/chkname.js&quot;</span><span class="o">&gt;</span><span class="c1">//调用js文件&lt;/script&gt;</span>
+        <span class="o">&lt;</span><span class="n">link</span> <span class="n">rel</span><span class="o">=</span><span class="s">&quot;Shortcut Icon&quot;</span> <span class="n">href</span><span class="o">=</span><span class="s">&quot;img/logo.ico&quot;</span><span class="o">/&gt;</span>
+        <span class="o">&lt;</span><span class="n">link</span> <span class="n">rel</span><span class="o">=</span><span class="s">&quot;Bookmark&quot;</span> <span class="n">href</span><span class="o">=</span><span class="s">&quot;img/logo.ico&quot;</span><span class="o">/&gt;</span>
+    <span class="o">&lt;/</span><span class="n">head</span><span class="o">&gt;</span>
+    <span class="o">&lt;%</span><span class="k">if</span> <span class="n">session</span><span class="p">(</span><span class="s">&quot;yh&quot;</span><span class="p">)</span><span class="o">&lt;&gt;</span><span class="s">&quot;&quot;</span> <span class="n">or</span> <span class="n">session</span><span class="p">(</span><span class="s">&quot;gly&quot;</span><span class="p">)</span><span class="o">&lt;&gt;</span><span class="s">&quot;&quot;</span> <span class="n">then</span> 
+        <span class="n">response</span><span class="p">.</span><span class="n">write</span><span class="s">&quot;&lt;script language=JavaScript&gt;alert(&#39;您已经注册并登录了！&#39;);&quot;</span>
+        <span class="n">response</span><span class="p">.</span><span class="n">write</span><span class="s">&quot;this.location.href=&#39;index.asp&#39;;&lt;/script&gt;&quot;</span> 
+        <span class="n">response</span><span class="p">.</span><span class="n">end</span>
+    <span class="k">else</span><span class="o">%&gt;</span>
+        <span class="o">&lt;</span><span class="n">script</span> <span class="n">language</span><span class="o">=</span><span class="s">&quot;javascript&quot;</span><span class="o">&gt;</span>
+        <span class="o">&lt;!--</span>
+            <span class="n">function</span> <span class="n">check</span><span class="p">(</span><span class="n">form</span><span class="p">){</span>
+                <span class="k">if</span> <span class="p">(</span><span class="n">form</span><span class="p">.</span><span class="n">name</span><span class="p">.</span><span class="n">value</span><span class="o">==</span><span class="s">&quot;&quot;</span><span class="p">){</span>
+                    <span class="n">alert</span><span class="p">(</span><span class="s">&quot;请填写用户名！&quot;</span><span class="p">);</span>
+                    <span class="n">form</span><span class="p">.</span><span class="n">name</span><span class="p">.</span><span class="n">focus</span><span class="p">();</span>
+                    <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+                <span class="p">}</span>
+                <span class="k">if</span> <span class="p">(</span><span class="n">form</span><span class="p">.</span><span class="n">name</span><span class="p">.</span><span class="n">value</span><span class="p">.</span><span class="n">length</span><span class="o">&lt;</span><span class="mi">2</span><span class="o">||</span><span class="n">form</span><span class="p">.</span><span class="n">name</span><span class="p">.</span><span class="n">value</span><span class="p">.</span><span class="n">length</span><span class="o">&gt;</span><span class="mi">10</span><span class="p">){</span>
+                    <span class="n">alert</span><span class="p">(</span><span class="s">&quot;用户名长度应该在2-10位！&quot;</span><span class="p">);</span>
+                    <span class="n">form</span><span class="p">.</span><span class="n">name</span><span class="p">.</span><span class="n">focus</span><span class="p">();</span>
+                    <span class="n">form</span><span class="p">.</span><span class="n">name</span><span class="p">.</span><span class="n">select</span><span class="p">();</span>
+                    <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+                <span class="p">}</span>
+                <span class="k">if</span> <span class="p">((</span><span class="n">form</span><span class="p">.</span><span class="n">email</span><span class="p">.</span><span class="n">value</span><span class="p">.</span><span class="n">indexOf</span><span class="p">(</span><span class="s">&quot;@&quot;</span><span class="p">)</span><span class="o">==-</span><span class="mi">1</span><span class="p">)</span><span class="o">||</span><span class="p">(</span><span class="n">form</span><span class="p">.</span><span class="n">email</span><span class="p">.</span><span class="n">value</span><span class="p">.</span><span class="n">indexOf</span><span class="p">(</span><span class="s">&quot;.&quot;</span><span class="p">)</span><span class="o">==-</span><span class="mi">1</span><span class="p">)){</span>
+                    <span class="n">alert</span><span class="p">(</span><span class="s">&quot;Email格式有错！(正确形式：vfhky@qq.com)&quot;</span><span class="p">);</span>
+                    <span class="n">form</span><span class="p">.</span><span class="n">email</span><span class="p">.</span><span class="n">focus</span><span class="p">();</span>
+                    <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+                <span class="p">}</span>
+                <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
+            <span class="p">}</span>
+        <span class="c1">//--&gt;</span>
+        <span class="o">&lt;/</span><span class="n">script</span><span class="o">&gt;</span>
+    <span class="o">&lt;%</span><span class="n">end</span> <span class="k">if</span><span class="o">%&gt;</span>
+    <span class="o">&lt;</span><span class="n">body</span><span class="o">&gt;</span>
+        <span class="o">&lt;</span><span class="n">div</span> <span class="kt">id</span><span class="o">=</span><span class="s">&quot;web&quot;</span><span class="o">&gt;</span>
+            <span class="o">&lt;!--</span><span class="err">#</span><span class="n">include</span> <span class="n">file</span><span class="o">=</span><span class="s">&quot;top.html&quot;</span><span class="o">--&gt;</span>
+            <span class="o">&lt;</span><span class="n">div</span> <span class="kt">id</span><span class="o">=</span><span class="s">&quot;mid&quot;</span><span class="o">&gt;</span>
+                <span class="o">&lt;!--</span><span class="err">#</span><span class="n">include</span> <span class="n">file</span><span class="o">=</span><span class="s">&quot;left.html&quot;</span><span class="o">--&gt;</span>
+                <span class="o">&lt;!--</span> <span class="err">网站中部右边</span> <span class="o">--&gt;</span>
+                <span class="o">&lt;</span><span class="n">div</span> <span class="kt">id</span><span class="o">=</span><span class="s">&quot;right&quot;</span><span class="o">&gt;</span>
+                    <span class="o">&lt;</span><span class="n">div</span> <span class="kt">id</span><span class="o">=</span><span class="s">&quot;title&quot;</span><span class="o">&gt;&lt;</span><span class="n">img</span> <span class="n">src</span><span class="o">=</span><span class="s">&quot;img/position.gif&quot;</span> <span class="o">/&gt;&lt;</span><span class="k">strong</span><span class="o">&gt;</span><span class="err">当前位置</span><span class="o">:&lt;/</span><span class="k">strong</span><span class="o">&gt;&lt;</span><span class="n">a</span> <span class="n">href</span><span class="o">=</span><span class="s">&quot;index.asp&quot;</span> <span class="n">target</span><span class="o">=</span><span class="s">&quot;_blank&quot;</span><span class="o">&gt;</span><span class="err">首页</span><span class="o">&lt;/</span><span class="n">a</span><span class="o">&gt;&gt;&gt;</span><span class="err">会员注册</span><span class="o">&lt;/</span><span class="n">div</span><span class="o">&gt;</span>
+                    <span class="o">&lt;</span><span class="n">div</span> <span class="kt">id</span><span class="o">=</span><span class="s">&quot;zc&quot;</span><span class="o">&gt;</span><span class="err">会员注册</span><span class="o">----</span><span class="n">REGISTER</span><span class="o">&lt;/</span><span class="n">div</span><span class="o">&gt;</span>
+                    <span class="o">&lt;</span><span class="n">ul</span> <span class="kt">id</span><span class="o">=</span><span class="s">&quot;neiron&quot;</span><span class="o">&gt;</span>
+                        <span class="o">&lt;</span><span class="n">form</span> <span class="n">action</span><span class="o">=</span><span class="s">&quot;registerck.asp&quot;</span> <span class="n">method</span><span class="o">=</span><span class="s">&quot;post&quot;</span>  <span class="n">name</span><span class="o">=</span><span class="s">&quot;form&quot;</span> <span class="n">onsubmit</span><span class="o">=</span><span class="s">&quot;return check(this)&quot;</span> <span class="o">&gt;</span>
+                            <span class="o">&lt;</span><span class="n">li</span><span class="o">&gt;</span><span class="err">用</span><span class="o">&lt;</span><span class="n">span</span> <span class="k">class</span><span class="o">=</span><span class="s">&quot;yzm&quot;</span><span class="o">&gt;</span><span class="err">户</span><span class="o">&lt;/</span><span class="n">h2</span><span class="o">&gt;</span><span class="err">名</span><span class="o">:&lt;</span><span class="n">input</span> <span class="n">type</span><span class="o">=</span><span class="s">&quot;text&quot;</span> <span class="n">name</span><span class="o">=</span><span class="s">&quot;name&quot;</span> <span class="kt">id</span><span class="o">=</span><span class="s">&quot;name&quot;</span> <span class="o">/&gt;&lt;</span><span class="n">span</span> <span class="kt">id</span><span class="o">=</span><span class="s">&quot;chk&quot;</span><span class="o">&gt;*</span><span class="err">必填，</span><span class="mi">2</span><span class="o">-</span><span class="mi">10</span><span class="err">字符</span><span class="o">&lt;/</span><span class="n">h2</span><span class="o">&gt;&lt;</span><span class="n">input</span> <span class="n">type</span><span class="o">=</span><span class="s">&quot;button&quot;</span> <span class="n">value</span><span class="o">=</span><span class="s">&quot;检测是否可用&quot;</span> <span class="n">onclick</span><span class="o">=</span><span class="s">&quot;chkname()&quot;</span><span class="o">/&gt;&lt;/</span><span class="n">li</span><span class="o">&gt;</span>
+                            <span class="o">&lt;</span><span class="n">li</span><span class="o">&gt;</span><span class="err">邮</span><span class="o">&lt;</span><span class="n">span</span> <span class="k">class</span><span class="o">=</span><span class="s">&quot;nc&quot;</span><span class="o">&gt;</span><span class="err">箱</span><span class="o">&lt;/</span><span class="n">h2</span><span class="o">&gt;:&lt;</span><span class="n">input</span> <span class="n">type</span><span class="o">=</span><span class="s">&quot;text&quot;</span> <span class="n">name</span><span class="o">=</span><span class="s">&quot;email&quot;</span> <span class="kt">id</span><span class="o">=</span><span class="s">&quot;email&quot;</span> <span class="o">/&gt;*</span><span class="err">必填，格式如：</span><span class="n">vfhky</span><span class="p">@</span><span class="n">qq</span><span class="p">.</span><span class="n">com</span><span class="o">&lt;/</span><span class="n">li</span><span class="o">&gt;</span>
+                            <span class="o">&lt;</span><span class="n">li</span><span class="o">&gt;&lt;</span><span class="n">span</span> <span class="k">class</span><span class="o">=</span><span class="s">&quot;submit&quot;</span><span class="o">&gt;&lt;</span><span class="n">input</span> <span class="n">type</span><span class="o">=</span><span class="s">&quot;submit&quot;</span> <span class="n">value</span><span class="o">=</span><span class="s">&quot;提交&quot;</span> <span class="o">/&gt;&lt;</span><span class="n">input</span> <span class="n">type</span><span class="o">=</span><span class="s">&quot;reset&quot;</span> <span class="n">value</span><span class="o">=</span><span class="s">&quot;重新设置&quot;</span> <span class="o">/&gt;&lt;/</span><span class="n">h2</span><span class="o">&gt;&lt;/</span><span class="n">li</span><span class="o">&gt;</span>
+                        <span class="o">&lt;/</span><span class="n">form</span><span class="o">&gt;</span>
+                    <span class="o">&lt;/</span><span class="n">ul</span><span class="o">&gt;</span>
+                <span class="o">&lt;/</span><span class="n">div</span><span class="o">&gt;</span>
+            <span class="o">&lt;/</span><span class="n">div</span><span class="o">&gt;</span>
+            <span class="o">&lt;!--</span><span class="err">#</span><span class="n">include</span> <span class="n">file</span><span class="o">=</span><span class="s">&quot;bottom.html&quot;</span><span class="o">--&gt;</span>
+        <span class="o">&lt;/</span><span class="n">div</span><span class="o">&gt;</span>
+    <span class="o">&lt;/</span><span class="n">body</span><span class="o">&gt;</span>
+<span class="o">&lt;/</span><span class="n">html</span><span class="o">&gt;</span>
+</pre></div>
+
+
+<h5>2 新建chkname.js文件</h5>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40</pre></div></td><td class="code"><div class="highlight"><pre><span class="cm">/**</span>
+<span class="cm"> * 根据客服端浏览器类型（IE和非IE）以你IE中安装的JavaScript技术版本的不同创建不同的XMLHttpRequest对象</span>
+<span class="cm"> */</span>
+<span class="kd">var</span> <span class="nx">xmlHttpObject</span><span class="p">;</span>
+<span class="k">try</span> <span class="p">{</span> 
+  <span class="nx">xmlHttpObject</span><span class="o">=</span><span class="k">new</span> <span class="nx">ActiveXObject</span><span class="p">(</span><span class="s2">&quot;Microsoft.XMLHTTP&quot;</span><span class="p">);</span> 
+<span class="p">}</span>
+<span class="k">catch</span> <span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">try</span> <span class="p">{</span>
+        <span class="nx">xmlHttpObject</span><span class="o">=</span><span class="k">new</span> <span class="nx">XMLHttpRequest</span><span class="p">();</span> 
+    <span class="p">}</span>
+    <span class="k">catch</span> <span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">xmlHttpObject</span><span class="o">=</span><span class="kc">false</span><span class="p">;</span>  
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">chkname</span><span class="p">(){</span>
+    <span class="kd">var</span> <span class="nx">chkthisname</span><span class="o">=</span><span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s2">&quot;chk&quot;</span><span class="p">);</span>  <span class="c1">//获取register.asp中元素ID为chk的值（即初始值为“*必填，2-10字符”，点击按钮后会变成各种提示信息，例如后面的“正在检测中”和“汗，被别人抢先了！”）</span>
+    <span class="kd">var</span> <span class="nx">name</span><span class="o">=</span><span class="nb">window</span><span class="p">.</span><span class="nb">document</span><span class="p">.</span><span class="nx">form</span><span class="p">.</span><span class="nx">name</span><span class="p">;</span>  <span class="c1">//通过name.value获取register.asp中的控件元素（用户名）的value值，如果输入长度不在2-10个字符的话就会JS弹窗提示“请确认用户名长度为2-10字符！”，否则显示“正在检测中……”</span>
+    <span class="kd">var</span> <span class="nx">backResult</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">;</span>
+    <span class="k">if</span><span class="p">(</span><span class="nx">name</span><span class="p">.</span><span class="nx">value</span><span class="o">==</span><span class="s2">&quot;&quot;</span><span class="o">||</span><span class="nx">name</span><span class="p">.</span><span class="nx">value</span><span class="p">.</span><span class="nx">length</span><span class="o">&gt;</span><span class="mi">10</span><span class="o">||</span><span class="nx">name</span><span class="p">.</span><span class="nx">value</span><span class="p">.</span><span class="nx">length</span><span class="o">&lt;</span><span class="mi">2</span><span class="p">){</span>
+        <span class="nx">alert</span><span class="p">(</span><span class="s2">&quot;请确认用户名长度为2-10字符！&quot;</span><span class="p">);</span><span class="nx">name</span><span class="p">.</span><span class="nx">focus</span><span class="p">();</span>
+    <span class="p">}</span>
+    <span class="k">else</span><span class="p">{</span>
+        <span class="nx">chkthisname</span><span class="p">.</span><span class="nx">innerHTML</span><span class="o">=</span><span class="s2">&quot;正在检测中……&quot;</span><span class="p">;</span>
+        <span class="kd">var</span> <span class="nx">url</span><span class="o">=</span><span class="s2">&quot;chknameisok.asp?name1=&quot;</span><span class="o">+</span><span class="nx">escape</span><span class="p">(</span><span class="nx">name</span><span class="p">.</span><span class="nx">value</span><span class="p">);</span>
+        <span class="nx">xmlHttpObject</span><span class="p">.</span><span class="nx">open</span><span class="p">(</span><span class="s2">&quot;GET&quot;</span><span class="p">,</span><span class="nx">url</span><span class="p">,</span><span class="kc">true</span><span class="p">);</span>
+        <span class="nx">xmlHttpObject</span><span class="p">.</span><span class="nx">onreadystatechange</span><span class="o">=</span><span class="kd">function</span><span class="p">(){</span>
+            <span class="k">if</span><span class="p">(</span><span class="nx">xmlHttpObject</span><span class="p">.</span><span class="nx">readyState</span><span class="o">==</span><span class="mi">4</span> <span class="o">&amp;&amp;</span> <span class="nx">xmlHttpObject</span><span class="p">.</span><span class="nx">status</span><span class="o">==</span><span class="mi">200</span><span class="p">){</span>
+                <span class="nx">backResult</span><span class="o">=</span><span class="nx">xmlHttpObject</span><span class="p">.</span><span class="nx">responseXML</span><span class="p">.</span><span class="nx">documentElement</span><span class="p">.</span><span class="nx">tagName</span><span class="p">;</span>
+                <span class="k">if</span><span class="p">(</span><span class="nx">backResult</span><span class="o">==</span><span class="s2">&quot;YES&quot;</span><span class="p">){</span> 
+                    <span class="nx">chkthisname</span><span class="p">.</span><span class="nx">innerHTML</span><span class="o">=</span><span class="s2">&quot;&lt;span&gt;恭喜您，此用户名有效！&lt;/h2&gt;&quot;</span><span class="p">;</span> <span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
+                <span class="p">}</span><span class="k">else</span><span class="p">{</span> 
+                    <span class="nx">chkthisname</span><span class="p">.</span><span class="nx">innerHTML</span><span class="o">=</span><span class="s2">&quot;&lt;span&gt;汗，被别人抢先了！&lt;/h2&gt;&quot;</span><span class="p">;</span> <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+        <span class="nx">xmlHttpObject</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="kc">null</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</td></tr></table>
+
+<p>温馨提示：第23行<code>var url="chknameisok.asp?name1="+escape(name.value);</code>是为了通过<code>xmlHttpObject.open("GET",url,true);</code>传递参数“name.value”给chknameisok.asp这个文件来查询数据库并验证是否存在该用户名同时返回一个验证标签（YES和NO）。后面的是xmlHttpObject的具体工作过程，有兴趣的可以自己查找相关解释。</p>
+<h5>3 新建chknameisok.asp文件</h5>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19</pre></div></td><td class="code"><div class="highlight"><pre><span class="c">&lt;!--#include file=&quot;Connection/conn.asp&quot;--&gt;</span>
+<span class="cp">&lt;%</span> 
+    <span class="no">Response</span><span class="o">.</span><span class="n">ContentType</span><span class="o">=</span><span class="s2">&quot;text/xml&quot;</span><span class="s1">&#39;确定此ASP文件是XML格式的 </span>
+<span class="s1">    Dim name1</span>
+<span class="s1">    Dim rs,sql</span>
+<span class="s1">    name1=request.querystring(&quot;name1&quot;)</span>
+<span class="s1">    Set rs = Server.CreateObject (&quot;ADODB.Recordset&quot;)</span>
+<span class="s1">    sql = &quot;Select * from alluser where name=&#39;</span><span class="s2">&quot;&amp;name1&amp;&quot;</span><span class="s1">&#39;&quot;</span>
+<span class="s1">    rs.Open sql,conn,1,1</span>
+<span class="s1">    if not (rs.eof AND rs.bof) then</span>
+<span class="s1">        response.write(&quot;&lt;NO/&gt;&quot;)&#39;</span><span class="err">生成</span><span class="o">&lt;</span><span class="n">err</span><span class="o">&gt;&lt;</span><span class="sr">/err&gt;标签 </span>
+<span class="sr">    Else </span>
+<span class="sr">        response.write(&quot;&lt;yes&gt;&lt;/</span><span class="n">yes</span><span class="o">&gt;</span><span class="s2">&quot;)&#39;生成&lt;ok&gt;&lt;/ok&gt;标签 </span>
+<span class="s2">    End If </span>
+<span class="s2">    rs.close</span>
+<span class="s2">    set rs=nothing</span>
+<span class="s2">    conn.close</span>
+<span class="s2">    set conn=nothing</span>
+<span class="cp">%&gt;</span>
+</pre></div>
+</td></tr></table>
+
+<h5>4 相关截图</h5>
+<p><img alt="浅谈初步应用Ajax技术-1" src="https://dn-vfhky.qbox.me/2012/06/4.jpg" title="浅谈初步应用Ajax技术-1" /></p>
+<p><img alt="浅谈初步应用Ajax技术-2" src="https://dn-vfhky.qbox.me/2012/06/5.jpg" title="浅谈初步应用Ajax技术-2" /></p>
+		    	<p class="tags">
+					<div class="post-share">
+						<ul class="post-shareul clearfix">
+							<li class="post-shareli">
+								<a href="http://note.youdao.com/memory/?url=https://typecodes.com/web/talkajax.html&title=从一段ASP代码分析HTML、CSS、ASP、SQL（一）" class="post-sharea ydshare" target="_blank" rel="nofollow">有道云笔记</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://v.t.sina.com.cn/share/share.php?url=https://typecodes.com/web/talkajax.html&title=从一段ASP代码分析HTML、CSS、ASP、SQL（一）&source=https://typecodes.com" class="post-sharea wbshare" target="_blank" rel="nofollow">新浪微博</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://v.t.qq.com/share/share.php?title=从一段ASP代码分析HTML、CSS、ASP、SQL（一）&url=https://typecodes.com/web/talkajax.html&site=https://typecodes.com" class="post-sharea twbshare" target="_blank" rel="nofollow">腾讯微博</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=https://typecodes.com/web/talkajax.html&title=从一段ASP代码分析HTML、CSS、ASP、SQL（一）&content='utf-8'" class="post-sharea qzoneshare" target="_blank" rel="nofollow">QZone</a>
+							</li>
+						</ul>
+					</div>
+					<div>
+						Tags: <a href="https://typecodes.com/tag/ajax.html">ajax</a>					</div>
+				</p>
+			</article>
+			
+			<div id="comments">
+				<h4 class="num">Comments &raquo;</h4>
+		    	<div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript></div>
+		    </div>
+		</div>
+		<!--3. right sider begin-->
+<div class="col-md-3" id="blog-secondary" role="complementary">
+	<section class="widget">
+		<ul class="widget-list">
+			<form id="search" method="get" action="https://typecodes.com/search.html">
+				<input type="text" name="q" id="s" size="20" x-webkit-speech="" x-webkit-grammar="builtin:search" onwebkitspeechchange="this.value = this.value.replace(this.defaultValue, '')" value="Google...." onfocus="this.value = (this.value == this.defaultValue) ? '' : this.value" onblur="this.value = (this.value == '') ? this.defaultValue : this.value">
+			</form>
+		</ul>
+	</section>
+	<section class="widget">
+		<h3 class="widget-title">Categories</h3>
+		<ul class="widget-list">
+		      <li class="current">
+		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (26)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/csharp/index.html">Csharp</a> (6)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/database/index.html">Database</a> (11)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/java/index.html">Java</a> (1)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/linux/index.html">Linux</a> (16)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/mix/index.html">Mix</a> (53)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/web/index.html">Web</a> (88)
+		      </li>
+		</ul>
+	</section>
+	<section class="widget">
+		<h3 class="widget-title">Recent Posts</h3>
+		<ul class="widget-list">
+			<li class="post">
+				<a href="https://typecodes.com/mix/sucesstypechotopelican.html">成功将博客从Typecho迁移到Pelican</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/mix/begintypechotopelican.html">准备将博客从Typecho迁移到Pelican</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/tcpconnectiontimedout.html">Linux TCP连接Connection Refused和Connection timed out的问题</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/mysqlerrornospace.html">博客MySQL服务惊魂记：Linux磁盘空间不足(Core Dump文件引爆)</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/mix/synweibophpmarkdownimgurl.html">升级博客文章同步微博的插件：PHP正则提取Markdown的图片地址</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/cppgeneralmakefile.html">Linux C/C++工程中可生成ELF、动/静态库文件的通用Makefile</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/libraryundefinedref.html">解决make编译链接动态库错误：libxx.so: undefined reference to xx</a>
+			</li>
+		</ul>
+	</section>
+	<section class="widget widget-feed">
+		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
+	</section>
+</div>
+				</div>
+			</div>
+		</div>
+		<!--4. bottom begin-->
+		<footer id="te-site-footer"><div class="container">
+	<div class="row" role="contentinfo">
+		<section class="col-md-2 col-md-offset-1">
+			<h3>Links</h3>
+			<ul><li><a href="http://diaosbook.com/" title="">diaosbook</a></li></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul>
+				<li><a href="https://typecodes.com/links.html">More..</a></li>
+			</ul>
+		</section>
+		<section class="col-md-2">
+			<h3>Following</h3>
+			<ul>
+				<li><a href="https://github.com/vfhky" class="following github" target="_blank" rel="external nofollow">GitHub</a></li>
+				<li><a href="http://weibo.com/typecodes" class="following weibo" target="_blank" rel="external nofollow">Weibo</a></li>
+				<li><a href="http://vfhky.sinaapp.com/" class="following sae" target="_blank" rel="external nofollow">SAE</a></li>
+				<li><a href="http://www.dwz.cn/mYiwa" class="following qqgroup" target="_blank" rel="external nofollow">Group</a></li>
+			</ul>
+		</section>
+		<div class="col-md-12 copyright">
+			<a href="#top"><i class="i-logo-s">TOP</i></a>
+			<p>
+				&copy; 2012-<script language="JavaScript">var date = new Date(); document.write(date.getFullYear());</script>							<a href="https://typecodes.com">TypeCodes</a>. All Rights Reserved<br>Powered by <a href="http://getpelican.com" rel="external" target="_blank">Pelican</a>. <a href="http://www.miitbeian.gov.cn/" rel="external nofollow" target="_blank">粤ICP备14050695号</a>
+			</p>
+		</div>
+	</div>
+</div>
+</footer>
+<script type="text/javascript">
+	var disqus_shortname = 'typecodes';
+	var disqus_identifier = '/web/talkajax.html';
+	var disqus_url = 'https://typecodes.com/web/talkajax.html';
+	var disqus_title = '从一段ASP代码分析HTML、CSS、ASP、SQL（一）';
+	(function() {
+		var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+		dsq.src = "//" + disqus_shortname + '.disqus.com/embed.js';
+		(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	 })();
+</script>
+	</body>
+</html>

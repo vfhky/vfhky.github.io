@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="zh-CN" class="no-js">
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<title>小心visual studio的“BUG”：变量的声明和使用 &mdash; TypeCodes</title>
+		<meta name="author" content="vfhky">
+  		<link href="https://typecodes.com/atom.xml" type="application/atom+xml" rel="alternate" title="TypeCodes Atom Feed" />
+	  	<link href="https://typecodes.com/feed.xml" type="application/rss+xml" rel="alternate" title="TypeCodes RSS Feed" />
+		<meta name="HandheldFriendly" content="True">
+		<meta name="MobileOptimized" content="320">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="renderer" content="webkit">
+		<link rel="stylesheet" href="https://dn-vfhky.qbox.me/libs/css/pelican-vfhky.css">
+		<script>
+			var _hmt = _hmt || [];
+			(function() {
+			  var hm = document.createElement("script");
+			  hm.src = "//hm.baidu.com/hm.js?c15c4ab8e91ba9ac3d5a12293cc93359";
+			  var s = document.getElementsByTagName("script")[0]; 
+			  s.parentNode.insertBefore(hm, s);
+			})();
+		</script>
+	</head>
+	<body style>
+		<!--1. header navigation begin-->
+		<header role="banner" id="te-site-header">
+			<div class="container">
+				<a href="https://typecodes.com" class="te-site-logo" role="logo" target="_self"> TypeCodes</a>
+				<ul class="nav nav-pills" id="te-site-nav" role="navigation">
+					<li><a href="https://typecodes.com">Home</a></li><li><a href="https://typecodes.com/archives.html" title="Archives">Archives</a></li><li><a href="https://typecodes.com/about.html" title="About">About</a></li></ul>
+			</div>
+		</header>
+		<div class="te-headline">
+			<div class="container">
+				<h2 class="te-headline-title"> <a href="https://typecodes.com">TypeCodes</a></h2>
+			</div>
+		</div>
+		<div class="container">
+			<div class="row">
+		<!--2. left sider begin-->
+		<div class="col-md-9" id="blog-main" role="main">
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/cseries/vsbugonvariable.html">小心visual studio的“BUG”：变量的声明和使用</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2014-03-19 16:34 | 分类：<a href="https://typecodes.com/cseries/index.html">cseries</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>昨天一Q友找我帮忙写个C程序：其中函数fun要实现：求出2000到2500之内能被7或者17或者27整除，但是不能同时被7和17整除，也不能同时被17和27整除的整数。题目倒是不难，遂打开visual studio，默默地写出下面的程序。</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30</pre></div></td><td class="code"><div class="highlight"><pre><span class="cp">#include &lt;stdio.h&gt;</span>
+<span class="kt">void</span> <span class="nf">fun</span><span class="p">(</span><span class="kt">int</span> <span class="o">*</span><span class="n">a</span><span class="p">,</span> <span class="kt">int</span> <span class="o">*</span><span class="n">n</span><span class="p">)</span>
+<span class="p">{</span>
+   <span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">2000</span><span class="p">,</span> <span class="n">sum</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+   <span class="k">for</span><span class="p">(;</span><span class="n">i</span><span class="o">&lt;</span><span class="mi">2501</span><span class="p">;</span><span class="n">i</span><span class="o">++</span><span class="p">)</span>
+   <span class="p">{</span>
+      <span class="k">if</span><span class="p">(</span> <span class="p">(</span><span class="n">i</span><span class="o">%</span><span class="mi">7</span><span class="o">==</span><span class="mi">0</span> <span class="o">||</span> <span class="n">i</span><span class="o">%</span><span class="mi">17</span><span class="o">==</span><span class="mi">0</span> <span class="o">||</span> <span class="n">i</span><span class="o">%</span><span class="mi">27</span><span class="o">==</span><span class="mi">0</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="o">!</span><span class="p">(</span><span class="n">i</span><span class="o">%</span><span class="mi">7</span><span class="o">==</span><span class="mi">0</span>  <span class="o">&amp;&amp;</span> <span class="n">i</span><span class="o">%</span><span class="mi">17</span><span class="o">==</span><span class="mi">0</span><span class="p">))</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="o">!</span><span class="p">(</span><span class="n">i</span><span class="o">%</span><span class="mi">17</span><span class="o">==</span><span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="n">i</span><span class="o">%</span><span class="mi">27</span><span class="o">==</span><span class="mi">0</span><span class="p">))</span> <span class="p">)</span>
+      <span class="p">{</span>
+           <span class="o">*</span><span class="n">a</span><span class="o">++</span> <span class="o">=</span> <span class="n">i</span><span class="p">;</span>
+           <span class="n">sum</span><span class="o">++</span><span class="p">;</span>
+      <span class="p">}</span>
+   <span class="p">}</span>
+   <span class="cm">/* 返回符合要求元素的个数 */</span>
+   <span class="o">*</span><span class="n">n</span> <span class="o">=</span> <span class="n">sum</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>
+<span class="p">{</span>
+   <span class="kt">int</span> <span class="n">a</span><span class="p">[</span><span class="mi">120</span><span class="p">];</span>
+   <span class="kt">int</span> <span class="n">k</span><span class="p">;</span>
+   <span class="n">fun</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="o">&amp;</span><span class="n">k</span><span class="p">);</span>
+   <span class="cm">/* 使指针pt指向数组a的起始地址 */</span>
+   <span class="kt">int</span> <span class="o">*</span><span class="n">pt</span> <span class="o">=</span> <span class="n">a</span><span class="p">;</span>
+   <span class="k">for</span><span class="p">(;</span><span class="n">pt</span><span class="o">&lt;</span><span class="n">a</span><span class="o">+</span><span class="mi">120</span><span class="p">;</span><span class="n">pt</span><span class="o">++</span><span class="p">)</span>
+   <span class="p">{</span>
+         <span class="n">printf</span><span class="p">(</span><span class="s">&quot;%d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="o">*</span><span class="n">pt</span><span class="p">);</span>
+   <span class="p">}</span>
+   <span class="n">printf</span><span class="p">(</span><span class="s">&quot;%d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="n">k</span><span class="p">);</span>
+   <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</td></tr></table>
+
+<p>然后ctrl+F5执行，结果很意外的报错了：</p>
+
+
+<div class="highlight"><pre><span class="nt">1</span><span class="o">&gt;</span><span class="nt">------</span> <span class="err">已启动生成</span><span class="o">:</span> <span class="err">项目</span><span class="o">:</span> <span class="nt">test</span><span class="o">,</span> <span class="err">配置</span><span class="o">:</span> <span class="nt">Debug</span> <span class="nt">Win32</span> <span class="nt">------</span>
+<span class="nt">1</span><span class="o">&gt;</span><span class="err">生成启动时间为</span> <span class="nt">2014</span><span class="o">/</span><span class="nt">3</span><span class="o">/</span><span class="nt">18</span> <span class="nt">16</span><span class="nd">:30:15</span><span class="err">。</span>
+<span class="nt">1</span><span class="o">&gt;</span><span class="nt">InitializeBuildStatus</span><span class="o">:</span>
+<span class="nt">1</span><span class="o">&gt;</span>  <span class="err">正在创建“</span><span class="nt">Debug</span><span class="err">\</span><span class="nt">test</span><span class="nc">.unsuccessfulbuild</span><span class="err">”，因为已指定“</span><span class="nt">AlwaysCreate</span><span class="err">”。</span>
+<span class="nt">1</span><span class="o">&gt;</span><span class="nt">ClCompile</span><span class="o">:</span>
+<span class="nt">1</span><span class="o">&gt;</span>  <span class="nt">1</span><span class="nc">.c</span>
+<span class="nt">1</span><span class="o">&gt;</span><span class="nt">g</span><span class="o">:</span><span class="err">\</span><span class="nt">vsprj</span><span class="err">\</span><span class="nt">test</span><span class="err">\</span><span class="nt">test</span><span class="err">\</span><span class="nt">1</span><span class="nc">.c</span><span class="o">(</span><span class="nt">23</span><span class="o">):</span> <span class="nt">error</span> <span class="nt">C2143</span><span class="o">:</span> <span class="err">语法错误</span> <span class="o">:</span> <span class="err">缺少“</span><span class="o">;</span><span class="err">”</span><span class="o">(</span><span class="err">在“类型”的前面</span><span class="o">)</span>
+<span class="nt">1</span><span class="o">&gt;</span><span class="nt">g</span><span class="o">:</span><span class="err">\</span><span class="nt">vsprj</span><span class="err">\</span><span class="nt">test</span><span class="err">\</span><span class="nt">test</span><span class="err">\</span><span class="nt">1</span><span class="nc">.c</span><span class="o">(</span><span class="nt">24</span><span class="o">):</span> <span class="nt">error</span> <span class="nt">C2065</span><span class="o">:</span> <span class="err">“</span><span class="nt">pt</span><span class="err">”</span><span class="o">:</span> <span class="err">未声明的标识符</span>
+<span class="nt">1</span><span class="o">&gt;</span><span class="nt">g</span><span class="o">:</span><span class="err">\</span><span class="nt">vsprj</span><span class="err">\</span><span class="nt">test</span><span class="err">\</span><span class="nt">test</span><span class="err">\</span><span class="nt">1</span><span class="nc">.c</span><span class="o">(</span><span class="nt">24</span><span class="o">):</span> <span class="nt">warning</span> <span class="nt">C4047</span><span class="o">:</span> <span class="err">“</span><span class="o">&lt;</span><span class="err">”</span><span class="o">:</span><span class="err">“</span><span class="nt">int</span><span class="err">”与“</span><span class="nt">int</span> <span class="o">*</span><span class="err">”的间接级别不同</span>
+<span class="nt">1</span><span class="o">&gt;</span><span class="nt">g</span><span class="o">:</span><span class="err">\</span><span class="nt">vsprj</span><span class="err">\</span><span class="nt">test</span><span class="err">\</span><span class="nt">test</span><span class="err">\</span><span class="nt">1</span><span class="nc">.c</span><span class="o">(</span><span class="nt">24</span><span class="o">):</span> <span class="nt">error</span> <span class="nt">C2065</span><span class="o">:</span> <span class="err">“</span><span class="nt">pt</span><span class="err">”</span><span class="o">:</span> <span class="err">未声明的标识符</span>
+<span class="nt">1</span><span class="o">&gt;</span><span class="nt">g</span><span class="o">:</span><span class="err">\</span><span class="nt">vsprj</span><span class="err">\</span><span class="nt">test</span><span class="err">\</span><span class="nt">test</span><span class="err">\</span><span class="nt">1</span><span class="nc">.c</span><span class="o">(</span><span class="nt">26</span><span class="o">):</span> <span class="nt">error</span> <span class="nt">C2065</span><span class="o">:</span> <span class="err">“</span><span class="nt">pt</span><span class="err">”</span><span class="o">:</span> <span class="err">未声明的标识符</span>
+<span class="nt">1</span><span class="o">&gt;</span><span class="nt">g</span><span class="o">:</span><span class="err">\</span><span class="nt">vsprj</span><span class="err">\</span><span class="nt">test</span><span class="err">\</span><span class="nt">test</span><span class="err">\</span><span class="nt">1</span><span class="nc">.c</span><span class="o">(</span><span class="nt">26</span><span class="o">):</span> <span class="nt">error</span> <span class="nt">C2100</span><span class="o">:</span> <span class="err">非法的间接寻址</span>
+<span class="nt">1</span><span class="o">&gt;</span>
+<span class="nt">1</span><span class="o">&gt;</span><span class="err">生成失败。</span>
+<span class="nt">1</span><span class="o">&gt;</span>
+<span class="nt">1</span><span class="o">&gt;</span><span class="err">已用时间</span> <span class="nt">00</span><span class="nd">:00:00</span><span class="nc">.65</span>
+<span class="o">==========</span> <span class="err">生成</span><span class="o">:</span> <span class="err">成功</span> <span class="nt">0</span> <span class="err">个，失败</span> <span class="nt">1</span> <span class="err">个，最新</span> <span class="nt">0</span> <span class="err">个，跳过</span> <span class="nt">0</span> <span class="err">个</span> <span class="o">==========</span>
+</pre></div>
+
+
+<p>无奈，只能根据上面的错误信息一个一个排查了。但很显然，第23行的int *pt = a;前面不缺分号，另外pt也声明为指针了，所以整个程序应该是没错的。检查了好几遍还是没看出问题，估计是vs编译出错了，于是决定用cygwin编译器重新编译一下。win+r打开cmd命令窗口，输入编译命令<code>gcc G:\VSprj\test\test\1.c -o 1</code>，然后直接执行1.exe。见证奇迹的时刻，竟然输出了数据。</p>
+<p><img alt="cmd命令窗口gcc编译" src="https://dn-vfhky.qbox.me/2014/03/gcc_compile.png" /></p>
+<p>回头想想，记得以前网上看过一个帖子，说是visual c++和visual studio对变量的声明要求特别严格，局部/全局变量一定要先声明在函数的最前面。于是把main函数中的指针pt声明调整到在fun函数的前面，再编译就没报错了。</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39</pre></div></td><td class="code"><div class="highlight"><pre><span class="cm">/**</span>
+<span class="cm"> * 使用指针和数组求2000到2500之内能被7或者17或者27整除，但是不能同时被7和17整除也不能同时被17和27整除的整数</span>
+<span class="cm"> * @author: vfhky 20140318 16:52</span>
+<span class="cm"> */</span>
+<span class="cp">#include &lt;stdio.h&gt;</span>
+<span class="kt">void</span> <span class="nf">fun</span><span class="p">(</span><span class="kt">int</span> <span class="o">*</span><span class="n">a</span><span class="p">,</span> <span class="kt">int</span> <span class="o">*</span><span class="n">n</span><span class="p">)</span>
+<span class="p">{</span>
+   <span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">2000</span><span class="p">,</span> <span class="n">sum</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+   <span class="k">for</span><span class="p">(;</span><span class="n">i</span><span class="o">&lt;</span><span class="mi">2501</span><span class="p">;</span><span class="n">i</span><span class="o">++</span><span class="p">)</span>
+   <span class="p">{</span>
+      <span class="k">if</span><span class="p">(</span> <span class="p">(</span><span class="n">i</span><span class="o">%</span><span class="mi">7</span><span class="o">==</span><span class="mi">0</span> <span class="o">||</span> <span class="n">i</span><span class="o">%</span><span class="mi">17</span><span class="o">==</span><span class="mi">0</span> <span class="o">||</span> <span class="n">i</span><span class="o">%</span><span class="mi">27</span><span class="o">==</span><span class="mi">0</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="o">!</span><span class="p">(</span><span class="n">i</span><span class="o">%</span><span class="mi">7</span><span class="o">==</span><span class="mi">0</span>  <span class="o">&amp;&amp;</span> <span class="n">i</span><span class="o">%</span><span class="mi">17</span><span class="o">==</span><span class="mi">0</span><span class="p">))</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="o">!</span><span class="p">(</span><span class="n">i</span><span class="o">%</span><span class="mi">17</span><span class="o">==</span><span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="n">i</span><span class="o">%</span><span class="mi">27</span><span class="o">==</span><span class="mi">0</span><span class="p">))</span> <span class="p">)</span>
+      <span class="p">{</span>
+            <span class="o">*</span><span class="n">a</span><span class="o">++</span> <span class="o">=</span> <span class="n">i</span><span class="p">;</span>
+            <span class="n">sum</span><span class="o">++</span><span class="p">;</span>
+      <span class="p">}</span>
+   <span class="p">}</span>
+   <span class="cm">/* 返回符合要求元素的个数 */</span>
+   <span class="o">*</span><span class="n">n</span> <span class="o">=</span> <span class="n">sum</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>
+<span class="p">{</span>
+   <span class="cm">/* 用于保存符合要求的元素 */</span>
+   <span class="kt">int</span> <span class="n">a</span><span class="p">[</span><span class="mi">120</span><span class="p">];</span>
+   <span class="kt">int</span> <span class="n">k</span><span class="p">;</span>
+   <span class="cm">/* 先声明指针变量pt */</span>
+   <span class="kt">int</span> <span class="o">*</span><span class="n">pt</span><span class="p">;</span>
+   <span class="n">fun</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="o">&amp;</span><span class="n">k</span><span class="p">);</span>
+   <span class="cm">/* 再使指针pt指向数组a的起始地址 */</span>
+   <span class="n">pt</span> <span class="o">=</span> <span class="n">a</span><span class="p">;</span>
+   <span class="k">for</span><span class="p">(;</span><span class="n">pt</span><span class="o">&lt;</span><span class="n">a</span><span class="o">+</span><span class="mi">120</span><span class="p">;</span><span class="n">pt</span><span class="o">++</span><span class="p">)</span>
+   <span class="p">{</span>
+         <span class="cm">/* 循环输出符合要求的元素 */</span>
+         <span class="n">printf</span><span class="p">(</span><span class="s">&quot;%d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="o">*</span><span class="n">pt</span><span class="p">);</span>
+   <span class="p">}</span>
+   <span class="cm">/* 输出总共符合要求的元素的个数 */</span>
+   <span class="n">printf</span><span class="p">(</span><span class="s">&quot;%d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="n">k</span><span class="p">);</span>
+   <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</td></tr></table>
+
+<p>虽然说vs对变量的使用比较“苛刻”，造成类似上面的“bug”，提供的错误信息“误导”了开发人员。但是细想之下，又觉得vs这种做法很“规范”：任何变量在使用之前必须先声明！而为了增强程序的可读性，也应该把声明语句尽量放在最前面！</p>
+		    	<p class="tags">
+					<div class="post-share">
+						<ul class="post-shareul clearfix">
+							<li class="post-shareli">
+								<a href="http://note.youdao.com/memory/?url=https://typecodes.com/cseries/vsbugonvariable.html&title=小心visual studio的“BUG”：变量的声明和使用" class="post-sharea ydshare" target="_blank" rel="nofollow">有道云笔记</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://v.t.sina.com.cn/share/share.php?url=https://typecodes.com/cseries/vsbugonvariable.html&title=小心visual studio的“BUG”：变量的声明和使用&source=https://typecodes.com" class="post-sharea wbshare" target="_blank" rel="nofollow">新浪微博</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://v.t.qq.com/share/share.php?title=小心visual studio的“BUG”：变量的声明和使用&url=https://typecodes.com/cseries/vsbugonvariable.html&site=https://typecodes.com" class="post-sharea twbshare" target="_blank" rel="nofollow">腾讯微博</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=https://typecodes.com/cseries/vsbugonvariable.html&title=小心visual studio的“BUG”：变量的声明和使用&content='utf-8'" class="post-sharea qzoneshare" target="_blank" rel="nofollow">QZone</a>
+							</li>
+						</ul>
+					</div>
+					<div>
+						Tags: <a href="https://typecodes.com/tag/visual-studio.html">visual studio</a>					</div>
+				</p>
+			</article>
+			
+			<div id="comments">
+				<h4 class="num">Comments &raquo;</h4>
+		    	<div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript></div>
+		    </div>
+		</div>
+		<!--3. right sider begin-->
+<div class="col-md-3" id="blog-secondary" role="complementary">
+	<section class="widget">
+		<ul class="widget-list">
+			<form id="search" method="get" action="https://typecodes.com/search.html">
+				<input type="text" name="q" id="s" size="20" x-webkit-speech="" x-webkit-grammar="builtin:search" onwebkitspeechchange="this.value = this.value.replace(this.defaultValue, '')" value="Google...." onfocus="this.value = (this.value == this.defaultValue) ? '' : this.value" onblur="this.value = (this.value == '') ? this.defaultValue : this.value">
+			</form>
+		</ul>
+	</section>
+	<section class="widget">
+		<h3 class="widget-title">Categories</h3>
+		<ul class="widget-list">
+		      <li class="current">
+		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (26)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/csharp/index.html">Csharp</a> (6)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/database/index.html">Database</a> (11)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/java/index.html">Java</a> (1)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/linux/index.html">Linux</a> (16)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/mix/index.html">Mix</a> (53)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/web/index.html">Web</a> (88)
+		      </li>
+		</ul>
+	</section>
+	<section class="widget">
+		<h3 class="widget-title">Recent Posts</h3>
+		<ul class="widget-list">
+			<li class="post">
+				<a href="https://typecodes.com/mix/sucesstypechotopelican.html">成功将博客从Typecho迁移到Pelican</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/mix/begintypechotopelican.html">准备将博客从Typecho迁移到Pelican</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/tcpconnectiontimedout.html">Linux TCP连接Connection Refused和Connection timed out的问题</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/mysqlerrornospace.html">博客MySQL服务惊魂记：Linux磁盘空间不足(Core Dump文件引爆)</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/mix/synweibophpmarkdownimgurl.html">升级博客文章同步微博的插件：PHP正则提取Markdown的图片地址</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/cppgeneralmakefile.html">Linux C/C++工程中可生成ELF、动/静态库文件的通用Makefile</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/libraryundefinedref.html">解决make编译链接动态库错误：libxx.so: undefined reference to xx</a>
+			</li>
+		</ul>
+	</section>
+	<section class="widget widget-feed">
+		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
+	</section>
+</div>
+				</div>
+			</div>
+		</div>
+		<!--4. bottom begin-->
+		<footer id="te-site-footer"><div class="container">
+	<div class="row" role="contentinfo">
+		<section class="col-md-2 col-md-offset-1">
+			<h3>Links</h3>
+			<ul><li><a href="http://diaosbook.com/" title="">diaosbook</a></li></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul>
+				<li><a href="https://typecodes.com/links.html">More..</a></li>
+			</ul>
+		</section>
+		<section class="col-md-2">
+			<h3>Following</h3>
+			<ul>
+				<li><a href="https://github.com/vfhky" class="following github" target="_blank" rel="external nofollow">GitHub</a></li>
+				<li><a href="http://weibo.com/typecodes" class="following weibo" target="_blank" rel="external nofollow">Weibo</a></li>
+				<li><a href="http://vfhky.sinaapp.com/" class="following sae" target="_blank" rel="external nofollow">SAE</a></li>
+				<li><a href="http://www.dwz.cn/mYiwa" class="following qqgroup" target="_blank" rel="external nofollow">Group</a></li>
+			</ul>
+		</section>
+		<div class="col-md-12 copyright">
+			<a href="#top"><i class="i-logo-s">TOP</i></a>
+			<p>
+				&copy; 2012-<script language="JavaScript">var date = new Date(); document.write(date.getFullYear());</script>							<a href="https://typecodes.com">TypeCodes</a>. All Rights Reserved<br>Powered by <a href="http://getpelican.com" rel="external" target="_blank">Pelican</a>. <a href="http://www.miitbeian.gov.cn/" rel="external nofollow" target="_blank">粤ICP备14050695号</a>
+			</p>
+		</div>
+	</div>
+</div>
+</footer>
+<script type="text/javascript">
+	var disqus_shortname = 'typecodes';
+	var disqus_identifier = '/cseries/vsbugonvariable.html';
+	var disqus_url = 'https://typecodes.com/cseries/vsbugonvariable.html';
+	var disqus_title = '小心visual studio的“BUG”：变量的声明和使用';
+	(function() {
+		var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+		dsq.src = "//" + disqus_shortname + '.disqus.com/embed.js';
+		(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	 })();
+</script>
+	</body>
+</html>

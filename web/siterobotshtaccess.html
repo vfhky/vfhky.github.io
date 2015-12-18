@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="zh-CN" class="no-js">
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<title>网站的robots和.htaccess应该如何写 &mdash; TypeCodes</title>
+		<meta name="author" content="vfhky">
+  		<link href="https://typecodes.com/atom.xml" type="application/atom+xml" rel="alternate" title="TypeCodes Atom Feed" />
+	  	<link href="https://typecodes.com/feed.xml" type="application/rss+xml" rel="alternate" title="TypeCodes RSS Feed" />
+		<meta name="HandheldFriendly" content="True">
+		<meta name="MobileOptimized" content="320">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="renderer" content="webkit">
+		<link rel="stylesheet" href="https://dn-vfhky.qbox.me/libs/css/pelican-vfhky.css">
+		<script>
+			var _hmt = _hmt || [];
+			(function() {
+			  var hm = document.createElement("script");
+			  hm.src = "//hm.baidu.com/hm.js?c15c4ab8e91ba9ac3d5a12293cc93359";
+			  var s = document.getElementsByTagName("script")[0]; 
+			  s.parentNode.insertBefore(hm, s);
+			})();
+		</script>
+	</head>
+	<body style>
+		<!--1. header navigation begin-->
+		<header role="banner" id="te-site-header">
+			<div class="container">
+				<a href="https://typecodes.com" class="te-site-logo" role="logo" target="_self"> TypeCodes</a>
+				<ul class="nav nav-pills" id="te-site-nav" role="navigation">
+					<li><a href="https://typecodes.com">Home</a></li><li><a href="https://typecodes.com/archives.html" title="Archives">Archives</a></li><li><a href="https://typecodes.com/about.html" title="About">About</a></li></ul>
+			</div>
+		</header>
+		<div class="te-headline">
+			<div class="container">
+				<h2 class="te-headline-title"> <a href="https://typecodes.com">TypeCodes</a></h2>
+			</div>
+		</div>
+		<div class="container">
+			<div class="row">
+		<!--2. left sider begin-->
+		<div class="col-md-9" id="blog-main" role="main">
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/web/siterobotshtaccess.html">网站的robots和.htaccess应该如何写</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2012-07-19 11:36 | 分类：<a href="https://typecodes.com/web/index.html">web</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>首先，我们了解一下robots和.htacces这两个文件是什么：①robots即文件robots.txt，存放位置为网站的根目录。它是搜索引擎中访问网站的时候要查看的第一个文件。robots.txt文件告诉蜘蛛程序在服务器上什么文件是可以被查看并收录的，而什么文件又是不能让这些搜索引擎查看和收录的。因为一旦一些服务器上的重要文件目录或者文件被别有用心的人搜索到的话，会构成网站安全的巨大威胁。所以有必要写好网站的robots。②.htaccess文件是Apache服务器中的一个配置文件，它负责相关目录下的网页配置。通过htaccess文件，可以帮我们实现：网页301重定向、自定义404错误页面、改变文件扩展名、允许/阻止特定的用户(ip)或者目录的访问、禁止目录列表、配置默认文档等功能。</p>
+
+
+<p>其次，分别了解robots和.htacces的具体写法：</p>
+<p>一、robots.txt文件：</p>
+<div class="highlight"><pre>User-agent: *       //针对所有的搜索引擎，把*符号改成Googlebot（google蜘蛛）或者Baiduspider（百度蜘蛛）等
+Disallow: /*?*      //禁止访问网站中所有的动态页面
+Disallow: /wp-*     //禁止引擎蜘蛛爬行任何以 wp- 形式命名的目录下面的目录或者文件
+Disallow: /wp-admin
+Disallow: /?s*
+Disallow: /*.gif$       //不允许抓取网页中存放的gif格式的图片
+Disallow: /*.png$
+Disallow: /*.bmp$
+Disallow: /*.swf$
+</pre></div>
+
+
+<p>网站的robots.txt文件只要列出不允许（Disallow）被搜索引擎访问的内容即可，未列出的会被自动视为可以（Allow）访问并收录的内容。</p>
+<p>二、htaccess文件：</p>
+<div class="highlight"><pre># BEGIN WordPress
+<span class="nt">&lt;ifmodule</span> <span class="err">mod_rewrite.c</span><span class="nt">&gt;</span>
+#重定向index.php到主域名
+RewriteEngine On
+RewriteBase /
+RewriteRule ^index\.php$ - [L]
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule . /index.php [L]
+
+#阻止没有referrer requests的评论减少垃圾评论
+RewriteCond %{REQUEST_METHOD} POST
+RewriteCond %{REQUEST_URI} .wp-comments-post.php*
+RewriteCond %{HTTP_REFERER} !.*xxx.com.* [OR]
+RewriteCond %{HTTP_USER_AGENT} ^$
+RewriteRule (.*) ^http://%{REMOTE_ADDR}/$ [R=301,L]
+
+#保护wp-config文件（自动跳转到404.php）
+<span class="nt">&lt;files</span> <span class="err">wp-config.php</span><span class="nt">&gt;</span>
+order allow,deny
+deny from all
+<span class="nt">&lt;/files&gt;</span>
+
+#保护.htaccess文件（自动跳转到404.php）
+<span class="nt">&lt;files</span> <span class="err">.htaccess</span><span class="nt">&gt;</span>
+order allow,deny
+deny from all
+<span class="nt">&lt;/files&gt;</span>
+
+#设置缓存
+FileETag MTime Size
+ExpiresActive on
+ExpiresDefault &quot;access plus 1 year&quot;
+
+#开启gzip
+AddOutputFilterByType DEFLATE text/html text/plain text/xml application/xml application/xhtml+xml text/javascript text/css application/x-javascript
+BrowserMatch ^Mozilla/4 gzip-only-text/html
+BrowserMatch ^Mozilla/4.0[678] no-gzip
+BrowserMatch bMSIE !no-gzip !gzip-only-text/html
+
+# 禁止列出目录(跳到404.php)
+Options All -Indexes
+
+#禁止某个ip访问整个网站（服务器500错误）
+#order allow,deny
+#deny from 123.123.123.123
+#deny from 456.456.456.*
+#deny from 789.789.*.*
+#allow from all
+
+<span class="nt">&lt;/ifmodule&gt;</span>
+</pre></div>
+
+
+<h1>END WordPress</h1>
+<p>这个也是wordpress中.htaccess文件的具体代码。具体的代码功能在上面已经通过#注释了。我想说明的是：①禁止列出目录是很重要的，比如针对博客类的网站，你可以通过访问http://网站域名/wp-admin/images/来查看网站的目录安全性。解决方法有两种，一种是使用上面的代码，另一种是在 images文件夹的目录下放置一个index.php或者index.htm文件（内容可以不填）。②设置网站的防盗链也是很有必要的，具体代码如下：</p>
+<div class="highlight"><pre>RewriteBase /wp-content/uploads/
+RewriteCond %{HTTP_REFERER} !^$ [NC]
+RewriteCond %{HTTP_REFERER} !sina.com.cn [NC]
+RewriteCond %{HTTP_REFERER} !google.com [NC]
+RewriteCond %{HTTP_REFERER} !baidu.com [NC]
+RewriteCond %{HTTP_REFERER} !qq.com [NC]
+RewriteCond %{HTTP_REFERER} !feedsky.com [NC]
+RewriteCond %{HTTP_REFERER} !xianguo.com [NC]
+RewriteCond %{HTTP_REFERER} !zhuaxia.com [NC]
+RewriteCond %{HTTP_REFERER} !yahoo.com [NC]
+RewriteRule .*\.(gif|jpg|jpeg|png|bmp|zip|rar|7z|swf|mp3)$ http://vfhky.sinaapp.com/error.png [NC,L]
+</pre></div>
+
+
+<p>其中，第一行 RewriteBase /wp-content/uploads/ 表示该目录下的文件是禁止盗链的。即如果uploads目录是你上传文件图片视频音乐等文件的地方，一般盗链耗流量的大户都在这里；第二行 RewriteCond %{HTTP_REFERER} !^$ [NC] 表示如果是用户直接访问你的图片则正常显示图片；另外，像 RewriteCond %{HTTP_REFERER} !royaso.com [NC] 这样的代码表示允许像百度、谷歌、qq之类的“盗链”，也显示正常的图片；倒数第二行 RewriteRule .*.(gif|jpg|jpeg|png|bmp|zip|rar|7z|swf|mp3)$ 表示设置防盗链的文件类型：图片、压缩文件、视频、音乐；最后一行代码表示如果不是上述的几种情况，那么将会被视为盗链，盗链后显示的图片为fangdaolian.png。</p>
+		    	<p class="tags">
+					<div class="post-share">
+						<ul class="post-shareul clearfix">
+							<li class="post-shareli">
+								<a href="http://note.youdao.com/memory/?url=https://typecodes.com/web/siterobotshtaccess.html&title=网站的robots和.htaccess应该如何写" class="post-sharea ydshare" target="_blank" rel="nofollow">有道云笔记</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://v.t.sina.com.cn/share/share.php?url=https://typecodes.com/web/siterobotshtaccess.html&title=网站的robots和.htaccess应该如何写&source=https://typecodes.com" class="post-sharea wbshare" target="_blank" rel="nofollow">新浪微博</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://v.t.qq.com/share/share.php?title=网站的robots和.htaccess应该如何写&url=https://typecodes.com/web/siterobotshtaccess.html&site=https://typecodes.com" class="post-sharea twbshare" target="_blank" rel="nofollow">腾讯微博</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=https://typecodes.com/web/siterobotshtaccess.html&title=网站的robots和.htaccess应该如何写&content='utf-8'" class="post-sharea qzoneshare" target="_blank" rel="nofollow">QZone</a>
+							</li>
+						</ul>
+					</div>
+					<div>
+						Tags: <a href="https://typecodes.com/tag/robots.html">robots</a>,<a href="https://typecodes.com/tag/htaccess.html">.htaccess</a>					</div>
+				</p>
+			</article>
+			
+			<div id="comments">
+				<h4 class="num">Comments &raquo;</h4>
+		    	<div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript></div>
+		    </div>
+		</div>
+		<!--3. right sider begin-->
+<div class="col-md-3" id="blog-secondary" role="complementary">
+	<section class="widget">
+		<ul class="widget-list">
+			<form id="search" method="get" action="https://typecodes.com/search.html">
+				<input type="text" name="q" id="s" size="20" x-webkit-speech="" x-webkit-grammar="builtin:search" onwebkitspeechchange="this.value = this.value.replace(this.defaultValue, '')" value="Google...." onfocus="this.value = (this.value == this.defaultValue) ? '' : this.value" onblur="this.value = (this.value == '') ? this.defaultValue : this.value">
+			</form>
+		</ul>
+	</section>
+	<section class="widget">
+		<h3 class="widget-title">Categories</h3>
+		<ul class="widget-list">
+		      <li class="current">
+		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (26)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/csharp/index.html">Csharp</a> (6)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/database/index.html">Database</a> (11)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/java/index.html">Java</a> (1)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/linux/index.html">Linux</a> (16)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/mix/index.html">Mix</a> (53)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/web/index.html">Web</a> (88)
+		      </li>
+		</ul>
+	</section>
+	<section class="widget">
+		<h3 class="widget-title">Recent Posts</h3>
+		<ul class="widget-list">
+			<li class="post">
+				<a href="https://typecodes.com/mix/sucesstypechotopelican.html">成功将博客从Typecho迁移到Pelican</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/mix/begintypechotopelican.html">准备将博客从Typecho迁移到Pelican</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/tcpconnectiontimedout.html">Linux TCP连接Connection Refused和Connection timed out的问题</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/mysqlerrornospace.html">博客MySQL服务惊魂记：Linux磁盘空间不足(Core Dump文件引爆)</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/mix/synweibophpmarkdownimgurl.html">升级博客文章同步微博的插件：PHP正则提取Markdown的图片地址</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/cppgeneralmakefile.html">Linux C/C++工程中可生成ELF、动/静态库文件的通用Makefile</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/libraryundefinedref.html">解决make编译链接动态库错误：libxx.so: undefined reference to xx</a>
+			</li>
+		</ul>
+	</section>
+	<section class="widget widget-feed">
+		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
+	</section>
+</div>
+				</div>
+			</div>
+		</div>
+		<!--4. bottom begin-->
+		<footer id="te-site-footer"><div class="container">
+	<div class="row" role="contentinfo">
+		<section class="col-md-2 col-md-offset-1">
+			<h3>Links</h3>
+			<ul><li><a href="http://diaosbook.com/" title="">diaosbook</a></li></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul>
+				<li><a href="https://typecodes.com/links.html">More..</a></li>
+			</ul>
+		</section>
+		<section class="col-md-2">
+			<h3>Following</h3>
+			<ul>
+				<li><a href="https://github.com/vfhky" class="following github" target="_blank" rel="external nofollow">GitHub</a></li>
+				<li><a href="http://weibo.com/typecodes" class="following weibo" target="_blank" rel="external nofollow">Weibo</a></li>
+				<li><a href="http://vfhky.sinaapp.com/" class="following sae" target="_blank" rel="external nofollow">SAE</a></li>
+				<li><a href="http://www.dwz.cn/mYiwa" class="following qqgroup" target="_blank" rel="external nofollow">Group</a></li>
+			</ul>
+		</section>
+		<div class="col-md-12 copyright">
+			<a href="#top"><i class="i-logo-s">TOP</i></a>
+			<p>
+				&copy; 2012-<script language="JavaScript">var date = new Date(); document.write(date.getFullYear());</script>							<a href="https://typecodes.com">TypeCodes</a>. All Rights Reserved<br>Powered by <a href="http://getpelican.com" rel="external" target="_blank">Pelican</a>. <a href="http://www.miitbeian.gov.cn/" rel="external nofollow" target="_blank">粤ICP备14050695号</a>
+			</p>
+		</div>
+	</div>
+</div>
+</footer>
+<script type="text/javascript">
+	var disqus_shortname = 'typecodes';
+	var disqus_identifier = '/web/siterobotshtaccess.html';
+	var disqus_url = 'https://typecodes.com/web/siterobotshtaccess.html';
+	var disqus_title = '网站的robots和.htaccess应该如何写';
+	(function() {
+		var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+		dsq.src = "//" + disqus_shortname + '.disqus.com/embed.js';
+		(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	 })();
+</script>
+	</body>
+</html>

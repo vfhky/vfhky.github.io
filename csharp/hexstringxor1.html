@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="zh-CN" class="no-js">
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<title>C#实现十六进制字符串异或（一） &mdash; TypeCodes</title>
+		<meta name="author" content="vfhky">
+  		<link href="https://typecodes.com/atom.xml" type="application/atom+xml" rel="alternate" title="TypeCodes Atom Feed" />
+	  	<link href="https://typecodes.com/feed.xml" type="application/rss+xml" rel="alternate" title="TypeCodes RSS Feed" />
+		<meta name="HandheldFriendly" content="True">
+		<meta name="MobileOptimized" content="320">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="renderer" content="webkit">
+		<link rel="stylesheet" href="https://dn-vfhky.qbox.me/libs/css/pelican-vfhky.css">
+		<script>
+			var _hmt = _hmt || [];
+			(function() {
+			  var hm = document.createElement("script");
+			  hm.src = "//hm.baidu.com/hm.js?c15c4ab8e91ba9ac3d5a12293cc93359";
+			  var s = document.getElementsByTagName("script")[0]; 
+			  s.parentNode.insertBefore(hm, s);
+			})();
+		</script>
+	</head>
+	<body style>
+		<!--1. header navigation begin-->
+		<header role="banner" id="te-site-header">
+			<div class="container">
+				<a href="https://typecodes.com" class="te-site-logo" role="logo" target="_self"> TypeCodes</a>
+				<ul class="nav nav-pills" id="te-site-nav" role="navigation">
+					<li><a href="https://typecodes.com">Home</a></li><li><a href="https://typecodes.com/archives.html" title="Archives">Archives</a></li><li><a href="https://typecodes.com/about.html" title="About">About</a></li></ul>
+			</div>
+		</header>
+		<div class="te-headline">
+			<div class="container">
+				<h2 class="te-headline-title"> <a href="https://typecodes.com">TypeCodes</a></h2>
+			</div>
+		</div>
+		<div class="container">
+			<div class="row">
+		<!--2. left sider begin-->
+		<div class="col-md-9" id="blog-main" role="main">
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/csharp/hexstringxor1.html">C#实现十六进制字符串异或（一）</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2014-12-29 21:52 | 分类：<a href="https://typecodes.com/csharp/index.html">csharp</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>前面用C/C++实现了两个十六进制的字符串进行异或（<a href="https://typecodes.com/cseries/hexstrxor.html" title="《C语言实现十六进制字符串异或》">查看该文</a>），这篇文章利用C#来实现这个功能。由于C#命名空间里已经封装好了很多类和方法，不用像之前用C实现十六进制字符串异或那样，需要自己写相关的函数，所以能够利用C#很快完成这个字符串异或功能。</p>
+<p>用C#实现两个十六进制的字符串进行异或和用C/C++实现两个十六进制的字符串进行异或的思路是一样的，对比着之前用C实现的那篇文章，可以很好理解。</p>
+
+
+<h5>关键点一</h5>
+<p>弄清十六进制字符串异或的思路：之前是自己写了一个C函数<code>int char2int( char input )</code>，把每个字符串中的单个字符转换成对应的十进制数（范围是0~15），而在C#中直接利用<code>Convert.ToInt32()</code>方法就可以实现了；同样在异或完后，自己用<code>int int2char( char input )</code>函数，根据ASCII码表将范围是0~15的<code>字符</code>转换成对应的占用1字节的字符串中的字符，而在C#中直接利用<code>Int.ToString("X")</code>方法就可以实现整数转换成对应的十六进制字符了。</p>
+<h5>关键点二</h5>
+<p>由于这两个十六进制的字符串的长度可能不相等，所以在异或的时候，对于不等长的这两个十六进制的字符串需要先把这两个字符串等长的部分异或完毕。然后再把长度较长的那个字符串未异或的部分<code>copy</code>至异或结果的后面（因为0与任何字符异或得到的结果都是这个字符本身），这个是通过<code>String.Substring(iStartPosition, iLength)</code>实现的。</p>
+<h5>关键点三</h5>
+<p>由于<code>Convert.ToInt32(单个字符)</code>方法不会区分这个单个字符是大写还是小写，所以在异或的时候，不用像C那样先把这两个十六进制的字符串全部转成大写。</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76</pre></div></td><td class="code"><div class="highlight"><pre><span class="cm">/**</span>
+<span class="cm">* C#实现两个十六进制字符串异或实例1</span>
+<span class="cm">* @FileName:  cHexStrXor.cs</span>
+<span class="cm">*/</span>
+<span class="n">using</span> <span class="n">System</span><span class="p">;</span>
+<span class="n">using</span> <span class="n">System</span><span class="p">.</span><span class="n">Text</span><span class="p">;</span>
+
+<span class="n">public</span> <span class="n">class</span> <span class="n">cHexStrXor</span>
+<span class="p">{</span>
+    <span class="cm">/**</span>
+<span class="cm">     * C#实现两个十六进制字符串异或的方法1（允许这两个字符串长度不等以及包含大小写）</span>
+<span class="cm">     * @Function:  HexStrXor</span>
+<span class="cm">     * @Author  :  vfhky  2014.11.20  https://typecodes.com</span>
+<span class="cm">     * @param   :  HexStr1     第一个十六进制的字符串</span>
+<span class="cm">     * @param   :  HexStr2     第二个十六进制的字符串</span>
+<span class="cm">     * @return  :  异或结果（一个十六进制的字符串）</span>
+<span class="cm">     */</span>
+    <span class="n">public</span> <span class="k">static</span> <span class="n">String</span> <span class="n">HexStrXor</span><span class="p">(</span> <span class="n">String</span> <span class="n">HexStr1</span><span class="p">,</span> <span class="n">String</span> <span class="n">HexStr2</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="c1">//两个十六进制字符串的长度和长度差的绝对值以及异或结果</span>
+        <span class="kt">int</span> <span class="n">iHexStr1Len</span> <span class="o">=</span> <span class="n">HexStr1</span><span class="p">.</span><span class="n">Length</span><span class="p">;</span>
+        <span class="kt">int</span> <span class="n">iHexStr2Len</span> <span class="o">=</span> <span class="n">HexStr2</span><span class="p">.</span><span class="n">Length</span><span class="p">;</span>
+        <span class="kt">int</span> <span class="n">iGap</span><span class="p">,</span> <span class="n">iHexStrLenLow</span><span class="p">;</span>
+        <span class="n">String</span> <span class="n">result</span> <span class="o">=</span> <span class="n">String</span><span class="p">.</span><span class="n">Empty</span><span class="p">;</span>
+
+        <span class="c1">//获取这两个十六进制字符串长度的差值</span>
+        <span class="n">iGap</span> <span class="o">=</span> <span class="n">iHexStr1Len</span> <span class="o">-</span> <span class="n">iHexStr2Len</span><span class="p">;</span>
+
+        <span class="c1">//获取这两个十六进制字符串长度最小的那一个</span>
+        <span class="n">iHexStrLenLow</span> <span class="o">=</span> <span class="n">iHexStr1Len</span> <span class="o">&lt;</span> <span class="n">iHexStr2Len</span> <span class="o">?</span> <span class="nl">iHexStr1Len</span> <span class="p">:</span> <span class="n">iHexStr2Len</span><span class="p">;</span>
+
+        <span class="cm">/**</span>
+<span class="cm">         * 把这两个十六进制字符串输出到控制台</span>
+<span class="cm">         * Console.WriteLine(&quot;HexStr1=[{0}]&quot;, HexStr1);</span>
+<span class="cm">         * Console.WriteLine(&quot;HexStr2=[{0}]&quot;, HexStr2);</span>
+<span class="cm">         */</span>
+
+        <span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+        <span class="n">try</span>
+        <span class="p">{</span>
+            <span class="c1">//先把每个十六进制字符转换成整数(0~15)，异或后再转换成十六进制字符</span>
+            <span class="k">for</span><span class="p">(</span> <span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">iHexStrLenLow</span><span class="p">;</span> <span class="o">++</span><span class="n">i</span> <span class="p">)</span>
+            <span class="p">{</span>
+                <span class="n">result</span> <span class="o">+=</span> <span class="p">(</span><span class="n">Convert</span><span class="p">.</span><span class="n">ToInt32</span><span class="p">(</span><span class="n">HexStr1</span><span class="p">.</span><span class="n">Substring</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="mi">16</span><span class="p">)</span> <span class="o">^</span> <span class="n">Convert</span><span class="p">.</span><span class="n">ToInt32</span><span class="p">(</span><span class="n">HexStr2</span><span class="p">.</span><span class="n">Substring</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="mi">16</span><span class="p">)).</span><span class="n">ToString</span><span class="p">(</span><span class="s">&quot;X&quot;</span><span class="p">);</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+        <span class="n">catch</span> <span class="p">(</span><span class="n">Exception</span> <span class="n">e</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">throw</span> <span class="n">new</span> <span class="n">Exception</span><span class="p">(</span><span class="n">e</span><span class="p">.</span><span class="n">Message</span><span class="p">);</span>
+            <span class="cm">/**</span>
+<span class="cm">             * 把错误信息输出到控制台</span>
+<span class="cm">             * Console.WriteLine(&quot;Exception {0} thrown.&quot;, e.GetType().FullName);</span>
+<span class="cm">             * Console.WriteLine(&quot;Message:{0}&quot;, e.Message);</span>
+<span class="cm">             */</span>
+        <span class="p">}</span>
+
+        <span class="n">result</span> <span class="o">+=</span> <span class="n">iGap</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="o">?</span> <span class="n">HexStr1</span><span class="p">.</span><span class="n">Substring</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">iGap</span><span class="p">)</span> <span class="o">:</span> <span class="n">HexStr2</span><span class="p">.</span><span class="n">Substring</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="o">-</span><span class="n">iGap</span><span class="p">);</span>
+        <span class="k">return</span> <span class="n">result</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="n">public</span> <span class="k">static</span> <span class="kt">void</span> <span class="n">Main</span><span class="p">(</span> <span class="n">String</span><span class="p">[]</span> <span class="n">args</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">while</span><span class="p">(</span><span class="nb">true</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="c1">//获取用户输入的两个十六进制字符串</span>
+            <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span> <span class="s">&quot;Please input the first Sting:&quot;</span> <span class="p">);</span>
+            <span class="n">String</span> <span class="n">HexStr1</span> <span class="o">=</span> <span class="n">Console</span><span class="p">.</span><span class="n">ReadLine</span><span class="p">();</span>
+            <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span> <span class="s">&quot;Please input the second Sting:&quot;</span> <span class="p">);</span>
+            <span class="n">String</span> <span class="n">HexStr2</span> <span class="o">=</span> <span class="n">Console</span><span class="p">.</span><span class="n">ReadLine</span><span class="p">();</span>
+
+            <span class="c1">//调用异或方法并打印输出结果</span>
+            <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span> <span class="s">&quot;The xor result=[{0}]&quot;</span><span class="p">,</span> <span class="n">HexStrXor</span><span class="p">(</span> <span class="n">HexStr1</span><span class="p">,</span> <span class="n">HexStr2</span> <span class="p">)</span> <span class="p">);</span>
+            <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span> <span class="s">&quot;---------------------------------------</span><span class="se">\n</span><span class="s">&quot;</span> <span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</td></tr></table>
+
+<h5>用C#编译命令csc编译执行</h5>
+<p>用C#编译命令csc命令编译<code>csc/out:c:\users\vfhky\desktop\cHexStrXor.exe  c:\users\vfhky\desktop\cHexStrXor.cs</code>后，用管理员身份打开<code>cHexStrXor.exe</code>文件。对两个十六进制的字符串按照“长度相等”、“存在小写”和“长度不等”的情况，分别输入如下3组测试数据：</p>
+<div class="highlight"><pre>【C#实现两个十六进制字符串异或测试结果：】
+[1] 两个长度相等的字符串异或
+Please input the first Sting:
+F1A37CD826BE0A38
+Please input the second Sting:
+4FBC926A2EED4F0A
+The xor result=[BE1FEEB208534532]
+---------------------------------------
+
+[2] 字符串大小写不影响异或结果
+Please input the first Sting:
+f1a37cd826be0a38
+Please input the second Sting:
+4FBC926A2EED4F0A
+The xor result=[BE1FEEB208534532]
+---------------------------------------
+
+[3] 两个长度不同的字符串异或
+Please input the first Sting:
+4FBC926A2EED40
+Please input the second Sting:
+F1A37CD826BE0A38
+The xor result=[BE1FEEB208534A38]
+---------------------------------------
+</pre></div>
+
+
+<p>即如图所示：</p>
+<p><img alt="C#实现十六进制字符串异或" src="https://dn-vfhky.qbox.me/2014/12/csharphexstrxor.png" title="C#实现十六进制字符串异或" /></p>
+		    	<p class="tags">
+					<div class="post-share">
+						<ul class="post-shareul clearfix">
+							<li class="post-shareli">
+								<a href="http://note.youdao.com/memory/?url=https://typecodes.com/csharp/hexstringxor1.html&title=C#实现十六进制字符串异或（一）" class="post-sharea ydshare" target="_blank" rel="nofollow">有道云笔记</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://v.t.sina.com.cn/share/share.php?url=https://typecodes.com/csharp/hexstringxor1.html&title=C#实现十六进制字符串异或（一）&source=https://typecodes.com" class="post-sharea wbshare" target="_blank" rel="nofollow">新浪微博</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://v.t.qq.com/share/share.php?title=C#实现十六进制字符串异或（一）&url=https://typecodes.com/csharp/hexstringxor1.html&site=https://typecodes.com" class="post-sharea twbshare" target="_blank" rel="nofollow">腾讯微博</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=https://typecodes.com/csharp/hexstringxor1.html&title=C#实现十六进制字符串异或（一）&content='utf-8'" class="post-sharea qzoneshare" target="_blank" rel="nofollow">QZone</a>
+							</li>
+						</ul>
+					</div>
+					<div>
+						Tags: <a href="https://typecodes.com/tag/shi-liu-jin-zhi-zi-fu-chuan.html">十六进制字符串</a>,<a href="https://typecodes.com/tag/zi-fu-chuan-yi-huo.html">字符串异或</a>,<a href="https://typecodes.com/tag/czi-fu-chuan-yi-huo.html">c#字符串异或</a>					</div>
+				</p>
+			</article>
+			
+			<div id="comments">
+				<h4 class="num">Comments &raquo;</h4>
+		    	<div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript></div>
+		    </div>
+		</div>
+		<!--3. right sider begin-->
+<div class="col-md-3" id="blog-secondary" role="complementary">
+	<section class="widget">
+		<ul class="widget-list">
+			<form id="search" method="get" action="https://typecodes.com/search.html">
+				<input type="text" name="q" id="s" size="20" x-webkit-speech="" x-webkit-grammar="builtin:search" onwebkitspeechchange="this.value = this.value.replace(this.defaultValue, '')" value="Google...." onfocus="this.value = (this.value == this.defaultValue) ? '' : this.value" onblur="this.value = (this.value == '') ? this.defaultValue : this.value">
+			</form>
+		</ul>
+	</section>
+	<section class="widget">
+		<h3 class="widget-title">Categories</h3>
+		<ul class="widget-list">
+		      <li class="current">
+		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (26)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/csharp/index.html">Csharp</a> (6)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/database/index.html">Database</a> (11)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/java/index.html">Java</a> (1)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/linux/index.html">Linux</a> (16)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/mix/index.html">Mix</a> (53)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/web/index.html">Web</a> (88)
+		      </li>
+		</ul>
+	</section>
+	<section class="widget">
+		<h3 class="widget-title">Recent Posts</h3>
+		<ul class="widget-list">
+			<li class="post">
+				<a href="https://typecodes.com/mix/sucesstypechotopelican.html">成功将博客从Typecho迁移到Pelican</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/mix/begintypechotopelican.html">准备将博客从Typecho迁移到Pelican</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/tcpconnectiontimedout.html">Linux TCP连接Connection Refused和Connection timed out的问题</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/mysqlerrornospace.html">博客MySQL服务惊魂记：Linux磁盘空间不足(Core Dump文件引爆)</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/mix/synweibophpmarkdownimgurl.html">升级博客文章同步微博的插件：PHP正则提取Markdown的图片地址</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/cppgeneralmakefile.html">Linux C/C++工程中可生成ELF、动/静态库文件的通用Makefile</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/libraryundefinedref.html">解决make编译链接动态库错误：libxx.so: undefined reference to xx</a>
+			</li>
+		</ul>
+	</section>
+	<section class="widget widget-feed">
+		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
+	</section>
+</div>
+				</div>
+			</div>
+		</div>
+		<!--4. bottom begin-->
+		<footer id="te-site-footer"><div class="container">
+	<div class="row" role="contentinfo">
+		<section class="col-md-2 col-md-offset-1">
+			<h3>Links</h3>
+			<ul><li><a href="http://diaosbook.com/" title="">diaosbook</a></li></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul>
+				<li><a href="https://typecodes.com/links.html">More..</a></li>
+			</ul>
+		</section>
+		<section class="col-md-2">
+			<h3>Following</h3>
+			<ul>
+				<li><a href="https://github.com/vfhky" class="following github" target="_blank" rel="external nofollow">GitHub</a></li>
+				<li><a href="http://weibo.com/typecodes" class="following weibo" target="_blank" rel="external nofollow">Weibo</a></li>
+				<li><a href="http://vfhky.sinaapp.com/" class="following sae" target="_blank" rel="external nofollow">SAE</a></li>
+				<li><a href="http://www.dwz.cn/mYiwa" class="following qqgroup" target="_blank" rel="external nofollow">Group</a></li>
+			</ul>
+		</section>
+		<div class="col-md-12 copyright">
+			<a href="#top"><i class="i-logo-s">TOP</i></a>
+			<p>
+				&copy; 2012-<script language="JavaScript">var date = new Date(); document.write(date.getFullYear());</script>							<a href="https://typecodes.com">TypeCodes</a>. All Rights Reserved<br>Powered by <a href="http://getpelican.com" rel="external" target="_blank">Pelican</a>. <a href="http://www.miitbeian.gov.cn/" rel="external nofollow" target="_blank">粤ICP备14050695号</a>
+			</p>
+		</div>
+	</div>
+</div>
+</footer>
+<script type="text/javascript">
+	var disqus_shortname = 'typecodes';
+	var disqus_identifier = '/csharp/hexstringxor1.html';
+	var disqus_url = 'https://typecodes.com/csharp/hexstringxor1.html';
+	var disqus_title = 'C#实现十六进制字符串异或（一）';
+	(function() {
+		var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+		dsq.src = "//" + disqus_shortname + '.disqus.com/embed.js';
+		(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	 })();
+</script>
+	</body>
+</html>

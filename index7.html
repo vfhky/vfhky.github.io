@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="zh-CN" class="no-js">
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<title>TypeCodes</title>
+		<meta name="author" content="vfhky">
+  		<link href="https://typecodes.com/atom.xml" type="application/atom+xml" rel="alternate" title="TypeCodes Atom Feed" />
+	  	<link href="https://typecodes.com/feed.xml" type="application/rss+xml" rel="alternate" title="TypeCodes RSS Feed" />
+		<meta name="HandheldFriendly" content="True">
+		<meta name="MobileOptimized" content="320">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="renderer" content="webkit">
+		<link rel="stylesheet" href="https://dn-vfhky.qbox.me/libs/css/pelican-vfhky.css">
+		<script>
+			var _hmt = _hmt || [];
+			(function() {
+			  var hm = document.createElement("script");
+			  hm.src = "//hm.baidu.com/hm.js?c15c4ab8e91ba9ac3d5a12293cc93359";
+			  var s = document.getElementsByTagName("script")[0]; 
+			  s.parentNode.insertBefore(hm, s);
+			})();
+		</script>
+	</head>
+	<body style>
+		<!--1. header navigation begin-->
+		<header role="banner" id="te-site-header">
+			<div class="container">
+				<a href="https://typecodes.com" class="te-site-logo" role="logo" target="_self"> TypeCodes</a>
+				<ul class="nav nav-pills" id="te-site-nav" role="navigation">
+					<li><a href="https://typecodes.com">Home</a></li><li><a href="https://typecodes.com/archives.html" title="Archives">Archives</a></li><li><a href="https://typecodes.com/about.html" title="About">About</a></li></ul>
+			</div>
+		</header>
+		<div class="te-headline">
+			<div class="container">
+				<h2 class="te-headline-title"> <a href="https://typecodes.com">TypeCodes</a></h2>
+			</div>
+		</div>
+		<div class="container">
+			<div class="row">
+		<!--2. left sider begin-->
+		<div class="col-md-9" id="blog-main" role="main">
+		  	<!--article recycle-->
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/cseries/studentssoundoffgame.html">由学生按某规则依次报数的游戏引发的问题</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2014-11-08 19:02 | 分类：<a href="https://typecodes.com/cseries/index.html">cseries</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>前段时间Q群里有提问如下，编写程序解决一个学生按规则依次报数的体育游戏问题。编程语言不限，Java, C#, Ruby, C++, Js, Python, Scala, objective-C统统可以，小语种也没问题。</p>
+<p><img alt="学生按某规则依次报数的游戏" src="https://dn-vfhky.qbox.me/2014/11/sportsgamepushpop.png" title="学生按某规则依次报数的游戏" /></p>
+<h5>1 问题描述：</h5>
+<div class="highlight"><pre>你是一名体育老师，在某次课距离下课还有五分钟时，你决定搞一个游戏。此时有100名学生在上课。游戏的规则是：
+1. 你首先说出三个不同的特殊数，要求必须是个位数，比如3、5、7。
+2. 让所有学生拍成一队，然后按顺序报数。
+3. 学生报数时，如果所报数字是第一个特殊数（3）的倍数，那么不能说该数字，而要说Fizz；如果所报数字是第二个特殊数（5）的倍数，那么要说Buzz；如果所报数字是第三个特殊数（7）的倍数，那么要说Whizz。
+4. 学生报数时，如果所报数字同时是两个特殊数的倍数情况下，也要特殊处理，比如第一个特殊数和第二个特殊数的倍数，那么不能说该数字，而是要说FizzBuzz, 以此类推。如果同时是三个特殊数的倍数，那么要说FizzBuzzWhizz。
+5. 学生报数时，如果所报数字包含了第一个特殊数，那么也不能说该数字，而是要说相应的单词，比如本例中第一个特殊数是3，那么要报13的同学应该说Fizz。如果数字中包含了第一个特殊数，那么忽略规则3和规则4，比如要报35的同学只报Fizz，不报BuzzWhizz。
+
+现在，我们需要你完成一个程序来模拟这个游戏，它首先接受3个特殊数，然后输出100名学生应该报数的数或单词。比如，
+
+输入
+3,5,7
+输出（片段）
+
+1
+2
+Fizz
+4
+Buzz
+Fizz
+Whizz
+8
+Fizz
+Buzz
+11
+Fizz
+Fizz
+Whizz
+FizzBuzz
+16
+17
+Fizz
+19
+Buzz
+…
+一直到100
+</pre></div>
+
+
+
+	<p class="more"><a href="https://typecodes.com/cseries/studentssoundoffgame.html" title="由学生按某规则依次报数的游戏引发的问题">- 阅读剩余部分 -</a></p>
+			</article>
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/cseries/signedunsignedcharconvint.html">理解有符号和无符号的字符数和整数的转换</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2014-11-07 21:52 | 分类：<a href="https://typecodes.com/cseries/index.html">cseries</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>网上关于有符号、无符号字符转换成有符号、无符号整形数据的问题，自己写了一个测试程序，分析了下，挺有意思的。</p>
+<h5>1 测试说明</h5>
+<p>用的是自己的win7 64位系统，处理器当然是Intel的，因此是前文提到的<code>小端模式</code>。默认按32位（总线）处理，即一个整型4个字节，长度共 2^32 = 4294967296 字节；有符号字符char类型数据的范围是 -128~127 （对应二进制 11111111~01111111），无符号字符 unsinged char 类型数据范围是 0~255（对应二进制 00000000~11111111）。</p>
+<p><img alt="C语言有符号和无符号数" src="https://dn-vfhky.qbox.me/2014/11/clangsignedandunsigned.png" title="C语言有符号和无符号数" /></p>
+
+	<p class="more"><a href="https://typecodes.com/cseries/signedunsignedcharconvint.html" title="理解有符号和无符号的字符数和整数的转换">- 阅读剩余部分 -</a></p>
+			</article>
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/cseries/sizeofbyteorder.html">C语言字节序的大小端模式</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2014-11-05 23:33 | 分类：<a href="https://typecodes.com/cseries/index.html">cseries</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>关于字节序的大小端模式，个人认为CSDN上Hackbuteer1作者的这篇文章<a href="http://blog.csdn.net/hackbuteer1/article/details/7722667" title="大端模式和小端模式">《大端模式和小端模式》</a>讲解的很清晰。这里MARK一下自己的学习心得：</p>
+<p><img alt="C程序内存映射模式" src="https://dn-vfhky.qbox.me/2014/11/memorymapping.png" title="C程序内存映射模式" /></p>
+<h5>1 原文精华</h5>
+<div class="highlight"><pre>小端模式[Little-Endian]：内存块低地址存放元素的低位(字节)，内存块高地址存放元素的高位(字节)；
+大端模式[Big-Endian]：内存块低地址存放元素的高位(字节)，内存块高地址存放元素的低位(字节)。
+</pre></div>
+
+
+<p>采用小端模式的处理器包括：<code>PDP-11、VAX、Intel系列微处理器和一些网络通信设备</code>；
+采用大端模式的处理器包括：<code>IBM3700系列、PDP-10、Mortolora微处理器系列和绝大多数的RISC处理器</code>。</p>
+
+	<p class="more"><a href="https://typecodes.com/cseries/sizeofbyteorder.html" title="C语言字节序的大小端模式">- 阅读剩余部分 -</a></p>
+			</article>
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/cseries/clangintegerstrtointeger.html">C语言将十进制字符串转成十进制整数</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2014-11-05 22:05 | 分类：<a href="https://typecodes.com/cseries/index.html">cseries</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>通过<a href="https://typecodes.com/cseries/clanghexstrtointeger.html" title="《C语言将十六进制字符串转成十进制整数》">上一篇文章</a>完成了十六进制字符串转成十进制整数，同理也很容易写出十进制字符串转成十进制整数的函数。考虑到十进制的字符串中可能会出现正负号，即转换后可能出现负整数，同样也增加了对这种情况的处理。例如将十进制的字符串"0621"、"+621"、"6210"、"-1234"转换十进制的整数，即621、621、6210、-1234。下面同样是正向和逆向两种方法的具体代码：</p>
+
+	<p class="more"><a href="https://typecodes.com/cseries/clangintegerstrtointeger.html" title="C语言将十进制字符串转成十进制整数">- 阅读剩余部分 -</a></p>
+			</article>
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/cseries/clanghexstrtointeger.html">C语言将十六进制字符串转成十进制整数</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2014-11-04 22:22 | 分类：<a href="https://typecodes.com/cseries/index.html">cseries</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>C/C++处理十六进制文件中的报文内容时，经常会遇到先读取报文头中的长度（例如"E2"、"1F"、"-eE2"等等），再读取报文体中的内容的情况。那么就需要把报文头中表示长度的十六进制字符串转换成十进制的整形数据。</p>
+<p>转换方法有两种，一种是正向从字符串低位到高位依次转换，另一种是逆向从字符串高位到低位依次转换。原理都是利用指针变量依次指向十六进制字符串中的单个字符，然后通过ASCII码表转换成对应的整数。考虑到十进制的字符串中可能会出现正负号，即转换后可能出现负整数，所以增加了对这种情况的处理。下面是两种方法的具体代码：</p>
+
+	<p class="more"><a href="https://typecodes.com/cseries/clanghexstrtointeger.html" title="C语言将十六进制字符串转成十进制整数">- 阅读剩余部分 -</a></p>
+			</article>
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/web/shutdownblogssl.html">决定关闭博客使用SSL证书访问</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2014-10-17 23:37 | 分类：<a href="https://typecodes.com/web/index.html">web</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>前几天博客使用了NameCheap的证书，将原来的http访问改成了https访问（详戳<a href="https://typecodes.com/web/lnmppositivessl.html" title="阿里云CentOS 6.5系统LNMP环境安装SSL证书">这里</a>）。由于下面的原因，现决定不再使用SSL证书，恢复http访问。</p>
+<p><img alt="使用SSL证书访问博客" src="https://dn-vfhky.qbox.me/2014/10/blogbeginusessl.png" title="使用SSL证书访问博客" /></p>
+<h5>1 无法通过https加载站外静态资源文件</h5>
+<p>主要是因为目前博客所有的静态资源文件，如css样式文件、js脚本文件、图片文件等，都使用了新浪SCS云存储。最初，博客程序中还存在类似于<code>https://dn-vfhky.qbox.me/libs/img/typecodes.png</code>这种http请求，所以浏览器地址栏会出现黄色警告图标。后来将所有的http请求全部改成https，结果浏览器地址栏图标变成正常的绿色图标了。</p>
+
+	<p class="more"><a href="https://typecodes.com/web/shutdownblogssl.html" title="决定关闭博客使用SSL证书访问">- 阅读剩余部分 -</a></p>
+			</article>
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/web/lnmppositivessl.html">阿里云CentOS 6.5系统LNMP环境安装SSL证书</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2014-10-15 00:02 | 分类：<a href="https://typecodes.com/web/index.html">web</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>近期参加了github的一项<a href="https://education.github.com/pack" title="GitHub Education Student pack">优惠活动</a>，获得了一年免费的SSL证书。下面是具体的安装过程，当然SSL证书的安装跟博客程序（不管是wordpress或者typecho等等）无关，只是跟服务器的类型（比如Nginx、Apache或者IIS等）有关。</p>
+<div class="highlight"><pre>----------操作说明----------               
+系统：            阿里云CentOS 6.5
+环境：            LNMP（只需配置Nginx服务器就行）
+操作工具：        SecureCRT 7.0
+博客程序：        Typecho 14.10
+SSL证书提供商：    PositiveSSL from Namecheap
+</pre></div>
+
+
+
+	<p class="more"><a href="https://typecodes.com/web/lnmppositivessl.html" title="阿里云CentOS 6.5系统LNMP环境安装SSL证书">- 阅读剩余部分 -</a></p>
+			</article>
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/web/scsfortypechov111.html">更新新浪云存储(SCS) for Typecho 插件版本V1.1.0</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2014-09-20 11:34 | 分类：<a href="https://typecodes.com/web/index.html">web</a></li>
+</ul>
+<div class="post-content fmt">
+	<h5>1 更新说明</h5>
+<p>感谢 @奇趣铺 的使用反馈，插件版本更新至最新的V1.1.1。更新内容如下：</p>
+<div class="highlight"><pre>1、更新官方SDK文件；
+2、增加SCS存储路径参数配置，用户能更自由定义SCS存储路径；
+3、取消SCS附件前缀用Unix time stamp格式命名，保持原附件名称不变。
+</pre></div>
+
+
+<h5>2 版本升级方法</h5>
+<p>下面对于 Linux主机 和 Windows主机 的升级方法同样适用于之前没有安装该插件的童鞋，步骤完全一样。</p>
+
+	<p class="more"><a href="https://typecodes.com/web/scsfortypechov111.html" title="更新新浪云存储(SCS) for Typecho 插件版本V1.1.0">- 阅读剩余部分 -</a></p>
+			</article>
+		  	<!--page navigation-->
+<ol class="page-navigator">
+<li class="prev"><a href="https://typecodes.com/index6.html">&laquo; 前一页</a></li><li><a href="https://typecodes.com/index.html">1</a>
+       <li><a href="https://typecodes.com/index2.html">2</a>
+       		</li><li><span>...</span></li><li><a href="https://typecodes.com/index5.html">5</a>
+       		</li><li><a href="https://typecodes.com/index6.html">6</a>
+       		</li><li class="current"><a href="https://typecodes.com/index7.html">7</a>
+       		</li><li><a href="https://typecodes.com/index8.html">8</a>
+       		</li><li><span>...</span></li><li><a href="https://typecodes.com/index25.html">25</a>
+       		</li><li><a href="https://typecodes.com/index26.html">26</a>
+       		</li><li class="next">
+       		<a href="https://typecodes.com/index8.html">后一页 &raquo;</a>
+       </li></ol>		</div>
+		<!--3. right sider begin-->
+<div class="col-md-3" id="blog-secondary" role="complementary">
+	<section class="widget">
+		<ul class="widget-list">
+			<form id="search" method="get" action="https://typecodes.com/search.html">
+				<input type="text" name="q" id="s" size="20" x-webkit-speech="" x-webkit-grammar="builtin:search" onwebkitspeechchange="this.value = this.value.replace(this.defaultValue, '')" value="Google...." onfocus="this.value = (this.value == this.defaultValue) ? '' : this.value" onblur="this.value = (this.value == '') ? this.defaultValue : this.value">
+			</form>
+		</ul>
+	</section>
+	<section class="widget">
+		<h3 class="widget-title">Categories</h3>
+		<ul class="widget-list">
+		      <li class="current">
+		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (26)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/csharp/index.html">Csharp</a> (6)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/database/index.html">Database</a> (11)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/java/index.html">Java</a> (1)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/linux/index.html">Linux</a> (16)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/mix/index.html">Mix</a> (53)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/web/index.html">Web</a> (88)
+		      </li>
+		</ul>
+	</section>
+	<section class="widget">
+		<h3 class="widget-title">Recent Posts</h3>
+		<ul class="widget-list">
+			<li class="post">
+				<a href="https://typecodes.com/mix/sucesstypechotopelican.html">成功将博客从Typecho迁移到Pelican</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/mix/begintypechotopelican.html">准备将博客从Typecho迁移到Pelican</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/tcpconnectiontimedout.html">Linux TCP连接Connection Refused和Connection timed out的问题</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/mysqlerrornospace.html">博客MySQL服务惊魂记：Linux磁盘空间不足(Core Dump文件引爆)</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/mix/synweibophpmarkdownimgurl.html">升级博客文章同步微博的插件：PHP正则提取Markdown的图片地址</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/cppgeneralmakefile.html">Linux C/C++工程中可生成ELF、动/静态库文件的通用Makefile</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/libraryundefinedref.html">解决make编译链接动态库错误：libxx.so: undefined reference to xx</a>
+			</li>
+		</ul>
+	</section>
+	<section class="widget widget-feed">
+		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
+	</section>
+</div>
+				</div>
+			</div>
+		</div>
+		<!--4. bottom begin-->
+		<footer id="te-site-footer"><div class="container">
+	<div class="row" role="contentinfo">
+		<section class="col-md-2 col-md-offset-1">
+			<h3>Links</h3>
+			<ul><li><a href="http://diaosbook.com/" title="">diaosbook</a></li></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul>
+				<li><a href="https://typecodes.com/links.html">More..</a></li>
+			</ul>
+		</section>
+		<section class="col-md-2">
+			<h3>Following</h3>
+			<ul>
+				<li><a href="https://github.com/vfhky" class="following github" target="_blank" rel="external nofollow">GitHub</a></li>
+				<li><a href="http://weibo.com/typecodes" class="following weibo" target="_blank" rel="external nofollow">Weibo</a></li>
+				<li><a href="http://vfhky.sinaapp.com/" class="following sae" target="_blank" rel="external nofollow">SAE</a></li>
+				<li><a href="http://www.dwz.cn/mYiwa" class="following qqgroup" target="_blank" rel="external nofollow">Group</a></li>
+			</ul>
+		</section>
+		<div class="col-md-12 copyright">
+			<a href="#top"><i class="i-logo-s">TOP</i></a>
+			<p>
+				&copy; 2012-<script language="JavaScript">var date = new Date(); document.write(date.getFullYear());</script>							<a href="https://typecodes.com">TypeCodes</a>. All Rights Reserved<br>Powered by <a href="http://getpelican.com" rel="external" target="_blank">Pelican</a>. <a href="http://www.miitbeian.gov.cn/" rel="external nofollow" target="_blank">粤ICP备14050695号</a>
+			</p>
+		</div>
+	</div>
+</div>
+</footer>
+<script type="text/javascript">
+	var disqus_shortname = 'typecodes';
+	(function() {
+		var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+		dsq.src = "//" + disqus_shortname + '.disqus.com/embed.js';
+		(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	 })();
+</script>
+	</body>
+</html>

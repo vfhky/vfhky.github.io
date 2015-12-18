@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="zh-CN" class="no-js">
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<title>再议Gravatar头像缓存至本地服务器 &mdash; TypeCodes</title>
+		<meta name="author" content="vfhky">
+  		<link href="https://typecodes.com/atom.xml" type="application/atom+xml" rel="alternate" title="TypeCodes Atom Feed" />
+	  	<link href="https://typecodes.com/feed.xml" type="application/rss+xml" rel="alternate" title="TypeCodes RSS Feed" />
+		<meta name="HandheldFriendly" content="True">
+		<meta name="MobileOptimized" content="320">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="renderer" content="webkit">
+		<link rel="stylesheet" href="https://dn-vfhky.qbox.me/libs/css/pelican-vfhky.css">
+		<script>
+			var _hmt = _hmt || [];
+			(function() {
+			  var hm = document.createElement("script");
+			  hm.src = "//hm.baidu.com/hm.js?c15c4ab8e91ba9ac3d5a12293cc93359";
+			  var s = document.getElementsByTagName("script")[0]; 
+			  s.parentNode.insertBefore(hm, s);
+			})();
+		</script>
+	</head>
+	<body style>
+		<!--1. header navigation begin-->
+		<header role="banner" id="te-site-header">
+			<div class="container">
+				<a href="https://typecodes.com" class="te-site-logo" role="logo" target="_self"> TypeCodes</a>
+				<ul class="nav nav-pills" id="te-site-nav" role="navigation">
+					<li><a href="https://typecodes.com">Home</a></li><li><a href="https://typecodes.com/archives.html" title="Archives">Archives</a></li><li><a href="https://typecodes.com/about.html" title="About">About</a></li></ul>
+			</div>
+		</header>
+		<div class="te-headline">
+			<div class="container">
+				<h2 class="te-headline-title"> <a href="https://typecodes.com">TypeCodes</a></h2>
+			</div>
+		</div>
+		<div class="container">
+			<div class="row">
+		<!--2. left sider begin-->
+		<div class="col-md-9" id="blog-main" role="main">
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/web/againwpgravatarcache.html">再议Gravatar头像缓存至本地服务器</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2012-12-30 01:58 | 分类：<a href="https://typecodes.com/web/index.html">web</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>在<a href="https://typecodes.com/web/wpgravatarcache.html" title="点击查看">《WordPress中Gravatar头像缓存至本地服务器——暨博客的优化实录》</a>一文中，vfhky谈到了Gravatar头像本地服务器缓存技术。遗憾的是，由于当时考虑得不够周到，使用这里面的代码造成了一个比较严重的问题：那就是从default文件夹随机取出的头像在超过5天的时间后，也会随着拥有gravatar真实头像的用户的头像一起更新。</p>
+
+
+<p>但是gravatar用户的头像在更新时，由于$default的值是空的，那么更新时$g的值就是类似于</p>
+<div class="highlight"><pre>http://www.gravatar.com/avatar/eefdd735a45efc514936a0d0ca7e2511?s=40?d=?r=G
+</pre></div>
+
+
+<p>然而没有gravatar头像的“default用户”，他们的头像更新的时候，$g的值就是类似于</p>
+<div class="highlight"><pre>http://www.gravatar.com/avatar/eefdd735a45efc514936a0d0ca7e2511?s=30&amp;d=/home4/jinrongi/public_html/hky/wp-content/themes/weisaysimple/avatar/default/default10.jpg&amp;r=G
+</pre></div>
+
+
+<p>这个是无法访问的，从而造成了应该显示头像的地方无法正常显示。</p>
+<p><img alt="gravatar头像缓存错误" src="https://dn-vfhky.qbox.me/2012/12/gravatar_error.png" /></p>
+<h5>—————————————解决方案—————————————</h5>
+<p>把原文中的代码改成下面的代码。需要说明的是<code>filesize($e) == 2637</code>是通过  http://www.gravatar.com/avatar/  访问得到的头像的size值，用它来判断是否是gravatar用户。</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29</pre></div></td><td class="code"><div class="highlight"><pre><span class="x">//gravatar cache by vfhky 1</span>
+<span class="x">function vfhky_avatar( $email, $size, $default , $alt) {</span>
+<span class="x">  // $alt = (false === $alt) ? &#39;&#39; : esc_attr( $alt );</span>
+<span class="x">  $alt = (&#39;&#39; == $alt) ? &#39;&#39; :  $alt ;//用于设置当鼠标移到头像上显示提示文字</span>
+<span class="x">  $f = md5( strtolower( $email ) );//根据email的值来生成一个md5变量值，作为本地.jpg头像的名字</span>
+<span class="x">  $a = get_bloginfo(&#39;wpurl&#39;) . &#39;/avatar/&#39; . $f. &#39;.jpg&#39;;//需要在根目录下面新建一个avatar文件夹</span>
+<span class="x">  $e = ABSPATH .&#39;avatar/&#39;. $f. &#39;.jpg&#39;;//缓存的头像的绝对路径</span>
+<span class="x">  $default_random_abs = ABSPATH .&#39;wp-content/themes/vfhky/avatardefault/&#39;;//在avatar文件夹下新建一个default文件夹，用于保存博客预先自定义的头像</span>
+<span class="x">  $default_random = array(&#39;default1.jpg&#39;, &#39;default2.jpg&#39;,&#39;default3.jpg&#39;,&#39;default4.jpg&#39;,&#39;default5.jpg&#39;,&#39;default6.jpg&#39;,&#39;default7.jpg&#39;,&#39;default8.jpg&#39;,&#39;default9.jpg&#39;,&#39;default10.jpg&#39;); //在default文件夹下添加18个自己喜欢的头像，作为没有gravatar头像的人使用</span>
+<span class="x">  $default_random_num = array_rand($default_random, 1);  //随机从上面18张头像中选出一张</span>
+<span class="x">  $t = 1296000; //单位s，设置更新时间为15天</span>
+<span class="x">  if ( empty($default) ) $default = $default_random_abs.$default_random[$default_random_num];//设置默认头像</span>
+<span class="x">  if ( (time() - filemtime($e)) &gt; $t ){ //不是第一次留言留言且留言时间超过5天就更新头像</span>
+<span class="x">    //$g = sprintf( &quot;http://%d.gravatar.com&quot;, ( hexdec( $f{0} ) % 2 ) ). &#39;/avatar/&#39;. $f</span>
+<span class="x">    // wp 3.0 的服务器</span>
+<span class="x">    $g = &#39;http://www.gravatar.com/avatar/&#39;. $f; // 旧服务器 (哪个快就开哪个)</span>
+<span class="x">    copy($g, $e); //将$g代表的网络图片复制到$e代表的本地服务器中</span>
+<span class="x">    if (filesize($e) == 2637 ){</span>
+<span class="x">      copy($default_random_abs.$default_random[$default_random_num], $a);</span>
+<span class="x">    }</span>
+<span class="x">    //如果该E-mail未在gravatar官网设置头像，则把官网默认的头像$e改成default中的随机一张图片</span>
+<span class="x">    else {$a = esc_attr($g);}</span>
+<span class="x">  }</span>
+<span class="x">  //如果是第一次留言并且没有官网头像，则直接用default中的随机一张图片替代</span>
+<span class="x">  if (!is_file($e) || filesize($e) == 2637  ){</span>
+<span class="x">    copy($default_random_abs.$default_random[$default_random_num], $e);</span>
+<span class="x">  }</span>
+<span class="x">  echo &quot;&lt;img title=&#39;{$alt}&#39; alt=&#39;{$alt}&#39; src=&#39;{$a}&#39; class=&#39;avatar avatar-{$size} photo&#39; height=&#39;{$size}&#39; width=&#39;{$size}&#39; /&gt;&quot;;</span>
+<span class="x">}</span>
+</pre></div>
+</td></tr></table>
+		    	<p class="tags">
+					<div class="post-share">
+						<ul class="post-shareul clearfix">
+							<li class="post-shareli">
+								<a href="http://note.youdao.com/memory/?url=https://typecodes.com/web/againwpgravatarcache.html&title=再议Gravatar头像缓存至本地服务器" class="post-sharea ydshare" target="_blank" rel="nofollow">有道云笔记</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://v.t.sina.com.cn/share/share.php?url=https://typecodes.com/web/againwpgravatarcache.html&title=再议Gravatar头像缓存至本地服务器&source=https://typecodes.com" class="post-sharea wbshare" target="_blank" rel="nofollow">新浪微博</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://v.t.qq.com/share/share.php?title=再议Gravatar头像缓存至本地服务器&url=https://typecodes.com/web/againwpgravatarcache.html&site=https://typecodes.com" class="post-sharea twbshare" target="_blank" rel="nofollow">腾讯微博</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=https://typecodes.com/web/againwpgravatarcache.html&title=再议Gravatar头像缓存至本地服务器&content='utf-8'" class="post-sharea qzoneshare" target="_blank" rel="nofollow">QZone</a>
+							</li>
+						</ul>
+					</div>
+					<div>
+						Tags: <a href="https://typecodes.com/tag/wordpress.html">wordpress</a>,<a href="https://typecodes.com/tag/gravatartou-xiang-huan-cun.html">gravatar头像缓存</a>					</div>
+				</p>
+			</article>
+			
+			<div id="comments">
+				<h4 class="num">Comments &raquo;</h4>
+		    	<div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript></div>
+		    </div>
+		</div>
+		<!--3. right sider begin-->
+<div class="col-md-3" id="blog-secondary" role="complementary">
+	<section class="widget">
+		<ul class="widget-list">
+			<form id="search" method="get" action="https://typecodes.com/search.html">
+				<input type="text" name="q" id="s" size="20" x-webkit-speech="" x-webkit-grammar="builtin:search" onwebkitspeechchange="this.value = this.value.replace(this.defaultValue, '')" value="Google...." onfocus="this.value = (this.value == this.defaultValue) ? '' : this.value" onblur="this.value = (this.value == '') ? this.defaultValue : this.value">
+			</form>
+		</ul>
+	</section>
+	<section class="widget">
+		<h3 class="widget-title">Categories</h3>
+		<ul class="widget-list">
+		      <li class="current">
+		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (26)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/csharp/index.html">Csharp</a> (6)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/database/index.html">Database</a> (11)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/java/index.html">Java</a> (1)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/linux/index.html">Linux</a> (16)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/mix/index.html">Mix</a> (53)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/web/index.html">Web</a> (88)
+		      </li>
+		</ul>
+	</section>
+	<section class="widget">
+		<h3 class="widget-title">Recent Posts</h3>
+		<ul class="widget-list">
+			<li class="post">
+				<a href="https://typecodes.com/mix/sucesstypechotopelican.html">成功将博客从Typecho迁移到Pelican</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/mix/begintypechotopelican.html">准备将博客从Typecho迁移到Pelican</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/tcpconnectiontimedout.html">Linux TCP连接Connection Refused和Connection timed out的问题</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/mysqlerrornospace.html">博客MySQL服务惊魂记：Linux磁盘空间不足(Core Dump文件引爆)</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/mix/synweibophpmarkdownimgurl.html">升级博客文章同步微博的插件：PHP正则提取Markdown的图片地址</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/cppgeneralmakefile.html">Linux C/C++工程中可生成ELF、动/静态库文件的通用Makefile</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/libraryundefinedref.html">解决make编译链接动态库错误：libxx.so: undefined reference to xx</a>
+			</li>
+		</ul>
+	</section>
+	<section class="widget widget-feed">
+		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
+	</section>
+</div>
+				</div>
+			</div>
+		</div>
+		<!--4. bottom begin-->
+		<footer id="te-site-footer"><div class="container">
+	<div class="row" role="contentinfo">
+		<section class="col-md-2 col-md-offset-1">
+			<h3>Links</h3>
+			<ul><li><a href="http://diaosbook.com/" title="">diaosbook</a></li></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul>
+				<li><a href="https://typecodes.com/links.html">More..</a></li>
+			</ul>
+		</section>
+		<section class="col-md-2">
+			<h3>Following</h3>
+			<ul>
+				<li><a href="https://github.com/vfhky" class="following github" target="_blank" rel="external nofollow">GitHub</a></li>
+				<li><a href="http://weibo.com/typecodes" class="following weibo" target="_blank" rel="external nofollow">Weibo</a></li>
+				<li><a href="http://vfhky.sinaapp.com/" class="following sae" target="_blank" rel="external nofollow">SAE</a></li>
+				<li><a href="http://www.dwz.cn/mYiwa" class="following qqgroup" target="_blank" rel="external nofollow">Group</a></li>
+			</ul>
+		</section>
+		<div class="col-md-12 copyright">
+			<a href="#top"><i class="i-logo-s">TOP</i></a>
+			<p>
+				&copy; 2012-<script language="JavaScript">var date = new Date(); document.write(date.getFullYear());</script>							<a href="https://typecodes.com">TypeCodes</a>. All Rights Reserved<br>Powered by <a href="http://getpelican.com" rel="external" target="_blank">Pelican</a>. <a href="http://www.miitbeian.gov.cn/" rel="external nofollow" target="_blank">粤ICP备14050695号</a>
+			</p>
+		</div>
+	</div>
+</div>
+</footer>
+<script type="text/javascript">
+	var disqus_shortname = 'typecodes';
+	var disqus_identifier = '/web/againwpgravatarcache.html';
+	var disqus_url = 'https://typecodes.com/web/againwpgravatarcache.html';
+	var disqus_title = '再议Gravatar头像缓存至本地服务器';
+	(function() {
+		var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+		dsq.src = "//" + disqus_shortname + '.disqus.com/embed.js';
+		(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	 })();
+</script>
+	</body>
+</html>

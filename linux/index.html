@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="zh-CN" class="no-js">
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<title>分类 linux 下的文章 - TypeCodes</title>
+		<meta name="author" content="vfhky">
+  		<link href="https://typecodes.com/atom.xml" type="application/atom+xml" rel="alternate" title="TypeCodes Atom Feed" />
+	  	<link href="https://typecodes.com/feed.xml" type="application/rss+xml" rel="alternate" title="TypeCodes RSS Feed" />
+		<meta name="HandheldFriendly" content="True">
+		<meta name="MobileOptimized" content="320">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="renderer" content="webkit">
+		<link rel="stylesheet" href="https://dn-vfhky.qbox.me/libs/css/pelican-vfhky.css">
+		<script>
+			var _hmt = _hmt || [];
+			(function() {
+			  var hm = document.createElement("script");
+			  hm.src = "//hm.baidu.com/hm.js?c15c4ab8e91ba9ac3d5a12293cc93359";
+			  var s = document.getElementsByTagName("script")[0]; 
+			  s.parentNode.insertBefore(hm, s);
+			})();
+		</script>
+	</head>
+	<body style>
+		<!--1. header navigation begin-->
+		<header role="banner" id="te-site-header">
+			<div class="container">
+				<a href="https://typecodes.com" class="te-site-logo" role="logo" target="_self"> TypeCodes</a>
+				<ul class="nav nav-pills" id="te-site-nav" role="navigation">
+					<li><a href="https://typecodes.com">Home</a></li><li><a href="https://typecodes.com/archives.html" title="Archives">Archives</a></li><li><a href="https://typecodes.com/about.html" title="About">About</a></li></ul>
+			</div>
+		</header>
+		<div class="te-headline">
+			<div class="container">
+				<h2 class="te-headline-title"> <a href="https://typecodes.com">TypeCodes</a></h2>
+			</div>
+		</div>
+		<div class="container">
+			<div class="row">
+		<!--2. left sider begin-->
+		<div class="col-md-9" id="blog-main" role="main">
+		  	<!--article recycle-->
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/linux/tcpconnectiontimedout.html">Linux TCP连接Connection Refused和Connection timed out的问题</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2015-09-12 22:39 | 分类：<a href="https://typecodes.com/linux/index.html">linux</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>前段时间和其它系统做联调测试，对方系统采用的是负载均衡模式。调试时采用的是多台手机作为客户端发送到对方负载均衡服务器，然后再把报文转发送到我这边的服务端。在测试的时候，对方测试人员说有的手机客户端会偶尔出现报文发不过来的情况。</p>
+<p>故事有点长，先发一张tcp三次握手的过程图镇楼~</p>
+<p><img alt="Linux tcp三次握手" src="https://dn-vfhky.qbox.me/2015/09/tcp_handshake.png" title="Linux tcp三次握手" /></p>
+
+	<p class="more"><a href="https://typecodes.com/linux/tcpconnectiontimedout.html" title="Linux TCP连接Connection Refused和Connection timed out的问题">- 阅读剩余部分 -</a></p>
+			</article>
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/linux/mysqlerrornospace.html">博客MySQL服务惊魂记：Linux磁盘空间不足(Core Dump文件引爆)</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2015-08-17 22:33 | 分类：<a href="https://typecodes.com/linux/index.html">linux</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>昨天在更新完文章<a href="https://typecodes.com/mix/synweibophpmarkdownimgurl.html">《升级博客文章同步微博的插件：PHP正则提取Markdown的图片地址》</a>后，博客突然无法访问了。</p>
+<p><img alt="MySQL的错误日志" src="https://dn-vfhky.qbox.me/2015/08/mysql_space_error.png" title="MySQL的错误日志" /></p>
+
+	<p class="more"><a href="https://typecodes.com/linux/mysqlerrornospace.html" title="博客MySQL服务惊魂记：Linux磁盘空间不足(Core Dump文件引爆)">- 阅读剩余部分 -</a></p>
+			</article>
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/linux/gitsynbackupshell.html">CentOS中将备份文件同步到BitBucket、GitHub和Coding的shell脚本</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2015-07-07 00:30 | 分类：<a href="https://typecodes.com/linux/index.html">linux</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>在<a href="https://typecodes.com/linux/gitaccountconfig.html" title="《CentOS系统BitBucket、GitHub和Coding等多git账户的配置》">上一篇文章</a>讲述了如何在Linux系统中配置BitBucket、GitHub和Coding这三个平台的git账户，这篇文章就分享如何通过shell脚本定时获取自己的CentOS7.1服务器上的备份文件，然后使用git命令同步到这三个平台仓库上。</p>
+<p><img alt="CentOS中git同步的shell脚本" src="https://dn-vfhky.qbox.me/2015/07/linux_git.png" title="CentOS中git同步的shell脚本" /></p>
+
+	<p class="more"><a href="https://typecodes.com/linux/gitsynbackupshell.html" title="CentOS中将备份文件同步到BitBucket、GitHub和Coding的shell脚本">- 阅读剩余部分 -</a></p>
+			</article>
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/linux/gitaccountconfig.html">CentOS系统BitBucket、GitHub和Coding等多git账户的配置</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2015-07-05 22:22 | 分类：<a href="https://typecodes.com/linux/index.html">linux</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>目前自己主要在BitBucket、GitHub和Coding这三个Git平台创建了一些项目，所以这篇文章以自己的CentOS7.1服务器作为示例，说说如何在Linux系统中配置不同平台的Git仓库，也即多git账户的配置。</p>
+<p>类似于Windows机器上的git配置方法，在CentOS上也是一样的。通过设置Git全部变量的配置文件<code>~/.ssh/config</code>和当前工作仓库的配置文件<code>your_git_project_root/.git/config</code>即可。</p>
+<p><img alt="当前git工作仓库的.git目录" src="https://dn-vfhky.qbox.me/2015/07/project_git_config_dir.png" title="当前git工作仓库的.git目录" /></p>
+
+	<p class="more"><a href="https://typecodes.com/linux/gitaccountconfig.html" title="CentOS系统BitBucket、GitHub和Coding等多git账户的配置">- 阅读剩余部分 -</a></p>
+			</article>
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/linux/centos7blogregularbackup.html">2015博客升级记(八)：CentOS7定时备份博客程序的shell脚本</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2015-06-30 22:24 | 分类：<a href="https://typecodes.com/linux/index.html">linux</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>这是<a href="https://typecodes.com/mix/2015updateblog.html" title="查看原文">《2015年博客升级记》</a>系列文章的第八篇，同时也是这一系列文章的最后一篇，内容主要记录在Linux系统中如何使用shell脚本备份服务器上的博客程序（当然也可以是主机上的任何目录或者文件）。</p>
+<p><img alt="CentOS7定时备份博客程序的shell脚本" src="https://dn-vfhky.qbox.me/2015/06/centos_files_backup_shell.png" title="CentOS7定时备份博客程序的shell脚本" /></p>
+
+	<p class="more"><a href="https://typecodes.com/linux/centos7blogregularbackup.html" title="2015博客升级记(八)：CentOS7定时备份博客程序的shell脚本">- 阅读剩余部分 -</a></p>
+			</article>
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/linux/centos7mysqlregularbackup.html">2015博客升级记(七)：CentOS7定时备份MySql的shell脚本</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2015-06-29 22:41 | 分类：<a href="https://typecodes.com/linux/index.html">linux</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>这是<a href="https://typecodes.com/mix/2015updateblog.html" title="查看原文">《2015年博客升级记》</a>系列文章的第七篇，主要记录在Linux系统中如何使用shell脚本备份服务器上的mysql数据库。</p>
+<p><img alt="CentOS7定时备份MySql的shell脚本" src="https://dn-vfhky.qbox.me/2015/06/centos_mysql_backup.png" title="CentOS7定时备份MySql的shell脚本" /></p>
+
+	<p class="more"><a href="https://typecodes.com/linux/centos7mysqlregularbackup.html" title="2015博客升级记(七)：CentOS7定时备份MySql的shell脚本">- 阅读剩余部分 -</a></p>
+			</article>
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/linux/centoscoredumpcfgshell.html">CentOS开启coredump转储并生成core文件的配置</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2015-06-11 21:47 | 分类：<a href="https://typecodes.com/linux/index.html">linux</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>在CentOS或者suse等Linux系统中默认是关闭coredump核心转储的，也就不会产生core文件。由于在C/C++开发中会用到gdb调试，所以需要开启coredump功能。下面是具体的配置命令，可以保存为一个简单的shell脚本执行。</p>
+
+	<p class="more"><a href="https://typecodes.com/linux/centoscoredumpcfgshell.html" title="CentOS开启coredump转储并生成core文件的配置">- 阅读剩余部分 -</a></p>
+			</article>
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/linux/centos7fdiskmountswap.html">2015博客升级记(二)：Linux系统磁盘分区挂载和交换空间</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2015-05-27 19:31 | 分类：<a href="https://typecodes.com/linux/index.html">linux</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>这是<a href="https://typecodes.com/mix/2015updateblog.html" title="查看原文">《2015年博客升级记》</a>系列文章的第二篇，主要记录在Linux系统中如何将磁盘进行分区和挂载。</p>
+<div class="highlight"><pre>------------操作说明------------               
+Linux系统：       阿里云CentOS 7.1（20G）
+操作工具：        SecureCRT 7.0
+待挂载的数据盘：   24G
+分区目标：        先分4G作为CentOS7.1系统的交换空间，剩余20G作为普通物理空间
+</pre></div>
+
+
+
+	<p class="more"><a href="https://typecodes.com/linux/centos7fdiskmountswap.html" title="2015博客升级记(二)：Linux系统磁盘分区挂载和交换空间">- 阅读剩余部分 -</a></p>
+			</article>
+		  	<!--page navigation-->
+<ol class="page-navigator">
+<li class="current"><a href="https://typecodes.com/linux/index.html">1</a><li><a href="https://typecodes.com/linux/index2.html">2</a>
+       		</li><li class="next">
+       		<a href="https://typecodes.com/linux/index2.html">后一页 &raquo;</a>
+       </li></ol>		</div>
+		<!--3. right sider begin-->
+<div class="col-md-3" id="blog-secondary" role="complementary">
+	<section class="widget">
+		<ul class="widget-list">
+			<form id="search" method="get" action="https://typecodes.com/search.html">
+				<input type="text" name="q" id="s" size="20" x-webkit-speech="" x-webkit-grammar="builtin:search" onwebkitspeechchange="this.value = this.value.replace(this.defaultValue, '')" value="Google...." onfocus="this.value = (this.value == this.defaultValue) ? '' : this.value" onblur="this.value = (this.value == '') ? this.defaultValue : this.value">
+			</form>
+		</ul>
+	</section>
+	<section class="widget">
+		<h3 class="widget-title">Categories</h3>
+		<ul class="widget-list">
+		      <li class="current">
+		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (26)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/csharp/index.html">Csharp</a> (6)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/database/index.html">Database</a> (11)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/java/index.html">Java</a> (1)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/linux/index.html">Linux</a> (16)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/mix/index.html">Mix</a> (53)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/web/index.html">Web</a> (88)
+		      </li>
+		</ul>
+	</section>
+	<section class="widget">
+		<h3 class="widget-title">Recent Posts</h3>
+		<ul class="widget-list">
+			<li class="post">
+				<a href="https://typecodes.com/linux/tcpconnectiontimedout.html">Linux TCP连接Connection Refused和Connection timed out的问题</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/mysqlerrornospace.html">博客MySQL服务惊魂记：Linux磁盘空间不足(Core Dump文件引爆)</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/gitsynbackupshell.html">CentOS中将备份文件同步到BitBucket、GitHub和Coding的shell脚本</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/gitaccountconfig.html">CentOS系统BitBucket、GitHub和Coding等多git账户的配置</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/centos7blogregularbackup.html">2015博客升级记(八)：CentOS7定时备份博客程序的shell脚本</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/centos7mysqlregularbackup.html">2015博客升级记(七)：CentOS7定时备份MySql的shell脚本</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/centoscoredumpcfgshell.html">CentOS开启coredump转储并生成core文件的配置</a>
+			</li>
+		</ul>
+	</section>
+	<section class="widget widget-feed">
+		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
+	</section>
+</div>
+				</div>
+			</div>
+		</div>
+		<!--4. bottom begin-->
+		<footer id="te-site-footer"><div class="container">
+	<div class="row" role="contentinfo">
+		<section class="col-md-2 col-md-offset-1">
+			<h3>Links</h3>
+			<ul><li><a href="http://diaosbook.com/" title="">diaosbook</a></li></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul>
+				<li><a href="https://typecodes.com/links.html">More..</a></li>
+			</ul>
+		</section>
+		<section class="col-md-2">
+			<h3>Following</h3>
+			<ul>
+				<li><a href="https://github.com/vfhky" class="following github" target="_blank" rel="external nofollow">GitHub</a></li>
+				<li><a href="http://weibo.com/typecodes" class="following weibo" target="_blank" rel="external nofollow">Weibo</a></li>
+				<li><a href="http://vfhky.sinaapp.com/" class="following sae" target="_blank" rel="external nofollow">SAE</a></li>
+				<li><a href="http://www.dwz.cn/mYiwa" class="following qqgroup" target="_blank" rel="external nofollow">Group</a></li>
+			</ul>
+		</section>
+		<div class="col-md-12 copyright">
+			<a href="#top"><i class="i-logo-s">TOP</i></a>
+			<p>
+				&copy; 2012-<script language="JavaScript">var date = new Date(); document.write(date.getFullYear());</script>							<a href="https://typecodes.com">TypeCodes</a>. All Rights Reserved<br>Powered by <a href="http://getpelican.com" rel="external" target="_blank">Pelican</a>. <a href="http://www.miitbeian.gov.cn/" rel="external nofollow" target="_blank">粤ICP备14050695号</a>
+			</p>
+		</div>
+	</div>
+</div>
+</footer>
+<script type="text/javascript">
+	var disqus_shortname = 'typecodes';
+	(function() {
+		var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+		dsq.src = "//" + disqus_shortname + '.disqus.com/embed.js';
+		(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	 })();
+</script>
+	</body>
+</html>

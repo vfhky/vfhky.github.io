@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="zh-CN" class="no-js">
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<title>动易SiteFactory系列教程六:数据源标签的讲解 &mdash; TypeCodes</title>
+		<meta name="author" content="vfhky">
+  		<link href="https://typecodes.com/atom.xml" type="application/atom+xml" rel="alternate" title="TypeCodes Atom Feed" />
+	  	<link href="https://typecodes.com/feed.xml" type="application/rss+xml" rel="alternate" title="TypeCodes RSS Feed" />
+		<meta name="HandheldFriendly" content="True">
+		<meta name="MobileOptimized" content="320">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="renderer" content="webkit">
+		<link rel="stylesheet" href="https://dn-vfhky.qbox.me/libs/css/pelican-vfhky.css">
+		<script>
+			var _hmt = _hmt || [];
+			(function() {
+			  var hm = document.createElement("script");
+			  hm.src = "//hm.baidu.com/hm.js?c15c4ab8e91ba9ac3d5a12293cc93359";
+			  var s = document.getElementsByTagName("script")[0]; 
+			  s.parentNode.insertBefore(hm, s);
+			})();
+		</script>
+	</head>
+	<body style>
+		<!--1. header navigation begin-->
+		<header role="banner" id="te-site-header">
+			<div class="container">
+				<a href="https://typecodes.com" class="te-site-logo" role="logo" target="_self"> TypeCodes</a>
+				<ul class="nav nav-pills" id="te-site-nav" role="navigation">
+					<li><a href="https://typecodes.com">Home</a></li><li><a href="https://typecodes.com/archives.html" title="Archives">Archives</a></li><li><a href="https://typecodes.com/about.html" title="About">About</a></li></ul>
+			</div>
+		</header>
+		<div class="te-headline">
+			<div class="container">
+				<h2 class="te-headline-title"> <a href="https://typecodes.com">TypeCodes</a></h2>
+			</div>
+		</div>
+		<div class="container">
+			<div class="row">
+		<!--2. left sider begin-->
+		<div class="col-md-9" id="blog-main" role="main">
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/web/sfdatasourcetag.html">动易SiteFactory系列教程六:数据源标签的讲解</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2012-08-22 22:05 | 分类：<a href="https://typecodes.com/web/index.html">web</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>本篇文章主要为大家讲解动易SiteFactory中的数据源标签，同时也算是动易SiteFactory系列教程的结束篇章了。因为任何一种CMS，只要你弄清它的标签了，你就算是一个二次开发者的入门者了。好了，不多说，我用“文章_内容页”标签作为例子来解说一下动易主要的两大类标签（普通标签和数据源标签）中的数据源标签。</p>
+<p><img alt="文章_内容页 标签" src="https://dn-vfhky.qbox.me/2012/08/25.png" title="文章_内容页 标签" /></p>
+
+
+<h5>（一）标签内容：</h5>
+<p>数据源标签从数据源里调用了数据后，然后把数据保存在生成的XML文件中，最后从中读取相应的节点数据。下面先贴出相应的标签</p>
+<div class="highlight"><pre><span class="cp">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;</span>
+<span class="k">&lt;xsl:transform</span> <span class="na">version=</span><span class="s">&quot;1.0&quot;</span> <span class="na">xmlns:xsl=</span><span class="s">&quot;http://www.w3.org/1999/XSL/Transform&quot;</span> <span class="na">xmlns:pe=</span><span class="s">&quot;labelproc&quot;</span> <span class="na">exclude-result-prefixes=</span><span class="s">&quot;pe&quot;</span><span class="nt">&gt;</span>
+ <span class="k">&lt;xsl:output</span> <span class="na">method=</span><span class="s">&quot;xml&quot;</span> <span class="nt">/&gt;</span>
+ <span class="k">&lt;xsl:param</span> <span class="na">name=</span><span class="s">&quot;itemId&quot;</span><span class="nt">/&gt;</span>
+ <span class="k">&lt;xsl:template</span> <span class="na">match=</span><span class="s">&quot;/&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;root&gt;</span>
+<span class="c">&lt;!--FieldTipsStart--&gt;</span>
+   <span class="nt">&lt;generalid&gt;</span>
+    <span class="nt">&lt;xsl:value</span> <span class="err">-of</span> <span class="na">select=</span><span class="s">&quot;/NewDataSet/Table/GeneralID&quot;</span><span class="nt">/&gt;</span>
+   <span class="nt">&lt;/generalid&gt;</span>
+   <span class="nt">&lt;nodeid&gt;</span>
+    <span class="nt">&lt;xsl:value</span> <span class="err">-of</span> <span class="na">select=</span><span class="s">&quot;/NewDataSet/Table/NodeID&quot;</span><span class="nt">/&gt;</span>
+   <span class="nt">&lt;/nodeid&gt;</span>
+   <span class="nt">&lt;title&gt;</span>
+    <span class="nt">&lt;xsl:value</span> <span class="err">-of</span> <span class="na">select=</span><span class="s">&quot;/NewDataSet/Table/Title&quot;</span><span class="nt">/&gt;</span>
+   <span class="nt">&lt;/title&gt;</span>
+  <span class="c">&lt;!--</span>
+<span class="c">   ……</span>
+<span class="c">   &lt;字段节点&gt;</span>
+<span class="c">     &lt;xsl:value -of select=&quot;/NewDataSet/Table/数据库表的字段&quot;/&gt;</span>
+
+<span class="c">   ……</span>
+<span class="c">   --&gt;</span>
+    <span class="c">&lt;!--FieldTipsEnd--&gt;</span>
+  <span class="nt">&lt;/root&gt;</span>
+ <span class="k">&lt;/xsl:template&gt;</span>
+<span class="k">&lt;/xsl:transform&gt;</span>
+</pre></div>
+
+
+<h5>（二）调用方法：</h5>
+<h6>2.1 调用“文章_内容页”数据源标签。</h6>
+<p>其中：DataSource表示该标签是数据源标签（Label表示为普通标签）；id是做为数据源的ID（可以自定义），第二步要调用数据源节点下的数据指向ID；itemid="520"表示文章的ID是传过来的；xslt表示是否解析，true表示解析，默认为false（直接调用数据库的数据，不经过数据源标签的解析）。</p>
+<div class="highlight"><pre>{PE.DataSource datasource=&quot;文章_内容页&quot; id=&quot;cone&quot;  itemid=&quot;520&quot; xslt=&quot;true&quot; /}
+</pre></div>
+
+
+<h6>2.2 调用相应字段节点的数据。</h6>
+<div class="highlight"><pre>{PE.Field id=&quot;cone&quot; fieldname=&quot;Title&quot; /}
+<span class="c">&lt;!---</span>
+<span class="c">id要指向第一步调用数据源标签的ID。fieldname表示的是数据源标签里面字段，这里写Title表示的是数据源标</span>
+<span class="c">----&gt;</span>
+<span class="nt">&lt;Title&gt;</span>
+    <span class="k">&lt;xsl:value-of</span> <span class="na">select=</span><span class="s">&quot;/NewDataSet/Table/Title&quot;</span><span class="nt">/&gt;</span>
+<span class="nt">&lt;/Title&gt;</span>
+</pre></div>
+
+
+<p>你可以按照第二步的方法调用（一）中的数据存在的任意节点。</p>
+<h5>（三）结语：</h5>
+<p>通过这8篇系列教程文章，相信你对动易SiteFactory的标签有了一定的了解。制作一个标签的大体步骤都是一样的——选择标签类型的“数据设置”，然后根据需要决定要填写的自定义参数，再后用SQL语句调用数据库的内容，接着运用XSTL语言格式生成具体的内容，最后在模板文件中的相关位置调用标签即可。当然，要想更快速的学习动易SiteFactory标签的制作，可以直接对照标签库里面的标签进行学习。</p>
+		    	<p class="tags">
+					<div class="post-share">
+						<ul class="post-shareul clearfix">
+							<li class="post-shareli">
+								<a href="http://note.youdao.com/memory/?url=https://typecodes.com/web/sfdatasourcetag.html&title=动易SiteFactory系列教程六:数据源标签的讲解" class="post-sharea ydshare" target="_blank" rel="nofollow">有道云笔记</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://v.t.sina.com.cn/share/share.php?url=https://typecodes.com/web/sfdatasourcetag.html&title=动易SiteFactory系列教程六:数据源标签的讲解&source=https://typecodes.com" class="post-sharea wbshare" target="_blank" rel="nofollow">新浪微博</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://v.t.qq.com/share/share.php?title=动易SiteFactory系列教程六:数据源标签的讲解&url=https://typecodes.com/web/sfdatasourcetag.html&site=https://typecodes.com" class="post-sharea twbshare" target="_blank" rel="nofollow">腾讯微博</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=https://typecodes.com/web/sfdatasourcetag.html&title=动易SiteFactory系列教程六:数据源标签的讲解&content='utf-8'" class="post-sharea qzoneshare" target="_blank" rel="nofollow">QZone</a>
+							</li>
+						</ul>
+					</div>
+					<div>
+						Tags: <a href="https://typecodes.com/tag/dong-yi-cms.html">动易cms</a>,<a href="https://typecodes.com/tag/dong-yi-shu-ju-yuan-biao-qian.html">动易数据源标签</a>					</div>
+				</p>
+			</article>
+			
+			<div id="comments">
+				<h4 class="num">Comments &raquo;</h4>
+		    	<div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript></div>
+		    </div>
+		</div>
+		<!--3. right sider begin-->
+<div class="col-md-3" id="blog-secondary" role="complementary">
+	<section class="widget">
+		<ul class="widget-list">
+			<form id="search" method="get" action="https://typecodes.com/search.html">
+				<input type="text" name="q" id="s" size="20" x-webkit-speech="" x-webkit-grammar="builtin:search" onwebkitspeechchange="this.value = this.value.replace(this.defaultValue, '')" value="Google...." onfocus="this.value = (this.value == this.defaultValue) ? '' : this.value" onblur="this.value = (this.value == '') ? this.defaultValue : this.value">
+			</form>
+		</ul>
+	</section>
+	<section class="widget">
+		<h3 class="widget-title">Categories</h3>
+		<ul class="widget-list">
+		      <li class="current">
+		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (26)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/csharp/index.html">Csharp</a> (6)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/database/index.html">Database</a> (11)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/java/index.html">Java</a> (1)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/linux/index.html">Linux</a> (16)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/mix/index.html">Mix</a> (53)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/web/index.html">Web</a> (88)
+		      </li>
+		</ul>
+	</section>
+	<section class="widget">
+		<h3 class="widget-title">Recent Posts</h3>
+		<ul class="widget-list">
+			<li class="post">
+				<a href="https://typecodes.com/mix/sucesstypechotopelican.html">成功将博客从Typecho迁移到Pelican</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/mix/begintypechotopelican.html">准备将博客从Typecho迁移到Pelican</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/tcpconnectiontimedout.html">Linux TCP连接Connection Refused和Connection timed out的问题</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/mysqlerrornospace.html">博客MySQL服务惊魂记：Linux磁盘空间不足(Core Dump文件引爆)</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/mix/synweibophpmarkdownimgurl.html">升级博客文章同步微博的插件：PHP正则提取Markdown的图片地址</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/cppgeneralmakefile.html">Linux C/C++工程中可生成ELF、动/静态库文件的通用Makefile</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/libraryundefinedref.html">解决make编译链接动态库错误：libxx.so: undefined reference to xx</a>
+			</li>
+		</ul>
+	</section>
+	<section class="widget widget-feed">
+		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
+	</section>
+</div>
+				</div>
+			</div>
+		</div>
+		<!--4. bottom begin-->
+		<footer id="te-site-footer"><div class="container">
+	<div class="row" role="contentinfo">
+		<section class="col-md-2 col-md-offset-1">
+			<h3>Links</h3>
+			<ul><li><a href="http://diaosbook.com/" title="">diaosbook</a></li></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul>
+				<li><a href="https://typecodes.com/links.html">More..</a></li>
+			</ul>
+		</section>
+		<section class="col-md-2">
+			<h3>Following</h3>
+			<ul>
+				<li><a href="https://github.com/vfhky" class="following github" target="_blank" rel="external nofollow">GitHub</a></li>
+				<li><a href="http://weibo.com/typecodes" class="following weibo" target="_blank" rel="external nofollow">Weibo</a></li>
+				<li><a href="http://vfhky.sinaapp.com/" class="following sae" target="_blank" rel="external nofollow">SAE</a></li>
+				<li><a href="http://www.dwz.cn/mYiwa" class="following qqgroup" target="_blank" rel="external nofollow">Group</a></li>
+			</ul>
+		</section>
+		<div class="col-md-12 copyright">
+			<a href="#top"><i class="i-logo-s">TOP</i></a>
+			<p>
+				&copy; 2012-<script language="JavaScript">var date = new Date(); document.write(date.getFullYear());</script>							<a href="https://typecodes.com">TypeCodes</a>. All Rights Reserved<br>Powered by <a href="http://getpelican.com" rel="external" target="_blank">Pelican</a>. <a href="http://www.miitbeian.gov.cn/" rel="external nofollow" target="_blank">粤ICP备14050695号</a>
+			</p>
+		</div>
+	</div>
+</div>
+</footer>
+<script type="text/javascript">
+	var disqus_shortname = 'typecodes';
+	var disqus_identifier = '/web/sfdatasourcetag.html';
+	var disqus_url = 'https://typecodes.com/web/sfdatasourcetag.html';
+	var disqus_title = '动易SiteFactory系列教程六:数据源标签的讲解';
+	(function() {
+		var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+		dsq.src = "//" + disqus_shortname + '.disqus.com/embed.js';
+		(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	 })();
+</script>
+	</body>
+</html>

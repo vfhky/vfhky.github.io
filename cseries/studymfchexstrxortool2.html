@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="zh-CN" class="no-js">
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<title>图文实例说MFC制作工具的心得（二） &mdash; TypeCodes</title>
+		<meta name="author" content="vfhky">
+  		<link href="https://typecodes.com/atom.xml" type="application/atom+xml" rel="alternate" title="TypeCodes Atom Feed" />
+	  	<link href="https://typecodes.com/feed.xml" type="application/rss+xml" rel="alternate" title="TypeCodes RSS Feed" />
+		<meta name="HandheldFriendly" content="True">
+		<meta name="MobileOptimized" content="320">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="renderer" content="webkit">
+		<link rel="stylesheet" href="https://dn-vfhky.qbox.me/libs/css/pelican-vfhky.css">
+		<script>
+			var _hmt = _hmt || [];
+			(function() {
+			  var hm = document.createElement("script");
+			  hm.src = "//hm.baidu.com/hm.js?c15c4ab8e91ba9ac3d5a12293cc93359";
+			  var s = document.getElementsByTagName("script")[0]; 
+			  s.parentNode.insertBefore(hm, s);
+			})();
+		</script>
+	</head>
+	<body style>
+		<!--1. header navigation begin-->
+		<header role="banner" id="te-site-header">
+			<div class="container">
+				<a href="https://typecodes.com" class="te-site-logo" role="logo" target="_self"> TypeCodes</a>
+				<ul class="nav nav-pills" id="te-site-nav" role="navigation">
+					<li><a href="https://typecodes.com">Home</a></li><li><a href="https://typecodes.com/archives.html" title="Archives">Archives</a></li><li><a href="https://typecodes.com/about.html" title="About">About</a></li></ul>
+			</div>
+		</header>
+		<div class="te-headline">
+			<div class="container">
+				<h2 class="te-headline-title"> <a href="https://typecodes.com">TypeCodes</a></h2>
+			</div>
+		</div>
+		<div class="container">
+			<div class="row">
+		<!--2. left sider begin-->
+		<div class="col-md-9" id="blog-main" role="main">
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/cseries/studymfchexstrxortool2.html">图文实例说MFC制作工具的心得（二）</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2014-11-14 23:58 | 分类：<a href="https://typecodes.com/cseries/index.html">cseries</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>继前文<a href="https://typecodes.com/cseries/studymfchexstrxortool1.html" title="点击查看">《图文实例说MFC制作工具的心得（一）》</a>，这篇文章继续写几点心得。</p>
+<h5>1 如何将CString转换成char *指针</h5>
+<p>由于异或的时候可以直接调用<a href="https://typecodes.com/cseries/hexstrxor.html" title="《十六进制字符串异或》">《十六进制字符串异或》</a>一文中的十六进制字符串异或方法<code>void hexstrxor(char * HexStr1, char * HexStr2, char * HexStr)</code>。</p>
+<p>但是<code>Edit Control</code>控件添加变量<code>HexStr1</code>、<code>HexStr2</code>都是CString类型，所以需要转换。由于项目的字符集是<code>使用多字节字符集</code>，所以可以通过<code>(LPSTR)(LPCTSTR)CString</code>方法强制将CString数据转换成char *指针类型，这样就可以直接调用了<code>hexstrxor((LPSTR)(LPCTSTR)HexStr1, (LPSTR)(LPCTSTR)HexStr2, HexStrXorResult);</code>。</p>
+
+
+<p>下面是当用户点击“进行异或”按钮这个控件所触发事件的处理代码，也就是异或的主要过程。异或后会同时更新所有<code>Edit Control</code>控件对应的字节数，同时释放保存异或结果时所开辟的内存：</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49</pre></div></td><td class="code"><div class="highlight"><pre><span class="kt">void</span> <span class="n">CHexStrXorDlg</span><span class="o">::</span><span class="n">OnBnClickedButton1</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="c1">// TODO:  在此添加控件通知处理程序代码</span>
+    <span class="n">UpdateData</span><span class="p">(</span><span class="n">TRUE</span><span class="p">);</span>
+
+    <span class="c1">//定义长度</span>
+    <span class="kt">int</span> <span class="n">iHexStr1Len</span><span class="p">,</span> <span class="n">iHexStr2Len</span><span class="p">,</span> <span class="n">iHexStrLenHigh</span><span class="p">;</span>
+
+    <span class="c1">//大写转换并求长度</span>
+    <span class="n">HexStr1</span><span class="p">.</span><span class="n">MakeUpper</span><span class="p">();</span>
+    <span class="n">HexStr2</span><span class="p">.</span><span class="n">MakeUpper</span><span class="p">();</span>
+    <span class="n">iHexStr1Len</span> <span class="o">=</span> <span class="n">HexStr1</span><span class="p">.</span><span class="n">GetLength</span><span class="p">();</span>
+    <span class="n">iHexStr2Len</span> <span class="o">=</span> <span class="n">HexStr2</span><span class="p">.</span><span class="n">GetLength</span><span class="p">();</span>
+
+    <span class="c1">//获取最大长度</span>
+    <span class="n">iHexStrLenHigh</span> <span class="o">=</span> <span class="n">iHexStr1Len</span> <span class="o">&gt;</span> <span class="n">iHexStr2Len</span> <span class="o">?</span> <span class="nl">iHexStr1Len</span> <span class="p">:</span> <span class="n">iHexStr2Len</span><span class="p">;</span>
+
+    <span class="c1">//为异或结果开辟内存</span>
+    <span class="kt">char</span> <span class="o">*</span> <span class="n">HexStrXorResult</span> <span class="o">=</span> <span class="p">(</span><span class="kt">char</span> <span class="o">*</span><span class="p">)</span><span class="n">malloc</span><span class="p">(</span><span class="k">sizeof</span><span class="p">(</span><span class="kt">char</span><span class="p">)</span><span class="o">*</span><span class="n">iHexStrLenHigh</span><span class="o">+</span><span class="mi">1</span><span class="p">);</span>
+
+    <span class="c1">//调用异或方法</span>
+    <span class="n">hexstrxor</span><span class="p">((</span><span class="n">LPSTR</span><span class="p">)(</span><span class="n">LPCTSTR</span><span class="p">)</span><span class="n">HexStr1</span><span class="p">,</span> <span class="p">(</span><span class="n">LPSTR</span><span class="p">)(</span><span class="n">LPCTSTR</span><span class="p">)</span><span class="n">HexStr2</span><span class="p">,</span> <span class="n">HexStrXorResult</span><span class="p">);</span>
+
+    <span class="c1">//显示异或结果</span>
+    <span class="n">HexStr</span> <span class="o">=</span> <span class="n">HexStrXorResult</span><span class="p">;</span>
+
+    <span class="c1">//更新静态控件1的长度</span>
+    <span class="n">CString</span> <span class="n">UpdateHexStrLen</span><span class="p">;</span>
+    <span class="n">UpdateHexStrLen</span><span class="p">.</span><span class="n">Format</span><span class="p">(</span><span class="s">&quot;%s%d%s&quot;</span><span class="p">,</span> <span class="s">&quot;字节=[&quot;</span><span class="p">,</span> <span class="n">HexStr1</span><span class="p">.</span><span class="n">GetLength</span><span class="p">(),</span> <span class="s">&quot;]&quot;</span><span class="p">);</span>
+    <span class="c1">//SetDlgItemText(IDC_STATIC_STR1, UpdateHexStr1Len );</span>
+    <span class="n">GetDlgItem</span><span class="p">(</span><span class="n">IDC_STATIC_STR1</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">SetWindowTextA</span><span class="p">(</span><span class="n">UpdateHexStrLen</span><span class="p">);</span>
+
+    <span class="c1">//更新静态控件2的长度</span>
+    <span class="n">UpdateHexStrLen</span><span class="p">.</span><span class="n">Format</span><span class="p">(</span><span class="s">&quot;%s%d%s&quot;</span><span class="p">,</span> <span class="s">&quot;字节=[&quot;</span><span class="p">,</span> <span class="n">HexStr2</span><span class="p">.</span><span class="n">GetLength</span><span class="p">(),</span> <span class="s">&quot;]&quot;</span><span class="p">);</span>
+    <span class="c1">//SetDlgItemText(IDC_STATIC_STR2, UpdateHexStr2Len );</span>
+    <span class="n">GetDlgItem</span><span class="p">(</span><span class="n">IDC_STATIC_STR2</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">SetWindowTextA</span><span class="p">(</span><span class="n">UpdateHexStrLen</span><span class="p">);</span>
+
+    <span class="c1">//更新静态控件3的长度</span>
+    <span class="n">UpdateHexStrLen</span><span class="p">.</span><span class="n">Format</span><span class="p">(</span><span class="s">&quot;%s%d%s&quot;</span><span class="p">,</span> <span class="s">&quot;字节=[&quot;</span><span class="p">,</span> <span class="n">iHexStrLenHigh</span><span class="p">,</span> <span class="s">&quot;]&quot;</span><span class="p">);</span>
+    <span class="c1">//SetDlgItemText(IDC_STATIC_STR, UpdateHexStrLen );</span>
+    <span class="n">GetDlgItem</span><span class="p">(</span><span class="n">IDC_STATIC_STR3</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">SetWindowTextA</span><span class="p">(</span><span class="n">UpdateHexStrLen</span><span class="p">);</span>
+
+    <span class="c1">//更新所有控件数据</span>
+    <span class="n">UpdateData</span><span class="p">(</span><span class="n">FALSE</span><span class="p">);</span>
+
+    <span class="c1">//释放内存</span>
+    <span class="n">free</span><span class="p">(</span><span class="n">HexStrXorResult</span><span class="p">);</span>
+    <span class="n">HexStrXorResult</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</td></tr></table>
+
+<h5>2 使用“Release”生成可执行文件后，无法在其它电脑上运行</h5>
+<p>在vs2013中调试完程序后，依次点击“配置管理器”--“Release”，然后重新生成整个项目。接着将Release文件夹下面的HexStrXor.exe文件放到其它电脑上，结果一运行时出现“无法启动该程序，因为计算机丢失mfc120.dll。”的情况。</p>
+<p><img alt="计算机丢失mfc120.dll" src="https://dn-vfhky.qbox.me/2014/11/mfclostmfc120dll.png" title="计算机丢失mfc120.dll" /></p>
+<p>这是由于该电脑没有VC运行库，所以在项目属性中需要设置<code>MFC的使用</code>为<code>在静态库中使用MFC</code>，这样就能在其它win系统上运行了。</p>
+<p><img alt="在静态库中使用MFC" src="https://dn-vfhky.qbox.me/2014/11/understaticusemfc.png" title="在静态库中使用MFC" /></p>
+<h5>3 鼠标显示生成的可执行exe文件的相关信息</h5>
+<p>把使用“Release”生成的可执行文件HexStrXor.exe放到桌面上，然后鼠标移至该文件上，会发现如下图所示的信息说明：</p>
+<p><img alt="mfc鼠标显示可执行exe文件的相关信息" src="https://dn-vfhky.qbox.me/2014/11/mfchexstrxorinfo.png" title="mfc鼠标显示可执行exe文件的相关信息" /></p>
+<p>这个主要是通过“资源视图”——“Version”——“VS-VERSION-INFO”实现的：</p>
+<p><img alt="mfc设置鼠标显示可执行exe文件的相关信息" src="https://dn-vfhky.qbox.me/2014/11/mfcsethexstrxorinfo.png" title="mfc设置鼠标显示可执行exe文件的相关信息" /></p>
+<h5>4 修改可执行文件默认的MFC图标</h5>
+<p>在当前VS2013的解决方案下的工程目录下面，可以看到一个<code>res</code>文件夹，里面就有一个MFC默认的ico图标。把自己制作的喜欢的ico图标替换，然后重新生成解决方案，这样就将生成的可执行文件HexStrXor.exe图标改成自己的了。我用的是自己博客的ico图标，绿色的<code>TC</code>两个字母，TypeCodes的含义，哈哈！</p>
+<h5>5 结语</h5>
+<p>还是那句话：整个项目已经托管在<a href="https://github.com/vfhky/HexStrXor" title="MFC制作十六进制字符串异或工具">Github</a>和<a href="https://coding.net/u/vfhky/p/HexStrXor/" title="MFC制作十六进制字符串异或工具">Coding</a>上了，也可直接<a href="https://dn-vfhky.qbox.me/cseries/HexStrXor.exe" title="工具下载">点击这里</a>下载这个工具，最后欢迎大家拍砖！</p>
+		    	<p class="tags">
+					<div class="post-share">
+						<ul class="post-shareul clearfix">
+							<li class="post-shareli">
+								<a href="http://note.youdao.com/memory/?url=https://typecodes.com/cseries/studymfchexstrxortool2.html&title=图文实例说MFC制作工具的心得（二）" class="post-sharea ydshare" target="_blank" rel="nofollow">有道云笔记</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://v.t.sina.com.cn/share/share.php?url=https://typecodes.com/cseries/studymfchexstrxortool2.html&title=图文实例说MFC制作工具的心得（二）&source=https://typecodes.com" class="post-sharea wbshare" target="_blank" rel="nofollow">新浪微博</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://v.t.qq.com/share/share.php?title=图文实例说MFC制作工具的心得（二）&url=https://typecodes.com/cseries/studymfchexstrxortool2.html&site=https://typecodes.com" class="post-sharea twbshare" target="_blank" rel="nofollow">腾讯微博</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=https://typecodes.com/cseries/studymfchexstrxortool2.html&title=图文实例说MFC制作工具的心得（二）&content='utf-8'" class="post-sharea qzoneshare" target="_blank" rel="nofollow">QZone</a>
+							</li>
+						</ul>
+					</div>
+					<div>
+						Tags: <a href="https://typecodes.com/tag/shi-liu-jin-zhi-zi-fu-chuan.html">十六进制字符串</a>,<a href="https://typecodes.com/tag/zi-fu-chuan-yi-huo.html">字符串异或</a>,<a href="https://typecodes.com/tag/mfc.html">mfc</a>					</div>
+				</p>
+			</article>
+			
+			<div id="comments">
+				<h4 class="num">Comments &raquo;</h4>
+		    	<div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript></div>
+		    </div>
+		</div>
+		<!--3. right sider begin-->
+<div class="col-md-3" id="blog-secondary" role="complementary">
+	<section class="widget">
+		<ul class="widget-list">
+			<form id="search" method="get" action="https://typecodes.com/search.html">
+				<input type="text" name="q" id="s" size="20" x-webkit-speech="" x-webkit-grammar="builtin:search" onwebkitspeechchange="this.value = this.value.replace(this.defaultValue, '')" value="Google...." onfocus="this.value = (this.value == this.defaultValue) ? '' : this.value" onblur="this.value = (this.value == '') ? this.defaultValue : this.value">
+			</form>
+		</ul>
+	</section>
+	<section class="widget">
+		<h3 class="widget-title">Categories</h3>
+		<ul class="widget-list">
+		      <li class="current">
+		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (26)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/csharp/index.html">Csharp</a> (6)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/database/index.html">Database</a> (11)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/java/index.html">Java</a> (1)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/linux/index.html">Linux</a> (16)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/mix/index.html">Mix</a> (53)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/web/index.html">Web</a> (88)
+		      </li>
+		</ul>
+	</section>
+	<section class="widget">
+		<h3 class="widget-title">Recent Posts</h3>
+		<ul class="widget-list">
+			<li class="post">
+				<a href="https://typecodes.com/mix/sucesstypechotopelican.html">成功将博客从Typecho迁移到Pelican</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/mix/begintypechotopelican.html">准备将博客从Typecho迁移到Pelican</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/tcpconnectiontimedout.html">Linux TCP连接Connection Refused和Connection timed out的问题</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/mysqlerrornospace.html">博客MySQL服务惊魂记：Linux磁盘空间不足(Core Dump文件引爆)</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/mix/synweibophpmarkdownimgurl.html">升级博客文章同步微博的插件：PHP正则提取Markdown的图片地址</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/cppgeneralmakefile.html">Linux C/C++工程中可生成ELF、动/静态库文件的通用Makefile</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/libraryundefinedref.html">解决make编译链接动态库错误：libxx.so: undefined reference to xx</a>
+			</li>
+		</ul>
+	</section>
+	<section class="widget widget-feed">
+		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
+	</section>
+</div>
+				</div>
+			</div>
+		</div>
+		<!--4. bottom begin-->
+		<footer id="te-site-footer"><div class="container">
+	<div class="row" role="contentinfo">
+		<section class="col-md-2 col-md-offset-1">
+			<h3>Links</h3>
+			<ul><li><a href="http://diaosbook.com/" title="">diaosbook</a></li></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul>
+				<li><a href="https://typecodes.com/links.html">More..</a></li>
+			</ul>
+		</section>
+		<section class="col-md-2">
+			<h3>Following</h3>
+			<ul>
+				<li><a href="https://github.com/vfhky" class="following github" target="_blank" rel="external nofollow">GitHub</a></li>
+				<li><a href="http://weibo.com/typecodes" class="following weibo" target="_blank" rel="external nofollow">Weibo</a></li>
+				<li><a href="http://vfhky.sinaapp.com/" class="following sae" target="_blank" rel="external nofollow">SAE</a></li>
+				<li><a href="http://www.dwz.cn/mYiwa" class="following qqgroup" target="_blank" rel="external nofollow">Group</a></li>
+			</ul>
+		</section>
+		<div class="col-md-12 copyright">
+			<a href="#top"><i class="i-logo-s">TOP</i></a>
+			<p>
+				&copy; 2012-<script language="JavaScript">var date = new Date(); document.write(date.getFullYear());</script>							<a href="https://typecodes.com">TypeCodes</a>. All Rights Reserved<br>Powered by <a href="http://getpelican.com" rel="external" target="_blank">Pelican</a>. <a href="http://www.miitbeian.gov.cn/" rel="external nofollow" target="_blank">粤ICP备14050695号</a>
+			</p>
+		</div>
+	</div>
+</div>
+</footer>
+<script type="text/javascript">
+	var disqus_shortname = 'typecodes';
+	var disqus_identifier = '/cseries/studymfchexstrxortool2.html';
+	var disqus_url = 'https://typecodes.com/cseries/studymfchexstrxortool2.html';
+	var disqus_title = '图文实例说MFC制作工具的心得（二）';
+	(function() {
+		var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+		dsq.src = "//" + disqus_shortname + '.disqus.com/embed.js';
+		(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	 })();
+</script>
+	</body>
+</html>

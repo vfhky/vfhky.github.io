@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="zh-CN" class="no-js">
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<title>Windows平台如何安装最新的MinGW GCC编译器 &mdash; TypeCodes</title>
+		<meta name="author" content="vfhky">
+  		<link href="https://typecodes.com/atom.xml" type="application/atom+xml" rel="alternate" title="TypeCodes Atom Feed" />
+	  	<link href="https://typecodes.com/feed.xml" type="application/rss+xml" rel="alternate" title="TypeCodes RSS Feed" />
+		<meta name="HandheldFriendly" content="True">
+		<meta name="MobileOptimized" content="320">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="renderer" content="webkit">
+		<link rel="stylesheet" href="https://dn-vfhky.qbox.me/libs/css/pelican-vfhky.css">
+		<script>
+			var _hmt = _hmt || [];
+			(function() {
+			  var hm = document.createElement("script");
+			  hm.src = "//hm.baidu.com/hm.js?c15c4ab8e91ba9ac3d5a12293cc93359";
+			  var s = document.getElementsByTagName("script")[0]; 
+			  s.parentNode.insertBefore(hm, s);
+			})();
+		</script>
+	</head>
+	<body style>
+		<!--1. header navigation begin-->
+		<header role="banner" id="te-site-header">
+			<div class="container">
+				<a href="https://typecodes.com" class="te-site-logo" role="logo" target="_self"> TypeCodes</a>
+				<ul class="nav nav-pills" id="te-site-nav" role="navigation">
+					<li><a href="https://typecodes.com">Home</a></li><li><a href="https://typecodes.com/archives.html" title="Archives">Archives</a></li><li><a href="https://typecodes.com/about.html" title="About">About</a></li></ul>
+			</div>
+		</header>
+		<div class="te-headline">
+			<div class="container">
+				<h2 class="te-headline-title"> <a href="https://typecodes.com">TypeCodes</a></h2>
+			</div>
+		</div>
+		<div class="container">
+			<div class="row">
+		<!--2. left sider begin-->
+		<div class="col-md-9" id="blog-main" role="main">
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/cseries/windowsinstallmingwgcc.html">Windows平台如何安装最新的MinGW GCC编译器</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2014-03-08 11:00 | 分类：<a href="https://typecodes.com/cseries/index.html">cseries</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>在Eclipse中搭建C/C++环境的话，需要一个C/C++编译器。之前文章<a href="https://typecodes.com/cseries/netbeanscdevenv.html" title="点击查看原文">《完美配置NetBeans IDE中的C/C++开发环境》</a>中提到了使用Cygwin作为C/C++程序的编译器，那么这篇文章就说说在Windows平台如何安装最新的MinGW GCC编译器。</p>
+<h5>1 下载MinGW GCC编译器</h5>
+<p>MinGW官网地址是：http://www.mingw.org/，目前它已经把MinGW源码托管在了sourceforge上了，因此下载地址是：<a href="http://sourceforge.net/projects/mingw/" title="进入官方下载地址">点击进入</a>。把那个mingw-get-setup.exe下载至本地电脑上即可。</p>
+
+
+<h5>2 点击开始安装MinGW</h5>
+<p>点击刚下载的mingw-get-setup.exe，将出现下图所示的界面，然后点击“Install”。</p>
+<p><img alt="点击mingw-get-setup.exe安装" src="https://dn-vfhky.qbox.me/2014/03/8.png" title="点击mingw-get-setup.exe安装" /></p>
+<p>然后出现下图所示画面，可以修改安装目录。这里保持默认即可，点击“Continue”。</p>
+<p><img alt="点击mingw-get-setup.exe安装，再保持默认安装" src="https://dn-vfhky.qbox.me/2014/03/9.png" title="点击mingw-get-setup.exe安装，再保持默认安装" /></p>
+<p>接着Mingw会自动下载远程文件，看到绿色进度条到达“100%”即可点击“Continue”继续下面的安装步骤。</p>
+<p><img alt="等待在线安装mingw文件" src="https://dn-vfhky.qbox.me/2014/03/10.png" title="等待在线安装mingw文件" /></p>
+<p><img alt="在线安装mingw文件完成" src="https://dn-vfhky.qbox.me/2014/03/11.png" title="在线安装mingw文件完成" /></p>
+<p>如果弹出如图所示警告，点击“确定”忽略即可。</p>
+<p><img alt="mingw弹出警告" src="https://dn-vfhky.qbox.me/2014/03/12.png" title="mingw弹出警告" /></p>
+<p>接着会弹出下图所示的界面，先选择左上角的“Basic Setup”。然后通过右键点击，把mingw32-base、mingw32-gcc-g++、mingw32-gcc-gdb等选上。接着点击左上角的“All Packges”，一定要确定是否选择了“gcc”（编译用），“g++”（编译用），“gdb”（调试用）以及“make”（Makefile文件用）这四个包。</p>
+<p><img alt="选择“Basic Setup”" src="https://dn-vfhky.qbox.me/2014/03/13.png" title="选择“Basic Setup”" /></p>
+<p><img alt="选择“All Packges”" src="https://dn-vfhky.qbox.me/2014/03/14.png" title="选择“All Packges”" /></p>
+<p><img alt="右键选择要安装的文件" src="https://dn-vfhky.qbox.me/2014/03/15.png" title="右键选择要安装的文件" /></p>
+<p>最后点击左上角菜单栏的“Installation”，然后点击“Apply this change”，这样就会把之前选中的在线安装了。当然由于网络问题，可能有些会安装失败，你需要再次点击“Basic Setup”和“All Packges”检查上面四个包安装完成与否。如果部分没安装成功，那么把没安装好的那个项选上，然后再次安装。</p>
+<h5>3 把C:\MinGW\bin;添加到环境变量Path中</h5>
+<p>把MincGW安装路径下的bin目录，例如默认的C:\MinGW\bin;添加到系统的环境变量Path中去。</p>
+<h5>4 检查是否安装成功</h5>
+<p>win+r打开cmd窗口，分别输入gcc --version、g++ --version、gdb --version。安装成功的话，会出现如下所示：</p>
+<div class="highlight"><pre>C:\MinGW\bin
+C:\Users\vfhky&gt;gcc --version
+gcc (GCC) 4.8.1
+Copyright (C) 2013 Free Software Foundation, Inc.
+This is free software; see the source for copying conditions.  There is NO
+warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+
+C:\Users\vfhky&gt;g++ --version
+g++ (GCC) 4.8.1
+Copyright (C) 2013 Free Software Foundation, Inc.
+This is free software; see the source for copying conditions.  There is NO
+warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+
+C:\Users\vfhky&gt;gdb --version
+GNU gdb (GDB) 7.6.1
+Copyright (C) 2013 Free Software Foundation, Inc.
+License GPLv3+: GNU GPL version 3 or later &lt;http://gnu.org/licenses/gpl.html&gt;
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.  Type &quot;show copying&quot;
+and &quot;show warranty&quot; for details.
+This GDB was configured as &quot;mingw32&quot;.
+For bug reporting instructions, please see:
+&lt;http://www.gnu.org/software/gdb/bugs/&gt;.
+</pre></div>
+		    	<p class="tags">
+					<div class="post-share">
+						<ul class="post-shareul clearfix">
+							<li class="post-shareli">
+								<a href="http://note.youdao.com/memory/?url=https://typecodes.com/cseries/windowsinstallmingwgcc.html&title=Windows平台如何安装最新的MinGW GCC编译器" class="post-sharea ydshare" target="_blank" rel="nofollow">有道云笔记</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://v.t.sina.com.cn/share/share.php?url=https://typecodes.com/cseries/windowsinstallmingwgcc.html&title=Windows平台如何安装最新的MinGW GCC编译器&source=https://typecodes.com" class="post-sharea wbshare" target="_blank" rel="nofollow">新浪微博</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://v.t.qq.com/share/share.php?title=Windows平台如何安装最新的MinGW GCC编译器&url=https://typecodes.com/cseries/windowsinstallmingwgcc.html&site=https://typecodes.com" class="post-sharea twbshare" target="_blank" rel="nofollow">腾讯微博</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=https://typecodes.com/cseries/windowsinstallmingwgcc.html&title=Windows平台如何安装最新的MinGW GCC编译器&content='utf-8'" class="post-sharea qzoneshare" target="_blank" rel="nofollow">QZone</a>
+							</li>
+						</ul>
+					</div>
+					<div>
+						Tags: <a href="https://typecodes.com/tag/mingw.html">mingw</a>,<a href="https://typecodes.com/tag/gcc.html">gcc</a>					</div>
+				</p>
+			</article>
+			
+			<div id="comments">
+				<h4 class="num">Comments &raquo;</h4>
+		    	<div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript></div>
+		    </div>
+		</div>
+		<!--3. right sider begin-->
+<div class="col-md-3" id="blog-secondary" role="complementary">
+	<section class="widget">
+		<ul class="widget-list">
+			<form id="search" method="get" action="https://typecodes.com/search.html">
+				<input type="text" name="q" id="s" size="20" x-webkit-speech="" x-webkit-grammar="builtin:search" onwebkitspeechchange="this.value = this.value.replace(this.defaultValue, '')" value="Google...." onfocus="this.value = (this.value == this.defaultValue) ? '' : this.value" onblur="this.value = (this.value == '') ? this.defaultValue : this.value">
+			</form>
+		</ul>
+	</section>
+	<section class="widget">
+		<h3 class="widget-title">Categories</h3>
+		<ul class="widget-list">
+		      <li class="current">
+		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (26)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/csharp/index.html">Csharp</a> (6)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/database/index.html">Database</a> (11)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/java/index.html">Java</a> (1)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/linux/index.html">Linux</a> (16)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/mix/index.html">Mix</a> (53)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/web/index.html">Web</a> (88)
+		      </li>
+		</ul>
+	</section>
+	<section class="widget">
+		<h3 class="widget-title">Recent Posts</h3>
+		<ul class="widget-list">
+			<li class="post">
+				<a href="https://typecodes.com/mix/sucesstypechotopelican.html">成功将博客从Typecho迁移到Pelican</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/mix/begintypechotopelican.html">准备将博客从Typecho迁移到Pelican</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/tcpconnectiontimedout.html">Linux TCP连接Connection Refused和Connection timed out的问题</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/mysqlerrornospace.html">博客MySQL服务惊魂记：Linux磁盘空间不足(Core Dump文件引爆)</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/mix/synweibophpmarkdownimgurl.html">升级博客文章同步微博的插件：PHP正则提取Markdown的图片地址</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/cppgeneralmakefile.html">Linux C/C++工程中可生成ELF、动/静态库文件的通用Makefile</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/libraryundefinedref.html">解决make编译链接动态库错误：libxx.so: undefined reference to xx</a>
+			</li>
+		</ul>
+	</section>
+	<section class="widget widget-feed">
+		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
+	</section>
+</div>
+				</div>
+			</div>
+		</div>
+		<!--4. bottom begin-->
+		<footer id="te-site-footer"><div class="container">
+	<div class="row" role="contentinfo">
+		<section class="col-md-2 col-md-offset-1">
+			<h3>Links</h3>
+			<ul><li><a href="http://diaosbook.com/" title="">diaosbook</a></li></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul>
+				<li><a href="https://typecodes.com/links.html">More..</a></li>
+			</ul>
+		</section>
+		<section class="col-md-2">
+			<h3>Following</h3>
+			<ul>
+				<li><a href="https://github.com/vfhky" class="following github" target="_blank" rel="external nofollow">GitHub</a></li>
+				<li><a href="http://weibo.com/typecodes" class="following weibo" target="_blank" rel="external nofollow">Weibo</a></li>
+				<li><a href="http://vfhky.sinaapp.com/" class="following sae" target="_blank" rel="external nofollow">SAE</a></li>
+				<li><a href="http://www.dwz.cn/mYiwa" class="following qqgroup" target="_blank" rel="external nofollow">Group</a></li>
+			</ul>
+		</section>
+		<div class="col-md-12 copyright">
+			<a href="#top"><i class="i-logo-s">TOP</i></a>
+			<p>
+				&copy; 2012-<script language="JavaScript">var date = new Date(); document.write(date.getFullYear());</script>							<a href="https://typecodes.com">TypeCodes</a>. All Rights Reserved<br>Powered by <a href="http://getpelican.com" rel="external" target="_blank">Pelican</a>. <a href="http://www.miitbeian.gov.cn/" rel="external nofollow" target="_blank">粤ICP备14050695号</a>
+			</p>
+		</div>
+	</div>
+</div>
+</footer>
+<script type="text/javascript">
+	var disqus_shortname = 'typecodes';
+	var disqus_identifier = '/cseries/windowsinstallmingwgcc.html';
+	var disqus_url = 'https://typecodes.com/cseries/windowsinstallmingwgcc.html';
+	var disqus_title = 'Windows平台如何安装最新的MinGW GCC编译器';
+	(function() {
+		var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+		dsq.src = "//" + disqus_shortname + '.disqus.com/embed.js';
+		(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	 })();
+</script>
+	</body>
+</html>

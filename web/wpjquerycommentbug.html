@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="zh-CN" class="no-js">
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<title>jQuery引起Wordpress评论快捷提交时的一个BUG &mdash; TypeCodes</title>
+		<meta name="author" content="vfhky">
+  		<link href="https://typecodes.com/atom.xml" type="application/atom+xml" rel="alternate" title="TypeCodes Atom Feed" />
+	  	<link href="https://typecodes.com/feed.xml" type="application/rss+xml" rel="alternate" title="TypeCodes RSS Feed" />
+		<meta name="HandheldFriendly" content="True">
+		<meta name="MobileOptimized" content="320">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="renderer" content="webkit">
+		<link rel="stylesheet" href="https://dn-vfhky.qbox.me/libs/css/pelican-vfhky.css">
+		<script>
+			var _hmt = _hmt || [];
+			(function() {
+			  var hm = document.createElement("script");
+			  hm.src = "//hm.baidu.com/hm.js?c15c4ab8e91ba9ac3d5a12293cc93359";
+			  var s = document.getElementsByTagName("script")[0]; 
+			  s.parentNode.insertBefore(hm, s);
+			})();
+		</script>
+	</head>
+	<body style>
+		<!--1. header navigation begin-->
+		<header role="banner" id="te-site-header">
+			<div class="container">
+				<a href="https://typecodes.com" class="te-site-logo" role="logo" target="_self"> TypeCodes</a>
+				<ul class="nav nav-pills" id="te-site-nav" role="navigation">
+					<li><a href="https://typecodes.com">Home</a></li><li><a href="https://typecodes.com/archives.html" title="Archives">Archives</a></li><li><a href="https://typecodes.com/about.html" title="About">About</a></li></ul>
+			</div>
+		</header>
+		<div class="te-headline">
+			<div class="container">
+				<h2 class="te-headline-title"> <a href="https://typecodes.com">TypeCodes</a></h2>
+			</div>
+		</div>
+		<div class="container">
+			<div class="row">
+		<!--2. left sider begin-->
+		<div class="col-md-9" id="blog-main" role="main">
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/web/wpjquerycommentbug.html">jQuery引起Wordpress评论快捷提交时的一个BUG</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2013-08-25 00:40 | 分类：<a href="https://typecodes.com/web/index.html">web</a></li>
+</ul>
+<div class="post-content fmt">
+	<h5>1 缘由：</h5>
+<p>上周六博主一直在纠结是否设置没有Gravatar头像的用户不能在博客发表评论，权衡利弊后，最终还是决定实施这个想法。主要考虑两个因素：最大可能避免那些发广告的人、提升博客评论的整体质量。因为一般的广告Spamer都不会有Gravatar头像，所以禁止掉这个用户群体后能尽量避免博客的垃圾评论；其次，博客之前会为无头像用户默认随机生成一张NBA球队的图片作为头像（方法见<a href="https://typecodes.com/web/againwpgravatarcache.html" title="再议Gravatar头像缓存至本地服务器">《再议Gravatar头像缓存至本地服务器》</a>），但这类用户的评论大多“含金量”不高。综上两方面，博主毅然选择了禁止。虽然这样可能会损失部分用户，例如纵多无觅的使用者等。</p>
+
+
+<h5>2 实现代码：</h5>
+<p>其实在之前那篇<a href="https://typecodes.com/mix/commentlinksitecertification.html">《关于博客评论的链接审查、网站认证的声明》</a>文章中，@Teddysun 就提到这个想法，现在终于实施了。其实代码也很简单，需要改动两个地方。</p>
+<h6>2.1 修改主题comments-ajax.php文件</h6>
+<p>目前，大部分的Wordpress主题的评论程序用的都是Willin Kan大神写的。所以找到主题根目录下面的comment-ajax.php文件，然后在大约91行的地方增加一个elseif语句，具体如下：</p>
+<div class="highlight"><pre><span class="x">if ( !</span><span class="p">$</span><span class="nv">user</span><span class="x">-&gt;ID ) </span><span class="err">{</span><span class="x"></span>
+<span class="x">  if ( 6 &gt; strlen(</span><span class="p">$</span><span class="nv">comment_author_email</span><span class="x">) || &#39;&#39; == </span><span class="p">$</span><span class="nv">comment_author</span><span class="x"> )</span>
+<span class="x">    err( __(&#39;提示：必须填写昵称及邮件。&#39;) ); // 将 wp_die 改为错误提示</span>
+<span class="x">  elseif ( !is_email(</span><span class="p">$</span><span class="nv">comment_author_email</span><span class="x">))</span>
+<span class="x">    err( __(&#39;提示：请输入一个有效的电子邮件地址。&#39;) );// 将 wp_die 改为错误提示</span>
+<span class="x">  elseif (vfhky_checkgravatar(</span><span class="p">$</span><span class="nv">comment_author_email</span><span class="x">) == 0)</span><span class="err">{</span><span class="x"></span>
+<span class="x">    err( __(&#39;请使用Gravatar头像留言。&#39;) );  //无头像用户无法提交评论</span>
+<span class="x">  }</span>
+<span class="x">}</span>
+</pre></div>
+
+
+<h6>2.2 修改主题functions.php文件</h6>
+<p>在主题的functions.php文件中添加vfhky_checkgravatar函数，其功能是判断用户是否具有Gravatar头像。因为博主在其它文件中还会用到这个函数，所以把它写进了functions.php中。当然也可以直接在comments-ajax.php文件中添加这个函数。</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10</pre></div></td><td class="code"><div class="highlight"><pre><span class="x">//check of gravatar</span>
+<span class="x">function vfhky_checkgravatar($email){</span>
+<span class="x">  $hashemail = md5(strtolower(trim($email)));</span>
+<span class="x">  $checkuri = &#39;http://www.gravatar.com/avatar/&#39; . $hashemail . &#39;?d=404&#39;;</span>
+<span class="x">  $headers = @get_headers($checkuri);</span>
+<span class="x">  if (!preg_match(&quot;|200|&quot;, $headers[0])) {</span>
+<span class="x">    return 0;</span>
+<span class="x">  }</span>
+<span class="x">  else {return 1;}</span>
+<span class="x">}</span>
+</pre></div>
+</td></tr></table>
+
+<h5>3 测试时产生BUG：</h5>
+<p>接下来就是在本地环境测试，当在评论框的“邮箱”一栏中随意填写一个邮箱时（此时右边显示默认的Gravatar头像）。在点击“提交”按钮后可以看到如下图中的文字提示。但是当使用快捷键“Ctrl+Enter”时，竟然没有出现上面的提示内容而是直接跳转到了wp-comments-post.php文件。好吧，BUG来临……</p>
+<p><img alt="没有Gravatar头像时无法提交警告" src="https://dn-vfhky.qbox.me/2013/08/comment_erro.png" title="没有Gravatar头像时无法提交警告" /></p>
+<p>甚是奇怪，为什么表单提交后会跳转到跳转的文件呢？这个测试结果只能说明comments.php中的添加的代码没有执行。可是在检查了comments-ajax.php这个文件程序后，还是没发现任何错误。好吧，为了解决这个问题周六折腾了一天还是没解决。</p>
+<h5>4 解决方案：</h5>
+<p>星期天早上起来，硬着头皮决定把整个主题整理一下，看看能不能找到一些头绪。当整理到js文件目录时，突然想到这些开源js应该更新了。于是上jQuery官网看了下，果然jquery.min.js更新到了2.0.3了。而博客所用到的这个压缩js还只是1.6的版本，立马更换掉。再打开博客首页看看有没有异常，结果发现首页的幻灯片竟然错位了。好吧，当看到官网下面图片的时候蛋都碎了一地。这不是又折腾兼容么，无力吐槽！那只能按版本从高到低一路测试下来，到1.8.3版本的时候，IE和搜狗都显示正常了。</p>
+<p><img alt="jquery2.x不支持IE9以下的浏览器" src="https://dn-vfhky.qbox.me/2013/08/jquery2.x.png" title="jquery2.x不支持IE9以下的浏览器" /></p>
+<p>完后，又回到了周六的“BUG”：评论快捷键提交后直接跳转到wp-comments-post.php。不过，在vfhky重新测试时，惊奇的发现评论框下出现了“请使用Gravatar头像留言。”的提示。尼玛，原来都是jQuery惹的祸！</p>
+		    	<p class="tags">
+					<div class="post-share">
+						<ul class="post-shareul clearfix">
+							<li class="post-shareli">
+								<a href="http://note.youdao.com/memory/?url=https://typecodes.com/web/wpjquerycommentbug.html&title=jQuery引起Wordpress评论快捷提交时的一个BUG" class="post-sharea ydshare" target="_blank" rel="nofollow">有道云笔记</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://v.t.sina.com.cn/share/share.php?url=https://typecodes.com/web/wpjquerycommentbug.html&title=jQuery引起Wordpress评论快捷提交时的一个BUG&source=https://typecodes.com" class="post-sharea wbshare" target="_blank" rel="nofollow">新浪微博</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://v.t.qq.com/share/share.php?title=jQuery引起Wordpress评论快捷提交时的一个BUG&url=https://typecodes.com/web/wpjquerycommentbug.html&site=https://typecodes.com" class="post-sharea twbshare" target="_blank" rel="nofollow">腾讯微博</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=https://typecodes.com/web/wpjquerycommentbug.html&title=jQuery引起Wordpress评论快捷提交时的一个BUG&content='utf-8'" class="post-sharea qzoneshare" target="_blank" rel="nofollow">QZone</a>
+							</li>
+						</ul>
+					</div>
+					<div>
+						Tags: <a href="https://typecodes.com/tag/wordpress-jquery-bug.html">wordpress jquery bug</a>					</div>
+				</p>
+			</article>
+			
+			<div id="comments">
+				<h4 class="num">Comments &raquo;</h4>
+		    	<div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript></div>
+		    </div>
+		</div>
+		<!--3. right sider begin-->
+<div class="col-md-3" id="blog-secondary" role="complementary">
+	<section class="widget">
+		<ul class="widget-list">
+			<form id="search" method="get" action="https://typecodes.com/search.html">
+				<input type="text" name="q" id="s" size="20" x-webkit-speech="" x-webkit-grammar="builtin:search" onwebkitspeechchange="this.value = this.value.replace(this.defaultValue, '')" value="Google...." onfocus="this.value = (this.value == this.defaultValue) ? '' : this.value" onblur="this.value = (this.value == '') ? this.defaultValue : this.value">
+			</form>
+		</ul>
+	</section>
+	<section class="widget">
+		<h3 class="widget-title">Categories</h3>
+		<ul class="widget-list">
+		      <li class="current">
+		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (26)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/csharp/index.html">Csharp</a> (6)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/database/index.html">Database</a> (11)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/java/index.html">Java</a> (1)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/linux/index.html">Linux</a> (16)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/mix/index.html">Mix</a> (53)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/web/index.html">Web</a> (88)
+		      </li>
+		</ul>
+	</section>
+	<section class="widget">
+		<h3 class="widget-title">Recent Posts</h3>
+		<ul class="widget-list">
+			<li class="post">
+				<a href="https://typecodes.com/mix/sucesstypechotopelican.html">成功将博客从Typecho迁移到Pelican</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/mix/begintypechotopelican.html">准备将博客从Typecho迁移到Pelican</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/tcpconnectiontimedout.html">Linux TCP连接Connection Refused和Connection timed out的问题</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/mysqlerrornospace.html">博客MySQL服务惊魂记：Linux磁盘空间不足(Core Dump文件引爆)</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/mix/synweibophpmarkdownimgurl.html">升级博客文章同步微博的插件：PHP正则提取Markdown的图片地址</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/cppgeneralmakefile.html">Linux C/C++工程中可生成ELF、动/静态库文件的通用Makefile</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/libraryundefinedref.html">解决make编译链接动态库错误：libxx.so: undefined reference to xx</a>
+			</li>
+		</ul>
+	</section>
+	<section class="widget widget-feed">
+		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
+	</section>
+</div>
+				</div>
+			</div>
+		</div>
+		<!--4. bottom begin-->
+		<footer id="te-site-footer"><div class="container">
+	<div class="row" role="contentinfo">
+		<section class="col-md-2 col-md-offset-1">
+			<h3>Links</h3>
+			<ul><li><a href="http://diaosbook.com/" title="">diaosbook</a></li></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul>
+				<li><a href="https://typecodes.com/links.html">More..</a></li>
+			</ul>
+		</section>
+		<section class="col-md-2">
+			<h3>Following</h3>
+			<ul>
+				<li><a href="https://github.com/vfhky" class="following github" target="_blank" rel="external nofollow">GitHub</a></li>
+				<li><a href="http://weibo.com/typecodes" class="following weibo" target="_blank" rel="external nofollow">Weibo</a></li>
+				<li><a href="http://vfhky.sinaapp.com/" class="following sae" target="_blank" rel="external nofollow">SAE</a></li>
+				<li><a href="http://www.dwz.cn/mYiwa" class="following qqgroup" target="_blank" rel="external nofollow">Group</a></li>
+			</ul>
+		</section>
+		<div class="col-md-12 copyright">
+			<a href="#top"><i class="i-logo-s">TOP</i></a>
+			<p>
+				&copy; 2012-<script language="JavaScript">var date = new Date(); document.write(date.getFullYear());</script>							<a href="https://typecodes.com">TypeCodes</a>. All Rights Reserved<br>Powered by <a href="http://getpelican.com" rel="external" target="_blank">Pelican</a>. <a href="http://www.miitbeian.gov.cn/" rel="external nofollow" target="_blank">粤ICP备14050695号</a>
+			</p>
+		</div>
+	</div>
+</div>
+</footer>
+<script type="text/javascript">
+	var disqus_shortname = 'typecodes';
+	var disqus_identifier = '/web/wpjquerycommentbug.html';
+	var disqus_url = 'https://typecodes.com/web/wpjquerycommentbug.html';
+	var disqus_title = 'jQuery引起Wordpress评论快捷提交时的一个BUG';
+	(function() {
+		var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+		dsq.src = "//" + disqus_shortname + '.disqus.com/embed.js';
+		(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	 })();
+</script>
+	</body>
+</html>

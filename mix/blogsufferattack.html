@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="zh-CN" class="no-js">
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<title>近期博客遭受后台攻击 &mdash; TypeCodes</title>
+		<meta name="author" content="vfhky">
+  		<link href="https://typecodes.com/atom.xml" type="application/atom+xml" rel="alternate" title="TypeCodes Atom Feed" />
+	  	<link href="https://typecodes.com/feed.xml" type="application/rss+xml" rel="alternate" title="TypeCodes RSS Feed" />
+		<meta name="HandheldFriendly" content="True">
+		<meta name="MobileOptimized" content="320">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="renderer" content="webkit">
+		<link rel="stylesheet" href="https://dn-vfhky.qbox.me/libs/css/pelican-vfhky.css">
+		<script>
+			var _hmt = _hmt || [];
+			(function() {
+			  var hm = document.createElement("script");
+			  hm.src = "//hm.baidu.com/hm.js?c15c4ab8e91ba9ac3d5a12293cc93359";
+			  var s = document.getElementsByTagName("script")[0]; 
+			  s.parentNode.insertBefore(hm, s);
+			})();
+		</script>
+	</head>
+	<body style>
+		<!--1. header navigation begin-->
+		<header role="banner" id="te-site-header">
+			<div class="container">
+				<a href="https://typecodes.com" class="te-site-logo" role="logo" target="_self"> TypeCodes</a>
+				<ul class="nav nav-pills" id="te-site-nav" role="navigation">
+					<li><a href="https://typecodes.com">Home</a></li><li><a href="https://typecodes.com/archives.html" title="Archives">Archives</a></li><li><a href="https://typecodes.com/about.html" title="About">About</a></li></ul>
+			</div>
+		</header>
+		<div class="te-headline">
+			<div class="container">
+				<h2 class="te-headline-title"> <a href="https://typecodes.com">TypeCodes</a></h2>
+			</div>
+		</div>
+		<div class="container">
+			<div class="row">
+		<!--2. left sider begin-->
+		<div class="col-md-9" id="blog-main" role="main">
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/mix/blogsufferattack.html">近期博客遭受后台攻击</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2013-07-27 01:13 | 分类：<a href="https://typecodes.com/mix/index.html">mix</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>和很多wordpress博主一样，vfhky也遭遇了博客后台的攻击。先不多说了，直接上图：</p>
+<p><img alt="不止160多次的轰炸" src="https://dn-vfhky.qbox.me/2013/07/1.jpg" /></p>
+
+
+<p><img alt="系统后台警告" src="https://dn-vfhky.qbox.me/2013/07/2.jpg" /></p>
+<p>第一张图是博客在昨天凌晨4点钟被攻击时，博客后台自动发过来的警告邮件。大概有160封左右，而这只是截取的一部分，还有第二页……好吧，吐槽不是博主的风格。不想多说，博客只是一枚24K纯屌丝的IT自娱地，内容完全安全无公害。看了不会使人产生三鹿的效果，也不知道如何放只熊猫在您的电脑上膜拜下，反而说不定您会被博主的一些二逼行为逗乐呢！所以各位糕富帅还请高抬贵手，放过小站，vfhky感激不尽！</p>
+<p>说归说，咱还是得紫薇一下吧。在第二张图片中我们可以看到，这个“国外”攻击者使用的后台登录名为admin，这是默认安装wordpress时可能使用的管理员账号。所以，你懂得，赶快删掉吧！</p>
+<p>很搞笑的是，这次博客遭受的攻击，使用的密码都是一些简单的，例如6个8，6个6，甚至还有123456的……所以，你懂得，密码得改吧。</p>
+<p>当然，一般博主前面两条应该都做得没问题的。所以，咱们得升级一下、伪装一下，嘿嘿</p>
+<p>怎么升级？vfhky觉得首先是博客使用的wordpress主题一定要官方版的。有些主题会使用加密恶意代码，更高级点的可能会使用复杂的程序把一些恶意跳转的链接予以分拆在主题的一些模块中，这个就比较难发现。</p>
+<p>其次，注意插件的安全性。博主在之前使用过一款wp-codebox的代码高亮插件，后来爆出了http拆分响应漏洞。即使是wp官网上，一些插件都比较长的时间没更新了，所以在选择插件的时候也得注意一下。</p>
+<p>第三，巩固了自身的问题，那么我们还需要知道敌人的进攻招数，这样才能“百战不殆”。对于wordpress而言，出了常规的保持升级之外，BZ觉得最需要注意的就是穷举破解。也就是常常谈到的暴库，这个asp程序最常见（mdb数据库本身的弱点），当然其它程序如果不加防范也是存在这个风险的。好吧，这个网络上都疯传着一款神级插件：Better WP Security。它能提供系统安全状态、后台登陆限制、数据库备份、SSL安全访问及日志记录等全面又强大功能，具体情况vfhky就不多说了，有我度娘和GG呢。</p>
+<p>第四，除了插件之外，我们还可以自己动手，丰衣足食。这里只列出博主用到并且比较推荐的方法，具体怎么做？有我度娘和GG呢！首先，把wp-config.php文件设置为444权限，当然还有主题中所有文件的权限最多为544。作用是什么？有我度娘和GG呢！；其次，.htaccess是神器，具体怎么做？嘿嘿，你懂的。如果你有固定IP的话，那配置好.htaccess后就可以真正高枕无忧了！再次，在wp-config.php中添加wordpress官方提供的一组唯一的随机私密密钥，生成地址：http://codex.wordpress.org/WordPress.org_API。</p>
+<p>第五，比较重要的一点：后台登陆限制。方法有很多，.htaccess限制（wp-admin文件以及登陆IP等）、修改登陆地址、修改wp-config.php文件、插件等等。怎么做？度娘+GG无解！</p>
+<p>尼玛，又到凌晨了，唉，晚安各位筒子们！</p>
+		    	<p class="tags">
+					<div class="post-share">
+						<ul class="post-shareul clearfix">
+							<li class="post-shareli">
+								<a href="http://note.youdao.com/memory/?url=https://typecodes.com/mix/blogsufferattack.html&title=近期博客遭受后台攻击" class="post-sharea ydshare" target="_blank" rel="nofollow">有道云笔记</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://v.t.sina.com.cn/share/share.php?url=https://typecodes.com/mix/blogsufferattack.html&title=近期博客遭受后台攻击&source=https://typecodes.com" class="post-sharea wbshare" target="_blank" rel="nofollow">新浪微博</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://v.t.qq.com/share/share.php?title=近期博客遭受后台攻击&url=https://typecodes.com/mix/blogsufferattack.html&site=https://typecodes.com" class="post-sharea twbshare" target="_blank" rel="nofollow">腾讯微博</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=https://typecodes.com/mix/blogsufferattack.html&title=近期博客遭受后台攻击&content='utf-8'" class="post-sharea qzoneshare" target="_blank" rel="nofollow">QZone</a>
+							</li>
+						</ul>
+					</div>
+					<div>
+						Tags: <a href="https://typecodes.com/tag/bo-ke-gong-ji.html">博客攻击</a>					</div>
+				</p>
+			</article>
+			
+			<div id="comments">
+				<h4 class="num">Comments &raquo;</h4>
+		    	<div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript></div>
+		    </div>
+		</div>
+		<!--3. right sider begin-->
+<div class="col-md-3" id="blog-secondary" role="complementary">
+	<section class="widget">
+		<ul class="widget-list">
+			<form id="search" method="get" action="https://typecodes.com/search.html">
+				<input type="text" name="q" id="s" size="20" x-webkit-speech="" x-webkit-grammar="builtin:search" onwebkitspeechchange="this.value = this.value.replace(this.defaultValue, '')" value="Google...." onfocus="this.value = (this.value == this.defaultValue) ? '' : this.value" onblur="this.value = (this.value == '') ? this.defaultValue : this.value">
+			</form>
+		</ul>
+	</section>
+	<section class="widget">
+		<h3 class="widget-title">Categories</h3>
+		<ul class="widget-list">
+		      <li class="current">
+		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (26)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/csharp/index.html">Csharp</a> (6)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/database/index.html">Database</a> (11)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/java/index.html">Java</a> (1)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/linux/index.html">Linux</a> (16)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/mix/index.html">Mix</a> (53)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/web/index.html">Web</a> (88)
+		      </li>
+		</ul>
+	</section>
+	<section class="widget">
+		<h3 class="widget-title">Recent Posts</h3>
+		<ul class="widget-list">
+			<li class="post">
+				<a href="https://typecodes.com/mix/sucesstypechotopelican.html">成功将博客从Typecho迁移到Pelican</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/mix/begintypechotopelican.html">准备将博客从Typecho迁移到Pelican</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/tcpconnectiontimedout.html">Linux TCP连接Connection Refused和Connection timed out的问题</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/mysqlerrornospace.html">博客MySQL服务惊魂记：Linux磁盘空间不足(Core Dump文件引爆)</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/mix/synweibophpmarkdownimgurl.html">升级博客文章同步微博的插件：PHP正则提取Markdown的图片地址</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/cppgeneralmakefile.html">Linux C/C++工程中可生成ELF、动/静态库文件的通用Makefile</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/libraryundefinedref.html">解决make编译链接动态库错误：libxx.so: undefined reference to xx</a>
+			</li>
+		</ul>
+	</section>
+	<section class="widget widget-feed">
+		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
+	</section>
+</div>
+				</div>
+			</div>
+		</div>
+		<!--4. bottom begin-->
+		<footer id="te-site-footer"><div class="container">
+	<div class="row" role="contentinfo">
+		<section class="col-md-2 col-md-offset-1">
+			<h3>Links</h3>
+			<ul><li><a href="http://diaosbook.com/" title="">diaosbook</a></li></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul>
+				<li><a href="https://typecodes.com/links.html">More..</a></li>
+			</ul>
+		</section>
+		<section class="col-md-2">
+			<h3>Following</h3>
+			<ul>
+				<li><a href="https://github.com/vfhky" class="following github" target="_blank" rel="external nofollow">GitHub</a></li>
+				<li><a href="http://weibo.com/typecodes" class="following weibo" target="_blank" rel="external nofollow">Weibo</a></li>
+				<li><a href="http://vfhky.sinaapp.com/" class="following sae" target="_blank" rel="external nofollow">SAE</a></li>
+				<li><a href="http://www.dwz.cn/mYiwa" class="following qqgroup" target="_blank" rel="external nofollow">Group</a></li>
+			</ul>
+		</section>
+		<div class="col-md-12 copyright">
+			<a href="#top"><i class="i-logo-s">TOP</i></a>
+			<p>
+				&copy; 2012-<script language="JavaScript">var date = new Date(); document.write(date.getFullYear());</script>							<a href="https://typecodes.com">TypeCodes</a>. All Rights Reserved<br>Powered by <a href="http://getpelican.com" rel="external" target="_blank">Pelican</a>. <a href="http://www.miitbeian.gov.cn/" rel="external nofollow" target="_blank">粤ICP备14050695号</a>
+			</p>
+		</div>
+	</div>
+</div>
+</footer>
+<script type="text/javascript">
+	var disqus_shortname = 'typecodes';
+	var disqus_identifier = '/mix/blogsufferattack.html';
+	var disqus_url = 'https://typecodes.com/mix/blogsufferattack.html';
+	var disqus_title = '近期博客遭受后台攻击';
+	(function() {
+		var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+		dsq.src = "//" + disqus_shortname + '.disqus.com/embed.js';
+		(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	 })();
+</script>
+	</body>
+</html>

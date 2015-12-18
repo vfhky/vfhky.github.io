@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="zh-CN" class="no-js">
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<title>音乐播放器PlayAtWill for typecho插件（移植自wordpress） &mdash; TypeCodes</title>
+		<meta name="author" content="vfhky">
+  		<link href="https://typecodes.com/atom.xml" type="application/atom+xml" rel="alternate" title="TypeCodes Atom Feed" />
+	  	<link href="https://typecodes.com/feed.xml" type="application/rss+xml" rel="alternate" title="TypeCodes RSS Feed" />
+		<meta name="HandheldFriendly" content="True">
+		<meta name="MobileOptimized" content="320">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="renderer" content="webkit">
+		<link rel="stylesheet" href="https://dn-vfhky.qbox.me/libs/css/pelican-vfhky.css">
+		<script>
+			var _hmt = _hmt || [];
+			(function() {
+			  var hm = document.createElement("script");
+			  hm.src = "//hm.baidu.com/hm.js?c15c4ab8e91ba9ac3d5a12293cc93359";
+			  var s = document.getElementsByTagName("script")[0]; 
+			  s.parentNode.insertBefore(hm, s);
+			})();
+		</script>
+	</head>
+	<body style>
+		<!--1. header navigation begin-->
+		<header role="banner" id="te-site-header">
+			<div class="container">
+				<a href="https://typecodes.com" class="te-site-logo" role="logo" target="_self"> TypeCodes</a>
+				<ul class="nav nav-pills" id="te-site-nav" role="navigation">
+					<li><a href="https://typecodes.com">Home</a></li><li><a href="https://typecodes.com/archives.html" title="Archives">Archives</a></li><li><a href="https://typecodes.com/about.html" title="About">About</a></li></ul>
+			</div>
+		</header>
+		<div class="te-headline">
+			<div class="container">
+				<h2 class="te-headline-title"> <a href="https://typecodes.com">TypeCodes</a></h2>
+			</div>
+		</div>
+		<div class="container">
+			<div class="row">
+		<!--2. left sider begin-->
+		<div class="col-md-9" id="blog-main" role="main">
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/web/typechomp3player.html">音乐播放器PlayAtWill for typecho插件（移植自wordpress）</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2014-09-05 22:53 | 分类：<a href="https://typecodes.com/web/index.html">web</a></li>
+</ul>
+<div class="post-content fmt">
+	<h5>1 移植wordpress音乐播放器到typecho</h5>
+<p>在之前的wordpress主题 [vfhky] 中，集成了三款不同风格的<a href="https://typecodes.com/mix/vfhkyinsertmusicplayer.html" title="教程：主题【vfhky】如何在文章中插入音乐播放器">音乐播放器</a>，觉得挺不错的。于是想把它们移植到typecho中，顺便学习一下typecho插件的制作。</p>
+<p>由于typecho不能像wordpress那样可直接在functions.php中使用hook，它只能以插件plugins的形式实现。</p>
+
+
+<h5>2 typecho插件制作方法</h5>
+<p>typecho插件入门教程，可以参考：<a href="http://docs.typecho.org/plugins/hello-world" title="《第一个插件Hello World》">官方文档</a>。另外，参考别人写的插件程序也是很有帮助的。尤其是对于目前typecho没有完整的钩子说明文档，通过查看其它插件中所用到的hooks，我们就可以定制自己的插件了。</p>
+<p>typecho插件制作的主流程都是相同的：</p>
+<div class="highlight"><pre>1、写激活插件的方法；
+2、写禁用插件的方法
+3、写获取插件配置面板；
+4、写个人用户的配置面板；
+5、写插件实现方法。
+</pre></div>
+
+
+<h5>3 使用方法和效果</h5>
+<p>这款typecho音乐播放器 PlayAtWill 插件，支持播放地址包括站内和在线的mp3、mp4等音乐。使用方法示例：在typecho后台文章内容中任意插入如下短代码（可在一篇文章内同时支持这三种播放模式）： </p>
+<div class="highlight"><pre>### 手工控制播放的灰色风格 ###
+<span class="nt">&lt;music1&gt;</span>http://qzone.haoduoge.com/up/6/MTYzMzcyMw.mp3<span class="nt">&lt;/music1&gt;</span>
+
+### 自动播放的灰色风格 ###
+<span class="nt">&lt;music1&gt;</span>http://qzone.haoduoge.com/up/6/MTYzMzcyMw.mp3<span class="err">&amp;</span>autostart=yes<span class="err">&amp;</span>titles=happy birthday<span class="nt">&lt;/music1&gt;</span>
+
+### 自动播放的彩色风格 ###
+<span class="nt">&lt;music2&gt;</span>http://qzone.haoduoge.com/up/6/MTYzMzcyMw.mp3<span class="err">&amp;</span>autostart=yes<span class="err">&amp;</span>titles=happy birthday<span class="nt">&lt;/music2&gt;</span>
+</pre></div>
+
+
+<p>具体演示效果，请点击 <a href="http://t.cn/RhcIUOL" title="插件PlayAtWill的演示效果">这里</a>  体验，截图如下：</p>
+<p><img alt="插件PlayAtWill的风格截图" src="https://dn-vfhky.qbox.me/2014/09/pluginplayatwill.png" title="插件PlayAtWill的风格截图" /></p>
+<h5>4 代码程序</h5>
+<p>插件 PlayAtWill 的源代码已经提交到了github上面，插件下载地址： <a href="https://github.com/vfhky/PlayAtWill" title="typecho音乐播放器 PlayAtWill ">github</a>  或者 <a href="https://dn-vfhky.qbox.me/2014/09/PlayAtWill.zip" title="新浪云存储SCS下载">新浪SCS</a> 。把这个插件（文件目录名是PlayAtWill）提交到typecho的插件目录，然后在后台启用该插件就可使用了。</p>
+		    	<p class="tags">
+					<div class="post-share">
+						<ul class="post-shareul clearfix">
+							<li class="post-shareli">
+								<a href="http://note.youdao.com/memory/?url=https://typecodes.com/web/typechomp3player.html&title=音乐播放器PlayAtWill for typecho插件（移植自wordpress）" class="post-sharea ydshare" target="_blank" rel="nofollow">有道云笔记</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://v.t.sina.com.cn/share/share.php?url=https://typecodes.com/web/typechomp3player.html&title=音乐播放器PlayAtWill for typecho插件（移植自wordpress）&source=https://typecodes.com" class="post-sharea wbshare" target="_blank" rel="nofollow">新浪微博</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://v.t.qq.com/share/share.php?title=音乐播放器PlayAtWill for typecho插件（移植自wordpress）&url=https://typecodes.com/web/typechomp3player.html&site=https://typecodes.com" class="post-sharea twbshare" target="_blank" rel="nofollow">腾讯微博</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=https://typecodes.com/web/typechomp3player.html&title=音乐播放器PlayAtWill for typecho插件（移植自wordpress）&content='utf-8'" class="post-sharea qzoneshare" target="_blank" rel="nofollow">QZone</a>
+							</li>
+						</ul>
+					</div>
+					<div>
+						Tags: <a href="https://typecodes.com/tag/ypechocha-jian.html">ypecho插件</a>,<a href="https://typecodes.com/tag/typechoyin-le-bo-fang-qi.html">typecho音乐播放器</a>,<a href="https://typecodes.com/tag/playatwill.html">playatwill</a>					</div>
+				</p>
+			</article>
+			
+			<div id="comments">
+				<h4 class="num">Comments &raquo;</h4>
+		    	<div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript></div>
+		    </div>
+		</div>
+		<!--3. right sider begin-->
+<div class="col-md-3" id="blog-secondary" role="complementary">
+	<section class="widget">
+		<ul class="widget-list">
+			<form id="search" method="get" action="https://typecodes.com/search.html">
+				<input type="text" name="q" id="s" size="20" x-webkit-speech="" x-webkit-grammar="builtin:search" onwebkitspeechchange="this.value = this.value.replace(this.defaultValue, '')" value="Google...." onfocus="this.value = (this.value == this.defaultValue) ? '' : this.value" onblur="this.value = (this.value == '') ? this.defaultValue : this.value">
+			</form>
+		</ul>
+	</section>
+	<section class="widget">
+		<h3 class="widget-title">Categories</h3>
+		<ul class="widget-list">
+		      <li class="current">
+		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (26)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/csharp/index.html">Csharp</a> (6)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/database/index.html">Database</a> (11)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/java/index.html">Java</a> (1)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/linux/index.html">Linux</a> (16)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/mix/index.html">Mix</a> (53)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/web/index.html">Web</a> (88)
+		      </li>
+		</ul>
+	</section>
+	<section class="widget">
+		<h3 class="widget-title">Recent Posts</h3>
+		<ul class="widget-list">
+			<li class="post">
+				<a href="https://typecodes.com/mix/sucesstypechotopelican.html">成功将博客从Typecho迁移到Pelican</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/mix/begintypechotopelican.html">准备将博客从Typecho迁移到Pelican</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/tcpconnectiontimedout.html">Linux TCP连接Connection Refused和Connection timed out的问题</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/mysqlerrornospace.html">博客MySQL服务惊魂记：Linux磁盘空间不足(Core Dump文件引爆)</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/mix/synweibophpmarkdownimgurl.html">升级博客文章同步微博的插件：PHP正则提取Markdown的图片地址</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/cppgeneralmakefile.html">Linux C/C++工程中可生成ELF、动/静态库文件的通用Makefile</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/libraryundefinedref.html">解决make编译链接动态库错误：libxx.so: undefined reference to xx</a>
+			</li>
+		</ul>
+	</section>
+	<section class="widget widget-feed">
+		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
+	</section>
+</div>
+				</div>
+			</div>
+		</div>
+		<!--4. bottom begin-->
+		<footer id="te-site-footer"><div class="container">
+	<div class="row" role="contentinfo">
+		<section class="col-md-2 col-md-offset-1">
+			<h3>Links</h3>
+			<ul><li><a href="http://diaosbook.com/" title="">diaosbook</a></li></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul>
+				<li><a href="https://typecodes.com/links.html">More..</a></li>
+			</ul>
+		</section>
+		<section class="col-md-2">
+			<h3>Following</h3>
+			<ul>
+				<li><a href="https://github.com/vfhky" class="following github" target="_blank" rel="external nofollow">GitHub</a></li>
+				<li><a href="http://weibo.com/typecodes" class="following weibo" target="_blank" rel="external nofollow">Weibo</a></li>
+				<li><a href="http://vfhky.sinaapp.com/" class="following sae" target="_blank" rel="external nofollow">SAE</a></li>
+				<li><a href="http://www.dwz.cn/mYiwa" class="following qqgroup" target="_blank" rel="external nofollow">Group</a></li>
+			</ul>
+		</section>
+		<div class="col-md-12 copyright">
+			<a href="#top"><i class="i-logo-s">TOP</i></a>
+			<p>
+				&copy; 2012-<script language="JavaScript">var date = new Date(); document.write(date.getFullYear());</script>							<a href="https://typecodes.com">TypeCodes</a>. All Rights Reserved<br>Powered by <a href="http://getpelican.com" rel="external" target="_blank">Pelican</a>. <a href="http://www.miitbeian.gov.cn/" rel="external nofollow" target="_blank">粤ICP备14050695号</a>
+			</p>
+		</div>
+	</div>
+</div>
+</footer>
+<script type="text/javascript">
+	var disqus_shortname = 'typecodes';
+	var disqus_identifier = '/web/typechomp3player.html';
+	var disqus_url = 'https://typecodes.com/web/typechomp3player.html';
+	var disqus_title = '音乐播放器PlayAtWill for typecho插件（移植自wordpress）';
+	(function() {
+		var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+		dsq.src = "//" + disqus_shortname + '.disqus.com/embed.js';
+		(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	 })();
+</script>
+	</body>
+</html>

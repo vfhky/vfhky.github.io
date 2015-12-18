@@ -2,7 +2,7 @@
 <html dir="ltr" lang="zh-CN" class="no-js">
 	<head>
 		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
-		<title>TypeCodes</title>
+		<title>标签 typecho 下的文章 - TypeCodes</title>
 		<meta name="author" content="vfhky">
   		<link href="https://typecodes.com/atom.xml" type="application/atom+xml" rel="alternate" title="TypeCodes Atom Feed" />
 	  	<link href="https://typecodes.com/feed.xml" type="application/rss+xml" rel="alternate" title="TypeCodes RSS Feed" />
@@ -64,92 +64,32 @@
 	<p class="more"><a href="https://typecodes.com/mix/begintypechotopelican.html" title="准备将博客从Typecho迁移到Pelican">- 阅读剩余部分 -</a></p>
 			</article>
 			<article class="post">
-<h2 class="post-title"><a href="https://typecodes.com/linux/tcpconnectiontimedout.html">Linux TCP连接Connection Refused和Connection timed out的问题</a></h2>
+<h2 class="post-title"><a href="https://typecodes.com/mix/typechoexmailconfig.html">Typecho评论邮件通知插件中使用腾讯企业邮箱SSL功能</a></h2>
 <ul class="post-meta">
-	<li>作者：vfhky | 时间：2015-09-12 22:39 | 分类：<a href="https://typecodes.com/linux/index.html">linux</a></li>
+	<li>作者：vfhky | 时间：2015-06-06 19:45 | 分类：<a href="https://typecodes.com/mix/index.html">mix</a></li>
 </ul>
 <div class="post-content fmt">
-	<p>前段时间和其它系统做联调测试，对方系统采用的是负载均衡模式。调试时采用的是多台手机作为客户端发送到对方负载均衡服务器，然后再把报文转发送到我这边的服务端。在测试的时候，对方测试人员说有的手机客户端会偶尔出现报文发不过来的情况。</p>
-<p>故事有点长，先发一张tcp三次握手的过程图镇楼~</p>
-<p><img alt="Linux tcp三次握手" src="https://dn-vfhky.qbox.me/2015/09/tcp_handshake.png" title="Linux tcp三次握手" /></p>
+	<p>前段时间，在查看博客绑定的腾讯企业邮箱时，发现POP3/SMTP协议支持SSL。由于正好使用了Typecho版的CommentToMail评论邮件通知插件，就顺便也升级成SSL协议。</p>
+<p><img alt="腾讯企业邮箱SSL配置" src="https://dn-vfhky.qbox.me/2015/06/exmailsslconfig.png" title="腾讯企业邮箱SSL配置" /></p>
 
-	<p class="more"><a href="https://typecodes.com/linux/tcpconnectiontimedout.html" title="Linux TCP连接Connection Refused和Connection timed out的问题">- 阅读剩余部分 -</a></p>
+	<p class="more"><a href="https://typecodes.com/mix/typechoexmailconfig.html" title="Typecho评论邮件通知插件中使用腾讯企业邮箱SSL功能">- 阅读剩余部分 -</a></p>
 			</article>
 			<article class="post">
-<h2 class="post-title"><a href="https://typecodes.com/linux/mysqlerrornospace.html">博客MySQL服务惊魂记：Linux磁盘空间不足(Core Dump文件引爆)</a></h2>
+<h2 class="post-title"><a href="https://typecodes.com/web/installtypechofail.html">解决阿里云无法安装typecho 1.0，页面全变空白</a></h2>
 <ul class="post-meta">
-	<li>作者：vfhky | 时间：2015-08-17 22:33 | 分类：<a href="https://typecodes.com/linux/index.html">linux</a></li>
+	<li>作者：vfhky | 时间：2014-08-17 21:33 | 分类：<a href="https://typecodes.com/web/index.html">web</a></li>
 </ul>
 <div class="post-content fmt">
-	<p>昨天在更新完文章<a href="https://typecodes.com/mix/synweibophpmarkdownimgurl.html">《升级博客文章同步微博的插件：PHP正则提取Markdown的图片地址》</a>后，博客突然无法访问了。</p>
-<p><img alt="MySQL的错误日志" src="https://dn-vfhky.qbox.me/2015/08/mysql_space_error.png" title="MySQL的错误日志" /></p>
+	<p>在Windows中安装 typecho 比较简单，只要先创建了数据库，然后安装过程和wordpress也类似。但是之前博主在自己的阿里云CentOS 6.5系统中安装 typecho，却出现了问题。</p>
+<h5>1 问题描述</h5>
+<p>先用 mysql 的一个用户创建了一个数据库，然后进入typecho的安装页面，填写好相关信息。typecho 会自动检测输入的数据库信息是否正确。如果正确，那么就会出现下图的页面。因为博客的根目录权限是不可写的，所以typecho程序无法自动生成配置文件 config.inc.php 。于是把里面的代码复制出来，并在根目录下新建文件 config.inc.php ，然后把复制的代码粘贴进去。结果在点击“创建完毕，继续安装”后，安装页面就跳转到空白页面了。</p>
+<p><img alt="点击“创建完毕，继续安装”后，安装页面就跳转到空白页面" src="https://dn-vfhky.qbox.me/2014/08/typechoconfig.png" title="点击“创建完毕，继续安装”后，安装页面就跳转到空白页面" /></p>
 
-	<p class="more"><a href="https://typecodes.com/linux/mysqlerrornospace.html" title="博客MySQL服务惊魂记：Linux磁盘空间不足(Core Dump文件引爆)">- 阅读剩余部分 -</a></p>
-			</article>
-			<article class="post">
-<h2 class="post-title"><a href="https://typecodes.com/mix/synweibophpmarkdownimgurl.html">升级博客文章同步微博的插件：PHP正则提取Markdown的图片地址</a></h2>
-<ul class="post-meta">
-	<li>作者：vfhky | 时间：2015-08-16 22:31 | 分类：<a href="https://typecodes.com/mix/index.html">mix</a></li>
-</ul>
-<div class="post-content fmt">
-	<p>作为一个微博控，为了把博客的文章同步到新浪微博上，BZ在<a href="http://open.weibo.com" title="点击查看">新浪微博开放平台</a>申请了一个应用。然后在自己的CentOS服务器上，利用<a href="http://open.weibo.com/wiki/SDK#PHP_SDK" title="点击查看">官方PHP SDK</a>搭了个服务端应用。这样通过博客插件作为请求客户端，调用相关API接口把文章同步到微博上。微博发布后，会显示来源，也即应用名称（如下图BZ的是<code>TypeCodes</code>）。</p>
-<p><img alt="博客文章同步到新浪微博的效果" src="https://dn-vfhky.qbox.me/2015/08/blog_synchronize_weibo.png" title="博客文章同步到新浪微博的效果" /></p>
-
-	<p class="more"><a href="https://typecodes.com/mix/synweibophpmarkdownimgurl.html" title="升级博客文章同步微博的插件：PHP正则提取Markdown的图片地址">- 阅读剩余部分 -</a></p>
-			</article>
-			<article class="post">
-<h2 class="post-title"><a href="https://typecodes.com/cseries/cppgeneralmakefile.html">Linux C/C++工程中可生成ELF、动/静态库文件的通用Makefile</a></h2>
-<ul class="post-meta">
-	<li>作者：vfhky | 时间：2015-08-14 20:27 | 分类：<a href="https://typecodes.com/cseries/index.html">cseries</a></li>
-</ul>
-<div class="post-content fmt">
-	<p>最近写了一个*nix环境下的Makefile文件，支持编译C/C++，同时能够通过参数配置生成ELF目标文件、动态链接库(.so)和静态链接库(.a)文件。</p>
-<p><img alt="Linux C/C++工程中可生成ELF、动/静态库文件的通用Makefile" src="https://dn-vfhky.qbox.me/2015/08/linux_general_makefile.png" title="Linux C/C++工程中可生成ELF、动/静态库文件的通用Makefile" /></p>
-
-	<p class="more"><a href="https://typecodes.com/cseries/cppgeneralmakefile.html" title="Linux C/C++工程中可生成ELF、动/静态库文件的通用Makefile">- 阅读剩余部分 -</a></p>
-			</article>
-			<article class="post">
-<h2 class="post-title"><a href="https://typecodes.com/cseries/libraryundefinedref.html">解决make编译链接动态库错误：libxx.so: undefined reference to xx</a></h2>
-<ul class="post-meta">
-	<li>作者：vfhky | 时间：2015-08-13 21:05 | 分类：<a href="https://typecodes.com/cseries/index.html">cseries</a></li>
-</ul>
-<div class="post-content fmt">
-	<p>最近在写一个Makefile，调试时遇到了<code>libsrcpbl.so: undefined reference to gcProgramName</code>的问题。在这个Makefile脚本里面，终极目标是通过链接一个自定义的动态库<code>libsrcpbl.so</code>生成一个ELF目标文件。</p>
-<p>由于链接生成libsrcpbl.so动态库的.o文件比较多，无法定位具体的错误程序文件和位置，所以折腾了较长时间。</p>
-
-	<p class="more"><a href="https://typecodes.com/cseries/libraryundefinedref.html" title="解决make编译链接动态库错误：libxx.so: undefined reference to xx">- 阅读剩余部分 -</a></p>
-			</article>
-			<article class="post">
-<h2 class="post-title"><a href="https://typecodes.com/cseries/nmobjectfilesymbol.html">Unix系统中nm命令展示目标文件符号的方法</a></h2>
-<ul class="post-meta">
-	<li>作者：vfhky | 时间：2015-08-12 00:07 | 分类：<a href="https://typecodes.com/cseries/index.html">cseries</a></li>
-</ul>
-<div class="post-content fmt">
-	<p>在*nix系统中，通过gnu开源gcc或者g++工具生成的目标文件（object file），可以用<code>nm</code>、<code>objdump</code>和<code>readelf</code>这三个命令来查看。</p>
-<div class="highlight"><pre>nm：显示目标文件中的符号；
-objdump：打印目标文件中的详细信息；
-readelf：显示关于 ELF 目标文件的信息。
-</pre></div>
-
-
-<p>之前在调试makefile文件的时候，链接动态库出错：<code>libsrcpbl.so: undefined reference to 'gcProgramName'</code>。也就是变量gcProgramName没定义，后来通过<code>nm -u libsrcpbl.so</code>命令辅助排查解决了。</p>
-
-	<p class="more"><a href="https://typecodes.com/cseries/nmobjectfilesymbol.html" title="Unix系统中nm命令展示目标文件符号的方法">- 阅读剩余部分 -</a></p>
+	<p class="more"><a href="https://typecodes.com/web/installtypechofail.html" title="解决阿里云无法安装typecho 1.0，页面全变空白">- 阅读剩余部分 -</a></p>
 			</article>
 		  	<!--page navigation-->
 <ol class="page-navigator">
-<li class="current"><a href="https://typecodes.com/index.html">1</a>
-       <li><a href="https://typecodes.com/index2.html">2</a>
-       		</li><li><a href="https://typecodes.com/index3.html">3</a>
-       		</li><li><a href="https://typecodes.com/index4.html">4</a>
-       		</li><li><a href="https://typecodes.com/index5.html">5</a>
-       		</li><li><a href="https://typecodes.com/index6.html">6</a>
-       		</li><li><a href="https://typecodes.com/index7.html">7</a>
-       		</li><li><span>...</span></li><li><a href="https://typecodes.com/index25.html">25</a>
-       		</li><li><a href="https://typecodes.com/index26.html">26</a>
-       		</li><li class="next">
-       		<a href="https://typecodes.com/index2.html">后一页 &raquo;</a>
-       </li></ol>		</div>
+</ol>		</div>
 		<!--3. right sider begin-->
 <div class="col-md-3" id="blog-secondary" role="complementary">
 	<section class="widget">
@@ -195,19 +135,10 @@ readelf：显示关于 ELF 目标文件的信息。
 				<a href="https://typecodes.com/mix/begintypechotopelican.html">准备将博客从Typecho迁移到Pelican</a>
 			</li>
 			<li class="post">
-				<a href="https://typecodes.com/linux/tcpconnectiontimedout.html">Linux TCP连接Connection Refused和Connection timed out的问题</a>
+				<a href="https://typecodes.com/mix/typechoexmailconfig.html">Typecho评论邮件通知插件中使用腾讯企业邮箱SSL功能</a>
 			</li>
 			<li class="post">
-				<a href="https://typecodes.com/linux/mysqlerrornospace.html">博客MySQL服务惊魂记：Linux磁盘空间不足(Core Dump文件引爆)</a>
-			</li>
-			<li class="post">
-				<a href="https://typecodes.com/mix/synweibophpmarkdownimgurl.html">升级博客文章同步微博的插件：PHP正则提取Markdown的图片地址</a>
-			</li>
-			<li class="post">
-				<a href="https://typecodes.com/cseries/cppgeneralmakefile.html">Linux C/C++工程中可生成ELF、动/静态库文件的通用Makefile</a>
-			</li>
-			<li class="post">
-				<a href="https://typecodes.com/cseries/libraryundefinedref.html">解决make编译链接动态库错误：libxx.so: undefined reference to xx</a>
+				<a href="https://typecodes.com/web/installtypechofail.html">解决阿里云无法安装typecho 1.0，页面全变空白</a>
 			</li>
 		</ul>
 	</section>

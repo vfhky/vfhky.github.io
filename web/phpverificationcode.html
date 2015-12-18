@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="zh-CN" class="no-js">
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<title>PHP中验证码的设计 &mdash; TypeCodes</title>
+		<meta name="author" content="vfhky">
+  		<link href="https://typecodes.com/atom.xml" type="application/atom+xml" rel="alternate" title="TypeCodes Atom Feed" />
+	  	<link href="https://typecodes.com/feed.xml" type="application/rss+xml" rel="alternate" title="TypeCodes RSS Feed" />
+		<meta name="HandheldFriendly" content="True">
+		<meta name="MobileOptimized" content="320">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="renderer" content="webkit">
+		<link rel="stylesheet" href="https://dn-vfhky.qbox.me/libs/css/pelican-vfhky.css">
+		<script>
+			var _hmt = _hmt || [];
+			(function() {
+			  var hm = document.createElement("script");
+			  hm.src = "//hm.baidu.com/hm.js?c15c4ab8e91ba9ac3d5a12293cc93359";
+			  var s = document.getElementsByTagName("script")[0]; 
+			  s.parentNode.insertBefore(hm, s);
+			})();
+		</script>
+	</head>
+	<body style>
+		<!--1. header navigation begin-->
+		<header role="banner" id="te-site-header">
+			<div class="container">
+				<a href="https://typecodes.com" class="te-site-logo" role="logo" target="_self"> TypeCodes</a>
+				<ul class="nav nav-pills" id="te-site-nav" role="navigation">
+					<li><a href="https://typecodes.com">Home</a></li><li><a href="https://typecodes.com/archives.html" title="Archives">Archives</a></li><li><a href="https://typecodes.com/about.html" title="About">About</a></li></ul>
+			</div>
+		</header>
+		<div class="te-headline">
+			<div class="container">
+				<h2 class="te-headline-title"> <a href="https://typecodes.com">TypeCodes</a></h2>
+			</div>
+		</div>
+		<div class="container">
+			<div class="row">
+		<!--2. left sider begin-->
+		<div class="col-md-9" id="blog-main" role="main">
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/web/phpverificationcode.html">PHP中验证码的设计</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2012-08-26 14:56 | 分类：<a href="https://typecodes.com/web/index.html">web</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>验证码是网站的重要组成部分，不管是在注册、登录又或者是留言页面，都需要注册码来验证当前操作者的合法性。很多情况下，我们的一些数据库会被那些垃圾广告软件发送大量的垃圾信息，这个是我们不愿看到的。更有甚者，一些非法用户会通过不断提交信息企图得到数据库的内容，或者造成网站的堵塞。所以，网站的验证码还是非常有必要的。</p>
+
+
+<p>而随着验证码的使用，很多不法分子“跟进”了它们的技术，所以当前很多门户网站的验证码都做了相应的改进。于是出现了文字长度变长，汉字夹杂数字或者字母的情况.</p>
+<p><img alt="PHP中的验证码设计" src="https://dn-vfhky.qbox.me/2012/08/110.png" title="PHP中的验证码设计" /></p>
+<h5>1 一个简单的验证码实例</h5>
+<h6>1.1 显示验证码的图片</h6>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7</pre></div></td><td class="code"><div class="highlight"><pre><span class="cp">&lt;?php</span> 
+    <span class="nv">$num</span><span class="o">=</span><span class="nb">intval</span><span class="p">(</span><span class="nb">mt_rand</span><span class="p">(</span><span class="mi">1000</span><span class="p">,</span><span class="mi">9999</span><span class="p">));</span>
+    <span class="k">for</span><span class="p">(</span><span class="nv">$i</span><span class="o">=</span><span class="mi">0</span> <span class="p">;</span> <span class="nv">$i</span><span class="o">&lt;</span><span class="mi">4</span> <span class="p">;</span><span class="nv">$i</span><span class="o">++</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">echo</span> <span class="s2">&quot;&lt;img src=img/yzm/&quot;</span><span class="o">.</span><span class="nb">substr</span><span class="p">(</span><span class="nb">strval</span><span class="p">(</span><span class="nv">$num</span><span class="p">),</span><span class="nv">$i</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="s2">&quot;.gif/&gt;&quot;</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="cp">?&gt;</span><span class="x"></span>
+</pre></div>
+</td></tr></table>
+
+<h6>1.2 验证过程</h6>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5</pre></div></td><td class="code"><div class="highlight"><pre><span class="x">if (strval($inputyzm)!=strval($num))</span>
+<span class="x">{</span>
+<span class="x">    echo &quot;&lt;script&gt;alert(&#39;验证码错误！&#39;);history.go(-1);&lt;/script&gt;&quot;;</span>
+<span class="x">    exit;</span>
+<span class="x">}</span>
+</pre></div>
+</td></tr></table>
+
+<h5>2 一个汉字的验证码实例</h5>
+<h6>2.1 显示验证码的图片</h6>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10</pre></div></td><td class="code"><div class="highlight"><pre><span class="cp">&lt;?php</span>
+    <span class="nv">$str</span><span class="o">=</span><span class="s2">&quot;汉&quot;</span><span class="p">,</span><span class="s2">&quot;字&quot;</span><span class="p">,</span><span class="s2">&quot;验&quot;</span><span class="p">,</span><span class="s2">&quot;证&quot;</span><span class="p">,</span><span class="s2">&quot;码&quot;</span><span class="p">);</span>      <span class="c1">//可以定义汉字的内容和个数</span>
+    <span class="nv">$word</span><span class="o">=</span><span class="nb">strlen</span><span class="p">(</span><span class="nv">$str</span><span class="p">));</span>
+    <span class="k">for</span> <span class="p">(</span><span class="nv">$i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="nv">$i</span><span class="o">&lt;</span><span class="mi">4</span><span class="p">;</span><span class="nv">$i</span><span class="o">++</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="nv">$num</span><span class="o">=</span><span class="nb">rand</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="nv">$word</span><span class="p">);</span>
+        <span class="nv">$img</span> <span class="o">=</span> <span class="nv">$img</span><span class="o">.</span><span class="s2">&quot;&lt;img src=&#39;../images/yzm/&quot;</span><span class="o">.</span><span class="nv">$num</span><span class="s2">&quot;.gif&#39;/&gt;&quot;</span><span class="p">;</span>
+        <span class="nv">$pic</span> <span class="o">=</span> <span class="nv">$pic</span><span class="o">.</span><span class="nv">$str</span><span class="p">[</span><span class="nv">$num</span><span class="p">];</span>
+    <span class="p">}</span>
+<span class="o">&gt;</span>
+</pre></div>
+</td></tr></table>
+
+<h6>2.2 将生成的随机字符串赋给一个隐藏域</h6>
+<div class="highlight"><pre><span class="o">&lt;</span><span class="nx">input</span> <span class="nx">type</span><span class="o">=</span><span class="s2">&quot;hidden&quot;</span> <span class="nx">name</span><span class="o">=</span><span class="s2">&quot;yzm&quot;</span> <span class="nx">value</span><span class="o">=</span><span class="err">&quot;</span><span class="cp">&lt;?php</span> <span class="k">echo</span> <span class="nv">$pic</span><span class="p">;</span> <span class="o">?/&gt;</span><span class="s2">&quot;&gt;</span>
+</pre></div>
+
+
+<h6>2.3 定义一个check（）函数</h6>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14</pre></div></td><td class="code"><div class="highlight"><pre><span class="x">&lt;script language=&quot;javascript&quot;&gt;</span>
+<span class="x">    function check(form){</span>
+<span class="x">        if(form.yzm.value==&quot;&quot;){</span>
+<span class="x">        alert(&quot;请输入验证码&quot;);</span>
+<span class="x">        form.yzm.focus();</span>
+<span class="x">        return false;</span>
+<span class="x">    }</span>
+<span class="x">    if(form.yzm.vale!=form.yz.value){</span>
+<span class="x">        alert(&quot;验证码错误&quot;);</span>
+<span class="x">        form.yzm.focus();</span>
+<span class="x">        return false;</span>
+<span class="x">    }</span>
+<span class="x">}</span>
+<span class="x">&lt;/script&gt;</span>
+</pre></div>
+</td></tr></table>
+		    	<p class="tags">
+					<div class="post-share">
+						<ul class="post-shareul clearfix">
+							<li class="post-shareli">
+								<a href="http://note.youdao.com/memory/?url=https://typecodes.com/web/phpverificationcode.html&title=PHP中验证码的设计" class="post-sharea ydshare" target="_blank" rel="nofollow">有道云笔记</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://v.t.sina.com.cn/share/share.php?url=https://typecodes.com/web/phpverificationcode.html&title=PHP中验证码的设计&source=https://typecodes.com" class="post-sharea wbshare" target="_blank" rel="nofollow">新浪微博</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://v.t.qq.com/share/share.php?title=PHP中验证码的设计&url=https://typecodes.com/web/phpverificationcode.html&site=https://typecodes.com" class="post-sharea twbshare" target="_blank" rel="nofollow">腾讯微博</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=https://typecodes.com/web/phpverificationcode.html&title=PHP中验证码的设计&content='utf-8'" class="post-sharea qzoneshare" target="_blank" rel="nofollow">QZone</a>
+							</li>
+						</ul>
+					</div>
+					<div>
+						Tags: <a href="https://typecodes.com/tag/phpyan-zheng-ma.html">php验证码</a>					</div>
+				</p>
+			</article>
+			
+			<div id="comments">
+				<h4 class="num">Comments &raquo;</h4>
+		    	<div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript></div>
+		    </div>
+		</div>
+		<!--3. right sider begin-->
+<div class="col-md-3" id="blog-secondary" role="complementary">
+	<section class="widget">
+		<ul class="widget-list">
+			<form id="search" method="get" action="https://typecodes.com/search.html">
+				<input type="text" name="q" id="s" size="20" x-webkit-speech="" x-webkit-grammar="builtin:search" onwebkitspeechchange="this.value = this.value.replace(this.defaultValue, '')" value="Google...." onfocus="this.value = (this.value == this.defaultValue) ? '' : this.value" onblur="this.value = (this.value == '') ? this.defaultValue : this.value">
+			</form>
+		</ul>
+	</section>
+	<section class="widget">
+		<h3 class="widget-title">Categories</h3>
+		<ul class="widget-list">
+		      <li class="current">
+		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (26)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/csharp/index.html">Csharp</a> (6)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/database/index.html">Database</a> (11)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/java/index.html">Java</a> (1)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/linux/index.html">Linux</a> (16)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/mix/index.html">Mix</a> (53)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/web/index.html">Web</a> (88)
+		      </li>
+		</ul>
+	</section>
+	<section class="widget">
+		<h3 class="widget-title">Recent Posts</h3>
+		<ul class="widget-list">
+			<li class="post">
+				<a href="https://typecodes.com/mix/sucesstypechotopelican.html">成功将博客从Typecho迁移到Pelican</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/mix/begintypechotopelican.html">准备将博客从Typecho迁移到Pelican</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/tcpconnectiontimedout.html">Linux TCP连接Connection Refused和Connection timed out的问题</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/mysqlerrornospace.html">博客MySQL服务惊魂记：Linux磁盘空间不足(Core Dump文件引爆)</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/mix/synweibophpmarkdownimgurl.html">升级博客文章同步微博的插件：PHP正则提取Markdown的图片地址</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/cppgeneralmakefile.html">Linux C/C++工程中可生成ELF、动/静态库文件的通用Makefile</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/libraryundefinedref.html">解决make编译链接动态库错误：libxx.so: undefined reference to xx</a>
+			</li>
+		</ul>
+	</section>
+	<section class="widget widget-feed">
+		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
+	</section>
+</div>
+				</div>
+			</div>
+		</div>
+		<!--4. bottom begin-->
+		<footer id="te-site-footer"><div class="container">
+	<div class="row" role="contentinfo">
+		<section class="col-md-2 col-md-offset-1">
+			<h3>Links</h3>
+			<ul><li><a href="http://diaosbook.com/" title="">diaosbook</a></li></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul>
+				<li><a href="https://typecodes.com/links.html">More..</a></li>
+			</ul>
+		</section>
+		<section class="col-md-2">
+			<h3>Following</h3>
+			<ul>
+				<li><a href="https://github.com/vfhky" class="following github" target="_blank" rel="external nofollow">GitHub</a></li>
+				<li><a href="http://weibo.com/typecodes" class="following weibo" target="_blank" rel="external nofollow">Weibo</a></li>
+				<li><a href="http://vfhky.sinaapp.com/" class="following sae" target="_blank" rel="external nofollow">SAE</a></li>
+				<li><a href="http://www.dwz.cn/mYiwa" class="following qqgroup" target="_blank" rel="external nofollow">Group</a></li>
+			</ul>
+		</section>
+		<div class="col-md-12 copyright">
+			<a href="#top"><i class="i-logo-s">TOP</i></a>
+			<p>
+				&copy; 2012-<script language="JavaScript">var date = new Date(); document.write(date.getFullYear());</script>							<a href="https://typecodes.com">TypeCodes</a>. All Rights Reserved<br>Powered by <a href="http://getpelican.com" rel="external" target="_blank">Pelican</a>. <a href="http://www.miitbeian.gov.cn/" rel="external nofollow" target="_blank">粤ICP备14050695号</a>
+			</p>
+		</div>
+	</div>
+</div>
+</footer>
+<script type="text/javascript">
+	var disqus_shortname = 'typecodes';
+	var disqus_identifier = '/web/phpverificationcode.html';
+	var disqus_url = 'https://typecodes.com/web/phpverificationcode.html';
+	var disqus_title = 'PHP中验证码的设计';
+	(function() {
+		var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+		dsq.src = "//" + disqus_shortname + '.disqus.com/embed.js';
+		(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	 })();
+</script>
+	</body>
+</html>

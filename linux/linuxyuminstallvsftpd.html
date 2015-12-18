@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="zh-CN" class="no-js">
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<title>Redhat/CentOS通过yum安装与配置vsFTPd的详细步骤 &mdash; TypeCodes</title>
+		<meta name="author" content="vfhky">
+  		<link href="https://typecodes.com/atom.xml" type="application/atom+xml" rel="alternate" title="TypeCodes Atom Feed" />
+	  	<link href="https://typecodes.com/feed.xml" type="application/rss+xml" rel="alternate" title="TypeCodes RSS Feed" />
+		<meta name="HandheldFriendly" content="True">
+		<meta name="MobileOptimized" content="320">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="renderer" content="webkit">
+		<link rel="stylesheet" href="https://dn-vfhky.qbox.me/libs/css/pelican-vfhky.css">
+		<script>
+			var _hmt = _hmt || [];
+			(function() {
+			  var hm = document.createElement("script");
+			  hm.src = "//hm.baidu.com/hm.js?c15c4ab8e91ba9ac3d5a12293cc93359";
+			  var s = document.getElementsByTagName("script")[0]; 
+			  s.parentNode.insertBefore(hm, s);
+			})();
+		</script>
+	</head>
+	<body style>
+		<!--1. header navigation begin-->
+		<header role="banner" id="te-site-header">
+			<div class="container">
+				<a href="https://typecodes.com" class="te-site-logo" role="logo" target="_self"> TypeCodes</a>
+				<ul class="nav nav-pills" id="te-site-nav" role="navigation">
+					<li><a href="https://typecodes.com">Home</a></li><li><a href="https://typecodes.com/archives.html" title="Archives">Archives</a></li><li><a href="https://typecodes.com/about.html" title="About">About</a></li></ul>
+			</div>
+		</header>
+		<div class="te-headline">
+			<div class="container">
+				<h2 class="te-headline-title"> <a href="https://typecodes.com">TypeCodes</a></h2>
+			</div>
+		</div>
+		<div class="container">
+			<div class="row">
+		<!--2. left sider begin-->
+		<div class="col-md-9" id="blog-main" role="main">
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/linux/linuxyuminstallvsftpd.html">Redhat/CentOS通过yum安装与配置vsFTPd的详细步骤</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2013-03-15 22:54 | 分类：<a href="https://typecodes.com/linux/index.html">linux</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>由于需要在RHEL5.3中安装oracle数据库，所以博主得把window7中的oracle软件上传到wm8中的linux系统中去。众所周知，对于如何实现vm与windows系统的互通，可以使用vmtools实现。</p>
+<p>但是对于一些类似于oracle这种大文件的话，直接从桌面或者其它硬盘拖动到linux中去的话是非常慢的。因此，我们一款轻巧快捷，安全易用的软件把它实现，这就是vsFTPd。下面就介绍下如何在linux系统Redhat/CentOS下简单安装和配置vsFTPd这个服务软件。</p>
+
+
+<p>如果在使用yum安装时出现“Redhat Linux5 yum出现This system is not registered with RHN”错误提示的话，请移步至博客上一篇文章 <a href="https://typecodes.com/linux/linuxnotregisteredrhn.html" title="解决Redhat Linux5 yum出现This system is not registered with RHN">《解决Redhat Linux5 yum出现This system is not registered with RHN》</a>。</p>
+<h5>1 检查当前Linux系统是否安装了vsftp</h5>
+<div class="highlight"><pre>[root@localhost ~]#rpm -qa|grep vsftpd
+//若没有任何输出内容，则表示当前linux系统未安装vsftp。
+</pre></div>
+
+
+<h5>2 安装vsftpd服务器</h5>
+<p>从redhat或者centos的安装镜像包的server/文件夹中提取出rpm包。（RHEL5.3中的是vsftpd-2.0.5-12.el5.i386.rpm，通过vmtools把它复制到root's home中去，然后执行如下命令：</p>
+<div class="highlight"><pre>[root@localhost ~]#rpm -ivh vsftpd-2.0.5-10.el5.i386.rpm
+</pre></div>
+
+
+<h5>3 配置vsftpd服务器</h5>
+<p>vsftp相关的配置文件都在/etc/vsftpd目录中，如何查看它的默认文件：</p>
+<div class="highlight"><pre>[root@localhost ~]# ll /etc/vsftpd
+total 40
+-rw-r--r-- 1 root root 6 Mar 14 01:28 chroot_list
+-rw------- 1 root root 125 Dec 13 2007 ftpusers
+-rw------- 1 root root 361 Dec 13 2007 user_list
+-rw-r--r-- 1 root root 6 Mar 14 23:21 user.list
+-rw------- 1 root root 4392 Mar 15 01:07 vsftpd.conf
+-rwxr--r-- 1 root root 338 Dec 13 2007 vsftpd_conf_migrate.sh
+</pre></div>
+
+
+<p>其中，vsftpd.conf是vsftp的核心配置文件，user.list是允许的用户列表，而ftpusers是禁止的用户列表（如root账户），这个大家有个大概了解就行，下面是配置vsftpd服务器的具体步骤。</p>
+<div class="highlight"><pre>[root@localhost ~]# vi /etc/vsftpd/vsftpd.conf
+//里面有很多配置点，我们只需检查
+anonymous_enable=YES（是否允许匿名用户anonymous在不用输密码的情况下登录FTP）
+local_enable=YES（是否允许本地用户登录。什么是本地用户？例如在安装linux的时候会让你填写一个账号，博主的是vfhky）
+write_enable=YES（开放本地用户的写权限）
+//其它可选项：
+chroot_list_enable=YES
+chroot_list_file=/etc/vsftpd/chroot_list
+//如果启动这项功能，则所有的本地账户登入FTP后均可进入自己根目录之外的其他目录。除了在/etc/vsftpd.chroot_list文件指定的使用者之外，默认值为NO，这里选择YES。
+</pre></div>
+
+
+<h5>4 添加ftp账户test1</h5>
+<p>使其指向目录/home/wwwroot/ftpuser1，并且禁止登录SSH权限：在/home/中新建wwwroot/ftpuser1的文件夹，然后</p>
+<div class="highlight"><pre>[root@localhost ~]# userdel -r test1
+[root@localhost ~]# useradd -d /home/wwwroot/ftpuser1 -g ftp -s /sbin/nologin test1 （表示限制test1只能在/home/wwwroot/ftpuser1中）
+[root@localhost ~]# passwd test1 （设置密码）
+Changing password for user test1.
+New UNIX password:
+BAD PASSWORD: it is too short
+Retype new UNIX password:
+passwd: all authentication tokens updated successfully.
+</pre></div>
+
+
+<h5>5 配置防火墙</h5>
+<div class="highlight"><pre>[root@localhost ~]# vi /etc/sysconfig/iptables
+//在REJECT行之前添加如下代码：
+-A RH-Firewall-1-INPUT -m state –state NEW -m tcp -p tcp –dport 21 -j ACCEPT //（因为FTP的默认端口是21）
+//保存和关闭文件，重启防火墙
+[root@localhost ~]# service iptables restart
+</pre></div>
+
+
+<h5>6 管理vsftpd服务的相关命令</h5>
+<div class="highlight"><pre>查看vsftpd状态：[root@localhost ~]# service vsftpd stauts
+停止vsftpd服务：[root@localhost ~]# service vsftpd stop
+重启vsftpd服务：[root@localhost ~]# service vsftpd restart
+设置vsftpd开机启动：[root@localhost ~]# ntsysv 或者
+[root@localhost ~]# chkconfig --level 35 vsftpd on
+</pre></div>
+
+
+<h5>7 在当前Linux系统测试vsftpd：</h5>
+<div class="highlight"><pre>[root@localhost ~]# cd /etc/vsftpd
+[root@localhost ~]# cd /etc/vsftpd
+[root@localhost vsftpd]# ftp 192.168.198.128 （填写FTP主机地址，可以通过[root@localhost ~]# ifconfig 获知）
+Connected to 192.168.198.128.
+220 (vsFTPd 2.0.5)
+530 Please login with USER and PASS.
+530 Please login with USER and PASS.
+KERBEROS_V4 rejected as an authentication type
+Name (192.168.198.128:root): test1
+331 Please specify the password.
+Password:
+230 Login successful.（登录成功）
+Remote system type is UNIX.
+Using binary mode to transfer files.
+ftp&gt; pwd
+257 &quot;/home/wwwroot/ftpuser1&quot;
+ftp&gt; mkdir ftp_data
+550 Create directory operation failed.（因为当时新建ftpuser1文件夹时用的是root登录账户，所以无法test1身份创建，所以把ftpuser1改为test1所有，即可显示如下命令）
+ftp&gt; mkdir ftp_data
+257 &quot;/home/wwwroot/ftpuser1/ftp_data&quot; created
+ftp&gt; cd /usr/local
+250 Directory successfully changed.
+ftp&gt; pwd
+257 &quot;/usr/local&quot;
+ftp&gt; by
+221 Goodbye.
+[root@localhost vsftpd]# su - test1
+This account is currently not available.（这里的test1是虚拟用户，因此无法登录系统）
+[root@localhost vsftpd]# cd /
+[root@localhost /]# cd ~
+[root@localhost ~]# ftp 192.168.198.128
+Connected to 192.168.198.128.
+220 (vsFTPd 2.0.5)
+530 Please login with USER and PASS.
+530 Please login with USER and PASS.
+KERBEROS_V4 rejected as an authentication type
+Name (192.168.198.128:root): test1
+331 Please specify the password.
+Password:
+230 Login successful.（登录成功）
+Remote system type is UNIX.
+Using binary mode to transfer files.
+ftp&gt; pwd
+257 &quot;/home/wwwroot/ftpuser1&quot;
+ftp&gt; mkdir test1
+257 &quot;/home/wwwroot/ftpuser1/test1&quot; created
+ftp&gt; cd /usr/local
+250 Directory successfully changed.
+ftp&gt; pwd
+257 &quot;/usr/local&quot;
+ftp&gt; by
+221 Goodbye.
+</pre></div>
+
+
+<h5>8 在windows系统测试vsftpd：</h5>
+<p>Win+R打开cmd命令，然后输入</p>
+<div class="highlight"><pre>C:\Users\vfhky&gt;ftp 192.168.198.128
+连接到 192.168.198.128。
+220 (vsFTPd 2.0.5)
+用户(192.168.198.128:(none)): test1
+331 Please specify the password.
+密码:
+230 Login successful.（登录成功）
+ftp&gt; pwd
+257 &quot;/home/wwwroot/ftpuser1&quot;
+ftp&gt; ls
+200 PORT command successful. Consider using PASV.
+150 Here comes the directory listing.
+ftp_data
+test
+test1
+226 Directory send OK.
+ftp: 收到 23 字节，用时 0.00秒 23000.00千字节/秒。
+</pre></div>
+
+
+<h5>9 如果出现500 OOPS的错误提示</h5>
+<p>若出现500 OOPS:cannot change directory:/home/wwwroot/ftpuser1的错误提示，可以通过以下命令关闭SELinux的保护设置即可解决。</p>
+<div class="highlight"><pre>[root@localhost ~]# setsebool -P ftpd_disable_trans 1
+</pre></div>
+
+
+<p>完成上面的工作后说明已经成功了，那么具体如何使用ftp命令进行上传或者下载请参照下一篇文章<a href="https://typecodes.com/linux/cmdvsftpdinteraction.html" title="在windows系统中通过CMD命令实现VSFTPD的上传下载">《windows系统中通过CMD命令实现VSFTPD的上传下载》</a>。</p>
+		    	<p class="tags">
+					<div class="post-share">
+						<ul class="post-shareul clearfix">
+							<li class="post-shareli">
+								<a href="http://note.youdao.com/memory/?url=https://typecodes.com/linux/linuxyuminstallvsftpd.html&title=Redhat/CentOS通过yum安装与配置vsFTPd的详细步骤" class="post-sharea ydshare" target="_blank" rel="nofollow">有道云笔记</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://v.t.sina.com.cn/share/share.php?url=https://typecodes.com/linux/linuxyuminstallvsftpd.html&title=Redhat/CentOS通过yum安装与配置vsFTPd的详细步骤&source=https://typecodes.com" class="post-sharea wbshare" target="_blank" rel="nofollow">新浪微博</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://v.t.qq.com/share/share.php?title=Redhat/CentOS通过yum安装与配置vsFTPd的详细步骤&url=https://typecodes.com/linux/linuxyuminstallvsftpd.html&site=https://typecodes.com" class="post-sharea twbshare" target="_blank" rel="nofollow">腾讯微博</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=https://typecodes.com/linux/linuxyuminstallvsftpd.html&title=Redhat/CentOS通过yum安装与配置vsFTPd的详细步骤&content='utf-8'" class="post-sharea qzoneshare" target="_blank" rel="nofollow">QZone</a>
+							</li>
+						</ul>
+					</div>
+					<div>
+						Tags: <a href="https://typecodes.com/tag/linux-vsftpd.html">linux vsftpd</a>					</div>
+				</p>
+			</article>
+			
+			<div id="comments">
+				<h4 class="num">Comments &raquo;</h4>
+		    	<div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript></div>
+		    </div>
+		</div>
+		<!--3. right sider begin-->
+<div class="col-md-3" id="blog-secondary" role="complementary">
+	<section class="widget">
+		<ul class="widget-list">
+			<form id="search" method="get" action="https://typecodes.com/search.html">
+				<input type="text" name="q" id="s" size="20" x-webkit-speech="" x-webkit-grammar="builtin:search" onwebkitspeechchange="this.value = this.value.replace(this.defaultValue, '')" value="Google...." onfocus="this.value = (this.value == this.defaultValue) ? '' : this.value" onblur="this.value = (this.value == '') ? this.defaultValue : this.value">
+			</form>
+		</ul>
+	</section>
+	<section class="widget">
+		<h3 class="widget-title">Categories</h3>
+		<ul class="widget-list">
+		      <li class="current">
+		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (26)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/csharp/index.html">Csharp</a> (6)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/database/index.html">Database</a> (11)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/java/index.html">Java</a> (1)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/linux/index.html">Linux</a> (16)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/mix/index.html">Mix</a> (53)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/web/index.html">Web</a> (88)
+		      </li>
+		</ul>
+	</section>
+	<section class="widget">
+		<h3 class="widget-title">Recent Posts</h3>
+		<ul class="widget-list">
+			<li class="post">
+				<a href="https://typecodes.com/mix/sucesstypechotopelican.html">成功将博客从Typecho迁移到Pelican</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/mix/begintypechotopelican.html">准备将博客从Typecho迁移到Pelican</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/tcpconnectiontimedout.html">Linux TCP连接Connection Refused和Connection timed out的问题</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/mysqlerrornospace.html">博客MySQL服务惊魂记：Linux磁盘空间不足(Core Dump文件引爆)</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/mix/synweibophpmarkdownimgurl.html">升级博客文章同步微博的插件：PHP正则提取Markdown的图片地址</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/cppgeneralmakefile.html">Linux C/C++工程中可生成ELF、动/静态库文件的通用Makefile</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/libraryundefinedref.html">解决make编译链接动态库错误：libxx.so: undefined reference to xx</a>
+			</li>
+		</ul>
+	</section>
+	<section class="widget widget-feed">
+		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
+	</section>
+</div>
+				</div>
+			</div>
+		</div>
+		<!--4. bottom begin-->
+		<footer id="te-site-footer"><div class="container">
+	<div class="row" role="contentinfo">
+		<section class="col-md-2 col-md-offset-1">
+			<h3>Links</h3>
+			<ul><li><a href="http://diaosbook.com/" title="">diaosbook</a></li></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul>
+				<li><a href="https://typecodes.com/links.html">More..</a></li>
+			</ul>
+		</section>
+		<section class="col-md-2">
+			<h3>Following</h3>
+			<ul>
+				<li><a href="https://github.com/vfhky" class="following github" target="_blank" rel="external nofollow">GitHub</a></li>
+				<li><a href="http://weibo.com/typecodes" class="following weibo" target="_blank" rel="external nofollow">Weibo</a></li>
+				<li><a href="http://vfhky.sinaapp.com/" class="following sae" target="_blank" rel="external nofollow">SAE</a></li>
+				<li><a href="http://www.dwz.cn/mYiwa" class="following qqgroup" target="_blank" rel="external nofollow">Group</a></li>
+			</ul>
+		</section>
+		<div class="col-md-12 copyright">
+			<a href="#top"><i class="i-logo-s">TOP</i></a>
+			<p>
+				&copy; 2012-<script language="JavaScript">var date = new Date(); document.write(date.getFullYear());</script>							<a href="https://typecodes.com">TypeCodes</a>. All Rights Reserved<br>Powered by <a href="http://getpelican.com" rel="external" target="_blank">Pelican</a>. <a href="http://www.miitbeian.gov.cn/" rel="external nofollow" target="_blank">粤ICP备14050695号</a>
+			</p>
+		</div>
+	</div>
+</div>
+</footer>
+<script type="text/javascript">
+	var disqus_shortname = 'typecodes';
+	var disqus_identifier = '/linux/linuxyuminstallvsftpd.html';
+	var disqus_url = 'https://typecodes.com/linux/linuxyuminstallvsftpd.html';
+	var disqus_title = 'Redhat/CentOS通过yum安装与配置vsFTPd的详细步骤';
+	(function() {
+		var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+		dsq.src = "//" + disqus_shortname + '.disqus.com/embed.js';
+		(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	 })();
+</script>
+	</body>
+</html>

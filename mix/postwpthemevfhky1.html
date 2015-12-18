@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="zh-CN" class="no-js">
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<title>配置IIS出现错误的解决方法 &mdash; TypeCodes</title>
+		<meta name="author" content="vfhky">
+  		<link href="https://typecodes.com/atom.xml" type="application/atom+xml" rel="alternate" title="TypeCodes Atom Feed" />
+	  	<link href="https://typecodes.com/feed.xml" type="application/rss+xml" rel="alternate" title="TypeCodes RSS Feed" />
+		<meta name="HandheldFriendly" content="True">
+		<meta name="MobileOptimized" content="320">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="renderer" content="webkit">
+		<link rel="stylesheet" href="https://dn-vfhky.qbox.me/libs/css/pelican-vfhky.css">
+		<script>
+			var _hmt = _hmt || [];
+			(function() {
+			  var hm = document.createElement("script");
+			  hm.src = "//hm.baidu.com/hm.js?c15c4ab8e91ba9ac3d5a12293cc93359";
+			  var s = document.getElementsByTagName("script")[0]; 
+			  s.parentNode.insertBefore(hm, s);
+			})();
+		</script>
+	</head>
+	<body style>
+		<!--1. header navigation begin-->
+		<header role="banner" id="te-site-header">
+			<div class="container">
+				<a href="https://typecodes.com" class="te-site-logo" role="logo" target="_self"> TypeCodes</a>
+				<ul class="nav nav-pills" id="te-site-nav" role="navigation">
+					<li><a href="https://typecodes.com">Home</a></li><li><a href="https://typecodes.com/archives.html" title="Archives">Archives</a></li><li><a href="https://typecodes.com/about.html" title="About">About</a></li></ul>
+			</div>
+		</header>
+		<div class="te-headline">
+			<div class="container">
+				<h2 class="te-headline-title"> <a href="https://typecodes.com">TypeCodes</a></h2>
+			</div>
+		</div>
+		<div class="container">
+			<div class="row">
+		<!--2. left sider begin-->
+		<div class="col-md-9" id="blog-main" role="main">
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/mix/postwpthemevfhky1.html">配置IIS出现错误的解决方法</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2014-02-15 20:07 | 分类：<a href="https://typecodes.com/mix/index.html">mix</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>从13年11月起，博客一直没有更新，主要是工作比较忙。之前陆陆续续有人问我，说主题挺不错的，能不能共享下。由于当时我的主题还在折腾，有时都有代码都有bug，所以一直没有发布。另外去年打算用typecho，选了一个主题，感觉不是很满意，所以也放弃了。趁现在空闲时间，我把现在用的这个主题整理出来（算是一个稳定版本吧），希望大家喜欢。虽然，之前折腾过一个功能比较多的版本，后来发现自己越来越喜欢精简的东西，所以就没用了。不多说了，直接进入主题vfhky1.0的发布正题。</p>
+
+
+<h5>1 主题更新历程</h5>
+<p>这个wordpress主题是基于洃少的<a href="http://www.zuifengyun.com/fengyun-2-1.html" title="查看 风云时代主题 ">风云时代主题</a>完成的。后面经过对程序的改进，变成了现在博主用的这个主题【vfhky】。主题最初是在去年7月在博客使用的：<a href="https://typecodes.com/mix/cmsblogwithvfhkyreturn.html" title="启用CMS类型的博客主题，vfhky再次回归">《启用CMS类型的博客主题，vfhky再次回归》</a>，后面不断折腾，改成了现在博客的风格。详情可以点击 <a href="https://typecodes.com/tag/%E5%8D%9A%E5%AE%A2%E6%88%90%E9%95%BF%E5%BD%95/" title="查看主题【vfhky】的更新历程">此处</a> 查看主题的更新历程。主题制作是一个非常折腾的过程，代码改了又改，bug调了又调。其中的艰辛就不多说了，当然这也是一个痛并快乐的过程。在此当然还得特别感谢洃少童鞋！</p>
+<h5>2 主题下载</h5>
+<p>为了让主题【vfhky】能够得到完善，我把它放在了github上，地址是<a href="https://github.com/vfhky/vfhky" title="下载主题【vfhky 1.0】">https://github.com/vfhky/vfhky</a>。怎么下载？请大家先fork，然后使用github客户端或者git shell来创建一个属于你自己的本地仓库。再进行修改，如果觉得自己修改的代码更好一些，那么可以提交一个pull request，我会及时合并。当然，你也可以直接在上面那个地址找到下载链接，不过还是请大家多fork！以后主题的补丁更新或者功能完善都会发布到github上，创建一个自己的本地仓库有利于更新到主题的最新版本。</p>
+<h5>3 主题安装方法</h5>
+<h6>3.1 在github上clone本地仓库</h6>
+<p>在fork后，创建clone一个自己的本地仓库。然后把go.php和urlsafe.php放到网站根目录下面；主题vfhky放在wordpress的主题wp-content\themes目录下面；另外在网站根目录下面新建一个名为avatar的文件夹，用于gravatar头像缓存；最后，把浏览人次的统计插件WP-PostViews Plus上传到wordpress的插件wp-content\plugins目录下面。</p>
+<h6>3.2 修改页面底部的当前在线人数程序</h6>
+<p>将custom.js中所有的https://typecodes.com替换为你的域名，例如http://www.baidu.com。</p>
+<h6>3.3 修改网站安全认证模版程序</h6>
+<p>将siteconfirm.php中所有的https://typecodes.com替换为你的域名，例如http://www.baidu.com。</p>
+<h6>3.4 修改淘宝IP库接口调用程序</h6>
+<p>将single.js中所有的https://typecodes.com替换为你的域名，例如http://www.baidu.com。</p>
+<h6>3.5 修改wordpress评论跳转程序</h6>
+<p>将go.php中第157和第168行的https://typecodes.com替换为你的域名，例如http://www.baidu.com。</p>
+<h6>3.6 增加博客“网站安全认证”页面</h6>
+<p>在wp后台新建一个页面，在“页面属性”-“模版”一栏中选择“网站认证”。页面的标题可以任意输入你想要的名字，例如“网站安全认证”；页面内容不用填，直接选择“发布”即可。</p>
+<h5>4 wordpress页面侧面小工具栏的设置</h5>
+<p>进入wordpress后台，然后如下图所示设置小工具栏就行了，当然你还可以自定义。</p>
+<p><img alt="主题vfhky右侧栏小工具设置" src="https://dn-vfhky.qbox.me/2014/02/wordpress_sidertool.png" title="主题vfhky右侧栏小工具设置" /></p>
+<h5>5 安装后续</h5>
+<p>此次主题vfhky 1.0是博主直接拿自己现在在用的代码提交的，所以有很多程序文件存在https://typecodes.com，大家可以直接替换掉。因此此次版本适合有PHP基础的童鞋使用，在下面的版本更新中，博主再封装完善下。</p>
+<h5>6 问题探讨</h5>
+<p>三种途径：博客自带的谷歌搜索；如果是安装过程出现问题，请加Q群：24385396；如果是代码合并更新问题，请直接提交一个pull request。</p>
+<h5>7 关于使用腾讯开放平台API接口</h5>
+<p>博主已经完成了腾讯所有API接口的调用封装（vfhky.QC.class.php），演示可以参考<a href="https://typecodes.com/web/qqapifollowweibo.html" title="上线第一个腾讯开放平台的API应用：收听微博用户（Beta版）">《上线第一个腾讯开放平台的API应用：收听微博用户（Beta版）》</a>。大家可以参考wpwplogin1.php文件中的调用方法，可以通过腾讯的API接口把博客中的信息推送到腾讯微博或者腾讯空间等等功能。</p>
+<h5>8 最后等你在github</h5>
+<p>为了主题vfhky能更加完善，请大家多多fork。等你在github！</p>
+		    	<p class="tags">
+					<div class="post-share">
+						<ul class="post-shareul clearfix">
+							<li class="post-shareli">
+								<a href="http://note.youdao.com/memory/?url=https://typecodes.com/mix/postwpthemevfhky1.html&title=配置IIS出现错误的解决方法" class="post-sharea ydshare" target="_blank" rel="nofollow">有道云笔记</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://v.t.sina.com.cn/share/share.php?url=https://typecodes.com/mix/postwpthemevfhky1.html&title=配置IIS出现错误的解决方法&source=https://typecodes.com" class="post-sharea wbshare" target="_blank" rel="nofollow">新浪微博</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://v.t.qq.com/share/share.php?title=配置IIS出现错误的解决方法&url=https://typecodes.com/mix/postwpthemevfhky1.html&site=https://typecodes.com" class="post-sharea twbshare" target="_blank" rel="nofollow">腾讯微博</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=https://typecodes.com/mix/postwpthemevfhky1.html&title=配置IIS出现错误的解决方法&content='utf-8'" class="post-sharea qzoneshare" target="_blank" rel="nofollow">QZone</a>
+							</li>
+						</ul>
+					</div>
+					<div>
+						Tags: <a href="https://typecodes.com/tag/bo-ke-cheng-chang-lu.html">博客成长录</a>,<a href="https://typecodes.com/tag/zhu-ti-vfhky.html">主题vfhky</a>					</div>
+				</p>
+			</article>
+			
+			<div id="comments">
+				<h4 class="num">Comments &raquo;</h4>
+		    	<div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript></div>
+		    </div>
+		</div>
+		<!--3. right sider begin-->
+<div class="col-md-3" id="blog-secondary" role="complementary">
+	<section class="widget">
+		<ul class="widget-list">
+			<form id="search" method="get" action="https://typecodes.com/search.html">
+				<input type="text" name="q" id="s" size="20" x-webkit-speech="" x-webkit-grammar="builtin:search" onwebkitspeechchange="this.value = this.value.replace(this.defaultValue, '')" value="Google...." onfocus="this.value = (this.value == this.defaultValue) ? '' : this.value" onblur="this.value = (this.value == '') ? this.defaultValue : this.value">
+			</form>
+		</ul>
+	</section>
+	<section class="widget">
+		<h3 class="widget-title">Categories</h3>
+		<ul class="widget-list">
+		      <li class="current">
+		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (26)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/csharp/index.html">Csharp</a> (6)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/database/index.html">Database</a> (11)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/java/index.html">Java</a> (1)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/linux/index.html">Linux</a> (16)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/mix/index.html">Mix</a> (53)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/web/index.html">Web</a> (88)
+		      </li>
+		</ul>
+	</section>
+	<section class="widget">
+		<h3 class="widget-title">Recent Posts</h3>
+		<ul class="widget-list">
+			<li class="post">
+				<a href="https://typecodes.com/mix/sucesstypechotopelican.html">成功将博客从Typecho迁移到Pelican</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/mix/begintypechotopelican.html">准备将博客从Typecho迁移到Pelican</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/tcpconnectiontimedout.html">Linux TCP连接Connection Refused和Connection timed out的问题</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/mysqlerrornospace.html">博客MySQL服务惊魂记：Linux磁盘空间不足(Core Dump文件引爆)</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/mix/synweibophpmarkdownimgurl.html">升级博客文章同步微博的插件：PHP正则提取Markdown的图片地址</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/cppgeneralmakefile.html">Linux C/C++工程中可生成ELF、动/静态库文件的通用Makefile</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/libraryundefinedref.html">解决make编译链接动态库错误：libxx.so: undefined reference to xx</a>
+			</li>
+		</ul>
+	</section>
+	<section class="widget widget-feed">
+		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
+	</section>
+</div>
+				</div>
+			</div>
+		</div>
+		<!--4. bottom begin-->
+		<footer id="te-site-footer"><div class="container">
+	<div class="row" role="contentinfo">
+		<section class="col-md-2 col-md-offset-1">
+			<h3>Links</h3>
+			<ul><li><a href="http://diaosbook.com/" title="">diaosbook</a></li></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul>
+				<li><a href="https://typecodes.com/links.html">More..</a></li>
+			</ul>
+		</section>
+		<section class="col-md-2">
+			<h3>Following</h3>
+			<ul>
+				<li><a href="https://github.com/vfhky" class="following github" target="_blank" rel="external nofollow">GitHub</a></li>
+				<li><a href="http://weibo.com/typecodes" class="following weibo" target="_blank" rel="external nofollow">Weibo</a></li>
+				<li><a href="http://vfhky.sinaapp.com/" class="following sae" target="_blank" rel="external nofollow">SAE</a></li>
+				<li><a href="http://www.dwz.cn/mYiwa" class="following qqgroup" target="_blank" rel="external nofollow">Group</a></li>
+			</ul>
+		</section>
+		<div class="col-md-12 copyright">
+			<a href="#top"><i class="i-logo-s">TOP</i></a>
+			<p>
+				&copy; 2012-<script language="JavaScript">var date = new Date(); document.write(date.getFullYear());</script>							<a href="https://typecodes.com">TypeCodes</a>. All Rights Reserved<br>Powered by <a href="http://getpelican.com" rel="external" target="_blank">Pelican</a>. <a href="http://www.miitbeian.gov.cn/" rel="external nofollow" target="_blank">粤ICP备14050695号</a>
+			</p>
+		</div>
+	</div>
+</div>
+</footer>
+<script type="text/javascript">
+	var disqus_shortname = 'typecodes';
+	var disqus_identifier = '/mix/postwpthemevfhky1.html';
+	var disqus_url = 'https://typecodes.com/mix/postwpthemevfhky1.html';
+	var disqus_title = '配置IIS出现错误的解决方法';
+	(function() {
+		var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+		dsq.src = "//" + disqus_shortname + '.disqus.com/embed.js';
+		(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	 })();
+</script>
+	</body>
+</html>

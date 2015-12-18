@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="zh-CN" class="no-js">
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<title>TypeCodes</title>
+		<meta name="author" content="vfhky">
+  		<link href="https://typecodes.com/atom.xml" type="application/atom+xml" rel="alternate" title="TypeCodes Atom Feed" />
+	  	<link href="https://typecodes.com/feed.xml" type="application/rss+xml" rel="alternate" title="TypeCodes RSS Feed" />
+		<meta name="HandheldFriendly" content="True">
+		<meta name="MobileOptimized" content="320">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="renderer" content="webkit">
+		<link rel="stylesheet" href="https://dn-vfhky.qbox.me/libs/css/pelican-vfhky.css">
+		<script>
+			var _hmt = _hmt || [];
+			(function() {
+			  var hm = document.createElement("script");
+			  hm.src = "//hm.baidu.com/hm.js?c15c4ab8e91ba9ac3d5a12293cc93359";
+			  var s = document.getElementsByTagName("script")[0]; 
+			  s.parentNode.insertBefore(hm, s);
+			})();
+		</script>
+	</head>
+	<body style>
+		<!--1. header navigation begin-->
+		<header role="banner" id="te-site-header">
+			<div class="container">
+				<a href="https://typecodes.com" class="te-site-logo" role="logo" target="_self"> TypeCodes</a>
+				<ul class="nav nav-pills" id="te-site-nav" role="navigation">
+					<li><a href="https://typecodes.com">Home</a></li><li><a href="https://typecodes.com/archives.html" title="Archives">Archives</a></li><li><a href="https://typecodes.com/about.html" title="About">About</a></li></ul>
+			</div>
+		</header>
+		<div class="te-headline">
+			<div class="container">
+				<h2 class="te-headline-title"> <a href="https://typecodes.com">TypeCodes</a></h2>
+			</div>
+		</div>
+		<div class="container">
+			<div class="row">
+		<!--2. left sider begin-->
+		<div class="col-md-9" id="blog-main" role="main">
+		  	<!--article recycle-->
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/web/wpcleanheaderfile.html">配置IIS出现错误的解决方法</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2012-12-13 00:58 | 分类：<a href="https://typecodes.com/web/index.html">web</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>前几天跟sparrowwei聊天，讨论博客空间访问速度的问题。一经比较，发觉自己的博客一些程序文件存在很多冗余信息，这些影响了博客的加载速度。遂下决心，彻底整理下博客，提高访问速度，于是开启了博客优化第二波进程。现将整个清理过程记录如下（主要还是头部文件的清理，产生这些冗余信息的是wp_head()函数）：</p>
+<h5>（一）选择sinaapp的jQuery库，合并JS文件</h5>
+
+	<p class="more"><a href="https://typecodes.com/web/wpcleanheaderfile.html" title="配置IIS出现错误的解决方法">- 阅读剩余部分 -</a></p>
+			</article>
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/web/wpmathverifycode.html">博客优化第二波(三)：wordpress评论添加算术验证码</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2012-12-12 16:17 | 分类：<a href="https://typecodes.com/web/index.html">web</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>虽然说前面通过前面通过采用<a href="https://typecodes.com/web/antiwpspamplugorno.html" title="屏蔽wordpress垃圾评论的方法（插件和非插件）">《屏蔽wordpress垃圾评论的方法（插件和非插件）》</a>的方法来拦截那些spam，效果非常不错。但是博主对这些垃圾评论不会直接删除，而是先经过非插件方法：Anti-Spam程序的处理，自动把他们列入黑名单，然后在wp后台手动删除。每天都要删半箩筐的垃圾评论，蛋疼不已。</p>
+
+	<p class="more"><a href="https://typecodes.com/web/wpmathverifycode.html" title="博客优化第二波(三)：wordpress评论添加算术验证码">- 阅读剩余部分 -</a></p>
+			</article>
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/web/wpcommentfacepicpath.html">博客优化第二波(二)：wordpress评论表情图片路径修改的两种方法</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2012-12-12 15:29 | 分类：<a href="https://typecodes.com/web/index.html">web</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>wordpress评论框上的22个表情的图片默认是放在wp-include/images/smilies路径中的，这样做的好处是能够比较快的读取图片，安全性也好；缺点是每次遇到wp程序升级，你精心设计的这22个表情图标（BZ设计了两套表情图标，<a href="http://pan.baidu.com/share/link?shareid=78704&amp;uk=1879910561" title="wordpress表情包">点击下载</a>）就会被覆盖成wp默认的那些图标，所以我想把它整到博客的主题images/smilies/中去。具体步骤如下：</p>
+<h5>（一）获取smiley.php文件</h5>
+
+	<p class="more"><a href="https://typecodes.com/web/wpcommentfacepicpath.html" title="博客优化第二波(二)：wordpress评论表情图片路径修改的两种方法">- 阅读剩余部分 -</a></p>
+			</article>
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/web/googlecustbaidusearch.html">博客优化第二波(一)：同时使用谷歌自定义搜索和百度站内搜索</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2012-12-11 23:33 | 分类：<a href="https://typecodes.com/web/index.html">web</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>之前我写过一篇关于谷歌自定义搜索的文章：<a href="https://typecodes.com/web/googlecustomsearch.html" title="查看原文">《如何把自己的站内搜索改用强大的谷歌搜索》</a>。使用自定义的谷歌搜索引擎，完全满足任何一个站点的搜索，更何况是区区一个wordpress程序。某大会召开之前，谷歌.HK还是可以用的，而且借助谷歌goagent和Proxy SwitchySharp插件，博客的站内搜索体验效果还不错。之后，.HK果断给Qiang了……</p>
+
+	<p class="more"><a href="https://typecodes.com/web/googlecustbaidusearch.html" title="博客优化第二波(一)：同时使用谷歌自定义搜索和百度站内搜索">- 阅读剩余部分 -</a></p>
+			</article>
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/mix/acerrestorefactorysystwo.html">宏碁笔记本恢复出厂系统记（二）</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2012-12-06 02:10 | 分类：<a href="https://typecodes.com/mix/index.html">mix</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>在<a href="https://typecodes.com/mix/acerrestorefactorysysone.html" title="查看原文">《宏碁笔记本恢复出厂系统记（一）》</a>一文中，记述了我的宏碁Aspire 4752G在用“ALT+F10”恢复出厂系统无效（因为该出厂系统被我损坏了）的情况下自己用宏碁官方的原镜像文件自己制作一个恢复系统，那么这篇文章就是具体的方法，需要准备的工具有：</p>
+<div class="highlight"><pre>AcronisDiskDirector或者DiskGenius分区工具
+Acer官方系统镜像（recovery1.iso，recovery2.iso，recovery3.iso，recovery4.iso。下载完后要用MD5校验软件进行校验，以确定镜像的完整性）
+Bootice启动制作工具
+ACER.rar宏碁的系统的启动文件
+</pre></div>
+
+
+
+	<p class="more"><a href="https://typecodes.com/mix/acerrestorefactorysystwo.html" title="宏碁笔记本恢复出厂系统记（二）">- 阅读剩余部分 -</a></p>
+			</article>
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/mix/acerrestorefactorysysone.html">宏碁笔记本恢复出厂系统记（一）</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2012-12-06 01:40 | 分类：<a href="https://typecodes.com/mix/index.html">mix</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>这篇文章是整个事件的记叙，如果想直接找安装教程，请到<a href="https://typecodes.com/mix/acerrestorefactorysystwo.html" title="查看原文">《宏碁笔记本恢复出厂系统记（二）》</a>中查看，适用于Acer Aspire 4752G/4750G等。</p>
+<p>在笔记本刚买回来的时候，硬盘大小为750G，系统默认划分了14G隐藏的系统恢复分区（当开机按F10+ALT的时候，就是利用这个隐藏分区来恢复出厂系统的），然后C盘设置了34G，其余都给我分成了4个逻辑分区。开始用着的时候觉得C盘空间挺足的，但随着各种软件的安装(除了一些杀毒软件、Office和输入法等最基本的软件安装到了C盘外，其余的都装到了D盘软件区)，使得C盘只有2-3G的使用空间了。要扩大空间的话，只能重新划分硬盘，系统也就没了。。。。所以只能忍了。于是每次电脑有点卡的时候果断上C盘寻找要Kill的目标，就这样凑活用着。俗话说：“夜路走多了总会遇到某某”，果不其然，前天下午在C盘删了一些文件，悲了个催的，系统就不能正常启动了……</p>
+
+	<p class="more"><a href="https://typecodes.com/mix/acerrestorefactorysysone.html" title="宏碁笔记本恢复出厂系统记（一）">- 阅读剩余部分 -</a></p>
+			</article>
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/cseries/datastructsortingcollect.html">C/C++数据结构与算法之排序法汇总</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2012-11-30 17:53 | 分类：<a href="https://typecodes.com/cseries/index.html">cseries</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>数据结构与算法之各种排序法汇总——数据结构与算法是软件工程必修课程，也是找软件方面工作必先学习的知识。几乎每次笔试一些软件公司都会碰到关于算法方面的题目。</p>
+
+	<p class="more"><a href="https://typecodes.com/cseries/datastructsortingcollect.html" title="C/C++数据结构与算法之排序法汇总">- 阅读剩余部分 -</a></p>
+			</article>
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/web/wpgravatarcache.html">WordPress中Gravatar头像缓存至本地服务器——暨博客优化实录</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2012-11-27 00:45 | 分类：<a href="https://typecodes.com/web/index.html">web</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>从11月24开始，博客开始进行优化。一来是博客的服务器不是很好，访问速度比较慢；二来，个人越来越倾向简洁、实用、便捷的博客主题。之前博客的界面有些地方比较繁复，比如右侧栏有两处同时实现类似“最新评论”的功能；另外，博客首页的图片过多，像右侧栏的粉丝墙和最新评论中的头像每次打开博客都需要从gravatar.com下载头像到本地的服务器，加长了响应速度，这点对用户的体验造成了很大的影响。所以，这次的优化主要就是针对这两个方面进行的。</p>
+
+	<p class="more"><a href="https://typecodes.com/web/wpgravatarcache.html" title="WordPress中Gravatar头像缓存至本地服务器——暨博客优化实录">- 阅读剩余部分 -</a></p>
+			</article>
+		  	<!--page navigation-->
+<ol class="page-navigator">
+<li class="prev"><a href="https://typecodes.com/index18.html">&laquo; 前一页</a></li><li><a href="https://typecodes.com/index.html">1</a>
+       <li><a href="https://typecodes.com/index2.html">2</a>
+       		</li><li><span>...</span></li><li><a href="https://typecodes.com/index17.html">17</a>
+       		</li><li><a href="https://typecodes.com/index18.html">18</a>
+       		</li><li class="current"><a href="https://typecodes.com/index19.html">19</a>
+       		</li><li><a href="https://typecodes.com/index20.html">20</a>
+       		</li><li><span>...</span></li><li><a href="https://typecodes.com/index25.html">25</a>
+       		</li><li><a href="https://typecodes.com/index26.html">26</a>
+       		</li><li class="next">
+       		<a href="https://typecodes.com/index20.html">后一页 &raquo;</a>
+       </li></ol>		</div>
+		<!--3. right sider begin-->
+<div class="col-md-3" id="blog-secondary" role="complementary">
+	<section class="widget">
+		<ul class="widget-list">
+			<form id="search" method="get" action="https://typecodes.com/search.html">
+				<input type="text" name="q" id="s" size="20" x-webkit-speech="" x-webkit-grammar="builtin:search" onwebkitspeechchange="this.value = this.value.replace(this.defaultValue, '')" value="Google...." onfocus="this.value = (this.value == this.defaultValue) ? '' : this.value" onblur="this.value = (this.value == '') ? this.defaultValue : this.value">
+			</form>
+		</ul>
+	</section>
+	<section class="widget">
+		<h3 class="widget-title">Categories</h3>
+		<ul class="widget-list">
+		      <li class="current">
+		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (26)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/csharp/index.html">Csharp</a> (6)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/database/index.html">Database</a> (11)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/java/index.html">Java</a> (1)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/linux/index.html">Linux</a> (16)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/mix/index.html">Mix</a> (53)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/web/index.html">Web</a> (88)
+		      </li>
+		</ul>
+	</section>
+	<section class="widget">
+		<h3 class="widget-title">Recent Posts</h3>
+		<ul class="widget-list">
+			<li class="post">
+				<a href="https://typecodes.com/mix/sucesstypechotopelican.html">成功将博客从Typecho迁移到Pelican</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/mix/begintypechotopelican.html">准备将博客从Typecho迁移到Pelican</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/tcpconnectiontimedout.html">Linux TCP连接Connection Refused和Connection timed out的问题</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/mysqlerrornospace.html">博客MySQL服务惊魂记：Linux磁盘空间不足(Core Dump文件引爆)</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/mix/synweibophpmarkdownimgurl.html">升级博客文章同步微博的插件：PHP正则提取Markdown的图片地址</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/cppgeneralmakefile.html">Linux C/C++工程中可生成ELF、动/静态库文件的通用Makefile</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/libraryundefinedref.html">解决make编译链接动态库错误：libxx.so: undefined reference to xx</a>
+			</li>
+		</ul>
+	</section>
+	<section class="widget widget-feed">
+		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
+	</section>
+</div>
+				</div>
+			</div>
+		</div>
+		<!--4. bottom begin-->
+		<footer id="te-site-footer"><div class="container">
+	<div class="row" role="contentinfo">
+		<section class="col-md-2 col-md-offset-1">
+			<h3>Links</h3>
+			<ul><li><a href="http://diaosbook.com/" title="">diaosbook</a></li></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul>
+				<li><a href="https://typecodes.com/links.html">More..</a></li>
+			</ul>
+		</section>
+		<section class="col-md-2">
+			<h3>Following</h3>
+			<ul>
+				<li><a href="https://github.com/vfhky" class="following github" target="_blank" rel="external nofollow">GitHub</a></li>
+				<li><a href="http://weibo.com/typecodes" class="following weibo" target="_blank" rel="external nofollow">Weibo</a></li>
+				<li><a href="http://vfhky.sinaapp.com/" class="following sae" target="_blank" rel="external nofollow">SAE</a></li>
+				<li><a href="http://www.dwz.cn/mYiwa" class="following qqgroup" target="_blank" rel="external nofollow">Group</a></li>
+			</ul>
+		</section>
+		<div class="col-md-12 copyright">
+			<a href="#top"><i class="i-logo-s">TOP</i></a>
+			<p>
+				&copy; 2012-<script language="JavaScript">var date = new Date(); document.write(date.getFullYear());</script>							<a href="https://typecodes.com">TypeCodes</a>. All Rights Reserved<br>Powered by <a href="http://getpelican.com" rel="external" target="_blank">Pelican</a>. <a href="http://www.miitbeian.gov.cn/" rel="external nofollow" target="_blank">粤ICP备14050695号</a>
+			</p>
+		</div>
+	</div>
+</div>
+</footer>
+<script type="text/javascript">
+	var disqus_shortname = 'typecodes';
+	(function() {
+		var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+		dsq.src = "//" + disqus_shortname + '.disqus.com/embed.js';
+		(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	 })();
+</script>
+	</body>
+</html>

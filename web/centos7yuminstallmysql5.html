@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="zh-CN" class="no-js">
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<title>阿里云CentOS 7.1使用yum安装MySql5.6.24 &mdash; TypeCodes</title>
+		<meta name="author" content="vfhky">
+  		<link href="https://typecodes.com/atom.xml" type="application/atom+xml" rel="alternate" title="TypeCodes Atom Feed" />
+	  	<link href="https://typecodes.com/feed.xml" type="application/rss+xml" rel="alternate" title="TypeCodes RSS Feed" />
+		<meta name="HandheldFriendly" content="True">
+		<meta name="MobileOptimized" content="320">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="renderer" content="webkit">
+		<link rel="stylesheet" href="https://dn-vfhky.qbox.me/libs/css/pelican-vfhky.css">
+		<script>
+			var _hmt = _hmt || [];
+			(function() {
+			  var hm = document.createElement("script");
+			  hm.src = "//hm.baidu.com/hm.js?c15c4ab8e91ba9ac3d5a12293cc93359";
+			  var s = document.getElementsByTagName("script")[0]; 
+			  s.parentNode.insertBefore(hm, s);
+			})();
+		</script>
+	</head>
+	<body style>
+		<!--1. header navigation begin-->
+		<header role="banner" id="te-site-header">
+			<div class="container">
+				<a href="https://typecodes.com" class="te-site-logo" role="logo" target="_self"> TypeCodes</a>
+				<ul class="nav nav-pills" id="te-site-nav" role="navigation">
+					<li><a href="https://typecodes.com">Home</a></li><li><a href="https://typecodes.com/archives.html" title="Archives">Archives</a></li><li><a href="https://typecodes.com/about.html" title="About">About</a></li></ul>
+			</div>
+		</header>
+		<div class="te-headline">
+			<div class="container">
+				<h2 class="te-headline-title"> <a href="https://typecodes.com">TypeCodes</a></h2>
+			</div>
+		</div>
+		<div class="container">
+			<div class="row">
+		<!--2. left sider begin-->
+		<div class="col-md-9" id="blog-main" role="main">
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/web/centos7yuminstallmysql5.html">阿里云CentOS 7.1使用yum安装MySql5.6.24</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2015-06-25 09:43 | 分类：<a href="https://typecodes.com/web/index.html">web</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>在前面两篇文章<a href="https://typecodes.com/web/centos7compilemysql.html" title="查看原文">《2015博客升级记(四)：CentOS 7.1编译安装MySQL5.7.7rc》</a>和<a href="https://typecodes.com/web/centos7compilemysql5.html" title="查看原文">《阿里云CentOS 7.1编译安装MySql5.6.24》</a>中，都是采用编译MySQL源码的方式安装的，过程相对比较复杂。所以，这篇文章演示如何使用yum的方式安装MySql5.6.24。</p>
+
+
+<h5>1 常规错误的yum安装方法：</h5>
+<p>在<a href="https://typecodes.com/web/aliyuncentos6creatlnmp.html" title="《阿里云CentOS 6.5搭建LNMP环境（非一键脚本）》">前文</a>中记述了CentOS 6.5系统中通过yum方式快速地搭建了LNMP环境，那么是否也能在CentOS 7或CentOS 7.1系统中依葫芦画瓢安装MySql5.6.24呢？答案是否定的。</p>
+<div class="highlight"><pre>[root@typecodes ~]# yum -y install mysql mysql-server mysql-devel
+.....................。
+....省略部分安装过程....
+.....................。
+
+Installed:
+  mariadb.x86_64 1:5.5.41-2.el7_0                                                 mariadb-devel.x86_64 1:5.5.41-2.el7_0
+
+Dependency Installed:
+  keyutils-libs-devel.x86_64 0:1.5.8-3.el7    krb5-devel.x86_64 0:1.12.2-14.el7      libcom_err-devel.x86_64 0:1.42.9-7.el7    libselinux-devel.x86_64 0:2.2.2-6.el7   
+  libsepol-devel.x86_64 0:2.1.9-3.el7         libverto-devel.x86_64 0:0.2.5-4.el7    openssl-devel.x86_64 1:1.0.1e-42.el7.4    pcre-devel.x86_64 0:8.32-14.el7         
+  zlib-devel.x86_64 0:1.2.7-13.el7
+
+Complete!
+</pre></div>
+
+
+<p>从上面的安装结果可以看出，没有安装mysql数据库，而是安装了mariadb数据！因为在CentOS 7和CentOS 7.1系统中，默认安装的mysql是它的分支mariadb。这里引用下百度百科关于mariadb的描述：</p>
+<div class="highlight"><pre>MariaDB数据库管理系统是MySQL的一个分支，主要由开源社区在维护，采用GPL授权许可 MariaDB的目的是完全兼容MySQL，包括API和命令行，使之能轻松成为MySQL的代替品。
+</pre></div>
+
+
+<p>因此，下面这些正常的MySQL操作都是无效的：</p>
+<div class="highlight"><pre>#######无法把mysql服务加入系统启动
+[root@typecodes ~]# chkconfig mysqld on
+error reading information on service mysqld: No such file or directory
+#######启动不了mysql
+[root@typecodes ~]# service mysqld start
+Redirecting to /bin/systemctl start  mysqld.service
+Failed to issue method call: Unit mysqld.service failed to load: No such file or directory.
+#######没有安装mysql相关包
+[root@typecodes ~]# rpm -qa |grep mysql
+php-mysql-5.4.16-23.el7_0.3.x86_64
+[root@typecodes ~]#
+</pre></div>
+
+
+<h5>2 正确的安装方法：</h5>
+<p>众所周知，Linux系统自带的repo是不会自动更新每个软件的最新版本（基本都是比较靠后的稳定版），所以无法通过yum方式安装MySQL的高级版本。所以我们需要先安装带有当前可用的mysql5系列社区版资源的rpm包。</p>
+<div class="highlight"><pre>#######安装rpm包
+[root@typecodes ~]# rpm -Uvh http://dev.mysql.com/get/mysql-community-release-el7-5.noarch.rpm
+Retrieving http://dev.mysql.com/get/mysql-community-release-el7-5.noarch.rpm
+Preparing...                          ################################# [100%]
+Updating / installing...
+   1:mysql-community-release-el7-5    ################################# [100%]
+</pre></div>
+
+
+<p>这时查看当前可用的mysql安装资源：</p>
+<div class="highlight"><pre>[root@typecodes ~]# yum repolist enabled | grep &quot;mysql.*-community.*&quot;
+mysql-connectors-community/x86_64 MySQL Connectors Community                 14
+mysql-tools-community/x86_64      MySQL Tools Community                      17
+mysql56-community/x86_64          MySQL 5.6 Community Server                139
+</pre></div>
+
+
+<p>从上面的列表可以看出，<code>mysql56-community/x86_64</code>和<code>MySQL 5.6 Community Server</code>可以使用。</p>
+<p>因此，我们就可以直接用yum方式安装了MySQL5.6版本了。</p>
+<div class="highlight"><pre>[root@typecodes ~]# yum -y install mysql-community-server
+Loaded plugins: axelget, langpacks
+No metadata available for base
+No metadata available for epel
+No metadata available for extras
+(Failed to load module fastestmirror: No module named fastestmirror)
+repomd.xml                                                                                                                                      | 2.5 kB  00:00:00     
+update mysql-connectors-community metadata successfully
+(Failed to load module fastestmirror: No module named fastestmirror)
+repomd.xml                                                                                                                                      | 2.5 kB  00:00:00     
+update mysql-tools-community metadata successfully
+(Failed to load module fastestmirror: No module named fastestmirror)
+repomd.xml                                                                                                                                      | 2.5 kB  00:00:00     
+update mysql56-community metadata successfully
+No metadata available for updates
+mysql-connectors-community                                                                                                                      | 2.5 kB  00:00:00     
+mysql-tools-community                                                                                                                           | 2.5 kB  00:00:00     
+mysql56-community                                                                                                                               | 2.5 kB  00:00:00     
+(1/3): mysql-connectors-community/x86_64/primary_db                                                                                             | 7.3 kB  00:00:00     
+(2/3): mysql56-community/x86_64/primary_db                                                                                                      |  83 kB  00:00:01     
+mysql-tools-community/x86_64/p FAILED                                          ==============================================        ]  19 kB/s |  92 kB  00:00:00 ETA 
+http://repo.mysql.com/yum/mysql-tools-community/el/7/x86_64/repodata/3301d2eb425f300dec5a46c4201d08f2cf9232a6-primary.sqlite.bz2: [Errno 12] Timeout on http://repo.mysql.com/yum/mysql-tools-community/el/7/x86_64/repodata/3301d2eb425f300dec5a46c4201d08f2cf9232a6-primary.sqlite.bz2: (28, &#39;Operation too slow. Less than 1000 bytes/sec transferred the last 3 seconds&#39;)
+Trying other mirror.
+(3/3): mysql-tools-community/x86_64/primary_db                                                                                                  |  15 kB  00:00:00     
+Resolving Dependencies
+--&gt; Running transaction check
+---&gt; Package mysql-community-server.x86_64 0:5.6.24-3.el7 will be installed
+--&gt; Processing Dependency: mysql-community-common(x86-64) = 5.6.24-3.el7 for package: mysql-community-server-5.6.24-3.el7.x86_64
+--&gt; Processing Dependency: mysql-community-client(x86-64) = 5.6.24-3.el7 for package: mysql-community-server-5.6.24-3.el7.x86_64
+--&gt; Processing Dependency: perl(DBI) for package: mysql-community-server-5.6.24-3.el7.x86_64
+--&gt; Running transaction check
+---&gt; Package mariadb.x86_64 1:5.5.41-2.el7_0 will be obsoleted
+---&gt; Package mysql-community-client.x86_64 0:5.6.24-3.el7 will be obsoleting
+--&gt; Processing Dependency: mysql-community-libs(x86-64) = 5.6.24-3.el7 for package: mysql-community-client-5.6.24-3.el7.x86_64
+---&gt; Package mysql-community-common.x86_64 0:5.6.24-3.el7 will be installed
+---&gt; Package perl-DBI.x86_64 0:1.627-4.el7 will be installed
+--&gt; Processing Dependency: perl(RPC::PlServer) &gt;= 0.2001 for package: perl-DBI-1.627-4.el7.x86_64
+--&gt; Processing Dependency: perl(RPC::PlClient) &gt;= 0.2000 for package: perl-DBI-1.627-4.el7.x86_64
+--&gt; Running transaction check
+---&gt; Package mariadb-libs.x86_64 1:5.5.41-2.el7_0 will be obsoleted
+--&gt; Processing Dependency: mariadb-libs(x86-64) = 1:5.5.41-2.el7_0 for package: 1:mariadb-devel-5.5.41-2.el7_0.x86_64
+---&gt; Package mysql-community-libs.x86_64 0:5.6.24-3.el7 will be obsoleting
+---&gt; Package perl-PlRPC.noarch 0:0.2020-14.el7 will be installed
+--&gt; Processing Dependency: perl(Net::Daemon) &gt;= 0.13 for package: perl-PlRPC-0.2020-14.el7.noarch
+--&gt; Processing Dependency: perl(Net::Daemon::Test) for package: perl-PlRPC-0.2020-14.el7.noarch
+--&gt; Processing Dependency: perl(Net::Daemon::Log) for package: perl-PlRPC-0.2020-14.el7.noarch
+--&gt; Processing Dependency: perl(Compress::Zlib) for package: perl-PlRPC-0.2020-14.el7.noarch
+--&gt; Running transaction check
+---&gt; Package mariadb-devel.x86_64 1:5.5.41-2.el7_0 will be obsoleted
+---&gt; Package mysql-community-devel.x86_64 0:5.6.24-3.el7 will be obsoleting
+---&gt; Package perl-IO-Compress.noarch 0:2.061-2.el7 will be installed
+--&gt; Processing Dependency: perl(Compress::Raw::Zlib) &gt;= 2.061 for package: perl-IO-Compress-2.061-2.el7.noarch
+--&gt; Processing Dependency: perl(Compress::Raw::Bzip2) &gt;= 2.061 for package: perl-IO-Compress-2.061-2.el7.noarch
+---&gt; Package perl-Net-Daemon.noarch 0:0.48-5.el7 will be installed
+--&gt; Running transaction check
+---&gt; Package perl-Compress-Raw-Bzip2.x86_64 0:2.061-3.el7 will be installed
+---&gt; Package perl-Compress-Raw-Zlib.x86_64 1:2.061-4.el7 will be installed
+--&gt; Finished Dependency Resolution
+
+Dependencies Resolved
+
+=======================================================================================================================================================================
+ Package                                         Arch                           Version                                Repository                                 Size
+=======================================================================================================================================================================
+Installing:
+ mysql-community-client                          x86_64                         5.6.24-3.el7                           mysql56-community                          19 M
+     replacing  mariadb.x86_64 1:5.5.41-2.el7_0
+ mysql-community-devel                           x86_64                         5.6.24-3.el7                           mysql56-community                         3.4 M
+     replacing  mariadb-devel.x86_64 1:5.5.41-2.el7_0
+ mysql-community-libs                            x86_64                         5.6.24-3.el7                           mysql56-community                         2.0 M
+     replacing  mariadb-libs.x86_64 1:5.5.41-2.el7_0
+ mysql-community-server                          x86_64                         5.6.24-3.el7                           mysql56-community                          58 M
+Installing for dependencies:
+ mysql-community-common                          x86_64                         5.6.24-3.el7                           mysql56-community                         256 k
+ perl-Compress-Raw-Bzip2                         x86_64                         2.061-3.el7                            base                                       32 k
+ perl-Compress-Raw-Zlib                          x86_64                         1:2.061-4.el7                          base                                       57 k
+ perl-DBI                                        x86_64                         1.627-4.el7                            base                                      802 k
+ perl-IO-Compress                                noarch                         2.061-2.el7                            base                                      260 k
+ perl-Net-Daemon                                 noarch                         0.48-5.el7                             base                                       51 k
+ perl-PlRPC                                      noarch                         0.2020-14.el7                          base                                       36 k
+
+Transaction Summary
+=======================================================================================================================================================================
+Install  4 Packages (+7 Dependent packages)
+
+Total download size: 83 M
+Downloading packages:
+mysql-community-devel-5.6.24-3.el7.x86_64.rpm                                                                                                   | 3.4 MB  00:00:03     
+mysql-community-client-5.6.24-3.el7.x86_64.rpm                                                                                                  |  19 MB  00:00:05     
+mysql-community-server-5.6.24-3.el7.x86_64.rpm                                                                                                  |  58 MB  00:00:11     
+mysql-community-libs-5.6.24-3.el7.x86_64.rpm                                                                                                    | 2.0 MB  00:00:02     
+perl-DBI-1.627-4.el7.x86_64.rpm                                                                                                                 |    0 B  00:00:01 ... 
+perl-DBI-1.627-4.el7.x86_64.rpm                                                                                                                 | 802 kB  00:00:00     
+(1/6): perl-Compress-Raw-Zlib-2.061-4.el7.x86_64.rpm                                                                                            |  57 kB  00:00:00     
+(2/6): perl-Net-Daemon-0.48-5.el7.noarch.rpm                                                                                                    |  51 kB  00:00:00     
+(3/6): perl-PlRPC-0.2020-14.el7.noarch.rpm                                                                                                      |  36 kB  00:00:00     
+(4/6): perl-Compress-Raw-Bzip2-2.061-3.el7.x86_64.rpm                                                                                           |  32 kB  00:00:00     
+(5/6): perl-IO-Compress-2.061-2.el7.noarch.rpm                                                                                                  | 260 kB  00:00:00     
+warning: /var/cache/yum/x86_64/7/mysql56-community/packages/mysql-community-common-5.6.24-3.el7.x86_64.rpm: V3 DSA/SHA1 Signature, key ID 5072e1f5: NOKEY 00:00:01 ETA 
+Public key for mysql-community-common-5.6.24-3.el7.x86_64.rpm is not installed
+(6/6): mysql-community-common-5.6.24-3.el7.x86_64.rpm                                                                                           | 256 kB  00:00:01     
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Total                                                                                                                                  388 kB/s | 692 kB  00:00:01     
+Retrieving key from file:/etc/pki/rpm-gpg/RPM-GPG-KEY-mysql
+Importing GPG key 0x5072E1F5:
+ Userid     : &quot;MySQL Release Engineering &lt;mysql-build@oss.oracle.com&gt;&quot;
+ Fingerprint: a4a9 4068 76fc bd3c 4567 70c8 8c71 8d3b 5072 e1f5
+ Package    : mysql-community-release-el7-5.noarch (installed)
+ From       : file:/etc/pki/rpm-gpg/RPM-GPG-KEY-mysql
+Running transaction check
+Running transaction test
+Transaction test succeeded
+Running transaction
+Warning: RPMDB altered outside of yum.
+  Installing : mysql-community-common-5.6.24-3.el7.x86_64                                                                                                         1/14 
+  Installing : mysql-community-libs-5.6.24-3.el7.x86_64                                                                                                           2/14 
+  Installing : mysql-community-client-5.6.24-3.el7.x86_64                                                                                                         3/14 
+  Installing : perl-Net-Daemon-0.48-5.el7.noarch                                                                                                                  4/14 
+  Installing : 1:perl-Compress-Raw-Zlib-2.061-4.el7.x86_64                                                                                                        5/14 
+  Installing : perl-Compress-Raw-Bzip2-2.061-3.el7.x86_64                                                                                                         6/14 
+  Installing : perl-IO-Compress-2.061-2.el7.noarch                                                                                                                7/14 
+  Installing : perl-PlRPC-0.2020-14.el7.noarch                                                                                                                    8/14 
+  Installing : perl-DBI-1.627-4.el7.x86_64                                                                                                                        9/14 
+  Installing : mysql-community-server-5.6.24-3.el7.x86_64                                                                                                        10/14 
+  Installing : mysql-community-devel-5.6.24-3.el7.x86_64                                                                                                         11/14 
+  Erasing    : 1:mariadb-devel-5.5.41-2.el7_0.x86_64                                                                                                             12/14 
+  Erasing    : 1:mariadb-5.5.41-2.el7_0.x86_64                                                                                                                   13/14 
+  Erasing    : 1:mariadb-libs-5.5.41-2.el7_0.x86_64                                                                                                              14/14 
+  Verifying  : perl-Compress-Raw-Bzip2-2.061-3.el7.x86_64                                                                                                         1/14 
+  Verifying  : mysql-community-common-5.6.24-3.el7.x86_64                                                                                                         2/14 
+  Verifying  : mysql-community-devel-5.6.24-3.el7.x86_64                                                                                                          3/14 
+  Verifying  : mysql-community-client-5.6.24-3.el7.x86_64                                                                                                         4/14 
+  Verifying  : perl-PlRPC-0.2020-14.el7.noarch                                                                                                                    5/14 
+  Verifying  : mysql-community-server-5.6.24-3.el7.x86_64                                                                                                         6/14 
+  Verifying  : 1:perl-Compress-Raw-Zlib-2.061-4.el7.x86_64                                                                                                        7/14 
+  Verifying  : mysql-community-libs-5.6.24-3.el7.x86_64                                                                                                           8/14 
+  Verifying  : perl-Net-Daemon-0.48-5.el7.noarch                                                                                                                  9/14 
+  Verifying  : perl-DBI-1.627-4.el7.x86_64                                                                                                                       10/14 
+  Verifying  : perl-IO-Compress-2.061-2.el7.noarch                                                                                                               11/14 
+  Verifying  : 1:mariadb-5.5.41-2.el7_0.x86_64                                                                                                                   12/14 
+  Verifying  : 1:mariadb-devel-5.5.41-2.el7_0.x86_64                                                                                                             13/14 
+  Verifying  : 1:mariadb-libs-5.5.41-2.el7_0.x86_64                                                                                                              14/14
+
+Installed:
+  mysql-community-client.x86_64 0:5.6.24-3.el7            mysql-community-devel.x86_64 0:5.6.24-3.el7            mysql-community-libs.x86_64 0:5.6.24-3.el7           
+  mysql-community-server.x86_64 0:5.6.24-3.el7
+
+Dependency Installed:
+  mysql-community-common.x86_64 0:5.6.24-3.el7 perl-Compress-Raw-Bzip2.x86_64 0:2.061-3.el7 perl-Compress-Raw-Zlib.x86_64 1:2.061-4.el7 perl-DBI.x86_64 0:1.627-4.el7
+  perl-IO-Compress.noarch 0:2.061-2.el7        perl-Net-Daemon.noarch 0:0.48-5.el7          perl-PlRPC.noarch 0:0.2020-14.el7
+
+Replaced:
+  mariadb.x86_64 1:5.5.41-2.el7_0                    mariadb-devel.x86_64 1:5.5.41-2.el7_0                    mariadb-libs.x86_64 1:5.5.41-2.el7_0
+
+Complete!
+</pre></div>
+
+
+<h5>3 MySQL安装完成后，进行相关配置</h5>
+<p>安装完MySQL后，需要进行一些基础配置工作：</p>
+<div class="highlight"><pre><span class="err">#######安装成功后，将其加入开机启动</span>
+<span class="cp">[</span><span class="nx">root</span><span class="p">@</span><span class="nx">typecodes</span> <span class="err">~</span><span class="cp">]</span><span class="err">#</span> <span class="nt">systemctl</span> <span class="nt">enable</span> <span class="nt">mysqld</span>
+
+<span class="err">#######启动</span><span class="nt">mysql</span><span class="err">服务进程</span>
+<span class="cp">[</span><span class="nx">root</span><span class="p">@</span><span class="nx">typecodes</span> <span class="err">~</span><span class="cp">]</span><span class="err">#</span> <span class="nt">systemctl</span> <span class="nt">start</span> <span class="nt">mysqld</span>
+
+<span class="err">#######配置</span><span class="nt">mysql</span><span class="err">（设置密码等）</span>
+<span class="cp">[</span><span class="nx">root</span><span class="p">@</span><span class="nx">typecodes</span> <span class="err">~</span><span class="cp">]</span><span class="err">#</span> <span class="nt">mysql_secure_installation</span>
+
+<span class="nt">NOTE</span><span class="o">:</span> <span class="nt">RUNNING</span> <span class="nt">ALL</span> <span class="nt">PARTS</span> <span class="nt">OF</span> <span class="nt">THIS</span> <span class="nt">SCRIPT</span> <span class="nt">IS</span> <span class="nt">RECOMMENDED</span> <span class="nt">FOR</span> <span class="nt">ALL</span> <span class="nt">MySQL</span>
+      <span class="nt">SERVERS</span> <span class="nt">IN</span> <span class="nt">PRODUCTION</span> <span class="nt">USE</span><span class="o">!</span>  <span class="nt">PLEASE</span> <span class="nt">READ</span> <span class="nt">EACH</span> <span class="nt">STEP</span> <span class="nt">CAREFULLY</span><span class="o">!</span>
+
+<span class="nt">In</span> <span class="nt">order</span> <span class="nt">to</span> <span class="nt">log</span> <span class="nt">into</span> <span class="nt">MySQL</span> <span class="nt">to</span> <span class="nt">secure</span> <span class="nt">it</span><span class="o">,</span> <span class="nt">we</span><span class="s1">&#39;ll need the current</span>
+<span class="s1">password for the root user.  If you&#39;</span><span class="nt">ve</span> <span class="nt">just</span> <span class="nt">installed</span> <span class="nt">MySQL</span><span class="o">,</span> <span class="nt">and</span>
+<span class="nt">you</span> <span class="nt">haven</span><span class="s1">&#39;t set the root password yet, the password will be blank,</span>
+<span class="s1">so you should just press enter here.</span>
+
+<span class="s1">Enter current password for root (enter for none): </span>
+<span class="s1">OK, successfully used password, moving on...</span>
+
+<span class="s1">Setting the root password ensures that nobody can log into the MySQL</span>
+<span class="s1">root user without the proper authorisation.</span>
+
+<span class="s1">Set root password? </span><span class="cp">[</span><span class="nx">Y</span><span class="p">/</span><span class="nx">n</span><span class="cp">]</span><span class="s1"> y                  </span><span class="cp">[</span><span class="err">设置</span><span class="nx">root</span><span class="err">用户密码</span><span class="cp">]</span><span class="s1"></span>
+<span class="s1">New password: </span>
+<span class="s1">Re-enter new password: </span>
+<span class="s1">Password updated successfully!</span>
+<span class="s1">Reloading privilege tables..</span>
+<span class="s1"> ... Success!</span>
+
+
+<span class="s1">By default, a MySQL installation has an anonymous user, allowing anyone</span>
+<span class="s1">to log into MySQL without having to have a user account created for</span>
+<span class="s1">them.  This is intended only for testing, and to make the installation</span>
+<span class="s1">go a bit smoother.  You should remove them before moving into a</span>
+<span class="s1">production environment.</span>
+
+<span class="s1">Remove anonymous users? </span><span class="cp">[</span><span class="nx">Y</span><span class="p">/</span><span class="nx">n</span><span class="cp">]</span><span class="s1"> y                 </span><span class="cp">[</span><span class="err">删除匿名用户</span><span class="cp">]</span><span class="s1"></span>
+<span class="s1"> ... Success!</span>
+
+<span class="s1">Normally, root should only be allowed to connect from &#39;</span><span class="nt">localhost</span><span class="s1">&#39;.  This</span>
+<span class="s1">ensures that someone cannot guess at the root password from the network.</span>
+
+<span class="s1">Disallow root login remotely? </span><span class="cp">[</span><span class="nx">Y</span><span class="p">/</span><span class="nx">n</span><span class="cp">]</span><span class="s1"> y       </span><span class="cp">[</span><span class="err">禁止</span><span class="nx">root</span><span class="err">远程登录</span><span class="cp">]</span><span class="s1"></span>
+<span class="s1"> ... Success!</span>
+
+<span class="s1">By default, MySQL comes with a database named &#39;</span><span class="nt">test</span><span class="s1">&#39; that anyone can</span>
+<span class="s1">access.  This is also intended only for testing, and should be removed</span>
+<span class="s1">before moving into a production environment.</span>
+
+<span class="s1">Remove test database and access to it? </span><span class="cp">[</span><span class="nx">Y</span><span class="p">/</span><span class="nx">n</span><span class="cp">]</span><span class="s1"> y          </span><span class="cp">[</span><span class="err">删除</span><span class="nx">test</span><span class="err">数据库</span><span class="cp">]</span><span class="s1"></span>
+<span class="s1"> - Dropping test database...</span>
+<span class="s1">ERROR 1008 (HY000) at line 1: Can&#39;</span><span class="nt">t</span> <span class="nt">drop</span> <span class="nt">database</span> <span class="s1">&#39;test&#39;</span><span class="o">;</span> <span class="nt">database</span> <span class="nt">doesn</span><span class="s1">&#39;t exist</span>
+<span class="s1"> ... Failed!  Not critical, keep moving...</span>
+<span class="s1"> - Removing privileges on test database...</span>
+<span class="s1"> ... Success!</span>
+
+<span class="s1">Reloading the privilege tables will ensure that all changes made so far</span>
+<span class="s1">will take effect immediately.</span>
+
+<span class="s1">Reload privilege tables now? </span><span class="cp">[</span><span class="nx">Y</span><span class="p">/</span><span class="nx">n</span><span class="cp">]</span><span class="s1"> y            </span><span class="cp">[</span><span class="err">刷新权限</span><span class="cp">]</span><span class="s1"></span>
+<span class="s1"> ... Success!</span>
+
+
+
+
+<span class="s1">All done!  If you&#39;</span><span class="nt">ve</span> <span class="nt">completed</span> <span class="nt">all</span> <span class="nt">of</span> <span class="nt">the</span> <span class="nt">above</span> <span class="nt">steps</span><span class="o">,</span> <span class="nt">your</span> <span class="nt">MySQL</span>
+<span class="nt">installation</span> <span class="nt">should</span> <span class="nt">now</span> <span class="nt">be</span> <span class="nt">secure</span><span class="o">.</span>
+
+<span class="nt">Thanks</span> <span class="nt">for</span> <span class="nt">using</span> <span class="nt">MySQL</span><span class="o">!</span>
+
+
+<span class="nt">Cleaning</span> <span class="nt">up</span><span class="o">...</span>
+</pre></div>
+
+
+<h5>4 其它说明</h5>
+<p>至于其它诸如使用root用户创建其它mysql用户或者导入sql文件到数据库中的操作，这里就不说了，可以参考前面的两篇文章。</p>
+		    	<p class="tags">
+					<div class="post-share">
+						<ul class="post-shareul clearfix">
+							<li class="post-shareli">
+								<a href="http://note.youdao.com/memory/?url=https://typecodes.com/web/centos7yuminstallmysql5.html&title=阿里云CentOS 7.1使用yum安装MySql5.6.24" class="post-sharea ydshare" target="_blank" rel="nofollow">有道云笔记</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://v.t.sina.com.cn/share/share.php?url=https://typecodes.com/web/centos7yuminstallmysql5.html&title=阿里云CentOS 7.1使用yum安装MySql5.6.24&source=https://typecodes.com" class="post-sharea wbshare" target="_blank" rel="nofollow">新浪微博</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://v.t.qq.com/share/share.php?title=阿里云CentOS 7.1使用yum安装MySql5.6.24&url=https://typecodes.com/web/centos7yuminstallmysql5.html&site=https://typecodes.com" class="post-sharea twbshare" target="_blank" rel="nofollow">腾讯微博</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=https://typecodes.com/web/centos7yuminstallmysql5.html&title=阿里云CentOS 7.1使用yum安装MySql5.6.24&content='utf-8'" class="post-sharea qzoneshare" target="_blank" rel="nofollow">QZone</a>
+							</li>
+						</ul>
+					</div>
+					<div>
+						Tags: <a href="https://typecodes.com/tag/bo-ke-cheng-chang-lu.html">博客成长录</a>,<a href="https://typecodes.com/tag/mysql.html">mysql</a>					</div>
+				</p>
+			</article>
+			
+			<div id="comments">
+				<h4 class="num">Comments &raquo;</h4>
+		    	<div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript></div>
+		    </div>
+		</div>
+		<!--3. right sider begin-->
+<div class="col-md-3" id="blog-secondary" role="complementary">
+	<section class="widget">
+		<ul class="widget-list">
+			<form id="search" method="get" action="https://typecodes.com/search.html">
+				<input type="text" name="q" id="s" size="20" x-webkit-speech="" x-webkit-grammar="builtin:search" onwebkitspeechchange="this.value = this.value.replace(this.defaultValue, '')" value="Google...." onfocus="this.value = (this.value == this.defaultValue) ? '' : this.value" onblur="this.value = (this.value == '') ? this.defaultValue : this.value">
+			</form>
+		</ul>
+	</section>
+	<section class="widget">
+		<h3 class="widget-title">Categories</h3>
+		<ul class="widget-list">
+		      <li class="current">
+		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (26)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/csharp/index.html">Csharp</a> (6)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/database/index.html">Database</a> (11)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/java/index.html">Java</a> (1)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/linux/index.html">Linux</a> (16)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/mix/index.html">Mix</a> (53)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/web/index.html">Web</a> (88)
+		      </li>
+		</ul>
+	</section>
+	<section class="widget">
+		<h3 class="widget-title">Recent Posts</h3>
+		<ul class="widget-list">
+			<li class="post">
+				<a href="https://typecodes.com/mix/sucesstypechotopelican.html">成功将博客从Typecho迁移到Pelican</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/mix/begintypechotopelican.html">准备将博客从Typecho迁移到Pelican</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/tcpconnectiontimedout.html">Linux TCP连接Connection Refused和Connection timed out的问题</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/mysqlerrornospace.html">博客MySQL服务惊魂记：Linux磁盘空间不足(Core Dump文件引爆)</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/mix/synweibophpmarkdownimgurl.html">升级博客文章同步微博的插件：PHP正则提取Markdown的图片地址</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/cppgeneralmakefile.html">Linux C/C++工程中可生成ELF、动/静态库文件的通用Makefile</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/libraryundefinedref.html">解决make编译链接动态库错误：libxx.so: undefined reference to xx</a>
+			</li>
+		</ul>
+	</section>
+	<section class="widget widget-feed">
+		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
+	</section>
+</div>
+				</div>
+			</div>
+		</div>
+		<!--4. bottom begin-->
+		<footer id="te-site-footer"><div class="container">
+	<div class="row" role="contentinfo">
+		<section class="col-md-2 col-md-offset-1">
+			<h3>Links</h3>
+			<ul><li><a href="http://diaosbook.com/" title="">diaosbook</a></li></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul>
+				<li><a href="https://typecodes.com/links.html">More..</a></li>
+			</ul>
+		</section>
+		<section class="col-md-2">
+			<h3>Following</h3>
+			<ul>
+				<li><a href="https://github.com/vfhky" class="following github" target="_blank" rel="external nofollow">GitHub</a></li>
+				<li><a href="http://weibo.com/typecodes" class="following weibo" target="_blank" rel="external nofollow">Weibo</a></li>
+				<li><a href="http://vfhky.sinaapp.com/" class="following sae" target="_blank" rel="external nofollow">SAE</a></li>
+				<li><a href="http://www.dwz.cn/mYiwa" class="following qqgroup" target="_blank" rel="external nofollow">Group</a></li>
+			</ul>
+		</section>
+		<div class="col-md-12 copyright">
+			<a href="#top"><i class="i-logo-s">TOP</i></a>
+			<p>
+				&copy; 2012-<script language="JavaScript">var date = new Date(); document.write(date.getFullYear());</script>							<a href="https://typecodes.com">TypeCodes</a>. All Rights Reserved<br>Powered by <a href="http://getpelican.com" rel="external" target="_blank">Pelican</a>. <a href="http://www.miitbeian.gov.cn/" rel="external nofollow" target="_blank">粤ICP备14050695号</a>
+			</p>
+		</div>
+	</div>
+</div>
+</footer>
+<script type="text/javascript">
+	var disqus_shortname = 'typecodes';
+	var disqus_identifier = '/web/centos7yuminstallmysql5.html';
+	var disqus_url = 'https://typecodes.com/web/centos7yuminstallmysql5.html';
+	var disqus_title = '阿里云CentOS 7.1使用yum安装MySql5.6.24';
+	(function() {
+		var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+		dsq.src = "//" + disqus_shortname + '.disqus.com/embed.js';
+		(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	 })();
+</script>
+	</body>
+</html>

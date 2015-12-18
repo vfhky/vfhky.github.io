@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="zh-CN" class="no-js">
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<title>PHP模拟登录WordPress后台二：使用curl函数 &mdash; TypeCodes</title>
+		<meta name="author" content="vfhky">
+  		<link href="https://typecodes.com/atom.xml" type="application/atom+xml" rel="alternate" title="TypeCodes Atom Feed" />
+	  	<link href="https://typecodes.com/feed.xml" type="application/rss+xml" rel="alternate" title="TypeCodes RSS Feed" />
+		<meta name="HandheldFriendly" content="True">
+		<meta name="MobileOptimized" content="320">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="renderer" content="webkit">
+		<link rel="stylesheet" href="https://dn-vfhky.qbox.me/libs/css/pelican-vfhky.css">
+		<script>
+			var _hmt = _hmt || [];
+			(function() {
+			  var hm = document.createElement("script");
+			  hm.src = "//hm.baidu.com/hm.js?c15c4ab8e91ba9ac3d5a12293cc93359";
+			  var s = document.getElementsByTagName("script")[0]; 
+			  s.parentNode.insertBefore(hm, s);
+			})();
+		</script>
+	</head>
+	<body style>
+		<!--1. header navigation begin-->
+		<header role="banner" id="te-site-header">
+			<div class="container">
+				<a href="https://typecodes.com" class="te-site-logo" role="logo" target="_self"> TypeCodes</a>
+				<ul class="nav nav-pills" id="te-site-nav" role="navigation">
+					<li><a href="https://typecodes.com">Home</a></li><li><a href="https://typecodes.com/archives.html" title="Archives">Archives</a></li><li><a href="https://typecodes.com/about.html" title="About">About</a></li></ul>
+			</div>
+		</header>
+		<div class="te-headline">
+			<div class="container">
+				<h2 class="te-headline-title"> <a href="https://typecodes.com">TypeCodes</a></h2>
+			</div>
+		</div>
+		<div class="container">
+			<div class="row">
+		<!--2. left sider begin-->
+		<div class="col-md-9" id="blog-main" role="main">
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/mix/chromephpsimulatelogwptwo.html">PHP模拟登录WordPress后台二：使用curl函数</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2014-03-15 13:21 | 分类：<a href="https://typecodes.com/mix/index.html">mix</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>在<a href="https://typecodes.com/web/chromephpsimulatelogwpone.html" title="《PHP模拟登录WordPress后台一：使用Chrome浏览器网络抓包》">上一篇文章</a>中讲述了如何使用chrome浏览器进行网络抓包，那么这篇文章就说说结合chrome抓包工具，使用PHP的curl函数模拟登录wordpress后台。</p>
+<h5>1 根据chrome网络抓包的数据组PHP发送包</h5>
+<p>根据上一篇文章chrome抓包的情况（主要是见节点6），通过curl函数组发送包。组包信息包括CURLOPT_HTTPHEADER等curl_setopt函数中的所有字段。</p>
+
+
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38</pre></div></td><td class="code"><div class="highlight"><pre><span class="x">/**</span>
+<span class="x">* @access_path: http://127.0.0.1/4.php</span>
+<span class="x">* @author: vfhky 20140313 19:13</span>
+<span class="x">* @description: PHP模拟登录wordpress后台(http://127.0.0.1/wpupdate/wp-admin/)</span>
+<span class="x">* @reference: http://vfhky.sinaapp.com/mix/887.html</span>
+<span class="x">*/</span>
+
+<span class="x">/* wordpress帐号 */</span>
+<span class="x">$log = &#39;***&#39;;</span>
+<span class="x">/* wordpress密码 */</span>
+<span class="x">$pwd = &#39;***&#39;;</span>
+<span class="x">/* cookie位置，一定要使用绝对路径 */</span>
+<span class="x">$cookie = dirname(__file__).&#39;/cookie.txt&#39;;</span>
+<span class="x">/* 目标登录的地址 */</span>
+<span class="x">$login_url = &#39;http://127.0.0.1/wpupdate/wp-login.php&#39;;</span>
+<span class="x">/* POST方式提交的字段内容 */</span>
+<span class="x">$post = &#39;log=&#39;.$log.&#39;&amp;pwd=&#39;.$pwd.&#39;&amp;wp-submit=登录&#39;;</span>
+
+<span class="x">$ch = curl_init($login_url);</span>
+<span class="x">curl_setopt($ch, CURLOPT_COOKIESESSION, true);</span>
+<span class="x">curl_setopt($ch, CURLOPT_HEADER, true);</span>
+
+<span class="x">/* curl_setopt($ch, CURLOPT_USERAGENT, $_SERVER[&#39;HTTP_USER_AGENT&#39;]); */</span>
+<span class="x">curl_setopt($ch, CURLOPT_HTTPHEADER, array(&#39;Accept-Language: zh-cn&#39;,&#39;Cache-Control: no-cache&#39;,&#39;User-Agent:Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/30.0.1599.101 Safari/537.36&#39;,&#39;Connection:keep-alive&#39;,&#39;Referer:Referer:http://127.0.0.1/wpupdate/wp-login.php?redirect_to=http%3A%2F%2F127.0.0.1%2Fwpupdate%2Fwp-admin%2F&amp;reauth=1&#39;));</span>
+
+<span class="x">/* CURL收到的 HTTP Response 中的 Set-Cookie 存放的位置 */</span>
+<span class="x">curl_setopt($ch, CURLOPT_COOKIEJAR, $cookie);</span>
+<span class="x">/* CURL发送的 HTTP Request 中的 Cookie 存放的位置 */</span>
+<span class="x">curl_setopt($ch, CURLOPT_COOKIEFILE, $cookie);</span>
+<span class="x">curl_setopt($ch,CURLOPT_RETURNTRANSFER,1);</span>
+<span class="x">curl_setopt($ch, CURLOPT_POSTFIELDS, $post);</span>
+<span class="x">$result = curl_exec($ch);</span>
+<span class="x">curl_close($ch);</span>
+
+<span class="x">/* 输出获取的资源$result,该资源是wordpress后台处理返回的Response Headers信息 */</span>
+<span class="x">print_r($result);</span>
+
+<span class="x">/* 清理cookie文件: unlink($cookie_file); */</span>
+</pre></div>
+</td></tr></table>
+
+<h5>2 打开chrome准备进行抓包</h5>
+<p>在chrome中F12打开“审查元素”，然后在地址栏中输入http://127.0.0.1/4.php，得到如下图片。图中Request Headers中，可以看出上面程序组包的那些字段：User-Agent、Connection等。</p>
+<p><img alt="打开chrome准备进行抓包" src="https://dn-vfhky.qbox.me/2014/03/google_php_crab.png" title="打开chrome准备进行抓包" /></p>
+<p><img alt="chrome网络抓包的数据" src="https://dn-vfhky.qbox.me/2014/03/google_crab_data.png" title="chrome网络抓包的数据" /></p>
+<h5>3 查看程序运行结果</h5>
+<p>上面程序在浏览器中输出结果后，可以通过右键“查看网页源代码”来查看返回数据的清晰结构。</p>
+<p><img alt="chrome中查看程序运行结果" src="https://dn-vfhky.qbox.me/2014/03/data_return.png" title="chrome中查看程序运行结果" /></p>
+<p><img alt="chrome中右键“查看网页源代码”" src="https://dn-vfhky.qbox.me/2014/03/data_return_source.png" title="chrome中右键“查看网页源代码”" /></p>
+<p>同时，在和4.php同目录下面生成了一个cookie.txt的文件。里面保存cookie信息如下所示，它和上图中浏览器中显示的信息完全一致（敏感信息博主用*替换了）。</p>
+<div class="highlight"><pre># Netscape HTTP Cookie File
+# http://curl.haxx.se/rfc/cookie_spec.html
+# This file was generated by libcurl! Edit at your own risk.
+
+127.0.0.1   FALSE   /wpupdate/  FALSE   0   wordpress_test_cookie   WP+Cookie+check
+#HttpOnly_127.0.0.1 FALSE   /wpupdate/wp-content/plugins    FALSE   0   wordpress_39bb3cf5af28163bc1699c85ce702b1c  ****************************75e2bc172f438ff20ac*******
+#HttpOnly_127.0.0.1 FALSE   /wpupdate/wp-admin  FALSE   0   wordpress_39bb3cf5af28163bc1699c85ce702b1c  ****************************75e2bc172f438ff20ac*******
+#HttpOnly_127.0.0.1 FALSE   /wpupdate/  FALSE   0   wordpress_logged_in_39bb3cf5af28163bc1699c85ce702b1c    *********************C7ffc62ae1216786a97b67bb*********
+</pre></div>
+
+
+<h5>3 收到wordpress后台发送过来的登录成功的邮箱提醒</h5>
+<p>由于主题[vfhky]设置了后台登录成功或者失败的邮件提醒功能，所以上面的操作如果成功的话，还会一封登录成功的邮件。</p>
+<p><img alt="wordpress后台登录成功的邮件提醒" src="https://dn-vfhky.qbox.me/2014/03/mail_notice.png" title="wordpress后台登录成功的邮件提醒" /></p>
+		    	<p class="tags">
+					<div class="post-share">
+						<ul class="post-shareul clearfix">
+							<li class="post-shareli">
+								<a href="http://note.youdao.com/memory/?url=https://typecodes.com/mix/chromephpsimulatelogwptwo.html&title=PHP模拟登录WordPress后台二：使用curl函数" class="post-sharea ydshare" target="_blank" rel="nofollow">有道云笔记</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://v.t.sina.com.cn/share/share.php?url=https://typecodes.com/mix/chromephpsimulatelogwptwo.html&title=PHP模拟登录WordPress后台二：使用curl函数&source=https://typecodes.com" class="post-sharea wbshare" target="_blank" rel="nofollow">新浪微博</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://v.t.qq.com/share/share.php?title=PHP模拟登录WordPress后台二：使用curl函数&url=https://typecodes.com/mix/chromephpsimulatelogwptwo.html&site=https://typecodes.com" class="post-sharea twbshare" target="_blank" rel="nofollow">腾讯微博</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=https://typecodes.com/mix/chromephpsimulatelogwptwo.html&title=PHP模拟登录WordPress后台二：使用curl函数&content='utf-8'" class="post-sharea qzoneshare" target="_blank" rel="nofollow">QZone</a>
+							</li>
+						</ul>
+					</div>
+					<div>
+						Tags: <a href="https://typecodes.com/tag/chromewang-luo-zhua-bao.html">chrome网络抓包</a>,<a href="https://typecodes.com/tag/phpmo-ni-deng-lu-wordpress.html">php模拟登录wordpress</a>					</div>
+				</p>
+			</article>
+			
+			<div id="comments">
+				<h4 class="num">Comments &raquo;</h4>
+		    	<div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript></div>
+		    </div>
+		</div>
+		<!--3. right sider begin-->
+<div class="col-md-3" id="blog-secondary" role="complementary">
+	<section class="widget">
+		<ul class="widget-list">
+			<form id="search" method="get" action="https://typecodes.com/search.html">
+				<input type="text" name="q" id="s" size="20" x-webkit-speech="" x-webkit-grammar="builtin:search" onwebkitspeechchange="this.value = this.value.replace(this.defaultValue, '')" value="Google...." onfocus="this.value = (this.value == this.defaultValue) ? '' : this.value" onblur="this.value = (this.value == '') ? this.defaultValue : this.value">
+			</form>
+		</ul>
+	</section>
+	<section class="widget">
+		<h3 class="widget-title">Categories</h3>
+		<ul class="widget-list">
+		      <li class="current">
+		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (26)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/csharp/index.html">Csharp</a> (6)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/database/index.html">Database</a> (11)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/java/index.html">Java</a> (1)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/linux/index.html">Linux</a> (16)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/mix/index.html">Mix</a> (53)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/web/index.html">Web</a> (88)
+		      </li>
+		</ul>
+	</section>
+	<section class="widget">
+		<h3 class="widget-title">Recent Posts</h3>
+		<ul class="widget-list">
+			<li class="post">
+				<a href="https://typecodes.com/mix/sucesstypechotopelican.html">成功将博客从Typecho迁移到Pelican</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/mix/begintypechotopelican.html">准备将博客从Typecho迁移到Pelican</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/tcpconnectiontimedout.html">Linux TCP连接Connection Refused和Connection timed out的问题</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/mysqlerrornospace.html">博客MySQL服务惊魂记：Linux磁盘空间不足(Core Dump文件引爆)</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/mix/synweibophpmarkdownimgurl.html">升级博客文章同步微博的插件：PHP正则提取Markdown的图片地址</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/cppgeneralmakefile.html">Linux C/C++工程中可生成ELF、动/静态库文件的通用Makefile</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/libraryundefinedref.html">解决make编译链接动态库错误：libxx.so: undefined reference to xx</a>
+			</li>
+		</ul>
+	</section>
+	<section class="widget widget-feed">
+		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
+	</section>
+</div>
+				</div>
+			</div>
+		</div>
+		<!--4. bottom begin-->
+		<footer id="te-site-footer"><div class="container">
+	<div class="row" role="contentinfo">
+		<section class="col-md-2 col-md-offset-1">
+			<h3>Links</h3>
+			<ul><li><a href="http://diaosbook.com/" title="">diaosbook</a></li></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul>
+				<li><a href="https://typecodes.com/links.html">More..</a></li>
+			</ul>
+		</section>
+		<section class="col-md-2">
+			<h3>Following</h3>
+			<ul>
+				<li><a href="https://github.com/vfhky" class="following github" target="_blank" rel="external nofollow">GitHub</a></li>
+				<li><a href="http://weibo.com/typecodes" class="following weibo" target="_blank" rel="external nofollow">Weibo</a></li>
+				<li><a href="http://vfhky.sinaapp.com/" class="following sae" target="_blank" rel="external nofollow">SAE</a></li>
+				<li><a href="http://www.dwz.cn/mYiwa" class="following qqgroup" target="_blank" rel="external nofollow">Group</a></li>
+			</ul>
+		</section>
+		<div class="col-md-12 copyright">
+			<a href="#top"><i class="i-logo-s">TOP</i></a>
+			<p>
+				&copy; 2012-<script language="JavaScript">var date = new Date(); document.write(date.getFullYear());</script>							<a href="https://typecodes.com">TypeCodes</a>. All Rights Reserved<br>Powered by <a href="http://getpelican.com" rel="external" target="_blank">Pelican</a>. <a href="http://www.miitbeian.gov.cn/" rel="external nofollow" target="_blank">粤ICP备14050695号</a>
+			</p>
+		</div>
+	</div>
+</div>
+</footer>
+<script type="text/javascript">
+	var disqus_shortname = 'typecodes';
+	var disqus_identifier = '/mix/chromephpsimulatelogwptwo.html';
+	var disqus_url = 'https://typecodes.com/mix/chromephpsimulatelogwptwo.html';
+	var disqus_title = 'PHP模拟登录WordPress后台二：使用curl函数';
+	(function() {
+		var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+		dsq.src = "//" + disqus_shortname + '.disqus.com/embed.js';
+		(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	 })();
+</script>
+	</body>
+</html>

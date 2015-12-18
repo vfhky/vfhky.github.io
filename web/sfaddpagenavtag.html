@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="zh-CN" class="no-js">
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<title>动易SiteFactory系列教程四:如何添加一个分页标签 &mdash; TypeCodes</title>
+		<meta name="author" content="vfhky">
+  		<link href="https://typecodes.com/atom.xml" type="application/atom+xml" rel="alternate" title="TypeCodes Atom Feed" />
+	  	<link href="https://typecodes.com/feed.xml" type="application/rss+xml" rel="alternate" title="TypeCodes RSS Feed" />
+		<meta name="HandheldFriendly" content="True">
+		<meta name="MobileOptimized" content="320">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="renderer" content="webkit">
+		<link rel="stylesheet" href="https://dn-vfhky.qbox.me/libs/css/pelican-vfhky.css">
+		<script>
+			var _hmt = _hmt || [];
+			(function() {
+			  var hm = document.createElement("script");
+			  hm.src = "//hm.baidu.com/hm.js?c15c4ab8e91ba9ac3d5a12293cc93359";
+			  var s = document.getElementsByTagName("script")[0]; 
+			  s.parentNode.insertBefore(hm, s);
+			})();
+		</script>
+	</head>
+	<body style>
+		<!--1. header navigation begin-->
+		<header role="banner" id="te-site-header">
+			<div class="container">
+				<a href="https://typecodes.com" class="te-site-logo" role="logo" target="_self"> TypeCodes</a>
+				<ul class="nav nav-pills" id="te-site-nav" role="navigation">
+					<li><a href="https://typecodes.com">Home</a></li><li><a href="https://typecodes.com/archives.html" title="Archives">Archives</a></li><li><a href="https://typecodes.com/about.html" title="About">About</a></li></ul>
+			</div>
+		</header>
+		<div class="te-headline">
+			<div class="container">
+				<h2 class="te-headline-title"> <a href="https://typecodes.com">TypeCodes</a></h2>
+			</div>
+		</div>
+		<div class="container">
+			<div class="row">
+		<!--2. left sider begin-->
+		<div class="col-md-9" id="blog-main" role="main">
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/web/sfaddpagenavtag.html">动易SiteFactory系列教程四:如何添加一个分页标签</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2012-08-22 01:10 | 分类：<a href="https://typecodes.com/web/index.html">web</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>通过这篇文章，我们继续学习动易SiteFactory的标签制作。相信大家在文章列表模板页面或者是下载列表页面又或者是在图片列表页面都会涉及到分页的情况。那么动易SiteFactory又是如何通过标签进行分页的呢？下面我就为大家介绍一下分页标签的具体实现过程以及调用方法。</p>
+
+
+<h5>（一）这里我只列出图片和相应标签内容设置的代码，按要求制作如下图的一个分页标签。</h5>
+<p><img alt="分页标签显示效果" src="https://dn-vfhky.qbox.me/2012/08/16.png" title="分页标签显示效果" /></p>
+<p><img alt="添加分页标签-1" src="https://dn-vfhky.qbox.me/2012/08/24.png" title="添加分页标签-1" /></p>
+<p><img alt="添加分页标签-2" src="https://dn-vfhky.qbox.me/2012/08/35.png" title="添加分页标签-2" /></p>
+<p><img alt="添加分页标签-3" src="https://dn-vfhky.qbox.me/2012/08/44.png" title="添加分页标签-3" /></p>
+<p><img alt="添加分页标签-4" src="https://dn-vfhky.qbox.me/2012/08/53.png" title="添加分页标签-4" /></p>
+<h5>（二）标签内容设置</h5>
+<div class="highlight"><pre><span class="cp">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;</span>
+    <span class="k">&lt;xsl:transform</span> <span class="na">version=</span><span class="s">&quot;1.0&quot;</span> <span class="na">xmlns:xsl=</span><span class="s">&quot;http://www.w3.org/1999/XSL/Transform&quot;</span> <span class="na">xmlns:pe=</span><span class="s">&quot;labelproc&quot;</span> <span class="na">exclude-result-prefixes=</span><span class="s">&quot;pe&quot;</span><span class="nt">&gt;</span>
+    <span class="k">&lt;xsl:output</span> <span class="na">method=</span><span class="s">&quot;xml&quot;</span> <span class="nt">/&gt;</span>
+    <span class="k">&lt;xsl:template</span> <span class="na">match=</span><span class="s">&quot;/&quot;</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;newdataset&gt;</span>
+            <span class="nt">&lt;xsl:for</span> <span class="err">-each</span> <span class="na">select=</span><span class="s">&quot;NewDataSet/Table&quot;</span><span class="nt">&gt;</span>
+                <span class="nt">&lt;table&gt;</span>
+                    <span class="nt">&lt;regionid&gt;</span>
+                        <span class="nt">&lt;xsl:value</span> <span class="err">-of</span> <span class="na">select=</span><span class="s">&quot;RegionID&quot;</span><span class="nt">/&gt;</span>
+                    <span class="nt">&lt;/regionid&gt;</span>
+                    <span class="nt">&lt;country&gt;</span>
+                        <span class="nt">&lt;xsl:value</span> <span class="err">-of</span> <span class="na">select=</span><span class="s">&quot; Country &quot;</span><span class="nt">/&gt;</span>
+                    <span class="nt">&lt;/country&gt;</span>
+                    <span class="nt">&lt;province&gt;</span>
+                        <span class="nt">&lt;xsl:value</span> <span class="err">-of</span> <span class="na">select=</span><span class="s">&quot; Province &quot;</span><span class="nt">/&gt;</span>
+                    <span class="nt">&lt;/province&gt;</span>
+                    <span class="nt">&lt;city&gt;</span>
+                        <span class="nt">&lt;xsl:value</span> <span class="err">-of</span> <span class="na">select=</span><span class="s">&quot; City &quot;</span><span class="nt">/&gt;</span>
+                    <span class="nt">&lt;/city&gt;</span>
+                    <span class="nt">&lt;area&gt;</span>
+                        <span class="nt">&lt;xsl:value</span> <span class="err">-of</span> <span class="na">select=</span><span class="s">&quot; Area &quot;</span><span class="nt">/&gt;</span>
+                    <span class="nt">&lt;/area&gt;</span>
+                    <span class="nt">&lt;postcode&gt;</span>
+                        <span class="nt">&lt;xsl:value</span> <span class="err">-of</span> <span class="na">select=</span><span class="s">&quot; PostCode &quot;</span><span class="nt">/&gt;</span>
+                    <span class="nt">&lt;/postcode&gt;</span>
+                    <span class="nt">&lt;areacode&gt;</span>
+                        <span class="nt">&lt;xsl:value</span> <span class="err">-of</span> <span class="na">select=</span><span class="s">&quot; AreaCode &quot;</span><span class="nt">/&gt;</span>
+                    <span class="nt">&lt;/areacode&gt;</span>
+                <span class="nt">&lt;/table&gt;</span>
+            <span class="nt">&lt;/xsl:for&gt;</span>
+        <span class="nt">&lt;/newdataset&gt;</span>
+    <span class="k">&lt;/xsl:template&gt;</span>
+<span class="k">&lt;/xsl:transform&gt;</span>
+</pre></div>
+
+
+<h5>（三）代码解说</h5>
+<div class="highlight"><pre><span class="nt">&lt;RegionID&gt;</span>
+    <span class="k">&lt;xsl:value-of</span> <span class="na">select=</span><span class="s">&quot;RegionID&quot;</span><span class="nt">/&gt;</span>
+<span class="nt">&lt;/RegionID&gt;</span>
+</pre></div>
+
+
+<h5>（四）标签调用</h5>
+<p>在模板页相应位置插入下面的代码。其中，fieldname是取出我们前面分页标签里面设置的节点内容；两个id=”fenye“需要一致；datasource是我们添加的标签名,id作为数据源的ID（可以自定义，它是这个标签的标识，下面要调用数据源节点下的数据指向ID；最后一行是引用不同的分页样式，由id指定，datasource填写开始定义的标签id值。</p>
+<div class="highlight"><pre>{PE.DataSource datasource=&quot;地区列表_分页3&quot; id=&quot;fenye&quot; nodeid=&quot;1&quot; page=&quot;true&quot; pagesize=&quot;10&quot; urlpage=&quot;true&quot; span=&quot;div&quot; class=&quot;&quot; /}
+ <span class="nt">&lt;table&gt;</span>
+   {PE.Repeat id=&quot;fenye&quot; loop=&quot;10&quot;}
+     <span class="nt">&lt;tr&gt;</span>
+      <span class="nt">&lt;td&gt;</span>{PE.field fieldname=&quot;ID&quot;/}<span class="nt">&lt;/td&gt;&lt;td&gt;</span>{PE.field fieldname=&quot;Country&quot;/}<span class="nt">&lt;/td&gt;</span>
+      <span class="nt">&lt;td&gt;</span>{PE.field fieldname=&quot;Province&quot;/}<span class="nt">&lt;/td&gt;</span>
+      <span class="nt">&lt;td&gt;</span>{PE.field fieldname=&quot;City&quot;/}<span class="nt">&lt;/td&gt;</span>
+     <span class="nt">&lt;/tr&gt;</span>
+   {/PE.Repeat}
+<span class="nt">&lt;/table&gt;</span>
+{PE.Page id=&quot;url_动易后台风格&quot; datasource=&quot;fenye&quot; span=&quot;&quot;/}
+</pre></div>
+		    	<p class="tags">
+					<div class="post-share">
+						<ul class="post-shareul clearfix">
+							<li class="post-shareli">
+								<a href="http://note.youdao.com/memory/?url=https://typecodes.com/web/sfaddpagenavtag.html&title=动易SiteFactory系列教程四:如何添加一个分页标签" class="post-sharea ydshare" target="_blank" rel="nofollow">有道云笔记</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://v.t.sina.com.cn/share/share.php?url=https://typecodes.com/web/sfaddpagenavtag.html&title=动易SiteFactory系列教程四:如何添加一个分页标签&source=https://typecodes.com" class="post-sharea wbshare" target="_blank" rel="nofollow">新浪微博</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://v.t.qq.com/share/share.php?title=动易SiteFactory系列教程四:如何添加一个分页标签&url=https://typecodes.com/web/sfaddpagenavtag.html&site=https://typecodes.com" class="post-sharea twbshare" target="_blank" rel="nofollow">腾讯微博</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=https://typecodes.com/web/sfaddpagenavtag.html&title=动易SiteFactory系列教程四:如何添加一个分页标签&content='utf-8'" class="post-sharea qzoneshare" target="_blank" rel="nofollow">QZone</a>
+							</li>
+						</ul>
+					</div>
+					<div>
+						Tags: <a href="https://typecodes.com/tag/dong-yi-cms.html">动易cms</a>,<a href="https://typecodes.com/tag/dong-yi-fen-ye-biao-qian.html">动易分页标签</a>					</div>
+				</p>
+			</article>
+			
+			<div id="comments">
+				<h4 class="num">Comments &raquo;</h4>
+		    	<div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript></div>
+		    </div>
+		</div>
+		<!--3. right sider begin-->
+<div class="col-md-3" id="blog-secondary" role="complementary">
+	<section class="widget">
+		<ul class="widget-list">
+			<form id="search" method="get" action="https://typecodes.com/search.html">
+				<input type="text" name="q" id="s" size="20" x-webkit-speech="" x-webkit-grammar="builtin:search" onwebkitspeechchange="this.value = this.value.replace(this.defaultValue, '')" value="Google...." onfocus="this.value = (this.value == this.defaultValue) ? '' : this.value" onblur="this.value = (this.value == '') ? this.defaultValue : this.value">
+			</form>
+		</ul>
+	</section>
+	<section class="widget">
+		<h3 class="widget-title">Categories</h3>
+		<ul class="widget-list">
+		      <li class="current">
+		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (26)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/csharp/index.html">Csharp</a> (6)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/database/index.html">Database</a> (11)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/java/index.html">Java</a> (1)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/linux/index.html">Linux</a> (16)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/mix/index.html">Mix</a> (53)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/web/index.html">Web</a> (88)
+		      </li>
+		</ul>
+	</section>
+	<section class="widget">
+		<h3 class="widget-title">Recent Posts</h3>
+		<ul class="widget-list">
+			<li class="post">
+				<a href="https://typecodes.com/mix/sucesstypechotopelican.html">成功将博客从Typecho迁移到Pelican</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/mix/begintypechotopelican.html">准备将博客从Typecho迁移到Pelican</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/tcpconnectiontimedout.html">Linux TCP连接Connection Refused和Connection timed out的问题</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/mysqlerrornospace.html">博客MySQL服务惊魂记：Linux磁盘空间不足(Core Dump文件引爆)</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/mix/synweibophpmarkdownimgurl.html">升级博客文章同步微博的插件：PHP正则提取Markdown的图片地址</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/cppgeneralmakefile.html">Linux C/C++工程中可生成ELF、动/静态库文件的通用Makefile</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/libraryundefinedref.html">解决make编译链接动态库错误：libxx.so: undefined reference to xx</a>
+			</li>
+		</ul>
+	</section>
+	<section class="widget widget-feed">
+		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
+	</section>
+</div>
+				</div>
+			</div>
+		</div>
+		<!--4. bottom begin-->
+		<footer id="te-site-footer"><div class="container">
+	<div class="row" role="contentinfo">
+		<section class="col-md-2 col-md-offset-1">
+			<h3>Links</h3>
+			<ul><li><a href="http://diaosbook.com/" title="">diaosbook</a></li></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul>
+				<li><a href="https://typecodes.com/links.html">More..</a></li>
+			</ul>
+		</section>
+		<section class="col-md-2">
+			<h3>Following</h3>
+			<ul>
+				<li><a href="https://github.com/vfhky" class="following github" target="_blank" rel="external nofollow">GitHub</a></li>
+				<li><a href="http://weibo.com/typecodes" class="following weibo" target="_blank" rel="external nofollow">Weibo</a></li>
+				<li><a href="http://vfhky.sinaapp.com/" class="following sae" target="_blank" rel="external nofollow">SAE</a></li>
+				<li><a href="http://www.dwz.cn/mYiwa" class="following qqgroup" target="_blank" rel="external nofollow">Group</a></li>
+			</ul>
+		</section>
+		<div class="col-md-12 copyright">
+			<a href="#top"><i class="i-logo-s">TOP</i></a>
+			<p>
+				&copy; 2012-<script language="JavaScript">var date = new Date(); document.write(date.getFullYear());</script>							<a href="https://typecodes.com">TypeCodes</a>. All Rights Reserved<br>Powered by <a href="http://getpelican.com" rel="external" target="_blank">Pelican</a>. <a href="http://www.miitbeian.gov.cn/" rel="external nofollow" target="_blank">粤ICP备14050695号</a>
+			</p>
+		</div>
+	</div>
+</div>
+</footer>
+<script type="text/javascript">
+	var disqus_shortname = 'typecodes';
+	var disqus_identifier = '/web/sfaddpagenavtag.html';
+	var disqus_url = 'https://typecodes.com/web/sfaddpagenavtag.html';
+	var disqus_title = '动易SiteFactory系列教程四:如何添加一个分页标签';
+	(function() {
+		var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+		dsq.src = "//" + disqus_shortname + '.disqus.com/embed.js';
+		(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	 })();
+</script>
+	</body>
+</html>

@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="zh-CN" class="no-js">
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<title>配置IIS出现错误的解决方法 &mdash; TypeCodes</title>
+		<meta name="author" content="vfhky">
+  		<link href="https://typecodes.com/atom.xml" type="application/atom+xml" rel="alternate" title="TypeCodes Atom Feed" />
+	  	<link href="https://typecodes.com/feed.xml" type="application/rss+xml" rel="alternate" title="TypeCodes RSS Feed" />
+		<meta name="HandheldFriendly" content="True">
+		<meta name="MobileOptimized" content="320">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="renderer" content="webkit">
+		<link rel="stylesheet" href="https://dn-vfhky.qbox.me/libs/css/pelican-vfhky.css">
+		<script>
+			var _hmt = _hmt || [];
+			(function() {
+			  var hm = document.createElement("script");
+			  hm.src = "//hm.baidu.com/hm.js?c15c4ab8e91ba9ac3d5a12293cc93359";
+			  var s = document.getElementsByTagName("script")[0]; 
+			  s.parentNode.insertBefore(hm, s);
+			})();
+		</script>
+	</head>
+	<body style>
+		<!--1. header navigation begin-->
+		<header role="banner" id="te-site-header">
+			<div class="container">
+				<a href="https://typecodes.com" class="te-site-logo" role="logo" target="_self"> TypeCodes</a>
+				<ul class="nav nav-pills" id="te-site-nav" role="navigation">
+					<li><a href="https://typecodes.com">Home</a></li><li><a href="https://typecodes.com/archives.html" title="Archives">Archives</a></li><li><a href="https://typecodes.com/about.html" title="About">About</a></li></ul>
+			</div>
+		</header>
+		<div class="te-headline">
+			<div class="container">
+				<h2 class="te-headline-title"> <a href="https://typecodes.com">TypeCodes</a></h2>
+			</div>
+		</div>
+		<div class="container">
+			<div class="row">
+		<!--2. left sider begin-->
+		<div class="col-md-9" id="blog-main" role="main">
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/web/wpcleanheaderfile.html">配置IIS出现错误的解决方法</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2012-12-13 00:58 | 分类：<a href="https://typecodes.com/web/index.html">web</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>前几天跟sparrowwei聊天，讨论博客空间访问速度的问题。一经比较，发觉自己的博客一些程序文件存在很多冗余信息，这些影响了博客的加载速度。遂下决心，彻底整理下博客，提高访问速度，于是开启了博客优化第二波进程。现将整个清理过程记录如下（主要还是头部文件的清理，产生这些冗余信息的是wp_head()函数）：</p>
+<h5>（一）选择sinaapp的jQuery库，合并JS文件</h5>
+
+
+<p>1、在 <a href="https://typecodes.com/web/wpaddrollnotice.html" title="点击查看">wordpress添加滚动（单条或多条）公告</a> 一文中提到了使用谷歌的jQuery库，但是你懂得，所以改用新浪开放平台的了；</p>
+<p>2、合并<a href="https://typecodes.com/web/wpquotecomments.html" title="如何给wordpress的回复添加引用功能">评论引用</a>quote.js和<a href="https://typecodes.com/web/wpatcommentauthor.html" title="如何在wordpress回复内容前面添加@方式">评论前面加@</a>的reply.js为quote_reply.js，减少请求次数；合并<a href="https://typecodes.com/web/wpaddrollnotice.html" title="wordpress添加滚动（单条或多条）公告">滚动公告notice.js</a>到主题weisay.js。然后根据页面的需要，通过is_singular函数判断是否加载quote_reply.js（因为它们只会在博客需要评论的地方出现），而整合notice.js的weisay.js需要在任何页面都加载，因为每个页面都会用到右侧栏的公告栏。</p>
+<h5>（二）重点：整理header.php，去掉多余的信息</h5>
+<p>经过sparrowwei的提醒，看下自己的<code>&lt;head&gt;</code>之间的信息，确实存在问题：</p>
+<div class="highlight"><pre><span class="o">&lt;</span><span class="nx">link</span> <span class="nx">rel</span><span class="o">=</span><span class="s2">&quot;alternate&quot;</span> <span class="nx">type</span><span class="o">=</span><span class="s2">&quot;application/rss+xml&quot;</span> <span class="nx">title</span><span class="o">=</span><span class="s2">&quot;TypeCodes RSS Feed&quot;</span> <span class="nx">href</span><span class="o">=</span><span class="s2">&quot;https://typecodes.com/?feed=rss2&quot;</span> <span class="o">/&gt;</span>
+<span class="o">&lt;</span><span class="nx">link</span> <span class="nx">rel</span><span class="o">=</span><span class="s2">&quot;alternate&quot;</span> <span class="nx">type</span><span class="o">=</span><span class="s2">&quot;application/atom+xml&quot;</span> <span class="nx">title</span><span class="o">=</span><span class="s2">&quot;TypeCodes Atom Feed&quot;</span> <span class="nx">href</span><span class="o">=</span><span class="s2">&quot;https://typecodes.com/?feed=atom&quot;</span> <span class="o">/&gt;</span>
+<span class="o">&lt;</span><span class="nx">link</span> <span class="nx">rel</span><span class="o">=</span><span class="s2">&quot;pingback&quot;</span> <span class="nx">href</span><span class="o">=</span><span class="s2">&quot;https://typecodes.com/xmlrpc.php&quot;</span> <span class="o">/&gt;</span>
+<span class="o">&lt;</span><span class="nx">link</span> <span class="nx">rel</span><span class="o">=</span><span class="s2">&quot;EditURI&quot;</span> <span class="nx">type</span><span class="o">=</span><span class="s2">&quot;application/rsd+xml&quot;</span> <span class="nx">title</span><span class="o">=</span><span class="s2">&quot;RSD&quot;</span> <span class="nx">href</span><span class="o">=</span><span class="s2">&quot;https://typecodes.com/xmlrpc.php?rsd&quot;</span> <span class="o">/&gt;</span>
+<span class="o">&lt;</span><span class="nx">link</span> <span class="nx">rel</span><span class="o">=</span><span class="s2">&quot;wlwmanifest&quot;</span> <span class="nx">type</span><span class="o">=</span><span class="s2">&quot;application/wlwmanifest+xml&quot;</span> <span class="nx">href</span><span class="o">=</span><span class="s2">&quot;https://typecodes.com/wp-includes/wlwmanifest.xml&quot;</span> <span class="o">/&gt;</span> 
+<span class="o">&lt;</span><span class="nx">meta</span> <span class="nx">name</span><span class="o">=</span><span class="s2">&quot;generator&quot;</span> <span class="nx">content</span><span class="o">=</span><span class="s2">&quot;WordPress 3.4.0&quot;</span> <span class="o">/&gt;</span>
+
+<span class="cp">[</span><span class="nx">WP</span><span class="err">官方解决代码</span><span class="cp">]</span><span class="p">(</span><span class="nx">http</span><span class="o">:</span><span class="c1">//wordpress.org/support/topic/remove-feed-from-wp_head)如下：在functions.php中添加如下代码</span>
+
+<span class="c1">//sorted by vfhky</span>
+<span class="nx">remove_action</span><span class="p">(</span> <span class="s1">&#39;wp_head&#39;</span><span class="p">,</span> <span class="s1">&#39;feed_links_extra&#39;</span><span class="p">,</span> <span class="mi">3</span> <span class="p">);</span> <span class="c1">//去除评论feed</span>
+<span class="nx">remove_action</span><span class="p">(</span> <span class="s1">&#39;wp_head&#39;</span><span class="p">,</span> <span class="s1">&#39;feed_links&#39;</span><span class="p">,</span> <span class="mi">2</span> <span class="p">);</span> <span class="c1">//去除文章feed</span>
+<span class="nx">remove_action</span><span class="p">(</span> <span class="s1">&#39;wp_head&#39;</span><span class="p">,</span> <span class="s1">&#39;rsd_link&#39;</span> <span class="p">);</span> <span class="c1">//针对Blog的远程离线编辑器接口</span>
+<span class="nx">remove_action</span><span class="p">(</span> <span class="s1">&#39;wp_head&#39;</span><span class="p">,</span> <span class="s1">&#39;wlwmanifest_link&#39;</span> <span class="p">);</span> <span class="c1">//Windows Live Writer接口</span>
+<span class="nx">remove_action</span><span class="p">(</span> <span class="s1">&#39;wp_head&#39;</span><span class="p">,</span> <span class="s1">&#39;index_rel_link&#39;</span> <span class="p">);</span> <span class="c1">//移除当前页面的索引</span>
+<span class="nx">remove_action</span><span class="p">(</span> <span class="s1">&#39;wp_head&#39;</span><span class="p">,</span> <span class="s1">&#39;parent_post_rel_link&#39;</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">0</span> <span class="p">);</span> <span class="c1">//移除后面文章的url</span>
+<span class="nx">remove_action</span><span class="p">(</span> <span class="s1">&#39;wp_head&#39;</span><span class="p">,</span> <span class="s1">&#39;start_post_rel_link&#39;</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">0</span> <span class="p">);</span> <span class="c1">//移除最开始文章的url</span>
+<span class="nx">remove_action</span><span class="p">(</span> <span class="s1">&#39;wp_head&#39;</span><span class="p">,</span> <span class="s1">&#39;wp_shortlink_wp_head&#39;</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">0</span> <span class="p">);</span><span class="c1">//自动生成的短链接</span>
+<span class="nx">remove_action</span><span class="p">(</span> <span class="s1">&#39;wp_head&#39;</span><span class="p">,</span> <span class="s1">&#39;adjacent_posts_rel_link&#39;</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">0</span> <span class="p">);</span> <span class="c1">///移除相邻文章的url</span>
+<span class="nx">remove_action</span><span class="p">(</span> <span class="s1">&#39;wp_head&#39;</span><span class="p">,</span> <span class="s1">&#39;wp_generator&#39;</span> <span class="p">);</span> <span class="c1">// 移除版本号</span>
+</pre></div>
+
+
+<p>函数说明：</p>
+<div class="highlight"><pre><span class="nx">remove_action</span><span class="p">(</span><span class="nx">$tag</span><span class="p">,</span> <span class="nx">$function_to_remove</span><span class="p">,</span> <span class="nx">$priority</span><span class="p">,</span> <span class="nx">$accepted_args</span><span class="p">);</span>
+<span class="nx">tag变量表示将要被删除的函数所连接到的动作hook</span><span class="err">；</span>
+<span class="nx">function_to_remove变量表示将要被删除函数的名称</span><span class="err">；</span>
+<span class="nx">priority变量表示函数优先级</span><span class="err">（</span><span class="nx">在函数最初连接时定义</span><span class="err">，</span><span class="nx">默认为10</span><span class="err">；</span>
+<span class="nx">accepted_args变量表示函数所接受参数的数量</span><span class="err">，</span><span class="nx">默认为1</span><span class="err">。</span>
+</pre></div>
+
+
+<h5>（三）严重失误：</h5>
+<p>把博客的ping功能去掉了，直接导致博客发布文章后没及时通知百度搜索……于是，重新在header.php中添加上代码</p>
+<div class="highlight"><pre><span class="o">&lt;</span><span class="nx">link</span> <span class="nx">rel</span><span class="o">=</span><span class="s2">&quot;pingback&quot;</span> <span class="nx">href</span><span class="o">=</span><span class="err">&quot;</span><span class="cp">&lt;?php</span> <span class="nx">bloginfo</span><span class="p">(</span><span class="s1">&#39;pingback_url&#39;</span><span class="p">);</span> <span class="o">?/&gt;</span><span class="s2">&quot; /&gt;</span>
+</pre></div>
+		    	<p class="tags">
+					<div class="post-share">
+						<ul class="post-shareul clearfix">
+							<li class="post-shareli">
+								<a href="http://note.youdao.com/memory/?url=https://typecodes.com/web/wpcleanheaderfile.html&title=配置IIS出现错误的解决方法" class="post-sharea ydshare" target="_blank" rel="nofollow">有道云笔记</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://v.t.sina.com.cn/share/share.php?url=https://typecodes.com/web/wpcleanheaderfile.html&title=配置IIS出现错误的解决方法&source=https://typecodes.com" class="post-sharea wbshare" target="_blank" rel="nofollow">新浪微博</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://v.t.qq.com/share/share.php?title=配置IIS出现错误的解决方法&url=https://typecodes.com/web/wpcleanheaderfile.html&site=https://typecodes.com" class="post-sharea twbshare" target="_blank" rel="nofollow">腾讯微博</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=https://typecodes.com/web/wpcleanheaderfile.html&title=配置IIS出现错误的解决方法&content='utf-8'" class="post-sharea qzoneshare" target="_blank" rel="nofollow">QZone</a>
+							</li>
+						</ul>
+					</div>
+					<div>
+						Tags: <a href="https://typecodes.com/tag/wordpress.html">wordpress</a>,<a href="https://typecodes.com/tag/wordpresstou-bu-wen-jian.html">wordpress头部文件</a>					</div>
+				</p>
+			</article>
+			
+			<div id="comments">
+				<h4 class="num">Comments &raquo;</h4>
+		    	<div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript></div>
+		    </div>
+		</div>
+		<!--3. right sider begin-->
+<div class="col-md-3" id="blog-secondary" role="complementary">
+	<section class="widget">
+		<ul class="widget-list">
+			<form id="search" method="get" action="https://typecodes.com/search.html">
+				<input type="text" name="q" id="s" size="20" x-webkit-speech="" x-webkit-grammar="builtin:search" onwebkitspeechchange="this.value = this.value.replace(this.defaultValue, '')" value="Google...." onfocus="this.value = (this.value == this.defaultValue) ? '' : this.value" onblur="this.value = (this.value == '') ? this.defaultValue : this.value">
+			</form>
+		</ul>
+	</section>
+	<section class="widget">
+		<h3 class="widget-title">Categories</h3>
+		<ul class="widget-list">
+		      <li class="current">
+		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (26)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/csharp/index.html">Csharp</a> (6)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/database/index.html">Database</a> (11)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/java/index.html">Java</a> (1)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/linux/index.html">Linux</a> (16)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/mix/index.html">Mix</a> (53)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/web/index.html">Web</a> (88)
+		      </li>
+		</ul>
+	</section>
+	<section class="widget">
+		<h3 class="widget-title">Recent Posts</h3>
+		<ul class="widget-list">
+			<li class="post">
+				<a href="https://typecodes.com/mix/sucesstypechotopelican.html">成功将博客从Typecho迁移到Pelican</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/mix/begintypechotopelican.html">准备将博客从Typecho迁移到Pelican</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/tcpconnectiontimedout.html">Linux TCP连接Connection Refused和Connection timed out的问题</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/mysqlerrornospace.html">博客MySQL服务惊魂记：Linux磁盘空间不足(Core Dump文件引爆)</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/mix/synweibophpmarkdownimgurl.html">升级博客文章同步微博的插件：PHP正则提取Markdown的图片地址</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/cppgeneralmakefile.html">Linux C/C++工程中可生成ELF、动/静态库文件的通用Makefile</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/libraryundefinedref.html">解决make编译链接动态库错误：libxx.so: undefined reference to xx</a>
+			</li>
+		</ul>
+	</section>
+	<section class="widget widget-feed">
+		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
+	</section>
+</div>
+				</div>
+			</div>
+		</div>
+		<!--4. bottom begin-->
+		<footer id="te-site-footer"><div class="container">
+	<div class="row" role="contentinfo">
+		<section class="col-md-2 col-md-offset-1">
+			<h3>Links</h3>
+			<ul><li><a href="http://diaosbook.com/" title="">diaosbook</a></li></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul>
+				<li><a href="https://typecodes.com/links.html">More..</a></li>
+			</ul>
+		</section>
+		<section class="col-md-2">
+			<h3>Following</h3>
+			<ul>
+				<li><a href="https://github.com/vfhky" class="following github" target="_blank" rel="external nofollow">GitHub</a></li>
+				<li><a href="http://weibo.com/typecodes" class="following weibo" target="_blank" rel="external nofollow">Weibo</a></li>
+				<li><a href="http://vfhky.sinaapp.com/" class="following sae" target="_blank" rel="external nofollow">SAE</a></li>
+				<li><a href="http://www.dwz.cn/mYiwa" class="following qqgroup" target="_blank" rel="external nofollow">Group</a></li>
+			</ul>
+		</section>
+		<div class="col-md-12 copyright">
+			<a href="#top"><i class="i-logo-s">TOP</i></a>
+			<p>
+				&copy; 2012-<script language="JavaScript">var date = new Date(); document.write(date.getFullYear());</script>							<a href="https://typecodes.com">TypeCodes</a>. All Rights Reserved<br>Powered by <a href="http://getpelican.com" rel="external" target="_blank">Pelican</a>. <a href="http://www.miitbeian.gov.cn/" rel="external nofollow" target="_blank">粤ICP备14050695号</a>
+			</p>
+		</div>
+	</div>
+</div>
+</footer>
+<script type="text/javascript">
+	var disqus_shortname = 'typecodes';
+	var disqus_identifier = '/web/wpcleanheaderfile.html';
+	var disqus_url = 'https://typecodes.com/web/wpcleanheaderfile.html';
+	var disqus_title = '配置IIS出现错误的解决方法';
+	(function() {
+		var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+		dsq.src = "//" + disqus_shortname + '.disqus.com/embed.js';
+		(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	 })();
+</script>
+	</body>
+</html>

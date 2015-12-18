@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="zh-CN" class="no-js">
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<title>PHP实现谷歌短网址服务的API接口调用 &mdash; TypeCodes</title>
+		<meta name="author" content="vfhky">
+  		<link href="https://typecodes.com/atom.xml" type="application/atom+xml" rel="alternate" title="TypeCodes Atom Feed" />
+	  	<link href="https://typecodes.com/feed.xml" type="application/rss+xml" rel="alternate" title="TypeCodes RSS Feed" />
+		<meta name="HandheldFriendly" content="True">
+		<meta name="MobileOptimized" content="320">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="renderer" content="webkit">
+		<link rel="stylesheet" href="https://dn-vfhky.qbox.me/libs/css/pelican-vfhky.css">
+		<script>
+			var _hmt = _hmt || [];
+			(function() {
+			  var hm = document.createElement("script");
+			  hm.src = "//hm.baidu.com/hm.js?c15c4ab8e91ba9ac3d5a12293cc93359";
+			  var s = document.getElementsByTagName("script")[0]; 
+			  s.parentNode.insertBefore(hm, s);
+			})();
+		</script>
+	</head>
+	<body style>
+		<!--1. header navigation begin-->
+		<header role="banner" id="te-site-header">
+			<div class="container">
+				<a href="https://typecodes.com" class="te-site-logo" role="logo" target="_self"> TypeCodes</a>
+				<ul class="nav nav-pills" id="te-site-nav" role="navigation">
+					<li><a href="https://typecodes.com">Home</a></li><li><a href="https://typecodes.com/archives.html" title="Archives">Archives</a></li><li><a href="https://typecodes.com/about.html" title="About">About</a></li></ul>
+			</div>
+		</header>
+		<div class="te-headline">
+			<div class="container">
+				<h2 class="te-headline-title"> <a href="https://typecodes.com">TypeCodes</a></h2>
+			</div>
+		</div>
+		<div class="container">
+			<div class="row">
+		<!--2. left sider begin-->
+		<div class="col-md-9" id="blog-main" role="main">
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/web/phgoogleshorturlapi.html">PHP实现谷歌短网址服务的API接口调用</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2014-03-12 22:20 | 分类：<a href="https://typecodes.com/web/index.html">web</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>前面整理了一篇文章<a href="https://typecodes.com/web/phpbd163sinashorturlapi.html" title="点击查看">《PHP实现百度、网易、新浪短网址服务的API接口调用》</a>，这篇文章就来说说如何用PHP实现谷歌短网址API接口的调用。谷歌短网址的API接口功能比较丰富，还能analytics某个短网址，例如点击量创建时间等等。</p>
+<h5>1 谷歌短网址API接口介绍</h5>
+<p>谷歌短网址（Google url shortener）页面是http://goo.gl/，官方API文档说明是：<a href="https://developers.google.com/url-shortener/v1/getting_started" title="点击查看">点击进入</a>。同新浪短网址的API一样，谷歌短网址的API调用可以通过两种授权方式（Authentication）实现。正如文档中所提到的：</p>
+<div class="highlight"><pre>Every request your application sends to the Google URL Shortener API needs to identify your application to Google. There are two ways to identify your application: using an OAuth 2.0 token (which also authorizes the request) and/or using the application&#39;s API key.（你的应用向谷歌短网址API服务器所发送的每一个请求，都需要向Google提供合法证明。有如下两种渠道来识别你的应用：使用一个OAuth 2.0 token，或者使用应用的API KEY）。由于OAuth 2.0的认证过程相对麻烦，而且谷歌官方文档也说了“An API key is highly recommended”，所以这里就使用第二种API KEY来实现。
+</pre></div>
+
+
+
+
+<h5>2 使用Google url shortener的API KEY来调用谷歌短网址API</h5>
+<p>Google url shortener的API KEY申请方式见<a href="https://typecodes.com/mix/googledevelopersconsoleapi.html" title="点击查看">《Google 开发者控制台Developers Console简单介绍以及API KEY的生成》</a>。在获得了API KEY后就可以使用下面的代码来实现谷歌短网址的API接口调用了：</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43</pre></div></td><td class="code"><div class="highlight"><pre><span class="cp">&lt;?php</span>
+    <span class="sd">/**</span>
+<span class="sd">    * @author: vfhky 201403012 20:31</span>
+<span class="sd">    * @description: PHP调用谷歌短网址API接口</span>
+<span class="sd">    * @reference: http://goo.gl/Ro277L</span>
+<span class="sd">    * @param string $type: 非零整数代表长网址转短网址,0表示短网址转长网址</span>
+<span class="sd">    * @note: 长网址转短网址采用POST模式,短网址转长网址采用Get模式</span>
+<span class="sd">    */</span>
+    <span class="k">function</span> <span class="nf">ggUrlAPI</span><span class="p">(</span><span class="nv">$type</span><span class="p">,</span><span class="nv">$url</span><span class="p">){</span>
+      <span class="k">if</span><span class="p">(</span><span class="nv">$type</span><span class="p">){</span>
+         <span class="cm">/* The API key is safe for embedding in URLs; it doesn&#39;t need any encoding. */</span>
+         <span class="nv">$key</span> <span class="o">=</span> <span class="s1">&#39;AIzaSyBlRWs2M5c6a04l-YSDUpUKtlsvDK1hL1Q&#39;</span><span class="p">;</span><span class="c1">//这是我申请的KEY，大家可以测试用</span>
+         <span class="nv">$data</span> <span class="o">=</span> <span class="k">array</span><span class="p">(</span><span class="s1">&#39;longUrl&#39;</span> <span class="o">=&gt;</span> <span class="nv">$url</span><span class="p">,</span> <span class="s1">&#39;key&#39;</span> <span class="o">=&gt;</span> <span class="nv">$key</span><span class="p">);</span>
+         <span class="cm">/* requests containing JSON content bodies must be accompanied by a Content-Type: application/json request header */</span>
+         <span class="nv">$post</span> <span class="o">=</span> <span class="nb">json_encode</span><span class="p">(</span><span class="nv">$data</span><span class="p">);</span>
+         <span class="nv">$baseurl</span> <span class="o">=</span> <span class="s1">&#39;https://www.googleapis.com/urlshortener/v1/url&#39;</span><span class="p">;</span>
+      <span class="p">}</span>
+      <span class="k">else</span>
+         <span class="nv">$baseurl</span> <span class="o">=</span> <span class="s1">&#39;https://www.googleapis.com/urlshortener/v1/url?shortUrl=&#39;</span><span class="o">.</span><span class="nv">$url</span><span class="p">;</span>
+      <span class="nv">$ch</span> <span class="o">=</span> <span class="nb">curl_init</span><span class="p">();</span>
+      <span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_URL</span><span class="p">,</span> <span class="nv">$baseurl</span><span class="p">);</span>
+      <span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_RETURNTRANSFER</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+      <span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_SSL_VERIFYPEER</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+      <span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_HEADER</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+      <span class="k">if</span><span class="p">(</span><span class="nv">$type</span><span class="p">){</span>
+         <span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_HTTPHEADER</span><span class="p">,</span> <span class="k">array</span><span class="p">(</span><span class="s1">&#39;Content-type:application/json&#39;</span><span class="p">));</span>
+         <span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_POST</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+         <span class="nb">curl_setopt</span><span class="p">(</span><span class="nv">$ch</span><span class="p">,</span> <span class="nx">CURLOPT_POSTFIELDS</span><span class="p">,</span> <span class="nv">$post</span><span class="p">);</span>
+      <span class="p">}</span>
+      <span class="nv">$response</span> <span class="o">=</span> <span class="nb">curl_exec</span><span class="p">(</span><span class="nv">$ch</span><span class="p">);</span>
+      <span class="nv">$arrResponse</span> <span class="o">=</span> <span class="nb">json_decode</span><span class="p">(</span><span class="nv">$response</span><span class="p">);</span>
+      <span class="nb">curl_close</span><span class="p">(</span><span class="nv">$ch</span><span class="p">);</span>
+      <span class="k">return</span> <span class="nv">$arrResponse</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">echo</span> <span class="s1">&#39;谷歌短网址API接口测试结果: &lt;br/&gt; &#39;</span><span class="p">;</span>
+    <span class="k">echo</span> <span class="s1">&#39;Long to Short: &#39;</span><span class="p">;</span>
+    <span class="nb">print_r</span><span class="p">(</span><span class="nx">ggUrlAPI</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="s1">&#39;http://vfhky.sinaapp.com&#39;</span><span class="p">));</span>
+    <span class="k">echo</span> <span class="s1">&#39;&lt;br/&gt;&lt;br/&gt;&#39;</span><span class="p">;</span>
+
+    <span class="k">echo</span> <span class="s1">&#39;Short to Long: &#39;</span><span class="p">;</span>
+    <span class="nb">print_r</span><span class="p">(</span><span class="nx">ggUrlAPI</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="s1">&#39;http://goo.gl/F90bfL&#39;</span><span class="p">));</span>
+    <span class="k">echo</span> <span class="s1">&#39;&lt;br/&gt;&lt;br/&gt;&#39;</span><span class="p">;</span>
+<span class="cp">?&gt;</span><span class="x"></span>
+</pre></div>
+</td></tr></table>
+
+<h5>3 要说明的地方1</h5>
+<p><img alt="PHP实现谷歌短网址服务的API接口调用" src="https://dn-vfhky.qbox.me/2014/03/google_shorturl_api.png" title="PHP实现谷歌短网址服务的API接口调用" />](https://dn-vfhky.qbox.me/2014/03/google_shorturl_api.png)</p>
+<p>从上面的测试结果图片可以看出，“长转短”和“短转长”的返回的对象中的成员类似，“短转长”多了一个status成员而已。下面是json格式的视图：</p>
+<div class="highlight"><pre><span class="cm">/* 1短网址转长网址 */</span><span class="w"></span>
+<span class="err">{</span><span class="w"></span>
+<span class="w">  </span><span class="s">&quot;kind&quot;</span><span class="err">:</span><span class="w"> </span><span class="s">&quot;urlshortener#url&quot;</span><span class="o">,</span><span class="w"></span>
+<span class="w">  </span><span class="s">&quot;id&quot;</span><span class="err">:</span><span class="w"> </span><span class="s">&quot;http://goo.gl/F90bfL&quot;</span><span class="o">,</span><span class="w"></span>
+<span class="w">  </span><span class="s">&quot;longUrl&quot;</span><span class="err">:</span><span class="w"> </span><span class="s">&quot;http://vfhky.sinaapp.com&quot;</span><span class="w"></span>
+<span class="err">}</span><span class="w"></span>
+
+<span class="cm">/* 2短网址转长网址 */</span><span class="w"></span>
+<span class="err">{</span><span class="w"></span>
+<span class="w">  </span><span class="s">&quot;kind&quot;</span><span class="err">:</span><span class="w"> </span><span class="s">&quot;urlshortener#url&quot;</span><span class="o">,</span><span class="w"></span>
+<span class="w">  </span><span class="s">&quot;id&quot;</span><span class="err">:</span><span class="w"> </span><span class="s">&quot;http://goo.gl/F90bfL&quot;</span><span class="o">,</span><span class="w"></span>
+<span class="w">  </span><span class="s">&quot;longUrl&quot;</span><span class="err">:</span><span class="w"> </span><span class="s">&quot;http://vfhky.sinaapp.com&quot;</span><span class="o">,</span><span class="w"></span>
+<span class="w">  </span><span class="s">&quot;status&quot;</span><span class="err">:</span><span class="w"> </span><span class="s">&quot;OK&quot;</span><span class="w"></span>
+<span class="err">}</span><span class="w"></span>
+</pre></div>
+
+
+<h5>4 要说明的地方2</h5>
+<p>上面代码输出的是对象，大家可以直接输出里面的成员，例如输出“短转长”中返回的短网址和长网址</p>
+<div class="highlight"><pre><span class="o">$</span><span class="nt">result</span> <span class="o">=</span> <span class="nt">ggUrlAPI</span><span class="o">(</span><span class="nt">0</span><span class="o">,</span><span class="s1">&#39;http://goo.gl/F90bfL&#39;</span><span class="o">);</span>
+<span class="nt">echo</span> <span class="o">$</span><span class="nt">result-</span><span class="o">&gt;</span><span class="nt">id</span><span class="o">.$</span><span class="nt">result-</span><span class="o">&gt;</span><span class="nt">longUrl</span><span class="o">.</span><span class="s1">&#39;&lt;br/&gt;&lt;br/&gt;&#39;</span><span class="o">;</span>
+</pre></div>
+
+
+<h5>5 错误响应Error responses</h5>
+<p>假如输入的数据有误或者其它原因造成接口返回错误数据，那么可以通过错误数据进行调试。谷歌短网址API返回的错误信息包括：a status code(状态码), a human readable message(人工可读的消息), and a list of error details(错误详细列表)。</p>
+<div class="highlight"><pre>{
+ &quot;error&quot;: {
+  &quot;errors&quot;: [
+   {
+    &quot;domain&quot;: &quot;global&quot;,
+    &quot;reason&quot;: &quot;required&quot;,
+    &quot;message&quot;: &quot;Required&quot;,
+    &quot;locationType&quot;: &quot;parameter&quot;,
+    &quot;location&quot;: &quot;resource.longUrl&quot;
+   }
+  ],
+  &quot;code&quot;: 400,
+  &quot;message&quot;: &quot;Required&quot;
+ }
+}
+</pre></div>
+		    	<p class="tags">
+					<div class="post-share">
+						<ul class="post-shareul clearfix">
+							<li class="post-shareli">
+								<a href="http://note.youdao.com/memory/?url=https://typecodes.com/web/phgoogleshorturlapi.html&title=PHP实现谷歌短网址服务的API接口调用" class="post-sharea ydshare" target="_blank" rel="nofollow">有道云笔记</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://v.t.sina.com.cn/share/share.php?url=https://typecodes.com/web/phgoogleshorturlapi.html&title=PHP实现谷歌短网址服务的API接口调用&source=https://typecodes.com" class="post-sharea wbshare" target="_blank" rel="nofollow">新浪微博</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://v.t.qq.com/share/share.php?title=PHP实现谷歌短网址服务的API接口调用&url=https://typecodes.com/web/phgoogleshorturlapi.html&site=https://typecodes.com" class="post-sharea twbshare" target="_blank" rel="nofollow">腾讯微博</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=https://typecodes.com/web/phgoogleshorturlapi.html&title=PHP实现谷歌短网址服务的API接口调用&content='utf-8'" class="post-sharea qzoneshare" target="_blank" rel="nofollow">QZone</a>
+							</li>
+						</ul>
+					</div>
+					<div>
+						Tags: <a href="https://typecodes.com/tag/duan-wang-zhi-api.html">短网址api</a>,<a href="https://typecodes.com/tag/gu-ge-duan-wang-zhi-api.html">谷歌短网址api</a>					</div>
+				</p>
+			</article>
+			
+			<div id="comments">
+				<h4 class="num">Comments &raquo;</h4>
+		    	<div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript></div>
+		    </div>
+		</div>
+		<!--3. right sider begin-->
+<div class="col-md-3" id="blog-secondary" role="complementary">
+	<section class="widget">
+		<ul class="widget-list">
+			<form id="search" method="get" action="https://typecodes.com/search.html">
+				<input type="text" name="q" id="s" size="20" x-webkit-speech="" x-webkit-grammar="builtin:search" onwebkitspeechchange="this.value = this.value.replace(this.defaultValue, '')" value="Google...." onfocus="this.value = (this.value == this.defaultValue) ? '' : this.value" onblur="this.value = (this.value == '') ? this.defaultValue : this.value">
+			</form>
+		</ul>
+	</section>
+	<section class="widget">
+		<h3 class="widget-title">Categories</h3>
+		<ul class="widget-list">
+		      <li class="current">
+		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (26)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/csharp/index.html">Csharp</a> (6)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/database/index.html">Database</a> (11)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/java/index.html">Java</a> (1)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/linux/index.html">Linux</a> (16)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/mix/index.html">Mix</a> (53)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/web/index.html">Web</a> (88)
+		      </li>
+		</ul>
+	</section>
+	<section class="widget">
+		<h3 class="widget-title">Recent Posts</h3>
+		<ul class="widget-list">
+			<li class="post">
+				<a href="https://typecodes.com/mix/sucesstypechotopelican.html">成功将博客从Typecho迁移到Pelican</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/mix/begintypechotopelican.html">准备将博客从Typecho迁移到Pelican</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/tcpconnectiontimedout.html">Linux TCP连接Connection Refused和Connection timed out的问题</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/mysqlerrornospace.html">博客MySQL服务惊魂记：Linux磁盘空间不足(Core Dump文件引爆)</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/mix/synweibophpmarkdownimgurl.html">升级博客文章同步微博的插件：PHP正则提取Markdown的图片地址</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/cppgeneralmakefile.html">Linux C/C++工程中可生成ELF、动/静态库文件的通用Makefile</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/libraryundefinedref.html">解决make编译链接动态库错误：libxx.so: undefined reference to xx</a>
+			</li>
+		</ul>
+	</section>
+	<section class="widget widget-feed">
+		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
+	</section>
+</div>
+				</div>
+			</div>
+		</div>
+		<!--4. bottom begin-->
+		<footer id="te-site-footer"><div class="container">
+	<div class="row" role="contentinfo">
+		<section class="col-md-2 col-md-offset-1">
+			<h3>Links</h3>
+			<ul><li><a href="http://diaosbook.com/" title="">diaosbook</a></li></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul>
+				<li><a href="https://typecodes.com/links.html">More..</a></li>
+			</ul>
+		</section>
+		<section class="col-md-2">
+			<h3>Following</h3>
+			<ul>
+				<li><a href="https://github.com/vfhky" class="following github" target="_blank" rel="external nofollow">GitHub</a></li>
+				<li><a href="http://weibo.com/typecodes" class="following weibo" target="_blank" rel="external nofollow">Weibo</a></li>
+				<li><a href="http://vfhky.sinaapp.com/" class="following sae" target="_blank" rel="external nofollow">SAE</a></li>
+				<li><a href="http://www.dwz.cn/mYiwa" class="following qqgroup" target="_blank" rel="external nofollow">Group</a></li>
+			</ul>
+		</section>
+		<div class="col-md-12 copyright">
+			<a href="#top"><i class="i-logo-s">TOP</i></a>
+			<p>
+				&copy; 2012-<script language="JavaScript">var date = new Date(); document.write(date.getFullYear());</script>							<a href="https://typecodes.com">TypeCodes</a>. All Rights Reserved<br>Powered by <a href="http://getpelican.com" rel="external" target="_blank">Pelican</a>. <a href="http://www.miitbeian.gov.cn/" rel="external nofollow" target="_blank">粤ICP备14050695号</a>
+			</p>
+		</div>
+	</div>
+</div>
+</footer>
+<script type="text/javascript">
+	var disqus_shortname = 'typecodes';
+	var disqus_identifier = '/web/phgoogleshorturlapi.html';
+	var disqus_url = 'https://typecodes.com/web/phgoogleshorturlapi.html';
+	var disqus_title = 'PHP实现谷歌短网址服务的API接口调用';
+	(function() {
+		var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+		dsq.src = "//" + disqus_shortname + '.disqus.com/embed.js';
+		(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	 })();
+</script>
+	</body>
+</html>

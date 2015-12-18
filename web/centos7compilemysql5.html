@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="zh-CN" class="no-js">
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<title>阿里云CentOS 7.1编译安装MySql5.6.24 &mdash; TypeCodes</title>
+		<meta name="author" content="vfhky">
+  		<link href="https://typecodes.com/atom.xml" type="application/atom+xml" rel="alternate" title="TypeCodes Atom Feed" />
+	  	<link href="https://typecodes.com/feed.xml" type="application/rss+xml" rel="alternate" title="TypeCodes RSS Feed" />
+		<meta name="HandheldFriendly" content="True">
+		<meta name="MobileOptimized" content="320">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="renderer" content="webkit">
+		<link rel="stylesheet" href="https://dn-vfhky.qbox.me/libs/css/pelican-vfhky.css">
+		<script>
+			var _hmt = _hmt || [];
+			(function() {
+			  var hm = document.createElement("script");
+			  hm.src = "//hm.baidu.com/hm.js?c15c4ab8e91ba9ac3d5a12293cc93359";
+			  var s = document.getElementsByTagName("script")[0]; 
+			  s.parentNode.insertBefore(hm, s);
+			})();
+		</script>
+	</head>
+	<body style>
+		<!--1. header navigation begin-->
+		<header role="banner" id="te-site-header">
+			<div class="container">
+				<a href="https://typecodes.com" class="te-site-logo" role="logo" target="_self"> TypeCodes</a>
+				<ul class="nav nav-pills" id="te-site-nav" role="navigation">
+					<li><a href="https://typecodes.com">Home</a></li><li><a href="https://typecodes.com/archives.html" title="Archives">Archives</a></li><li><a href="https://typecodes.com/about.html" title="About">About</a></li></ul>
+			</div>
+		</header>
+		<div class="te-headline">
+			<div class="container">
+				<h2 class="te-headline-title"> <a href="https://typecodes.com">TypeCodes</a></h2>
+			</div>
+		</div>
+		<div class="container">
+			<div class="row">
+		<!--2. left sider begin-->
+		<div class="col-md-9" id="blog-main" role="main">
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/web/centos7compilemysql5.html">阿里云CentOS 7.1编译安装MySql5.6.24</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2015-06-25 09:42 | 分类：<a href="https://typecodes.com/web/index.html">web</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>继<a href="https://typecodes.com/web/centos7compilemysql.html" title="《2015博客升级记(四)：CentOS 7.1编译安装MySQL5.7.7rc》">前文</a>记述了如何在Linux系统中，通过源码编译安装MySQL5.7.7 Release Candidate版本的过程，这篇文章主要是记录源码编译安装MySql5.6.24的过程。</p>
+<p>鉴于官方MySql5.6.24相对是一个比较稳定的版本，所以博主之前也在自己的另一台CentOS7.1主机上安装了一遍。不过最后还是图新鲜，选择了MySQL5.7.7rc版本。下面是具体的安装过程，由于和MySQL5.7.7rc的编译安装过程很类似，所以这里尽可能精简文字：</p>
+
+
+<h5>1 创建mysql用户和用户组，并下载MySql5.6.24版本</h5>
+<p>首先创建一个名为mysql且<code>没有登录权限</code>的用户和一个名为mysql的用户组，然后去mysql官网下载MySql5.6.24版本。</p>
+<div class="highlight"><pre>#######新建mysql用户和mysql组
+[root@typecodes ~]# groupadd -r mysql &amp;&amp; useradd -r -g mysql -s /bin/false -M mysql
+
+######从官网或者博客备份地址下载MySql5.6.24版本
+[root@typecodes ~]# wget -c http://cdn.mysql.com/Downloads/MySQL-5.6/mysql-5.6.24.tar.gz
+[root@typecodes ~]# wget -c http://git.typecodes.com/libs/mysql/mysql-5.6.24.tar.gz
+
+######开始解压MySql5.6.24
+[root@typecodes ~]# tar -zxvf mysql-5.6.24.tar.gz &amp;&amp; cd mysql-5.6.24/
+######下载gmock：google的c++mock框架，从mysql 5.6开始支持
+[root@typecodes mysql-5.6.24]# wget -c https://googlemock.googlecode.com/files/gmock-1.6.0.zip
+[root@typecodes mysql-5.6.24]# wget -c http://git.typecodes.com/libs/ccpp/gmock-1.6.0.zip
+######将其解压到MySQL5.6.24的source_downloads目录下
+[root@typecodes mysql-5.6.24]# unzip gmock-1.6.0.zip -d source_downloads
+</pre></div>
+
+
+<h5>2 下载编译MySql5.6.24时需要的工具（安装过程同编译安装MySQL5.7.7rc完全一致）</h5>
+<p>和编译安装MySQL5.7.7rc版本一样，这里也需要安装CMake、Ncurses、bison和Boost库。</p>
+<div class="highlight"><pre>#######CMake编译工具
+[root@typecodes ~]# wget -c http://git.typecodes.com/libs/ccpp/cmake-3.2.1.tar.gz
+[root@typecodes ~]# tar -zxf cmake-3.2.1.tar.gz &amp;&amp; cd cmake-3.2.1
+[root@typecodes cmake-3.2.1]# ./configure 
+[root@typecodes cmake-3.2.1]# make &amp;&amp; make install  [默认安装路径是/usr/local/bin]
+[root@typecodes cmake-3.2.1]# cmake --version       [查看cmake版本]
+cmake version 3.2.1
+
+CMake suite maintained and supported by Kitware (kitware.com/cmake).
+[root@typecodes cmake-3.2.1]# cd ~ &amp;&amp; rm -rf cmake-3.2.1*
+
+#######Ncurses：提供功能键定义(快捷键),屏幕绘制以及基于文本终端的图形互动功能的动态库。
+[root@typecodes ~]# yum -y install ncurses-devel
+
+#######bison：GNU分析器生成器
+[root@typecodes ~]# wget -c http://git.typecodes.com/libs/ccpp/bison-3.0.tar.gz
+[root@typecodes ~]# tar -zxf bison-3.0.tar.gz &amp;&amp; cd bison-3.0/ &amp;&amp; ./configure
+[root@typecodes bison-3.0]# make &amp;&amp; make install
+[root@typecodes bison-3.0]# cd ~ &amp;&amp; rm -rf bison-3.0*
+
+#######Boost库：一个开源可移植的C++库，是C++标准化进程的开发引擎之一
+[root@typecodes ~]# wget -c http://git.typecodes.com/libs/ccpp/boost_1_57_0.tar.bz2
+[root@typecodes ~]# tar -jxf boost_1_57_0.tar.bz2 &amp;&amp; cd boost_1_57_0/
+[root@typecodes boost_1_57_0]# ./bootstrap.sh
+[root@typecodes boost_1_57_0]# ./b2 stage threading=multi link=shared
+[root@typecodes boost_1_57_0]# ./b2 install threading=multi link=shared
+[root@typecodes boost_1_57_0]# cd ~ &amp;&amp; rm -rf boost_1_57_0*
+</pre></div>
+
+
+<h5>3 解决MySQL5.6.24的bug</h5>
+<p>在MySQL5.6.24源码包中的<code>/cmd-line-utils/libedit/terminal.c</code>文件有bug，会导致在安装完后，使用命令报<code>Segmentation fault</code>的错误。</p>
+<p><img alt="MySQL5.6.24的bug" src="https://dn-vfhky.qbox.me/2015/06/mysql5.6.24_bug.png" title="MySQL5.6.24的bug" /></p>
+<p>谷歌到<a href="https://bugs.launchpad.net/percona-server/+bug/1201123" title="《connect using mysql client gives a segmentation fault》">这篇文章</a>解决：注销第869行的 <code>//char buf[TC_BUFSIZE];</code>并将第879行的<code>area = buf;</code>改成<code>area = NULL;</code>。</p>
+<p><img alt="MySQL5.6.24的bug" src="https://dn-vfhky.qbox.me/2015/06/solve_mysql5.6.24_bug.png" title="MySQL5.6.24的bug" /></p>
+<h5>4 开始进行MySql5.6.24编译前的配置</h5>
+<p>这里和编译安装MySQL5.7.7rc时的操作也完全相同：</p>
+<div class="highlight"><pre>######使用cmake命令，开始编译MySql5.6.24
+[root@typecodes mysql-5.6.24]# cmake \
+-DCMAKE_INSTALL_PREFIX=/usr/local/mysql  \              [MySQL安装的根目录]
+-DMYSQL_DATADIR=/mydata/mysql/data  \                   [MySQL数据库文件存放目录]
+-DSYSCONFDIR=/etc \                                     [MySQL配置文件所在目录]
+-DMYSQL_USER=mysql \                                    [MySQL用户名]      
+-DWITH_MYISAM_STORAGE_ENGINE=1 \                        [MySQL的数据库引擎]
+-DWITH_INNOBASE_STORAGE_ENGINE=1 \                      [MySQL的数据库引擎]
+-DWITH_ARCHIVE_STORAGE_ENGINE=1 \                       [MySQL的数据库引擎]
+-DWITH_MEMORY_STORAGE_ENGINE=1 \                        [MySQL的数据库引擎]
+-DWITH_READLINE=1 \                                     [MySQL的readline library]
+-DMYSQL_UNIX_ADDR=/var/run/mysql/mysql.sock \           [MySQL的通讯目录]
+-DMYSQL_TCP_PORT=3306 \                                 [MySQL的监听端口]
+-DENABLED_LOCAL_INFILE=1 \                              [启用加载本地数据]
+-DENABLE_DOWNLOADS=1 \                                  [编译时允许自主下载相关文件]
+-DWITH_PARTITION_STORAGE_ENGINE=1  \
+-DEXTRA_CHARSETS=all \                                  [使MySQL支持所有的扩展字符]
+-DDEFAULT_CHARSET=utf8 \                                [设置默认字符集为utf8]
+-DDEFAULT_COLLATION=utf8_general_ci \                   [设置默认字符校对]
+-DWITH_DEBUG=0 \                                        [禁用调试模式]
+-DMYSQL_MAINTAINER_MODE=0 \
+-DWITH_SSL:STRING=bundled \                             [通讯时支持ssl协议]
+-DWITH_ZLIB:STRING=bundled                              [允许使用zlib library]
+</pre></div>
+
+
+<p>执行上面的配置命令的结果如下图所示：</p>
+<p><img alt="MySQL5.7.7rc编译前的配置" src="https://dn-vfhky.qbox.me/2015/06/compile_mysql5.6.24_config.png" title="MySQL5.7.7rc编译前的配置" /></p>
+<h5>5 开始编译和安装MySQL5.6.24</h5>
+<p>相对编译MySQL5.7.7rc来说，编译MySQL5.6.24对主机资源的消耗低很多，而且耗时也少（约1小时）。</p>
+<div class="highlight"><pre>[root@typecodes mysql-5.6.24]# make &amp;&amp; make install
+</pre></div>
+
+
+<p>下图展示的是<code>make</code>命令执行完毕的情况：</p>
+<p><img alt="编译MySQL5.6.24的make命令执行结果" src="https://dn-vfhky.qbox.me/2015/06/make_mysql5.6.24_step1.png" title="编译MySQL5.6.24的make命令执行结果" /></p>
+<p><img alt="编译MySQL5.6.24的make命令执行结果" src="https://dn-vfhky.qbox.me/2015/06/make_mysql5.6.24_step2.png" title="编译MySQL5.6.24的make命令执行结果" /></p>
+<p><code>make</code>命令执行完后，开始执行<code>make install</code>命令：</p>
+<p><img alt="编译MySQL5.6.24的make命令执行结果" src="https://dn-vfhky.qbox.me/2015/06/make_mysql5.6.24_step3.png" title="编译MySQL5.6.24的make命令执行结果" /></p>
+<p><img alt="编译MySQL5.6.24的make命令执行结果" src="https://dn-vfhky.qbox.me/2015/06/make_mysql5.6.24_step4.png" title="编译MySQL5.6.24的make命令执行结果" /></p>
+<p>最后，激动人心的时刻，看到下图就代表已经编译安装好了MySQL5.6.24！</p>
+<p><img alt="安装MySQL5.6.24的make install命令执行结果" src="https://dn-vfhky.qbox.me/2015/06/make_mysql5.6.24_step5.png" title="安装MySQL5.7.7rc的MySQL5.6.24命令执行结果" /></p>
+<h5>6 查看编译成功后的MySQL安装目录</h5>
+<p>同MySQL5.7.7rc一样，需要查看MySQL5.6.24的<code>/usr/local/mysql/lib/</code>目录下是否存在下面的库文件。</p>
+<div class="highlight"><pre>[root@typecodes lib]# ls
+libmysqlclient.a    libmysqlclient_r.so     libmysqlclient_r.so.18.1.0  libmysqlclient.so.18      libmysqld.a         plugin
+libmysqlclient_r.a  libmysqlclient_r.so.18  libmysqlclient.so           libmysqlclient.so.18.1.0  libmysqlservices.a
+</pre></div>
+
+
+<h5>7 开始设置MySQL的配置文件my.cnf</h5>
+<p>同MySQL5.7.7rc的配置文件my.cnf一样，直接把<a href="https://typecodes.com/web/centosmysqlconfig.html" title="查看原文">《CentOS系统MySQL的配置文件my.cnf》</a>文中整理的my.cnf文件覆盖服务器上的<code>/etc/my.cnf</code>即可。</p>
+<div class="highlight"><pre>[root@typecodes mysql]# mv /etc/my.cnf /etc/my.cnfbak
+[root@typecodes mysql]# mv  ~/my.cnf  /etc/my.cnf
+</pre></div>
+
+
+<h5>8 添加mysql的环境变量</h5>
+<p>同MySQL5.7.7rc，添加MySQL的bin目录到Linux环境变量中：</p>
+<div class="highlight"><pre><span class="x">[root@typecodes mysql]</span><span class="err">#</span><span class="x"> echo -e &#39;\n\nexport PATH=/usr/local/mysql/bin:</span><span class="p">$</span><span class="nv">PATH</span><span class="x">\n&#39; &gt;&gt; /etc/profile &amp;&amp; source /etc/profile</span>
+</pre></div>
+
+
+<h5>9 创建MySQL数据库文件的存放路径以及相关安全配置</h5>
+<p>同MySQL5.7.7rc，创建<code>/mydata/mysql/data</code>作为MySQL的数据库目录。</p>
+<div class="highlight"><pre>[root@typecodes ~]# mkdir -p /mydata/mysql/data &amp;&amp; chown -R root:mysql /usr/local/mysql
+[root@typecodes mysql]# chown -R mysql:mysql /mydata/mysql/data
+[root@typecodes mysql]# chmod -R go-rwx /mydata/mysql/data
+</pre></div>
+
+
+<h5>10 初始化MySQL自身的数据库</h5>
+<p>同MySQL5.7.7rc，初始化MySQL自身的数据库。</p>
+<div class="highlight"><pre>######参数user表示用户，basedir表示mysql的安装路径，datadir表示数据库文件存放路径
+[root@typecodes bin]# mysqld --initialize-insecure --user=mysql --basedir=/usr/local/mysql --datadir=/mydata/mysql/data
+</pre></div>
+
+
+<p>执行完后，可以通过<code>[root@typecodes mysql]# ls -lrt /mydata/mysql/data/</code>命令查看是否生成了MySQL自身的数据库文件。</p>
+<p><img alt="初始化MySQL自身的数据库" src="https://dn-vfhky.qbox.me/2015/06/mysql_ini_dir.png" title="初始化MySQL自身的数据库" /></p>
+<h5>11 创建MySQL日志存放目录以及设置开机启动</h5>
+<p>同MySQL5.7.7rc，将启动MySQL服务进程的脚本添加到开机启动项中。</p>
+<div class="highlight"><pre>[root@typecodes ~]# mkdir -p /var/run/mysql &amp;&amp; mkdir -p /var/log/mysql
+[root@typecodes ~]# chown -R mysql:mysql /var/log/mysql &amp;&amp; chown -R mysql:mysql /var/run/mysql
+######配置开机自启动
+[root@typecodes mysql]# cp /usr/local/mysql/support-files/mysql.server  /etc/init.d/mysqld
+[root@typecodes mysql]# chmod +x /etc/init.d/mysqld     #增加可执行权限
+[root@typecodes mysql]# chkconfig --add mysql       #添加到sysV服务
+[root@typecodes mysql]# chkconfig mysqld on
+</pre></div>
+
+
+<h5>12 启动MySQL服务</h5>
+<p>同MySQL5.7.7rc，启动MySQL服务进程：</p>
+<div class="highlight"><pre>[root@typecodes mysql]# mysqld_safe --user=mysql --datadir=/mydata/mysql/data --log-error=/var/log/mysql/error.log &amp;
+[1] 10274
+[root@typecodes mysql]# 150513 21:28:16 mysqld_safe Logging to &#39;/var/log/mysql/error.log&#39;.
+150513 21:28:16 mysqld_safe Starting mysqld daemon with databases from /mydata/mysql/data
+
+[root@typecodes mysql]# service mysqld start
+Starting MySQL.[  OK  ]                 [启动成功]
+[root@typecodes mysql]#
+</pre></div>
+
+
+<p>然后使用下面这命令<code>ps -ef | grep mysql</code>和<code>netstat -tunpl | grep 3306</code>查看MySQL服务进程和端口监听情况：</p>
+<p><img alt="查看MySQL服务进程和端口监听情况" src="https://dn-vfhky.qbox.me/2015/06/mysql_process_litsen_port.png" title="查看MySQL服务进程和端口监听情况" /></p>
+<h5>13 初始化MySQL数据库的root用户密码</h5>
+<p>MySQL5.6.24和MySQL5.7.7rc的用户密码策略是不同的，MySQL5.6.24没有提示用户密码的强度等级，所以也就不会去校验。因此，我们只需要一路输入<code>y</code>和自己喜欢的密码即可。</p>
+<p><img alt="MySQL5.6.24设置密码" src="https://dn-vfhky.qbox.me/2015/06/mysql_set_password.png" title="MySQL5.6.24设置密码" /></p>
+<h5>14 将MySQL数据库的动态链接库共享至系统链接库</h5>
+<p>同MySQL5.7.7rc，将MySQL5.6.24的lib库文件添加到当前Linux主机链接库<code>/etc/ld.so.conf.d/</code>下，方便其它程序安装调用。</p>
+<div class="highlight"><pre>[root@typecodes lib]# echo &quot;/usr/local/mysql/lib&quot; &gt; /etc/ld.so.conf.d/mysql.conf
+[root@typecodes lib]# ldconfig          [使生效]
+[root@typecodes lib]# ldconfig -v |grep mysql       [查看效果]
+ldconfig: Can&#39;t stat /libx32: No such file or directory
+ldconfig: Path `/usr/lib&#39; given more than once
+ldconfig: Path `/usr/lib64&#39; given more than once
+ldconfig: Can&#39;t stat /usr/libx32: No such file or directory
+/usr/lib64/mysql:
+    libmysqlclient.so.18 -&gt; libmysqlclient.so.18.0.0
+    libmysqlclient.so.18 -&gt; libmysqlclient_r.so.18.1.0
+/usr/local/mysql/lib:
+    libmysqlclient.so.18 -&gt; libmysqlclient_r.so.18.1.0
+</pre></div>
+
+
+<h5>15 创建其它MySQL数据库用户</h5>
+<p>操作同MySQL5.7.7rc，这里就不再演示了。</p>
+		    	<p class="tags">
+					<div class="post-share">
+						<ul class="post-shareul clearfix">
+							<li class="post-shareli">
+								<a href="http://note.youdao.com/memory/?url=https://typecodes.com/web/centos7compilemysql5.html&title=阿里云CentOS 7.1编译安装MySql5.6.24" class="post-sharea ydshare" target="_blank" rel="nofollow">有道云笔记</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://v.t.sina.com.cn/share/share.php?url=https://typecodes.com/web/centos7compilemysql5.html&title=阿里云CentOS 7.1编译安装MySql5.6.24&source=https://typecodes.com" class="post-sharea wbshare" target="_blank" rel="nofollow">新浪微博</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://v.t.qq.com/share/share.php?title=阿里云CentOS 7.1编译安装MySql5.6.24&url=https://typecodes.com/web/centos7compilemysql5.html&site=https://typecodes.com" class="post-sharea twbshare" target="_blank" rel="nofollow">腾讯微博</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=https://typecodes.com/web/centos7compilemysql5.html&title=阿里云CentOS 7.1编译安装MySql5.6.24&content='utf-8'" class="post-sharea qzoneshare" target="_blank" rel="nofollow">QZone</a>
+							</li>
+						</ul>
+					</div>
+					<div>
+						Tags: <a href="https://typecodes.com/tag/bo-ke-cheng-chang-lu.html">博客成长录</a>,<a href="https://typecodes.com/tag/mysql.html">mysql</a>					</div>
+				</p>
+			</article>
+			
+			<div id="comments">
+				<h4 class="num">Comments &raquo;</h4>
+		    	<div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript></div>
+		    </div>
+		</div>
+		<!--3. right sider begin-->
+<div class="col-md-3" id="blog-secondary" role="complementary">
+	<section class="widget">
+		<ul class="widget-list">
+			<form id="search" method="get" action="https://typecodes.com/search.html">
+				<input type="text" name="q" id="s" size="20" x-webkit-speech="" x-webkit-grammar="builtin:search" onwebkitspeechchange="this.value = this.value.replace(this.defaultValue, '')" value="Google...." onfocus="this.value = (this.value == this.defaultValue) ? '' : this.value" onblur="this.value = (this.value == '') ? this.defaultValue : this.value">
+			</form>
+		</ul>
+	</section>
+	<section class="widget">
+		<h3 class="widget-title">Categories</h3>
+		<ul class="widget-list">
+		      <li class="current">
+		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (26)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/csharp/index.html">Csharp</a> (6)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/database/index.html">Database</a> (11)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/java/index.html">Java</a> (1)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/linux/index.html">Linux</a> (16)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/mix/index.html">Mix</a> (53)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/web/index.html">Web</a> (88)
+		      </li>
+		</ul>
+	</section>
+	<section class="widget">
+		<h3 class="widget-title">Recent Posts</h3>
+		<ul class="widget-list">
+			<li class="post">
+				<a href="https://typecodes.com/mix/sucesstypechotopelican.html">成功将博客从Typecho迁移到Pelican</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/mix/begintypechotopelican.html">准备将博客从Typecho迁移到Pelican</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/tcpconnectiontimedout.html">Linux TCP连接Connection Refused和Connection timed out的问题</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/mysqlerrornospace.html">博客MySQL服务惊魂记：Linux磁盘空间不足(Core Dump文件引爆)</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/mix/synweibophpmarkdownimgurl.html">升级博客文章同步微博的插件：PHP正则提取Markdown的图片地址</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/cppgeneralmakefile.html">Linux C/C++工程中可生成ELF、动/静态库文件的通用Makefile</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/libraryundefinedref.html">解决make编译链接动态库错误：libxx.so: undefined reference to xx</a>
+			</li>
+		</ul>
+	</section>
+	<section class="widget widget-feed">
+		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
+	</section>
+</div>
+				</div>
+			</div>
+		</div>
+		<!--4. bottom begin-->
+		<footer id="te-site-footer"><div class="container">
+	<div class="row" role="contentinfo">
+		<section class="col-md-2 col-md-offset-1">
+			<h3>Links</h3>
+			<ul><li><a href="http://diaosbook.com/" title="">diaosbook</a></li></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul>
+				<li><a href="https://typecodes.com/links.html">More..</a></li>
+			</ul>
+		</section>
+		<section class="col-md-2">
+			<h3>Following</h3>
+			<ul>
+				<li><a href="https://github.com/vfhky" class="following github" target="_blank" rel="external nofollow">GitHub</a></li>
+				<li><a href="http://weibo.com/typecodes" class="following weibo" target="_blank" rel="external nofollow">Weibo</a></li>
+				<li><a href="http://vfhky.sinaapp.com/" class="following sae" target="_blank" rel="external nofollow">SAE</a></li>
+				<li><a href="http://www.dwz.cn/mYiwa" class="following qqgroup" target="_blank" rel="external nofollow">Group</a></li>
+			</ul>
+		</section>
+		<div class="col-md-12 copyright">
+			<a href="#top"><i class="i-logo-s">TOP</i></a>
+			<p>
+				&copy; 2012-<script language="JavaScript">var date = new Date(); document.write(date.getFullYear());</script>							<a href="https://typecodes.com">TypeCodes</a>. All Rights Reserved<br>Powered by <a href="http://getpelican.com" rel="external" target="_blank">Pelican</a>. <a href="http://www.miitbeian.gov.cn/" rel="external nofollow" target="_blank">粤ICP备14050695号</a>
+			</p>
+		</div>
+	</div>
+</div>
+</footer>
+<script type="text/javascript">
+	var disqus_shortname = 'typecodes';
+	var disqus_identifier = '/web/centos7compilemysql5.html';
+	var disqus_url = 'https://typecodes.com/web/centos7compilemysql5.html';
+	var disqus_title = '阿里云CentOS 7.1编译安装MySql5.6.24';
+	(function() {
+		var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+		dsq.src = "//" + disqus_shortname + '.disqus.com/embed.js';
+		(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	 })();
+</script>
+	</body>
+</html>

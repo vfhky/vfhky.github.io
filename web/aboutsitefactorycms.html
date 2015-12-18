@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="zh-CN" class="no-js">
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<title>对动易CMS和织梦CMS的一些认识——动易CMS篇 &mdash; TypeCodes</title>
+		<meta name="author" content="vfhky">
+  		<link href="https://typecodes.com/atom.xml" type="application/atom+xml" rel="alternate" title="TypeCodes Atom Feed" />
+	  	<link href="https://typecodes.com/feed.xml" type="application/rss+xml" rel="alternate" title="TypeCodes RSS Feed" />
+		<meta name="HandheldFriendly" content="True">
+		<meta name="MobileOptimized" content="320">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="renderer" content="webkit">
+		<link rel="stylesheet" href="https://dn-vfhky.qbox.me/libs/css/pelican-vfhky.css">
+		<script>
+			var _hmt = _hmt || [];
+			(function() {
+			  var hm = document.createElement("script");
+			  hm.src = "//hm.baidu.com/hm.js?c15c4ab8e91ba9ac3d5a12293cc93359";
+			  var s = document.getElementsByTagName("script")[0]; 
+			  s.parentNode.insertBefore(hm, s);
+			})();
+		</script>
+	</head>
+	<body style>
+		<!--1. header navigation begin-->
+		<header role="banner" id="te-site-header">
+			<div class="container">
+				<a href="https://typecodes.com" class="te-site-logo" role="logo" target="_self"> TypeCodes</a>
+				<ul class="nav nav-pills" id="te-site-nav" role="navigation">
+					<li><a href="https://typecodes.com">Home</a></li><li><a href="https://typecodes.com/archives.html" title="Archives">Archives</a></li><li><a href="https://typecodes.com/about.html" title="About">About</a></li></ul>
+			</div>
+		</header>
+		<div class="te-headline">
+			<div class="container">
+				<h2 class="te-headline-title"> <a href="https://typecodes.com">TypeCodes</a></h2>
+			</div>
+		</div>
+		<div class="container">
+			<div class="row">
+		<!--2. left sider begin-->
+		<div class="col-md-9" id="blog-main" role="main">
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/web/aboutsitefactorycms.html">对动易CMS和织梦CMS的一些认识——动易CMS篇</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2012-08-19 01:24 | 分类：<a href="https://typecodes.com/web/index.html">web</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>最近一Q友找我帮忙修改他的一个网站，用的是动易SiteFactory3.6的内容管理系统。对于动易的话，我第一次接触也是在大二的时候。那时跟着学校实验室的坤哥混，他接手了一些网站项目然后让我和另外一同学参与了进来。其实那个时候对CMS还是闻所未闻，因为自己以前总觉得所有网站都是自己用相关的开发语言写出来的。就像当时参加学校的网页设计比赛一样，我也是自己用ASP+ACCESS写的一个应该说是比较戳的网站。</p>
+<p>可能是由于主办方觉得是一难得的奇葩吧，也让我进入了决赛。后来想想，还是觉得自己的CSS设计太戳了，就两个字“难看”。那时，坤哥推荐我用动易的CMS做网站。这样我就加入了CMS的行列。不过，在初次使用动易CMS的时候遇到的麻烦还是挺多的，所以在从那次以后也没怎么使用SiteFactory这个CMS了。直到这次，网上一Q友找我修改他的这个动易CMS网站，我又重新接触了动易SiteFactory（此前大多时候都用的是织梦的CMS）。再加上近段时间，我也在学习C#，对微软.NET平台比较感兴趣，所以还是接受了。下面，我就通过两篇文章来说说我对动易CMS和织梦CMS的一些看法（当然有一定的局限性，不妥的地方还望指正！）</p>
+
+
+<h5>1 动易CMS的概况</h5>
+<p>动易目前有三大系列产品，即动易SiteFactory、动易BizIdea和动易SiteWeaver。其中，动易SiteFactory 、动易 BizIdea 为08年新推出的基于.NET技术开发的内容管理系统和电子商务管理系统。而动易SiteWeaver是基于ASP技术的内容管理系统。当然每种大类下面还专门分类出了不同的“子系统”，比如动易SiteFactory可以具体到“政府门户网站系统”、“行业门户网站系统”等“子系统”。</p>
+<h5>2 动易CMS的优势</h5>
+<p>这里主要说明一下动易SiteFactory和动易BizIdea这两种基于.NET的系统，因为动易已经把注意力集中到了微软的.NET平台上了，当然这也是一种大的趋势。而基于ASP+Access开发环境的动易SiteWeaver已经渐渐地淡出了他们的开发团队。虽然动易SiteWeaver是动易产品里面唯一一款开源的CMS系统，但是由微软领导的.NET潮流确实势不可挡。因此，动易SiteWeaver的没落，也就没什么奇怪的了。下面我就自己的一些经验，谈一下动易SiteFactory和动易BizIdea这两种CMS的优势所在，当然也是有一定的局限性的：</p>
+<h6>2.1 基于微软.Net 2.0平台</h6>
+<p>.Net2.0目前微软帝国在Web方面极力主导和推广的开发环境。在这个封闭的王国里面还是有它的强项的，.NET2.0在Web开发的平台支持上面依然高调的贴着“高效”、“稳定”、“安全”的标签。</p>
+<h6>2.2 系统N层架构设计</h6>
+<p>这两种CMS确实跟着微软在企业架构的设计方案，采用以表现层、业务逻辑层、数据访问层为主的N层架构设计，系统结构清晰、易于维护，提高了它们的可扩展性和重用性。而这种可伸缩的N层架构设计是网站平台可持续发展的核心保证。</p>
+<p><img alt="微软.NET2.0推荐的N层架构设计" src="https://dn-vfhky.qbox.me/2012/08/dy.jpg" title="微软.NET2.0推荐的N层架构设计" /></p>
+<h6>2.3 管理日志</h6>
+<p>类似飞机的黑匣子一样，为网站管理员提供了安全分析的依据。管理员能够通过网站日志了解到站点异常活动或者黑客尝试性攻击，为及时预防和应对提供了宝贵的时间。</p>
+<h6>2.4 URL参数安全过滤</h6>
+<p>这两种CMS允许在开发设计的过程中，自由设置URL可传递的参数个数、类型等。而且系统内置了一些相关的模板函数，通过限制URL参数传递的方式来进行安全过滤，从而杜绝SQL等黑客攻击方式。</p>
+<h6>2.5 较快的加载和响应速度</h6>
+<p>相信大家在初次使用动易SiteFactory和动易BizIdea的时候，会感觉加载的速度比较慢。开始也以为这是这两种CMS的一大缺憾，后来查了下主要是由于Asp.Net的特性，即在第一次访问某个页面时，要进行编译过程。但当自己或他人再访问这个页面的时候，由于不需要再次编译，所以加载速度会变快。</p>
+<h6>2.6 可配置式管道处理模型（Configurable HTTP Pipeline）</h6>
+<p>通过重写HttpModule，使其模块化和可配置，根据配置文件指定哪些目录/类型文件可以通过此HttpModule。这种模块化和可配置技术，使之更适合IIS7的新功能特性并且减少无效的管道请求以提高性能。</p>
+<h5>3 动易CMS的不足</h5>
+<h6>3.1 平台整合</h6>
+<p>我觉得动易SiteFactory和动易BizIdea的平台整合性还是比较差的，例如不能够比较完美地融合Discuz论坛程序，不能够较好的接入当前比较流行的开放平台的接口应用程序。虽然官方宣称“系统内置平台整合接口，可以与论坛及博客平台进行整合，实现全站通行证效果。”</p>
+<h6>3.2 较为落后的后期技术支持</h6>
+<p>由于目前动易SiteFactory和动易BizIdea的“封闭性”，很难让更多的程序猿等开发者参与进来。所以造成了一些入门者觉得难以上手或者说是驾驭，从动易的官方论坛以及其他网络上的技术文档都是比较少的，很多问题都没得到解决方案。</p>
+		    	<p class="tags">
+					<div class="post-share">
+						<ul class="post-shareul clearfix">
+							<li class="post-shareli">
+								<a href="http://note.youdao.com/memory/?url=https://typecodes.com/web/aboutsitefactorycms.html&title=对动易CMS和织梦CMS的一些认识——动易CMS篇" class="post-sharea ydshare" target="_blank" rel="nofollow">有道云笔记</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://v.t.sina.com.cn/share/share.php?url=https://typecodes.com/web/aboutsitefactorycms.html&title=对动易CMS和织梦CMS的一些认识——动易CMS篇&source=https://typecodes.com" class="post-sharea wbshare" target="_blank" rel="nofollow">新浪微博</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://v.t.qq.com/share/share.php?title=对动易CMS和织梦CMS的一些认识——动易CMS篇&url=https://typecodes.com/web/aboutsitefactorycms.html&site=https://typecodes.com" class="post-sharea twbshare" target="_blank" rel="nofollow">腾讯微博</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=https://typecodes.com/web/aboutsitefactorycms.html&title=对动易CMS和织梦CMS的一些认识——动易CMS篇&content='utf-8'" class="post-sharea qzoneshare" target="_blank" rel="nofollow">QZone</a>
+							</li>
+						</ul>
+					</div>
+					<div>
+						Tags: <a href="https://typecodes.com/tag/dong-yi-cms.html">动易cms</a>,<a href="https://typecodes.com/tag/zhi-meng-cms.html">织梦cms</a>					</div>
+				</p>
+			</article>
+			
+			<div id="comments">
+				<h4 class="num">Comments &raquo;</h4>
+		    	<div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript></div>
+		    </div>
+		</div>
+		<!--3. right sider begin-->
+<div class="col-md-3" id="blog-secondary" role="complementary">
+	<section class="widget">
+		<ul class="widget-list">
+			<form id="search" method="get" action="https://typecodes.com/search.html">
+				<input type="text" name="q" id="s" size="20" x-webkit-speech="" x-webkit-grammar="builtin:search" onwebkitspeechchange="this.value = this.value.replace(this.defaultValue, '')" value="Google...." onfocus="this.value = (this.value == this.defaultValue) ? '' : this.value" onblur="this.value = (this.value == '') ? this.defaultValue : this.value">
+			</form>
+		</ul>
+	</section>
+	<section class="widget">
+		<h3 class="widget-title">Categories</h3>
+		<ul class="widget-list">
+		      <li class="current">
+		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (26)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/csharp/index.html">Csharp</a> (6)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/database/index.html">Database</a> (11)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/java/index.html">Java</a> (1)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/linux/index.html">Linux</a> (16)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/mix/index.html">Mix</a> (53)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/web/index.html">Web</a> (88)
+		      </li>
+		</ul>
+	</section>
+	<section class="widget">
+		<h3 class="widget-title">Recent Posts</h3>
+		<ul class="widget-list">
+			<li class="post">
+				<a href="https://typecodes.com/mix/sucesstypechotopelican.html">成功将博客从Typecho迁移到Pelican</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/mix/begintypechotopelican.html">准备将博客从Typecho迁移到Pelican</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/tcpconnectiontimedout.html">Linux TCP连接Connection Refused和Connection timed out的问题</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/mysqlerrornospace.html">博客MySQL服务惊魂记：Linux磁盘空间不足(Core Dump文件引爆)</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/mix/synweibophpmarkdownimgurl.html">升级博客文章同步微博的插件：PHP正则提取Markdown的图片地址</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/cppgeneralmakefile.html">Linux C/C++工程中可生成ELF、动/静态库文件的通用Makefile</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/libraryundefinedref.html">解决make编译链接动态库错误：libxx.so: undefined reference to xx</a>
+			</li>
+		</ul>
+	</section>
+	<section class="widget widget-feed">
+		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
+	</section>
+</div>
+				</div>
+			</div>
+		</div>
+		<!--4. bottom begin-->
+		<footer id="te-site-footer"><div class="container">
+	<div class="row" role="contentinfo">
+		<section class="col-md-2 col-md-offset-1">
+			<h3>Links</h3>
+			<ul><li><a href="http://diaosbook.com/" title="">diaosbook</a></li></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul>
+				<li><a href="https://typecodes.com/links.html">More..</a></li>
+			</ul>
+		</section>
+		<section class="col-md-2">
+			<h3>Following</h3>
+			<ul>
+				<li><a href="https://github.com/vfhky" class="following github" target="_blank" rel="external nofollow">GitHub</a></li>
+				<li><a href="http://weibo.com/typecodes" class="following weibo" target="_blank" rel="external nofollow">Weibo</a></li>
+				<li><a href="http://vfhky.sinaapp.com/" class="following sae" target="_blank" rel="external nofollow">SAE</a></li>
+				<li><a href="http://www.dwz.cn/mYiwa" class="following qqgroup" target="_blank" rel="external nofollow">Group</a></li>
+			</ul>
+		</section>
+		<div class="col-md-12 copyright">
+			<a href="#top"><i class="i-logo-s">TOP</i></a>
+			<p>
+				&copy; 2012-<script language="JavaScript">var date = new Date(); document.write(date.getFullYear());</script>							<a href="https://typecodes.com">TypeCodes</a>. All Rights Reserved<br>Powered by <a href="http://getpelican.com" rel="external" target="_blank">Pelican</a>. <a href="http://www.miitbeian.gov.cn/" rel="external nofollow" target="_blank">粤ICP备14050695号</a>
+			</p>
+		</div>
+	</div>
+</div>
+</footer>
+<script type="text/javascript">
+	var disqus_shortname = 'typecodes';
+	var disqus_identifier = '/web/aboutsitefactorycms.html';
+	var disqus_url = 'https://typecodes.com/web/aboutsitefactorycms.html';
+	var disqus_title = '对动易CMS和织梦CMS的一些认识——动易CMS篇';
+	(function() {
+		var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+		dsq.src = "//" + disqus_shortname + '.disqus.com/embed.js';
+		(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	 })();
+</script>
+	</body>
+</html>

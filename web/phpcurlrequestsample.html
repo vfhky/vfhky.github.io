@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="zh-CN" class="no-js">
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<title>PHP中的cURL请求及示例 &mdash; TypeCodes</title>
+		<meta name="author" content="vfhky">
+  		<link href="https://typecodes.com/atom.xml" type="application/atom+xml" rel="alternate" title="TypeCodes Atom Feed" />
+	  	<link href="https://typecodes.com/feed.xml" type="application/rss+xml" rel="alternate" title="TypeCodes RSS Feed" />
+		<meta name="HandheldFriendly" content="True">
+		<meta name="MobileOptimized" content="320">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="renderer" content="webkit">
+		<link rel="stylesheet" href="https://dn-vfhky.qbox.me/libs/css/pelican-vfhky.css">
+		<script>
+			var _hmt = _hmt || [];
+			(function() {
+			  var hm = document.createElement("script");
+			  hm.src = "//hm.baidu.com/hm.js?c15c4ab8e91ba9ac3d5a12293cc93359";
+			  var s = document.getElementsByTagName("script")[0]; 
+			  s.parentNode.insertBefore(hm, s);
+			})();
+		</script>
+	</head>
+	<body style>
+		<!--1. header navigation begin-->
+		<header role="banner" id="te-site-header">
+			<div class="container">
+				<a href="https://typecodes.com" class="te-site-logo" role="logo" target="_self"> TypeCodes</a>
+				<ul class="nav nav-pills" id="te-site-nav" role="navigation">
+					<li><a href="https://typecodes.com">Home</a></li><li><a href="https://typecodes.com/archives.html" title="Archives">Archives</a></li><li><a href="https://typecodes.com/about.html" title="About">About</a></li></ul>
+			</div>
+		</header>
+		<div class="te-headline">
+			<div class="container">
+				<h2 class="te-headline-title"> <a href="https://typecodes.com">TypeCodes</a></h2>
+			</div>
+		</div>
+		<div class="container">
+			<div class="row">
+		<!--2. left sider begin-->
+		<div class="col-md-9" id="blog-main" role="main">
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/web/phpcurlrequestsample.html">PHP中的cURL请求及示例</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2013-09-01 18:34 | 分类：<a href="https://typecodes.com/web/index.html">web</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>最近在学习腾讯开放平台API接口的过程中，看到了一个很强大的PHP库——cURL。它是利用URL语法在命令行方式下工作的文件传输工具。这篇文章是博主直接从国外一个博客翻译过来的，原文地址是：<a href="http://codular.com/curl-with-php" title="点击查看原文">http://codular.com/curl-with-php</a>。这篇文章讲的很基础，但条理很清晰，知识比较系统和全面，所以转过来收藏了！（下面的有些标题是博主画蛇添足的，大家近乎可以忽略。）</p>
+<h5>1 定义：什么是cURL</h5>
+<p>cURL允许数据传输跨广泛的协议,是一个非常强大的系统。它广泛用于跨网站发送数据，包括诸如API交互和oAuth。cURL是在它的应用范围内几乎是无所不能的，从基本的HTTP请求，到更为复杂的FTP上传或封闭式HTTPS网站的交互验证。让我们一起来看看发送一个GET和POST请求和处理返回的响应的简单区别，以及一些重要的参数说明。</p>
+
+
+<p>在我们通过一个cURL请求做任何事之前，我们首先需要初始化一个cURL的实例。我们可以通过调用函数curl_init()函数实现，它会返回一个cURL资源。该函数接收你想要发送的请求URL作为它的一个参数。在本文中，我们先不做这一步，可以在接下来的过程中用另一种方式来实现它。</p>
+<h5>2 须知：一些核心设置</h5>
+<p>一旦我们得到了一个cURL资源，我们可以开始进行一些配置，下面列出我总结的一些核心设置。</p>
+<div class="highlight"><pre>CURLOPT_RETURNTRANSFER - 返回响应作为一个字符串，而不是输出到屏幕
+CURLOPT_CONNECTTIMEOUT - 连接超时的时间
+CURLOPT_TIMEOUT - cURL执行的超时时间
+CURLOPT_USERAGENT - 用于请求的Useragent字符串
+CURLOPT_URL - 发送请求的URL对象
+CURLOPT_POST - 以POST方式发送一个请求
+CURLOPT_POSTFIELDS - 在POST提交的请求中的数组数据
+</pre></div>
+
+
+<h5>3 创建一个配置</h5>
+<p>我们可以通过使用curl_setopt()方式创建一个配置，这个方式接受3个参数：cURL资源、设置以及设置对应的值。因此，我们可以如下所示设置我们正在发送的请求URL。</p>
+<div class="highlight"><pre><span class="o">$</span><span class="nt">curl</span> <span class="o">=</span> <span class="nt">curl_init</span><span class="o">();</span>
+<span class="nt">curl_setopt</span><span class="o">($</span><span class="nt">curl</span><span class="o">,</span> <span class="nt">CURLOPT_URL</span><span class="o">,</span> <span class="s1">&#39;http://testcURL.com&#39;</span><span class="o">);</span>
+</pre></div>
+
+
+<p>如上所示，当获取cURL资源时，我们可以通过传送一个参数来设置URL。</p>
+<div class="highlight"><pre><span class="o">$</span><span class="nt">curl</span> <span class="o">=</span> <span class="nt">curl_init</span><span class="o">(</span><span class="s1">&#39;http://testcURL.com&#39;</span><span class="o">);</span>
+</pre></div>
+
+
+<p>当然我们也可以通过给curl_setopt_array()函数传递一个包含变量名和变量值的数组一次性地创建多重配置。</p>
+<div class="highlight"><pre><span class="p">$</span><span class="nv">curl</span><span class="x"> = curl_init();</span>
+<span class="x">curl_setopt_array(</span><span class="p">$</span><span class="nv">curl</span><span class="x">, array(</span>
+<span class="x">    CURLOPT_RETURNTRANSFER =&gt; 1,</span>
+<span class="x">    CURLOPT_URL =&gt; &#39;http://testcURL.com&#39;</span>
+<span class="x">));</span>
+</pre></div>
+
+
+<h5>4 执行请求：curl_exec()</h5>
+<p>当所有选项都配置好后，准备发送请求时，我们可以通过调用curl_exec()方式来执行这个cURL请求。这个函数将会返回三种不同的情形：</p>
+<div class="highlight"><pre>false - 如果执行这个请求时发生错误
+true - 如果该请求成功执行并且CURLOPT_RETURNTRANSFER被设置为false
+The result - 如果该请求成功执行并且CURLOPT_RETURNTRANSFER被设置为true
+</pre></div>
+
+
+<p>如果我们想要从上面的例子获得返回结果,我们可以用以下方法：</p>
+<div class="highlight"><pre><span class="p">$</span><span class="nv">result</span><span class="x"> = curl_exec(</span><span class="p">$</span><span class="nv">curl</span><span class="x">);</span>
+</pre></div>
+
+
+<p>此时，$result已经包含了页面的响应——它可能是JSON，一个字符串或者一个完整的网站的HTML。</p>
+<h5>5 关闭请求：curl_close()</h5>
+<p>当你发送完一个请求并且获取到了相应的返回结果，你就需要关闭这个cURL请求以便释放一些系统资源。通过调用curl_close()方法，我们可以像其它所有需要将资源作为参数的函数一样简单实现资源的释放。</p>
+<h5>6 GET请求</h5>
+<p>GET请求是默认的请求方法，并且我们可以很直截了当的使用它。事实上所有的例子到目前为止一直都是GET请求。如果你想在请求中加入传入一些参数，那么你可以像http://testcURL.com/?item1=value&amp;item2=value2一样把这些参数作为一个查询字符串附加在URL地址后面。</p>
+<p>因此，我们可以通过如下示例发送一个GET请求到上面的URL中去，并且返回相应的结果。</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12</pre></div></td><td class="code"><div class="highlight"><pre><span class="x">// Get cURL resource</span>
+<span class="x">$curl = curl_init();</span>
+<span class="x">// Set some options - we are passing in a useragent too here</span>
+<span class="x">curl_setopt_array($curl, array(</span>
+<span class="x">    CURLOPT_RETURNTRANSFER =&gt; 1,</span>
+<span class="x">    CURLOPT_URL =&gt; &#39;http://testcURL.com/?item1=value&amp;item2=value2&#39;,</span>
+<span class="x">    CURLOPT_USERAGENT =&gt; &#39;Codular Sample cURL Request&#39;</span>
+<span class="x">));</span>
+<span class="x">// Send the request &amp; save response to $resp</span>
+<span class="x">$resp = curl_exec($curl);</span>
+<span class="x">// Close request to clear up some resources</span>
+<span class="x">curl_close($curl);</span>
+</pre></div>
+</td></tr></table>
+
+<h5>7 POST请求</h5>
+<p>GET请求和POST请求两者之间语法的唯一区别就是：在你想要传送一些数据时，多了一个设置。我们将把CURLOPT_POST设置为true，并且通过设置CURLOPT_POSTFIELDS来传送包含一个数组的数据。</p>
+<p>因此，如果把上面的GET请求转换为POST请求，我们可以使用下面的代码：</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17</pre></div></td><td class="code"><div class="highlight"><pre><span class="x">// Get cURL resource</span>
+<span class="x">$curl = curl_init();</span>
+<span class="x">// Set some options - we are passing in a useragent too here</span>
+<span class="x">curl_setopt_array($curl, array(</span>
+<span class="x">    CURLOPT_RETURNTRANSFER =&gt; 1,</span>
+<span class="x">    CURLOPT_URL =&gt; &#39;http://testcURL.com&#39;,</span>
+<span class="x">    CURLOPT_USERAGENT =&gt; &#39;Codular Sample cURL Request&#39;,</span>
+<span class="x">    CURLOPT_POST =&gt; 1,</span>
+<span class="x">    CURLOPT_POSTFIELDS =&gt; array(</span>
+<span class="x">        item1 =&gt; &#39;value&#39;,</span>
+<span class="x">        item2 =&gt; &#39;value2&#39;</span>
+<span class="x">    )</span>
+<span class="x">));</span>
+<span class="x">// Send the request &amp; save response to $resp</span>
+<span class="x">$resp = curl_exec($curl);</span>
+<span class="x">// Close request to clear up some resources</span>
+<span class="x">curl_close($curl);</span>
+</pre></div>
+</td></tr></table>
+
+<p>到这里，你就拥有了这样的一个POST请求：它将产生和上面GET请求一样的效果，并且把返回数据到脚本中，这样你就可以随便使用它们了。</p>
+<h5>8 错误</h5>
+<p>尽管我们讨厌错误，但是你还是得注意使用cURL时可能出现的情形。因为你最终无法控制你所发送请求的网站，也无法保证该站点的响应结果将会是你预想的那种方式以及这个站点一直都会是正常状态。</p>
+<p>这里提供了两个可以用来处理错误的函数：</p>
+<div class="highlight"><pre>curl_error() - 返回一个字符串错误信息（当请求正常返回时，其值为空）
+curl_errno() - 返回cURL的错误数目，然后你可以查看这个包含错误代码的页面。
+</pre></div>
+
+
+<p>例如，你可以如下示例使用：</p>
+<div class="highlight"><pre><span class="nt">if</span><span class="o">(!</span><span class="nt">curl_exec</span><span class="o">($</span><span class="nt">curl</span><span class="o">))</span><span class="p">{</span>
+    <span class="n">die</span><span class="p">(</span><span class="s1">&#39;Error: &quot;&#39;</span> <span class="o">.</span> <span class="n">curl_error</span><span class="p">(</span><span class="err">$</span><span class="n">curl</span><span class="p">)</span> <span class="o">.</span> <span class="s1">&#39;&quot; - Code: &#39;</span> <span class="o">.</span> <span class="n">curl_errno</span><span class="p">(</span><span class="err">$</span><span class="n">curl</span><span class="p">));</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<p>如果你想要任何HTTP响应代码都大于400来产生一个错误，而不是返回整个HTML页面，那么你可以把CURLOPT_FAILONERROR设置为true。cURL是一个“庞然大物”，并且还有很多很多的可能。有些网站可能为一些用户代理提供服务页面，当使用API接口时，它们可能会要求你传送一个特别的用户代理，这些都是我们需要注意的。如果你还想了解一些cURL请求，为何不尝试去oAuth with Instagram看看呢？</p>
+<h5>9 附录：PHP中的CURL函数库</h5>
+<div class="highlight"><pre><span class="x">curl_close — 关闭一个curl会话</span>
+<span class="x">curl_copy_handle — 拷贝一个curl连接资源的所有内容和参数</span>
+<span class="x">curl_errno — 返回一个包含当前会话错误信息的数字编号</span>
+<span class="x">curl_error — 返回一个包含当前会话错误信息的字符串</span>
+<span class="x">curl_exec — 执行一个curl会话</span>
+<span class="x">curl_getinfo — 获取一个curl连接资源句柄的信息</span>
+<span class="x">curl_setopt — 为一个curl设置会话参数</span>
+<span class="x">CURLOPT_HEADER — 如果你想把一个头包含在输出中，设置这个选项为一个非零值(curl_setopt(</span><span class="p">$</span><span class="nv">ch</span><span class="x">, CURLOPT_HEADER, false))</span>
+<span class="x">CURLOPT_REFERER — 在HTTP请求中包含一个”referer”头的字符串</span>
+<span class="x">curl_init — 初始化一个curl会话</span>
+<span class="x">curl_multi_add_handle — 向curl批处理会话中添加单独的curl句柄资源</span>
+<span class="x">curl_multi_close — 关闭一个批处理句柄资源</span>
+<span class="x">curl_multi_exec — 解析一个curl批处理句柄</span>
+<span class="x">curl_multi_getcontent — 返回获取的输出的文本流</span>
+<span class="x">curl_multi_info_read — 获取当前解析的curl的相关传输信息</span>
+<span class="x">curl_multi_init — 初始化一个curl批处理句柄资源</span>
+<span class="x">curl_multi_remove_handle — 移除curl批处理句柄资源中的某个句柄资源</span>
+<span class="x">curl_multi_select — Get all the sockets associated with the cURL extension, which can then be &quot;selected&quot;</span>
+<span class="x">curl_setopt_array — 以数组的形式为一个curl设置会话参数</span>
+<span class="x">curl_version — 获取curl相关的版本信息</span>
+
+<span class="x">curl_init()函数的作用初始化一个curl会话，curl_init()函数唯一的一个参数是可选的，表示一个url地址。</span>
+<span class="x">curl_exec()函数的作用是执行一个curl会话，唯一的参数是curl_init()函数返回的句柄。</span>
+<span class="x">curl_close()函数的作用是关闭一个curl会话，唯一的参数是curl_init()函数返回的句柄。</span>
+</pre></div>
+		    	<p class="tags">
+					<div class="post-share">
+						<ul class="post-shareul clearfix">
+							<li class="post-shareli">
+								<a href="http://note.youdao.com/memory/?url=https://typecodes.com/web/phpcurlrequestsample.html&title=PHP中的cURL请求及示例" class="post-sharea ydshare" target="_blank" rel="nofollow">有道云笔记</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://v.t.sina.com.cn/share/share.php?url=https://typecodes.com/web/phpcurlrequestsample.html&title=PHP中的cURL请求及示例&source=https://typecodes.com" class="post-sharea wbshare" target="_blank" rel="nofollow">新浪微博</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://v.t.qq.com/share/share.php?title=PHP中的cURL请求及示例&url=https://typecodes.com/web/phpcurlrequestsample.html&site=https://typecodes.com" class="post-sharea twbshare" target="_blank" rel="nofollow">腾讯微博</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=https://typecodes.com/web/phpcurlrequestsample.html&title=PHP中的cURL请求及示例&content='utf-8'" class="post-sharea qzoneshare" target="_blank" rel="nofollow">QZone</a>
+							</li>
+						</ul>
+					</div>
+					<div>
+						Tags: <a href="https://typecodes.com/tag/php-curl.html">php curl</a>					</div>
+				</p>
+			</article>
+			
+			<div id="comments">
+				<h4 class="num">Comments &raquo;</h4>
+		    	<div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript></div>
+		    </div>
+		</div>
+		<!--3. right sider begin-->
+<div class="col-md-3" id="blog-secondary" role="complementary">
+	<section class="widget">
+		<ul class="widget-list">
+			<form id="search" method="get" action="https://typecodes.com/search.html">
+				<input type="text" name="q" id="s" size="20" x-webkit-speech="" x-webkit-grammar="builtin:search" onwebkitspeechchange="this.value = this.value.replace(this.defaultValue, '')" value="Google...." onfocus="this.value = (this.value == this.defaultValue) ? '' : this.value" onblur="this.value = (this.value == '') ? this.defaultValue : this.value">
+			</form>
+		</ul>
+	</section>
+	<section class="widget">
+		<h3 class="widget-title">Categories</h3>
+		<ul class="widget-list">
+		      <li class="current">
+		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (26)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/csharp/index.html">Csharp</a> (6)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/database/index.html">Database</a> (11)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/java/index.html">Java</a> (1)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/linux/index.html">Linux</a> (16)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/mix/index.html">Mix</a> (53)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/web/index.html">Web</a> (88)
+		      </li>
+		</ul>
+	</section>
+	<section class="widget">
+		<h3 class="widget-title">Recent Posts</h3>
+		<ul class="widget-list">
+			<li class="post">
+				<a href="https://typecodes.com/mix/sucesstypechotopelican.html">成功将博客从Typecho迁移到Pelican</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/mix/begintypechotopelican.html">准备将博客从Typecho迁移到Pelican</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/tcpconnectiontimedout.html">Linux TCP连接Connection Refused和Connection timed out的问题</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/mysqlerrornospace.html">博客MySQL服务惊魂记：Linux磁盘空间不足(Core Dump文件引爆)</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/mix/synweibophpmarkdownimgurl.html">升级博客文章同步微博的插件：PHP正则提取Markdown的图片地址</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/cppgeneralmakefile.html">Linux C/C++工程中可生成ELF、动/静态库文件的通用Makefile</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/libraryundefinedref.html">解决make编译链接动态库错误：libxx.so: undefined reference to xx</a>
+			</li>
+		</ul>
+	</section>
+	<section class="widget widget-feed">
+		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
+	</section>
+</div>
+				</div>
+			</div>
+		</div>
+		<!--4. bottom begin-->
+		<footer id="te-site-footer"><div class="container">
+	<div class="row" role="contentinfo">
+		<section class="col-md-2 col-md-offset-1">
+			<h3>Links</h3>
+			<ul><li><a href="http://diaosbook.com/" title="">diaosbook</a></li></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul>
+				<li><a href="https://typecodes.com/links.html">More..</a></li>
+			</ul>
+		</section>
+		<section class="col-md-2">
+			<h3>Following</h3>
+			<ul>
+				<li><a href="https://github.com/vfhky" class="following github" target="_blank" rel="external nofollow">GitHub</a></li>
+				<li><a href="http://weibo.com/typecodes" class="following weibo" target="_blank" rel="external nofollow">Weibo</a></li>
+				<li><a href="http://vfhky.sinaapp.com/" class="following sae" target="_blank" rel="external nofollow">SAE</a></li>
+				<li><a href="http://www.dwz.cn/mYiwa" class="following qqgroup" target="_blank" rel="external nofollow">Group</a></li>
+			</ul>
+		</section>
+		<div class="col-md-12 copyright">
+			<a href="#top"><i class="i-logo-s">TOP</i></a>
+			<p>
+				&copy; 2012-<script language="JavaScript">var date = new Date(); document.write(date.getFullYear());</script>							<a href="https://typecodes.com">TypeCodes</a>. All Rights Reserved<br>Powered by <a href="http://getpelican.com" rel="external" target="_blank">Pelican</a>. <a href="http://www.miitbeian.gov.cn/" rel="external nofollow" target="_blank">粤ICP备14050695号</a>
+			</p>
+		</div>
+	</div>
+</div>
+</footer>
+<script type="text/javascript">
+	var disqus_shortname = 'typecodes';
+	var disqus_identifier = '/web/phpcurlrequestsample.html';
+	var disqus_url = 'https://typecodes.com/web/phpcurlrequestsample.html';
+	var disqus_title = 'PHP中的cURL请求及示例';
+	(function() {
+		var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+		dsq.src = "//" + disqus_shortname + '.disqus.com/embed.js';
+		(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	 })();
+</script>
+	</body>
+</html>

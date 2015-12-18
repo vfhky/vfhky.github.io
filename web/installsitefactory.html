@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="zh-CN" class="no-js">
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<title>动易SiteFactory的详细安装以及常见错误解决方案 &mdash; TypeCodes</title>
+		<meta name="author" content="vfhky">
+  		<link href="https://typecodes.com/atom.xml" type="application/atom+xml" rel="alternate" title="TypeCodes Atom Feed" />
+	  	<link href="https://typecodes.com/feed.xml" type="application/rss+xml" rel="alternate" title="TypeCodes RSS Feed" />
+		<meta name="HandheldFriendly" content="True">
+		<meta name="MobileOptimized" content="320">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="renderer" content="webkit">
+		<link rel="stylesheet" href="https://dn-vfhky.qbox.me/libs/css/pelican-vfhky.css">
+		<script>
+			var _hmt = _hmt || [];
+			(function() {
+			  var hm = document.createElement("script");
+			  hm.src = "//hm.baidu.com/hm.js?c15c4ab8e91ba9ac3d5a12293cc93359";
+			  var s = document.getElementsByTagName("script")[0]; 
+			  s.parentNode.insertBefore(hm, s);
+			})();
+		</script>
+	</head>
+	<body style>
+		<!--1. header navigation begin-->
+		<header role="banner" id="te-site-header">
+			<div class="container">
+				<a href="https://typecodes.com" class="te-site-logo" role="logo" target="_self"> TypeCodes</a>
+				<ul class="nav nav-pills" id="te-site-nav" role="navigation">
+					<li><a href="https://typecodes.com">Home</a></li><li><a href="https://typecodes.com/archives.html" title="Archives">Archives</a></li><li><a href="https://typecodes.com/about.html" title="About">About</a></li></ul>
+			</div>
+		</header>
+		<div class="te-headline">
+			<div class="container">
+				<h2 class="te-headline-title"> <a href="https://typecodes.com">TypeCodes</a></h2>
+			</div>
+		</div>
+		<div class="container">
+			<div class="row">
+		<!--2. left sider begin-->
+		<div class="col-md-9" id="blog-main" role="main">
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/web/installsitefactory.html">动易SiteFactory的详细安装以及常见错误解决方案</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2012-08-19 16:25 | 分类：<a href="https://typecodes.com/web/index.html">web</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>最近一Q友叫我帮他改一个网站，他用的是动易SiteFactory3.6的内容管理系统。因此，我对动易CMS有了进一步了解。那么，从今天开始，我将为大家做一个关于动易SiteFactory内容管理系统的系列教程（这中间免不了有错误的地方，希望大家指正）。废话不多说，直接从动易CMS的安装开始：</p>
+<h5>1 动易SiteFactory的安装</h5>
+<p>虽然动易SiteFactory的安装包里面已经附录了比较完整的安装过程，但是我想做一些重要补充和提示。</p>
+
+
+<h6>1.1 用sa账号登录Sql Server08服务器</h6>
+<p><img alt="用sa账号登录Sql Server08服务器" src="https://dn-vfhky.qbox.me/2012/08/11.png" title="用sa账号登录Sql Server08服务器" /></p>
+<h6>1.2 登入后新建数据库，例如：数据库名为dy</h6>
+<p><img alt="登入后新建数据库1" src="https://dn-vfhky.qbox.me/2012/08/2.png" title="登入后新建数据库1" /></p>
+<p><img alt="登入后新建数据库2" src="https://dn-vfhky.qbox.me/2012/08/31.png" title="登入后新建数据库2" /></p>
+<h6>1.3 新建数据库用户</h6>
+<p>在Sql Server08中点击“安全性”--“登录名”--“新建登录名”：在“常规”选项中新建例如登录名为dy_user或者dy。Sql身份验证自己设置密码。</p>
+<p><img alt="新建登录名" src="https://dn-vfhky.qbox.me/2012/08/4.png" title="新建登录名" /></p>
+<h6>1.4 在“用户映射”中必须勾选db_owner和public</h6>
+<p>在“用户映射”选项中，选择自己命名的用户名“dy_user”或者“dy”，并且勾选db_owner和public</p>
+<p><img alt="数据库用户映射" src="https://dn-vfhky.qbox.me/2012/08/5.png" title="数据库用户映射" /></p>
+<h6>1.5 输入数据库的信息内容然后安装</h6>
+<p>进入网站http://127.0.0.1:90/9，“数据库”选择sqlserver2008中默认的“（local）”，“数据库名称”输入“dy_user”或者“dy”，“数据库名称”输入“dy”，然后直接点击“下一步”，不用点击“创建数据库”。</p>
+<p><img alt="安装动易" src="https://dn-vfhky.qbox.me/2012/08/6.png" title="安装动易" /></p>
+<p><code>温馨提示：</code>当你在IIS服务器上安装了多个动易数据库的时候，可以使用同一个账户。例如，将dy账户映射到如图“dy11”、“dy13”、“dy2”“dy3”的数据库上。这样就不用为每一个数据库建立多个登录用户账号了。</p>
+<p><img alt="多数据库的用户映射" src="https://dn-vfhky.qbox.me/2012/08/7.png" title="多数据库的用户映射" /></p>
+<h5>2 常见错误</h5>
+<h6>2.1 出现普通的“/服务程序错误”</h6>
+<p>解决方案：在网站的虚拟目录上点击右键选择“添加应用池”，再选择Classic.NET AppPool不要选择DefaultAppPool那个(除非在开始的IIS配置过程中，你已经把这两个应用池的”管道模式“都设置成了”经典“)。或者直接右键选择“转换为应用程序”。</p>
+<h6>2.2 出现“/服务程序错误。不允许远程SQL Server远程连接……”</h6>
+<p><img alt="SQL Server无法远程连接" src="https://dn-vfhky.qbox.me/2012/08/8.png" title="SQL Server无法远程连接" /></p>
+<p>解决方案：SQL Server的配置工具文件夹中点击“SQL Server配置管理器”，然后继续点击“SQL Server网络配置”中的“MSSQLSERVER的协议”，将“TCP/IP”和“Named Pipes”都进行启用。然后重启SQL Server即可。</p>
+<h6>2.3 出现如下图所示的“/服务程序错误”</h6>
+<p><img alt=".NET Framework 2.0补丁" src="https://dn-vfhky.qbox.me/2012/08/9.png" title=".NET Framework 2.0补丁" /></p>
+<p>解决方案：由于动易SiteFactory的安装要求就是需要.NET Framework 2.0 sp2的平台，所以需要将自己的.net2.0打上微软官方.net2.0 sp2的补丁（<a href="http://www.microsoft.com/zh-cn/download/details.aspx?id=1639">点击下载</a>）。另外，可以通过IIS管理器查看并“更改.NET Framework版本”；也可以通过打开“C:\WINDOWS\Microsoft.NET\Framework”查看自己的“.NET Framework版本”。</p>
+<h6>2.4 使用“快速安装”的方法安装动易SiteFactory出现如图“找不到数据库”</h6>
+<p><img alt="在SQL Server2008中找不到动易数据库" src="https://dn-vfhky.qbox.me/2012/08/10.png" title="在SQL Server2008中找不到动易数据库" /></p>
+<p>解决方案：错误原因是在安装Visual Studio2008的时候，没把同时安装“SQL Server2005”的选项去掉，导致本地计算机同时存在SQL Server2008和2005。而你使用快速安装方法安装的动易数据库就装在了2005上，但是你却使用SQL Server2008登录服务器的，所以看不到数据库。建议删掉SQL Server2005或者使用上面推荐的详细方法安装。</p>
+		    	<p class="tags">
+					<div class="post-share">
+						<ul class="post-shareul clearfix">
+							<li class="post-shareli">
+								<a href="http://note.youdao.com/memory/?url=https://typecodes.com/web/installsitefactory.html&title=动易SiteFactory的详细安装以及常见错误解决方案" class="post-sharea ydshare" target="_blank" rel="nofollow">有道云笔记</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://v.t.sina.com.cn/share/share.php?url=https://typecodes.com/web/installsitefactory.html&title=动易SiteFactory的详细安装以及常见错误解决方案&source=https://typecodes.com" class="post-sharea wbshare" target="_blank" rel="nofollow">新浪微博</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://v.t.qq.com/share/share.php?title=动易SiteFactory的详细安装以及常见错误解决方案&url=https://typecodes.com/web/installsitefactory.html&site=https://typecodes.com" class="post-sharea twbshare" target="_blank" rel="nofollow">腾讯微博</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=https://typecodes.com/web/installsitefactory.html&title=动易SiteFactory的详细安装以及常见错误解决方案&content='utf-8'" class="post-sharea qzoneshare" target="_blank" rel="nofollow">QZone</a>
+							</li>
+						</ul>
+					</div>
+					<div>
+						Tags: <a href="https://typecodes.com/tag/dong-yi-sitefactory.html">动易sitefactory</a>					</div>
+				</p>
+			</article>
+			
+			<div id="comments">
+				<h4 class="num">Comments &raquo;</h4>
+		    	<div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript></div>
+		    </div>
+		</div>
+		<!--3. right sider begin-->
+<div class="col-md-3" id="blog-secondary" role="complementary">
+	<section class="widget">
+		<ul class="widget-list">
+			<form id="search" method="get" action="https://typecodes.com/search.html">
+				<input type="text" name="q" id="s" size="20" x-webkit-speech="" x-webkit-grammar="builtin:search" onwebkitspeechchange="this.value = this.value.replace(this.defaultValue, '')" value="Google...." onfocus="this.value = (this.value == this.defaultValue) ? '' : this.value" onblur="this.value = (this.value == '') ? this.defaultValue : this.value">
+			</form>
+		</ul>
+	</section>
+	<section class="widget">
+		<h3 class="widget-title">Categories</h3>
+		<ul class="widget-list">
+		      <li class="current">
+		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (26)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/csharp/index.html">Csharp</a> (6)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/database/index.html">Database</a> (11)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/java/index.html">Java</a> (1)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/linux/index.html">Linux</a> (16)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/mix/index.html">Mix</a> (53)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/web/index.html">Web</a> (88)
+		      </li>
+		</ul>
+	</section>
+	<section class="widget">
+		<h3 class="widget-title">Recent Posts</h3>
+		<ul class="widget-list">
+			<li class="post">
+				<a href="https://typecodes.com/mix/sucesstypechotopelican.html">成功将博客从Typecho迁移到Pelican</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/mix/begintypechotopelican.html">准备将博客从Typecho迁移到Pelican</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/tcpconnectiontimedout.html">Linux TCP连接Connection Refused和Connection timed out的问题</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/mysqlerrornospace.html">博客MySQL服务惊魂记：Linux磁盘空间不足(Core Dump文件引爆)</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/mix/synweibophpmarkdownimgurl.html">升级博客文章同步微博的插件：PHP正则提取Markdown的图片地址</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/cppgeneralmakefile.html">Linux C/C++工程中可生成ELF、动/静态库文件的通用Makefile</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/libraryundefinedref.html">解决make编译链接动态库错误：libxx.so: undefined reference to xx</a>
+			</li>
+		</ul>
+	</section>
+	<section class="widget widget-feed">
+		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
+	</section>
+</div>
+				</div>
+			</div>
+		</div>
+		<!--4. bottom begin-->
+		<footer id="te-site-footer"><div class="container">
+	<div class="row" role="contentinfo">
+		<section class="col-md-2 col-md-offset-1">
+			<h3>Links</h3>
+			<ul><li><a href="http://diaosbook.com/" title="">diaosbook</a></li></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul>
+				<li><a href="https://typecodes.com/links.html">More..</a></li>
+			</ul>
+		</section>
+		<section class="col-md-2">
+			<h3>Following</h3>
+			<ul>
+				<li><a href="https://github.com/vfhky" class="following github" target="_blank" rel="external nofollow">GitHub</a></li>
+				<li><a href="http://weibo.com/typecodes" class="following weibo" target="_blank" rel="external nofollow">Weibo</a></li>
+				<li><a href="http://vfhky.sinaapp.com/" class="following sae" target="_blank" rel="external nofollow">SAE</a></li>
+				<li><a href="http://www.dwz.cn/mYiwa" class="following qqgroup" target="_blank" rel="external nofollow">Group</a></li>
+			</ul>
+		</section>
+		<div class="col-md-12 copyright">
+			<a href="#top"><i class="i-logo-s">TOP</i></a>
+			<p>
+				&copy; 2012-<script language="JavaScript">var date = new Date(); document.write(date.getFullYear());</script>							<a href="https://typecodes.com">TypeCodes</a>. All Rights Reserved<br>Powered by <a href="http://getpelican.com" rel="external" target="_blank">Pelican</a>. <a href="http://www.miitbeian.gov.cn/" rel="external nofollow" target="_blank">粤ICP备14050695号</a>
+			</p>
+		</div>
+	</div>
+</div>
+</footer>
+<script type="text/javascript">
+	var disqus_shortname = 'typecodes';
+	var disqus_identifier = '/web/installsitefactory.html';
+	var disqus_url = 'https://typecodes.com/web/installsitefactory.html';
+	var disqus_title = '动易SiteFactory的详细安装以及常见错误解决方案';
+	(function() {
+		var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+		dsq.src = "//" + disqus_shortname + '.disqus.com/embed.js';
+		(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	 })();
+</script>
+	</body>
+</html>

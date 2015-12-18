@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="zh-CN" class="no-js">
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<title>图解如何在PLSQL中调试PACKAGE包中的FUNCTION函数 &mdash; TypeCodes</title>
+		<meta name="author" content="vfhky">
+  		<link href="https://typecodes.com/atom.xml" type="application/atom+xml" rel="alternate" title="TypeCodes Atom Feed" />
+	  	<link href="https://typecodes.com/feed.xml" type="application/rss+xml" rel="alternate" title="TypeCodes RSS Feed" />
+		<meta name="HandheldFriendly" content="True">
+		<meta name="MobileOptimized" content="320">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="renderer" content="webkit">
+		<link rel="stylesheet" href="https://dn-vfhky.qbox.me/libs/css/pelican-vfhky.css">
+		<script>
+			var _hmt = _hmt || [];
+			(function() {
+			  var hm = document.createElement("script");
+			  hm.src = "//hm.baidu.com/hm.js?c15c4ab8e91ba9ac3d5a12293cc93359";
+			  var s = document.getElementsByTagName("script")[0]; 
+			  s.parentNode.insertBefore(hm, s);
+			})();
+		</script>
+	</head>
+	<body style>
+		<!--1. header navigation begin-->
+		<header role="banner" id="te-site-header">
+			<div class="container">
+				<a href="https://typecodes.com" class="te-site-logo" role="logo" target="_self"> TypeCodes</a>
+				<ul class="nav nav-pills" id="te-site-nav" role="navigation">
+					<li><a href="https://typecodes.com">Home</a></li><li><a href="https://typecodes.com/archives.html" title="Archives">Archives</a></li><li><a href="https://typecodes.com/about.html" title="About">About</a></li></ul>
+			</div>
+		</header>
+		<div class="te-headline">
+			<div class="container">
+				<h2 class="te-headline-title"> <a href="https://typecodes.com">TypeCodes</a></h2>
+			</div>
+		</div>
+		<div class="container">
+			<div class="row">
+		<!--2. left sider begin-->
+		<div class="col-md-9" id="blog-main" role="main">
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/database/plsqldebugpackagefunction.html">图解如何在PLSQL中调试PACKAGE包中的FUNCTION函数</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2014-12-31 21:00 | 分类：<a href="https://typecodes.com/database/index.html">database</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>Oracle中的packages包是一组包含procedures存储过程、functions函数和游标等元素的组合。相比Sybase数据库的SQL Advantage工具，Oracle数据库的管理工具——PLSQL在调试存储过程还是方便。</p>
+<p><img alt="PLSQL Developer调试packages包" src="https://dn-vfhky.qbox.me/2014/12/plsqldeveloper.png" title="PLSQL Developer调试packages包" /></p>
+
+
+<h5>1 Oracle数据库中的packages包、functions函数和procedures存储过程的关系</h5>
+<p>Oracle数据库中的packages包类似于Java中的packages的概念，在一个packages包中不允许定义多个相同的functions函数或者procedures存储过程，但允许重载functions方法和procedures过程。packages包是可以被引用的，例如在C程序中调用packages包中的functions方法：</p>
+<div class="highlight"><pre>sprintf( SqlStr, &quot;select pkg_Name.Func_Name(&#39;%s&#39;, &#39;%s&#39;, &#39;%d&#39;) as RESULT from dual &quot;, sPara1, sPara2, sPara3 );
+</pre></div>
+
+
+<h5>2 在PLSQL中调试packages包中functions函数</h5>
+<p>下面是自己在PL/SQL Developer Version 8.0中调试一个packages包中functions函数的演示过程：</p>
+<h5>2.1 在PLSQL中找到需要调试的packages包</h5>
+<p>如下图所示，展开PLSQL左侧菜单栏的<code>Packages</code>收缩项，可以看到下面的Packages包名，这里只有一个名为<code>PKG_COMM</code>的包（包括包头和包体Package bodies）。</p>
+<p><img alt="在PLSQL中找到需要调试的packages包" src="https://dn-vfhky.qbox.me/2014/12/getplsqlpackages.png" title="在PLSQL中找到需要调试的packages包" /></p>
+<h5>2.2 切换到“调试”模式</h5>
+<p>在Packages包名上，右键选择<code>添加调试信息</code>，如下图所示：</p>
+<p><img alt="在PLSQL中找到需要调试的packages包" src="https://dn-vfhky.qbox.me/2014/12/adddebuginfo.png" title="在PLSQL中找到需要调试的packages包" /></p>
+<h5>2.3 双击需要调试的Packages包</h5>
+<p>查看packages包中具体的内容：鼠标双击PLSQL左侧的packages包名（PKG_COMM），可以看到它包含的Functions函数<code>Get_counter</code>和函数的3个形参变量（Pi_cnttype、Pi_Cntobj和Pi_Nowdate）。</p>
+<p><img alt="双击需要调试的存储过程" src="https://dn-vfhky.qbox.me/2014/12/clickplsqlpackages.png" title="双击需要调试的存储过程" /></p>
+<h5>2.4 添加测试断点（BreakPoint）</h5>
+<p>鼠标双击这个函数名<code>Get_counter</code>后，会在右侧显示该函数的具体实现代码。接着在需要添加断点的地方，用鼠标点击代码左侧的行号位置就行了。如下图所示，红色的小圆圈就是添加BreakPoint。</p>
+<p><img alt="双击需要调试的存储过程" src="https://dn-vfhky.qbox.me/2014/12/addbreakpoint.png" title="双击需要调试的存储过程" /></p>
+<h5>2.5 在functions函数上右键选择测试按钮</h5>
+<p>完成上面的工作后，就可以正式进入Debug模式了。在函数名<code>Get_counter</code>选项上鼠标右键选择<code>测试</code>菜单，进入Package调试模式。</p>
+<p><img alt="在functions函数上右键选择测试按钮" src="https://dn-vfhky.qbox.me/2014/12/clickpackagesfunctions.png" title="在functions函数上右键选择测试按钮" /></p>
+<h5>2.6 把实参变量的值传给functions函数的形参变量</h5>
+<p>在2.5步骤中，会打开如下图的初始调试界面。这时，我们看到的是包头的实现代码（<code>每个Package包都是从包头声明开始的</code>）。可以先给函数<code>Get_counter</code>的3个形参变量赋值，这点和C/C#/JAVA等高级语言的调试是一样的。</p>
+<p><img alt="把实参变量的值传给functions函数的形参变量" src="https://dn-vfhky.qbox.me/2014/12/passvaluetopara.png" title="把实参变量的值传给functions函数的形参变量" /></p>
+<h5>2.7 调试工具栏的使用</h5>
+<p>如下图所示，PLSQL的<code>调试工具栏</code>上的按钮依次是：<code>开始调试器(F9)</code>，<code>运行（Ctrl+R）</code>，<code>单步进入（Ctrl+N）</code>，<code>单步跳过（Ctrl+O）</code>，<code>单步退出（Ctrl+T）</code>，<code>运行到下一个异常</code>。它们的功能和visual studio、eclipse等开发语言的IDE工具类似。在点击测试工具栏上的第一个按钮<code>开始调试器(F9)</code>，就开始Debug了。</p>
+<p><img alt="开启Debug调试" src="https://dn-vfhky.qbox.me/2014/12/begindebug.png" title="开启Debug调试" /></p>
+<h5>2.8 添加监控变量</h5>
+<p>在packages包函数的调试过程中，我们可以像visual studio、eclipse等IDE那样，手动添加一些我们需要的监控变量。同时，在调试过程中我们还可以继续用2.4步骤中的方法添加调试断点。</p>
+<p><img alt="添加监控变量" src="https://dn-vfhky.qbox.me/2014/12/addmonitoringvar.png" title="添加监控变量" /></p>
+<h5>2.9 调试完毕，得到结果</h5>
+<p>多次点击<code>单步进入（Ctrl+N）</code>，直到该functions函数运行到结束，最后会在界面自动输出该函数的返回值。</p>
+<p><img alt="调试完毕，得到结果" src="https://dn-vfhky.qbox.me/2014/12/debugover.png" title="调试完毕，得到结果" /></p>
+		    	<p class="tags">
+					<div class="post-share">
+						<ul class="post-shareul clearfix">
+							<li class="post-shareli">
+								<a href="http://note.youdao.com/memory/?url=https://typecodes.com/database/plsqldebugpackagefunction.html&title=图解如何在PLSQL中调试PACKAGE包中的FUNCTION函数" class="post-sharea ydshare" target="_blank" rel="nofollow">有道云笔记</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://v.t.sina.com.cn/share/share.php?url=https://typecodes.com/database/plsqldebugpackagefunction.html&title=图解如何在PLSQL中调试PACKAGE包中的FUNCTION函数&source=https://typecodes.com" class="post-sharea wbshare" target="_blank" rel="nofollow">新浪微博</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://v.t.qq.com/share/share.php?title=图解如何在PLSQL中调试PACKAGE包中的FUNCTION函数&url=https://typecodes.com/database/plsqldebugpackagefunction.html&site=https://typecodes.com" class="post-sharea twbshare" target="_blank" rel="nofollow">腾讯微博</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=https://typecodes.com/database/plsqldebugpackagefunction.html&title=图解如何在PLSQL中调试PACKAGE包中的FUNCTION函数&content='utf-8'" class="post-sharea qzoneshare" target="_blank" rel="nofollow">QZone</a>
+							</li>
+						</ul>
+					</div>
+					<div>
+						Tags: <a href="https://typecodes.com/tag/plsql.html">plsql</a>,<a href="https://typecodes.com/tag/plsqldiao-shi.html">plsql调试</a>,<a href="https://typecodes.com/tag/plsql-packagesbao.html">plsql packages包</a>					</div>
+				</p>
+			</article>
+			
+			<div id="comments">
+				<h4 class="num">Comments &raquo;</h4>
+		    	<div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript></div>
+		    </div>
+		</div>
+		<!--3. right sider begin-->
+<div class="col-md-3" id="blog-secondary" role="complementary">
+	<section class="widget">
+		<ul class="widget-list">
+			<form id="search" method="get" action="https://typecodes.com/search.html">
+				<input type="text" name="q" id="s" size="20" x-webkit-speech="" x-webkit-grammar="builtin:search" onwebkitspeechchange="this.value = this.value.replace(this.defaultValue, '')" value="Google...." onfocus="this.value = (this.value == this.defaultValue) ? '' : this.value" onblur="this.value = (this.value == '') ? this.defaultValue : this.value">
+			</form>
+		</ul>
+	</section>
+	<section class="widget">
+		<h3 class="widget-title">Categories</h3>
+		<ul class="widget-list">
+		      <li class="current">
+		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (26)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/csharp/index.html">Csharp</a> (6)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/database/index.html">Database</a> (11)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/java/index.html">Java</a> (1)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/linux/index.html">Linux</a> (16)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/mix/index.html">Mix</a> (53)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/web/index.html">Web</a> (88)
+		      </li>
+		</ul>
+	</section>
+	<section class="widget">
+		<h3 class="widget-title">Recent Posts</h3>
+		<ul class="widget-list">
+			<li class="post">
+				<a href="https://typecodes.com/mix/sucesstypechotopelican.html">成功将博客从Typecho迁移到Pelican</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/mix/begintypechotopelican.html">准备将博客从Typecho迁移到Pelican</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/tcpconnectiontimedout.html">Linux TCP连接Connection Refused和Connection timed out的问题</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/mysqlerrornospace.html">博客MySQL服务惊魂记：Linux磁盘空间不足(Core Dump文件引爆)</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/mix/synweibophpmarkdownimgurl.html">升级博客文章同步微博的插件：PHP正则提取Markdown的图片地址</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/cppgeneralmakefile.html">Linux C/C++工程中可生成ELF、动/静态库文件的通用Makefile</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/libraryundefinedref.html">解决make编译链接动态库错误：libxx.so: undefined reference to xx</a>
+			</li>
+		</ul>
+	</section>
+	<section class="widget widget-feed">
+		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
+	</section>
+</div>
+				</div>
+			</div>
+		</div>
+		<!--4. bottom begin-->
+		<footer id="te-site-footer"><div class="container">
+	<div class="row" role="contentinfo">
+		<section class="col-md-2 col-md-offset-1">
+			<h3>Links</h3>
+			<ul><li><a href="http://diaosbook.com/" title="">diaosbook</a></li></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul>
+				<li><a href="https://typecodes.com/links.html">More..</a></li>
+			</ul>
+		</section>
+		<section class="col-md-2">
+			<h3>Following</h3>
+			<ul>
+				<li><a href="https://github.com/vfhky" class="following github" target="_blank" rel="external nofollow">GitHub</a></li>
+				<li><a href="http://weibo.com/typecodes" class="following weibo" target="_blank" rel="external nofollow">Weibo</a></li>
+				<li><a href="http://vfhky.sinaapp.com/" class="following sae" target="_blank" rel="external nofollow">SAE</a></li>
+				<li><a href="http://www.dwz.cn/mYiwa" class="following qqgroup" target="_blank" rel="external nofollow">Group</a></li>
+			</ul>
+		</section>
+		<div class="col-md-12 copyright">
+			<a href="#top"><i class="i-logo-s">TOP</i></a>
+			<p>
+				&copy; 2012-<script language="JavaScript">var date = new Date(); document.write(date.getFullYear());</script>							<a href="https://typecodes.com">TypeCodes</a>. All Rights Reserved<br>Powered by <a href="http://getpelican.com" rel="external" target="_blank">Pelican</a>. <a href="http://www.miitbeian.gov.cn/" rel="external nofollow" target="_blank">粤ICP备14050695号</a>
+			</p>
+		</div>
+	</div>
+</div>
+</footer>
+<script type="text/javascript">
+	var disqus_shortname = 'typecodes';
+	var disqus_identifier = '/database/plsqldebugpackagefunction.html';
+	var disqus_url = 'https://typecodes.com/database/plsqldebugpackagefunction.html';
+	var disqus_title = '图解如何在PLSQL中调试PACKAGE包中的FUNCTION函数';
+	(function() {
+		var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+		dsq.src = "//" + disqus_shortname + '.disqus.com/embed.js';
+		(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	 })();
+</script>
+	</body>
+</html>

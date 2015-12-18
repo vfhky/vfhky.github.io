@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="zh-CN" class="no-js">
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<title>宏碁笔记本恢复出厂系统记（一） &mdash; TypeCodes</title>
+		<meta name="author" content="vfhky">
+  		<link href="https://typecodes.com/atom.xml" type="application/atom+xml" rel="alternate" title="TypeCodes Atom Feed" />
+	  	<link href="https://typecodes.com/feed.xml" type="application/rss+xml" rel="alternate" title="TypeCodes RSS Feed" />
+		<meta name="HandheldFriendly" content="True">
+		<meta name="MobileOptimized" content="320">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="renderer" content="webkit">
+		<link rel="stylesheet" href="https://dn-vfhky.qbox.me/libs/css/pelican-vfhky.css">
+		<script>
+			var _hmt = _hmt || [];
+			(function() {
+			  var hm = document.createElement("script");
+			  hm.src = "//hm.baidu.com/hm.js?c15c4ab8e91ba9ac3d5a12293cc93359";
+			  var s = document.getElementsByTagName("script")[0]; 
+			  s.parentNode.insertBefore(hm, s);
+			})();
+		</script>
+	</head>
+	<body style>
+		<!--1. header navigation begin-->
+		<header role="banner" id="te-site-header">
+			<div class="container">
+				<a href="https://typecodes.com" class="te-site-logo" role="logo" target="_self"> TypeCodes</a>
+				<ul class="nav nav-pills" id="te-site-nav" role="navigation">
+					<li><a href="https://typecodes.com">Home</a></li><li><a href="https://typecodes.com/archives.html" title="Archives">Archives</a></li><li><a href="https://typecodes.com/about.html" title="About">About</a></li></ul>
+			</div>
+		</header>
+		<div class="te-headline">
+			<div class="container">
+				<h2 class="te-headline-title"> <a href="https://typecodes.com">TypeCodes</a></h2>
+			</div>
+		</div>
+		<div class="container">
+			<div class="row">
+		<!--2. left sider begin-->
+		<div class="col-md-9" id="blog-main" role="main">
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/mix/acerrestorefactorysysone.html">宏碁笔记本恢复出厂系统记（一）</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2012-12-06 01:40 | 分类：<a href="https://typecodes.com/mix/index.html">mix</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>这篇文章是整个事件的记叙，如果想直接找安装教程，请到<a href="https://typecodes.com/mix/acerrestorefactorysystwo.html" title="查看原文">《宏碁笔记本恢复出厂系统记（二）》</a>中查看，适用于Acer Aspire 4752G/4750G等。</p>
+<p>在笔记本刚买回来的时候，硬盘大小为750G，系统默认划分了14G隐藏的系统恢复分区（当开机按F10+ALT的时候，就是利用这个隐藏分区来恢复出厂系统的），然后C盘设置了34G，其余都给我分成了4个逻辑分区。开始用着的时候觉得C盘空间挺足的，但随着各种软件的安装(除了一些杀毒软件、Office和输入法等最基本的软件安装到了C盘外，其余的都装到了D盘软件区)，使得C盘只有2-3G的使用空间了。要扩大空间的话，只能重新划分硬盘，系统也就没了。。。。所以只能忍了。于是每次电脑有点卡的时候果断上C盘寻找要Kill的目标，就这样凑活用着。俗话说：“夜路走多了总会遇到某某”，果不其然，前天下午在C盘删了一些文件，悲了个催的，系统就不能正常启动了……</p>
+
+
+<p>没办法，只能恢复出厂系统了。这个挺麻烦的，因为至少要花费一个半小时才能完成，而且系统装好后以前装的软件又要重新装。单单一个vs08和sql05，就够你受的，你懂的！于是琢磨这减少安装的时间，那只能删掉出厂系统中的一些默认软件的安装。立马用PE进去，根据名字把隐藏分区中的一些软件文件删除后，退出重启。崩溃的事情出现了，开机按F10+ALT，滴的一声，画面顿时卡住没反应了。几次重复还是没用，估计隐藏恢复系统给K了……当时给吓住了，这情况电脑不会挂了吧。再加上上次由于不熟悉用DiskGenius合并分区的时候把硬盘里面的备份资料和软件系统什么的格式化了，心情郁闷至极。只好到网吧去下WIN7的旗舰版系统，奋战一个下午终于下好了一个32位和64位的系统，外加vs和sql、server……都是以G做单位的大家伙。晚上用PE装了个32位的旗舰win7，64位的装不了（2G的内存只能装32位的）。装好后，一看界面，竟然跟家庭普通版的一样，音效也差的要死，以前自带的杜比音效真心不错。总之是各种不满意，而且还要更新各种驱动，又要下载各种大家伙，2M的网速带不动啊。唉，累的半死还没结果。一看时间已经深夜1点了，抵不住了，明天还要早读（此处省略一万字……）</p>
+<p>早读回来后，小憩一会儿继续工作，上网找了找看能不能恢复Acer官方的系统。各种泡论坛，终于发现了一个帖子发了Acer 4752G的系统，他是提取了隐藏分区里面的系统，总共是12.4G，分为15个iso镜像文件（其实是将4个iso镜像分割成的）。果断跑网吧。下载完后，提取出4个iso镜像。问题来了，怎么安装？要是刻盘的话，安装比较容易，但还得买4个光盘，关键是这种行径肯定不符合咱身份是吧，哈哈。。。那么PE安装的话，没有那个隐藏分区就无法像原系统一样能够通过快捷键还原到出厂系统。所以看能不能做一个隐藏分区，以后可以用来还原。</p>
+<p>于是乎，破釜沉舟，冒足勇气，进PE用DiskGenius，一气呵成，把所有的的分区格式化，当然包括刚装的win7 32旗舰系统。结果显示整个硬盘是598.6G，不知道为什么不是750G……接下来按照“宏碁恢复出厂系统记（二）”中的方法操作，结果在重启后显示“ERROR: BACKUP E:\WNAPP.INI to E:\WNAPP.INFO fail”的错误提示。真够打击人的，因为期间都是摸着石头过河的，风险大啊（要是硬盘坏了就坑了），而且AcronisDiskDirector和DiskGenius这两个工具用的也不是很熟，所以这中间的曲折自不必多说了。于是又再来，重新操作，尤其是把步骤1的分区和文件提取工作重新做了一遍。结果在步骤11完成重启后，还是那个错误……当时就想放弃了，睡觉去。</p>
+<p>下午起来想了想，可能是因为在PE中操作的缘故，要是在实际操作系统中会不会也出错呢？于是在PE中分好区（仍然按照<a href="https://typecodes.com/mix/acerrestorefactorysystwo.html" title="查看原文">《碁笔记本恢复官方系统记（二）》</a>中的分区方法分区）。然后把下载的win7 32位系统用PE安装到C盘，大概30分钟完成。最后完全按照“宏碁笔记本恢复出厂系统记（二）”中的其他步骤操作。终于，见证奇迹的时刻到了（图2中在99%的时候停顿了大概15分钟，当时差点以为又挂了的，结果……嘿嘿）</p>
+<p><img alt="正在恢复出厂系统" src="https://dn-vfhky.qbox.me/2012/12/1.jpg" title="正在恢复出厂系统" /></p>
+<p>图1、正在恢复出厂系统（激动了一把）</p>
+<p><img alt="将要完成恢复" src="https://dn-vfhky.qbox.me/2012/12/2.jpg" title="将要完成恢复" /></p>
+<p>图2、将要完成恢复（99%的时候停顿大概15分钟，淡定）</p>
+<p><img alt="系统正在初始化" src="https://dn-vfhky.qbox.me/2012/12/3.jpg" title="系统正在初始化" /></p>
+<p>图3、系统正在初始化（中间会自动重启）</p>
+<p><img alt="系统正在安装驱动和自带的软件" src="https://dn-vfhky.qbox.me/2012/12/4.jpg" title="系统正在安装驱动和自带的软件" /></p>
+<p>图4、系统正在安装驱动和自带的软件（中间会自动重启好几次）</p>
+<p><img alt="系统将要完成驱动和软件的安装" src="https://dn-vfhky.qbox.me/2012/12/5.jpg" title="系统将要完成驱动和软件的安装" /></p>
+<p>图5、系统将要完成驱动和软件的安装（中间会自动重启好几次）</p>
+<p><img alt="安装完成" src="https://dn-vfhky.qbox.me/2012/12/6.jpg" title="安装完成" /></p>
+<p>图6、安装完成，进入计算机的设置（激动哇！！！）</p>
+<p><img alt="计算机设置完成" src="https://dn-vfhky.qbox.me/2012/12/7.jpg" title="计算机设置完成" /></p>
+<p>图7、计算机设置完成后的Acer官方Win7家庭普通版界面</p>
+		    	<p class="tags">
+					<div class="post-share">
+						<ul class="post-shareul clearfix">
+							<li class="post-shareli">
+								<a href="http://note.youdao.com/memory/?url=https://typecodes.com/mix/acerrestorefactorysysone.html&title=宏碁笔记本恢复出厂系统记（一）" class="post-sharea ydshare" target="_blank" rel="nofollow">有道云笔记</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://v.t.sina.com.cn/share/share.php?url=https://typecodes.com/mix/acerrestorefactorysysone.html&title=宏碁笔记本恢复出厂系统记（一）&source=https://typecodes.com" class="post-sharea wbshare" target="_blank" rel="nofollow">新浪微博</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://v.t.qq.com/share/share.php?title=宏碁笔记本恢复出厂系统记（一）&url=https://typecodes.com/mix/acerrestorefactorysysone.html&site=https://typecodes.com" class="post-sharea twbshare" target="_blank" rel="nofollow">腾讯微博</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=https://typecodes.com/mix/acerrestorefactorysysone.html&title=宏碁笔记本恢复出厂系统记（一）&content='utf-8'" class="post-sharea qzoneshare" target="_blank" rel="nofollow">QZone</a>
+							</li>
+						</ul>
+					</div>
+					<div>
+						Tags: <a href="https://typecodes.com/tag/hong-qi-xi-tong.html">宏碁系统</a>,<a href="https://typecodes.com/tag/hui-fu-chu-han-xi-tong.html">恢复出厂系统</a>					</div>
+				</p>
+			</article>
+			
+			<div id="comments">
+				<h4 class="num">Comments &raquo;</h4>
+		    	<div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript></div>
+		    </div>
+		</div>
+		<!--3. right sider begin-->
+<div class="col-md-3" id="blog-secondary" role="complementary">
+	<section class="widget">
+		<ul class="widget-list">
+			<form id="search" method="get" action="https://typecodes.com/search.html">
+				<input type="text" name="q" id="s" size="20" x-webkit-speech="" x-webkit-grammar="builtin:search" onwebkitspeechchange="this.value = this.value.replace(this.defaultValue, '')" value="Google...." onfocus="this.value = (this.value == this.defaultValue) ? '' : this.value" onblur="this.value = (this.value == '') ? this.defaultValue : this.value">
+			</form>
+		</ul>
+	</section>
+	<section class="widget">
+		<h3 class="widget-title">Categories</h3>
+		<ul class="widget-list">
+		      <li class="current">
+		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (26)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/csharp/index.html">Csharp</a> (6)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/database/index.html">Database</a> (11)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/java/index.html">Java</a> (1)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/linux/index.html">Linux</a> (16)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/mix/index.html">Mix</a> (53)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/web/index.html">Web</a> (88)
+		      </li>
+		</ul>
+	</section>
+	<section class="widget">
+		<h3 class="widget-title">Recent Posts</h3>
+		<ul class="widget-list">
+			<li class="post">
+				<a href="https://typecodes.com/mix/sucesstypechotopelican.html">成功将博客从Typecho迁移到Pelican</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/mix/begintypechotopelican.html">准备将博客从Typecho迁移到Pelican</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/tcpconnectiontimedout.html">Linux TCP连接Connection Refused和Connection timed out的问题</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/mysqlerrornospace.html">博客MySQL服务惊魂记：Linux磁盘空间不足(Core Dump文件引爆)</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/mix/synweibophpmarkdownimgurl.html">升级博客文章同步微博的插件：PHP正则提取Markdown的图片地址</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/cppgeneralmakefile.html">Linux C/C++工程中可生成ELF、动/静态库文件的通用Makefile</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/libraryundefinedref.html">解决make编译链接动态库错误：libxx.so: undefined reference to xx</a>
+			</li>
+		</ul>
+	</section>
+	<section class="widget widget-feed">
+		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
+	</section>
+</div>
+				</div>
+			</div>
+		</div>
+		<!--4. bottom begin-->
+		<footer id="te-site-footer"><div class="container">
+	<div class="row" role="contentinfo">
+		<section class="col-md-2 col-md-offset-1">
+			<h3>Links</h3>
+			<ul><li><a href="http://diaosbook.com/" title="">diaosbook</a></li></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul>
+				<li><a href="https://typecodes.com/links.html">More..</a></li>
+			</ul>
+		</section>
+		<section class="col-md-2">
+			<h3>Following</h3>
+			<ul>
+				<li><a href="https://github.com/vfhky" class="following github" target="_blank" rel="external nofollow">GitHub</a></li>
+				<li><a href="http://weibo.com/typecodes" class="following weibo" target="_blank" rel="external nofollow">Weibo</a></li>
+				<li><a href="http://vfhky.sinaapp.com/" class="following sae" target="_blank" rel="external nofollow">SAE</a></li>
+				<li><a href="http://www.dwz.cn/mYiwa" class="following qqgroup" target="_blank" rel="external nofollow">Group</a></li>
+			</ul>
+		</section>
+		<div class="col-md-12 copyright">
+			<a href="#top"><i class="i-logo-s">TOP</i></a>
+			<p>
+				&copy; 2012-<script language="JavaScript">var date = new Date(); document.write(date.getFullYear());</script>							<a href="https://typecodes.com">TypeCodes</a>. All Rights Reserved<br>Powered by <a href="http://getpelican.com" rel="external" target="_blank">Pelican</a>. <a href="http://www.miitbeian.gov.cn/" rel="external nofollow" target="_blank">粤ICP备14050695号</a>
+			</p>
+		</div>
+	</div>
+</div>
+</footer>
+<script type="text/javascript">
+	var disqus_shortname = 'typecodes';
+	var disqus_identifier = '/mix/acerrestorefactorysysone.html';
+	var disqus_url = 'https://typecodes.com/mix/acerrestorefactorysysone.html';
+	var disqus_title = '宏碁笔记本恢复出厂系统记（一）';
+	(function() {
+		var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+		dsq.src = "//" + disqus_shortname + '.disqus.com/embed.js';
+		(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	 })();
+</script>
+	</body>
+</html>

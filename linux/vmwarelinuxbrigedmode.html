@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="zh-CN" class="no-js">
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<title>虚拟机VMWare中Linux用桥接方式连接实例 &mdash; TypeCodes</title>
+		<meta name="author" content="vfhky">
+  		<link href="https://typecodes.com/atom.xml" type="application/atom+xml" rel="alternate" title="TypeCodes Atom Feed" />
+	  	<link href="https://typecodes.com/feed.xml" type="application/rss+xml" rel="alternate" title="TypeCodes RSS Feed" />
+		<meta name="HandheldFriendly" content="True">
+		<meta name="MobileOptimized" content="320">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="renderer" content="webkit">
+		<link rel="stylesheet" href="https://dn-vfhky.qbox.me/libs/css/pelican-vfhky.css">
+		<script>
+			var _hmt = _hmt || [];
+			(function() {
+			  var hm = document.createElement("script");
+			  hm.src = "//hm.baidu.com/hm.js?c15c4ab8e91ba9ac3d5a12293cc93359";
+			  var s = document.getElementsByTagName("script")[0]; 
+			  s.parentNode.insertBefore(hm, s);
+			})();
+		</script>
+	</head>
+	<body style>
+		<!--1. header navigation begin-->
+		<header role="banner" id="te-site-header">
+			<div class="container">
+				<a href="https://typecodes.com" class="te-site-logo" role="logo" target="_self"> TypeCodes</a>
+				<ul class="nav nav-pills" id="te-site-nav" role="navigation">
+					<li><a href="https://typecodes.com">Home</a></li><li><a href="https://typecodes.com/archives.html" title="Archives">Archives</a></li><li><a href="https://typecodes.com/about.html" title="About">About</a></li></ul>
+			</div>
+		</header>
+		<div class="te-headline">
+			<div class="container">
+				<h2 class="te-headline-title"> <a href="https://typecodes.com">TypeCodes</a></h2>
+			</div>
+		</div>
+		<div class="container">
+			<div class="row">
+		<!--2. left sider begin-->
+		<div class="col-md-9" id="blog-main" role="main">
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/linux/vmwarelinuxbrigedmode.html">虚拟机VMWare中Linux用桥接方式连接实例</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2013-04-20 14:58 | 分类：<a href="https://typecodes.com/linux/index.html">linux</a></li>
+</ul>
+<div class="post-content fmt">
+	<h5>1 虚拟机网络模式介绍与说明</h5>
+<p>我们在安装完虚拟机VMWare后，会发现在我们的宿主机Windows系统中多出了两个虚拟网卡：VMware Network Adapter VMnet1 和 VMware Network Adapter VMnet8 。因此，我们在使用虚拟机VMWare时，会利用这两个网卡中的一个来进行网络通信服务。具体可以分为如下三种网络工作模式： bridged(桥接模式)、NAT(网络地址转换模式 )和host-only(主机模式)。在VMware的网络模型中，VMware有如下几个虚拟设备：</p>
+<div class="highlight"><pre>VMnet0：这是VMware用于虚拟桥接网络下的虚拟交换机；
+VMnet1：这是VMware用于虚拟Host-Only网络下的虚拟交换机；
+VMnet8：这是VMware用于虚拟NAT网络下的虚拟交换机；
+VMware Network Adapter VMnet1：这是Host用于与Host-Only虚拟网络进行通信的虚拟网卡；
+VMware Network Adapter VMnet8：这是Host用于与NAT虚拟网络进行通信的虚拟网卡；
+</pre></div>
+
+
+
+
+<p>如果你想利用VMWare在局域网内新建一个虚拟服务器，为局域网用户提供网络服务，就应该选择桥接模式。</p>
+<p>在这种模式下，主要是使用VMnet0虚拟交换机来进行通信。此时， VMWare虚拟出来的操作系统就像是局域网中的一台独立的主机，和宿主机Windows一样，拥有一个独立的IP地址。正如下图所示，A，A1，A2，B是可以互访的。下面就以博主的小红帽RHEL5.3系统为例，演示在虚拟机VMWare中如何用桥接方式连接网络（Use bridged networking）。</p>
+<p><img alt="使用桥接模式Use bridged networking" src="https://dn-vfhky.qbox.me/2013/04/Use-bridged-networking.jpeg" title="使用桥接模式Use bridged networking" /></p>
+<h5>2 查找宿主机Windows的ip配置信息</h5>
+<p>在宿主Windows中打开CMD命令，输入ipconfig，可以看到我的win7连接的无线网络的IP地址是192.168.1.100，子网掩码（subnetmask）是255.255.255.0，默认网关是192.168.1.1。记下这3个信息，下面会用到。</p>
+<p><img alt="宿主机Windows中的所有IP" src="https://dn-vfhky.qbox.me/2013/04/ipconfig.jpg" title="宿主机Windows中的所有IP" /></p>
+<h5>3 虚拟机中Linux的网络配置</h5>
+<p>打开虚拟机VM，右键Linux，选择“Settings……”，然后选择“Bridged”。</p>
+<p><img alt="Linux网络设置为桥接模式" src="https://dn-vfhky.qbox.me/2013/04/set-network.jpg" title="Linux网络设置为桥接模式" /></p>
+<h5>4 Linux系统etho设置为Statically set IP addresses，即静态设置的IP地址</h5>
+<p>在linux左上角的导航菜单中，单击“System”，“Administation”，“Network”，“Editor”。然后依次设置Address（只要和windows主机的IP192.168.1.100在同一网段即可），子网掩码Subnet mask和默认网关Default gateway address都设置成windows主机的子网掩码、默认网关。</p>
+<p><img alt="Linux系统eth0设置为Statically set IP addresses" src="https://dn-vfhky.qbox.me/2013/04/set-eth0.jpg" title="Linux系统eth0设置为Statically set IP addresses" /></p>
+<p>当然，上面是GUI操作模式。其实，我们也可以用Linux命令行实现，二者是等价的。</p>
+<div class="highlight"><pre><span class="p">[</span><span class="n">root</span><span class="p">@</span><span class="n">localhost</span> <span class="o">~</span><span class="p">]</span><span class="err">#</span> <span class="n">cd</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">sysconfig</span><span class="o">/</span><span class="n">network</span><span class="o">-</span><span class="n">scripts</span><span class="o">/</span>
+<span class="p">[</span><span class="n">root</span><span class="p">@</span><span class="n">localhost</span> <span class="n">network</span><span class="o">-</span><span class="n">scripts</span><span class="p">]</span><span class="err">#</span> <span class="n">vi</span> <span class="n">ifcfg</span><span class="o">-</span><span class="n">eth0</span>
+
+<span class="cp"># Advanced Micro Devices [AMD] 79c970 [PCnet32 LANCE]</span>
+<span class="n">DEVICE</span><span class="o">=</span><span class="n">eth0</span>            <span class="c1">//由eth0来启动</span>
+<span class="n">BOOTPROTO</span><span class="o">=</span><span class="n">none</span>         <span class="c1">//dhcp自动获取IP，static是固定IP，none是手动</span>
+<span class="n">HWADDR</span><span class="o">=</span><span class="mo">00</span><span class="o">:</span><span class="mi">0</span><span class="nl">C</span><span class="p">:</span><span class="mi">29</span><span class="o">:</span><span class="mi">75</span><span class="o">:</span><span class="nl">C0</span><span class="p">:</span><span class="mi">12</span>     <span class="c1">//网卡的物理地址</span>
+<span class="n">ONBOOT</span><span class="o">=</span><span class="n">yes</span>             <span class="c1">//启动时网络接口是否有效</span>
+<span class="n">TYPE</span><span class="o">=</span><span class="n">Ethernet</span>
+<span class="n">USERCTL</span><span class="o">=</span><span class="n">no</span>
+<span class="n">IPV6INIT</span><span class="o">=</span><span class="n">no</span>
+<span class="n">PEERDNS</span><span class="o">=</span><span class="n">yes</span>
+<span class="n">NETMASK</span><span class="o">=</span><span class="mf">255.255.255.0</span>           <span class="c1">//子网掩码</span>
+<span class="n">IPADDR</span><span class="o">=</span><span class="mf">192.168.1.125</span>            <span class="c1">//IP地址</span>
+<span class="n">GATEWAY</span><span class="o">=</span><span class="mf">192.168.1.250</span>           <span class="c1">//默认网关</span>
+</pre></div>
+
+
+<h5>（四）就这么简单，over！</h5>
+		    	<p class="tags">
+					<div class="post-share">
+						<ul class="post-shareul clearfix">
+							<li class="post-shareli">
+								<a href="http://note.youdao.com/memory/?url=https://typecodes.com/linux/vmwarelinuxbrigedmode.html&title=虚拟机VMWare中Linux用桥接方式连接实例" class="post-sharea ydshare" target="_blank" rel="nofollow">有道云笔记</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://v.t.sina.com.cn/share/share.php?url=https://typecodes.com/linux/vmwarelinuxbrigedmode.html&title=虚拟机VMWare中Linux用桥接方式连接实例&source=https://typecodes.com" class="post-sharea wbshare" target="_blank" rel="nofollow">新浪微博</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://v.t.qq.com/share/share.php?title=虚拟机VMWare中Linux用桥接方式连接实例&url=https://typecodes.com/linux/vmwarelinuxbrigedmode.html&site=https://typecodes.com" class="post-sharea twbshare" target="_blank" rel="nofollow">腾讯微博</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=https://typecodes.com/linux/vmwarelinuxbrigedmode.html&title=虚拟机VMWare中Linux用桥接方式连接实例&content='utf-8'" class="post-sharea qzoneshare" target="_blank" rel="nofollow">QZone</a>
+							</li>
+						</ul>
+					</div>
+					<div>
+						Tags: <a href="https://typecodes.com/tag/xu-ni-ji-qiao-jie-mo-shi.html">虚拟机桥接模式</a>					</div>
+				</p>
+			</article>
+			
+			<div id="comments">
+				<h4 class="num">Comments &raquo;</h4>
+		    	<div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript></div>
+		    </div>
+		</div>
+		<!--3. right sider begin-->
+<div class="col-md-3" id="blog-secondary" role="complementary">
+	<section class="widget">
+		<ul class="widget-list">
+			<form id="search" method="get" action="https://typecodes.com/search.html">
+				<input type="text" name="q" id="s" size="20" x-webkit-speech="" x-webkit-grammar="builtin:search" onwebkitspeechchange="this.value = this.value.replace(this.defaultValue, '')" value="Google...." onfocus="this.value = (this.value == this.defaultValue) ? '' : this.value" onblur="this.value = (this.value == '') ? this.defaultValue : this.value">
+			</form>
+		</ul>
+	</section>
+	<section class="widget">
+		<h3 class="widget-title">Categories</h3>
+		<ul class="widget-list">
+		      <li class="current">
+		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (26)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/csharp/index.html">Csharp</a> (6)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/database/index.html">Database</a> (11)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/java/index.html">Java</a> (1)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/linux/index.html">Linux</a> (16)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/mix/index.html">Mix</a> (53)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/web/index.html">Web</a> (88)
+		      </li>
+		</ul>
+	</section>
+	<section class="widget">
+		<h3 class="widget-title">Recent Posts</h3>
+		<ul class="widget-list">
+			<li class="post">
+				<a href="https://typecodes.com/mix/sucesstypechotopelican.html">成功将博客从Typecho迁移到Pelican</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/mix/begintypechotopelican.html">准备将博客从Typecho迁移到Pelican</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/tcpconnectiontimedout.html">Linux TCP连接Connection Refused和Connection timed out的问题</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/mysqlerrornospace.html">博客MySQL服务惊魂记：Linux磁盘空间不足(Core Dump文件引爆)</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/mix/synweibophpmarkdownimgurl.html">升级博客文章同步微博的插件：PHP正则提取Markdown的图片地址</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/cppgeneralmakefile.html">Linux C/C++工程中可生成ELF、动/静态库文件的通用Makefile</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/libraryundefinedref.html">解决make编译链接动态库错误：libxx.so: undefined reference to xx</a>
+			</li>
+		</ul>
+	</section>
+	<section class="widget widget-feed">
+		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
+	</section>
+</div>
+				</div>
+			</div>
+		</div>
+		<!--4. bottom begin-->
+		<footer id="te-site-footer"><div class="container">
+	<div class="row" role="contentinfo">
+		<section class="col-md-2 col-md-offset-1">
+			<h3>Links</h3>
+			<ul><li><a href="http://diaosbook.com/" title="">diaosbook</a></li></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul>
+				<li><a href="https://typecodes.com/links.html">More..</a></li>
+			</ul>
+		</section>
+		<section class="col-md-2">
+			<h3>Following</h3>
+			<ul>
+				<li><a href="https://github.com/vfhky" class="following github" target="_blank" rel="external nofollow">GitHub</a></li>
+				<li><a href="http://weibo.com/typecodes" class="following weibo" target="_blank" rel="external nofollow">Weibo</a></li>
+				<li><a href="http://vfhky.sinaapp.com/" class="following sae" target="_blank" rel="external nofollow">SAE</a></li>
+				<li><a href="http://www.dwz.cn/mYiwa" class="following qqgroup" target="_blank" rel="external nofollow">Group</a></li>
+			</ul>
+		</section>
+		<div class="col-md-12 copyright">
+			<a href="#top"><i class="i-logo-s">TOP</i></a>
+			<p>
+				&copy; 2012-<script language="JavaScript">var date = new Date(); document.write(date.getFullYear());</script>							<a href="https://typecodes.com">TypeCodes</a>. All Rights Reserved<br>Powered by <a href="http://getpelican.com" rel="external" target="_blank">Pelican</a>. <a href="http://www.miitbeian.gov.cn/" rel="external nofollow" target="_blank">粤ICP备14050695号</a>
+			</p>
+		</div>
+	</div>
+</div>
+</footer>
+<script type="text/javascript">
+	var disqus_shortname = 'typecodes';
+	var disqus_identifier = '/linux/vmwarelinuxbrigedmode.html';
+	var disqus_url = 'https://typecodes.com/linux/vmwarelinuxbrigedmode.html';
+	var disqus_title = '虚拟机VMWare中Linux用桥接方式连接实例';
+	(function() {
+		var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+		dsq.src = "//" + disqus_shortname + '.disqus.com/embed.js';
+		(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	 })();
+</script>
+	</body>
+</html>

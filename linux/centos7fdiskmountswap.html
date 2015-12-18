@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="zh-CN" class="no-js">
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<title>2015博客升级记(二)：Linux系统磁盘分区挂载和交换空间 &mdash; TypeCodes</title>
+		<meta name="author" content="vfhky">
+  		<link href="https://typecodes.com/atom.xml" type="application/atom+xml" rel="alternate" title="TypeCodes Atom Feed" />
+	  	<link href="https://typecodes.com/feed.xml" type="application/rss+xml" rel="alternate" title="TypeCodes RSS Feed" />
+		<meta name="HandheldFriendly" content="True">
+		<meta name="MobileOptimized" content="320">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="renderer" content="webkit">
+		<link rel="stylesheet" href="https://dn-vfhky.qbox.me/libs/css/pelican-vfhky.css">
+		<script>
+			var _hmt = _hmt || [];
+			(function() {
+			  var hm = document.createElement("script");
+			  hm.src = "//hm.baidu.com/hm.js?c15c4ab8e91ba9ac3d5a12293cc93359";
+			  var s = document.getElementsByTagName("script")[0]; 
+			  s.parentNode.insertBefore(hm, s);
+			})();
+		</script>
+	</head>
+	<body style>
+		<!--1. header navigation begin-->
+		<header role="banner" id="te-site-header">
+			<div class="container">
+				<a href="https://typecodes.com" class="te-site-logo" role="logo" target="_self"> TypeCodes</a>
+				<ul class="nav nav-pills" id="te-site-nav" role="navigation">
+					<li><a href="https://typecodes.com">Home</a></li><li><a href="https://typecodes.com/archives.html" title="Archives">Archives</a></li><li><a href="https://typecodes.com/about.html" title="About">About</a></li></ul>
+			</div>
+		</header>
+		<div class="te-headline">
+			<div class="container">
+				<h2 class="te-headline-title"> <a href="https://typecodes.com">TypeCodes</a></h2>
+			</div>
+		</div>
+		<div class="container">
+			<div class="row">
+		<!--2. left sider begin-->
+		<div class="col-md-9" id="blog-main" role="main">
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/linux/centos7fdiskmountswap.html">2015博客升级记(二)：Linux系统磁盘分区挂载和交换空间</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2015-05-27 19:31 | 分类：<a href="https://typecodes.com/linux/index.html">linux</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>这是<a href="https://typecodes.com/mix/2015updateblog.html" title="查看原文">《2015年博客升级记》</a>系列文章的第二篇，主要记录在Linux系统中如何将磁盘进行分区和挂载。</p>
+<div class="highlight"><pre>------------操作说明------------               
+Linux系统：       阿里云CentOS 7.1（20G）
+操作工具：        SecureCRT 7.0
+待挂载的数据盘：   24G
+分区目标：        先分4G作为CentOS7.1系统的交换空间，剩余20G作为普通物理空间
+</pre></div>
+
+
+
+
+<h5>1 查看当前Linux系统分区信息</h5>
+<p>由于阿里云主机默认系统盘大小为20G，通过命令<code>df -h</code>可以看到分区<code>/dev/xvda1</code>挂载在当前CentOS7.1系统的根目录<code>/</code>下面，系统本身占用了2.1G空间。</p>
+<div class="highlight"><pre>[root@typecodes ~]# df -h
+Filesystem      Size  Used Avail Use% Mounted on
+/dev/xvda1       20G  2.1G   17G   12% /
+devtmpfs        489M     0  489M   0% /dev
+tmpfs           497M     0  497M   0% /dev/shm
+tmpfs           497M  6.5M  490M   2% /run
+tmpfs           497M     0  497M   0% /sys/fs/cgroup
+</pre></div>
+
+
+<h5>2 列出所有安装的磁盘及分区信息</h5>
+<p>那么，如果主机上还存在额外的未挂载的磁盘，我们可以通过<code>fdisk -l</code>查看这些磁盘的信息。如下所示，磁盘<code>/dev/xvda</code>是阿里云主机自带的，然后被划分成了分区<code>/dev/xvda1</code>；而磁盘<code>/dev/xvdb</code>就是24G大小（实际为25.8G）的阿里云数据盘（还未进行分区）。</p>
+<div class="highlight"><pre>[root@typecodes ~]# fdisk -l
+
+Disk /dev/xvda: 21.5 GB, 21474836480 bytes, 41943040 sectors
+Units = sectors of 1 * 512 = 512 bytes
+Sector size (logical/physical): 512 bytes / 512 bytes
+I/O size (minimum/optimal): 512 bytes / 512 bytes
+Disk label type: dos
+Disk identifier: 0x0009e68a
+
+    Device Boot      Start         End      Blocks   Id  System
+/dev/xvda1   *        2048    41943039    20970496   83  Linux
+
+Disk /dev/xvdb: 25.8 GB, 25769803776 bytes, 50331648 sectors
+Units = sectors of 1 * 512 = 512 bytes
+Sector size (logical/physical): 512 bytes / 512 bytes
+I/O size (minimum/optimal): 512 bytes / 512 bytes
+</pre></div>
+
+
+<h5>3 开始将磁盘进行分区</h5>
+<p>按照先前设定的目标，将磁盘<code>/dev/xvdb</code>划分成两个区：一区用于CentOS7.1系统的交换空间，二区就是普通的Linux物理空间，用作仓库存放备份的数据库文件、程序等等。</p>
+<div class="highlight"><pre>[root@typecodes ~]# fdisk /dev/xvdb
+Welcome to fdisk (util-linux 2.23.2).
+
+Changes will remain in memory only, until you decide to write them.
+Be careful before using the write command.
+
+Device does not contain a recognized partition table
+Building a new DOS disklabel with disk identifier 0x6c0e75aa.
+
+################开始分区1##################
+Command (m for help): n     [第1步：输入n，代表新建分区]
+Partition type:
+   p   primary (0 primary, 0 extended, 4 free)
+   e   extended
+Select (default p): p       [第2步：输入p或直接回车]
+Partition number (1-4, default 1): 1            [第3步：输入区号1]
+First sector (2048-50331647, default 2048):    [第4步：直接回车]
+Using default value 2048
+Last sector, +sectors or +size{K,M,G} (2048-50331647, default 50331647): +4G        [第5步：划分4G空间]
+Partition 1 of type Linux and of size 4 GiB is set
+</pre></div>
+
+
+<p>同样，使用<code>fdisk /dev/xvdb</code>命令划分区域2。需要说明的是，因为需要将剩余的20G空间全部划分到区域2，所以在第5步<code>Last sector, +sectors or +size{K,M,G} (8390656-50331647, default 50331647)</code>一栏中直接回车即可。这里省略具体执行过程，附图如下：</p>
+<p><img alt="开始对磁盘/dev/xvdb进行分区" src="https://dn-vfhky.qbox.me/2015/05/beginfdiskxvdb.png" title="开始对磁盘/dev/xvdb进行分区" /></p>
+<h5>4 开始格式化刚划分的第1和第2分区</h5>
+<p>开始分别将分区<code>/dev/xvdb1</code>和<code>/dev/xvdb2</code>格式化为ext4文件系统：</p>
+<div class="highlight"><pre>[root@typecodes /]# mkfs.ext4 /dev/xvdb1
+mke2fs 1.42.9 (28-Dec-2013)
+Filesystem label=
+OS type: Linux
+Block size=4096 (log=2)
+Fragment size=4096 (log=2)
+Stride=0 blocks, Stripe width=0 blocks
+262144 inodes, 1048576 blocks
+52428 blocks (5.00%) reserved for the super user
+First data block=0
+Maximum filesystem blocks=1073741824
+32 block groups
+32768 blocks per group, 32768 fragments per group
+8192 inodes per group
+Superblock backups stored on blocks: 
+        32768, 98304, 163840, 229376, 294912, 819200, 884736
+
+Allocating group tables: done                            
+Writing inode tables: done                            
+Creating journal (32768 blocks): done
+Writing superblocks and filesystem accounting information: done
+</pre></div>
+
+
+<p>同样使用命令<code>mkfs.ext4 /dev/xvdb2</code>格式化分区/dev/xvdb2为ext4文件系统，这里省略具体执行过程，附图如下：</p>
+<p><img alt="格式化分区/dev/xvdb2为ext4文件系统" src="https://dn-vfhky.qbox.me/2015/05/mkfs.ext4xvdb2.png" title="格式化分区/dev/xvdb2为ext4文件系统" /></p>
+<h5>5 指定第1分区类型为linux Swap分区</h5>
+<p>将第1分区<code>/dev/xvdb1</code>指定为当前CentOS7.1系统的交换空间，这对Linux系统来说是很重要的一部分。Linux系统可用的虚拟内存的总量等于物理内存（硬件的内存）和交换空间的总和。设置交换空间Swap的好处在于：当系统的物理内存耗尽时，系统调度将那些长时间没有什么操作的程序所占用的物理内存中的一部分空间释放出来，并临时保存到Swap交换空间中。等到那些程序要运行时，再将保存的数据从Swap中恢复到内存中。</p>
+<p>这里将分区1<code>/dev/xvdb1</code>改成Swap分区类型，最终操作如下图所示，其中<code>82</code>表示Linux系统Swap交换空间的文件类型。</p>
+<p><img alt="将分区/dev/xvdb1改成Swap分区类型" src="https://dn-vfhky.qbox.me/2015/05/linuxswap.png" title="将分区/dev/xvdb1改成Swap分区类型" /></p>
+<h5>6 使用mkswap命令设置交换分区</h5>
+<div class="highlight"><pre>[root@typecodes /]# mkswap /dev/xvdb1
+mkswap: /dev/xvdb1: warning: wiping old ext4 signature.
+Setting up swapspace version 1, size = 2097148 KiB
+no label, UUID=4c90adae-7459-4a99-8999-fef130ff3da1
+
+###############激活swap分区###############
+[root@typecodes /]# swapon -a /dev/xvdb1
+
+###############查看swap分区###############
+[root@typecodes /]# swapon -s       [或 free 或 cat /proc/swaps]
+Filename        Type        Size        Used    Priority
+/dev/xvdb1      partition   2097148     0       -1
+</pre></div>
+
+
+<h5>7 将分区2挂载到CentOS系统目录</h5>
+<p>根据目标设定，这里将分区2<code>/dev/xvdb2</code>挂载到我的CentOS7.1系统的<code>mydata</code>目录下面，用于存储仓库。</p>
+<div class="highlight"><pre>######在系统根目录新建mydata目录，并将分区2挂载到这个目录
+[root@typecodes /]# mkdir /mydata
+[root@typecodes /]# mount /dev/xvdb2 /mydata
+</pre></div>
+
+
+<h5>8 将分区1和分区2的信息分别追加到系统/etc/fstab文件中</h5>
+<p>Linux系统<code>/etc/fstab</code>文件中包含了当前主机磁盘分区以及存储设备如何挂载的信息，所以我们需要将分区1、2的信息分别写入到这个文件中。</p>
+<div class="highlight"><pre>[root@typecodes /]# echo &#39;/dev/xvdb1              swap               swap   defaults        0 0&#39; &gt;&gt; /etc/fstab
+[root@typecodes /]# echo &#39;/dev/xvdb2              /mydata            ext4   defaults        0 0&#39; &gt;&gt; /etc/fstab
+</pre></div>
+
+
+<h5>9 最后查看效果</h5>
+<p>最后，通过命令<code>df -h</code>和<code>fdisk -l</code>查看分区挂载效果如下图所示：</p>
+<p><img alt="开始对磁盘/dev/xvdb进行分区" src="https://dn-vfhky.qbox.me/2015/05/fdiskresult.png" title="开始对磁盘/dev/xvdb进行分区" /></p>
+		    	<p class="tags">
+					<div class="post-share">
+						<ul class="post-shareul clearfix">
+							<li class="post-shareli">
+								<a href="http://note.youdao.com/memory/?url=https://typecodes.com/linux/centos7fdiskmountswap.html&title=2015博客升级记(二)：Linux系统磁盘分区挂载和交换空间" class="post-sharea ydshare" target="_blank" rel="nofollow">有道云笔记</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://v.t.sina.com.cn/share/share.php?url=https://typecodes.com/linux/centos7fdiskmountswap.html&title=2015博客升级记(二)：Linux系统磁盘分区挂载和交换空间&source=https://typecodes.com" class="post-sharea wbshare" target="_blank" rel="nofollow">新浪微博</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://v.t.qq.com/share/share.php?title=2015博客升级记(二)：Linux系统磁盘分区挂载和交换空间&url=https://typecodes.com/linux/centos7fdiskmountswap.html&site=https://typecodes.com" class="post-sharea twbshare" target="_blank" rel="nofollow">腾讯微博</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=https://typecodes.com/linux/centos7fdiskmountswap.html&title=2015博客升级记(二)：Linux系统磁盘分区挂载和交换空间&content='utf-8'" class="post-sharea qzoneshare" target="_blank" rel="nofollow">QZone</a>
+							</li>
+						</ul>
+					</div>
+					<div>
+						Tags: <a href="https://typecodes.com/tag/bo-ke-cheng-chang-lu.html">博客成长录</a>,<a href="https://typecodes.com/tag/linuxgua-zai.html">linux挂载</a>,<a href="https://typecodes.com/tag/fen-qu-gua-zai.html">分区挂载</a>					</div>
+				</p>
+			</article>
+			
+			<div id="comments">
+				<h4 class="num">Comments &raquo;</h4>
+		    	<div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript></div>
+		    </div>
+		</div>
+		<!--3. right sider begin-->
+<div class="col-md-3" id="blog-secondary" role="complementary">
+	<section class="widget">
+		<ul class="widget-list">
+			<form id="search" method="get" action="https://typecodes.com/search.html">
+				<input type="text" name="q" id="s" size="20" x-webkit-speech="" x-webkit-grammar="builtin:search" onwebkitspeechchange="this.value = this.value.replace(this.defaultValue, '')" value="Google...." onfocus="this.value = (this.value == this.defaultValue) ? '' : this.value" onblur="this.value = (this.value == '') ? this.defaultValue : this.value">
+			</form>
+		</ul>
+	</section>
+	<section class="widget">
+		<h3 class="widget-title">Categories</h3>
+		<ul class="widget-list">
+		      <li class="current">
+		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (26)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/csharp/index.html">Csharp</a> (6)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/database/index.html">Database</a> (11)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/java/index.html">Java</a> (1)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/linux/index.html">Linux</a> (16)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/mix/index.html">Mix</a> (53)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/web/index.html">Web</a> (88)
+		      </li>
+		</ul>
+	</section>
+	<section class="widget">
+		<h3 class="widget-title">Recent Posts</h3>
+		<ul class="widget-list">
+			<li class="post">
+				<a href="https://typecodes.com/mix/sucesstypechotopelican.html">成功将博客从Typecho迁移到Pelican</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/mix/begintypechotopelican.html">准备将博客从Typecho迁移到Pelican</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/tcpconnectiontimedout.html">Linux TCP连接Connection Refused和Connection timed out的问题</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/mysqlerrornospace.html">博客MySQL服务惊魂记：Linux磁盘空间不足(Core Dump文件引爆)</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/mix/synweibophpmarkdownimgurl.html">升级博客文章同步微博的插件：PHP正则提取Markdown的图片地址</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/cppgeneralmakefile.html">Linux C/C++工程中可生成ELF、动/静态库文件的通用Makefile</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/libraryundefinedref.html">解决make编译链接动态库错误：libxx.so: undefined reference to xx</a>
+			</li>
+		</ul>
+	</section>
+	<section class="widget widget-feed">
+		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
+	</section>
+</div>
+				</div>
+			</div>
+		</div>
+		<!--4. bottom begin-->
+		<footer id="te-site-footer"><div class="container">
+	<div class="row" role="contentinfo">
+		<section class="col-md-2 col-md-offset-1">
+			<h3>Links</h3>
+			<ul><li><a href="http://diaosbook.com/" title="">diaosbook</a></li></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul>
+				<li><a href="https://typecodes.com/links.html">More..</a></li>
+			</ul>
+		</section>
+		<section class="col-md-2">
+			<h3>Following</h3>
+			<ul>
+				<li><a href="https://github.com/vfhky" class="following github" target="_blank" rel="external nofollow">GitHub</a></li>
+				<li><a href="http://weibo.com/typecodes" class="following weibo" target="_blank" rel="external nofollow">Weibo</a></li>
+				<li><a href="http://vfhky.sinaapp.com/" class="following sae" target="_blank" rel="external nofollow">SAE</a></li>
+				<li><a href="http://www.dwz.cn/mYiwa" class="following qqgroup" target="_blank" rel="external nofollow">Group</a></li>
+			</ul>
+		</section>
+		<div class="col-md-12 copyright">
+			<a href="#top"><i class="i-logo-s">TOP</i></a>
+			<p>
+				&copy; 2012-<script language="JavaScript">var date = new Date(); document.write(date.getFullYear());</script>							<a href="https://typecodes.com">TypeCodes</a>. All Rights Reserved<br>Powered by <a href="http://getpelican.com" rel="external" target="_blank">Pelican</a>. <a href="http://www.miitbeian.gov.cn/" rel="external nofollow" target="_blank">粤ICP备14050695号</a>
+			</p>
+		</div>
+	</div>
+</div>
+</footer>
+<script type="text/javascript">
+	var disqus_shortname = 'typecodes';
+	var disqus_identifier = '/linux/centos7fdiskmountswap.html';
+	var disqus_url = 'https://typecodes.com/linux/centos7fdiskmountswap.html';
+	var disqus_title = '2015博客升级记(二)：Linux系统磁盘分区挂载和交换空间';
+	(function() {
+		var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+		dsq.src = "//" + disqus_shortname + '.disqus.com/embed.js';
+		(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	 })();
+</script>
+	</body>
+</html>

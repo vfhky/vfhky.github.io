@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="zh-CN" class="no-js">
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<title>解决Redhat Linux5 yum出现This system is not registered with RHN &mdash; TypeCodes</title>
+		<meta name="author" content="vfhky">
+  		<link href="https://typecodes.com/atom.xml" type="application/atom+xml" rel="alternate" title="TypeCodes Atom Feed" />
+	  	<link href="https://typecodes.com/feed.xml" type="application/rss+xml" rel="alternate" title="TypeCodes RSS Feed" />
+		<meta name="HandheldFriendly" content="True">
+		<meta name="MobileOptimized" content="320">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="renderer" content="webkit">
+		<link rel="stylesheet" href="https://dn-vfhky.qbox.me/libs/css/pelican-vfhky.css">
+		<script>
+			var _hmt = _hmt || [];
+			(function() {
+			  var hm = document.createElement("script");
+			  hm.src = "//hm.baidu.com/hm.js?c15c4ab8e91ba9ac3d5a12293cc93359";
+			  var s = document.getElementsByTagName("script")[0]; 
+			  s.parentNode.insertBefore(hm, s);
+			})();
+		</script>
+	</head>
+	<body style>
+		<!--1. header navigation begin-->
+		<header role="banner" id="te-site-header">
+			<div class="container">
+				<a href="https://typecodes.com" class="te-site-logo" role="logo" target="_self"> TypeCodes</a>
+				<ul class="nav nav-pills" id="te-site-nav" role="navigation">
+					<li><a href="https://typecodes.com">Home</a></li><li><a href="https://typecodes.com/archives.html" title="Archives">Archives</a></li><li><a href="https://typecodes.com/about.html" title="About">About</a></li></ul>
+			</div>
+		</header>
+		<div class="te-headline">
+			<div class="container">
+				<h2 class="te-headline-title"> <a href="https://typecodes.com">TypeCodes</a></h2>
+			</div>
+		</div>
+		<div class="container">
+			<div class="row">
+		<!--2. left sider begin-->
+		<div class="col-md-9" id="blog-main" role="main">
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/linux/linuxnotregisteredrhn.html">解决Redhat Linux5 yum出现This system is not registered with RHN</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2013-03-08 14:04 | 分类：<a href="https://typecodes.com/linux/index.html">linux</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>最近博主在学习Linux，菜鸟级别的的选手连装个Chrome都觉得难，悲了个催的……百度了很多教程，大多是类似的。博主的配置是在VM8下搭建的RHEL5.3 (Tikanga)版本，不知道什么原因，每次在输入yum install google-chrome-stable之后就会出现“This system is not registered with RHN”的错误提示，蛋疼不已。百度无果后，GG大神帮上忙了（搜索Redhat This system is not registered with RHN，会冒出很多国外大牛的文章）。</p>
+<p>出现这个错误的原因是你的Linux木有花钱在红帽网络上注册^^，所以无法下载谷歌Chrome的软件包，解决方案可以使用从Redhat演化而来的免费Linux版本CentOS，通过CentOS的yum更新源来实现RHEL5的YUM功能。下面博主结合GG到的国外文章谈谈How to Install CentOS YUM on Redhat Linux RHEL5，以此来解决This system is not registered with RHN的问题。</p>
+
+
+<h5>1 check what yum package installed</h5>
+<p>查看RHEL是否安装了yum，若是安装了，那么又有哪些yum包：</p>
+<div class="highlight"><pre>[root@localhost ~]# rpm -qa |grep yum
+yum-metadata-parser-1.0-8.fc6
+yum-3.0.1-5.el5
+yum-rhn-plugin-0.4.3-1.el5
+yum-updatesd-3.0.1-5.el5
+</pre></div>
+
+
+<h5>2 remove all installed yum packages</h5>
+<p>卸载上面显示的所有yum包：</p>
+<div class="highlight"><pre>[root@localhost ~]# rpm -qa|grep yum|xargs rpm -e --nodeps（不检查依赖，直接删除rpm包）
+再用
+[root@localhost ~]# rpm -qa |grep yum查看，无信息显示表示已经卸载完成。
+</pre></div>
+
+
+<h5>3 download the centos packages from website</h5>
+<p>下载 CentOS YUM包，首先我们需要找到CentOS YUM的更新源，推荐的有（前三个适用于Redhat Linux5版本，最后一个适用于RHEL6的64位版本，当然不管是RHEL5还是RHEL6等等都可以从下面四个镜像网站中下载）：</p>
+<div class="highlight"><pre>1.国外镜像源http://ftp.heanet.ie/pub/centos/5/os/i386/CentOS/
+2.中国科技大学http://centos.ustc.edu.cn/centos/5/os/i386/CentOS/
+3.网易开源镜像http://mirrors.163.com/centos/5/os/i386/CentOS/
+4.搜狐开源镜像http://mirrors.ustc.edu.cn/centos/6/os/x86_64/Packages/
+</pre></div>
+
+
+<p>接着我们就需要在终端里面输入以下命令进行下载（以博主的RHEL5.3为例，从中国科大下载镜像，下载的目录如果没设置的话就会默认是[root@localhost ~]# pwd显示的路径）</p>
+<div class="highlight"><pre>[root@localhost ~]# wget http://centos.ustc.edu.cn/centos/5/os/i386/CentOS/yum-
+fastestmirror-1.1.16-21.el5.centos.noarch.rpm
+[root@localhost ~]# wget http://centos.ustc.edu.cn/centos/5/os/i386/CentOS/yum-
+metadata-parser-1.1.2-4.el5.i386.rpm
+[root@localhost ~]# wget http://centos.ustc.edu.cn/centos/5/os/i386/CentOS/yum-
+3.2.22-40.el5.centos.noarch.rpm
+[root@localhost ~]# wget http://centos.ustc.edu.cn/centos/5/os/i386/CentOS/
+python-iniparse-0.2.3-6.el5.noarch.rpm
+</pre></div>
+
+
+<h5>4 安装这所下载的四个包</h5>
+<p>注意:单个的安装包可能会依赖其它包（例如yum和yum-fastestmirror会相互依赖），所以我们可以把所有这些包放在一起，用一行命令将它们同时安装即可：</p>
+<div class="highlight"><pre>[root@localhost ~]# rpm -ivh  yum-fastestmirror-1.1.16-21.el5.centos.noarch.rpm 
+yum-metadata-parser-1.1.2-4.el5.i386.rpm 
+yum-3.2.22-40.el5.centos.noarch.rpm 
+yum-3.2.22-40.el5.centos.noarch.rpm
+//或者
+[root@localhost ~]# rpm –ivh yum-*
+</pre></div>
+
+
+<h5>5 download configure file</h5>
+<p>下载CentOS-Base.repo到/etc/yum.repos.d/文件夹里：</p>
+<div class="highlight"><pre>[root@localhost ~]# wget  http://docs.linuxtone.org/soft/lemp/CentOS-Base.repo 
+-O /etc/yum.repos.d/CentOS-Base.repo
+[root@localhost ~]# wget  http://huangkeye-blog.googlecode.com/files/CentOS-Base.repo 
+-O /etc/yum.repos.d/CentOS-Base.repo（以上这两个适用于RHEL版本5）
+[root@localhost ~]# wget  http://my-project-huangkeye.googlecode.com/files/CentOS-Base.repo 
+-O /etc/yum.repos.d/CentOS-Base.repo（这个适用于RHEL版本6)
+</pre></div>
+
+
+<p>也可以直接进入vim修改该文件为以下内容：</p>
+<div class="highlight"><pre><span class="k">[base]</span>
+<span class="na">name</span><span class="o">=</span><span class="s">CentOS-5 - Base</span>
+<span class="na">baseurl</span><span class="o">=</span><span class="s">http://centos.ustc.edu.cn/centos/5/os/$basearch/</span>
+<span class="na">gpgcheck</span><span class="o">=</span><span class="s">1</span>
+<span class="na">gpgkey</span><span class="o">=</span><span class="s">http://mirror.centos.org/centos/RPM-GPG-KEY-CentOS-5</span>
+
+<span class="c1">#released updates</span>
+<span class="k">[update]</span>
+<span class="na">name</span><span class="o">=</span><span class="s">CentOS-5 - Updates</span>
+<span class="na">baseurl</span><span class="o">=</span><span class="s">http://centos.ustc.edu.cn/centos/5/updates/$basearch/</span>
+<span class="na">gpgcheck</span><span class="o">=</span><span class="s">1</span>
+<span class="na">gpgkey</span><span class="o">=</span><span class="s">http://mirror.centos.org/centos/RPM-GPG-KEY-CentOS-5</span>
+
+<span class="c1">#packages used/produced in the build but not released</span>
+<span class="k">[addons]</span>
+<span class="na">name</span><span class="o">=</span><span class="s">CentOS-5 - Addons</span>
+<span class="na">baseurl</span><span class="o">=</span><span class="s">http://centos.ustc.edu.cn/centos/5/addons/$basearch/</span>
+<span class="na">gpgcheck</span><span class="o">=</span><span class="s">1</span>
+<span class="na">gpgkey</span><span class="o">=</span><span class="s">http://mirror.centos.org/centos/RPM-GPG-KEY-CentOS-5</span>
+<span class="c1">#additional packages that may be useful</span>
+<span class="k">[extras]</span>
+<span class="na">name</span><span class="o">=</span><span class="s">CentOS-5 - Extras</span>
+<span class="na">baseurl</span><span class="o">=</span><span class="s">http://centos.ustc.edu.cn/centos/5/extras/$basearch/</span>
+<span class="na">gpgcheck</span><span class="o">=</span><span class="s">1</span>
+<span class="na">gpgkey</span><span class="o">=</span><span class="s">http://mirror.centos.org/centos/RPM-GPG-KEY-CentOS-5</span>
+
+<span class="c1">#additional packages that extend functionality of existing packages</span>
+<span class="k">[centosplus]</span>
+<span class="na">name</span><span class="o">=</span><span class="s">CentOS-5 - Plus</span>
+<span class="na">baseurl</span><span class="o">=</span><span class="s">http://centos.ustc.edu.cn/centos/5/centosplus/$basearch/</span>
+<span class="na">gpgcheck</span><span class="o">=</span><span class="s">1</span>
+<span class="na">enabled</span><span class="o">=</span><span class="s">0</span>
+<span class="na">gpgkey</span><span class="o">=</span><span class="s">http://mirror.centos.org/centos/RPM-GPG-KEY-CentOS-5</span>
+
+<span class="c1">#contrib - packages by Centos Users</span>
+<span class="k">[contrib]</span>
+<span class="na">name</span><span class="o">=</span><span class="s">CentOS-5 - Contrib</span>
+<span class="na">baseurl</span><span class="o">=</span><span class="s">http://centos.ustc.edu.cn/centos/5/contrib/$basearch/</span>
+<span class="na">gpgcheck</span><span class="o">=</span><span class="s">1</span>
+<span class="na">enabled</span><span class="o">=</span><span class="s">0</span>
+<span class="na">gpgkey</span><span class="o">=</span><span class="s">http://mirror.centos.org/centos/RPM-GPG-KEY-CentOS-5</span>
+
+<span class="c1">#packages in testing</span>
+<span class="k">[testing]</span>
+<span class="na">name</span><span class="o">=</span><span class="s">CentOS-5 - Testing</span>
+<span class="na">baseurl</span><span class="o">=</span><span class="s">http://centos.ustc.edu.cn/centos/5/testing/$basearch/</span>
+<span class="na">gpgcheck</span><span class="o">=</span><span class="s">1</span>
+<span class="na">enabled</span><span class="o">=</span><span class="s">0</span>
+<span class="na">gpgkey</span><span class="o">=</span><span class="s">http://mirror.centos.org/centos/RPM-GPG-KEY-CentOS-5</span>
+</pre></div>
+
+
+<h5>6 [选做]clear cache and rebuild</h5>
+<p>需要清除和重建cache：</p>
+<div class="highlight"><pre>[root@localhost ~]# yum clean metadata
+[root@localhost ~]# yum clean dbcache
+[root@localhost ~]# yum makecache
+</pre></div>
+
+
+<h5>7 installation has been completed, testing</h5>
+<div class="highlight"><pre>//安装成功，开始测试：
+[root@localhost ~]# yum update
+</pre></div>
+
+
+<h5>8 Yum百科 ：</h5>
+<div class="highlight"><pre>RHEL安装软件包管理器Yum（全称为 Yellow dog Updater, Modified）是一个在Fedora和RedHat以及SUSE、CentOS中的Shell前端软件包管理器。基于RPM包管理，能够从指定的服务器自动下载RPM包并且安装，可以自动处理依赖性关系，并且一次安装所有依赖的软件包，无须繁琐地一次次下载、安装。
+</pre></div>
+		    	<p class="tags">
+					<div class="post-share">
+						<ul class="post-shareul clearfix">
+							<li class="post-shareli">
+								<a href="http://note.youdao.com/memory/?url=https://typecodes.com/linux/linuxnotregisteredrhn.html&title=解决Redhat Linux5 yum出现This system is not registered with RHN" class="post-sharea ydshare" target="_blank" rel="nofollow">有道云笔记</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://v.t.sina.com.cn/share/share.php?url=https://typecodes.com/linux/linuxnotregisteredrhn.html&title=解决Redhat Linux5 yum出现This system is not registered with RHN&source=https://typecodes.com" class="post-sharea wbshare" target="_blank" rel="nofollow">新浪微博</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://v.t.qq.com/share/share.php?title=解决Redhat Linux5 yum出现This system is not registered with RHN&url=https://typecodes.com/linux/linuxnotregisteredrhn.html&site=https://typecodes.com" class="post-sharea twbshare" target="_blank" rel="nofollow">腾讯微博</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=https://typecodes.com/linux/linuxnotregisteredrhn.html&title=解决Redhat Linux5 yum出现This system is not registered with RHN&content='utf-8'" class="post-sharea qzoneshare" target="_blank" rel="nofollow">QZone</a>
+							</li>
+						</ul>
+					</div>
+					<div>
+						Tags: <a href="https://typecodes.com/tag/registered-with-rhn.html">registered with rhn</a>					</div>
+				</p>
+			</article>
+			
+			<div id="comments">
+				<h4 class="num">Comments &raquo;</h4>
+		    	<div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript></div>
+		    </div>
+		</div>
+		<!--3. right sider begin-->
+<div class="col-md-3" id="blog-secondary" role="complementary">
+	<section class="widget">
+		<ul class="widget-list">
+			<form id="search" method="get" action="https://typecodes.com/search.html">
+				<input type="text" name="q" id="s" size="20" x-webkit-speech="" x-webkit-grammar="builtin:search" onwebkitspeechchange="this.value = this.value.replace(this.defaultValue, '')" value="Google...." onfocus="this.value = (this.value == this.defaultValue) ? '' : this.value" onblur="this.value = (this.value == '') ? this.defaultValue : this.value">
+			</form>
+		</ul>
+	</section>
+	<section class="widget">
+		<h3 class="widget-title">Categories</h3>
+		<ul class="widget-list">
+		      <li class="current">
+		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (26)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/csharp/index.html">Csharp</a> (6)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/database/index.html">Database</a> (11)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/java/index.html">Java</a> (1)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/linux/index.html">Linux</a> (16)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/mix/index.html">Mix</a> (53)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/web/index.html">Web</a> (88)
+		      </li>
+		</ul>
+	</section>
+	<section class="widget">
+		<h3 class="widget-title">Recent Posts</h3>
+		<ul class="widget-list">
+			<li class="post">
+				<a href="https://typecodes.com/mix/sucesstypechotopelican.html">成功将博客从Typecho迁移到Pelican</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/mix/begintypechotopelican.html">准备将博客从Typecho迁移到Pelican</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/tcpconnectiontimedout.html">Linux TCP连接Connection Refused和Connection timed out的问题</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/mysqlerrornospace.html">博客MySQL服务惊魂记：Linux磁盘空间不足(Core Dump文件引爆)</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/mix/synweibophpmarkdownimgurl.html">升级博客文章同步微博的插件：PHP正则提取Markdown的图片地址</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/cppgeneralmakefile.html">Linux C/C++工程中可生成ELF、动/静态库文件的通用Makefile</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/libraryundefinedref.html">解决make编译链接动态库错误：libxx.so: undefined reference to xx</a>
+			</li>
+		</ul>
+	</section>
+	<section class="widget widget-feed">
+		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
+	</section>
+</div>
+				</div>
+			</div>
+		</div>
+		<!--4. bottom begin-->
+		<footer id="te-site-footer"><div class="container">
+	<div class="row" role="contentinfo">
+		<section class="col-md-2 col-md-offset-1">
+			<h3>Links</h3>
+			<ul><li><a href="http://diaosbook.com/" title="">diaosbook</a></li></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul>
+				<li><a href="https://typecodes.com/links.html">More..</a></li>
+			</ul>
+		</section>
+		<section class="col-md-2">
+			<h3>Following</h3>
+			<ul>
+				<li><a href="https://github.com/vfhky" class="following github" target="_blank" rel="external nofollow">GitHub</a></li>
+				<li><a href="http://weibo.com/typecodes" class="following weibo" target="_blank" rel="external nofollow">Weibo</a></li>
+				<li><a href="http://vfhky.sinaapp.com/" class="following sae" target="_blank" rel="external nofollow">SAE</a></li>
+				<li><a href="http://www.dwz.cn/mYiwa" class="following qqgroup" target="_blank" rel="external nofollow">Group</a></li>
+			</ul>
+		</section>
+		<div class="col-md-12 copyright">
+			<a href="#top"><i class="i-logo-s">TOP</i></a>
+			<p>
+				&copy; 2012-<script language="JavaScript">var date = new Date(); document.write(date.getFullYear());</script>							<a href="https://typecodes.com">TypeCodes</a>. All Rights Reserved<br>Powered by <a href="http://getpelican.com" rel="external" target="_blank">Pelican</a>. <a href="http://www.miitbeian.gov.cn/" rel="external nofollow" target="_blank">粤ICP备14050695号</a>
+			</p>
+		</div>
+	</div>
+</div>
+</footer>
+<script type="text/javascript">
+	var disqus_shortname = 'typecodes';
+	var disqus_identifier = '/linux/linuxnotregisteredrhn.html';
+	var disqus_url = 'https://typecodes.com/linux/linuxnotregisteredrhn.html';
+	var disqus_title = '解决Redhat Linux5 yum出现This system is not registered with RHN';
+	(function() {
+		var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+		dsq.src = "//" + disqus_shortname + '.disqus.com/embed.js';
+		(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	 })();
+</script>
+	</body>
+</html>

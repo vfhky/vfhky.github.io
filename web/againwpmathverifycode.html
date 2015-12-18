@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="zh-CN" class="no-js">
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<title>再谈wordpress评论验证码——Willin Kan大神开的一个“玩笑” &mdash; TypeCodes</title>
+		<meta name="author" content="vfhky">
+  		<link href="https://typecodes.com/atom.xml" type="application/atom+xml" rel="alternate" title="TypeCodes Atom Feed" />
+	  	<link href="https://typecodes.com/feed.xml" type="application/rss+xml" rel="alternate" title="TypeCodes RSS Feed" />
+		<meta name="HandheldFriendly" content="True">
+		<meta name="MobileOptimized" content="320">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="renderer" content="webkit">
+		<link rel="stylesheet" href="https://dn-vfhky.qbox.me/libs/css/pelican-vfhky.css">
+		<script>
+			var _hmt = _hmt || [];
+			(function() {
+			  var hm = document.createElement("script");
+			  hm.src = "//hm.baidu.com/hm.js?c15c4ab8e91ba9ac3d5a12293cc93359";
+			  var s = document.getElementsByTagName("script")[0]; 
+			  s.parentNode.insertBefore(hm, s);
+			})();
+		</script>
+	</head>
+	<body style>
+		<!--1. header navigation begin-->
+		<header role="banner" id="te-site-header">
+			<div class="container">
+				<a href="https://typecodes.com" class="te-site-logo" role="logo" target="_self"> TypeCodes</a>
+				<ul class="nav nav-pills" id="te-site-nav" role="navigation">
+					<li><a href="https://typecodes.com">Home</a></li><li><a href="https://typecodes.com/archives.html" title="Archives">Archives</a></li><li><a href="https://typecodes.com/about.html" title="About">About</a></li></ul>
+			</div>
+		</header>
+		<div class="te-headline">
+			<div class="container">
+				<h2 class="te-headline-title"> <a href="https://typecodes.com">TypeCodes</a></h2>
+			</div>
+		</div>
+		<div class="container">
+			<div class="row">
+		<!--2. left sider begin-->
+		<div class="col-md-9" id="blog-main" role="main">
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/web/againwpmathverifycode.html">再谈wordpress评论验证码——Willin Kan大神开的一个“玩笑”</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2013-04-12 22:10 | 分类：<a href="https://typecodes.com/web/index.html">web</a></li>
+</ul>
+<div class="post-content fmt">
+	<h5>（一）问题描述</h5>
+<p>最近在筹划博客的新主题中，遇到了一个问题，那就是在调用先前vfhky写的<a href="https://typecodes.com/web/wpmathverifycode.html" title="点击查看原文">《博客优化第二波(三)：wordpress评论添加算术验证码》</a>文中的spam_provent_math函数时，如果用户错误的输入了验证码，那么在提交的时候网页就会变形。昨天，来哥在用这段代码的时候也提到了 页面框架变形的问题 ，所以觉得有必要把解决方案提出来，免得误导了大家。</p>
+
+
+<p>网上查找了资料，大多说是因为在提交评论的时候，由于调用ajax评论JS代码导致在输出错误提示的时候评论页面变形（一般的wp主题评论都回调用的Willin Kan编写的jQuery-Ajax-Comments v1.3），这该不会是Willin大神故意开玩笑吧？？？</p>
+<p><img alt="wordpress评论框变形" src="https://dn-vfhky.qbox.me/2013/04/change-shape.png" title="wordpress评论框变形" /></p>
+<h5>（二）网络解决方法</h5>
+<p>那么，我们找到 comments-ajax.js 中的第43-47行：</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5</pre></div></td><td class="code"><div class="highlight"><pre><span class="nx">error</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">request</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#loading&#39;</span><span class="p">).</span><span class="nx">slideUp</span><span class="p">();</span>
+  <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#error&#39;</span><span class="p">).</span><span class="nx">slideDown</span><span class="p">().</span><span class="nx">html</span><span class="p">(</span><span class="s1">&#39;&lt;img src=&quot;&#39;</span> <span class="o">+</span> <span class="nx">pic_no</span> <span class="o">+</span> <span class="s1">&#39;&quot; style=&quot;vertical-align:middle;&quot; alt=&quot;&quot;/&gt; &#39;</span> <span class="o">+</span> <span class="nx">request</span><span class="p">.</span><span class="nx">responseText</span><span class="p">);</span>
+  <span class="nx">setTimeout</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span><span class="nx">$submit</span><span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s1">&#39;disabled&#39;</span><span class="p">,</span> <span class="kc">false</span><span class="p">).</span><span class="nx">fadeTo</span><span class="p">(</span><span class="s1">&#39;slow&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span> <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#error&#39;</span><span class="p">).</span><span class="nx">slideUp</span><span class="p">();},</span> <span class="mi">3000</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</td></tr></table>
+
+<p>这段代码也就是在出现error的时候执行的语句，也就是wordpress评论框变形的“罪魁祸首”！网上的解决方法是：在第45行的代码后面添加正则表达式，过滤掉上面代码产生的常见的html标签代码，具体如下</p>
+<div class="highlight"><pre><span class="o">$(</span><span class="s1">&#39;#error&#39;</span><span class="o">)</span><span class="nc">.slideDown</span><span class="o">()</span><span class="nc">.html</span><span class="o">(</span><span class="s1">&#39;&lt;img src=&quot;&#39;</span> <span class="o">+</span> <span class="nt">pic_no</span> <span class="o">+</span> <span class="s1">&#39;&quot; style=&quot;vertical-align:middle;&quot; alt=&quot;&quot;/&gt; &#39;</span> <span class="o">+</span> <span class="nt">request</span><span class="nc">.responseText.replace</span><span class="o">(/&lt;</span> <span class="o">(?!</span><span class="nt">p</span><span class="o">).*?&gt;(?:.*?&lt;</span> <span class="err">\</span><span class="o">/.*?&gt;)?/</span><span class="nt">gi</span><span class="o">,</span><span class="s1">&#39;&#39;</span><span class="o">));</span>
+</pre></div>
+
+
+<h5>（三）遗留问题</h5>
+<p>但是经过vfhky的测试，改进后的代码虽然避免了wordpress评论页面的变形，但是会输出很多浏览器无法解析的源代码，图就不贴出来了，大家可以自己测试一下。没办法，博主就小小研究了下comments-ajax.php，发现里面的出错提示语句用的是</p>
+<div class="highlight"><pre>err(__(&#39;Sorry, comments are closed for this item.&#39;));
+</pre></div>
+
+
+<p>而不是用常规的echo函数输出，所以我把spam_provent_pre($spam_result)函数中的 两个we_die函数全都替换成err 。修改后，vfhky进行了测试，结果显示即使用户错误的输入验证码也不会使评论框页面变形了，它会像用户没有输入邮箱号码而直接提交评论那样在评论框的底部以温馨的小字提示用户应该输入正确的验证码！</p>
+<h5>（四）结语</h5>
+<p>看来bug只能是偶们这小菜鸟产生的，膜拜Willin Kan大神啦！</p>
+		    	<p class="tags">
+					<div class="post-share">
+						<ul class="post-shareul clearfix">
+							<li class="post-shareli">
+								<a href="http://note.youdao.com/memory/?url=https://typecodes.com/web/againwpmathverifycode.html&title=再谈wordpress评论验证码——Willin Kan大神开的一个“玩笑”" class="post-sharea ydshare" target="_blank" rel="nofollow">有道云笔记</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://v.t.sina.com.cn/share/share.php?url=https://typecodes.com/web/againwpmathverifycode.html&title=再谈wordpress评论验证码——Willin Kan大神开的一个“玩笑”&source=https://typecodes.com" class="post-sharea wbshare" target="_blank" rel="nofollow">新浪微博</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://v.t.qq.com/share/share.php?title=再谈wordpress评论验证码——Willin Kan大神开的一个“玩笑”&url=https://typecodes.com/web/againwpmathverifycode.html&site=https://typecodes.com" class="post-sharea twbshare" target="_blank" rel="nofollow">腾讯微博</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=https://typecodes.com/web/againwpmathverifycode.html&title=再谈wordpress评论验证码——Willin Kan大神开的一个“玩笑”&content='utf-8'" class="post-sharea qzoneshare" target="_blank" rel="nofollow">QZone</a>
+							</li>
+						</ul>
+					</div>
+					<div>
+						Tags: <a href="https://typecodes.com/tag/wordpressyan-zheng-ma.html">wordpress验证码</a>					</div>
+				</p>
+			</article>
+			
+			<div id="comments">
+				<h4 class="num">Comments &raquo;</h4>
+		    	<div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript></div>
+		    </div>
+		</div>
+		<!--3. right sider begin-->
+<div class="col-md-3" id="blog-secondary" role="complementary">
+	<section class="widget">
+		<ul class="widget-list">
+			<form id="search" method="get" action="https://typecodes.com/search.html">
+				<input type="text" name="q" id="s" size="20" x-webkit-speech="" x-webkit-grammar="builtin:search" onwebkitspeechchange="this.value = this.value.replace(this.defaultValue, '')" value="Google...." onfocus="this.value = (this.value == this.defaultValue) ? '' : this.value" onblur="this.value = (this.value == '') ? this.defaultValue : this.value">
+			</form>
+		</ul>
+	</section>
+	<section class="widget">
+		<h3 class="widget-title">Categories</h3>
+		<ul class="widget-list">
+		      <li class="current">
+		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (26)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/csharp/index.html">Csharp</a> (6)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/database/index.html">Database</a> (11)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/java/index.html">Java</a> (1)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/linux/index.html">Linux</a> (16)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/mix/index.html">Mix</a> (53)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/web/index.html">Web</a> (88)
+		      </li>
+		</ul>
+	</section>
+	<section class="widget">
+		<h3 class="widget-title">Recent Posts</h3>
+		<ul class="widget-list">
+			<li class="post">
+				<a href="https://typecodes.com/mix/sucesstypechotopelican.html">成功将博客从Typecho迁移到Pelican</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/mix/begintypechotopelican.html">准备将博客从Typecho迁移到Pelican</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/tcpconnectiontimedout.html">Linux TCP连接Connection Refused和Connection timed out的问题</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/mysqlerrornospace.html">博客MySQL服务惊魂记：Linux磁盘空间不足(Core Dump文件引爆)</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/mix/synweibophpmarkdownimgurl.html">升级博客文章同步微博的插件：PHP正则提取Markdown的图片地址</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/cppgeneralmakefile.html">Linux C/C++工程中可生成ELF、动/静态库文件的通用Makefile</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/libraryundefinedref.html">解决make编译链接动态库错误：libxx.so: undefined reference to xx</a>
+			</li>
+		</ul>
+	</section>
+	<section class="widget widget-feed">
+		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
+	</section>
+</div>
+				</div>
+			</div>
+		</div>
+		<!--4. bottom begin-->
+		<footer id="te-site-footer"><div class="container">
+	<div class="row" role="contentinfo">
+		<section class="col-md-2 col-md-offset-1">
+			<h3>Links</h3>
+			<ul><li><a href="http://diaosbook.com/" title="">diaosbook</a></li></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul>
+				<li><a href="https://typecodes.com/links.html">More..</a></li>
+			</ul>
+		</section>
+		<section class="col-md-2">
+			<h3>Following</h3>
+			<ul>
+				<li><a href="https://github.com/vfhky" class="following github" target="_blank" rel="external nofollow">GitHub</a></li>
+				<li><a href="http://weibo.com/typecodes" class="following weibo" target="_blank" rel="external nofollow">Weibo</a></li>
+				<li><a href="http://vfhky.sinaapp.com/" class="following sae" target="_blank" rel="external nofollow">SAE</a></li>
+				<li><a href="http://www.dwz.cn/mYiwa" class="following qqgroup" target="_blank" rel="external nofollow">Group</a></li>
+			</ul>
+		</section>
+		<div class="col-md-12 copyright">
+			<a href="#top"><i class="i-logo-s">TOP</i></a>
+			<p>
+				&copy; 2012-<script language="JavaScript">var date = new Date(); document.write(date.getFullYear());</script>							<a href="https://typecodes.com">TypeCodes</a>. All Rights Reserved<br>Powered by <a href="http://getpelican.com" rel="external" target="_blank">Pelican</a>. <a href="http://www.miitbeian.gov.cn/" rel="external nofollow" target="_blank">粤ICP备14050695号</a>
+			</p>
+		</div>
+	</div>
+</div>
+</footer>
+<script type="text/javascript">
+	var disqus_shortname = 'typecodes';
+	var disqus_identifier = '/web/againwpmathverifycode.html';
+	var disqus_url = 'https://typecodes.com/web/againwpmathverifycode.html';
+	var disqus_title = '再谈wordpress评论验证码——Willin Kan大神开的一个“玩笑”';
+	(function() {
+		var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+		dsq.src = "//" + disqus_shortname + '.disqus.com/embed.js';
+		(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	 })();
+</script>
+	</body>
+</html>

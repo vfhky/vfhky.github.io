@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="zh-CN" class="no-js">
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<title>如何修改WordPress的后台登录界面 &mdash; TypeCodes</title>
+		<meta name="author" content="vfhky">
+  		<link href="https://typecodes.com/atom.xml" type="application/atom+xml" rel="alternate" title="TypeCodes Atom Feed" />
+	  	<link href="https://typecodes.com/feed.xml" type="application/rss+xml" rel="alternate" title="TypeCodes RSS Feed" />
+		<meta name="HandheldFriendly" content="True">
+		<meta name="MobileOptimized" content="320">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="renderer" content="webkit">
+		<link rel="stylesheet" href="https://dn-vfhky.qbox.me/libs/css/pelican-vfhky.css">
+		<script>
+			var _hmt = _hmt || [];
+			(function() {
+			  var hm = document.createElement("script");
+			  hm.src = "//hm.baidu.com/hm.js?c15c4ab8e91ba9ac3d5a12293cc93359";
+			  var s = document.getElementsByTagName("script")[0]; 
+			  s.parentNode.insertBefore(hm, s);
+			})();
+		</script>
+	</head>
+	<body style>
+		<!--1. header navigation begin-->
+		<header role="banner" id="te-site-header">
+			<div class="container">
+				<a href="https://typecodes.com" class="te-site-logo" role="logo" target="_self"> TypeCodes</a>
+				<ul class="nav nav-pills" id="te-site-nav" role="navigation">
+					<li><a href="https://typecodes.com">Home</a></li><li><a href="https://typecodes.com/archives.html" title="Archives">Archives</a></li><li><a href="https://typecodes.com/about.html" title="About">About</a></li></ul>
+			</div>
+		</header>
+		<div class="te-headline">
+			<div class="container">
+				<h2 class="te-headline-title"> <a href="https://typecodes.com">TypeCodes</a></h2>
+			</div>
+		</div>
+		<div class="container">
+			<div class="row">
+		<!--2. left sider begin-->
+		<div class="col-md-9" id="blog-main" role="main">
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/web/amendwordpressloginpage.html">如何修改WordPress的后台登录界面</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2012-09-07 20:31 | 分类：<a href="https://typecodes.com/web/index.html">web</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>和很多CMS一样，网站一经升级就会把你先前修改的一些图片或者样式什么的都替换为CMS自己的内容。Wordpress也一样，每次官方发布新版本升级后的后台管理都会被恢复为官方内容。所以很是麻烦，我们要做的就是想办法“一劳永逸”地解决这个问题。要修改的内容包括：替换登录Logo图片、替换Logo上的链接和提示文字。最终的效果如下图所示，</p>
+<p><img alt="修改wordpress后台登陆界面" src="https://dn-vfhky.qbox.me/2012/09/1.png" title="修改wordpress后台登陆界面" /></p>
+
+
+<h5>方法1：直接修改安装目录下的wp-login.php文件（这种方法比较直接，但是不推荐）</h5>
+<div class="highlight"><pre><span class="nt">if</span> <span class="o">(</span> <span class="nt">is_multisite</span><span class="o">()</span> <span class="o">)</span> <span class="p">{</span>
+    <span class="err">$</span><span class="n">login_header_url</span>   <span class="o">=</span> <span class="n">network_home_url</span><span class="p">();</span>
+    <span class="err">$</span><span class="n">login_header_title</span> <span class="o">=</span> <span class="err">$</span><span class="n">current_site</span><span class="o">-&gt;</span><span class="n">site_name</span><span class="p">;</span>
+<span class="p">}</span> <span class="nt">else</span> <span class="p">{</span>
+    <span class="err">$</span><span class="n">login_header_url</span>   <span class="o">=</span> <span class="n">__</span><span class="p">(</span> <span class="s1">&#39;http://wordpress.org/&#39;</span> <span class="p">);</span>
+    <span class="err">$</span><span class="n">login_header_title</span> <span class="o">=</span> <span class="n">__</span><span class="p">(</span> <span class="s1">&#39;Powered by WordPress&#39;</span> <span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<p>如果没有开启多站点功能的话，那么链接地址及其标题提示就是WordPress的内容；否则，就是网络站点的地址与站点名称。把else里面的内容修改即可。</p>
+<h5>方法2：修改自己的主题中的functions.php文件（一劳永逸的方法，推荐）</h5>
+<h6>1、修改Logo上的链接</h6>
+<p>在functions.php中添加代码：</p>
+<div class="highlight"><pre><span class="nx">add_filter</span><span class="p">(</span><span class="s1">&#39;login_headerurl&#39;</span><span class="p">,</span> <span class="nx">create_function</span><span class="p">(</span><span class="kc">false</span><span class="p">,</span><span class="s2">&quot;return get_bloginfo( &#39;siteurl&#39; );&quot;</span><span class="p">));</span>
+</pre></div>
+
+
+<h6>2、修改Logo上的提示文字</h6>
+<p>在functions.php中添加如下代码：</p>
+<div class="highlight"><pre><span class="nx">add_filter</span><span class="p">(</span><span class="s1">&#39;login_headertitle&#39;</span><span class="p">,</span> <span class="nx">create_function</span><span class="p">(</span><span class="kc">false</span><span class="p">,</span><span class="s2">&quot;return get_bloginfo( &#39;description&#39; );&quot;</span><span class="p">));</span>
+</pre></div>
+
+
+<h6>3、修改由CSS控制显示的链接图片</h6>
+<p>在functions.php中添加如下代码：</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6</pre></div></td><td class="code"><div class="highlight"><pre><span class="x">add_action(&#39;login_head&#39;, &#39;my_custom_login_logo&#39;);</span>
+<span class="x">function my_custom_login_logo() {</span>
+<span class="x">    echo &#39;&lt;style type=&quot;text/css&quot;&gt;</span>
+<span class="x">        h1 a { background-image:url(&#39;.get_bloginfo(&#39;template_directory&#39;).&#39;/images/wordpress-logo.png) !important; }</span>
+<span class="x">    &lt;/style&gt;&#39;;</span>
+<span class="x">}</span>
+</pre></div>
+</td></tr></table>
+
+<p>然后在你的主题文件夹下的images文件夹中放置自己的LOGO 图片wordpress-logo.png。</p>
+		    	<p class="tags">
+					<div class="post-share">
+						<ul class="post-shareul clearfix">
+							<li class="post-shareli">
+								<a href="http://note.youdao.com/memory/?url=https://typecodes.com/web/amendwordpressloginpage.html&title=如何修改WordPress的后台登录界面" class="post-sharea ydshare" target="_blank" rel="nofollow">有道云笔记</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://v.t.sina.com.cn/share/share.php?url=https://typecodes.com/web/amendwordpressloginpage.html&title=如何修改WordPress的后台登录界面&source=https://typecodes.com" class="post-sharea wbshare" target="_blank" rel="nofollow">新浪微博</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://v.t.qq.com/share/share.php?title=如何修改WordPress的后台登录界面&url=https://typecodes.com/web/amendwordpressloginpage.html&site=https://typecodes.com" class="post-sharea twbshare" target="_blank" rel="nofollow">腾讯微博</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=https://typecodes.com/web/amendwordpressloginpage.html&title=如何修改WordPress的后台登录界面&content='utf-8'" class="post-sharea qzoneshare" target="_blank" rel="nofollow">QZone</a>
+							</li>
+						</ul>
+					</div>
+					<div>
+						Tags: <a href="https://typecodes.com/tag/wordpress.html">wordpress</a>					</div>
+				</p>
+			</article>
+			
+			<div id="comments">
+				<h4 class="num">Comments &raquo;</h4>
+		    	<div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript></div>
+		    </div>
+		</div>
+		<!--3. right sider begin-->
+<div class="col-md-3" id="blog-secondary" role="complementary">
+	<section class="widget">
+		<ul class="widget-list">
+			<form id="search" method="get" action="https://typecodes.com/search.html">
+				<input type="text" name="q" id="s" size="20" x-webkit-speech="" x-webkit-grammar="builtin:search" onwebkitspeechchange="this.value = this.value.replace(this.defaultValue, '')" value="Google...." onfocus="this.value = (this.value == this.defaultValue) ? '' : this.value" onblur="this.value = (this.value == '') ? this.defaultValue : this.value">
+			</form>
+		</ul>
+	</section>
+	<section class="widget">
+		<h3 class="widget-title">Categories</h3>
+		<ul class="widget-list">
+		      <li class="current">
+		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (26)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/csharp/index.html">Csharp</a> (6)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/database/index.html">Database</a> (11)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/java/index.html">Java</a> (1)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/linux/index.html">Linux</a> (16)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/mix/index.html">Mix</a> (53)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/web/index.html">Web</a> (88)
+		      </li>
+		</ul>
+	</section>
+	<section class="widget">
+		<h3 class="widget-title">Recent Posts</h3>
+		<ul class="widget-list">
+			<li class="post">
+				<a href="https://typecodes.com/mix/sucesstypechotopelican.html">成功将博客从Typecho迁移到Pelican</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/mix/begintypechotopelican.html">准备将博客从Typecho迁移到Pelican</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/tcpconnectiontimedout.html">Linux TCP连接Connection Refused和Connection timed out的问题</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/mysqlerrornospace.html">博客MySQL服务惊魂记：Linux磁盘空间不足(Core Dump文件引爆)</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/mix/synweibophpmarkdownimgurl.html">升级博客文章同步微博的插件：PHP正则提取Markdown的图片地址</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/cppgeneralmakefile.html">Linux C/C++工程中可生成ELF、动/静态库文件的通用Makefile</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/libraryundefinedref.html">解决make编译链接动态库错误：libxx.so: undefined reference to xx</a>
+			</li>
+		</ul>
+	</section>
+	<section class="widget widget-feed">
+		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
+	</section>
+</div>
+				</div>
+			</div>
+		</div>
+		<!--4. bottom begin-->
+		<footer id="te-site-footer"><div class="container">
+	<div class="row" role="contentinfo">
+		<section class="col-md-2 col-md-offset-1">
+			<h3>Links</h3>
+			<ul><li><a href="http://diaosbook.com/" title="">diaosbook</a></li></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul>
+				<li><a href="https://typecodes.com/links.html">More..</a></li>
+			</ul>
+		</section>
+		<section class="col-md-2">
+			<h3>Following</h3>
+			<ul>
+				<li><a href="https://github.com/vfhky" class="following github" target="_blank" rel="external nofollow">GitHub</a></li>
+				<li><a href="http://weibo.com/typecodes" class="following weibo" target="_blank" rel="external nofollow">Weibo</a></li>
+				<li><a href="http://vfhky.sinaapp.com/" class="following sae" target="_blank" rel="external nofollow">SAE</a></li>
+				<li><a href="http://www.dwz.cn/mYiwa" class="following qqgroup" target="_blank" rel="external nofollow">Group</a></li>
+			</ul>
+		</section>
+		<div class="col-md-12 copyright">
+			<a href="#top"><i class="i-logo-s">TOP</i></a>
+			<p>
+				&copy; 2012-<script language="JavaScript">var date = new Date(); document.write(date.getFullYear());</script>							<a href="https://typecodes.com">TypeCodes</a>. All Rights Reserved<br>Powered by <a href="http://getpelican.com" rel="external" target="_blank">Pelican</a>. <a href="http://www.miitbeian.gov.cn/" rel="external nofollow" target="_blank">粤ICP备14050695号</a>
+			</p>
+		</div>
+	</div>
+</div>
+</footer>
+<script type="text/javascript">
+	var disqus_shortname = 'typecodes';
+	var disqus_identifier = '/web/amendwordpressloginpage.html';
+	var disqus_url = 'https://typecodes.com/web/amendwordpressloginpage.html';
+	var disqus_title = '如何修改WordPress的后台登录界面';
+	(function() {
+		var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+		dsq.src = "//" + disqus_shortname + '.disqus.com/embed.js';
+		(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	 })();
+</script>
+	</body>
+</html>

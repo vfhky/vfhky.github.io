@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="zh-CN" class="no-js">
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<title>如何把自己的站内搜索改用强大的谷歌搜索 &mdash; TypeCodes</title>
+		<meta name="author" content="vfhky">
+  		<link href="https://typecodes.com/atom.xml" type="application/atom+xml" rel="alternate" title="TypeCodes Atom Feed" />
+	  	<link href="https://typecodes.com/feed.xml" type="application/rss+xml" rel="alternate" title="TypeCodes RSS Feed" />
+		<meta name="HandheldFriendly" content="True">
+		<meta name="MobileOptimized" content="320">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="renderer" content="webkit">
+		<link rel="stylesheet" href="https://dn-vfhky.qbox.me/libs/css/pelican-vfhky.css">
+		<script>
+			var _hmt = _hmt || [];
+			(function() {
+			  var hm = document.createElement("script");
+			  hm.src = "//hm.baidu.com/hm.js?c15c4ab8e91ba9ac3d5a12293cc93359";
+			  var s = document.getElementsByTagName("script")[0]; 
+			  s.parentNode.insertBefore(hm, s);
+			})();
+		</script>
+	</head>
+	<body style>
+		<!--1. header navigation begin-->
+		<header role="banner" id="te-site-header">
+			<div class="container">
+				<a href="https://typecodes.com" class="te-site-logo" role="logo" target="_self"> TypeCodes</a>
+				<ul class="nav nav-pills" id="te-site-nav" role="navigation">
+					<li><a href="https://typecodes.com">Home</a></li><li><a href="https://typecodes.com/archives.html" title="Archives">Archives</a></li><li><a href="https://typecodes.com/about.html" title="About">About</a></li></ul>
+			</div>
+		</header>
+		<div class="te-headline">
+			<div class="container">
+				<h2 class="te-headline-title"> <a href="https://typecodes.com">TypeCodes</a></h2>
+			</div>
+		</div>
+		<div class="container">
+			<div class="row">
+		<!--2. left sider begin-->
+		<div class="col-md-9" id="blog-main" role="main">
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/web/googlecustomsearch.html">如何把自己的站内搜索改用强大的谷歌搜索</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2012-08-27 17:44 | 分类：<a href="https://typecodes.com/web/index.html">web</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>一个优秀的网站必须有一个强大搜索引擎，这是毋庸置疑的。你可以想象一下，如果京东商城没有了搜索，新浪门户没有了搜索，虎扑篮球网没有了搜素……那将是让人奔溃的事情。这些大型网站都有这海量的数据库内容，一旦失去了搜索功能，那么用户要想找到自己想要的资源，简直是大海捞针。而一般网站自带的搜索功能，因为没有比较优秀的存储检索机制，当数据库内容越大，搜索用户越多，造成大量的数据库运算而占用服务器资源。</p>
+<p>使用谷歌自定义搜索可以有以下优势：首先是提高了站点的搜索速度；其次是减少服务器的压力，节省资源；另外，谷歌精准、快速和灵活且全面的搜索特性，完全满足我们网站的需求。接下来就为大家演示具体的步骤：（温馨提示：整个过程都需要谷歌Gmail账号）</p>
+
+
+<h5>1.申请<a href="http://www.google.com/cse/">Google自定义搜索</a></h5>
+<p><img alt="申请Google自定义搜索" src="https://dn-vfhky.qbox.me/2012/08/11.jpg" title="申请Google自定义搜索" /></p>
+<h5>2.填写Google自定义搜索相关信息，方便以后管理</h5>
+<p><img alt="填写Google自定义搜索相关信息" src="https://dn-vfhky.qbox.me/2012/08/27.png" title="填写Google自定义搜索相关信息" /></p>
+<h5>3.选择Google自定义搜索的样式（不满意的话，后面还可以修改）</h5>
+<p><img alt="选择Google自定义搜索的样式" src="https://dn-vfhky.qbox.me/2012/08/37.png" title="选择Google自定义搜索的样式" /></p>
+<h5>4.点击“control panel”对Google自定义搜索进行配置和管理</h5>
+<p><img alt="对Google自定义搜索进行配置和管理" src="https://dn-vfhky.qbox.me/2012/08/46.png" title="对Google自定义搜索进行配置和管理" /></p>
+<h5>5.点击“look and feel”选择“results only”(即使用网站自带的搜索框架，只调用谷歌的搜索结果)，最后点击“Save&amp;GetCode”</h5>
+<p><img alt="选择“results only”" src="https://dn-vfhky.qbox.me/2012/08/55.png" title="选择“results only”" /></p>
+<h5>6.选择“Switch to Search Element V1 code”，其余选项保持默认即可</h5>
+<p><img alt="选择“Switch to Search Element V1 code”" src="https://dn-vfhky.qbox.me/2012/08/64.png" title="选择“Switch to Search Element V1 code”" /></p>
+<h5>7.把代码复制出来</h5>
+<p><img alt="复制代码" src="https://dn-vfhky.qbox.me/2012/08/74.png" title="复制代码" /></p>
+<h5>8.由于在第5步，我们选择只需要调用谷歌的搜索结果，所以根据自己网站的搜索结果页面来修改。</h5>
+<p>比如，我博客的搜索结果页面是search.php，那么我只需把第7步复制的代码覆盖原文件的输出结果的代码行即可。注意，谷歌自定义搜索的大小、宽度可以自适应网站的相应位置，无需做更多的调整。</p>
+<h5>9.与此同时，我们还可以申请Google AdSense添加网站广告并以此获得收入。</h5>
+<p>最后的测试结果，大家可以点击博客右上角的搜索框进行测试</p>
+<p><img alt="博客测试" src="https://dn-vfhky.qbox.me/2012/08/83.png" title="博客测试" /></p>
+<p>另外，大家还可以尝试应用谷歌搜索的另一种方式Google AJAX Search API，它的灵活性更强。由于马上要找工作了，我也就没做过多的研究了，期待大家更多的给力开发支持！</p>
+		    	<p class="tags">
+					<div class="post-share">
+						<ul class="post-shareul clearfix">
+							<li class="post-shareli">
+								<a href="http://note.youdao.com/memory/?url=https://typecodes.com/web/googlecustomsearch.html&title=如何把自己的站内搜索改用强大的谷歌搜索" class="post-sharea ydshare" target="_blank" rel="nofollow">有道云笔记</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://v.t.sina.com.cn/share/share.php?url=https://typecodes.com/web/googlecustomsearch.html&title=如何把自己的站内搜索改用强大的谷歌搜索&source=https://typecodes.com" class="post-sharea wbshare" target="_blank" rel="nofollow">新浪微博</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://v.t.qq.com/share/share.php?title=如何把自己的站内搜索改用强大的谷歌搜索&url=https://typecodes.com/web/googlecustomsearch.html&site=https://typecodes.com" class="post-sharea twbshare" target="_blank" rel="nofollow">腾讯微博</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=https://typecodes.com/web/googlecustomsearch.html&title=如何把自己的站内搜索改用强大的谷歌搜索&content='utf-8'" class="post-sharea qzoneshare" target="_blank" rel="nofollow">QZone</a>
+							</li>
+						</ul>
+					</div>
+					<div>
+						Tags: <a href="https://typecodes.com/tag/gu-ge-zi-ding-yi-sou-suo.html">谷歌自定义搜索</a>					</div>
+				</p>
+			</article>
+			
+			<div id="comments">
+				<h4 class="num">Comments &raquo;</h4>
+		    	<div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript></div>
+		    </div>
+		</div>
+		<!--3. right sider begin-->
+<div class="col-md-3" id="blog-secondary" role="complementary">
+	<section class="widget">
+		<ul class="widget-list">
+			<form id="search" method="get" action="https://typecodes.com/search.html">
+				<input type="text" name="q" id="s" size="20" x-webkit-speech="" x-webkit-grammar="builtin:search" onwebkitspeechchange="this.value = this.value.replace(this.defaultValue, '')" value="Google...." onfocus="this.value = (this.value == this.defaultValue) ? '' : this.value" onblur="this.value = (this.value == '') ? this.defaultValue : this.value">
+			</form>
+		</ul>
+	</section>
+	<section class="widget">
+		<h3 class="widget-title">Categories</h3>
+		<ul class="widget-list">
+		      <li class="current">
+		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (26)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/csharp/index.html">Csharp</a> (6)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/database/index.html">Database</a> (11)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/java/index.html">Java</a> (1)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/linux/index.html">Linux</a> (16)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/mix/index.html">Mix</a> (53)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/web/index.html">Web</a> (88)
+		      </li>
+		</ul>
+	</section>
+	<section class="widget">
+		<h3 class="widget-title">Recent Posts</h3>
+		<ul class="widget-list">
+			<li class="post">
+				<a href="https://typecodes.com/mix/sucesstypechotopelican.html">成功将博客从Typecho迁移到Pelican</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/mix/begintypechotopelican.html">准备将博客从Typecho迁移到Pelican</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/tcpconnectiontimedout.html">Linux TCP连接Connection Refused和Connection timed out的问题</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/mysqlerrornospace.html">博客MySQL服务惊魂记：Linux磁盘空间不足(Core Dump文件引爆)</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/mix/synweibophpmarkdownimgurl.html">升级博客文章同步微博的插件：PHP正则提取Markdown的图片地址</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/cppgeneralmakefile.html">Linux C/C++工程中可生成ELF、动/静态库文件的通用Makefile</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/libraryundefinedref.html">解决make编译链接动态库错误：libxx.so: undefined reference to xx</a>
+			</li>
+		</ul>
+	</section>
+	<section class="widget widget-feed">
+		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
+	</section>
+</div>
+				</div>
+			</div>
+		</div>
+		<!--4. bottom begin-->
+		<footer id="te-site-footer"><div class="container">
+	<div class="row" role="contentinfo">
+		<section class="col-md-2 col-md-offset-1">
+			<h3>Links</h3>
+			<ul><li><a href="http://diaosbook.com/" title="">diaosbook</a></li></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul>
+				<li><a href="https://typecodes.com/links.html">More..</a></li>
+			</ul>
+		</section>
+		<section class="col-md-2">
+			<h3>Following</h3>
+			<ul>
+				<li><a href="https://github.com/vfhky" class="following github" target="_blank" rel="external nofollow">GitHub</a></li>
+				<li><a href="http://weibo.com/typecodes" class="following weibo" target="_blank" rel="external nofollow">Weibo</a></li>
+				<li><a href="http://vfhky.sinaapp.com/" class="following sae" target="_blank" rel="external nofollow">SAE</a></li>
+				<li><a href="http://www.dwz.cn/mYiwa" class="following qqgroup" target="_blank" rel="external nofollow">Group</a></li>
+			</ul>
+		</section>
+		<div class="col-md-12 copyright">
+			<a href="#top"><i class="i-logo-s">TOP</i></a>
+			<p>
+				&copy; 2012-<script language="JavaScript">var date = new Date(); document.write(date.getFullYear());</script>							<a href="https://typecodes.com">TypeCodes</a>. All Rights Reserved<br>Powered by <a href="http://getpelican.com" rel="external" target="_blank">Pelican</a>. <a href="http://www.miitbeian.gov.cn/" rel="external nofollow" target="_blank">粤ICP备14050695号</a>
+			</p>
+		</div>
+	</div>
+</div>
+</footer>
+<script type="text/javascript">
+	var disqus_shortname = 'typecodes';
+	var disqus_identifier = '/web/googlecustomsearch.html';
+	var disqus_url = 'https://typecodes.com/web/googlecustomsearch.html';
+	var disqus_title = '如何把自己的站内搜索改用强大的谷歌搜索';
+	(function() {
+		var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+		dsq.src = "//" + disqus_shortname + '.disqus.com/embed.js';
+		(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	 })();
+</script>
+	</body>
+</html>

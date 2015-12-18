@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="zh-CN" class="no-js">
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<title>Typecho评论中开启和使用Markdown的方法 &mdash; TypeCodes</title>
+		<meta name="author" content="vfhky">
+  		<link href="https://typecodes.com/atom.xml" type="application/atom+xml" rel="alternate" title="TypeCodes Atom Feed" />
+	  	<link href="https://typecodes.com/feed.xml" type="application/rss+xml" rel="alternate" title="TypeCodes RSS Feed" />
+		<meta name="HandheldFriendly" content="True">
+		<meta name="MobileOptimized" content="320">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="renderer" content="webkit">
+		<link rel="stylesheet" href="https://dn-vfhky.qbox.me/libs/css/pelican-vfhky.css">
+		<script>
+			var _hmt = _hmt || [];
+			(function() {
+			  var hm = document.createElement("script");
+			  hm.src = "//hm.baidu.com/hm.js?c15c4ab8e91ba9ac3d5a12293cc93359";
+			  var s = document.getElementsByTagName("script")[0]; 
+			  s.parentNode.insertBefore(hm, s);
+			})();
+		</script>
+	</head>
+	<body style>
+		<!--1. header navigation begin-->
+		<header role="banner" id="te-site-header">
+			<div class="container">
+				<a href="https://typecodes.com" class="te-site-logo" role="logo" target="_self"> TypeCodes</a>
+				<ul class="nav nav-pills" id="te-site-nav" role="navigation">
+					<li><a href="https://typecodes.com">Home</a></li><li><a href="https://typecodes.com/archives.html" title="Archives">Archives</a></li><li><a href="https://typecodes.com/about.html" title="About">About</a></li></ul>
+			</div>
+		</header>
+		<div class="te-headline">
+			<div class="container">
+				<h2 class="te-headline-title"> <a href="https://typecodes.com">TypeCodes</a></h2>
+			</div>
+		</div>
+		<div class="container">
+			<div class="row">
+		<!--2. left sider begin-->
+		<div class="col-md-9" id="blog-main" role="main">
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/mix/typechocommentmarkdown.html">Typecho评论中开启和使用Markdown的方法</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2015-05-31 18:20 | 分类：<a href="https://typecodes.com/mix/index.html">mix</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>轻量级的博客程序Typecho，还有一个很舒适的体验，那就是支持Markdown语法，不论是在文章或是评论中。这篇文章主要是说明如何在博客中使用Markdown写作以及如何在评论中使用Markdown语法。</p>
+<p><img alt="Typecho评论中开启和使用Markdown的方法" src="https://dn-vfhky.qbox.me/2015/05/typechomarkdown.png" title="Typecho评论中开启和使用Markdown的方法" /></p>
+
+
+<h5>1 Typecho博客评论中开启Markdown功能</h5>
+<p>在Typecho中，如何在写评论的时候也能像写文章那样，使用Markdown语法？我们只需要在Typecho的后台分两个步骤即可开启这个功能。</p>
+<p>首先进入Typecho博客的后台管理界面，然后鼠标滑到左上角菜单栏上的<code>设置</code>，接着点击<code>评论</code>进入到评论设置界面。如下图所示，需要勾选上<code>在评论中使用 Markdown 语法</code>。同时，我们还需要在<code>允许使用的HTML标签和属性</code>栏目中填写上Typecho将Markdown转换后的HTML标签。</p>
+<p>博客目前使用的是如图所示的下面这个配置，大家可以根据需要进行加减。</p>
+<div class="highlight"><pre>&lt;blockquote&gt;&lt;pre&gt;&lt;code&gt;&lt;strong&gt;&lt;em&gt;&lt;h5&gt;&lt;h6&gt;&lt;a href title&gt;&lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;&lt;tbody&gt;&lt;td&gt;
+</pre></div>
+
+
+<p>其中，<code>code</code>标签作用是高亮某个单词或词组；<code>&lt;a href&gt;</code>标签作用是允许评论文字附带超链接，而如果这个链接上还要有文字提示信息，那么就需要改成<code>&lt;a href title&gt;</code>标签；剩余的<code>&lt;table&gt;</code>标签作用是允许表格。</p>
+<p><img alt="Typecho博客评论中开启Markdown功能" src="https://dn-vfhky.qbox.me/2015/05/typechostartmarkdown.png" title="Typecho博客评论中开启Markdown功能" /></p>
+<h5>2 如何在评论中使用Markdown语法</h5>
+<p>由于Typecho程序使用的是PHP Markdown Lib库，自然也遵循Markdown基本语法。所以，在写评论的时候，直接使用Markdown的基本语法即可。下面是在写文章或者评论时，一些经常会用到的Markdown演示。</p>
+<h6>2.1 高亮某个词组</h6>
+<p>使用两个反引号把要高亮的词组包含起来，例如<code>`echo "Hello"`</code>即可，结果如图所示。</p>
+<p><img alt="typecho中使用Markdown高亮某个词组" src="https://dn-vfhky.qbox.me/2015/05/commentlightwords.png" title="typecho中使用Markdown高亮某个词组" /></p>
+<h6>2.2 插入代码</h6>
+<p>在评论中插入代码，只需要在代码中的每一行的开头增加4个空格即可，效果如下图所示。</p>
+<p><img alt="typecho中使用Markdown插入代码" src="https://dn-vfhky.qbox.me/2015/05/commentinsertcodes.png" title="typecho中使用Markdown插入代码" /></p>
+<h6>2.3 将文字加上超链接</h6>
+<p>这个功能不是用来发广告链接的哟！开个玩笑，我们只需要使用Markdown的超链接标签即可。例如，<code>[欢迎来到我的博客](https://typecodes.com "TypeCodes")</code>。</p>
+<p><img alt="typecho中将文字加上超链接" src="https://dn-vfhky.qbox.me/2015/05/commenttexturllinker.png" title="typecho中将文字加上超链接" /></p>
+<h6>2.4 插入表格</h6>
+<p>在评论中插入表格，当然这个功能基本不会用到吧。在文章中使用Markdown语法展示表格的效果如下图所示：</p>
+<p><img alt="typecho中使用Markdown插入表格" src="https://dn-vfhky.qbox.me/2015/05/typechomarkdowntable.png" title="typecho中使用Markdown插入表格" /></p>
+<p>那么在评论中要用Markdown展示表格的话，方法也是一样的。例如使用下面这段格式，就可以用表格的形式展示出来了。</p>
+<div class="highlight"><pre>Lang| Start | IDE| Inheritance
+----|------|----
+Java | 1995  | Eclipse | Yes
+C | 1972  | CodeBlocks | No
+C++ | 1983 | Visual Studio | Yes
+Python | 1989 | Eclipse | Yes
+C#| 2000 | Visual Studio | Yes
+</pre></div>
+
+
+<h5>3 总结</h5>
+<p>小节2中只是展示了Markdown的部分基本语法如何在Typecho写文章或者评论中应用，更多的语法可以参考<a href="http://wowubuntu.com/markdown/" title="《Markdown 语法说明 (简体中文版)》">这篇文章</a>。最后需要说明的是：Typecho将Markdown转换成普通html标签后，我们可以修改对应的CSS样式，大家可以尽情发挥。</p>
+		    	<p class="tags">
+					<div class="post-share">
+						<ul class="post-shareul clearfix">
+							<li class="post-shareli">
+								<a href="http://note.youdao.com/memory/?url=https://typecodes.com/mix/typechocommentmarkdown.html&title=Typecho评论中开启和使用Markdown的方法" class="post-sharea ydshare" target="_blank" rel="nofollow">有道云笔记</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://v.t.sina.com.cn/share/share.php?url=https://typecodes.com/mix/typechocommentmarkdown.html&title=Typecho评论中开启和使用Markdown的方法&source=https://typecodes.com" class="post-sharea wbshare" target="_blank" rel="nofollow">新浪微博</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://v.t.qq.com/share/share.php?title=Typecho评论中开启和使用Markdown的方法&url=https://typecodes.com/mix/typechocommentmarkdown.html&site=https://typecodes.com" class="post-sharea twbshare" target="_blank" rel="nofollow">腾讯微博</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=https://typecodes.com/mix/typechocommentmarkdown.html&title=Typecho评论中开启和使用Markdown的方法&content='utf-8'" class="post-sharea qzoneshare" target="_blank" rel="nofollow">QZone</a>
+							</li>
+						</ul>
+					</div>
+					<div>
+						Tags: <a href="https://typecodes.com/tag/typecho-markdown.html">typecho markdown</a>,<a href="https://typecodes.com/tag/markdown.html">markdown</a>					</div>
+				</p>
+			</article>
+			
+			<div id="comments">
+				<h4 class="num">Comments &raquo;</h4>
+		    	<div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript></div>
+		    </div>
+		</div>
+		<!--3. right sider begin-->
+<div class="col-md-3" id="blog-secondary" role="complementary">
+	<section class="widget">
+		<ul class="widget-list">
+			<form id="search" method="get" action="https://typecodes.com/search.html">
+				<input type="text" name="q" id="s" size="20" x-webkit-speech="" x-webkit-grammar="builtin:search" onwebkitspeechchange="this.value = this.value.replace(this.defaultValue, '')" value="Google...." onfocus="this.value = (this.value == this.defaultValue) ? '' : this.value" onblur="this.value = (this.value == '') ? this.defaultValue : this.value">
+			</form>
+		</ul>
+	</section>
+	<section class="widget">
+		<h3 class="widget-title">Categories</h3>
+		<ul class="widget-list">
+		      <li class="current">
+		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (26)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/csharp/index.html">Csharp</a> (6)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/database/index.html">Database</a> (11)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/java/index.html">Java</a> (1)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/linux/index.html">Linux</a> (16)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/mix/index.html">Mix</a> (53)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/web/index.html">Web</a> (88)
+		      </li>
+		</ul>
+	</section>
+	<section class="widget">
+		<h3 class="widget-title">Recent Posts</h3>
+		<ul class="widget-list">
+			<li class="post">
+				<a href="https://typecodes.com/mix/sucesstypechotopelican.html">成功将博客从Typecho迁移到Pelican</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/mix/begintypechotopelican.html">准备将博客从Typecho迁移到Pelican</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/tcpconnectiontimedout.html">Linux TCP连接Connection Refused和Connection timed out的问题</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/mysqlerrornospace.html">博客MySQL服务惊魂记：Linux磁盘空间不足(Core Dump文件引爆)</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/mix/synweibophpmarkdownimgurl.html">升级博客文章同步微博的插件：PHP正则提取Markdown的图片地址</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/cppgeneralmakefile.html">Linux C/C++工程中可生成ELF、动/静态库文件的通用Makefile</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/libraryundefinedref.html">解决make编译链接动态库错误：libxx.so: undefined reference to xx</a>
+			</li>
+		</ul>
+	</section>
+	<section class="widget widget-feed">
+		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
+	</section>
+</div>
+				</div>
+			</div>
+		</div>
+		<!--4. bottom begin-->
+		<footer id="te-site-footer"><div class="container">
+	<div class="row" role="contentinfo">
+		<section class="col-md-2 col-md-offset-1">
+			<h3>Links</h3>
+			<ul><li><a href="http://diaosbook.com/" title="">diaosbook</a></li></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul>
+				<li><a href="https://typecodes.com/links.html">More..</a></li>
+			</ul>
+		</section>
+		<section class="col-md-2">
+			<h3>Following</h3>
+			<ul>
+				<li><a href="https://github.com/vfhky" class="following github" target="_blank" rel="external nofollow">GitHub</a></li>
+				<li><a href="http://weibo.com/typecodes" class="following weibo" target="_blank" rel="external nofollow">Weibo</a></li>
+				<li><a href="http://vfhky.sinaapp.com/" class="following sae" target="_blank" rel="external nofollow">SAE</a></li>
+				<li><a href="http://www.dwz.cn/mYiwa" class="following qqgroup" target="_blank" rel="external nofollow">Group</a></li>
+			</ul>
+		</section>
+		<div class="col-md-12 copyright">
+			<a href="#top"><i class="i-logo-s">TOP</i></a>
+			<p>
+				&copy; 2012-<script language="JavaScript">var date = new Date(); document.write(date.getFullYear());</script>							<a href="https://typecodes.com">TypeCodes</a>. All Rights Reserved<br>Powered by <a href="http://getpelican.com" rel="external" target="_blank">Pelican</a>. <a href="http://www.miitbeian.gov.cn/" rel="external nofollow" target="_blank">粤ICP备14050695号</a>
+			</p>
+		</div>
+	</div>
+</div>
+</footer>
+<script type="text/javascript">
+	var disqus_shortname = 'typecodes';
+	var disqus_identifier = '/mix/typechocommentmarkdown.html';
+	var disqus_url = 'https://typecodes.com/mix/typechocommentmarkdown.html';
+	var disqus_title = 'Typecho评论中开启和使用Markdown的方法';
+	(function() {
+		var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+		dsq.src = "//" + disqus_shortname + '.disqus.com/embed.js';
+		(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	 })();
+</script>
+	</body>
+</html>

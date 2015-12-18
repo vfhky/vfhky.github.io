@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="zh-CN" class="no-js">
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<title>在UEStudio/UltraEdit中打造C/C#/JAVA等语言的编译器 &mdash; TypeCodes</title>
+		<meta name="author" content="vfhky">
+  		<link href="https://typecodes.com/atom.xml" type="application/atom+xml" rel="alternate" title="TypeCodes Atom Feed" />
+	  	<link href="https://typecodes.com/feed.xml" type="application/rss+xml" rel="alternate" title="TypeCodes RSS Feed" />
+		<meta name="HandheldFriendly" content="True">
+		<meta name="MobileOptimized" content="320">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="renderer" content="webkit">
+		<link rel="stylesheet" href="https://dn-vfhky.qbox.me/libs/css/pelican-vfhky.css">
+		<script>
+			var _hmt = _hmt || [];
+			(function() {
+			  var hm = document.createElement("script");
+			  hm.src = "//hm.baidu.com/hm.js?c15c4ab8e91ba9ac3d5a12293cc93359";
+			  var s = document.getElementsByTagName("script")[0]; 
+			  s.parentNode.insertBefore(hm, s);
+			})();
+		</script>
+	</head>
+	<body style>
+		<!--1. header navigation begin-->
+		<header role="banner" id="te-site-header">
+			<div class="container">
+				<a href="https://typecodes.com" class="te-site-logo" role="logo" target="_self"> TypeCodes</a>
+				<ul class="nav nav-pills" id="te-site-nav" role="navigation">
+					<li><a href="https://typecodes.com">Home</a></li><li><a href="https://typecodes.com/archives.html" title="Archives">Archives</a></li><li><a href="https://typecodes.com/about.html" title="About">About</a></li></ul>
+			</div>
+		</header>
+		<div class="te-headline">
+			<div class="container">
+				<h2 class="te-headline-title"> <a href="https://typecodes.com">TypeCodes</a></h2>
+			</div>
+		</div>
+		<div class="container">
+			<div class="row">
+		<!--2. left sider begin-->
+		<div class="col-md-9" id="blog-main" role="main">
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/mix/uestudioidecompiler.html">在UEStudio/UltraEdit中打造C/C#/JAVA等语言的编译器</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2015-02-01 01:19 | 分类：<a href="https://typecodes.com/mix/index.html">mix</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>像Emacs、Vim、UEStudio/UltraEdit、Sublime text等非IDE类的文本编辑器，都不会自带某种语言的编译功能，这对于不想开IDE的程序狗来说很是蛋疼。尤其是需要切换到不同语言做开发时，非常不方便，总不能这边开一个VS，那边开一个Eclipse吧。于是自己折腾了一番，通过配置可以在UEStudio或者UltraEdit中直接将写好的C/C++/C#/JAVA等代码编译并运行输出结果。</p>
+<p><img alt="在UEStudio/UltraEdit中打造C/C#/JAVA等语言的编译器" src="https://dn-vfhky.qbox.me/2015/02/uestudioidecompiler.png" title="在UEStudio/UltraEdit中打造C/C#/JAVA等语言的编译器" /></p>
+
+
+<h5>1 实现思路</h5>
+<p>要实现直接在UEStudio或者UltraEdit中编译和执行的功能，原理很简单：利用本机已经安装并配置好的环境变量然后在UEStudio或者UltraEdit中简单配置即可。因此，首先需要在自己的Windows环境中安装这种语言所对应的编译器。例如，要编译C或者C++程序，那么可以选择MinGw GCC或者Cygwin GCC编译器，然后利用gcc和g++编译和执行功能；又例如，要编译Java程序，那么的先安装好JDK编译器。注意，安装后一定要设置好环境变量！下图是我的环境变量配置情况（红色划线1,2,3分别是C/C++、Java和C#的环境变量配置）：</p>
+<p><img alt="对应语言的环境变量的配置" src="https://dn-vfhky.qbox.me/2015/02/environmentvariable.png" title="对应语言的环境变量的配置" /></p>
+<h5>2 具体配置</h5>
+<p>下面以配置C/C++、C#、Java这三种开发语言的编译器为例，大家可以举一反三。</p>
+<h6>2.1 配置C/C++编译器</h6>
+<p>从上图的环境变量配置可知，博主安装的C/C++编译器是MinGw GCC。首先打开UEStudio或者UltraEdit编辑器，在顶部菜单栏依次点击“高级”--“工具栏配置”--“插入”。配置C/C++编译器如下图的界面所示，只要在这里按照规则配置好C/C++的编译命令即可。</p>
+<div class="highlight"><pre>C/C++的编译命令配置
+1 菜单项目名称：  Ccomp   [可以任意]
+2 命令       ：  g++ -Wall %n%e -o %n   或者   gcc -Wall %n%e -o %n
+3 工作目录    ：  %p    [%p是当前C/C++程序文件的路径]
+</pre></div>
+
+
+<p><img alt="配置C/C++编译器" src="https://dn-vfhky.qbox.me/2015/02/configccompile.png" title="配置C/C++编译器" /></p>
+<h6>2.2 配置C#编译器</h6>
+<p>配置C#编译器如下图的界面所示，只要在这里按照规则配置好C#的编译命令即可。</p>
+<div class="highlight"><pre>C#的编译命令配置
+1 菜单项目名称：  C#comp   [可以任意]
+2 命令       ：  csc/out:%n.exe %n%e    [%n是当前C#程序文件名 %e是文件后缀名]
+3 工作目录    ：  %p    [%p是当前C#程序文件的路径]
+</pre></div>
+
+
+<p><img alt="配置C#编译器" src="https://dn-vfhky.qbox.me/2015/02/configcsharpcompile.png" title="配置C#编译器" /></p>
+<h6>2.3 配置C/C++和C#的运行命令</h6>
+<p>由于C/C++和C#经过上面的编译命令后，生成的是可执行的二进制exe文件，所以它们的执行命令都是相同的。因此，可以配置一个公共的“Run”栏目：</p>
+<div class="highlight"><pre>C/C++/C#的运行命令配置
+1 菜单项目名称：  Run   [可以任意]
+2 命令       ：  %n.exe    [%n是可执行文件名]
+3 工作目录    ：  C:\Users\vfhky\Desktop  [可执行文件的路径]
+</pre></div>
+
+
+<p><img alt="配置C/C++和C#的运行命令" src="https://dn-vfhky.qbox.me/2015/02/configrun.png" title="配置C/C++和C#的运行命令" /></p>
+<h6>2.4 配置Java编译器</h6>
+<p>配置Java编译器如下图的界面所示，只要在这里按照规则配置好Java的编译命令即可。</p>
+<div class="highlight"><pre>JAVA的编译命令配置
+1 菜单项目名称：  Jcomp   [可以任意]
+2 命令       ：  javac %n%e    [%n是当前java程序文件名 %e是文件后缀名]
+3 工作目录    ：  %p    [%p是当前JAVA程序文件的路径]
+</pre></div>
+
+
+<p><img alt="配置Java编译器" src="https://dn-vfhky.qbox.me/2015/02/configjavacompile.png" title="配置Java编译器" /></p>
+<h6>2.5 配置Java的执行命令</h6>
+<p>由于Java程序文件经过上面的<code>Jcomp</code>编译命令后，生成的是<code>.class</code>文件，不可以直接运行。还需要将这个<code>.class</code>文件通过命令在JVM虚拟机下运行。</p>
+<div class="highlight"><pre>JAVA的运行命令配置
+1 菜单项目名称：  Jrun   [可以任意]
+2 命令       ：  java %n    [%n是当前JAVA程序文件名]
+3 工作目录    ：  %p    [%p是当前JAVA程序class文件的路径]
+</pre></div>
+
+
+<p><img alt="配置Java的执行命令" src="https://dn-vfhky.qbox.me/2015/02/configjavarun.png" title="配置Java的执行命令" /></p>
+<h5>3 通过程序测试是否生效</h5>
+<p>配置完后，点击“高级”栏目，会显示如下图所示。最后写如下3个C、C#和Java的测试程序，然后分别点击对应的上面配置好的“编译”命令，再点击“执行”命令即可查看输出结果。</p>
+<h6>3.1 测试C/C++程序</h6>
+<p>依次点击“高级”--“Ccomp”--“Run”命令，最后结果如下所示：</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12</pre></div></td><td class="code"><div class="highlight"><pre><span class="cm">/**</span>
+<span class="cm"> * @Functions:  在UEStudio/UltraEdit中编译C/C++程序并输出结果</span>
+<span class="cm"> * @Author   :  vfhky  https://typecodes.com  2015.02.01</span>
+<span class="cm"> * @FileName :  UEStudioCCompiler.c</span>
+<span class="cm"> */</span>
+<span class="cp">#include &lt;stdio.h&gt;</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span> <span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span> <span class="n">argv</span><span class="p">[]</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">printf</span><span class="p">(</span> <span class="s">&quot;Tutorial to useing UEStudio compiling C/C++ program!</span><span class="se">\n</span><span class="s">&quot;</span> <span class="p">);</span>
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</td></tr></table>
+
+<h6>3.2 测试C#程序</h6>
+<p>依次点击“高级”--“C#comp”--“Run”命令，最后结果如下所示：</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15</pre></div></td><td class="code"><div class="highlight"><pre><span class="cm">/**</span>
+<span class="cm"> * @Functions:  在UEStudio/UltraEdit中编译C#程序并输出结果</span>
+<span class="cm"> * @Author   :  vfhky  https://typecodes.com  2015.02.01</span>
+<span class="cm"> * @FileName :  UEStudioCSharpCompiler.cs</span>
+<span class="cm"> */</span>
+<span class="n">using</span> <span class="n">System</span><span class="p">;</span>
+<span class="n">using</span> <span class="n">System</span><span class="p">.</span><span class="n">Text</span><span class="p">;</span>
+
+<span class="n">public</span> <span class="n">class</span> <span class="n">UEStudioCSharpCompiler</span>
+<span class="p">{</span>       
+    <span class="n">public</span> <span class="k">static</span> <span class="kt">void</span> <span class="n">Main</span><span class="p">(</span> <span class="n">String</span><span class="p">[]</span> <span class="n">args</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span> <span class="s">&quot;Tutorial to useing UEStudio compiling C# program!&quot;</span> <span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</td></tr></table>
+
+<h6>3.3 测试Java程序</h6>
+<p>依次点击“高级”--“Jcomp”--“Jrun”命令，最后结果如下所示：</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12</pre></div></td><td class="code"><div class="highlight"><pre><span class="cm">/**</span>
+<span class="cm"> * @Functions:  在UEStudio/UltraEdit中编译JAVA程序并输出结果</span>
+<span class="cm"> * @Author   :  vfhky  https://typecodes.com  2015.02.01</span>
+<span class="cm"> * @FileName :  UEStudioJavaCompiler.java</span>
+<span class="cm"> */</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">UEStudioJavaCompiler</span>
+<span class="o">{</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span> <span class="n">args</span><span class="o">[])</span>
+    <span class="o">{</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;Tutorial to useing UEStudio compiling Java program!&quot;</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</pre></div>
+</td></tr></table>
+
+<h6>3.4 上面C、C#和Java程序执行结果</h6>
+<p><img alt="上面C、C#和Java程序执行结果" src="https://dn-vfhky.qbox.me/2015/02/runresults.png" title="上面C、C#和Java程序执行结果" /></p>
+		    	<p class="tags">
+					<div class="post-share">
+						<ul class="post-shareul clearfix">
+							<li class="post-shareli">
+								<a href="http://note.youdao.com/memory/?url=https://typecodes.com/mix/uestudioidecompiler.html&title=在UEStudio/UltraEdit中打造C/C#/JAVA等语言的编译器" class="post-sharea ydshare" target="_blank" rel="nofollow">有道云笔记</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://v.t.sina.com.cn/share/share.php?url=https://typecodes.com/mix/uestudioidecompiler.html&title=在UEStudio/UltraEdit中打造C/C#/JAVA等语言的编译器&source=https://typecodes.com" class="post-sharea wbshare" target="_blank" rel="nofollow">新浪微博</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://v.t.qq.com/share/share.php?title=在UEStudio/UltraEdit中打造C/C#/JAVA等语言的编译器&url=https://typecodes.com/mix/uestudioidecompiler.html&site=https://typecodes.com" class="post-sharea twbshare" target="_blank" rel="nofollow">腾讯微博</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=https://typecodes.com/mix/uestudioidecompiler.html&title=在UEStudio/UltraEdit中打造C/C#/JAVA等语言的编译器&content='utf-8'" class="post-sharea qzoneshare" target="_blank" rel="nofollow">QZone</a>
+							</li>
+						</ul>
+					</div>
+					<div>
+						Tags: <a href="https://typecodes.com/tag/uestudio.html">UEStudio</a>,<a href="https://typecodes.com/tag/ultraedit.html">UltraEdit</a>					</div>
+				</p>
+			</article>
+			
+			<div id="comments">
+				<h4 class="num">Comments &raquo;</h4>
+		    	<div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript></div>
+		    </div>
+		</div>
+		<!--3. right sider begin-->
+<div class="col-md-3" id="blog-secondary" role="complementary">
+	<section class="widget">
+		<ul class="widget-list">
+			<form id="search" method="get" action="https://typecodes.com/search.html">
+				<input type="text" name="q" id="s" size="20" x-webkit-speech="" x-webkit-grammar="builtin:search" onwebkitspeechchange="this.value = this.value.replace(this.defaultValue, '')" value="Google...." onfocus="this.value = (this.value == this.defaultValue) ? '' : this.value" onblur="this.value = (this.value == '') ? this.defaultValue : this.value">
+			</form>
+		</ul>
+	</section>
+	<section class="widget">
+		<h3 class="widget-title">Categories</h3>
+		<ul class="widget-list">
+		      <li class="current">
+		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (26)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/csharp/index.html">Csharp</a> (6)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/database/index.html">Database</a> (11)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/java/index.html">Java</a> (1)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/linux/index.html">Linux</a> (16)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/mix/index.html">Mix</a> (53)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/web/index.html">Web</a> (88)
+		      </li>
+		</ul>
+	</section>
+	<section class="widget">
+		<h3 class="widget-title">Recent Posts</h3>
+		<ul class="widget-list">
+			<li class="post">
+				<a href="https://typecodes.com/mix/sucesstypechotopelican.html">成功将博客从Typecho迁移到Pelican</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/mix/begintypechotopelican.html">准备将博客从Typecho迁移到Pelican</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/tcpconnectiontimedout.html">Linux TCP连接Connection Refused和Connection timed out的问题</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/mysqlerrornospace.html">博客MySQL服务惊魂记：Linux磁盘空间不足(Core Dump文件引爆)</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/mix/synweibophpmarkdownimgurl.html">升级博客文章同步微博的插件：PHP正则提取Markdown的图片地址</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/cppgeneralmakefile.html">Linux C/C++工程中可生成ELF、动/静态库文件的通用Makefile</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/libraryundefinedref.html">解决make编译链接动态库错误：libxx.so: undefined reference to xx</a>
+			</li>
+		</ul>
+	</section>
+	<section class="widget widget-feed">
+		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
+	</section>
+</div>
+				</div>
+			</div>
+		</div>
+		<!--4. bottom begin-->
+		<footer id="te-site-footer"><div class="container">
+	<div class="row" role="contentinfo">
+		<section class="col-md-2 col-md-offset-1">
+			<h3>Links</h3>
+			<ul><li><a href="http://diaosbook.com/" title="">diaosbook</a></li></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul>
+				<li><a href="https://typecodes.com/links.html">More..</a></li>
+			</ul>
+		</section>
+		<section class="col-md-2">
+			<h3>Following</h3>
+			<ul>
+				<li><a href="https://github.com/vfhky" class="following github" target="_blank" rel="external nofollow">GitHub</a></li>
+				<li><a href="http://weibo.com/typecodes" class="following weibo" target="_blank" rel="external nofollow">Weibo</a></li>
+				<li><a href="http://vfhky.sinaapp.com/" class="following sae" target="_blank" rel="external nofollow">SAE</a></li>
+				<li><a href="http://www.dwz.cn/mYiwa" class="following qqgroup" target="_blank" rel="external nofollow">Group</a></li>
+			</ul>
+		</section>
+		<div class="col-md-12 copyright">
+			<a href="#top"><i class="i-logo-s">TOP</i></a>
+			<p>
+				&copy; 2012-<script language="JavaScript">var date = new Date(); document.write(date.getFullYear());</script>							<a href="https://typecodes.com">TypeCodes</a>. All Rights Reserved<br>Powered by <a href="http://getpelican.com" rel="external" target="_blank">Pelican</a>. <a href="http://www.miitbeian.gov.cn/" rel="external nofollow" target="_blank">粤ICP备14050695号</a>
+			</p>
+		</div>
+	</div>
+</div>
+</footer>
+<script type="text/javascript">
+	var disqus_shortname = 'typecodes';
+	var disqus_identifier = '/mix/uestudioidecompiler.html';
+	var disqus_url = 'https://typecodes.com/mix/uestudioidecompiler.html';
+	var disqus_title = '在UEStudio/UltraEdit中打造C/C#/JAVA等语言的编译器';
+	(function() {
+		var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+		dsq.src = "//" + disqus_shortname + '.disqus.com/embed.js';
+		(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	 })();
+</script>
+	</body>
+</html>

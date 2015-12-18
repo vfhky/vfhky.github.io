@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="zh-CN" class="no-js">
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<title>标签 asp 下的文章 - TypeCodes</title>
+		<meta name="author" content="vfhky">
+  		<link href="https://typecodes.com/atom.xml" type="application/atom+xml" rel="alternate" title="TypeCodes Atom Feed" />
+	  	<link href="https://typecodes.com/feed.xml" type="application/rss+xml" rel="alternate" title="TypeCodes RSS Feed" />
+		<meta name="HandheldFriendly" content="True">
+		<meta name="MobileOptimized" content="320">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="renderer" content="webkit">
+		<link rel="stylesheet" href="https://dn-vfhky.qbox.me/libs/css/pelican-vfhky.css">
+		<script>
+			var _hmt = _hmt || [];
+			(function() {
+			  var hm = document.createElement("script");
+			  hm.src = "//hm.baidu.com/hm.js?c15c4ab8e91ba9ac3d5a12293cc93359";
+			  var s = document.getElementsByTagName("script")[0]; 
+			  s.parentNode.insertBefore(hm, s);
+			})();
+		</script>
+	</head>
+	<body style>
+		<!--1. header navigation begin-->
+		<header role="banner" id="te-site-header">
+			<div class="container">
+				<a href="https://typecodes.com" class="te-site-logo" role="logo" target="_self"> TypeCodes</a>
+				<ul class="nav nav-pills" id="te-site-nav" role="navigation">
+					<li><a href="https://typecodes.com">Home</a></li><li><a href="https://typecodes.com/archives.html" title="Archives">Archives</a></li><li><a href="https://typecodes.com/about.html" title="About">About</a></li></ul>
+			</div>
+		</header>
+		<div class="te-headline">
+			<div class="container">
+				<h2 class="te-headline-title"> <a href="https://typecodes.com">TypeCodes</a></h2>
+			</div>
+		</div>
+		<div class="container">
+			<div class="row">
+		<!--2. left sider begin-->
+		<div class="col-md-9" id="blog-main" role="main">
+		  	<!--article recycle-->
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/web/aspanalyzetwo.html">从一段ASP代码分析HTML、CSS、ASP、SQL（二）</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2012-06-30 00:08 | 分类：<a href="https://typecodes.com/web/index.html">web</a></li>
+</ul>
+<div class="post-content fmt">
+	<h5>（一）前台DIV+CSS布局</h5>
+<p>布局样式通过第11行 <code>linkrel ="stylesheet" href="css/index.css" type="text/css"</code> 引入控制的。而从图中可以看出首页(index.asp)是由头部(第18行)、中部(第20行）和底部（第127行）这三个DIV层构成。其中，头部和尾部调用两个页面即可：top.html 和 bottom.html 。</p>
+<p>中部又由左边(第21行)和右边(第23行)构成，即 left.html 和 div id="right" 。中部的右边又由位于上面部分的1个flash层和2个content1层、下面部分的2个content层和1个留言板content2层。所以整个CSS布局框架就是这样的。值得注意的是中间部分嵌套了2个层(即左右两层)，右边的层又嵌套了6个层（1个flash层,2个content1层,2个content层,1个content2层）。</p>
+
+	<p class="more"><a href="https://typecodes.com/web/aspanalyzetwo.html" title="从一段ASP代码分析HTML、CSS、ASP、SQL（二）">- 阅读剩余部分 -</a></p>
+			</article>
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/web/aspanalyzeone.html">从一段ASP代码分析HTML、CSS、ASP、SQL（一）</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2012-06-29 21:49 | 分类：<a href="https://typecodes.com/web/index.html">web</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>在大二的时候参加学校的一个网页设计比赛，做了一个关于党建90周年的网站。这个网站是用CSS+ASP+ACCESS2003写的。虽说access数据库现在基本没人用了，但是这对初学者来说是很好的一个数据库操作平台。尤其是在学习SQL时，用Access比MSSQL和MYSQL要容易上手些，因为Access数据库很直观并且各种操作也很简洁明了。但是微软自己Access已经被MSSQL代替了，而且当前流行的Web技术都集中在了PHP上，而PHP和MYSQL向来是黄金搭档，所以几乎没人用了。随之是ASP升级为ASP.NET，搭配MSSQL数据库。我写这篇博文的目的是给一些WEB的初学者，当然也算是自己的一个心路总结了。下面是首页index.asp代码，我就从这里入手。</p>
+
+	<p class="more"><a href="https://typecodes.com/web/aspanalyzeone.html" title="从一段ASP代码分析HTML、CSS、ASP、SQL（一）">- 阅读剩余部分 -</a></p>
+			</article>
+		  	<!--page navigation-->
+<ol class="page-navigator">
+</ol>		</div>
+		<!--3. right sider begin-->
+<div class="col-md-3" id="blog-secondary" role="complementary">
+	<section class="widget">
+		<ul class="widget-list">
+			<form id="search" method="get" action="https://typecodes.com/search.html">
+				<input type="text" name="q" id="s" size="20" x-webkit-speech="" x-webkit-grammar="builtin:search" onwebkitspeechchange="this.value = this.value.replace(this.defaultValue, '')" value="Google...." onfocus="this.value = (this.value == this.defaultValue) ? '' : this.value" onblur="this.value = (this.value == '') ? this.defaultValue : this.value">
+			</form>
+		</ul>
+	</section>
+	<section class="widget">
+		<h3 class="widget-title">Categories</h3>
+		<ul class="widget-list">
+		      <li class="current">
+		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (26)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/csharp/index.html">Csharp</a> (6)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/database/index.html">Database</a> (11)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/java/index.html">Java</a> (1)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/linux/index.html">Linux</a> (16)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/mix/index.html">Mix</a> (53)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/web/index.html">Web</a> (88)
+		      </li>
+		</ul>
+	</section>
+	<section class="widget">
+		<h3 class="widget-title">Recent Posts</h3>
+		<ul class="widget-list">
+			<li class="post">
+				<a href="https://typecodes.com/web/aspanalyzetwo.html">从一段ASP代码分析HTML、CSS、ASP、SQL（二）</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/web/aspanalyzeone.html">从一段ASP代码分析HTML、CSS、ASP、SQL（一）</a>
+			</li>
+		</ul>
+	</section>
+	<section class="widget widget-feed">
+		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
+	</section>
+</div>
+				</div>
+			</div>
+		</div>
+		<!--4. bottom begin-->
+		<footer id="te-site-footer"><div class="container">
+	<div class="row" role="contentinfo">
+		<section class="col-md-2 col-md-offset-1">
+			<h3>Links</h3>
+			<ul><li><a href="http://diaosbook.com/" title="">diaosbook</a></li></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul>
+				<li><a href="https://typecodes.com/links.html">More..</a></li>
+			</ul>
+		</section>
+		<section class="col-md-2">
+			<h3>Following</h3>
+			<ul>
+				<li><a href="https://github.com/vfhky" class="following github" target="_blank" rel="external nofollow">GitHub</a></li>
+				<li><a href="http://weibo.com/typecodes" class="following weibo" target="_blank" rel="external nofollow">Weibo</a></li>
+				<li><a href="http://vfhky.sinaapp.com/" class="following sae" target="_blank" rel="external nofollow">SAE</a></li>
+				<li><a href="http://www.dwz.cn/mYiwa" class="following qqgroup" target="_blank" rel="external nofollow">Group</a></li>
+			</ul>
+		</section>
+		<div class="col-md-12 copyright">
+			<a href="#top"><i class="i-logo-s">TOP</i></a>
+			<p>
+				&copy; 2012-<script language="JavaScript">var date = new Date(); document.write(date.getFullYear());</script>							<a href="https://typecodes.com">TypeCodes</a>. All Rights Reserved<br>Powered by <a href="http://getpelican.com" rel="external" target="_blank">Pelican</a>. <a href="http://www.miitbeian.gov.cn/" rel="external nofollow" target="_blank">粤ICP备14050695号</a>
+			</p>
+		</div>
+	</div>
+</div>
+</footer>
+<script type="text/javascript">
+	var disqus_shortname = 'typecodes';
+	(function() {
+		var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+		dsq.src = "//" + disqus_shortname + '.disqus.com/embed.js';
+		(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	 })();
+</script>
+	</body>
+</html>

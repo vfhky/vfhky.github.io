@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="zh-CN" class="no-js">
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<title>指针数组和指针的指针（间级指针）实例分析 &mdash; TypeCodes</title>
+		<meta name="author" content="vfhky">
+  		<link href="https://typecodes.com/atom.xml" type="application/atom+xml" rel="alternate" title="TypeCodes Atom Feed" />
+	  	<link href="https://typecodes.com/feed.xml" type="application/rss+xml" rel="alternate" title="TypeCodes RSS Feed" />
+		<meta name="HandheldFriendly" content="True">
+		<meta name="MobileOptimized" content="320">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="renderer" content="webkit">
+		<link rel="stylesheet" href="https://dn-vfhky.qbox.me/libs/css/pelican-vfhky.css">
+		<script>
+			var _hmt = _hmt || [];
+			(function() {
+			  var hm = document.createElement("script");
+			  hm.src = "//hm.baidu.com/hm.js?c15c4ab8e91ba9ac3d5a12293cc93359";
+			  var s = document.getElementsByTagName("script")[0]; 
+			  s.parentNode.insertBefore(hm, s);
+			})();
+		</script>
+	</head>
+	<body style>
+		<!--1. header navigation begin-->
+		<header role="banner" id="te-site-header">
+			<div class="container">
+				<a href="https://typecodes.com" class="te-site-logo" role="logo" target="_self"> TypeCodes</a>
+				<ul class="nav nav-pills" id="te-site-nav" role="navigation">
+					<li><a href="https://typecodes.com">Home</a></li><li><a href="https://typecodes.com/archives.html" title="Archives">Archives</a></li><li><a href="https://typecodes.com/about.html" title="About">About</a></li></ul>
+			</div>
+		</header>
+		<div class="te-headline">
+			<div class="container">
+				<h2 class="te-headline-title"> <a href="https://typecodes.com">TypeCodes</a></h2>
+			</div>
+		</div>
+		<div class="container">
+			<div class="row">
+		<!--2. left sider begin-->
+		<div class="col-md-9" id="blog-main" role="main">
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/cseries/doubledimensionalarray.html">指针数组和指针的指针（间级指针）实例分析</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2014-11-17 22:09 | 分类：<a href="https://typecodes.com/cseries/index.html">cseries</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>网上看到一个关于指向指针的指针变量（间级指针）和指针数组的分析题，感觉比较有代表性，所以摘录了下来自己分析了一番。</p>
+
+
+<h5>1 程序代码：</h5>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50</pre></div></td><td class="code"><div class="highlight"><pre><span class="cm">/**</span>
+<span class="cm"> * 指针数组和指针的指针（间级指针）实例分析</span>
+<span class="cm"> * @Filename: doubledimensionalarray.c</span>
+<span class="cm"> * @Source  : 改动自网络</span>
+<span class="cm"> */</span>
+<span class="cp">#include &lt;stdio.h&gt;</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span> <span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span> <span class="n">argv</span><span class="p">[]</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+
+    <span class="c1">//指针数组</span>
+    <span class="kt">char</span> <span class="o">*</span><span class="n">str</span><span class="p">[]</span> <span class="o">=</span> <span class="p">{</span> <span class="s">&quot;welcome&quot;</span><span class="p">,</span> <span class="s">&quot;to&quot;</span><span class="p">,</span> <span class="s">&quot;fortemedia&quot;</span><span class="p">,</span> <span class="s">&quot;Nanjing&quot;</span> <span class="p">};</span>
+
+    <span class="c1">//sizeof查看指针数组str占用内存大小，输出sizeof(str)=[16]，因为指针数组str里面存放的是4个指针，所以共4*4Bytes=16Bytes</span>
+    <span class="n">printf</span><span class="p">(</span> <span class="s">&quot;sizeof(str)=[%d]</span><span class="se">\n\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">str</span><span class="p">)</span> <span class="p">);</span>
+
+    <span class="c1">//打印指针数组的内容</span>
+    <span class="k">for</span><span class="p">(</span> <span class="p">;</span> <span class="n">i</span><span class="o">&lt;</span><span class="mi">4</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span> <span class="p">)</span>
+        <span class="n">printf</span><span class="p">(</span> <span class="s">&quot;str[%d]=[%s]</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">str</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="p">);</span>
+
+    <span class="n">printf</span><span class="p">(</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span> <span class="p">);</span>
+
+    <span class="c1">//初始化指针的指针p，指向&amp;str[1]，即指针元素str[1]所在的地址，而指针元素str[1]又指向字符串&quot;to&quot;，即其值是字符串&quot;to&quot;的地址</span>
+    <span class="kt">char</span> <span class="o">**</span><span class="n">p</span> <span class="o">=</span> <span class="n">str</span><span class="o">+</span><span class="mi">1</span><span class="p">;</span>
+
+    <span class="c1">//sizeof查看指向指针的指针变量p、指针变量*p和**p对应的字符所占用的内存大小</span>
+    <span class="n">printf</span><span class="p">(</span> <span class="s">&quot;sizeof(p)=[%d]</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">p</span><span class="p">)</span> <span class="p">);</span>        <span class="c1">//输出:sizeof(p)=[4]      因为p仍然只是一个指针变量(等价于&amp;str[1])</span>
+    <span class="n">printf</span><span class="p">(</span> <span class="s">&quot;sizeof(*p)=[%d]</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="o">*</span><span class="n">p</span><span class="p">)</span> <span class="p">);</span>      <span class="c1">//输出:sizeof(*p)=[4]     因为*p同样只是一个指针变量(等价于str[1])</span>
+    <span class="n">printf</span><span class="p">(</span> <span class="s">&quot;sizeof(**p)=[%d]</span><span class="se">\n\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="o">**</span><span class="n">p</span><span class="p">)</span> <span class="p">);</span>  <span class="c1">//输出:sizeof(**p)=[1]    **p等价于*str[1]，即值是字符&#39;t&#39;</span>
+
+    <span class="n">printf</span><span class="p">(</span> <span class="s">&quot;*p=[%s]</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="o">*</span><span class="n">p</span> <span class="p">);</span>              <span class="c1">//输出:  *p=[to]</span>
+    <span class="n">printf</span><span class="p">(</span> <span class="s">&quot;(**p)+1=[%c]</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="p">(</span><span class="o">**</span><span class="n">p</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span> <span class="p">);</span>    <span class="c1">//输出:  (**p)+1=[u]</span>
+    <span class="n">printf</span><span class="p">(</span> <span class="s">&quot;str[1]=[%s]</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">str</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="p">);</span>      <span class="c1">//输出:  str[1]=[to]</span>
+    <span class="n">printf</span><span class="p">(</span> <span class="s">&quot;*str[1]=[%c]</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="o">*</span><span class="n">str</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="p">);</span>    <span class="c1">//输出:  *str[1]=[t]</span>
+
+    <span class="c1">//开始通过指针的指针变量p改变指针数组str中的内容</span>
+    <span class="n">str</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="o">*</span><span class="n">p</span><span class="o">++</span><span class="p">)</span> <span class="o">+</span> <span class="mi">2</span><span class="p">;</span>                    <span class="c1">//(*p++)即前面的*p=[to]，所以(*p++)+2指向字符串&quot;to&quot;后面的字符串；执行完后，p=&amp;str[2]，即字符串&quot;fortemedia&quot;地址的地址</span>
+    <span class="n">str</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="o">*</span><span class="p">(</span><span class="n">p</span><span class="o">+</span><span class="mi">1</span><span class="p">);</span>                        <span class="c1">//*(p+1)等价于str[3]，也就是此时str[1]指向了字符串&quot;Nanjing&quot;</span>
+    <span class="n">str</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">p</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="mi">3</span><span class="p">;</span>                      <span class="c1">//p[1]相当于*(p+1)，指向字符串&quot;Nanjing&quot;，所以右边相当于str[3]+3，也即str[2]指向了字符串&quot;jing&quot;</span>
+    <span class="n">str</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="n">p</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="p">(</span> <span class="n">str</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">-</span><span class="n">str</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="p">);</span>      <span class="c1">//p[0]相当于*p也即str[2]，所以右边相当于*p+3也即str[2]+3，也就是字符串&quot;jing&quot;中从字符&#39;g&#39;开始的字符串</span>
+
+    <span class="n">printf</span><span class="p">(</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span> <span class="p">);</span>
+
+    <span class="c1">//打印指针数组的内容</span>
+    <span class="k">for</span><span class="p">(</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">i</span><span class="o">&lt;</span><span class="mi">4</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span> <span class="p">)</span>
+        <span class="n">printf</span><span class="p">(</span> <span class="s">&quot;str[%d]=[%s]</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">str</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="p">);</span>
+
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</td></tr></table>
+
+<p><img alt="指针数组和指针的指针（间级指针）实例分析" src="https://dn-vfhky.qbox.me/2014/11/doubledimensionalarray.png" title="指针数组和指针的指针（间级指针）实例分析" /></p>
+<h5>2 分析总结</h5>
+<p>由于在上面的程序中，已经对重要内容都做了分析注释，所以这里再做一些其它的分析总结。</p>
+<h6>2.1 指针数组初始化的过程</h6>
+<p>程序通过<code>char *str[] = { "welcome", "to", "fortemedia", "Nanjing" };</code>初始化指针数组str时，实质是初始化了4个字符指针指向一个连续的内存块。而这个连续的内存块中，依次存储的内容是<code>"welcome", "to", "fortemedia", "Nanjing"</code>这4个字符串。</p>
+<p>可以通过CodeBlocks调试，在watch窗口视图和memory窗口视图中查看内存状况。PS：这个连续的内存块（0x405064~0x40507a+8）存放这个4个字符串时，还包括了字符串结束标志符号'\0'，即十六进制的0x00。</p>
+<p><img alt="CodeBlocks调试watch窗口" src="https://dn-vfhky.qbox.me/2014/11/doubledimensionalarraywatchmemory.png" title="CodeBlocks调试watch窗口" /></p>
+<p><img alt="CodeBlocks调试memory窗口" src="https://dn-vfhky.qbox.me/2014/11/doubledimensionalarraymemory.png" title="CodeBlocks调试memory窗口" /></p>
+<h6>2.2 sizeof指针数组，查看占用内存大小</h6>
+<p>在程序中的第16行，由于指针数组里面实质存放的是指针，所以<code>sizeof(指针数组)</code>时，跟它的指针个数有关，即一个指针数组占用的内存大小是<code>指针个数*4</code>字节。这点跟二维数组不同，因为<code>sizeof(二维数组)</code>所占内存是<code>元素类型*元素个数</code>字节。</p>
+<p>例如一个字符型二维数组char a[3][4]的大小为：1*12 = 12 字节；而一个整型二维数组int a[3][4]的大小为：4*12=48 字节。</p>
+<h6>2.3 sizeof多重指针，查看占用内存大小</h6>
+<p>在程序中的第28~30行，通过sizeof可以看到不管是指向指针的指针还是纯粹的单级指针，它始终只占用4字节内存大小。</p>
+<h6>2.4 间级指针（多重指针）和指针数组的关系</h6>
+<p>程序中第25行中，通过<code>char **p = str+1;</code>初始化指针的指针p，即<code>p=&amp;str[1]</code>，也即指针元素str[1]所在的地址。而指针元素str[1]又指向字符串"to"，即其值是字符串"to"的地址0x40506c。</p>
+<p>理解这点是关键，指针变量p初始化时，是把指针数组str中第二个指针的地址赋给p，而不是直接把字符串"to"的地址赋给p！其实，指针数组也是一个间级指针（二重指针）。</p>
+		    	<p class="tags">
+					<div class="post-share">
+						<ul class="post-shareul clearfix">
+							<li class="post-shareli">
+								<a href="http://note.youdao.com/memory/?url=https://typecodes.com/cseries/doubledimensionalarray.html&title=指针数组和指针的指针（间级指针）实例分析" class="post-sharea ydshare" target="_blank" rel="nofollow">有道云笔记</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://v.t.sina.com.cn/share/share.php?url=https://typecodes.com/cseries/doubledimensionalarray.html&title=指针数组和指针的指针（间级指针）实例分析&source=https://typecodes.com" class="post-sharea wbshare" target="_blank" rel="nofollow">新浪微博</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://v.t.qq.com/share/share.php?title=指针数组和指针的指针（间级指针）实例分析&url=https://typecodes.com/cseries/doubledimensionalarray.html&site=https://typecodes.com" class="post-sharea twbshare" target="_blank" rel="nofollow">腾讯微博</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=https://typecodes.com/cseries/doubledimensionalarray.html&title=指针数组和指针的指针（间级指针）实例分析&content='utf-8'" class="post-sharea qzoneshare" target="_blank" rel="nofollow">QZone</a>
+							</li>
+						</ul>
+					</div>
+					<div>
+						Tags: <a href="https://typecodes.com/tag/zhi-zhen-shu-zu.html">指针数组</a>,<a href="https://typecodes.com/tag/er-wei-zhi-zhen.html">二维指针</a>,<a href="https://typecodes.com/tag/zhi-zhen-de-zhi-zhen.html">指针的指针</a>					</div>
+				</p>
+			</article>
+			
+			<div id="comments">
+				<h4 class="num">Comments &raquo;</h4>
+		    	<div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript></div>
+		    </div>
+		</div>
+		<!--3. right sider begin-->
+<div class="col-md-3" id="blog-secondary" role="complementary">
+	<section class="widget">
+		<ul class="widget-list">
+			<form id="search" method="get" action="https://typecodes.com/search.html">
+				<input type="text" name="q" id="s" size="20" x-webkit-speech="" x-webkit-grammar="builtin:search" onwebkitspeechchange="this.value = this.value.replace(this.defaultValue, '')" value="Google...." onfocus="this.value = (this.value == this.defaultValue) ? '' : this.value" onblur="this.value = (this.value == '') ? this.defaultValue : this.value">
+			</form>
+		</ul>
+	</section>
+	<section class="widget">
+		<h3 class="widget-title">Categories</h3>
+		<ul class="widget-list">
+		      <li class="current">
+		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (26)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/csharp/index.html">Csharp</a> (6)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/database/index.html">Database</a> (11)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/java/index.html">Java</a> (1)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/linux/index.html">Linux</a> (16)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/mix/index.html">Mix</a> (53)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/web/index.html">Web</a> (88)
+		      </li>
+		</ul>
+	</section>
+	<section class="widget">
+		<h3 class="widget-title">Recent Posts</h3>
+		<ul class="widget-list">
+			<li class="post">
+				<a href="https://typecodes.com/mix/sucesstypechotopelican.html">成功将博客从Typecho迁移到Pelican</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/mix/begintypechotopelican.html">准备将博客从Typecho迁移到Pelican</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/tcpconnectiontimedout.html">Linux TCP连接Connection Refused和Connection timed out的问题</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/mysqlerrornospace.html">博客MySQL服务惊魂记：Linux磁盘空间不足(Core Dump文件引爆)</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/mix/synweibophpmarkdownimgurl.html">升级博客文章同步微博的插件：PHP正则提取Markdown的图片地址</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/cppgeneralmakefile.html">Linux C/C++工程中可生成ELF、动/静态库文件的通用Makefile</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/libraryundefinedref.html">解决make编译链接动态库错误：libxx.so: undefined reference to xx</a>
+			</li>
+		</ul>
+	</section>
+	<section class="widget widget-feed">
+		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
+	</section>
+</div>
+				</div>
+			</div>
+		</div>
+		<!--4. bottom begin-->
+		<footer id="te-site-footer"><div class="container">
+	<div class="row" role="contentinfo">
+		<section class="col-md-2 col-md-offset-1">
+			<h3>Links</h3>
+			<ul><li><a href="http://diaosbook.com/" title="">diaosbook</a></li></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul>
+				<li><a href="https://typecodes.com/links.html">More..</a></li>
+			</ul>
+		</section>
+		<section class="col-md-2">
+			<h3>Following</h3>
+			<ul>
+				<li><a href="https://github.com/vfhky" class="following github" target="_blank" rel="external nofollow">GitHub</a></li>
+				<li><a href="http://weibo.com/typecodes" class="following weibo" target="_blank" rel="external nofollow">Weibo</a></li>
+				<li><a href="http://vfhky.sinaapp.com/" class="following sae" target="_blank" rel="external nofollow">SAE</a></li>
+				<li><a href="http://www.dwz.cn/mYiwa" class="following qqgroup" target="_blank" rel="external nofollow">Group</a></li>
+			</ul>
+		</section>
+		<div class="col-md-12 copyright">
+			<a href="#top"><i class="i-logo-s">TOP</i></a>
+			<p>
+				&copy; 2012-<script language="JavaScript">var date = new Date(); document.write(date.getFullYear());</script>							<a href="https://typecodes.com">TypeCodes</a>. All Rights Reserved<br>Powered by <a href="http://getpelican.com" rel="external" target="_blank">Pelican</a>. <a href="http://www.miitbeian.gov.cn/" rel="external nofollow" target="_blank">粤ICP备14050695号</a>
+			</p>
+		</div>
+	</div>
+</div>
+</footer>
+<script type="text/javascript">
+	var disqus_shortname = 'typecodes';
+	var disqus_identifier = '/cseries/doubledimensionalarray.html';
+	var disqus_url = 'https://typecodes.com/cseries/doubledimensionalarray.html';
+	var disqus_title = '指针数组和指针的指针（间级指针）实例分析';
+	(function() {
+		var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+		dsq.src = "//" + disqus_shortname + '.disqus.com/embed.js';
+		(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	 })();
+</script>
+	</body>
+</html>

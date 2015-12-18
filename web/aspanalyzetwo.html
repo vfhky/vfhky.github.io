@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="zh-CN" class="no-js">
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<title>从一段ASP代码分析HTML、CSS、ASP、SQL（二） &mdash; TypeCodes</title>
+		<meta name="author" content="vfhky">
+  		<link href="https://typecodes.com/atom.xml" type="application/atom+xml" rel="alternate" title="TypeCodes Atom Feed" />
+	  	<link href="https://typecodes.com/feed.xml" type="application/rss+xml" rel="alternate" title="TypeCodes RSS Feed" />
+		<meta name="HandheldFriendly" content="True">
+		<meta name="MobileOptimized" content="320">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="renderer" content="webkit">
+		<link rel="stylesheet" href="https://dn-vfhky.qbox.me/libs/css/pelican-vfhky.css">
+		<script>
+			var _hmt = _hmt || [];
+			(function() {
+			  var hm = document.createElement("script");
+			  hm.src = "//hm.baidu.com/hm.js?c15c4ab8e91ba9ac3d5a12293cc93359";
+			  var s = document.getElementsByTagName("script")[0]; 
+			  s.parentNode.insertBefore(hm, s);
+			})();
+		</script>
+	</head>
+	<body style>
+		<!--1. header navigation begin-->
+		<header role="banner" id="te-site-header">
+			<div class="container">
+				<a href="https://typecodes.com" class="te-site-logo" role="logo" target="_self"> TypeCodes</a>
+				<ul class="nav nav-pills" id="te-site-nav" role="navigation">
+					<li><a href="https://typecodes.com">Home</a></li><li><a href="https://typecodes.com/archives.html" title="Archives">Archives</a></li><li><a href="https://typecodes.com/about.html" title="About">About</a></li></ul>
+			</div>
+		</header>
+		<div class="te-headline">
+			<div class="container">
+				<h2 class="te-headline-title"> <a href="https://typecodes.com">TypeCodes</a></h2>
+			</div>
+		</div>
+		<div class="container">
+			<div class="row">
+		<!--2. left sider begin-->
+		<div class="col-md-9" id="blog-main" role="main">
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/web/aspanalyzetwo.html">从一段ASP代码分析HTML、CSS、ASP、SQL（二）</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2012-06-30 00:08 | 分类：<a href="https://typecodes.com/web/index.html">web</a></li>
+</ul>
+<div class="post-content fmt">
+	<h5>（一）前台DIV+CSS布局</h5>
+<p>布局样式通过第11行 <code>linkrel ="stylesheet" href="css/index.css" type="text/css"</code> 引入控制的。而从图中可以看出首页(index.asp)是由头部(第18行)、中部(第20行）和底部（第127行）这三个DIV层构成。其中，头部和尾部调用两个页面即可：top.html 和 bottom.html 。</p>
+<p>中部又由左边(第21行)和右边(第23行)构成，即 left.html 和 div id="right" 。中部的右边又由位于上面部分的1个flash层和2个content1层、下面部分的2个content层和1个留言板content2层。所以整个CSS布局框架就是这样的。值得注意的是中间部分嵌套了2个层(即左右两层)，右边的层又嵌套了6个层（1个flash层,2个content1层,2个content层,1个content2层）。</p>
+
+
+<p><img alt="从一段ASP代码分析HTML、CSS、ASP、SQL（二）" src="https://dn-vfhky.qbox.me/2012/06/3.png" title="从一段ASP代码分析HTML、CSS、ASP、SQL（二）-1" /></p>
+<h5>（二）ASP和PHP比较</h5>
+<p>1 第4行<code>&lt;!--#include file="Connection/conn.asp"--&gt;</code>表示引入conn.asp(数据库Access连接文件)。在PHP中可以用两种方法引入文件：</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8</pre></div></td><td class="code"><div class="highlight"><pre><span class="x">/*</span>
+<span class="x">PHP程序在执行前，就会先读入所指定引入的文件，使它变成 PHP程序的一部份。常用的函数，亦可以这个方法将它引入网页中。</span>
+<span class="x">*/</span>
+<span class="cp">&lt;?php</span> <span class="k">require</span><span class="p">(</span><span class="s2">&quot;left.php&quot;</span><span class="p">);</span> <span class="cp">?&gt;</span><span class="x"></span>
+<span class="x">/*</span>
+<span class="x">这个函数一般是放在流程控制的处理部分中。PHP程序在读到include的文件时，才将它读进来。这种方式，可以把程序执行时的流程简单化。</span>
+<span class="x">*/</span>
+<span class="cp">&lt;?php</span> <span class="k">include</span><span class="p">(</span><span class="s2">&quot;left.php&quot;</span><span class="p">);</span><span class="cp">?&gt;</span><span class="x"></span>
+</pre></div>
+</td></tr></table>
+
+<p>2 ASP主要利用VB语言，PHP语法方面类似C语言，这点在PHP每句后面都用分号来表示程序语句的完整性得以从分体现。</p>
+<p>3 其它具体的语法细节大家可以具体比较下，例如在ASP中用得较多的是if……else if…… end if的循环语句，在PHP中不用end if来表示循环语句的结束。</p>
+<h5>（三）SQL语句的特色</h5>
+<p>在第4行引入conn.asp(数据库Access连接文件)后，我们就可以在页面中进行数据库的“增删改查”了。例如，第68-73行</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14</pre></div></td><td class="code"><div class="highlight"><pre><span class="cp">&lt;%</span>
+    <span class="n">classid1</span><span class="o">=</span><span class="n">rs</span><span class="p">(</span><span class="s2">&quot;classid&quot;</span><span class="p">)</span>
+    <span class="n">sql</span><span class="o">=</span><span class="s2">&quot;select  top 3 * from news where classid=&quot;</span><span class="o">&amp;</span><span class="n">classid1</span><span class="o">&amp;</span><span class="s2">&quot; order by time desc &quot;</span>
+    <span class="n">set</span> <span class="n">rs1</span><span class="o">=</span><span class="n">conn</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">sql</span><span class="p">)</span>
+    <span class="k">do</span> <span class="k">while</span> <span class="ow">not</span> <span class="n">rs1</span><span class="o">.</span><span class="n">eof</span>
+
+    <span class="sr">/&#39;循环输出部分</span>
+
+<span class="sr">    end if</span>
+<span class="sr">    rs.movenext</span>
+<span class="sr">    loop</span>
+<span class="sr">    rs.close</span>
+<span class="sr">    set rs=nothing</span>
+<span class="cp">%&gt;</span><span class="x"></span>
+</pre></div>
+</td></tr></table>
+
+<p>首先查询<code>classid="&amp;classid1&amp;"</code>最新的3条新闻信息，并按时间递减排列；然后如果所查询的记录集rs1没有结束的话则循环执行中间的循环部分，最后输出这3条信息并且关闭数据库的连接，清空记录集。这段代码是VB和SQL语句的结合。当然这个index.asp里面还有其它的SQL语句，就留给大家分析了。</p>
+<h5>（四）结语</h5>
+<p>虽然ASP和ACCESS已经退出时代舞台了，但是对那些入门WEB技术的人来说我觉得还是有很好的帮助提升作用的。</p>
+		    	<p class="tags">
+					<div class="post-share">
+						<ul class="post-shareul clearfix">
+							<li class="post-shareli">
+								<a href="http://note.youdao.com/memory/?url=https://typecodes.com/web/aspanalyzetwo.html&title=从一段ASP代码分析HTML、CSS、ASP、SQL（二）" class="post-sharea ydshare" target="_blank" rel="nofollow">有道云笔记</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://v.t.sina.com.cn/share/share.php?url=https://typecodes.com/web/aspanalyzetwo.html&title=从一段ASP代码分析HTML、CSS、ASP、SQL（二）&source=https://typecodes.com" class="post-sharea wbshare" target="_blank" rel="nofollow">新浪微博</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://v.t.qq.com/share/share.php?title=从一段ASP代码分析HTML、CSS、ASP、SQL（二）&url=https://typecodes.com/web/aspanalyzetwo.html&site=https://typecodes.com" class="post-sharea twbshare" target="_blank" rel="nofollow">腾讯微博</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=https://typecodes.com/web/aspanalyzetwo.html&title=从一段ASP代码分析HTML、CSS、ASP、SQL（二）&content='utf-8'" class="post-sharea qzoneshare" target="_blank" rel="nofollow">QZone</a>
+							</li>
+						</ul>
+					</div>
+					<div>
+						Tags: <a href="https://typecodes.com/tag/asp.html">asp</a>					</div>
+				</p>
+			</article>
+			
+			<div id="comments">
+				<h4 class="num">Comments &raquo;</h4>
+		    	<div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript></div>
+		    </div>
+		</div>
+		<!--3. right sider begin-->
+<div class="col-md-3" id="blog-secondary" role="complementary">
+	<section class="widget">
+		<ul class="widget-list">
+			<form id="search" method="get" action="https://typecodes.com/search.html">
+				<input type="text" name="q" id="s" size="20" x-webkit-speech="" x-webkit-grammar="builtin:search" onwebkitspeechchange="this.value = this.value.replace(this.defaultValue, '')" value="Google...." onfocus="this.value = (this.value == this.defaultValue) ? '' : this.value" onblur="this.value = (this.value == '') ? this.defaultValue : this.value">
+			</form>
+		</ul>
+	</section>
+	<section class="widget">
+		<h3 class="widget-title">Categories</h3>
+		<ul class="widget-list">
+		      <li class="current">
+		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (26)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/csharp/index.html">Csharp</a> (6)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/database/index.html">Database</a> (11)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/java/index.html">Java</a> (1)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/linux/index.html">Linux</a> (16)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/mix/index.html">Mix</a> (53)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/web/index.html">Web</a> (88)
+		      </li>
+		</ul>
+	</section>
+	<section class="widget">
+		<h3 class="widget-title">Recent Posts</h3>
+		<ul class="widget-list">
+			<li class="post">
+				<a href="https://typecodes.com/mix/sucesstypechotopelican.html">成功将博客从Typecho迁移到Pelican</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/mix/begintypechotopelican.html">准备将博客从Typecho迁移到Pelican</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/tcpconnectiontimedout.html">Linux TCP连接Connection Refused和Connection timed out的问题</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/mysqlerrornospace.html">博客MySQL服务惊魂记：Linux磁盘空间不足(Core Dump文件引爆)</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/mix/synweibophpmarkdownimgurl.html">升级博客文章同步微博的插件：PHP正则提取Markdown的图片地址</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/cppgeneralmakefile.html">Linux C/C++工程中可生成ELF、动/静态库文件的通用Makefile</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/libraryundefinedref.html">解决make编译链接动态库错误：libxx.so: undefined reference to xx</a>
+			</li>
+		</ul>
+	</section>
+	<section class="widget widget-feed">
+		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
+	</section>
+</div>
+				</div>
+			</div>
+		</div>
+		<!--4. bottom begin-->
+		<footer id="te-site-footer"><div class="container">
+	<div class="row" role="contentinfo">
+		<section class="col-md-2 col-md-offset-1">
+			<h3>Links</h3>
+			<ul><li><a href="http://diaosbook.com/" title="">diaosbook</a></li></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul>
+				<li><a href="https://typecodes.com/links.html">More..</a></li>
+			</ul>
+		</section>
+		<section class="col-md-2">
+			<h3>Following</h3>
+			<ul>
+				<li><a href="https://github.com/vfhky" class="following github" target="_blank" rel="external nofollow">GitHub</a></li>
+				<li><a href="http://weibo.com/typecodes" class="following weibo" target="_blank" rel="external nofollow">Weibo</a></li>
+				<li><a href="http://vfhky.sinaapp.com/" class="following sae" target="_blank" rel="external nofollow">SAE</a></li>
+				<li><a href="http://www.dwz.cn/mYiwa" class="following qqgroup" target="_blank" rel="external nofollow">Group</a></li>
+			</ul>
+		</section>
+		<div class="col-md-12 copyright">
+			<a href="#top"><i class="i-logo-s">TOP</i></a>
+			<p>
+				&copy; 2012-<script language="JavaScript">var date = new Date(); document.write(date.getFullYear());</script>							<a href="https://typecodes.com">TypeCodes</a>. All Rights Reserved<br>Powered by <a href="http://getpelican.com" rel="external" target="_blank">Pelican</a>. <a href="http://www.miitbeian.gov.cn/" rel="external nofollow" target="_blank">粤ICP备14050695号</a>
+			</p>
+		</div>
+	</div>
+</div>
+</footer>
+<script type="text/javascript">
+	var disqus_shortname = 'typecodes';
+	var disqus_identifier = '/web/aspanalyzetwo.html';
+	var disqus_url = 'https://typecodes.com/web/aspanalyzetwo.html';
+	var disqus_title = '从一段ASP代码分析HTML、CSS、ASP、SQL（二）';
+	(function() {
+		var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+		dsq.src = "//" + disqus_shortname + '.disqus.com/embed.js';
+		(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	 })();
+</script>
+	</body>
+</html>

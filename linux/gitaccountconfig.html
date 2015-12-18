@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="zh-CN" class="no-js">
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<title>CentOS系统BitBucket、GitHub和Coding等多git账户的配置 &mdash; TypeCodes</title>
+		<meta name="author" content="vfhky">
+  		<link href="https://typecodes.com/atom.xml" type="application/atom+xml" rel="alternate" title="TypeCodes Atom Feed" />
+	  	<link href="https://typecodes.com/feed.xml" type="application/rss+xml" rel="alternate" title="TypeCodes RSS Feed" />
+		<meta name="HandheldFriendly" content="True">
+		<meta name="MobileOptimized" content="320">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="renderer" content="webkit">
+		<link rel="stylesheet" href="https://dn-vfhky.qbox.me/libs/css/pelican-vfhky.css">
+		<script>
+			var _hmt = _hmt || [];
+			(function() {
+			  var hm = document.createElement("script");
+			  hm.src = "//hm.baidu.com/hm.js?c15c4ab8e91ba9ac3d5a12293cc93359";
+			  var s = document.getElementsByTagName("script")[0]; 
+			  s.parentNode.insertBefore(hm, s);
+			})();
+		</script>
+	</head>
+	<body style>
+		<!--1. header navigation begin-->
+		<header role="banner" id="te-site-header">
+			<div class="container">
+				<a href="https://typecodes.com" class="te-site-logo" role="logo" target="_self"> TypeCodes</a>
+				<ul class="nav nav-pills" id="te-site-nav" role="navigation">
+					<li><a href="https://typecodes.com">Home</a></li><li><a href="https://typecodes.com/archives.html" title="Archives">Archives</a></li><li><a href="https://typecodes.com/about.html" title="About">About</a></li></ul>
+			</div>
+		</header>
+		<div class="te-headline">
+			<div class="container">
+				<h2 class="te-headline-title"> <a href="https://typecodes.com">TypeCodes</a></h2>
+			</div>
+		</div>
+		<div class="container">
+			<div class="row">
+		<!--2. left sider begin-->
+		<div class="col-md-9" id="blog-main" role="main">
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/linux/gitaccountconfig.html">CentOS系统BitBucket、GitHub和Coding等多git账户的配置</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2015-07-05 22:22 | 分类：<a href="https://typecodes.com/linux/index.html">linux</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>目前自己主要在BitBucket、GitHub和Coding这三个Git平台创建了一些项目，所以这篇文章以自己的CentOS7.1服务器作为示例，说说如何在Linux系统中配置不同平台的Git仓库，也即多git账户的配置。</p>
+<p>类似于Windows机器上的git配置方法，在CentOS上也是一样的。通过设置Git全部变量的配置文件<code>~/.ssh/config</code>和当前工作仓库的配置文件<code>your_git_project_root/.git/config</code>即可。</p>
+<p><img alt="当前git工作仓库的.git目录" src="https://dn-vfhky.qbox.me/2015/07/project_git_config_dir.png" title="当前git工作仓库的.git目录" /></p>
+
+
+<h5>1 Git全部变量的配置文件：~/.ssh/config</h5>
+<p>如上图所示，git全部变量的配置文件<code>~/.ssh/config</code>在当前用户的.ssh目录下面，通过配置这个文件可以实现对多个不同平台的Git账户进行整体控制。例如，使用ssh身份认证的RSA密钥对的存放位置；使用<code>git push</code>的时候，到底是推送到BitBucket还是GitHub活着Coding呢？这些都是由这个文件控制的。</p>
+<div class="highlight"><pre>[root@typecodes .ssh]# vim config 
+Host github.com
+    HostName        github.com
+    User            vfhky
+    IdentityFile    ~/.ssh/github_rsa
+
+Host git.coding.net
+    HostName        git.coding.net
+    User            vfhky
+    IdentityFile    ~/.ssh/coding_rsa
+
+Host bitbucket.org
+    HostName        bitbucket.org
+    User            vfhky
+    IdentityFile    ~/.ssh/bitbucket_rsa
+
+Host typecodes.com
+    HostName        typecodes.com
+    Port            8866
+    User            root
+    IdentityFile    ~/.ssh/typecodes_rsa
+</pre></div>
+
+
+<p>配置要点：
+1、<code>Host</code>表示主机名，当在每个具体的git项目中执行了git操作，那么会先在这个文件里面所有的HOST名字中进行查找匹配出对应的SSH或者HTTPS地址。通过Host别名和<code>User</code>的配置，可以将不同的Git账户（即使是同一平台的）的区分开来；2、<code>IdentityFile</code>表示使用SSH登录认证时的私钥路径（一般在.ssh目录下面），对应的公钥复制到对应的Git平台上。</p>
+<p><img alt="Git的ssh身份认证的RSA密钥对" src="https://dn-vfhky.qbox.me/2015/07/git_ssh_rsa_key.png" title="Git的ssh身份认证的RSA密钥对" /></p>
+<p>注意：如前文<a href="https://typecodes.com/mix/codinggitsshbug.html" title="查看原文">《Coding.net上git仓库ssh地址的"bug"》</a>所述，如果错误的配置了Host，那么会造成<code>Permission denied</code>的错误。</p>
+<h5>2 当前Git项目的配置文件：your_git_project_root/.git/config</h5>
+<p>小节1中是全部变量的配置，那么在对应每个具体的Git项目中，还需要做一些配置。</p>
+<p>vim编辑当前Git项目的隐藏目录<code>.git</code>下面的config文件（以bitbucket为例），这里很容易猜到<code>git push origin master</code>命令的含义和来源。我们在末尾添加<code>[user]</code>信息，包括name和email。当然，也可以直接通过命令<code>git config --global user.name "your git-account-name"</code>和<code>git config --global user.email "your git-account-email"</code>配置。</p>
+<p><img alt="当前Git项目的配置文件" src="https://dn-vfhky.qbox.me/2015/07/project_git_config_file.png" title="当前Git项目的配置文件" /></p>
+<p>如果<code>[user]</code>信息未配置，很可能在执行git命令时报错：</p>
+<p><img alt="[user]信息未配置时报错" src="https://dn-vfhky.qbox.me/2015/07/git_commit_error.png" title="[user]信息未配置时报错" /></p>
+<h5>3 结束：关于SSH登录认证的RSA公私钥的权限设置</h5>
+<p>小节1中已经说了，git的SSH登录认证的RSA私钥存放在当前用的<code>.ssh</code>目录下面。我们需要尽量降低该私钥文件的权限，否则会报<code>Permissions 0644 for '~/.ssh/bitbucket_rsa' are too open.</code>的错误。</p>
+<p><img alt="设置git的SSH登录认证的RSA私钥权限为0600" src="https://dn-vfhky.qbox.me/2015/07/git_permissions_0644_too_open.png" title="设置git的SSH登录认证的RSA私钥权限为0600" /></p>
+		    	<p class="tags">
+					<div class="post-share">
+						<ul class="post-shareul clearfix">
+							<li class="post-shareli">
+								<a href="http://note.youdao.com/memory/?url=https://typecodes.com/linux/gitaccountconfig.html&title=CentOS系统BitBucket、GitHub和Coding等多git账户的配置" class="post-sharea ydshare" target="_blank" rel="nofollow">有道云笔记</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://v.t.sina.com.cn/share/share.php?url=https://typecodes.com/linux/gitaccountconfig.html&title=CentOS系统BitBucket、GitHub和Coding等多git账户的配置&source=https://typecodes.com" class="post-sharea wbshare" target="_blank" rel="nofollow">新浪微博</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://v.t.qq.com/share/share.php?title=CentOS系统BitBucket、GitHub和Coding等多git账户的配置&url=https://typecodes.com/linux/gitaccountconfig.html&site=https://typecodes.com" class="post-sharea twbshare" target="_blank" rel="nofollow">腾讯微博</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=https://typecodes.com/linux/gitaccountconfig.html&title=CentOS系统BitBucket、GitHub和Coding等多git账户的配置&content='utf-8'" class="post-sharea qzoneshare" target="_blank" rel="nofollow">QZone</a>
+							</li>
+						</ul>
+					</div>
+					<div>
+						Tags: <a href="https://typecodes.com/tag/git.html">git</a>					</div>
+				</p>
+			</article>
+			
+			<div id="comments">
+				<h4 class="num">Comments &raquo;</h4>
+		    	<div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript></div>
+		    </div>
+		</div>
+		<!--3. right sider begin-->
+<div class="col-md-3" id="blog-secondary" role="complementary">
+	<section class="widget">
+		<ul class="widget-list">
+			<form id="search" method="get" action="https://typecodes.com/search.html">
+				<input type="text" name="q" id="s" size="20" x-webkit-speech="" x-webkit-grammar="builtin:search" onwebkitspeechchange="this.value = this.value.replace(this.defaultValue, '')" value="Google...." onfocus="this.value = (this.value == this.defaultValue) ? '' : this.value" onblur="this.value = (this.value == '') ? this.defaultValue : this.value">
+			</form>
+		</ul>
+	</section>
+	<section class="widget">
+		<h3 class="widget-title">Categories</h3>
+		<ul class="widget-list">
+		      <li class="current">
+		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (26)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/csharp/index.html">Csharp</a> (6)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/database/index.html">Database</a> (11)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/java/index.html">Java</a> (1)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/linux/index.html">Linux</a> (16)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/mix/index.html">Mix</a> (53)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/web/index.html">Web</a> (88)
+		      </li>
+		</ul>
+	</section>
+	<section class="widget">
+		<h3 class="widget-title">Recent Posts</h3>
+		<ul class="widget-list">
+			<li class="post">
+				<a href="https://typecodes.com/mix/sucesstypechotopelican.html">成功将博客从Typecho迁移到Pelican</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/mix/begintypechotopelican.html">准备将博客从Typecho迁移到Pelican</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/tcpconnectiontimedout.html">Linux TCP连接Connection Refused和Connection timed out的问题</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/mysqlerrornospace.html">博客MySQL服务惊魂记：Linux磁盘空间不足(Core Dump文件引爆)</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/mix/synweibophpmarkdownimgurl.html">升级博客文章同步微博的插件：PHP正则提取Markdown的图片地址</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/cppgeneralmakefile.html">Linux C/C++工程中可生成ELF、动/静态库文件的通用Makefile</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/libraryundefinedref.html">解决make编译链接动态库错误：libxx.so: undefined reference to xx</a>
+			</li>
+		</ul>
+	</section>
+	<section class="widget widget-feed">
+		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
+	</section>
+</div>
+				</div>
+			</div>
+		</div>
+		<!--4. bottom begin-->
+		<footer id="te-site-footer"><div class="container">
+	<div class="row" role="contentinfo">
+		<section class="col-md-2 col-md-offset-1">
+			<h3>Links</h3>
+			<ul><li><a href="http://diaosbook.com/" title="">diaosbook</a></li></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul>
+				<li><a href="https://typecodes.com/links.html">More..</a></li>
+			</ul>
+		</section>
+		<section class="col-md-2">
+			<h3>Following</h3>
+			<ul>
+				<li><a href="https://github.com/vfhky" class="following github" target="_blank" rel="external nofollow">GitHub</a></li>
+				<li><a href="http://weibo.com/typecodes" class="following weibo" target="_blank" rel="external nofollow">Weibo</a></li>
+				<li><a href="http://vfhky.sinaapp.com/" class="following sae" target="_blank" rel="external nofollow">SAE</a></li>
+				<li><a href="http://www.dwz.cn/mYiwa" class="following qqgroup" target="_blank" rel="external nofollow">Group</a></li>
+			</ul>
+		</section>
+		<div class="col-md-12 copyright">
+			<a href="#top"><i class="i-logo-s">TOP</i></a>
+			<p>
+				&copy; 2012-<script language="JavaScript">var date = new Date(); document.write(date.getFullYear());</script>							<a href="https://typecodes.com">TypeCodes</a>. All Rights Reserved<br>Powered by <a href="http://getpelican.com" rel="external" target="_blank">Pelican</a>. <a href="http://www.miitbeian.gov.cn/" rel="external nofollow" target="_blank">粤ICP备14050695号</a>
+			</p>
+		</div>
+	</div>
+</div>
+</footer>
+<script type="text/javascript">
+	var disqus_shortname = 'typecodes';
+	var disqus_identifier = '/linux/gitaccountconfig.html';
+	var disqus_url = 'https://typecodes.com/linux/gitaccountconfig.html';
+	var disqus_title = 'CentOS系统BitBucket、GitHub和Coding等多git账户的配置';
+	(function() {
+		var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+		dsq.src = "//" + disqus_shortname + '.disqus.com/embed.js';
+		(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	 })();
+</script>
+	</body>
+</html>

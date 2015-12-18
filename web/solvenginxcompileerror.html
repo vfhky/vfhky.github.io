@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="zh-CN" class="no-js">
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<title>Nginx编译安装时常见错误分析 &mdash; TypeCodes</title>
+		<meta name="author" content="vfhky">
+  		<link href="https://typecodes.com/atom.xml" type="application/atom+xml" rel="alternate" title="TypeCodes Atom Feed" />
+	  	<link href="https://typecodes.com/feed.xml" type="application/rss+xml" rel="alternate" title="TypeCodes RSS Feed" />
+		<meta name="HandheldFriendly" content="True">
+		<meta name="MobileOptimized" content="320">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="renderer" content="webkit">
+		<link rel="stylesheet" href="https://dn-vfhky.qbox.me/libs/css/pelican-vfhky.css">
+		<script>
+			var _hmt = _hmt || [];
+			(function() {
+			  var hm = document.createElement("script");
+			  hm.src = "//hm.baidu.com/hm.js?c15c4ab8e91ba9ac3d5a12293cc93359";
+			  var s = document.getElementsByTagName("script")[0]; 
+			  s.parentNode.insertBefore(hm, s);
+			})();
+		</script>
+	</head>
+	<body style>
+		<!--1. header navigation begin-->
+		<header role="banner" id="te-site-header">
+			<div class="container">
+				<a href="https://typecodes.com" class="te-site-logo" role="logo" target="_self"> TypeCodes</a>
+				<ul class="nav nav-pills" id="te-site-nav" role="navigation">
+					<li><a href="https://typecodes.com">Home</a></li><li><a href="https://typecodes.com/archives.html" title="Archives">Archives</a></li><li><a href="https://typecodes.com/about.html" title="About">About</a></li></ul>
+			</div>
+		</header>
+		<div class="te-headline">
+			<div class="container">
+				<h2 class="te-headline-title"> <a href="https://typecodes.com">TypeCodes</a></h2>
+			</div>
+		</div>
+		<div class="container">
+			<div class="row">
+		<!--2. left sider begin-->
+		<div class="col-md-9" id="blog-main" role="main">
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/web/solvenginxcompileerror.html">Nginx编译安装时常见错误分析</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2015-06-22 17:02 | 分类：<a href="https://typecodes.com/web/index.html">web</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>这篇文章主要是关于Nginx在编译安装时，可能出现的错误的解决方法。Nginx正确的编译安装操作见前文<a href="https://typecodes.com/web/centos7compilenginx.html" title="查看原文">《2015博客升级记(三)：CentOS 7.1编译安装Nginx1.9.0》</a>。</p>
+<h5>1 Nginx启动脚本错误：env: /etc/init.d/nginx: No such file or directory</h5>
+<p>明明上传了Nginx服务控制脚本<code>nginx</code>，但是在执行<code>service nginx start</code>命令时，却会报上面的错误。</p>
+<p>解决方法：启动脚本的格式有问题，例如该脚本是dos格式，在Linux系统是中无法识别的。可以通过vim打开该文件，如果可以看到出现<code>^M</code>的字符，就可以确定是DOS格式的了。那么可以在vim中执行命令<code>:%s/\r\+$//e</code>，将其转换成Unix格式即可。</p>
+
+
+<h5>2 启动Nginx服务失败</h5>
+<p>安装完Nginx后，执行命令<code>service nginx start</code>失败，即无法正常启动Nginx服务。</p>
+<div class="highlight"><pre>[root@typecodes init.d]# service nginx start
+Starting nginx (via systemctl):  Warning: Unit file of nginx.service changed on disk, &#39;systemctl daemon-reload&#39; recommended.
+Job for nginx.service failed. See &#39;systemctl status nginx.service&#39; and &#39;journalctl -xn&#39; for details.
+[FAILED]
+</pre></div>
+
+
+<p>解决方法：主要通过命令<code>systemctl status nginx.service</code>来分析，如下图所示。</p>
+<p><img alt="Nginx编译安装时常见错误分析" src="https://dn-vfhky.qbox.me/2015/06/nginx_start_error.png" title="Nginx编译安装时常见错误分析" /></p>
+<p>很明显是由于下面这个错误，导致Nginx服务启动失败。</p>
+<div class="highlight"><pre>Apr 11 21:43:07 typecodes nginx[4026]: Starting nginx: nginx: [emerg] mkdir() &quot;/var/tmp/nginx/client/&quot; failed (2: No such file or directory)
+</pre></div>
+
+
+<p>这种错误一般都是目录不存在或者权限不足，所以直接执行下面两条命令即可。</p>
+<div class="highlight"><pre>[root@typecodes ~]# cd /var/tmp/
+[root@typecodes ~]# mkdir -p /var/tmp/nginx/{client,proxy,fastcgi,uwsgi,scgi}
+</pre></div>
+
+
+<h5>3 启动Nginx服务时，界面卡住</h5>
+<p>在敲入命令<code>service nginx restart</code>后，终端界面能卡住，也就是Nginx服务控制脚本<code>nginx</code>没有正常执行完毕。在停止Nginx服务后，发现Nginx进程还存在。</p>
+<div class="highlight"><pre>#######启动Nginx服务出现警告
+[root@typecodes init.d]# service nginx restart 
+Restarting nginx (via systemctl):  Warning: Unit file of nginx.service changed on disk, &#39;systemctl daemon-reload&#39; recommended.
+Restarting nginx (via systemctl):  Warning: Unit file of nginx.service changed on disk, &#39;systemctl daemon-reload&#39; recommended.
+^C     ######终端界面卡住，使用ctrl+c命令强制结束
+
+#######停掉Nginx服务
+[root@typecodes init.d]# service nginx stop
+Stopping nginx (via systemctl):  [  OK  ]
+
+#######查看Nginx进程是否已被停止（可以看到未停止）
+[root@typecodes init.d]# ps -aux|grep nginx 
+root      7796  0.0  0.2  84184  2044 ?        Ss   21:14   0:00 nginx: master process /usr/sbin/nginx -c /etc/nginx/nginx.conf
+nginx     7798  0.0  0.3  86656  3380 ?        S    21:14   0:00 nginx: worker process
+root      7981  0.0  0.0 112644   964 pts/0    S+   21:19   0:00 grep --color=auto nginx
+</pre></div>
+
+
+<p>解决方法：可能是Nginx服务控制脚本（/etc/init.d/nginx）代码不正确，推荐使用文章<a href="https://typecodes.com/web/nginxserviceoptshell.html" title="查看原文">《Nginx服务启动、停止和重启等操作的SHELL脚本》</a>中的shell脚本。最后再重新执行下面的脚本即可。</p>
+<div class="highlight"><pre>[root@typecodes init.d]# chkconfig --add nginx
+[root@typecodes init.d]# chkconfig nginx on
+[root@typecodes init.d]# service nginx restart
+</pre></div>
+
+
+<p>还有一种在启动Nginx服务时，终端界面会卡住的情况：那就是Nginx的配置文件<code>/etc/nginx/nginx.conf</code>不正确，但是使用<code>nginx -t</code>命令显示正常。这种情况只能对nginx.conf文件中的每一个配置进行检查了。</p>
+<h5>4 Compilation failed in require或者perl_parse() failed</h5>
+<p>在使用命令<code>service nginx start</code>启动Nginx服务时报错，于是通过<code>systemctl status nginx.service</code>查看具体的错误信息。   </p>
+<p><img alt="查看Nginx1.9.0的详细信息" src="https://dn-vfhky.qbox.me/2015/05/compilationfailedinrequire.png" title="查看Nginx1.9.0的详细信息" /></p>
+<p>然后使用命令<code>nginx -t</code>查看配置是否正常，如下图所示，同样报错。 </p>
+<p><img alt="nginx -t查看错误信息" src="https://dn-vfhky.qbox.me/2015/05/nginx-t-error.png" title="nginx -t查看错误信息" /></p>
+<p>解决方法：从图中可以看出由于<code>Can't load '/usr/local/lib64/perl5/auto/nginx/nginx.so' for module nginx: /usr/local/lib64/perl5/au...m line 68.</code>的错误，导致了Nginx在调用函数时失败：<code>perl_parse() failed</code>。也就是证明是之前没有安装perl依赖包，于是通过执行命令<code>yum -y install perl-devel perl-ExtUtils-Embed</code>后，再次编译安装Nginx解决。</p>
+		    	<p class="tags">
+					<div class="post-share">
+						<ul class="post-shareul clearfix">
+							<li class="post-shareli">
+								<a href="http://note.youdao.com/memory/?url=https://typecodes.com/web/solvenginxcompileerror.html&title=Nginx编译安装时常见错误分析" class="post-sharea ydshare" target="_blank" rel="nofollow">有道云笔记</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://v.t.sina.com.cn/share/share.php?url=https://typecodes.com/web/solvenginxcompileerror.html&title=Nginx编译安装时常见错误分析&source=https://typecodes.com" class="post-sharea wbshare" target="_blank" rel="nofollow">新浪微博</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://v.t.qq.com/share/share.php?title=Nginx编译安装时常见错误分析&url=https://typecodes.com/web/solvenginxcompileerror.html&site=https://typecodes.com" class="post-sharea twbshare" target="_blank" rel="nofollow">腾讯微博</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=https://typecodes.com/web/solvenginxcompileerror.html&title=Nginx编译安装时常见错误分析&content='utf-8'" class="post-sharea qzoneshare" target="_blank" rel="nofollow">QZone</a>
+							</li>
+						</ul>
+					</div>
+					<div>
+						Tags: <a href="https://typecodes.com/tag/nginx.html">nginx</a>					</div>
+				</p>
+			</article>
+			
+			<div id="comments">
+				<h4 class="num">Comments &raquo;</h4>
+		    	<div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript></div>
+		    </div>
+		</div>
+		<!--3. right sider begin-->
+<div class="col-md-3" id="blog-secondary" role="complementary">
+	<section class="widget">
+		<ul class="widget-list">
+			<form id="search" method="get" action="https://typecodes.com/search.html">
+				<input type="text" name="q" id="s" size="20" x-webkit-speech="" x-webkit-grammar="builtin:search" onwebkitspeechchange="this.value = this.value.replace(this.defaultValue, '')" value="Google...." onfocus="this.value = (this.value == this.defaultValue) ? '' : this.value" onblur="this.value = (this.value == '') ? this.defaultValue : this.value">
+			</form>
+		</ul>
+	</section>
+	<section class="widget">
+		<h3 class="widget-title">Categories</h3>
+		<ul class="widget-list">
+		      <li class="current">
+		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (26)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/csharp/index.html">Csharp</a> (6)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/database/index.html">Database</a> (11)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/java/index.html">Java</a> (1)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/linux/index.html">Linux</a> (16)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/mix/index.html">Mix</a> (53)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/web/index.html">Web</a> (88)
+		      </li>
+		</ul>
+	</section>
+	<section class="widget">
+		<h3 class="widget-title">Recent Posts</h3>
+		<ul class="widget-list">
+			<li class="post">
+				<a href="https://typecodes.com/mix/sucesstypechotopelican.html">成功将博客从Typecho迁移到Pelican</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/mix/begintypechotopelican.html">准备将博客从Typecho迁移到Pelican</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/tcpconnectiontimedout.html">Linux TCP连接Connection Refused和Connection timed out的问题</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/mysqlerrornospace.html">博客MySQL服务惊魂记：Linux磁盘空间不足(Core Dump文件引爆)</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/mix/synweibophpmarkdownimgurl.html">升级博客文章同步微博的插件：PHP正则提取Markdown的图片地址</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/cppgeneralmakefile.html">Linux C/C++工程中可生成ELF、动/静态库文件的通用Makefile</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/libraryundefinedref.html">解决make编译链接动态库错误：libxx.so: undefined reference to xx</a>
+			</li>
+		</ul>
+	</section>
+	<section class="widget widget-feed">
+		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
+	</section>
+</div>
+				</div>
+			</div>
+		</div>
+		<!--4. bottom begin-->
+		<footer id="te-site-footer"><div class="container">
+	<div class="row" role="contentinfo">
+		<section class="col-md-2 col-md-offset-1">
+			<h3>Links</h3>
+			<ul><li><a href="http://diaosbook.com/" title="">diaosbook</a></li></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul>
+				<li><a href="https://typecodes.com/links.html">More..</a></li>
+			</ul>
+		</section>
+		<section class="col-md-2">
+			<h3>Following</h3>
+			<ul>
+				<li><a href="https://github.com/vfhky" class="following github" target="_blank" rel="external nofollow">GitHub</a></li>
+				<li><a href="http://weibo.com/typecodes" class="following weibo" target="_blank" rel="external nofollow">Weibo</a></li>
+				<li><a href="http://vfhky.sinaapp.com/" class="following sae" target="_blank" rel="external nofollow">SAE</a></li>
+				<li><a href="http://www.dwz.cn/mYiwa" class="following qqgroup" target="_blank" rel="external nofollow">Group</a></li>
+			</ul>
+		</section>
+		<div class="col-md-12 copyright">
+			<a href="#top"><i class="i-logo-s">TOP</i></a>
+			<p>
+				&copy; 2012-<script language="JavaScript">var date = new Date(); document.write(date.getFullYear());</script>							<a href="https://typecodes.com">TypeCodes</a>. All Rights Reserved<br>Powered by <a href="http://getpelican.com" rel="external" target="_blank">Pelican</a>. <a href="http://www.miitbeian.gov.cn/" rel="external nofollow" target="_blank">粤ICP备14050695号</a>
+			</p>
+		</div>
+	</div>
+</div>
+</footer>
+<script type="text/javascript">
+	var disqus_shortname = 'typecodes';
+	var disqus_identifier = '/web/solvenginxcompileerror.html';
+	var disqus_url = 'https://typecodes.com/web/solvenginxcompileerror.html';
+	var disqus_title = 'Nginx编译安装时常见错误分析';
+	(function() {
+		var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+		dsq.src = "//" + disqus_shortname + '.disqus.com/embed.js';
+		(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	 })();
+</script>
+	</body>
+</html>

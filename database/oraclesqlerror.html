@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="zh-CN" class="no-js">
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<title>Oracle数据库SQL操作语句报错的解决 &mdash; TypeCodes</title>
+		<meta name="author" content="vfhky">
+  		<link href="https://typecodes.com/atom.xml" type="application/atom+xml" rel="alternate" title="TypeCodes Atom Feed" />
+	  	<link href="https://typecodes.com/feed.xml" type="application/rss+xml" rel="alternate" title="TypeCodes RSS Feed" />
+		<meta name="HandheldFriendly" content="True">
+		<meta name="MobileOptimized" content="320">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="renderer" content="webkit">
+		<link rel="stylesheet" href="https://dn-vfhky.qbox.me/libs/css/pelican-vfhky.css">
+		<script>
+			var _hmt = _hmt || [];
+			(function() {
+			  var hm = document.createElement("script");
+			  hm.src = "//hm.baidu.com/hm.js?c15c4ab8e91ba9ac3d5a12293cc93359";
+			  var s = document.getElementsByTagName("script")[0]; 
+			  s.parentNode.insertBefore(hm, s);
+			})();
+		</script>
+	</head>
+	<body style>
+		<!--1. header navigation begin-->
+		<header role="banner" id="te-site-header">
+			<div class="container">
+				<a href="https://typecodes.com" class="te-site-logo" role="logo" target="_self"> TypeCodes</a>
+				<ul class="nav nav-pills" id="te-site-nav" role="navigation">
+					<li><a href="https://typecodes.com">Home</a></li><li><a href="https://typecodes.com/archives.html" title="Archives">Archives</a></li><li><a href="https://typecodes.com/about.html" title="About">About</a></li></ul>
+			</div>
+		</header>
+		<div class="te-headline">
+			<div class="container">
+				<h2 class="te-headline-title"> <a href="https://typecodes.com">TypeCodes</a></h2>
+			</div>
+		</div>
+		<div class="container">
+			<div class="row">
+		<!--2. left sider begin-->
+		<div class="col-md-9" id="blog-main" role="main">
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/database/oraclesqlerror.html">Oracle数据库SQL操作语句报错的解决</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2013-08-04 00:04 | 分类：<a href="https://typecodes.com/database/index.html">database</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>最近在小红帽里面用GCCC编译含Oracle数据库SQL操作语句的C程序时候遇到了下面的7个报错信息，现整理出来Mark一下。</p>
+<h5>1 错误信息</h5>
+<div class="highlight"><pre><span class="k">[-1400][ORA-01400: cannot insert NULL into (&quot;CARDMAIN&quot;.&quot;CLR_SFTC000BLOCK0&quot;.&quot;SE]</span>
+<span class="err">&lt;!--</span>
+<span class="err">描述：CARDMAIN数据库用户，CLR_SFTC000BLOCK0数据表，SE表字段</span>
+
+<span class="err">原因：Oracle数据库对于特定类型的非空字段无法区分空值和空字符串</span>
+
+<span class="err">解决：明确数据源中的空值类型，并且在INSERT和UPDATE中必须插入一个值，不能将某个值修改为NULL。</span>
+<span class="err">--&gt;</span>
+</pre></div>
+
+
+
+
+<h5>2 错误信息</h5>
+<div class="highlight"><pre><span class="k">[-12899][ORA-12899: value too large for column &quot;CARDMAIN&quot;.&quot;CLR_SFTC000BLOCK0&quot;.&quot;]</span>
+<span class="err">&lt;!--</span>
+<span class="err">原因：SQL语句中对于某个字段列中的值类型不符合。例如将int类型的值插入到char类型的数据库字段中。</span>
+
+<span class="err">解决：检查字段类型。</span>
+<span class="err">--&gt;</span>
+</pre></div>
+
+
+<h5>3 错误信息</h5>
+<div class="highlight"><pre><span class="k">[ORA-00984: column not allowed here]</span>
+<span class="err">&lt;!--</span>
+<span class="err">原因：一般出现在SQL插入数据时，值引号使用没有成对；又或者应该char类型的字段在插入值时被当做int等类型不加单引号。</span>
+
+<span class="err">解决：当数据以char的形式存在时,应加单引号,则插入数据库就不会出现类似错误。例如当数据以char的形式存在时，应加单引号；又或者在SQL插入语句中出现数组不加单引号，直接执行的话就会出现这个错误。</span>
+<span class="err">--&gt;</span>
+</pre></div>
+
+
+<h5>4 错误信息</h5>
+<div class="highlight"><pre>[-1756][ORA-01756: quoted string not properly terminated
+&lt;!--
+原因：SQL语句不完整或有语法错误，例如SQL语句引号内的字符串没有正常结束（即不成对）；
+
+解决：检查SQL语句，例如相邻之间的数据是否漏掉了一个单引号。
+--&gt;
+</pre></div>
+
+
+<h5>5 错误信息</h5>
+<div class="highlight"><pre>[-1008][ORA-01008: not all variables bound] 
+&lt;!--
+原因/解决：SQL插入语句中漏掉了某个必须字段的值。
+--&gt;
+</pre></div>
+
+
+<h5>6 错误信息</h5>
+<div class="highlight"><pre><span class="k">[-1][ORA-00001: unique constraint (CARDMAIN.pk_clr_sftc000block0) violated]</span>
+<span class="err">&lt;!--</span>
+<span class="err">原因：违反唯一约束，即在INSERT和UPDATE语句中指定值不能已存在于表中，不过允许存在多个NULL值。</span>
+
+<span class="err">解决：原来的oracle数据库中已近存在主键值相同的行了，那么如果插入主键值相同的数据就会造成主键冲突。</span>
+<span class="err">--&gt;</span>
+</pre></div>
+		    	<p class="tags">
+					<div class="post-share">
+						<ul class="post-shareul clearfix">
+							<li class="post-shareli">
+								<a href="http://note.youdao.com/memory/?url=https://typecodes.com/database/oraclesqlerror.html&title=Oracle数据库SQL操作语句报错的解决" class="post-sharea ydshare" target="_blank" rel="nofollow">有道云笔记</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://v.t.sina.com.cn/share/share.php?url=https://typecodes.com/database/oraclesqlerror.html&title=Oracle数据库SQL操作语句报错的解决&source=https://typecodes.com" class="post-sharea wbshare" target="_blank" rel="nofollow">新浪微博</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://v.t.qq.com/share/share.php?title=Oracle数据库SQL操作语句报错的解决&url=https://typecodes.com/database/oraclesqlerror.html&site=https://typecodes.com" class="post-sharea twbshare" target="_blank" rel="nofollow">腾讯微博</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=https://typecodes.com/database/oraclesqlerror.html&title=Oracle数据库SQL操作语句报错的解决&content='utf-8'" class="post-sharea qzoneshare" target="_blank" rel="nofollow">QZone</a>
+							</li>
+						</ul>
+					</div>
+					<div>
+						Tags: <a href="https://typecodes.com/tag/oracle.html">oracle</a>					</div>
+				</p>
+			</article>
+			
+			<div id="comments">
+				<h4 class="num">Comments &raquo;</h4>
+		    	<div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript></div>
+		    </div>
+		</div>
+		<!--3. right sider begin-->
+<div class="col-md-3" id="blog-secondary" role="complementary">
+	<section class="widget">
+		<ul class="widget-list">
+			<form id="search" method="get" action="https://typecodes.com/search.html">
+				<input type="text" name="q" id="s" size="20" x-webkit-speech="" x-webkit-grammar="builtin:search" onwebkitspeechchange="this.value = this.value.replace(this.defaultValue, '')" value="Google...." onfocus="this.value = (this.value == this.defaultValue) ? '' : this.value" onblur="this.value = (this.value == '') ? this.defaultValue : this.value">
+			</form>
+		</ul>
+	</section>
+	<section class="widget">
+		<h3 class="widget-title">Categories</h3>
+		<ul class="widget-list">
+		      <li class="current">
+		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (26)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/csharp/index.html">Csharp</a> (6)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/database/index.html">Database</a> (11)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/java/index.html">Java</a> (1)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/linux/index.html">Linux</a> (16)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/mix/index.html">Mix</a> (53)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/web/index.html">Web</a> (88)
+		      </li>
+		</ul>
+	</section>
+	<section class="widget">
+		<h3 class="widget-title">Recent Posts</h3>
+		<ul class="widget-list">
+			<li class="post">
+				<a href="https://typecodes.com/mix/sucesstypechotopelican.html">成功将博客从Typecho迁移到Pelican</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/mix/begintypechotopelican.html">准备将博客从Typecho迁移到Pelican</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/tcpconnectiontimedout.html">Linux TCP连接Connection Refused和Connection timed out的问题</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/mysqlerrornospace.html">博客MySQL服务惊魂记：Linux磁盘空间不足(Core Dump文件引爆)</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/mix/synweibophpmarkdownimgurl.html">升级博客文章同步微博的插件：PHP正则提取Markdown的图片地址</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/cppgeneralmakefile.html">Linux C/C++工程中可生成ELF、动/静态库文件的通用Makefile</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/libraryundefinedref.html">解决make编译链接动态库错误：libxx.so: undefined reference to xx</a>
+			</li>
+		</ul>
+	</section>
+	<section class="widget widget-feed">
+		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
+	</section>
+</div>
+				</div>
+			</div>
+		</div>
+		<!--4. bottom begin-->
+		<footer id="te-site-footer"><div class="container">
+	<div class="row" role="contentinfo">
+		<section class="col-md-2 col-md-offset-1">
+			<h3>Links</h3>
+			<ul><li><a href="http://diaosbook.com/" title="">diaosbook</a></li></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul>
+				<li><a href="https://typecodes.com/links.html">More..</a></li>
+			</ul>
+		</section>
+		<section class="col-md-2">
+			<h3>Following</h3>
+			<ul>
+				<li><a href="https://github.com/vfhky" class="following github" target="_blank" rel="external nofollow">GitHub</a></li>
+				<li><a href="http://weibo.com/typecodes" class="following weibo" target="_blank" rel="external nofollow">Weibo</a></li>
+				<li><a href="http://vfhky.sinaapp.com/" class="following sae" target="_blank" rel="external nofollow">SAE</a></li>
+				<li><a href="http://www.dwz.cn/mYiwa" class="following qqgroup" target="_blank" rel="external nofollow">Group</a></li>
+			</ul>
+		</section>
+		<div class="col-md-12 copyright">
+			<a href="#top"><i class="i-logo-s">TOP</i></a>
+			<p>
+				&copy; 2012-<script language="JavaScript">var date = new Date(); document.write(date.getFullYear());</script>							<a href="https://typecodes.com">TypeCodes</a>. All Rights Reserved<br>Powered by <a href="http://getpelican.com" rel="external" target="_blank">Pelican</a>. <a href="http://www.miitbeian.gov.cn/" rel="external nofollow" target="_blank">粤ICP备14050695号</a>
+			</p>
+		</div>
+	</div>
+</div>
+</footer>
+<script type="text/javascript">
+	var disqus_shortname = 'typecodes';
+	var disqus_identifier = '/database/oraclesqlerror.html';
+	var disqus_url = 'https://typecodes.com/database/oraclesqlerror.html';
+	var disqus_title = 'Oracle数据库SQL操作语句报错的解决';
+	(function() {
+		var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+		dsq.src = "//" + disqus_shortname + '.disqus.com/embed.js';
+		(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	 })();
+</script>
+	</body>
+</html>

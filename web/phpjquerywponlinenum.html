@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="zh-CN" class="no-js">
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<title>PHP+jQuery实现wordpress当前在线人数统计 &mdash; TypeCodes</title>
+		<meta name="author" content="vfhky">
+  		<link href="https://typecodes.com/atom.xml" type="application/atom+xml" rel="alternate" title="TypeCodes Atom Feed" />
+	  	<link href="https://typecodes.com/feed.xml" type="application/rss+xml" rel="alternate" title="TypeCodes RSS Feed" />
+		<meta name="HandheldFriendly" content="True">
+		<meta name="MobileOptimized" content="320">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="renderer" content="webkit">
+		<link rel="stylesheet" href="https://dn-vfhky.qbox.me/libs/css/pelican-vfhky.css">
+		<script>
+			var _hmt = _hmt || [];
+			(function() {
+			  var hm = document.createElement("script");
+			  hm.src = "//hm.baidu.com/hm.js?c15c4ab8e91ba9ac3d5a12293cc93359";
+			  var s = document.getElementsByTagName("script")[0]; 
+			  s.parentNode.insertBefore(hm, s);
+			})();
+		</script>
+	</head>
+	<body style>
+		<!--1. header navigation begin-->
+		<header role="banner" id="te-site-header">
+			<div class="container">
+				<a href="https://typecodes.com" class="te-site-logo" role="logo" target="_self"> TypeCodes</a>
+				<ul class="nav nav-pills" id="te-site-nav" role="navigation">
+					<li><a href="https://typecodes.com">Home</a></li><li><a href="https://typecodes.com/archives.html" title="Archives">Archives</a></li><li><a href="https://typecodes.com/about.html" title="About">About</a></li></ul>
+			</div>
+		</header>
+		<div class="te-headline">
+			<div class="container">
+				<h2 class="te-headline-title"> <a href="https://typecodes.com">TypeCodes</a></h2>
+			</div>
+		</div>
+		<div class="container">
+			<div class="row">
+		<!--2. left sider begin-->
+		<div class="col-md-9" id="blog-main" role="main">
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/web/phpjquerywponlinenum.html">PHP+jQuery实现wordpress当前在线人数统计</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2013-09-21 22:41 | 分类：<a href="https://typecodes.com/web/index.html">web</a></li>
+</ul>
+<div class="post-content fmt">
+	<h5>1 在线人数统计：插件OR代码</h5>
+<p>如何实现一个web站点的在线人数统计？方法可能有很多，在最开始接触PHP的时候，大家可能会用session保存当前用户的IP地址和时间；也有人把登录用户的IP地址和登录时间保存到数据库中，然后在需要的地方查询数据库得到相应的数据；当然还可以用txt、html等文件来保存用户的IP和最初登录的时间，然后不断读写文件取得数据；最后，还可以用cnzz等统计方代码或者WP插件通过加载javascript脚本显示当前在线人数。</p>
+<h5>2 用PHP+jQuery实现</h5>
+<p>网上搜了下相关的教程，代码基本类似，都是直接通过PHP读写txt文件实现的。博主起初采用这种方法，发现页面加载较之前明显变慢。考虑到不断读写文件对页面速度的影响，博主于是改用jQuery加载的方式实现当前在线人数统计。具体方法如下：</p>
+
+
+<h6>2.1 修改主题底部模板footer.php</h6>
+<p>在主题的底部模板（footer.php）中找到需要显示人数统计结果的位置，然后在该文件中加上下面的代码：</p>
+<div class="highlight"><pre>/**
+ * @Description:  jQuery异步调用显示节点
+ */
+<span class="nt">&lt;span</span> <span class="na">class=</span><span class="s">&#39;online&#39;</span><span class="nt">&gt;&lt;/span&gt;</span>
+</pre></div>
+
+
+<h6>2.2 修改主题头部模板header.php</h6>
+<p>在主题的头部模板（header.php）中找到任意一个js文件，然后在最后加上下面的jQuery代码：</p>
+<div class="highlight"><pre><span class="cm">/**</span>
+<span class="cm"> * @Description:  jQuery加载统计代码文件countOEUTQ.php</span>
+<span class="cm"> */</span>
+<span class="nx">$</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span><span class="nx">$</span><span class="p">(</span><span class="s2">&quot;.online&quot;</span><span class="p">).</span><span class="nx">load</span><span class="p">(</span><span class="s2">&quot;http://vfhky.sinaapp.com/wp-content/themes/vfhky/countOEUTQ.php&quot;</span><span class="p">);});</span>
+</pre></div>
+
+
+<h6>2.3 新建统计代码文件countOEUTQ.php</h6>
+<p>新建一个countOEUTQ.php文件中加入下面的代码，然后把该文件放在2.2步骤中所填写的路径中。</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30</pre></div></td><td class="code"><div class="highlight"><pre><span class="x">/*</span>
+<span class="x"> * @From：  Network &amp;&amp; vfhky 2013年09月17日21:23</span>
+<span class="x"> * @Description:  文本txt保存的单条数据格式类似于 “123.123.123.123,1379769278#”</span>
+<span class="x"> * @return:  输出文本“Online:12”</span>
+<span class="x"> **/</span>
+<span class="cp">&lt;?php</span>
+   <span class="k">if</span> <span class="p">(</span><span class="k">empty</span><span class="p">(</span><span class="nv">$_SERVER</span><span class="p">[</span><span class="s1">&#39;HTTP_REFERER&#39;</span><span class="p">])</span> <span class="o">||</span> <span class="nb">strpos</span><span class="p">(</span><span class="nv">$_SERVER</span><span class="p">[</span><span class="s1">&#39;HTTP_REFERER&#39;</span><span class="p">],</span> <span class="nv">$_SERVER</span><span class="p">[</span><span class="s1">&#39;HTTP_HOST&#39;</span><span class="p">])</span> <span class="o">===</span> <span class="k">false</span><span class="p">)</span>
+      <span class="k">exit</span><span class="p">;</span>  <span class="c1">//如果直接加载本文件则直接退出</span>
+   <span class="nv">$online_log</span> <span class="o">=</span> <span class="s2">&quot;conutnQudHh0.txt&quot;</span><span class="p">;</span>  <span class="c1">//保存数据用，请重命名该文件</span>
+   <span class="nv">$timeout</span> <span class="o">=</span> <span class="mi">60</span><span class="p">;</span>  <span class="c1">//超时时间，单位秒，越小越精确，但是越耗资源</span>
+   <span class="nv">$user_arr</span> <span class="o">=</span> <span class="o">@</span><span class="nb">file_get_contents</span><span class="p">(</span><span class="nv">$online_log</span><span class="p">);</span>  <span class="c1">//读取txt文件的全部内容</span>
+   <span class="nv">$user_arr</span> <span class="o">=</span> <span class="nb">explode</span><span class="p">(</span><span class="s2">&quot;#&quot;</span><span class="p">,</span><span class="nb">rtrim</span><span class="p">(</span><span class="nv">$user_arr</span><span class="p">,</span><span class="s2">&quot;#&quot;</span><span class="p">));</span>
+   <span class="nv">$temp</span> <span class="o">=</span> <span class="k">array</span><span class="p">();</span>
+   <span class="k">foreach</span><span class="p">(</span><span class="nv">$user_arr</span> <span class="k">as</span> <span class="nv">$value</span><span class="p">){</span>
+      <span class="nv">$user</span> <span class="o">=</span> <span class="nb">explode</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">,</span> <span class="nb">trim</span><span class="p">(</span><span class="nv">$value</span><span class="p">));</span>
+      <span class="c1">//如果为新的IP地址并且txt文件中的时间记录大于当前时间</span>
+      <span class="k">if</span> <span class="p">((</span><span class="nv">$user</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="nb">getenv</span><span class="p">(</span><span class="s2">&quot;REMOTE_ADDR&quot;</span><span class="p">))</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="nv">$user</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">&gt;</span> <span class="nb">time</span><span class="p">())){</span>
+         <span class="nb">array_push</span><span class="p">(</span><span class="nv">$temp</span><span class="p">,</span> <span class="nv">$user</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="s2">&quot;,&quot;</span><span class="o">.</span><span class="nv">$user</span><span class="p">[</span><span class="mi">1</span><span class="p">]);</span>
+         <span class="nv">$user_arr</span> <span class="o">=</span> <span class="nb">implode</span><span class="p">(</span><span class="s2">&quot;#&quot;</span><span class="p">,</span><span class="nv">$temp</span><span class="p">);</span>
+      <span class="p">}</span>
+   <span class="p">}</span>
+   <span class="nb">array_push</span><span class="p">(</span><span class="nv">$temp</span><span class="p">,</span><span class="nb">getenv</span><span class="p">(</span><span class="s2">&quot;REMOTE_ADDR&quot;</span><span class="p">)</span><span class="o">.</span><span class="s2">&quot;,&quot;</span><span class="o">.</span><span class="p">(</span><span class="nb">time</span><span class="p">()</span><span class="o">+</span><span class="nv">$timeout</span><span class="p">)</span><span class="o">.</span><span class="s2">&quot;#&quot;</span><span class="p">);</span>  <span class="c1">//上面两个getenv(&quot;REMOTE_ADDR&quot;)可以改用更为精确的IP统计变量</span>
+   <span class="nv">$user_arr</span> <span class="o">=</span> <span class="nb">implode</span><span class="p">(</span><span class="s2">&quot;#&quot;</span><span class="p">,</span><span class="nv">$temp</span><span class="p">);</span>
+   <span class="nv">$fp</span> <span class="o">=</span> <span class="nb">fopen</span><span class="p">(</span><span class="nv">$online_log</span><span class="p">,</span><span class="s2">&quot;w&quot;</span><span class="p">);</span><span class="c1">//更新文件</span>
+   <span class="nb">flock</span><span class="p">(</span><span class="nv">$fp</span><span class="p">,</span> <span class="nx">LOCK_EX</span><span class="p">);</span>  <span class="c1">//锁定txt文件，直到写入完数据</span>
+   <span class="o">@</span><span class="nb">fputs</span><span class="p">(</span><span class="nv">$fp</span><span class="p">,</span><span class="nv">$user_arr</span><span class="p">);</span>
+   <span class="nb">flock</span><span class="p">(</span><span class="nv">$fp</span><span class="p">,</span> <span class="nx">LOCK_UN</span><span class="p">);</span>  <span class="c1">//释放锁定</span>
+   <span class="o">@</span><span class="nb">fclose</span><span class="p">();</span>  <span class="c1">//关闭文件资源</span>
+   <span class="k">echo</span> <span class="s2">&quot;Online:&quot;</span><span class="o">.</span><span class="nb">count</span><span class="p">(</span><span class="nv">$temp</span><span class="p">);</span>
+<span class="cp">?&gt;</span><span class="x"></span>
+</pre></div>
+</td></tr></table>
+
+<h5>3 后记</h5>
+<p>通过上面的三个步骤，我们就用PHP+jQuery实现了wordpress当前在线人数统计的功能。根据博主自身的体验，相对于直接用PHP读写txt文件，这种方法对页面的载入速度影响小很多。另外，超时变量$timeout不宜过小，否则会给服务器造成较大负荷。</p>
+		    	<p class="tags">
+					<div class="post-share">
+						<ul class="post-shareul clearfix">
+							<li class="post-shareli">
+								<a href="http://note.youdao.com/memory/?url=https://typecodes.com/web/phpjquerywponlinenum.html&title=PHP+jQuery实现wordpress当前在线人数统计" class="post-sharea ydshare" target="_blank" rel="nofollow">有道云笔记</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://v.t.sina.com.cn/share/share.php?url=https://typecodes.com/web/phpjquerywponlinenum.html&title=PHP+jQuery实现wordpress当前在线人数统计&source=https://typecodes.com" class="post-sharea wbshare" target="_blank" rel="nofollow">新浪微博</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://v.t.qq.com/share/share.php?title=PHP+jQuery实现wordpress当前在线人数统计&url=https://typecodes.com/web/phpjquerywponlinenum.html&site=https://typecodes.com" class="post-sharea twbshare" target="_blank" rel="nofollow">腾讯微博</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=https://typecodes.com/web/phpjquerywponlinenum.html&title=PHP+jQuery实现wordpress当前在线人数统计&content='utf-8'" class="post-sharea qzoneshare" target="_blank" rel="nofollow">QZone</a>
+							</li>
+						</ul>
+					</div>
+					<div>
+						Tags: <a href="https://typecodes.com/tag/wordpresszai-xian-ren-shu.html">wordpress在线人数</a>					</div>
+				</p>
+			</article>
+			
+			<div id="comments">
+				<h4 class="num">Comments &raquo;</h4>
+		    	<div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript></div>
+		    </div>
+		</div>
+		<!--3. right sider begin-->
+<div class="col-md-3" id="blog-secondary" role="complementary">
+	<section class="widget">
+		<ul class="widget-list">
+			<form id="search" method="get" action="https://typecodes.com/search.html">
+				<input type="text" name="q" id="s" size="20" x-webkit-speech="" x-webkit-grammar="builtin:search" onwebkitspeechchange="this.value = this.value.replace(this.defaultValue, '')" value="Google...." onfocus="this.value = (this.value == this.defaultValue) ? '' : this.value" onblur="this.value = (this.value == '') ? this.defaultValue : this.value">
+			</form>
+		</ul>
+	</section>
+	<section class="widget">
+		<h3 class="widget-title">Categories</h3>
+		<ul class="widget-list">
+		      <li class="current">
+		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (26)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/csharp/index.html">Csharp</a> (6)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/database/index.html">Database</a> (11)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/java/index.html">Java</a> (1)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/linux/index.html">Linux</a> (16)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/mix/index.html">Mix</a> (53)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/web/index.html">Web</a> (88)
+		      </li>
+		</ul>
+	</section>
+	<section class="widget">
+		<h3 class="widget-title">Recent Posts</h3>
+		<ul class="widget-list">
+			<li class="post">
+				<a href="https://typecodes.com/mix/sucesstypechotopelican.html">成功将博客从Typecho迁移到Pelican</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/mix/begintypechotopelican.html">准备将博客从Typecho迁移到Pelican</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/tcpconnectiontimedout.html">Linux TCP连接Connection Refused和Connection timed out的问题</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/mysqlerrornospace.html">博客MySQL服务惊魂记：Linux磁盘空间不足(Core Dump文件引爆)</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/mix/synweibophpmarkdownimgurl.html">升级博客文章同步微博的插件：PHP正则提取Markdown的图片地址</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/cppgeneralmakefile.html">Linux C/C++工程中可生成ELF、动/静态库文件的通用Makefile</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/libraryundefinedref.html">解决make编译链接动态库错误：libxx.so: undefined reference to xx</a>
+			</li>
+		</ul>
+	</section>
+	<section class="widget widget-feed">
+		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
+	</section>
+</div>
+				</div>
+			</div>
+		</div>
+		<!--4. bottom begin-->
+		<footer id="te-site-footer"><div class="container">
+	<div class="row" role="contentinfo">
+		<section class="col-md-2 col-md-offset-1">
+			<h3>Links</h3>
+			<ul><li><a href="http://diaosbook.com/" title="">diaosbook</a></li></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul>
+				<li><a href="https://typecodes.com/links.html">More..</a></li>
+			</ul>
+		</section>
+		<section class="col-md-2">
+			<h3>Following</h3>
+			<ul>
+				<li><a href="https://github.com/vfhky" class="following github" target="_blank" rel="external nofollow">GitHub</a></li>
+				<li><a href="http://weibo.com/typecodes" class="following weibo" target="_blank" rel="external nofollow">Weibo</a></li>
+				<li><a href="http://vfhky.sinaapp.com/" class="following sae" target="_blank" rel="external nofollow">SAE</a></li>
+				<li><a href="http://www.dwz.cn/mYiwa" class="following qqgroup" target="_blank" rel="external nofollow">Group</a></li>
+			</ul>
+		</section>
+		<div class="col-md-12 copyright">
+			<a href="#top"><i class="i-logo-s">TOP</i></a>
+			<p>
+				&copy; 2012-<script language="JavaScript">var date = new Date(); document.write(date.getFullYear());</script>							<a href="https://typecodes.com">TypeCodes</a>. All Rights Reserved<br>Powered by <a href="http://getpelican.com" rel="external" target="_blank">Pelican</a>. <a href="http://www.miitbeian.gov.cn/" rel="external nofollow" target="_blank">粤ICP备14050695号</a>
+			</p>
+		</div>
+	</div>
+</div>
+</footer>
+<script type="text/javascript">
+	var disqus_shortname = 'typecodes';
+	var disqus_identifier = '/web/phpjquerywponlinenum.html';
+	var disqus_url = 'https://typecodes.com/web/phpjquerywponlinenum.html';
+	var disqus_title = 'PHP+jQuery实现wordpress当前在线人数统计';
+	(function() {
+		var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+		dsq.src = "//" + disqus_shortname + '.disqus.com/embed.js';
+		(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	 })();
+</script>
+	</body>
+</html>

@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="zh-CN" class="no-js">
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<title>简洁的哲学：从华丽的WordPress转Typecho &mdash; TypeCodes</title>
+		<meta name="author" content="vfhky">
+  		<link href="https://typecodes.com/atom.xml" type="application/atom+xml" rel="alternate" title="TypeCodes Atom Feed" />
+	  	<link href="https://typecodes.com/feed.xml" type="application/rss+xml" rel="alternate" title="TypeCodes RSS Feed" />
+		<meta name="HandheldFriendly" content="True">
+		<meta name="MobileOptimized" content="320">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="renderer" content="webkit">
+		<link rel="stylesheet" href="https://dn-vfhky.qbox.me/libs/css/pelican-vfhky.css">
+		<script>
+			var _hmt = _hmt || [];
+			(function() {
+			  var hm = document.createElement("script");
+			  hm.src = "//hm.baidu.com/hm.js?c15c4ab8e91ba9ac3d5a12293cc93359";
+			  var s = document.getElementsByTagName("script")[0]; 
+			  s.parentNode.insertBefore(hm, s);
+			})();
+		</script>
+	</head>
+	<body style>
+		<!--1. header navigation begin-->
+		<header role="banner" id="te-site-header">
+			<div class="container">
+				<a href="https://typecodes.com" class="te-site-logo" role="logo" target="_self"> TypeCodes</a>
+				<ul class="nav nav-pills" id="te-site-nav" role="navigation">
+					<li><a href="https://typecodes.com">Home</a></li><li><a href="https://typecodes.com/archives.html" title="Archives">Archives</a></li><li><a href="https://typecodes.com/about.html" title="About">About</a></li></ul>
+			</div>
+		</header>
+		<div class="te-headline">
+			<div class="container">
+				<h2 class="te-headline-title"> <a href="https://typecodes.com">TypeCodes</a></h2>
+			</div>
+		</div>
+		<div class="container">
+			<div class="row">
+		<!--2. left sider begin-->
+		<div class="col-md-9" id="blog-main" role="main">
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/mix/wptoconcisetypecho.html">简洁的哲学：从华丽的WordPress转Typecho</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2013-10-13 00:57 | 分类：<a href="https://typecodes.com/mix/index.html">mix</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>前段时间，vfhky还在折腾主题，只为变得更简洁轻快。从12年6月博客建立初，就一直在用Wordpress。优秀的开发团队和强大的社区力量给予了Wordpress强大的生命力。看看各种琳琅满目的主题以及各种功能强劲的插件，你不由得感概这是wp统治的博客帝国。甚者，还有开发人员将其用于企业WEB站点。但是，我还是被简洁的 <a href="http://typecho.org/" title="进入typecho官方网站">Typecho</a> 所吸引了……下面是个人愚见，希望和大家探讨一下。</p>
+
+
+<h5>1 主观：博客的原始需求</h5>
+<p>为什么要建立一个博客？可能我们会忘记了初衷。我们不是为了在wordpress中折腾各种主题和各种插件，而是为了有个平台让我们做学习笔记、总结心得、分享经验、记录生活！正如Typecho所阐述的那样：typecho想提供这样一个产品，它如同安静的玻璃瓶，简简单单，没有什么花巧的装饰。撰写者只需要考虑往容器里放什么，而不是怎么放。</p>
+<p><img alt="简洁极致的哲学：typecho" src="https://dn-vfhky.qbox.me/2013/10/typecho.png" title="简洁极致的哲学：typecho" /></p>
+<h5>2 负载能力比较：WordPress和Typecho程序</h5>
+<p>目前，最新的wordpress版本3.61，tar包后体积为3.8M；而最新的Typecho版本0.8，tar包后的体积为278k。二者差距很大，因为WordPress强悍的内部功能（例如编辑器）。但是这些功能对于很多人来说并不一定是必须的，例如vfhky在写博客时都是直接在vim中编辑好然后贴到WordPress后台编辑器的文本框中去，根本没用到其它功能。而Typecho虽然体型小，基本的博客写作功能却是一应俱全。追求精简到极致的php博客代码，能有效减轻对cpu的压力，提高负载能力。WordPress会使用wp_head()等函数钩子进行查询，错综交互，插件越多运行越慢；而Typecho采用PHP5静态技术，使用的是接口，通过静态继承快速传递参数，插件的开启对博客速度影响却微乎其微。因此，整体负载能力Ty还是领先于WP。</p>
+<h5>3 博客功能比较：WordPress和Typecho</h5>
+<p>WordPress毫无疑问是纵多博客程序中功能最为健全和华丽的。不过正如上面所提到的，如果你只想找一个平台，写下你内心的片段，那么Typecho能够完全满足。我想每个程序员可能都有这么一个想法：只想静敲代码，不想夹入任何一个多余的文字。因此，如果只想用文字表达你的态度、分享你的经验、记录生活，那么Typecho绝对是首选；如果想多折腾，打造一个华丽而强大的博客平台，那么WordPress绝对是首选。</p>
+<p><img alt="最新的WordPress3.6.1程序" src="https://dn-vfhky.qbox.me/2013/10/wordpress3.6.1.png" title="最新的WordPress3.6.1程序" /></p>
+<h5>4 用户群体比较：WordPress和Typecho社区</h5>
+<p>WordPress和Typecho都是开源的PHP博客程序，但WP拥有Ty完全无法企及的用户数量。因此，这也是WordPress蓬勃发展的重要推力。很多WP的问题，只要在谷歌或者百度一搜，立马给出一大堆的解决方案。而小众化的Ty目前还处于“难产”阶段：两年过去了，70组织的开发小组（据说都来自淘宝）还在为升级0.8到2.0版本而奋战。反观WP已经是隔不了几个月就升级一次，看来这也是社区用户群体的数目差距。</p>
+<h5>5 总结比较：WordPressh和Typecho博客</h5>
+<p>正如上面提到的四点，WordPress拥有强大的社区力量和健全的“功能”，而Typecho着重突出优越的负载性能、专注于文章内容写作，实实在在的一个简洁的博客程序。因此，根据自身情况，vfhky决定从华丽的WordPress转向简洁的Typecho（目前还在本地进行数据迁移和主题测试）。最后，在github上，静待70的Ty2.0……</p>
+<p><img alt="Typecho在github上的开发进度" src="https://dn-vfhky.qbox.me/2013/10/typecho_github.png" title="Typecho在github上的开发进度" /></p>
+		    	<p class="tags">
+					<div class="post-share">
+						<ul class="post-shareul clearfix">
+							<li class="post-shareli">
+								<a href="http://note.youdao.com/memory/?url=https://typecodes.com/mix/wptoconcisetypecho.html&title=简洁的哲学：从华丽的WordPress转Typecho" class="post-sharea ydshare" target="_blank" rel="nofollow">有道云笔记</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://v.t.sina.com.cn/share/share.php?url=https://typecodes.com/mix/wptoconcisetypecho.html&title=简洁的哲学：从华丽的WordPress转Typecho&source=https://typecodes.com" class="post-sharea wbshare" target="_blank" rel="nofollow">新浪微博</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://v.t.qq.com/share/share.php?title=简洁的哲学：从华丽的WordPress转Typecho&url=https://typecodes.com/mix/wptoconcisetypecho.html&site=https://typecodes.com" class="post-sharea twbshare" target="_blank" rel="nofollow">腾讯微博</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=https://typecodes.com/mix/wptoconcisetypecho.html&title=简洁的哲学：从华丽的WordPress转Typecho&content='utf-8'" class="post-sharea qzoneshare" target="_blank" rel="nofollow">QZone</a>
+							</li>
+						</ul>
+					</div>
+					<div>
+						Tags: <a href="https://typecodes.com/tag/bo-ke-cheng-chang-lu.html">博客成长录</a>					</div>
+				</p>
+			</article>
+			
+			<div id="comments">
+				<h4 class="num">Comments &raquo;</h4>
+		    	<div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript></div>
+		    </div>
+		</div>
+		<!--3. right sider begin-->
+<div class="col-md-3" id="blog-secondary" role="complementary">
+	<section class="widget">
+		<ul class="widget-list">
+			<form id="search" method="get" action="https://typecodes.com/search.html">
+				<input type="text" name="q" id="s" size="20" x-webkit-speech="" x-webkit-grammar="builtin:search" onwebkitspeechchange="this.value = this.value.replace(this.defaultValue, '')" value="Google...." onfocus="this.value = (this.value == this.defaultValue) ? '' : this.value" onblur="this.value = (this.value == '') ? this.defaultValue : this.value">
+			</form>
+		</ul>
+	</section>
+	<section class="widget">
+		<h3 class="widget-title">Categories</h3>
+		<ul class="widget-list">
+		      <li class="current">
+		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (26)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/csharp/index.html">Csharp</a> (6)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/database/index.html">Database</a> (11)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/java/index.html">Java</a> (1)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/linux/index.html">Linux</a> (16)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/mix/index.html">Mix</a> (53)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/web/index.html">Web</a> (88)
+		      </li>
+		</ul>
+	</section>
+	<section class="widget">
+		<h3 class="widget-title">Recent Posts</h3>
+		<ul class="widget-list">
+			<li class="post">
+				<a href="https://typecodes.com/mix/sucesstypechotopelican.html">成功将博客从Typecho迁移到Pelican</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/mix/begintypechotopelican.html">准备将博客从Typecho迁移到Pelican</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/tcpconnectiontimedout.html">Linux TCP连接Connection Refused和Connection timed out的问题</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/mysqlerrornospace.html">博客MySQL服务惊魂记：Linux磁盘空间不足(Core Dump文件引爆)</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/mix/synweibophpmarkdownimgurl.html">升级博客文章同步微博的插件：PHP正则提取Markdown的图片地址</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/cppgeneralmakefile.html">Linux C/C++工程中可生成ELF、动/静态库文件的通用Makefile</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/libraryundefinedref.html">解决make编译链接动态库错误：libxx.so: undefined reference to xx</a>
+			</li>
+		</ul>
+	</section>
+	<section class="widget widget-feed">
+		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
+	</section>
+</div>
+				</div>
+			</div>
+		</div>
+		<!--4. bottom begin-->
+		<footer id="te-site-footer"><div class="container">
+	<div class="row" role="contentinfo">
+		<section class="col-md-2 col-md-offset-1">
+			<h3>Links</h3>
+			<ul><li><a href="http://diaosbook.com/" title="">diaosbook</a></li></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul>
+				<li><a href="https://typecodes.com/links.html">More..</a></li>
+			</ul>
+		</section>
+		<section class="col-md-2">
+			<h3>Following</h3>
+			<ul>
+				<li><a href="https://github.com/vfhky" class="following github" target="_blank" rel="external nofollow">GitHub</a></li>
+				<li><a href="http://weibo.com/typecodes" class="following weibo" target="_blank" rel="external nofollow">Weibo</a></li>
+				<li><a href="http://vfhky.sinaapp.com/" class="following sae" target="_blank" rel="external nofollow">SAE</a></li>
+				<li><a href="http://www.dwz.cn/mYiwa" class="following qqgroup" target="_blank" rel="external nofollow">Group</a></li>
+			</ul>
+		</section>
+		<div class="col-md-12 copyright">
+			<a href="#top"><i class="i-logo-s">TOP</i></a>
+			<p>
+				&copy; 2012-<script language="JavaScript">var date = new Date(); document.write(date.getFullYear());</script>							<a href="https://typecodes.com">TypeCodes</a>. All Rights Reserved<br>Powered by <a href="http://getpelican.com" rel="external" target="_blank">Pelican</a>. <a href="http://www.miitbeian.gov.cn/" rel="external nofollow" target="_blank">粤ICP备14050695号</a>
+			</p>
+		</div>
+	</div>
+</div>
+</footer>
+<script type="text/javascript">
+	var disqus_shortname = 'typecodes';
+	var disqus_identifier = '/mix/wptoconcisetypecho.html';
+	var disqus_url = 'https://typecodes.com/mix/wptoconcisetypecho.html';
+	var disqus_title = '简洁的哲学：从华丽的WordPress转Typecho';
+	(function() {
+		var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+		dsq.src = "//" + disqus_shortname + '.disqus.com/embed.js';
+		(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	 })();
+</script>
+	</body>
+</html>

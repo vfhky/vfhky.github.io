@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="zh-CN" class="no-js">
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<title>标签 博客成长录 下的文章 - TypeCodes</title>
+		<meta name="author" content="vfhky">
+  		<link href="https://typecodes.com/atom.xml" type="application/atom+xml" rel="alternate" title="TypeCodes Atom Feed" />
+	  	<link href="https://typecodes.com/feed.xml" type="application/rss+xml" rel="alternate" title="TypeCodes RSS Feed" />
+		<meta name="HandheldFriendly" content="True">
+		<meta name="MobileOptimized" content="320">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="renderer" content="webkit">
+		<link rel="stylesheet" href="https://dn-vfhky.qbox.me/libs/css/pelican-vfhky.css">
+		<script>
+			var _hmt = _hmt || [];
+			(function() {
+			  var hm = document.createElement("script");
+			  hm.src = "//hm.baidu.com/hm.js?c15c4ab8e91ba9ac3d5a12293cc93359";
+			  var s = document.getElementsByTagName("script")[0]; 
+			  s.parentNode.insertBefore(hm, s);
+			})();
+		</script>
+	</head>
+	<body style>
+		<!--1. header navigation begin-->
+		<header role="banner" id="te-site-header">
+			<div class="container">
+				<a href="https://typecodes.com" class="te-site-logo" role="logo" target="_self"> TypeCodes</a>
+				<ul class="nav nav-pills" id="te-site-nav" role="navigation">
+					<li><a href="https://typecodes.com">Home</a></li><li><a href="https://typecodes.com/archives.html" title="Archives">Archives</a></li><li><a href="https://typecodes.com/about.html" title="About">About</a></li></ul>
+			</div>
+		</header>
+		<div class="te-headline">
+			<div class="container">
+				<h2 class="te-headline-title"> <a href="https://typecodes.com">TypeCodes</a></h2>
+			</div>
+		</div>
+		<div class="container">
+			<div class="row">
+		<!--2. left sider begin-->
+		<div class="col-md-9" id="blog-main" role="main">
+		  	<!--article recycle-->
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/web/centos7nginxhttpsspdy.html">2015博客升级记(六)：Nginx配置HTTPS和SPDY实战</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2015-06-21 22:39 | 分类：<a href="https://typecodes.com/web/index.html">web</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>这是<a href="https://typecodes.com/mix/2015updateblog.html" title="查看原文">《2015年博客升级记》</a>系列文章的第六篇，主要记录如何在CentOS 7.1中Nginx如何配置HTTPS和SPDY。关于具体如何编译安装Nginx，可以查看文章<a href="https://typecodes.com/web/centos7compilenginx.html" title="查看原文">《2015博客升级记(三)：CentOS 7.1编译安装Nginx1.9.0》</a>。</p>
+
+	<p class="more"><a href="https://typecodes.com/web/centos7nginxhttpsspdy.html" title="2015博客升级记(六)：Nginx配置HTTPS和SPDY实战">- 阅读剩余部分 -</a></p>
+			</article>
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/web/centos7compilemysql.html">2015博客升级记(四)：CentOS 7.1编译安装MySQL5.7.7rc</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2015-06-21 00:53 | 分类：<a href="https://typecodes.com/web/index.html">web</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>这是<a href="https://typecodes.com/mix/2015updateblog.html" title="查看原文">《2015年博客升级记》</a>系列文章的第四篇，主要记录在Linux系统中如何编译安装MySql数据库。</p>
+<h5>1 创建mysql用户和用户组，并下载MySQL5.7.7 Release Candidate版本</h5>
+<p>首先创建一个名为mysql且<code>没有登录权限</code>的用户和一个名为mysql的用户组，然后去mysql官网下载MySQL5.7.7rc版本。</p>
+<div class="highlight"><pre>#######新建mysql用户和mysql组
+[root@typecodes ~]# groupadd -r mysql &amp;&amp; useradd -r -g mysql -s /bin/false -M mysql
+
+######从官网或者博客备份地址下载MySQL5.7.7 Release Candidate版本
+[root@typecodes ~]# wget -c http://cdn.mysql.com/Downloads/MySQL-5.7/mysql-5.7.7-rc.tar.gz
+[root@typecodes ~]# wget -c http://git.typecodes.com/libs/mysql/mysql-5.7.7-rc.tar.gz
+[root@typecodes ~]# md5sum mysql-5.7.7-rc.tar.gz        [MD5校验]
+36a96021a93ca236e76f5c90ae19cd44  mysql-5.7.7-rc.tar.gz
+######开始解压MySQL5.7.7
+[root@typecodes ~]# tar -zxf mysql-5.7.7-rc.tar.gz &amp;&amp; cd mysql-5.7.7-rc
+######下载gmock：google的c++mock框架，从mysql 5.6开始支持
+[root@typecodes mysql-5.7.7-rc]# wget -c http://git.typecodes.com/libs/ccpp/gmock-1.6.0.zip
+######将其解压到MySQL5.7.7的source_downloads目录下
+[root@typecodes mysql-5.7.7-rc]# unzip gmock-1.6.0.zip -d source_downloads
+</pre></div>
+
+
+
+	<p class="more"><a href="https://typecodes.com/web/centos7compilemysql.html" title="2015博客升级记(四)：CentOS 7.1编译安装MySQL5.7.7rc">- 阅读剩余部分 -</a></p>
+			</article>
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/web/centos7compilenginx.html">2015博客升级记(三)：CentOS 7.1编译安装Nginx1.9.0</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2015-06-03 16:06 | 分类：<a href="https://typecodes.com/web/index.html">web</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>这是<a href="https://typecodes.com/mix/2015updateblog.html" title="查看原文">《2015年博客升级记》</a>系列文章的第三篇，主要记录如何在CentOS 7.1中编译安装Nginx官方最新的1.9.0版本。由于像Nginx、Mysql和PHP7的的源码都是用C/C++写的，所以自己的CentOS 7.1服务器上必须要安装gcc和g++软件（CentOS 7系列会自带这两个编译软件）。</p>
+<p><img alt="CentOS 7.1编译安装Nginx1.9.0" src="https://dn-vfhky.qbox.me/2015/05/nginxlogo.png" title="CentOS 7.1编译安装Nginx1.9.0" /></p>
+
+	<p class="more"><a href="https://typecodes.com/web/centos7compilenginx.html" title="2015博客升级记(三)：CentOS 7.1编译安装Nginx1.9.0">- 阅读剩余部分 -</a></p>
+			</article>
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/linux/centos7fdiskmountswap.html">2015博客升级记(二)：Linux系统磁盘分区挂载和交换空间</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2015-05-27 19:31 | 分类：<a href="https://typecodes.com/linux/index.html">linux</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>这是<a href="https://typecodes.com/mix/2015updateblog.html" title="查看原文">《2015年博客升级记》</a>系列文章的第二篇，主要记录在Linux系统中如何将磁盘进行分区和挂载。</p>
+<div class="highlight"><pre>------------操作说明------------               
+Linux系统：       阿里云CentOS 7.1（20G）
+操作工具：        SecureCRT 7.0
+待挂载的数据盘：   24G
+分区目标：        先分4G作为CentOS7.1系统的交换空间，剩余20G作为普通物理空间
+</pre></div>
+
+
+
+	<p class="more"><a href="https://typecodes.com/linux/centos7fdiskmountswap.html" title="2015博客升级记(二)：Linux系统磁盘分区挂载和交换空间">- 阅读剩余部分 -</a></p>
+			</article>
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/linux/centos7afteroperate.html">2015博客升级记(一)：安装CentOS7后需要的操作</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2015-05-25 16:27 | 分类：<a href="https://typecodes.com/linux/index.html">linux</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>这是<a href="https://typecodes.com/mix/2015updateblog.html" title="查看原文">《2015年博客升级记》</a>系列文章的第一篇，主要记录安装完CentOS7后的一些优化操作，包括更换yum源并升级系统到CentOS7.1、使用sshd登录、修改机器名、vi映射为vim、vimrc的配置。</p>
+<p><img alt="安装CentOS7后需要的操作" src="https://dn-vfhky.qbox.me/2015/05/centos7update.png" title="安装CentOS7后需要的操作" /></p>
+
+	<p class="more"><a href="https://typecodes.com/linux/centos7afteroperate.html" title="2015博客升级记(一)：安装CentOS7后需要的操作">- 阅读剩余部分 -</a></p>
+			</article>
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/mix/2015updateblog.html">2015年博客升级记</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2015-05-23 17:25 | 分类：<a href="https://typecodes.com/mix/index.html">mix</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>这段时间对博客进行了一次升级，主要是从博客程序所在的系统服务器（CentOS）和WEB环境（LNMP）入手。目前自己的Linux服务器已经升级到CentOS7.1，同时LNMP环境也升级到了最新的版本。下面是整个升级过程的详细整理，记录一下方便以后查看。</p>
+<p><img alt="2015博客升级记" src="https://dn-vfhky.qbox.me/2015/05/updatemyblog.png" title="2015博客升级记" /></p>
+
+	<p class="more"><a href="https://typecodes.com/mix/2015updateblog.html" title="2015年博客升级记">- 阅读剩余部分 -</a></p>
+			</article>
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/mix/eventualwptotypecho.html">终于从WordPress转向Typecho了</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2014-08-09 17:13 | 分类：<a href="https://typecodes.com/mix/index.html">mix</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>4月底，博客的虚拟主机到期。因为不想再用绑定几百个站点的虚拟主机了，所以决定买个vps或者云主机。在比较了几个vps和云主机后，发现阿里的ECS相对来说价格还比较合适，稳定性不错。于是选了个最低配置的CentOS主机，期限为一年。</p>
+<p>买完后，由于没时间去备案，所以5，6，7月份博客都处于无法访问状态。7月底下决心准备把博客重新捡起来，顺带完成去年年底就准备的工作——<a href="https://typecodes.com/mix/wptoconcisetypecho.html" title="简洁的哲学：从华丽的WordPress转Typecho">从wordpress转向typecho</a>。</p>
+<p><img alt="终于从WordPress转向Typecho了" src="https://dn-vfhky.qbox.me/2013/10/typecho.png" title="终于从WordPress转向Typecho了" /></p>
+
+	<p class="more"><a href="https://typecodes.com/mix/eventualwptotypecho.html" title="终于从WordPress转向Typecho了">- 阅读剩余部分 -</a></p>
+			</article>
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/mix/postwvfhkygithub.html">GitHub个人仓库更新：wordpress主题[W_vfhky]</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2014-03-18 18:42 | 分类：<a href="https://typecodes.com/mix/index.html">mix</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>今天往自己的github仓库中扔进另一份博客wordpress主题[W_vfhky]。这份主题是从12年6月12建立至2013年7月，博主一直在用的。原型是威少的主题<a href="http://www.weisay.com/">weisaysimple</a>，简洁明了，很适合IT类的博客。精炼的页面设计，让博客的内容主次分明，详略得当，真的是让人爱不释手。</p>
+<p>当然，我也对weisaysimple修改了N多次，做了很多代码优化和个性化需求的定制和改进。例如，博客右上角的综合谷歌自定义搜索和百度搜索为一体的博客站内搜索，博客右侧栏的Jquery滚动公告，右侧栏的Jquery滚动最新评论和样式设计，评论列表纯真IP库的使用，邮件通知的改进，博客整站的avatar个性头像缓存等等。</p>
+
+	<p class="more"><a href="https://typecodes.com/mix/postwvfhkygithub.html" title="GitHub个人仓库更新：wordpress主题[W_vfhky]">- 阅读剩余部分 -</a></p>
+			</article>
+		  	<!--page navigation-->
+<ol class="page-navigator">
+<li class="prev"><a href="https://typecodes.com/tag/bo-ke-cheng-chang-lu.html">&laquo; 前一页</a></li><li><a href="https://typecodes.com/tag/bo-ke-cheng-chang-lu.html">1</a><li class="current"><a href="https://typecodes.com/tag/bo-ke-cheng-chang-lu2.html">2</a>
+       		</li><li><a href="https://typecodes.com/tag/bo-ke-cheng-chang-lu3.html">3</a>
+       		</li><li class="next">
+       		<a href="https://typecodes.com/tag/bo-ke-cheng-chang-lu3.html">后一页 &raquo;</a>
+       </li></ol>		</div>
+		<!--3. right sider begin-->
+<div class="col-md-3" id="blog-secondary" role="complementary">
+	<section class="widget">
+		<ul class="widget-list">
+			<form id="search" method="get" action="https://typecodes.com/search.html">
+				<input type="text" name="q" id="s" size="20" x-webkit-speech="" x-webkit-grammar="builtin:search" onwebkitspeechchange="this.value = this.value.replace(this.defaultValue, '')" value="Google...." onfocus="this.value = (this.value == this.defaultValue) ? '' : this.value" onblur="this.value = (this.value == '') ? this.defaultValue : this.value">
+			</form>
+		</ul>
+	</section>
+	<section class="widget">
+		<h3 class="widget-title">Categories</h3>
+		<ul class="widget-list">
+		      <li class="current">
+		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (26)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/csharp/index.html">Csharp</a> (6)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/database/index.html">Database</a> (11)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/java/index.html">Java</a> (1)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/linux/index.html">Linux</a> (16)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/mix/index.html">Mix</a> (53)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/web/index.html">Web</a> (88)
+		      </li>
+		</ul>
+	</section>
+	<section class="widget">
+		<h3 class="widget-title">Recent Posts</h3>
+		<ul class="widget-list">
+			<li class="post">
+				<a href="https://typecodes.com/mix/sucesstypechotopelican.html">成功将博客从Typecho迁移到Pelican</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/mix/begintypechotopelican.html">准备将博客从Typecho迁移到Pelican</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/mix/synweibophpmarkdownimgurl.html">升级博客文章同步微博的插件：PHP正则提取Markdown的图片地址</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/centos7blogregularbackup.html">2015博客升级记(八)：CentOS7定时备份博客程序的shell脚本</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/centos7mysqlregularbackup.html">2015博客升级记(七)：CentOS7定时备份MySql的shell脚本</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/web/centos7compilephp7.html">2015博客升级记(五)：CentOS 7.1编译安装PHP7</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/web/centos7yuminstallmysql5.html">阿里云CentOS 7.1使用yum安装MySql5.6.24</a>
+			</li>
+		</ul>
+	</section>
+	<section class="widget widget-feed">
+		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
+	</section>
+</div>
+				</div>
+			</div>
+		</div>
+		<!--4. bottom begin-->
+		<footer id="te-site-footer"><div class="container">
+	<div class="row" role="contentinfo">
+		<section class="col-md-2 col-md-offset-1">
+			<h3>Links</h3>
+			<ul><li><a href="http://diaosbook.com/" title="">diaosbook</a></li></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul>
+				<li><a href="https://typecodes.com/links.html">More..</a></li>
+			</ul>
+		</section>
+		<section class="col-md-2">
+			<h3>Following</h3>
+			<ul>
+				<li><a href="https://github.com/vfhky" class="following github" target="_blank" rel="external nofollow">GitHub</a></li>
+				<li><a href="http://weibo.com/typecodes" class="following weibo" target="_blank" rel="external nofollow">Weibo</a></li>
+				<li><a href="http://vfhky.sinaapp.com/" class="following sae" target="_blank" rel="external nofollow">SAE</a></li>
+				<li><a href="http://www.dwz.cn/mYiwa" class="following qqgroup" target="_blank" rel="external nofollow">Group</a></li>
+			</ul>
+		</section>
+		<div class="col-md-12 copyright">
+			<a href="#top"><i class="i-logo-s">TOP</i></a>
+			<p>
+				&copy; 2012-<script language="JavaScript">var date = new Date(); document.write(date.getFullYear());</script>							<a href="https://typecodes.com">TypeCodes</a>. All Rights Reserved<br>Powered by <a href="http://getpelican.com" rel="external" target="_blank">Pelican</a>. <a href="http://www.miitbeian.gov.cn/" rel="external nofollow" target="_blank">粤ICP备14050695号</a>
+			</p>
+		</div>
+	</div>
+</div>
+</footer>
+<script type="text/javascript">
+	var disqus_shortname = 'typecodes';
+	(function() {
+		var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+		dsq.src = "//" + disqus_shortname + '.disqus.com/embed.js';
+		(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	 })();
+</script>
+	</body>
+</html>

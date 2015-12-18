@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="zh-CN" class="no-js">
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<title>动易SiteFactory系列教程一:最新头条新闻带内容标签的制作 &mdash; TypeCodes</title>
+		<meta name="author" content="vfhky">
+  		<link href="https://typecodes.com/atom.xml" type="application/atom+xml" rel="alternate" title="TypeCodes Atom Feed" />
+	  	<link href="https://typecodes.com/feed.xml" type="application/rss+xml" rel="alternate" title="TypeCodes RSS Feed" />
+		<meta name="HandheldFriendly" content="True">
+		<meta name="MobileOptimized" content="320">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="renderer" content="webkit">
+		<link rel="stylesheet" href="https://dn-vfhky.qbox.me/libs/css/pelican-vfhky.css">
+		<script>
+			var _hmt = _hmt || [];
+			(function() {
+			  var hm = document.createElement("script");
+			  hm.src = "//hm.baidu.com/hm.js?c15c4ab8e91ba9ac3d5a12293cc93359";
+			  var s = document.getElementsByTagName("script")[0]; 
+			  s.parentNode.insertBefore(hm, s);
+			})();
+		</script>
+	</head>
+	<body style>
+		<!--1. header navigation begin-->
+		<header role="banner" id="te-site-header">
+			<div class="container">
+				<a href="https://typecodes.com" class="te-site-logo" role="logo" target="_self"> TypeCodes</a>
+				<ul class="nav nav-pills" id="te-site-nav" role="navigation">
+					<li><a href="https://typecodes.com">Home</a></li><li><a href="https://typecodes.com/archives.html" title="Archives">Archives</a></li><li><a href="https://typecodes.com/about.html" title="About">About</a></li></ul>
+			</div>
+		</header>
+		<div class="te-headline">
+			<div class="container">
+				<h2 class="te-headline-title"> <a href="https://typecodes.com">TypeCodes</a></h2>
+			</div>
+		</div>
+		<div class="container">
+			<div class="row">
+		<!--2. left sider begin-->
+		<div class="col-md-9" id="blog-main" role="main">
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/web/sfnewscontenttag.html">动易SiteFactory系列教程一:最新头条新闻带内容标签的制作</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2012-08-21 22:51 | 分类：<a href="https://typecodes.com/web/index.html">web</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>如何运用cms建立一个网站？我认为，可以分为3个步骤：第一个步骤是设计好整个网站的模板页面，这个主要有前台开发人员设计；第二个是熟悉后台的各种栏目（或者频道或者节点）的设置。不能小看这个步骤，很多标签都跟栏目使用的模板有关，不能通用；第三个步骤是后台开发人员根据相应的前台设计以及相应的要求添加相应的标签，调用出数据库内容（或者一些已经设计好的静态内容）。那么，这一系列的动易CMS教程主要讲解动易Sitefactory的标签。我将通过几个制作实例来讲解相关操作.</p>
+<p><img alt="最新头条新闻带图片标签制作" src="https://dn-vfhky.qbox.me/2012/08/13.png" title="最新头条新闻带图片标签制作" /></p>
+
+
+<p>（一）新建一个标签，“标签分类”可以任意选择类别，最好能归入以后能后找得到的标签目录，也可以自己新建一个目录；“数据设置”因为要涉及到数据库，所以选择“系统是数据库SQL查询”；“标签模板处理方式”选择“简单XSLT解析”，涉及数据库方面的标签我们一般都选择这个。</p>
+<p><img alt="添加标签参数" src="https://dn-vfhky.qbox.me/2012/08/22.png" title="添加标签参数" /></p>
+<p>（二）添加标签参数，这个看自己的需要而定（也可以不填），这个参数的作用是通过这个参数可以控制下面步骤中标签的一些数据调用。这个可能表抽象，多看几个标签就明白了。</p>
+<p><img alt="标签查询设置1" src="https://dn-vfhky.qbox.me/2012/08/33.png" title="标签查询设置1" /></p>
+<p>（三）标签查询设置，熟悉的话直接写sql语句；不熟悉的话可以通过“标签查询设置”提示写，效果由下图看出是一样的。</p>
+<div class="highlight"><pre>SELECT TOP 10 PE_CommonModel.*,PE_U_Article.*  FROM PE_CommonModel INNER JOIN PE_U_Article ON PE_CommonModel.GeneralID = PE_U_Article.ID  WHERE  ((PE_CommonModel.NodeID IN (0)) AND (PE_CommonModel.Status = 99))  ORDER BY PE_CommonModel.UpdateTime DESC
+</pre></div>
+
+
+<p>提示：信息内容保存的公共表PE_CommonModel表里面，所以我们只需要查询PE_CommonModel表；Status=99，表示审核通过的信息，其它的就不介绍了。<code>注意把上面SQL与剧中的(0)改成(@node)</code></p>
+<p><img alt="标签查询设置2" src="https://dn-vfhky.qbox.me/2012/08/42.png" title="标签查询设置2" /></p>
+<p><img alt="标签查询设置3" src="https://dn-vfhky.qbox.me/2012/08/52.png" title="标签查询设置3" /></p>
+<p><img alt="标签查询设置4" src="https://dn-vfhky.qbox.me/2012/08/62.png" title="标签查询设置4" /></p>
+<p><img alt="标签查询设置5" src="https://dn-vfhky.qbox.me/2012/08/72.png" title="标签查询设置5" /></p>
+<p><img alt="标签查询设置6" src="https://dn-vfhky.qbox.me/2012/08/81.png" title="标签查询设置6" /></p>
+<p>（四）标签内容设置：</p>
+<div class="highlight"><pre><span class="cp">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;</span>
+<span class="k">&lt;xsl:stylesheet</span> <span class="na">version=</span><span class="s">&quot;1.0&quot;</span> <span class="na">xmlns:xsl=</span><span class="s">&quot;http://www.w3.org/1999/XSL/Transform&quot;</span> <span class="na">xmlns:pe=</span><span class="s">&quot;labelproc&quot;</span> <span class="na">exclude-result-prefixes=</span><span class="s">&quot;pe&quot;</span><span class="nt">&gt;</span>
+<span class="c">&lt;!--这个是我们开始定义的参数--&gt;</span>
+<span class="k">&lt;xsl:param</span> <span class="na">name=</span><span class="s">&quot;NodeID&quot;</span> <span class="nt">/&gt;</span>
+<span class="k">&lt;xsl:param</span> <span class="na">name=</span><span class="s">&quot;OutPutQty&quot;</span> <span class="nt">/&gt;</span>
+<span class="k">&lt;xsl:param</span> <span class="na">name=</span><span class="s">&quot;titlelenght&quot;</span> <span class="nt">/&gt;</span>
+<span class="k">&lt;xsl:param</span> <span class="na">name=</span><span class="s">&quot;contentlenght&quot;</span> <span class="nt">/&gt;</span>
+<span class="k">&lt;xsl:output</span> <span class="na">method=</span><span class="s">&quot;html&quot;</span> <span class="nt">/&gt;</span>
+<span class="k">&lt;xsl:template</span> <span class="na">match=</span><span class="s">&quot;/NewDataSet/Table&quot;</span><span class="nt">&gt;</span>
+<span class="nt">&lt;li&gt;</span>
+ <span class="k">&lt;xsl:choose</span><span class="nt">&gt;</span>
+   <span class="k">&lt;xsl:when</span> <span class="na">test=</span><span class="s">&quot;position() =1&quot;</span><span class="nt">&gt;</span>       <span class="c">&lt;!--判断是否第一条信息内容--&gt;</span>
+ <span class="nt">&lt;span</span> <span class="na">class=</span><span class="s">&quot;listfirst_title&quot;</span> <span class="na">style=</span><span class="s">&quot;font-size: 16px;font-weight: bold;color:red;&quot;</span><span class="nt">&gt;</span>   <span class="c">&lt;!--是就在标题上加上相应的样式--&gt;</span>
+         <span class="nt">&lt;a&gt;</span>
+            <span class="k">&lt;xsl:attribute</span> <span class="na">name=</span><span class="s">&quot;href&quot;</span><span class="nt">&gt;</span>
+               <span class="nt">&lt;xsl:value</span> <span class="err">-of</span> <span class="na">select=</span><span class="s">&quot;pe:GetInfoPath(GeneralID)&quot;</span><span class="nt">/&gt;</span><span class="c">&lt;!--获取信息路径--&gt;</span>
+            <span class="k">&lt;/xsl:attribute&gt;</span>
+            <span class="k">&lt;xsl:attribute</span> <span class="na">name=</span><span class="s">&quot;title&quot;</span><span class="nt">&gt;</span>
+              <span class="nt">&lt;xsl:value</span> <span class="err">-of</span> <span class="na">select=</span><span class="s">&quot;Title&quot;</span><span class="nt">/&gt;</span><span class="c">&lt;!--获取数据库中的Title字段内容--&gt;</span>
+                 <span class="k">&lt;/xsl:attribute&gt;</span>
+            <span class="nt">&lt;xsl:value</span> <span class="err">-of</span> <span class="na">select=</span><span class="s">&quot;pe:CutText(Title,$titlelenght,&#39;…&#39;)&quot;</span><span class="nt">/&gt;</span> <span class="c">&lt;!--通过自定义的参数titlelength来截取Title字段的长度--&gt;</span>
+         <span class="nt">&lt;/a&gt;</span>
+ <span class="nt">&lt;/span&gt;</span>
+ <span class="nt">&lt;span</span> <span class="na">class=</span><span class="s">&quot;listfirst_content&quot;</span><span class="nt">&gt;</span>
+<span class="c">&lt;!--通过自定义的参数contentlenght来截取Content字段的长度--&gt;</span>
+   <span class="nt">&lt;xsl:value</span> <span class="err">-of</span> <span class="na">disable-output-escaping=</span><span class="s">&quot;yes&quot;</span> <span class="na">select=</span><span class="s">&quot;pe:CutText(pe:RemoveHtml(Content),$contentlenght,&#39;…&#39;)&quot;</span><span class="nt">/&gt;</span>     
+ <span class="nt">&lt;/span&gt;</span>
+   <span class="k">&lt;/xsl:when&gt;</span>
+      <span class="k">&lt;xsl:otherwise</span><span class="nt">&gt;</span>
+         <span class="nt">&lt;a&gt;</span>
+           <span class="k">&lt;xsl:attribute</span> <span class="na">name=</span><span class="s">&quot;href&quot;</span><span class="nt">&gt;</span>
+              <span class="nt">&lt;xsl:value</span> <span class="err">-of</span> <span class="na">select=</span><span class="s">&quot;pe:GetInfoPath(GeneralID)&quot;</span><span class="nt">/&gt;</span>
+           <span class="k">&lt;/xsl:attribute&gt;</span>
+           <span class="k">&lt;xsl:attribute</span> <span class="na">name=</span><span class="s">&quot;title&quot;</span><span class="nt">&gt;</span>
+              <span class="nt">&lt;xsl:value</span> <span class="err">-of</span> <span class="na">select=</span><span class="s">&quot;Title&quot;</span><span class="nt">/&gt;</span>
+           <span class="k">&lt;/xsl:attribute&gt;</span>
+              <span class="nt">&lt;xsl:value</span> <span class="err">-of</span> <span class="na">select=</span><span class="s">&quot;pe:CutText(Title,$titlelenght,&#39;…&#39;)&quot;</span><span class="nt">/&gt;</span>
+         <span class="nt">&lt;/a&gt;</span>
+       <span class="k">&lt;/xsl:otherwise&gt;</span>
+  <span class="k">&lt;/xsl:choose&gt;</span>
+<span class="nt">&lt;/li&gt;</span>
+<span class="k">&lt;/xsl:template&gt;</span>
+<span class="k">&lt;/xsl:stylesheet&gt;</span>
+</pre></div>
+
+
+<p>（五）最后只要在相应模板中调用{PE.Label id="最新头条新闻带内容" /}即可。</p>
+		    	<p class="tags">
+					<div class="post-share">
+						<ul class="post-shareul clearfix">
+							<li class="post-shareli">
+								<a href="http://note.youdao.com/memory/?url=https://typecodes.com/web/sfnewscontenttag.html&title=动易SiteFactory系列教程一:最新头条新闻带内容标签的制作" class="post-sharea ydshare" target="_blank" rel="nofollow">有道云笔记</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://v.t.sina.com.cn/share/share.php?url=https://typecodes.com/web/sfnewscontenttag.html&title=动易SiteFactory系列教程一:最新头条新闻带内容标签的制作&source=https://typecodes.com" class="post-sharea wbshare" target="_blank" rel="nofollow">新浪微博</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://v.t.qq.com/share/share.php?title=动易SiteFactory系列教程一:最新头条新闻带内容标签的制作&url=https://typecodes.com/web/sfnewscontenttag.html&site=https://typecodes.com" class="post-sharea twbshare" target="_blank" rel="nofollow">腾讯微博</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=https://typecodes.com/web/sfnewscontenttag.html&title=动易SiteFactory系列教程一:最新头条新闻带内容标签的制作&content='utf-8'" class="post-sharea qzoneshare" target="_blank" rel="nofollow">QZone</a>
+							</li>
+						</ul>
+					</div>
+					<div>
+						Tags: <a href="https://typecodes.com/tag/dong-yi-cms.html">动易cms</a>,<a href="https://typecodes.com/tag/zui-xin-tou-tiao-xin-wen-dai-nei-rong-biao-qian-de-zhi-zuo.html">最新头条新闻带内容标签的制作</a>					</div>
+				</p>
+			</article>
+			
+			<div id="comments">
+				<h4 class="num">Comments &raquo;</h4>
+		    	<div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript></div>
+		    </div>
+		</div>
+		<!--3. right sider begin-->
+<div class="col-md-3" id="blog-secondary" role="complementary">
+	<section class="widget">
+		<ul class="widget-list">
+			<form id="search" method="get" action="https://typecodes.com/search.html">
+				<input type="text" name="q" id="s" size="20" x-webkit-speech="" x-webkit-grammar="builtin:search" onwebkitspeechchange="this.value = this.value.replace(this.defaultValue, '')" value="Google...." onfocus="this.value = (this.value == this.defaultValue) ? '' : this.value" onblur="this.value = (this.value == '') ? this.defaultValue : this.value">
+			</form>
+		</ul>
+	</section>
+	<section class="widget">
+		<h3 class="widget-title">Categories</h3>
+		<ul class="widget-list">
+		      <li class="current">
+		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (26)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/csharp/index.html">Csharp</a> (6)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/database/index.html">Database</a> (11)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/java/index.html">Java</a> (1)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/linux/index.html">Linux</a> (16)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/mix/index.html">Mix</a> (53)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/web/index.html">Web</a> (88)
+		      </li>
+		</ul>
+	</section>
+	<section class="widget">
+		<h3 class="widget-title">Recent Posts</h3>
+		<ul class="widget-list">
+			<li class="post">
+				<a href="https://typecodes.com/mix/sucesstypechotopelican.html">成功将博客从Typecho迁移到Pelican</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/mix/begintypechotopelican.html">准备将博客从Typecho迁移到Pelican</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/tcpconnectiontimedout.html">Linux TCP连接Connection Refused和Connection timed out的问题</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/mysqlerrornospace.html">博客MySQL服务惊魂记：Linux磁盘空间不足(Core Dump文件引爆)</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/mix/synweibophpmarkdownimgurl.html">升级博客文章同步微博的插件：PHP正则提取Markdown的图片地址</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/cppgeneralmakefile.html">Linux C/C++工程中可生成ELF、动/静态库文件的通用Makefile</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/libraryundefinedref.html">解决make编译链接动态库错误：libxx.so: undefined reference to xx</a>
+			</li>
+		</ul>
+	</section>
+	<section class="widget widget-feed">
+		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
+	</section>
+</div>
+				</div>
+			</div>
+		</div>
+		<!--4. bottom begin-->
+		<footer id="te-site-footer"><div class="container">
+	<div class="row" role="contentinfo">
+		<section class="col-md-2 col-md-offset-1">
+			<h3>Links</h3>
+			<ul><li><a href="http://diaosbook.com/" title="">diaosbook</a></li></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul>
+				<li><a href="https://typecodes.com/links.html">More..</a></li>
+			</ul>
+		</section>
+		<section class="col-md-2">
+			<h3>Following</h3>
+			<ul>
+				<li><a href="https://github.com/vfhky" class="following github" target="_blank" rel="external nofollow">GitHub</a></li>
+				<li><a href="http://weibo.com/typecodes" class="following weibo" target="_blank" rel="external nofollow">Weibo</a></li>
+				<li><a href="http://vfhky.sinaapp.com/" class="following sae" target="_blank" rel="external nofollow">SAE</a></li>
+				<li><a href="http://www.dwz.cn/mYiwa" class="following qqgroup" target="_blank" rel="external nofollow">Group</a></li>
+			</ul>
+		</section>
+		<div class="col-md-12 copyright">
+			<a href="#top"><i class="i-logo-s">TOP</i></a>
+			<p>
+				&copy; 2012-<script language="JavaScript">var date = new Date(); document.write(date.getFullYear());</script>							<a href="https://typecodes.com">TypeCodes</a>. All Rights Reserved<br>Powered by <a href="http://getpelican.com" rel="external" target="_blank">Pelican</a>. <a href="http://www.miitbeian.gov.cn/" rel="external nofollow" target="_blank">粤ICP备14050695号</a>
+			</p>
+		</div>
+	</div>
+</div>
+</footer>
+<script type="text/javascript">
+	var disqus_shortname = 'typecodes';
+	var disqus_identifier = '/web/sfnewscontenttag.html';
+	var disqus_url = 'https://typecodes.com/web/sfnewscontenttag.html';
+	var disqus_title = '动易SiteFactory系列教程一:最新头条新闻带内容标签的制作';
+	(function() {
+		var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+		dsq.src = "//" + disqus_shortname + '.disqus.com/embed.js';
+		(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	 })();
+</script>
+	</body>
+</html>

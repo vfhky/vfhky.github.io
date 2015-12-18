@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="zh-CN" class="no-js">
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<title>PHP中将Unix timestamp时间戳转换成北京时间 &mdash; TypeCodes</title>
+		<meta name="author" content="vfhky">
+  		<link href="https://typecodes.com/atom.xml" type="application/atom+xml" rel="alternate" title="TypeCodes Atom Feed" />
+	  	<link href="https://typecodes.com/feed.xml" type="application/rss+xml" rel="alternate" title="TypeCodes RSS Feed" />
+		<meta name="HandheldFriendly" content="True">
+		<meta name="MobileOptimized" content="320">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="renderer" content="webkit">
+		<link rel="stylesheet" href="https://dn-vfhky.qbox.me/libs/css/pelican-vfhky.css">
+		<script>
+			var _hmt = _hmt || [];
+			(function() {
+			  var hm = document.createElement("script");
+			  hm.src = "//hm.baidu.com/hm.js?c15c4ab8e91ba9ac3d5a12293cc93359";
+			  var s = document.getElementsByTagName("script")[0]; 
+			  s.parentNode.insertBefore(hm, s);
+			})();
+		</script>
+	</head>
+	<body style>
+		<!--1. header navigation begin-->
+		<header role="banner" id="te-site-header">
+			<div class="container">
+				<a href="https://typecodes.com" class="te-site-logo" role="logo" target="_self"> TypeCodes</a>
+				<ul class="nav nav-pills" id="te-site-nav" role="navigation">
+					<li><a href="https://typecodes.com">Home</a></li><li><a href="https://typecodes.com/archives.html" title="Archives">Archives</a></li><li><a href="https://typecodes.com/about.html" title="About">About</a></li></ul>
+			</div>
+		</header>
+		<div class="te-headline">
+			<div class="container">
+				<h2 class="te-headline-title"> <a href="https://typecodes.com">TypeCodes</a></h2>
+			</div>
+		</div>
+		<div class="container">
+			<div class="row">
+		<!--2. left sider begin-->
+		<div class="col-md-9" id="blog-main" role="main">
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/web/phpunixtimeconvert.html">PHP中将Unix timestamp时间戳转换成北京时间</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2014-08-19 22:12 | 分类：<a href="https://typecodes.com/web/index.html">web</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>由于博客刚从wordpress转到typecho，所以对之前的数据库需要处理。在wordpress数据库中，文章和评论的时间记录形式和typecho不同：wordpress中登记的是北京时间，形如 2014-08-19 21:05:27；而typecho数据库中登记的是时间戳Unix timestamp，形如1408456593（对应标准北京时间是 2014/8/19 21:56:33 ）。</p>
+<p>于是，我在typecho中用<code>date('Y-m-d H:i', $older_date)</code>函数把从数据库读取出来的Unix timestamp格式的<code>$older_date</code>转换成形如 2014-08-19 21:05 的北京时间后，发现比当前的北京时间少了8个小时。GG一番，原来是时区导致的：格林威治时间与中国东八区本地时间相差8个时差。解决方法如下：</p>
+
+
+<h5>1 推荐的必杀技：修改php配置文件php.ini</h5>
+<p>先查看当前Linux系统的日期与时间（locale time）</p>
+<div class="highlight"><pre>[root@typecodes ~]# date
+Tue Aug 19 21:36:33 CST 2014
+</pre></div>
+
+
+<p>然后修改php.ini文件的第 943 行处的 date.timezone( 设置时区 )</p>
+<div class="highlight"><pre><span class="cp">[</span><span class="nx">root</span><span class="p">@</span><span class="nx">typecodes</span> <span class="err">~</span><span class="cp">]</span><span class="err">#</span> <span class="nx">vi</span> <span class="o">/</span><span class="nx">etc</span><span class="o">/</span><span class="nx">php</span><span class="p">.</span><span class="nx">ini</span>
+<span class="mi">943</span> <span class="cp">[</span><span class="kt">Date</span><span class="cp">]</span>
+<span class="mi">944</span> <span class="p">;</span> <span class="nx">Defines</span> <span class="nx">the</span> <span class="k">default</span> <span class="nx">timezone</span> <span class="nx">used</span> <span class="nx">by</span> <span class="nx">the</span> <span class="nx">date</span> <span class="nx">functions</span>
+<span class="mi">945</span> <span class="p">;</span> <span class="nx">http</span><span class="o">:</span><span class="c1">//www.php.net/manual/en/datetime.configuration.php#ini.date.timezone</span>
+<span class="mi">946</span> <span class="nx">date</span><span class="p">.</span><span class="nx">timezone</span> <span class="o">=</span> <span class="nx">Asia</span><span class="o">/</span><span class="nx">Shanghai</span>
+<span class="err">######</span> <span class="nx">Asia</span><span class="o">/</span><span class="nx">Shanghai</span> <span class="nx">还可以改成</span> <span class="nx">PRC</span><span class="err">、</span><span class="nx">Asia</span><span class="o">/</span><span class="nx">Chongqing</span><span class="err">、</span><span class="nx">Asia</span><span class="o">/</span><span class="nx">Taipei等中国时区</span>
+</pre></div>
+
+
+<h5>2 使用PHP代码的解决方法</h5>
+<p>如果主机不能修改 php.ini 文件，那么只能使用临时办法解决了：先把 Unix timestamp 的值加 8 个小时（相当于 8 * 3600 = 28800 秒），再使用 date 函数格式化输出。例如，将上面的php代码<code>date('Y-m-d H:i', $older_date)</code>改成<code>date('Y-m-d H:i', $older_date+28800)</code>即可转换成标准的北京时间。</p>
+<p>评论中 @mumuno 提供的PHP方法也是行的：</p>
+<div class="highlight"><pre><span class="nt">date_default_timezone_set</span><span class="o">(</span><span class="s2">&quot;PRC&quot;</span><span class="o">);</span>
+<span class="nt">date</span><span class="o">(</span><span class="s2">&quot;Y-m-d H:i&quot;</span><span class="o">);</span>
+</pre></div>
+
+
+<h5>3 计算机时间概要</h5>
+<p>以下内容整理自互联网和 <a href="http://zoroeye.iteye.com/blog/2008381" title="计算机世界中的时间概念">计算机世界中的时间概念</a> 一文。</p>
+<div class="highlight"><pre>格林威治时间（Greenwich Mean Time, GMT）。
+
+通用协调时间（Universal Time Coordinated, UTC）。UTC的表示方式为：年（y）、月（m）、日（d）、时（h）、分（min）、秒（s），均用数字表示。若以「世界标准时间」的角度来说，UTC比GMT来得更加精准： *UTC = GMT +/- 0.9* 。
+
+本地时间(locale time)：很显然，本地时间跟时区(timezone)有关： *本地时间 = UTC + 时区* 。例如，中国北京标准时间（忽略GMT和UTC的差异）： *CST = GMT + 8 = UTC + 8* 。
+
+Unix时间戳(Unix timestamp)，又称 Unix时间(Unix time) 或 POSIX时间(POSIX time) ，它从格林威治时间1970年01月01日00时00分00秒起至现在的总秒数。
+</pre></div>
+		    	<p class="tags">
+					<div class="post-share">
+						<ul class="post-shareul clearfix">
+							<li class="post-shareli">
+								<a href="http://note.youdao.com/memory/?url=https://typecodes.com/web/phpunixtimeconvert.html&title=PHP中将Unix timestamp时间戳转换成北京时间" class="post-sharea ydshare" target="_blank" rel="nofollow">有道云笔记</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://v.t.sina.com.cn/share/share.php?url=https://typecodes.com/web/phpunixtimeconvert.html&title=PHP中将Unix timestamp时间戳转换成北京时间&source=https://typecodes.com" class="post-sharea wbshare" target="_blank" rel="nofollow">新浪微博</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://v.t.qq.com/share/share.php?title=PHP中将Unix timestamp时间戳转换成北京时间&url=https://typecodes.com/web/phpunixtimeconvert.html&site=https://typecodes.com" class="post-sharea twbshare" target="_blank" rel="nofollow">腾讯微博</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=https://typecodes.com/web/phpunixtimeconvert.html&title=PHP中将Unix timestamp时间戳转换成北京时间&content='utf-8'" class="post-sharea qzoneshare" target="_blank" rel="nofollow">QZone</a>
+							</li>
+						</ul>
+					</div>
+					<div>
+						Tags: <a href="https://typecodes.com/tag/unix-timestampzhuan-huan.html">unix timestamp转换</a>					</div>
+				</p>
+			</article>
+			
+			<div id="comments">
+				<h4 class="num">Comments &raquo;</h4>
+		    	<div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript></div>
+		    </div>
+		</div>
+		<!--3. right sider begin-->
+<div class="col-md-3" id="blog-secondary" role="complementary">
+	<section class="widget">
+		<ul class="widget-list">
+			<form id="search" method="get" action="https://typecodes.com/search.html">
+				<input type="text" name="q" id="s" size="20" x-webkit-speech="" x-webkit-grammar="builtin:search" onwebkitspeechchange="this.value = this.value.replace(this.defaultValue, '')" value="Google...." onfocus="this.value = (this.value == this.defaultValue) ? '' : this.value" onblur="this.value = (this.value == '') ? this.defaultValue : this.value">
+			</form>
+		</ul>
+	</section>
+	<section class="widget">
+		<h3 class="widget-title">Categories</h3>
+		<ul class="widget-list">
+		      <li class="current">
+		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (26)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/csharp/index.html">Csharp</a> (6)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/database/index.html">Database</a> (11)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/java/index.html">Java</a> (1)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/linux/index.html">Linux</a> (16)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/mix/index.html">Mix</a> (53)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/web/index.html">Web</a> (88)
+		      </li>
+		</ul>
+	</section>
+	<section class="widget">
+		<h3 class="widget-title">Recent Posts</h3>
+		<ul class="widget-list">
+			<li class="post">
+				<a href="https://typecodes.com/mix/sucesstypechotopelican.html">成功将博客从Typecho迁移到Pelican</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/mix/begintypechotopelican.html">准备将博客从Typecho迁移到Pelican</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/tcpconnectiontimedout.html">Linux TCP连接Connection Refused和Connection timed out的问题</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/mysqlerrornospace.html">博客MySQL服务惊魂记：Linux磁盘空间不足(Core Dump文件引爆)</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/mix/synweibophpmarkdownimgurl.html">升级博客文章同步微博的插件：PHP正则提取Markdown的图片地址</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/cppgeneralmakefile.html">Linux C/C++工程中可生成ELF、动/静态库文件的通用Makefile</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/libraryundefinedref.html">解决make编译链接动态库错误：libxx.so: undefined reference to xx</a>
+			</li>
+		</ul>
+	</section>
+	<section class="widget widget-feed">
+		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
+	</section>
+</div>
+				</div>
+			</div>
+		</div>
+		<!--4. bottom begin-->
+		<footer id="te-site-footer"><div class="container">
+	<div class="row" role="contentinfo">
+		<section class="col-md-2 col-md-offset-1">
+			<h3>Links</h3>
+			<ul><li><a href="http://diaosbook.com/" title="">diaosbook</a></li></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul>
+				<li><a href="https://typecodes.com/links.html">More..</a></li>
+			</ul>
+		</section>
+		<section class="col-md-2">
+			<h3>Following</h3>
+			<ul>
+				<li><a href="https://github.com/vfhky" class="following github" target="_blank" rel="external nofollow">GitHub</a></li>
+				<li><a href="http://weibo.com/typecodes" class="following weibo" target="_blank" rel="external nofollow">Weibo</a></li>
+				<li><a href="http://vfhky.sinaapp.com/" class="following sae" target="_blank" rel="external nofollow">SAE</a></li>
+				<li><a href="http://www.dwz.cn/mYiwa" class="following qqgroup" target="_blank" rel="external nofollow">Group</a></li>
+			</ul>
+		</section>
+		<div class="col-md-12 copyright">
+			<a href="#top"><i class="i-logo-s">TOP</i></a>
+			<p>
+				&copy; 2012-<script language="JavaScript">var date = new Date(); document.write(date.getFullYear());</script>							<a href="https://typecodes.com">TypeCodes</a>. All Rights Reserved<br>Powered by <a href="http://getpelican.com" rel="external" target="_blank">Pelican</a>. <a href="http://www.miitbeian.gov.cn/" rel="external nofollow" target="_blank">粤ICP备14050695号</a>
+			</p>
+		</div>
+	</div>
+</div>
+</footer>
+<script type="text/javascript">
+	var disqus_shortname = 'typecodes';
+	var disqus_identifier = '/web/phpunixtimeconvert.html';
+	var disqus_url = 'https://typecodes.com/web/phpunixtimeconvert.html';
+	var disqus_title = 'PHP中将Unix timestamp时间戳转换成北京时间';
+	(function() {
+		var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+		dsq.src = "//" + disqus_shortname + '.disqus.com/embed.js';
+		(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	 })();
+</script>
+	</body>
+</html>

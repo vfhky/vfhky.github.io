@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="zh-CN" class="no-js">
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<title>博客减负记：wordpress主题的优化 &mdash; TypeCodes</title>
+		<meta name="author" content="vfhky">
+  		<link href="https://typecodes.com/atom.xml" type="application/atom+xml" rel="alternate" title="TypeCodes Atom Feed" />
+	  	<link href="https://typecodes.com/feed.xml" type="application/rss+xml" rel="alternate" title="TypeCodes RSS Feed" />
+		<meta name="HandheldFriendly" content="True">
+		<meta name="MobileOptimized" content="320">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="renderer" content="webkit">
+		<link rel="stylesheet" href="https://dn-vfhky.qbox.me/libs/css/pelican-vfhky.css">
+		<script>
+			var _hmt = _hmt || [];
+			(function() {
+			  var hm = document.createElement("script");
+			  hm.src = "//hm.baidu.com/hm.js?c15c4ab8e91ba9ac3d5a12293cc93359";
+			  var s = document.getElementsByTagName("script")[0]; 
+			  s.parentNode.insertBefore(hm, s);
+			})();
+		</script>
+	</head>
+	<body style>
+		<!--1. header navigation begin-->
+		<header role="banner" id="te-site-header">
+			<div class="container">
+				<a href="https://typecodes.com" class="te-site-logo" role="logo" target="_self"> TypeCodes</a>
+				<ul class="nav nav-pills" id="te-site-nav" role="navigation">
+					<li><a href="https://typecodes.com">Home</a></li><li><a href="https://typecodes.com/archives.html" title="Archives">Archives</a></li><li><a href="https://typecodes.com/about.html" title="About">About</a></li></ul>
+			</div>
+		</header>
+		<div class="te-headline">
+			<div class="container">
+				<h2 class="te-headline-title"> <a href="https://typecodes.com">TypeCodes</a></h2>
+			</div>
+		</div>
+		<div class="container">
+			<div class="row">
+		<!--2. left sider begin-->
+		<div class="col-md-9" id="blog-main" role="main">
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/mix/wpthemeoptimize.html">博客减负记：wordpress主题的优化</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2013-09-28 23:18 | 分类：<a href="https://typecodes.com/mix/index.html">mix</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>主题制作从7月21完成后，基本上没进行什么大的改动了。而且域名从huangkeye.com转到vfhky.sinaapp.com上来后，就一直搭载着360网站卫士。每天都要上360看看博客的安全状况，尤其看到那些被拦截的攻击后心里就特爽。心里就在琢磨着，要是没用360，博客是不是早就挂掉了。不过，用着用着总是有麻烦的。比如，有博友反映博客在很多地方打开奇慢。最令自己烦心的就是每次用联通的网络修改代码，动不动就超时或者2k左右的代码半天提交不了。到9月15左右，博客从.com域名转到.cn域名大概有5个月了，而百度的收录竟然还只是停留在40多篇，很不科学。这跟360卫士CDN逃不了干系，因此在把域名的DNS解析回原主机后，vfhky就打算彻底给博客做个诊断。</p>
+
+
+<h5>1 主题：花式繁杂vs简约实用</h5>
+<p>首先从页面的加载速度着手，蜘蛛的耐心也有限呐。很多时候，我和大多博主一样，会在博客功能上下大功夫，追求花式多样的风格。也许这样看着心里觉得特别舒服，多有内涵呐。不过，渐渐地却发现很多功能都是用户不常用或者根本不用的，这样它们就成了无用的摆设，而且还加重了服务器的负担。于是vfhky决定从简出发，给博客减负！简约实用才是王道，而且不浪费资源！</p>
+<h5>2 优化wordpress评论者信息列表</h5>
+<p>之前博客对评论者实行了“等级”制度——根据评论者在博客留言的总数来显示相应的等级图标。这样就造成了每次加载评论信息时，都要查询数据库。于是把这个功能连同博主身份提示图标一同去掉，只显示通过jQuery调用淘宝IP库接口的评论者地理位置信息。</p>
+<p><img alt="wordpress主题的优化：评论信息列表" src="https://dn-vfhky.qbox.me/2013/09/blog_comment_style.png" title="wordpress主题的优化：评论信息列表" /></p>
+<h5>3 优化wordpress相关文章</h5>
+<p>很多博客的主题都有“相关文章”功能，个人感觉列出的相关文章与原文的“相关程度”不是很高，所以决定一同把这个功能去掉。减少数据库的查询和图片信息的加载。</p>
+<p><img alt="wordpress主题的优化：相关文章" src="https://dn-vfhky.qbox.me/2013/09/blog_related_article.png" title="wordpress主题的优化：相关文章" /></p>
+<h5>4 优化wordpress评论框</h5>
+<p>主题之前在评论框上玩了一把花哨的功能：用jquery在评论框下加载一个包含“表情”、“颜色”、“代码”、“插图”等功能的工具。不过从前面的评论来看，用户几乎很少用到这些。所以vfhky也决定把它删掉，js文件瞬间减少进0.5k大小。</p>
+<p><img alt="wordpress主题的优化：评论框" src="https://dn-vfhky.qbox.me/2013/09/comment_js_simplefied.png" title="wordpress主题的优化：评论框" /></p>
+<h5>5 优化wordpress右侧栏的TAB列表</h5>
+<p>之前博客右侧栏加载了两个TAB列表栏，功能相对丰富，包含了大多的文章归类显示方式。但是这个需要多次查询数据库，而且还需加载jQUery代码使这两个TAB菜单列表自动从左向右滚动。考虑到用户的需求，去掉“热门标签”、“博主推荐”等列表，保留了“本季热文”、“读者热评”、“最新文章”、“博客统计”这四个功能，并把它们整合到一个TAB菜单列表中。</p>
+<p><img alt="wordpress主题的优化：tab列表" src="https://dn-vfhky.qbox.me/2013/09/wordpress_tab.gif" title="wordpress主题的优化：tab列表" /></p>
+<h5>6 优化wordpress的站外Trackback</h5>
+<p>之前在弄主题的时候，就琢磨着这个功能可以方便博客间的交流。不过，现实残忍地标明这个功能已经是wordpress垃圾评论的发源地了。而且站外Trackback也需要服务器去检测你的文章是否被引用了，消耗了资源。因此，通过SQL关闭之前所有文章的Trackback后，再在博客后台设置不启用站外Trackback就解决了这个问题。</p>
+<p><img alt="wordpress主题的优化：pingback" src="https://dn-vfhky.qbox.me/2013/09/blog_pingback.png" title="wordpress主题的优化：pingback" /></p>
+<h5>7 压缩js和css文件</h5>
+<p>压缩js和css文件对页面的加载速度还是很有帮助的，这里vfhky总结了4个比较好的javascript和css在线压缩网站，希望对大家有用！</p>
+<div class="highlight"><pre>http://jscompress.com/
+http://www.csscompressor.com/
+http://www.ostools.net/jscompress
+http://tool.css-js.com/
+http://javascriptcompressor.com/
+</pre></div>
+
+
+<h5>8 博客减负后记</h5>
+<p>精简的代码，看着舒服；简约的博客，看着同样舒服！从15号到现在，博客从360网站卫士撤回来，然后完成了上面这几个优化，收到了不错的效果。昨天百度收录将近100，快照也更新了。最重要的是每次打开博客速度比以前快了，页面看着也更顺心了！</p>
+		    	<p class="tags">
+					<div class="post-share">
+						<ul class="post-shareul clearfix">
+							<li class="post-shareli">
+								<a href="http://note.youdao.com/memory/?url=https://typecodes.com/mix/wpthemeoptimize.html&title=博客减负记：wordpress主题的优化" class="post-sharea ydshare" target="_blank" rel="nofollow">有道云笔记</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://v.t.sina.com.cn/share/share.php?url=https://typecodes.com/mix/wpthemeoptimize.html&title=博客减负记：wordpress主题的优化&source=https://typecodes.com" class="post-sharea wbshare" target="_blank" rel="nofollow">新浪微博</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://v.t.qq.com/share/share.php?title=博客减负记：wordpress主题的优化&url=https://typecodes.com/mix/wpthemeoptimize.html&site=https://typecodes.com" class="post-sharea twbshare" target="_blank" rel="nofollow">腾讯微博</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=https://typecodes.com/mix/wpthemeoptimize.html&title=博客减负记：wordpress主题的优化&content='utf-8'" class="post-sharea qzoneshare" target="_blank" rel="nofollow">QZone</a>
+							</li>
+						</ul>
+					</div>
+					<div>
+						Tags: <a href="https://typecodes.com/tag/wordpresszhu-ti-you-hua.html">wordpress主题优化</a>					</div>
+				</p>
+			</article>
+			
+			<div id="comments">
+				<h4 class="num">Comments &raquo;</h4>
+		    	<div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript></div>
+		    </div>
+		</div>
+		<!--3. right sider begin-->
+<div class="col-md-3" id="blog-secondary" role="complementary">
+	<section class="widget">
+		<ul class="widget-list">
+			<form id="search" method="get" action="https://typecodes.com/search.html">
+				<input type="text" name="q" id="s" size="20" x-webkit-speech="" x-webkit-grammar="builtin:search" onwebkitspeechchange="this.value = this.value.replace(this.defaultValue, '')" value="Google...." onfocus="this.value = (this.value == this.defaultValue) ? '' : this.value" onblur="this.value = (this.value == '') ? this.defaultValue : this.value">
+			</form>
+		</ul>
+	</section>
+	<section class="widget">
+		<h3 class="widget-title">Categories</h3>
+		<ul class="widget-list">
+		      <li class="current">
+		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (26)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/csharp/index.html">Csharp</a> (6)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/database/index.html">Database</a> (11)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/java/index.html">Java</a> (1)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/linux/index.html">Linux</a> (16)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/mix/index.html">Mix</a> (53)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/web/index.html">Web</a> (88)
+		      </li>
+		</ul>
+	</section>
+	<section class="widget">
+		<h3 class="widget-title">Recent Posts</h3>
+		<ul class="widget-list">
+			<li class="post">
+				<a href="https://typecodes.com/mix/sucesstypechotopelican.html">成功将博客从Typecho迁移到Pelican</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/mix/begintypechotopelican.html">准备将博客从Typecho迁移到Pelican</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/tcpconnectiontimedout.html">Linux TCP连接Connection Refused和Connection timed out的问题</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/mysqlerrornospace.html">博客MySQL服务惊魂记：Linux磁盘空间不足(Core Dump文件引爆)</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/mix/synweibophpmarkdownimgurl.html">升级博客文章同步微博的插件：PHP正则提取Markdown的图片地址</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/cppgeneralmakefile.html">Linux C/C++工程中可生成ELF、动/静态库文件的通用Makefile</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/libraryundefinedref.html">解决make编译链接动态库错误：libxx.so: undefined reference to xx</a>
+			</li>
+		</ul>
+	</section>
+	<section class="widget widget-feed">
+		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
+	</section>
+</div>
+				</div>
+			</div>
+		</div>
+		<!--4. bottom begin-->
+		<footer id="te-site-footer"><div class="container">
+	<div class="row" role="contentinfo">
+		<section class="col-md-2 col-md-offset-1">
+			<h3>Links</h3>
+			<ul><li><a href="http://diaosbook.com/" title="">diaosbook</a></li></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul>
+				<li><a href="https://typecodes.com/links.html">More..</a></li>
+			</ul>
+		</section>
+		<section class="col-md-2">
+			<h3>Following</h3>
+			<ul>
+				<li><a href="https://github.com/vfhky" class="following github" target="_blank" rel="external nofollow">GitHub</a></li>
+				<li><a href="http://weibo.com/typecodes" class="following weibo" target="_blank" rel="external nofollow">Weibo</a></li>
+				<li><a href="http://vfhky.sinaapp.com/" class="following sae" target="_blank" rel="external nofollow">SAE</a></li>
+				<li><a href="http://www.dwz.cn/mYiwa" class="following qqgroup" target="_blank" rel="external nofollow">Group</a></li>
+			</ul>
+		</section>
+		<div class="col-md-12 copyright">
+			<a href="#top"><i class="i-logo-s">TOP</i></a>
+			<p>
+				&copy; 2012-<script language="JavaScript">var date = new Date(); document.write(date.getFullYear());</script>							<a href="https://typecodes.com">TypeCodes</a>. All Rights Reserved<br>Powered by <a href="http://getpelican.com" rel="external" target="_blank">Pelican</a>. <a href="http://www.miitbeian.gov.cn/" rel="external nofollow" target="_blank">粤ICP备14050695号</a>
+			</p>
+		</div>
+	</div>
+</div>
+</footer>
+<script type="text/javascript">
+	var disqus_shortname = 'typecodes';
+	var disqus_identifier = '/mix/wpthemeoptimize.html';
+	var disqus_url = 'https://typecodes.com/mix/wpthemeoptimize.html';
+	var disqus_title = '博客减负记：wordpress主题的优化';
+	(function() {
+		var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+		dsq.src = "//" + disqus_shortname + '.disqus.com/embed.js';
+		(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	 })();
+</script>
+	</body>
+</html>

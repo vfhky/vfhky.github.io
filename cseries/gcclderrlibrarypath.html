@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="zh-CN" class="no-js">
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<title>Linux gcc链接动态库出错：LIBRARY_PATH和LD_LIBRARY_PATH的区别 &mdash; TypeCodes</title>
+		<meta name="author" content="vfhky">
+  		<link href="https://typecodes.com/atom.xml" type="application/atom+xml" rel="alternate" title="TypeCodes Atom Feed" />
+	  	<link href="https://typecodes.com/feed.xml" type="application/rss+xml" rel="alternate" title="TypeCodes RSS Feed" />
+		<meta name="HandheldFriendly" content="True">
+		<meta name="MobileOptimized" content="320">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="renderer" content="webkit">
+		<link rel="stylesheet" href="https://dn-vfhky.qbox.me/libs/css/pelican-vfhky.css">
+		<script>
+			var _hmt = _hmt || [];
+			(function() {
+			  var hm = document.createElement("script");
+			  hm.src = "//hm.baidu.com/hm.js?c15c4ab8e91ba9ac3d5a12293cc93359";
+			  var s = document.getElementsByTagName("script")[0]; 
+			  s.parentNode.insertBefore(hm, s);
+			})();
+		</script>
+	</head>
+	<body style>
+		<!--1. header navigation begin-->
+		<header role="banner" id="te-site-header">
+			<div class="container">
+				<a href="https://typecodes.com" class="te-site-logo" role="logo" target="_self"> TypeCodes</a>
+				<ul class="nav nav-pills" id="te-site-nav" role="navigation">
+					<li><a href="https://typecodes.com">Home</a></li><li><a href="https://typecodes.com/archives.html" title="Archives">Archives</a></li><li><a href="https://typecodes.com/about.html" title="About">About</a></li></ul>
+			</div>
+		</header>
+		<div class="te-headline">
+			<div class="container">
+				<h2 class="te-headline-title"> <a href="https://typecodes.com">TypeCodes</a></h2>
+			</div>
+		</div>
+		<div class="container">
+			<div class="row">
+		<!--2. left sider begin-->
+		<div class="col-md-9" id="blog-main" role="main">
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/cseries/gcclderrlibrarypath.html">Linux gcc链接动态库出错：LIBRARY_PATH和LD_LIBRARY_PATH的区别</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2015-08-08 22:51 | 分类：<a href="https://typecodes.com/cseries/index.html">cseries</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>昨天在自己的CentOs7.1上写makefile的时候，发现在一个C程序在编译并链接一个已生成好的lib动态库的时候出错。链接命令大概是这样的：</p>
+<div class="highlight"><pre>[root@typecodes tcpmsg]# gcc -o hello main.c -lmyhello
+/usr/bin/ld: cannot find -lmyhello
+collect2: error: ld returned 1 exit status
+</pre></div>
+
+
+<p><img alt="Linux gcc链接动态库出错" src="https://dn-vfhky.qbox.me/2015/08/gcc_linux.png" title="Linux gcc链接动态库出错" /></p>
+
+
+<h4>1 gcc链接动态库时的搜索路径</h4>
+<p>自以为在当前工程中设置好了环境变量<code>LD_LIBRARY_PATH</code>包含了工程中的lib库路径，并且还在<code>/etc/ld.so.conf/apphome.conf</code>中配置了lib库的路径。那么在调用动态库的时候，gcc就应该能自动去搜索该目录。</p>
+<p><img alt="gcc链接动态库时的搜索路径" src="https://dn-vfhky.qbox.me/2015/08/centos7_gcc_cannot_find_library.png" title="gcc链接动态库时的搜索路径" /></p>
+<p>很遗憾ld链接器报了如上的错误，但是如果在上面的gcc命令中添加上<code>-L /root/gcc_test/tcp_msg/lib/</code>参数，即明确动态库的绝对路径，是能够链接成功的。</p>
+<h4>2 Google上查找 /usr/bin/ld: cannot find -l* 的出错原因</h4>
+<p>gg了很久gcc ld链接动态库出错的原因，结果还是没找到理想的答案。后来猜想是不是在CentOs7中LD_LIBRARY_PATH不起作用的缘故，但是也不应该，因为自己用的GCC（version 4.8.3）跟操作系统没关系。于是重新搜索了gcc LD_LIBRARY_PATH的作用，竟然发现gcc在编译链接时链接的动态库跟<code>LIBRARY_PATH</code>有关而跟<code>LD_LIBRARY_PATH</code>没关系！</p>
+<h4>3 关于Linux gcc中的<code>LIBRARY_PATH</code>和<code>LD_LIBRARY_PATH</code>参数说明</h4>
+<p>下面摘取了两篇较权威的说明资料： </p>
+<p>1、<a href="https://gcc.gnu.org/onlinedocs/gcc/Environment-Variables.html" title="查看原文">GNU</a>上关于LIBRARY_PATH的说明：</p>
+<div class="highlight"><pre>LIBRARY_PATH
+The value of LIBRARY_PATH is a colon-separated list of directories, much like PATH.
+When configured as a native compiler, GCC tries the directories thus specified when searching for special linker files, if it can&#39;t find them using GCC_EXEC_PREFIX.
+Linking using GCC also uses these directories when searching for ordinary libraries for the -l option (but directories specified with -L come first).
+</pre></div>
+
+
+<p>2、<a href="http://man7.org/linux/man-pages/man8/ld.so.8.html" title="查看原文">man7</a>上关于LD_LIBRARY_PATH的说明：</p>
+<div class="highlight"><pre>LD_LIBRARY_PATH
+A colon-separated list of directories in which to search for
+ELF libraries at execution-time.  Similar to the PATH
+environment variable.  Ignored in set-user-ID and set-group-ID
+programs.
+</pre></div>
+
+
+<p>后面发现<a href="http://stackoverflow.com/questions/4250624/ld-library-path-vs-library-path" title="查看详情">StackOverflow</a>上关于<code>LIBRARY_PATH</code>和<code>LD_LIBRARY_PATH</code>的解释更直白：</p>
+<div class="highlight"><pre>LIBRARY_PATH is used by gcc before compilation to search for directories containing libraries that need to be linked to your program.
+
+LD_LIBRARY_PATH is used by your program to search for directories containing the libraries after it has been successfully compiled and linked.
+
+EDIT: As pointed below, your libraries can be static or shared.
+If it is static then the code is copied over into your program and you don&#39;t need to search for the library after your program is compiled and linked.
+If your library is shared then it needs to be dynamically linked to your program and that&#39;s when LD_LIBRARY_PATH comes into play.
+</pre></div>
+
+
+<p>通过这三篇资料的说明，很快明白了<code>LIBRARY_PATH</code>和<code>LD_LIBRARY_PATH</code>的作用。于是，自己在项目配置文件中添加<code>export LIBRARY_PATH=${LIBRARY_PATH}:${APPHOME}/lib</code>。接着将这个配置文件加载到CentOs的环境变量中，这样就在gcc编译不用加<code>-L</code>参数生成目标文件CommuTcp了。</p>
+<h4>4 总结</h4>
+<p>关于<code>LIBRARY_PATH</code>和<code>LD_LIBRARY_PATH</code>的关系，这里自己再总结一下。</p>
+<h5>4.1 Linux gcc编译链接时的动态库搜索路径</h5>
+<p>GCC编译、链接生成可执行文件时，动态库的搜索路径顺序如下（注意不会递归性地在其子目录下搜索）：</p>
+<div class="highlight"><pre>1、gcc编译、链接命令中的-L选项；
+2、gcc的环境变量的LIBRARY_PATH（多个路径用冒号分割）；
+3、gcc默认动态库目录：/lib:/usr/lib:usr/lib64:/usr/local/lib。
+</pre></div>
+
+
+<h5>4.2 执行二进制文件时的动态库搜索路径</h5>
+<p>链接生成二进制可执行文件后，在运行程序加载动态库文件时，搜索的路径顺序如下：</p>
+<div class="highlight"><pre>1、编译目标代码时指定的动态库搜索路径：用选项-Wl,rpath和include指定的动态库的搜索路径，比如gcc -Wl,-rpath,include -L. -ldltest hello.c，在执行文件时会搜索路径`./include`；
+2、环境变量LD_LIBRARY_PATH（多个路径用冒号分割）；
+3、在 /etc/ld.so.conf.d/ 目录下的配置文件指定的动态库绝对路径（通过ldconfig生效，一般是非root用户时使用）；
+4、gcc默认动态库目录：/lib:/usr/lib:usr/lib64:/usr/local/lib等。
+</pre></div>
+
+
+<p>其中，Linux GCC默认的动态库搜索路径可以通过<code>ld --verbose</code>命令查看：</p>
+<div class="highlight"><pre>[root@typecodes tcpmsg]# ld --verbose
+    ............
+    SEARCH_DIR(&quot;/usr/x86_64-redhat-linux/lib64&quot;);
+    SEARCH_DIR(&quot;/usr/local/lib64&quot;);
+    SEARCH_DIR(&quot;/lib64&quot;);
+    SEARCH_DIR(&quot;/usr/lib64&quot;);               ##### 64位系统
+    SEARCH_DIR(&quot;/usr/x86_64-redhat-linux/lib&quot;);
+    SEARCH_DIR(&quot;/usr/local/lib&quot;);
+    SEARCH_DIR(&quot;/lib&quot;);
+    SEARCH_DIR(&quot;/usr/lib&quot;);
+</pre></div>
+
+
+<p><img alt="Linux GCC中ld --verbose命令" src="https://dn-vfhky.qbox.me/2015/08/gcc_ld_verbose.png" title="Linux GCC中ld --verbose命令" /></p>
+		    	<p class="tags">
+					<div class="post-share">
+						<ul class="post-shareul clearfix">
+							<li class="post-shareli">
+								<a href="http://note.youdao.com/memory/?url=https://typecodes.com/cseries/gcclderrlibrarypath.html&title=Linux gcc链接动态库出错：LIBRARY_PATH和LD_LIBRARY_PATH的区别" class="post-sharea ydshare" target="_blank" rel="nofollow">有道云笔记</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://v.t.sina.com.cn/share/share.php?url=https://typecodes.com/cseries/gcclderrlibrarypath.html&title=Linux gcc链接动态库出错：LIBRARY_PATH和LD_LIBRARY_PATH的区别&source=https://typecodes.com" class="post-sharea wbshare" target="_blank" rel="nofollow">新浪微博</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://v.t.qq.com/share/share.php?title=Linux gcc链接动态库出错：LIBRARY_PATH和LD_LIBRARY_PATH的区别&url=https://typecodes.com/cseries/gcclderrlibrarypath.html&site=https://typecodes.com" class="post-sharea twbshare" target="_blank" rel="nofollow">腾讯微博</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=https://typecodes.com/cseries/gcclderrlibrarypath.html&title=Linux gcc链接动态库出错：LIBRARY_PATH和LD_LIBRARY_PATH的区别&content='utf-8'" class="post-sharea qzoneshare" target="_blank" rel="nofollow">QZone</a>
+							</li>
+						</ul>
+					</div>
+					<div>
+						Tags: <a href="https://typecodes.com/tag/gcc.html">gcc</a>,<a href="https://typecodes.com/tag/library_path.html">library_path</a>,<a href="https://typecodes.com/tag/ld_library_path.html">ld_library_path</a>					</div>
+				</p>
+			</article>
+			
+			<div id="comments">
+				<h4 class="num">Comments &raquo;</h4>
+		    	<div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript></div>
+		    </div>
+		</div>
+		<!--3. right sider begin-->
+<div class="col-md-3" id="blog-secondary" role="complementary">
+	<section class="widget">
+		<ul class="widget-list">
+			<form id="search" method="get" action="https://typecodes.com/search.html">
+				<input type="text" name="q" id="s" size="20" x-webkit-speech="" x-webkit-grammar="builtin:search" onwebkitspeechchange="this.value = this.value.replace(this.defaultValue, '')" value="Google...." onfocus="this.value = (this.value == this.defaultValue) ? '' : this.value" onblur="this.value = (this.value == '') ? this.defaultValue : this.value">
+			</form>
+		</ul>
+	</section>
+	<section class="widget">
+		<h3 class="widget-title">Categories</h3>
+		<ul class="widget-list">
+		      <li class="current">
+		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (26)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/csharp/index.html">Csharp</a> (6)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/database/index.html">Database</a> (11)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/java/index.html">Java</a> (1)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/linux/index.html">Linux</a> (16)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/mix/index.html">Mix</a> (53)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/web/index.html">Web</a> (88)
+		      </li>
+		</ul>
+	</section>
+	<section class="widget">
+		<h3 class="widget-title">Recent Posts</h3>
+		<ul class="widget-list">
+			<li class="post">
+				<a href="https://typecodes.com/mix/sucesstypechotopelican.html">成功将博客从Typecho迁移到Pelican</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/mix/begintypechotopelican.html">准备将博客从Typecho迁移到Pelican</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/tcpconnectiontimedout.html">Linux TCP连接Connection Refused和Connection timed out的问题</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/mysqlerrornospace.html">博客MySQL服务惊魂记：Linux磁盘空间不足(Core Dump文件引爆)</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/mix/synweibophpmarkdownimgurl.html">升级博客文章同步微博的插件：PHP正则提取Markdown的图片地址</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/cppgeneralmakefile.html">Linux C/C++工程中可生成ELF、动/静态库文件的通用Makefile</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/libraryundefinedref.html">解决make编译链接动态库错误：libxx.so: undefined reference to xx</a>
+			</li>
+		</ul>
+	</section>
+	<section class="widget widget-feed">
+		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
+	</section>
+</div>
+				</div>
+			</div>
+		</div>
+		<!--4. bottom begin-->
+		<footer id="te-site-footer"><div class="container">
+	<div class="row" role="contentinfo">
+		<section class="col-md-2 col-md-offset-1">
+			<h3>Links</h3>
+			<ul><li><a href="http://diaosbook.com/" title="">diaosbook</a></li></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul>
+				<li><a href="https://typecodes.com/links.html">More..</a></li>
+			</ul>
+		</section>
+		<section class="col-md-2">
+			<h3>Following</h3>
+			<ul>
+				<li><a href="https://github.com/vfhky" class="following github" target="_blank" rel="external nofollow">GitHub</a></li>
+				<li><a href="http://weibo.com/typecodes" class="following weibo" target="_blank" rel="external nofollow">Weibo</a></li>
+				<li><a href="http://vfhky.sinaapp.com/" class="following sae" target="_blank" rel="external nofollow">SAE</a></li>
+				<li><a href="http://www.dwz.cn/mYiwa" class="following qqgroup" target="_blank" rel="external nofollow">Group</a></li>
+			</ul>
+		</section>
+		<div class="col-md-12 copyright">
+			<a href="#top"><i class="i-logo-s">TOP</i></a>
+			<p>
+				&copy; 2012-<script language="JavaScript">var date = new Date(); document.write(date.getFullYear());</script>							<a href="https://typecodes.com">TypeCodes</a>. All Rights Reserved<br>Powered by <a href="http://getpelican.com" rel="external" target="_blank">Pelican</a>. <a href="http://www.miitbeian.gov.cn/" rel="external nofollow" target="_blank">粤ICP备14050695号</a>
+			</p>
+		</div>
+	</div>
+</div>
+</footer>
+<script type="text/javascript">
+	var disqus_shortname = 'typecodes';
+	var disqus_identifier = '/cseries/gcclderrlibrarypath.html';
+	var disqus_url = 'https://typecodes.com/cseries/gcclderrlibrarypath.html';
+	var disqus_title = 'Linux gcc链接动态库出错：LIBRARY_PATH和LD_LIBRARY_PATH的区别';
+	(function() {
+		var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+		dsq.src = "//" + disqus_shortname + '.disqus.com/embed.js';
+		(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	 })();
+</script>
+	</body>
+</html>

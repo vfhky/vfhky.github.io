@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="zh-CN" class="no-js">
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<title>博客优化第二波(三)：wordpress评论添加算术验证码 &mdash; TypeCodes</title>
+		<meta name="author" content="vfhky">
+  		<link href="https://typecodes.com/atom.xml" type="application/atom+xml" rel="alternate" title="TypeCodes Atom Feed" />
+	  	<link href="https://typecodes.com/feed.xml" type="application/rss+xml" rel="alternate" title="TypeCodes RSS Feed" />
+		<meta name="HandheldFriendly" content="True">
+		<meta name="MobileOptimized" content="320">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="renderer" content="webkit">
+		<link rel="stylesheet" href="https://dn-vfhky.qbox.me/libs/css/pelican-vfhky.css">
+		<script>
+			var _hmt = _hmt || [];
+			(function() {
+			  var hm = document.createElement("script");
+			  hm.src = "//hm.baidu.com/hm.js?c15c4ab8e91ba9ac3d5a12293cc93359";
+			  var s = document.getElementsByTagName("script")[0]; 
+			  s.parentNode.insertBefore(hm, s);
+			})();
+		</script>
+	</head>
+	<body style>
+		<!--1. header navigation begin-->
+		<header role="banner" id="te-site-header">
+			<div class="container">
+				<a href="https://typecodes.com" class="te-site-logo" role="logo" target="_self"> TypeCodes</a>
+				<ul class="nav nav-pills" id="te-site-nav" role="navigation">
+					<li><a href="https://typecodes.com">Home</a></li><li><a href="https://typecodes.com/archives.html" title="Archives">Archives</a></li><li><a href="https://typecodes.com/about.html" title="About">About</a></li></ul>
+			</div>
+		</header>
+		<div class="te-headline">
+			<div class="container">
+				<h2 class="te-headline-title"> <a href="https://typecodes.com">TypeCodes</a></h2>
+			</div>
+		</div>
+		<div class="container">
+			<div class="row">
+		<!--2. left sider begin-->
+		<div class="col-md-9" id="blog-main" role="main">
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/web/wpmathverifycode.html">博客优化第二波(三)：wordpress评论添加算术验证码</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2012-12-12 16:17 | 分类：<a href="https://typecodes.com/web/index.html">web</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>虽然说前面通过前面通过采用<a href="https://typecodes.com/web/antiwpspamplugorno.html" title="屏蔽wordpress垃圾评论的方法（插件和非插件）">《屏蔽wordpress垃圾评论的方法（插件和非插件）》</a>的方法来拦截那些spam，效果非常不错。但是博主对这些垃圾评论不会直接删除，而是先经过非插件方法：Anti-Spam程序的处理，自动把他们列入黑名单，然后在wp后台手动删除。每天都要删半箩筐的垃圾评论，蛋疼不已。</p>
+
+
+<p>于是博主做了一个艰难的决定，那就是填写验证码后才能发表评论，幸苦发表评论的筒子们了。之前写过一篇关于PHP验证码的文章——<a href="https://typecodes.com/web/phpverificationcode.html" title="PHP中验证码的设计">《PHP中验证码的设计》</a>，主要是JS弹窗进行验证。这样的好处是整个过程在客户端进行，不用提交到服务器，减轻了服务器的负担；缺点是安全性不佳，要是用户禁用了浏览器的javascript，那么弹窗是不起作用的。那么除了图片验证码之外，我们也可以使用简单的数字验证码，即简单的算术运算来完成验证工作。</p>
+<p>效果如下图示:</p>
+<p><img alt="wordpress算术验证码验证码" src="https://dn-vfhky.qbox.me/2012/12/yzm.png" title="wordpress算术验证码验证码" /></p>
+<p>不罗嗦了，直接贴出代码：</p>
+<h5>（一）在主题目录的functions.php添加如下代码：</h5>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19</pre></div></td><td class="code"><div class="highlight"><pre><span class="x">//算术验证码by vfhky</span>
+<span class="x">function spam_provent_math(){</span>
+<span class="x">  $a=rand(5,15);</span>
+<span class="x">  $b=rand(5,15);</span>
+<span class="x">  echo &quot;&amp;lt;input type=&#39;text&#39; name=&#39;sum&#39; id=&#39;sum&#39;  size=&#39;22&#39; tabindex=&#39;3&#39; value=&#39;动手又动脑，哦也 ！&#39; onfocus=&#39;if (this.value != \&quot;\&quot;) {this.value = \&quot;\&quot;;}&#39; onblur=&#39;if (this.value == \&quot;\&quot;) {this.value = \&quot;动手又动脑，哦也 ！\&quot;;}&#39; /&amp;gt; = $a + $b （&amp;lt;font color=&#39;#0088DD&#39;&amp;gt;防止机器人评论&amp;lt;/font&amp;gt;）&quot; .&quot;&amp;lt;input type=&#39;hidden&#39; name=&#39;a&#39; value=&#39;$a&#39;/&amp;gt;&quot; .&quot;&amp;lt;input type=&#39;hidden&#39; name=&#39;b&#39; value=&#39;$b&#39;/&amp;gt;&quot;;</span>
+<span class="x">}</span>
+<span class="x">function spam_provent_pre($spam_result){</span>
+<span class="x">  $sum=$_POST[&#39;sum&#39;];</span>
+<span class="x">  switch($sum){</span>
+<span class="x">    case $_POST[&#39;a&#39;]+$_POST[&#39;b&#39;]:break;</span>
+<span class="x">    case null:wp_die(&#39;亲，算个结果撒&#39;);break;</span>
+<span class="x">    default:wp_die(&#39;算错啦⊙﹏⊙b汗&#39;);</span>
+<span class="x">  }</span>
+<span class="x">  return $spam_result;</span>
+<span class="x">}</span>
+<span class="x">//注册用户or管理员则不需要验证</span>
+<span class="x">if(!is_user_logged_in() &amp;&amp; $comment_data[&#39;comment_type&#39;]==&#39;&#39;){</span>
+<span class="x">  add_filter(&#39;preprocess_comment&#39;,&#39;spam_provent_pre&#39;);</span>
+<span class="x">}</span>
+</pre></div>
+</td></tr></table>
+
+<h5>（二）在主题目录下的comments.php(不同的主题可能评论框的位置不同，有的主题可能在functions.php里面)中调用上述代码：</h5>
+<div class="highlight"><pre>//根据是否是管理员来决定是否显示验证码
+&lt;php if(!is_user_logged_in())spam_provent_math();?&gt;
+</pre></div>
+
+
+<h5>Update 2013.03.09 00:26</h5>
+<p>感谢 @Teddysun 指出本代码的BUG——普通评论者在初次留言后，如果继续留言的话就需要点击“更改”按钮，否则直接留言的话会被程序视为未登录者而调用spam_provent_math()函数，从而造成BUG。问题出在is_user_logged_in()函数身上，先给出解决方案：</p>
+<p>在wp官方论坛也有人遇到了类似问题：<a href="http://wordpress.org/support/topic/is_user_logged_in-not-working-as-expected" title="查看 wordpress论坛中的类似问题 ">is_user_logged_in not working as expected</a>。其中，有两位大牛的回答我觉得还是有见地的。</p>
+<h6>Asbj?rn Ulsberg的解释是：</h6>
+<p>他在查看了is_user_logged_in()的底层函数之后发觉内部调用wp_parse_auth_cookie()会返回false。因为根据var_dump($_COOKIE)打印输出的变量$_COOKIE的值可以揭示wp_parse_auth_cookie()正在查找的cookies是完全不存在的。</p>
+<div class="highlight"><pre><span class="x">I&#39;ve dug into the underlying code of is_user_logged_in() and found that the inner call to wp_parse_auth_cookie() returns false. A var_dump(</span><span class="p">$</span><span class="nv">_COOKIE</span><span class="x">) reveals that there&#39;s actually no cookies named anything like what wp_parse_auth_cookie() is looking for.</span>
+</pre></div>
+
+
+<h6>rhysgoodwin的个人博客解释是：</h6>
+<p>wp_signon()函数可能出于某些原因使得$current_user之类的全局变量在页面刷新前是无法存储的,而且调用get_currentuserinfo()也无法产生。而is_user_logged_in()也是返回false，因此认为是cookie的认证过程出了什么问题引起的。</p>
+<div class="highlight"><pre><span class="nx">The</span> <span class="nx">wp_signon</span><span class="p">()</span> <span class="kd">function</span> <span class="nx">logs</span> <span class="nx">a</span> <span class="nx">user</span> <span class="k">in</span> <span class="nx">but</span> <span class="k">for</span> <span class="nx">some</span> <span class="nx">reason</span> <span class="nx">after</span> <span class="nx">doing</span> <span class="nx">so</span> <span class="nx">the</span> <span class="nx">global</span> <span class="nx">user</span> <span class="nx">variables</span> <span class="nx">such</span> <span class="nx">as</span> <span class="nx">$current_user</span> <span class="nx">and</span> <span class="nx">$user_ID</span> <span class="nx">are</span> <span class="nx">not</span> <span class="nx">populated</span> <span class="nx">until</span> <span class="nx">the</span> <span class="nx">page</span> <span class="nx">is</span> <span class="nx">refreshed</span> <span class="nx">and</span> <span class="nx">calling</span> <span class="nx">get_currentuserinfo</span><span class="p">()</span> <span class="nx">doesn</span><span class="err">’</span><span class="nx">t</span> <span class="nx">populate</span> <span class="nx">them</span><span class="p">.</span> <span class="nx">The</span> <span class="nx">is_user_logged_in</span><span class="p">()</span> <span class="kd">function</span> <span class="nx">also</span> <span class="nx">returns</span> <span class="kc">false</span><span class="p">.</span>  <span class="nx">I</span> <span class="nx">think</span> <span class="nx">the</span> <span class="nx">problem</span> <span class="nx">has</span> <span class="nx">something</span> <span class="nx">to</span> <span class="k">do</span> <span class="kd">with</span> <span class="nx">the</span> <span class="nx">cookie</span> <span class="nx">authentication</span> <span class="nx">process</span><span class="p">.</span>
+</pre></div>
+
+
+<h6>（三）我们也不去深入考究上面两位大牛的具体，结合博客先前评论遇到的实际BUG，有一点是可以确定的：is_user_logged_in()只能“一次性”使用，一旦页面刷新就无法起作用了。所以我把步骤(二)中的调用代码改成</h6>
+<div class="highlight"><pre><span class="cp">&lt;?php</span> <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="nb">isset</span><span class="p">(</span><span class="nv">$_COOKIE</span><span class="p">[</span><span class="s1">&#39;comment_author_email_&#39;</span><span class="o">.</span><span class="nx">COOKIEHASH</span><span class="p">]))</span><span class="nx">spam_provent_math</span><span class="p">();</span><span class="cp">?&gt;</span>
+</pre></div>
+
+
+<p>经博主的验证测试木有出现上面的BUG了，问题解决！！！</p>
+<h5>Update 2013.04.12 22:10</h5>
+<p>感谢 @来哥 指出本代码的BUG——用户在错误输入验证码结果后会导致博客布局错乱、页面变形。解决方案见<a href="https://typecodes.com/web/againwpmathverifycode.html" title="再谈wordpress评论验证码——Willin Kan大神开的一个“玩笑”">《再谈wordpress评论验证码——Willin Kan大神开的一个“玩笑”》</a>。</p>
+		    	<p class="tags">
+					<div class="post-share">
+						<ul class="post-shareul clearfix">
+							<li class="post-shareli">
+								<a href="http://note.youdao.com/memory/?url=https://typecodes.com/web/wpmathverifycode.html&title=博客优化第二波(三)：wordpress评论添加算术验证码" class="post-sharea ydshare" target="_blank" rel="nofollow">有道云笔记</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://v.t.sina.com.cn/share/share.php?url=https://typecodes.com/web/wpmathverifycode.html&title=博客优化第二波(三)：wordpress评论添加算术验证码&source=https://typecodes.com" class="post-sharea wbshare" target="_blank" rel="nofollow">新浪微博</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://v.t.qq.com/share/share.php?title=博客优化第二波(三)：wordpress评论添加算术验证码&url=https://typecodes.com/web/wpmathverifycode.html&site=https://typecodes.com" class="post-sharea twbshare" target="_blank" rel="nofollow">腾讯微博</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=https://typecodes.com/web/wpmathverifycode.html&title=博客优化第二波(三)：wordpress评论添加算术验证码&content='utf-8'" class="post-sharea qzoneshare" target="_blank" rel="nofollow">QZone</a>
+							</li>
+						</ul>
+					</div>
+					<div>
+						Tags: <a href="https://typecodes.com/tag/wordpress.html">wordpress</a>,<a href="https://typecodes.com/tag/wordpressyan-zheng-ma.html">wordpress验证码</a>					</div>
+				</p>
+			</article>
+			
+			<div id="comments">
+				<h4 class="num">Comments &raquo;</h4>
+		    	<div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript></div>
+		    </div>
+		</div>
+		<!--3. right sider begin-->
+<div class="col-md-3" id="blog-secondary" role="complementary">
+	<section class="widget">
+		<ul class="widget-list">
+			<form id="search" method="get" action="https://typecodes.com/search.html">
+				<input type="text" name="q" id="s" size="20" x-webkit-speech="" x-webkit-grammar="builtin:search" onwebkitspeechchange="this.value = this.value.replace(this.defaultValue, '')" value="Google...." onfocus="this.value = (this.value == this.defaultValue) ? '' : this.value" onblur="this.value = (this.value == '') ? this.defaultValue : this.value">
+			</form>
+		</ul>
+	</section>
+	<section class="widget">
+		<h3 class="widget-title">Categories</h3>
+		<ul class="widget-list">
+		      <li class="current">
+		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (26)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/csharp/index.html">Csharp</a> (6)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/database/index.html">Database</a> (11)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/java/index.html">Java</a> (1)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/linux/index.html">Linux</a> (16)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/mix/index.html">Mix</a> (53)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/web/index.html">Web</a> (88)
+		      </li>
+		</ul>
+	</section>
+	<section class="widget">
+		<h3 class="widget-title">Recent Posts</h3>
+		<ul class="widget-list">
+			<li class="post">
+				<a href="https://typecodes.com/mix/sucesstypechotopelican.html">成功将博客从Typecho迁移到Pelican</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/mix/begintypechotopelican.html">准备将博客从Typecho迁移到Pelican</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/tcpconnectiontimedout.html">Linux TCP连接Connection Refused和Connection timed out的问题</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/mysqlerrornospace.html">博客MySQL服务惊魂记：Linux磁盘空间不足(Core Dump文件引爆)</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/mix/synweibophpmarkdownimgurl.html">升级博客文章同步微博的插件：PHP正则提取Markdown的图片地址</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/cppgeneralmakefile.html">Linux C/C++工程中可生成ELF、动/静态库文件的通用Makefile</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/libraryundefinedref.html">解决make编译链接动态库错误：libxx.so: undefined reference to xx</a>
+			</li>
+		</ul>
+	</section>
+	<section class="widget widget-feed">
+		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
+	</section>
+</div>
+				</div>
+			</div>
+		</div>
+		<!--4. bottom begin-->
+		<footer id="te-site-footer"><div class="container">
+	<div class="row" role="contentinfo">
+		<section class="col-md-2 col-md-offset-1">
+			<h3>Links</h3>
+			<ul><li><a href="http://diaosbook.com/" title="">diaosbook</a></li></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul>
+				<li><a href="https://typecodes.com/links.html">More..</a></li>
+			</ul>
+		</section>
+		<section class="col-md-2">
+			<h3>Following</h3>
+			<ul>
+				<li><a href="https://github.com/vfhky" class="following github" target="_blank" rel="external nofollow">GitHub</a></li>
+				<li><a href="http://weibo.com/typecodes" class="following weibo" target="_blank" rel="external nofollow">Weibo</a></li>
+				<li><a href="http://vfhky.sinaapp.com/" class="following sae" target="_blank" rel="external nofollow">SAE</a></li>
+				<li><a href="http://www.dwz.cn/mYiwa" class="following qqgroup" target="_blank" rel="external nofollow">Group</a></li>
+			</ul>
+		</section>
+		<div class="col-md-12 copyright">
+			<a href="#top"><i class="i-logo-s">TOP</i></a>
+			<p>
+				&copy; 2012-<script language="JavaScript">var date = new Date(); document.write(date.getFullYear());</script>							<a href="https://typecodes.com">TypeCodes</a>. All Rights Reserved<br>Powered by <a href="http://getpelican.com" rel="external" target="_blank">Pelican</a>. <a href="http://www.miitbeian.gov.cn/" rel="external nofollow" target="_blank">粤ICP备14050695号</a>
+			</p>
+		</div>
+	</div>
+</div>
+</footer>
+<script type="text/javascript">
+	var disqus_shortname = 'typecodes';
+	var disqus_identifier = '/web/wpmathverifycode.html';
+	var disqus_url = 'https://typecodes.com/web/wpmathverifycode.html';
+	var disqus_title = '博客优化第二波(三)：wordpress评论添加算术验证码';
+	(function() {
+		var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+		dsq.src = "//" + disqus_shortname + '.disqus.com/embed.js';
+		(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	 })();
+</script>
+	</body>
+</html>

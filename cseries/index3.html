@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="zh-CN" class="no-js">
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<title>分类 cseries 下的文章 - TypeCodes</title>
+		<meta name="author" content="vfhky">
+  		<link href="https://typecodes.com/atom.xml" type="application/atom+xml" rel="alternate" title="TypeCodes Atom Feed" />
+	  	<link href="https://typecodes.com/feed.xml" type="application/rss+xml" rel="alternate" title="TypeCodes RSS Feed" />
+		<meta name="HandheldFriendly" content="True">
+		<meta name="MobileOptimized" content="320">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="renderer" content="webkit">
+		<link rel="stylesheet" href="https://dn-vfhky.qbox.me/libs/css/pelican-vfhky.css">
+		<script>
+			var _hmt = _hmt || [];
+			(function() {
+			  var hm = document.createElement("script");
+			  hm.src = "//hm.baidu.com/hm.js?c15c4ab8e91ba9ac3d5a12293cc93359";
+			  var s = document.getElementsByTagName("script")[0]; 
+			  s.parentNode.insertBefore(hm, s);
+			})();
+		</script>
+	</head>
+	<body style>
+		<!--1. header navigation begin-->
+		<header role="banner" id="te-site-header">
+			<div class="container">
+				<a href="https://typecodes.com" class="te-site-logo" role="logo" target="_self"> TypeCodes</a>
+				<ul class="nav nav-pills" id="te-site-nav" role="navigation">
+					<li><a href="https://typecodes.com">Home</a></li><li><a href="https://typecodes.com/archives.html" title="Archives">Archives</a></li><li><a href="https://typecodes.com/about.html" title="About">About</a></li></ul>
+			</div>
+		</header>
+		<div class="te-headline">
+			<div class="container">
+				<h2 class="te-headline-title"> <a href="https://typecodes.com">TypeCodes</a></h2>
+			</div>
+		</div>
+		<div class="container">
+			<div class="row">
+		<!--2. left sider begin-->
+		<div class="col-md-9" id="blog-main" role="main">
+		  	<!--article recycle-->
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/cseries/sizeofbyteorder.html">C语言字节序的大小端模式</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2014-11-05 23:33 | 分类：<a href="https://typecodes.com/cseries/index.html">cseries</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>关于字节序的大小端模式，个人认为CSDN上Hackbuteer1作者的这篇文章<a href="http://blog.csdn.net/hackbuteer1/article/details/7722667" title="大端模式和小端模式">《大端模式和小端模式》</a>讲解的很清晰。这里MARK一下自己的学习心得：</p>
+<p><img alt="C程序内存映射模式" src="https://dn-vfhky.qbox.me/2014/11/memorymapping.png" title="C程序内存映射模式" /></p>
+<h5>1 原文精华</h5>
+<div class="highlight"><pre>小端模式[Little-Endian]：内存块低地址存放元素的低位(字节)，内存块高地址存放元素的高位(字节)；
+大端模式[Big-Endian]：内存块低地址存放元素的高位(字节)，内存块高地址存放元素的低位(字节)。
+</pre></div>
+
+
+<p>采用小端模式的处理器包括：<code>PDP-11、VAX、Intel系列微处理器和一些网络通信设备</code>；
+采用大端模式的处理器包括：<code>IBM3700系列、PDP-10、Mortolora微处理器系列和绝大多数的RISC处理器</code>。</p>
+
+	<p class="more"><a href="https://typecodes.com/cseries/sizeofbyteorder.html" title="C语言字节序的大小端模式">- 阅读剩余部分 -</a></p>
+			</article>
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/cseries/clangintegerstrtointeger.html">C语言将十进制字符串转成十进制整数</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2014-11-05 22:05 | 分类：<a href="https://typecodes.com/cseries/index.html">cseries</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>通过<a href="https://typecodes.com/cseries/clanghexstrtointeger.html" title="《C语言将十六进制字符串转成十进制整数》">上一篇文章</a>完成了十六进制字符串转成十进制整数，同理也很容易写出十进制字符串转成十进制整数的函数。考虑到十进制的字符串中可能会出现正负号，即转换后可能出现负整数，同样也增加了对这种情况的处理。例如将十进制的字符串"0621"、"+621"、"6210"、"-1234"转换十进制的整数，即621、621、6210、-1234。下面同样是正向和逆向两种方法的具体代码：</p>
+
+	<p class="more"><a href="https://typecodes.com/cseries/clangintegerstrtointeger.html" title="C语言将十进制字符串转成十进制整数">- 阅读剩余部分 -</a></p>
+			</article>
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/cseries/clanghexstrtointeger.html">C语言将十六进制字符串转成十进制整数</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2014-11-04 22:22 | 分类：<a href="https://typecodes.com/cseries/index.html">cseries</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>C/C++处理十六进制文件中的报文内容时，经常会遇到先读取报文头中的长度（例如"E2"、"1F"、"-eE2"等等），再读取报文体中的内容的情况。那么就需要把报文头中表示长度的十六进制字符串转换成十进制的整形数据。</p>
+<p>转换方法有两种，一种是正向从字符串低位到高位依次转换，另一种是逆向从字符串高位到低位依次转换。原理都是利用指针变量依次指向十六进制字符串中的单个字符，然后通过ASCII码表转换成对应的整数。考虑到十进制的字符串中可能会出现正负号，即转换后可能出现负整数，所以增加了对这种情况的处理。下面是两种方法的具体代码：</p>
+
+	<p class="more"><a href="https://typecodes.com/cseries/clanghexstrtointeger.html" title="C语言将十六进制字符串转成十进制整数">- 阅读剩余部分 -</a></p>
+			</article>
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/cseries/pointermemaccess0xC0000005.html">再谈“0xC0000005读取写入位置冲突”——正确使用指针访问内存</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2014-09-03 22:26 | 分类：<a href="https://typecodes.com/cseries/index.html">cseries</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>在<a href="https://typecodes.com/cseries/trimspace0xC0000005.html" title="未经处理的异常:0xC0000005:读取/写入位置冲突——从去掉字符串所有空格说起">前面一篇文章</a>中，总结了错误使用指针指向一个字符串常量，然后对该字符串常量进行写入操作导致出错：“未经处理的异常：0xC0000005: 读取/写入位置发生访问冲突”。</p>
+<p>这篇文章继续使用指针来探索这个问题。</p>
+<h5>1 测试程序：“异常: 0xC0000005: 写入位置 0xxxxxxxxx 时发生访问冲突”</h5>
+
+	<p class="more"><a href="https://typecodes.com/cseries/pointermemaccess0xC0000005.html" title="再谈“0xC0000005读取写入位置冲突”——正确使用指针访问内存">- 阅读剩余部分 -</a></p>
+			</article>
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/cseries/trimspace0xC0000005.html">未经处理的异常:0xC0000005:读取/写入位置冲突——从去掉字符串所有空格说起</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2014-08-30 13:17 | 分类：<a href="https://typecodes.com/cseries/index.html">cseries</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>在c/c++中，有时会遇到c0xC0000005: 读取/写入位置冲突的问题。明明编译器编译通过，但是在执行的时候就出现<code>Segmentation fault(coredump)</code>了。</p>
+<p>该错误是由于内存访问出错引起的，最常见于指针的错误使用和数组越界等。下面是博主之前的一个经历——去掉一个字符串前后的所有空格。</p>
+
+	<p class="more"><a href="https://typecodes.com/cseries/trimspace0xC0000005.html" title="未经处理的异常:0xC0000005:读取/写入位置冲突——从去掉字符串所有空格说起">- 阅读剩余部分 -</a></p>
+			</article>
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/cseries/cfree5ldexedwarferr.html">解决C-FREE 5编译出现“ld.exe: Dwarf Error: found dwarf version '0'”的问题</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2014-08-10 23:37 | 分类：<a href="https://typecodes.com/cseries/index.html">cseries</a></li>
+</ul>
+<div class="post-content fmt">
+	<h5>1问题描述</h5>
+<p>之前自己在win7 64bit的机器上，安装了MinGW编译器，GCC版本是4.8.1，安装目录是 C:\MinGW ，同时安装了C-FREE 5这款C/C++集成开发环境到 D:\C-Free 5\ 目录。用c-free编译程序的时候总是报：C-FREE~1\mingw\bin\ld.exe: Dwarf Error: found dwarf version '0', this reader only handles version 2 and 3 information。如下图所示：</p>
+<p><img alt="C-FREE 5编译出现“ld.exe: Dwarf Error: found dwarf version '0'”" src="https://dn-vfhky.qbox.me/2014/08/cfree5ldexedwarferr.png" title="C-FREE 5编译出现“ld.exe: Dwarf Error: found dwarf version '0'”" /></p>
+
+	<p class="more"><a href="https://typecodes.com/cseries/cfree5ldexedwarferr.html" title="解决C-FREE 5编译出现“ld.exe: Dwarf Error: found dwarf version '0'”的问题">- 阅读剩余部分 -</a></p>
+			</article>
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/cseries/vsbugonvariable.html">小心visual studio的“BUG”：变量的声明和使用</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2014-03-19 16:34 | 分类：<a href="https://typecodes.com/cseries/index.html">cseries</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>昨天一Q友找我帮忙写个C程序：其中函数fun要实现：求出2000到2500之内能被7或者17或者27整除，但是不能同时被7和17整除，也不能同时被17和27整除的整数。题目倒是不难，遂打开visual studio，默默地写出下面的程序。</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30</pre></div></td><td class="code"><div class="highlight"><pre><span class="cp">#include &lt;stdio.h&gt;</span>
+<span class="kt">void</span> <span class="nf">fun</span><span class="p">(</span><span class="kt">int</span> <span class="o">*</span><span class="n">a</span><span class="p">,</span> <span class="kt">int</span> <span class="o">*</span><span class="n">n</span><span class="p">)</span>
+<span class="p">{</span>
+   <span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">2000</span><span class="p">,</span> <span class="n">sum</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+   <span class="k">for</span><span class="p">(;</span><span class="n">i</span><span class="o">&lt;</span><span class="mi">2501</span><span class="p">;</span><span class="n">i</span><span class="o">++</span><span class="p">)</span>
+   <span class="p">{</span>
+      <span class="k">if</span><span class="p">(</span> <span class="p">(</span><span class="n">i</span><span class="o">%</span><span class="mi">7</span><span class="o">==</span><span class="mi">0</span> <span class="o">||</span> <span class="n">i</span><span class="o">%</span><span class="mi">17</span><span class="o">==</span><span class="mi">0</span> <span class="o">||</span> <span class="n">i</span><span class="o">%</span><span class="mi">27</span><span class="o">==</span><span class="mi">0</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="o">!</span><span class="p">(</span><span class="n">i</span><span class="o">%</span><span class="mi">7</span><span class="o">==</span><span class="mi">0</span>  <span class="o">&amp;&amp;</span> <span class="n">i</span><span class="o">%</span><span class="mi">17</span><span class="o">==</span><span class="mi">0</span><span class="p">))</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="o">!</span><span class="p">(</span><span class="n">i</span><span class="o">%</span><span class="mi">17</span><span class="o">==</span><span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="n">i</span><span class="o">%</span><span class="mi">27</span><span class="o">==</span><span class="mi">0</span><span class="p">))</span> <span class="p">)</span>
+      <span class="p">{</span>
+           <span class="o">*</span><span class="n">a</span><span class="o">++</span> <span class="o">=</span> <span class="n">i</span><span class="p">;</span>
+           <span class="n">sum</span><span class="o">++</span><span class="p">;</span>
+      <span class="p">}</span>
+   <span class="p">}</span>
+   <span class="cm">/* 返回符合要求元素的个数 */</span>
+   <span class="o">*</span><span class="n">n</span> <span class="o">=</span> <span class="n">sum</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>
+<span class="p">{</span>
+   <span class="kt">int</span> <span class="n">a</span><span class="p">[</span><span class="mi">120</span><span class="p">];</span>
+   <span class="kt">int</span> <span class="n">k</span><span class="p">;</span>
+   <span class="n">fun</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="o">&amp;</span><span class="n">k</span><span class="p">);</span>
+   <span class="cm">/* 使指针pt指向数组a的起始地址 */</span>
+   <span class="kt">int</span> <span class="o">*</span><span class="n">pt</span> <span class="o">=</span> <span class="n">a</span><span class="p">;</span>
+   <span class="k">for</span><span class="p">(;</span><span class="n">pt</span><span class="o">&lt;</span><span class="n">a</span><span class="o">+</span><span class="mi">120</span><span class="p">;</span><span class="n">pt</span><span class="o">++</span><span class="p">)</span>
+   <span class="p">{</span>
+         <span class="n">printf</span><span class="p">(</span><span class="s">&quot;%d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="o">*</span><span class="n">pt</span><span class="p">);</span>
+   <span class="p">}</span>
+   <span class="n">printf</span><span class="p">(</span><span class="s">&quot;%d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="n">k</span><span class="p">);</span>
+   <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</td></tr></table>
+
+<p>然后ctrl+F5执行，结果很意外的报错了：</p>
+
+	<p class="more"><a href="https://typecodes.com/cseries/vsbugonvariable.html" title="小心visual studio的“BUG”：变量的声明和使用">- 阅读剩余部分 -</a></p>
+			</article>
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/cseries/windowsinstallmingwgcc.html">Windows平台如何安装最新的MinGW GCC编译器</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2014-03-08 11:00 | 分类：<a href="https://typecodes.com/cseries/index.html">cseries</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>在Eclipse中搭建C/C++环境的话，需要一个C/C++编译器。之前文章<a href="https://typecodes.com/cseries/netbeanscdevenv.html" title="点击查看原文">《完美配置NetBeans IDE中的C/C++开发环境》</a>中提到了使用Cygwin作为C/C++程序的编译器，那么这篇文章就说说在Windows平台如何安装最新的MinGW GCC编译器。</p>
+<h5>1 下载MinGW GCC编译器</h5>
+<p>MinGW官网地址是：http://www.mingw.org/，目前它已经把MinGW源码托管在了sourceforge上了，因此下载地址是：<a href="http://sourceforge.net/projects/mingw/" title="进入官方下载地址">点击进入</a>。把那个mingw-get-setup.exe下载至本地电脑上即可。</p>
+
+	<p class="more"><a href="https://typecodes.com/cseries/windowsinstallmingwgcc.html" title="Windows平台如何安装最新的MinGW GCC编译器">- 阅读剩余部分 -</a></p>
+			</article>
+		  	<!--page navigation-->
+<ol class="page-navigator">
+<li class="prev"><a href="https://typecodes.com/cseries/index2.html">&laquo; 前一页</a></li><li><a href="https://typecodes.com/cseries/index.html">1</a><li><a href="https://typecodes.com/cseries/index2.html">2</a>
+       		</li><li class="current"><a href="https://typecodes.com/cseries/index3.html">3</a>
+       		</li><li><a href="https://typecodes.com/cseries/index4.html">4</a>
+       		</li><li class="next">
+       		<a href="https://typecodes.com/cseries/index4.html">后一页 &raquo;</a>
+       </li></ol>		</div>
+		<!--3. right sider begin-->
+<div class="col-md-3" id="blog-secondary" role="complementary">
+	<section class="widget">
+		<ul class="widget-list">
+			<form id="search" method="get" action="https://typecodes.com/search.html">
+				<input type="text" name="q" id="s" size="20" x-webkit-speech="" x-webkit-grammar="builtin:search" onwebkitspeechchange="this.value = this.value.replace(this.defaultValue, '')" value="Google...." onfocus="this.value = (this.value == this.defaultValue) ? '' : this.value" onblur="this.value = (this.value == '') ? this.defaultValue : this.value">
+			</form>
+		</ul>
+	</section>
+	<section class="widget">
+		<h3 class="widget-title">Categories</h3>
+		<ul class="widget-list">
+		      <li class="current">
+		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (26)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/csharp/index.html">Csharp</a> (6)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/database/index.html">Database</a> (11)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/java/index.html">Java</a> (1)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/linux/index.html">Linux</a> (16)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/mix/index.html">Mix</a> (53)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/web/index.html">Web</a> (88)
+		      </li>
+		</ul>
+	</section>
+	<section class="widget">
+		<h3 class="widget-title">Recent Posts</h3>
+		<ul class="widget-list">
+			<li class="post">
+				<a href="https://typecodes.com/cseries/cppgeneralmakefile.html">Linux C/C++工程中可生成ELF、动/静态库文件的通用Makefile</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/libraryundefinedref.html">解决make编译链接动态库错误：libxx.so: undefined reference to xx</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/nmobjectfilesymbol.html">Unix系统中nm命令展示目标文件符号的方法</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/gcclderrlibrarypath.html">Linux gcc链接动态库出错：LIBRARY_PATH和LD_LIBRARY_PATH的区别</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/unixsigtermkill.html">Unix系统进程对SIGTERM、SIGUSR1和SIGUSR2信号处理</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/simplifychexstrtoint.html">视角：C语言将十六进制字符串转成十进制整数</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/againchexstrtointeger.html">再议C语言将十六进制字符串转成十进制整数</a>
+			</li>
+		</ul>
+	</section>
+	<section class="widget widget-feed">
+		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
+	</section>
+</div>
+				</div>
+			</div>
+		</div>
+		<!--4. bottom begin-->
+		<footer id="te-site-footer"><div class="container">
+	<div class="row" role="contentinfo">
+		<section class="col-md-2 col-md-offset-1">
+			<h3>Links</h3>
+			<ul><li><a href="http://diaosbook.com/" title="">diaosbook</a></li></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul>
+				<li><a href="https://typecodes.com/links.html">More..</a></li>
+			</ul>
+		</section>
+		<section class="col-md-2">
+			<h3>Following</h3>
+			<ul>
+				<li><a href="https://github.com/vfhky" class="following github" target="_blank" rel="external nofollow">GitHub</a></li>
+				<li><a href="http://weibo.com/typecodes" class="following weibo" target="_blank" rel="external nofollow">Weibo</a></li>
+				<li><a href="http://vfhky.sinaapp.com/" class="following sae" target="_blank" rel="external nofollow">SAE</a></li>
+				<li><a href="http://www.dwz.cn/mYiwa" class="following qqgroup" target="_blank" rel="external nofollow">Group</a></li>
+			</ul>
+		</section>
+		<div class="col-md-12 copyright">
+			<a href="#top"><i class="i-logo-s">TOP</i></a>
+			<p>
+				&copy; 2012-<script language="JavaScript">var date = new Date(); document.write(date.getFullYear());</script>							<a href="https://typecodes.com">TypeCodes</a>. All Rights Reserved<br>Powered by <a href="http://getpelican.com" rel="external" target="_blank">Pelican</a>. <a href="http://www.miitbeian.gov.cn/" rel="external nofollow" target="_blank">粤ICP备14050695号</a>
+			</p>
+		</div>
+	</div>
+</div>
+</footer>
+<script type="text/javascript">
+	var disqus_shortname = 'typecodes';
+	(function() {
+		var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+		dsq.src = "//" + disqus_shortname + '.disqus.com/embed.js';
+		(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	 })();
+</script>
+	</body>
+</html>

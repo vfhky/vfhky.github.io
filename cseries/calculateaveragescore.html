@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="zh-CN" class="no-js">
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<title>去掉最高分和最低分求平均分数的问题 &mdash; TypeCodes</title>
+		<meta name="author" content="vfhky">
+  		<link href="https://typecodes.com/atom.xml" type="application/atom+xml" rel="alternate" title="TypeCodes Atom Feed" />
+	  	<link href="https://typecodes.com/feed.xml" type="application/rss+xml" rel="alternate" title="TypeCodes RSS Feed" />
+		<meta name="HandheldFriendly" content="True">
+		<meta name="MobileOptimized" content="320">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="renderer" content="webkit">
+		<link rel="stylesheet" href="https://dn-vfhky.qbox.me/libs/css/pelican-vfhky.css">
+		<script>
+			var _hmt = _hmt || [];
+			(function() {
+			  var hm = document.createElement("script");
+			  hm.src = "//hm.baidu.com/hm.js?c15c4ab8e91ba9ac3d5a12293cc93359";
+			  var s = document.getElementsByTagName("script")[0]; 
+			  s.parentNode.insertBefore(hm, s);
+			})();
+		</script>
+	</head>
+	<body style>
+		<!--1. header navigation begin-->
+		<header role="banner" id="te-site-header">
+			<div class="container">
+				<a href="https://typecodes.com" class="te-site-logo" role="logo" target="_self"> TypeCodes</a>
+				<ul class="nav nav-pills" id="te-site-nav" role="navigation">
+					<li><a href="https://typecodes.com">Home</a></li><li><a href="https://typecodes.com/archives.html" title="Archives">Archives</a></li><li><a href="https://typecodes.com/about.html" title="About">About</a></li></ul>
+			</div>
+		</header>
+		<div class="te-headline">
+			<div class="container">
+				<h2 class="te-headline-title"> <a href="https://typecodes.com">TypeCodes</a></h2>
+			</div>
+		</div>
+		<div class="container">
+			<div class="row">
+		<!--2. left sider begin-->
+		<div class="col-md-9" id="blog-main" role="main">
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/cseries/calculateaveragescore.html">去掉最高分和最低分求平均分数的问题</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2014-11-16 14:50 | 分类：<a href="https://typecodes.com/cseries/index.html">cseries</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>在百度知道看到个问题，原地址不记得了。题目大致是5位选手参加某歌唱比赛，然后6个评委依次为每位选手打分，最终要求出每位选手在去掉一个最高分和最低分后，自己的平均成绩是多少。然后有人给出了一个比较巧妙的答案，遍历二维数组中的每个元素的时候，“找出”最大值和最小值，然后就去掉这个最大值和最小值求出平均值了。</p>
+
+
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43</pre></div></td><td class="code"><div class="highlight"><pre><span class="cm">/**</span>
+<span class="cm"> * 歌唱比赛评委评分，去掉最高分和最低分后求出平均分</span>
+<span class="cm"> * @Filename:  singerscore2.c</span>
+<span class="cm"> * @Source  :  百度知道</span>
+<span class="cm"> */</span>
+
+<span class="cp">#include &lt;stdio.h&gt;</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span> <span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span> <span class="n">argv</span><span class="p">[]</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="c1">//所有选手的评分</span>
+    <span class="kt">float</span> <span class="n">SoreData</span><span class="p">[</span><span class="mi">5</span><span class="p">][</span><span class="mi">6</span><span class="p">]</span> <span class="o">=</span> 
+    <span class="p">{</span>
+        <span class="p">{</span><span class="mf">9.31</span><span class="p">,</span> <span class="mf">9.20</span><span class="p">,</span> <span class="mf">9.00</span><span class="p">,</span> <span class="mf">9.40</span><span class="p">,</span> <span class="mf">9.35</span><span class="p">,</span> <span class="mf">9.20</span><span class="p">},</span>
+        <span class="p">{</span><span class="mf">9.71</span><span class="p">,</span> <span class="mf">9.52</span><span class="p">,</span> <span class="mf">9.50</span><span class="p">,</span> <span class="mf">9.66</span><span class="p">,</span> <span class="mf">9.49</span><span class="p">,</span> <span class="mf">9.57</span><span class="p">},</span>
+        <span class="p">{</span><span class="mf">8.89</span><span class="p">,</span> <span class="mf">8.80</span><span class="p">,</span> <span class="mf">9.10</span><span class="p">,</span> <span class="mf">9.25</span><span class="p">,</span> <span class="mf">8.90</span><span class="p">,</span> <span class="mf">9.00</span><span class="p">},</span>
+        <span class="p">{</span><span class="mf">9.38</span><span class="p">,</span> <span class="mf">9.50</span><span class="p">,</span> <span class="mf">9.40</span><span class="p">,</span> <span class="mf">9.20</span><span class="p">,</span> <span class="mf">9.90</span><span class="p">,</span> <span class="mf">8.90</span><span class="p">},</span>
+        <span class="p">{</span><span class="mf">9.30</span><span class="p">,</span> <span class="mf">8.84</span><span class="p">,</span> <span class="mf">9.40</span><span class="p">,</span> <span class="mf">9.45</span><span class="p">,</span> <span class="mf">9.10</span><span class="p">,</span> <span class="mf">8.89</span><span class="p">}</span>
+    <span class="p">};</span>
+
+    <span class="kt">float</span> <span class="n">max</span><span class="p">,</span> <span class="n">min</span><span class="p">,</span> <span class="n">sum</span><span class="p">,</span> <span class="n">average</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">;</span>
+    <span class="k">for</span><span class="p">(</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">i</span><span class="o">&lt;</span><span class="k">sizeof</span><span class="p">(</span><span class="n">SoreData</span><span class="p">)</span><span class="o">/</span><span class="k">sizeof</span><span class="p">(</span><span class="n">SoreData</span><span class="p">[</span><span class="mi">0</span><span class="p">]);</span> <span class="n">i</span><span class="o">++</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="c1">//初始化每个选手的总分数, 最低分, 最高分</span>
+        <span class="n">sum</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">min</span> <span class="o">=</span> <span class="mi">10</span><span class="p">;</span> <span class="n">max</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+
+        <span class="k">for</span><span class="p">(</span> <span class="n">j</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">j</span><span class="o">&lt;</span><span class="mi">6</span><span class="p">;</span> <span class="n">j</span><span class="o">++</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">if</span><span class="p">(</span> <span class="n">SoreData</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">max</span> <span class="p">)</span>
+                <span class="n">max</span> <span class="o">=</span> <span class="n">SoreData</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">];</span>
+            <span class="k">if</span><span class="p">(</span> <span class="n">SoreData</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">min</span> <span class="p">)</span>
+                <span class="n">min</span> <span class="o">=</span> <span class="n">SoreData</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">];</span>
+            <span class="n">sum</span> <span class="o">+=</span> <span class="n">SoreData</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">];</span>
+        <span class="p">}</span>
+        <span class="n">average</span> <span class="o">=</span> <span class="p">(</span><span class="n">sum</span><span class="o">-</span><span class="n">min</span><span class="o">-</span><span class="n">max</span><span class="p">)</span><span class="o">/</span><span class="mi">4</span><span class="p">;</span>
+
+        <span class="c1">//打印出结果</span>
+        <span class="n">printf</span><span class="p">(</span> <span class="s">&quot;No.[%d] total scores are:[%f], average scores are:[%.2f]</span><span class="se">\n\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">sum</span><span class="o">-</span><span class="n">min</span><span class="o">-</span><span class="n">max</span><span class="p">,</span> <span class="p">(</span><span class="n">sum</span><span class="o">-</span><span class="n">min</span><span class="o">-</span><span class="n">max</span><span class="p">)</span><span class="o">/</span><span class="mi">4</span> <span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</td></tr></table>
+
+<p>测试结果：</p>
+<div class="highlight"><pre>No.[1] total scores are:[37.060003], average scores are:[9.27]
+
+No.[2] total scores are:[38.249997], average scores are:[9.56]
+
+No.[3] total scores are:[35.890002], average scores are:[8.97]
+
+No.[4] total scores are:[37.480000], average scores are:[9.37]
+
+No.[5] total scores are:[36.689996], average scores are:[9.17]
+</pre></div>
+
+
+<p><img alt="去掉最高分和最低分后求出平均分" src="https://dn-vfhky.qbox.me/2014/11/singerscore2.png" title="去掉最高分和最低分后求出平均分" /></p>
+<p>自己想了想，还可以用冒泡排序法：先将二维数组中的每一行（即“一维数组”）用冒泡排序法排序，然后每一行中的起始元素和最后一个元素都不用管（分别是最小值、最大值），直接求平均值就行了。实现代码如下：</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87</pre></div></td><td class="code"><div class="highlight"><pre><span class="cm">/**</span>
+<span class="cm"> * 歌唱比赛评委评分，去掉最高分和最低分后求出平均分</span>
+<span class="cm"> * @Filename:  singerscore.c</span>
+<span class="cm"> * @author  :  vfhky 2014.11.10 https://typecodes.com</span>
+<span class="cm"> */</span>
+
+<span class="cp">#include &lt;stdio.h&gt;</span>
+
+<span class="c1">//一维字符数组的冒泡排序</span>
+<span class="kt">void</span> <span class="nf">BubbleSort</span><span class="p">(</span> <span class="kt">float</span> <span class="n">array</span><span class="p">[],</span> <span class="kt">int</span> <span class="n">n</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">j</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> 
+    <span class="kt">float</span> <span class="n">temp</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">flag</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="k">for</span><span class="p">(</span> <span class="p">;</span> <span class="n">i</span><span class="o">&lt;</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">flag</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+        <span class="k">for</span><span class="p">(</span> <span class="n">j</span><span class="o">=</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">;</span> <span class="n">j</span><span class="o">&gt;</span><span class="n">i</span><span class="p">;</span> <span class="n">j</span><span class="o">--</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">if</span><span class="p">(</span> <span class="n">array</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">array</span><span class="p">[</span><span class="n">j</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="p">)</span>
+            <span class="p">{</span>
+                <span class="n">temp</span> <span class="o">=</span> <span class="n">array</span><span class="p">[</span><span class="n">j</span><span class="p">];</span>
+                <span class="n">array</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">array</span><span class="p">[</span><span class="n">j</span><span class="o">-</span><span class="mi">1</span><span class="p">];</span>
+                <span class="n">array</span><span class="p">[</span><span class="n">j</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">temp</span><span class="p">;</span>
+                <span class="n">flag</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+
+        <span class="k">if</span><span class="p">(</span> <span class="n">flag</span> <span class="o">==</span> <span class="mi">0</span> <span class="p">)</span>
+            <span class="k">break</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span> <span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span> <span class="n">argv</span><span class="p">[]</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="kt">int</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">;</span>
+
+    <span class="c1">//所有选手的评分</span>
+    <span class="kt">float</span> <span class="n">doubleSoreData</span><span class="p">[</span><span class="mi">5</span><span class="p">][</span><span class="mi">6</span><span class="p">]</span> <span class="o">=</span> 
+    <span class="p">{</span>
+        <span class="p">{</span><span class="mf">9.31</span><span class="p">,</span> <span class="mf">9.20</span><span class="p">,</span> <span class="mf">9.00</span><span class="p">,</span> <span class="mf">9.40</span><span class="p">,</span> <span class="mf">9.35</span><span class="p">,</span> <span class="mf">9.20</span><span class="p">},</span>
+        <span class="p">{</span><span class="mf">9.71</span><span class="p">,</span> <span class="mf">9.52</span><span class="p">,</span> <span class="mf">9.50</span><span class="p">,</span> <span class="mf">9.66</span><span class="p">,</span> <span class="mf">9.49</span><span class="p">,</span> <span class="mf">9.57</span><span class="p">},</span>
+        <span class="p">{</span><span class="mf">8.89</span><span class="p">,</span> <span class="mf">8.80</span><span class="p">,</span> <span class="mf">9.10</span><span class="p">,</span> <span class="mf">9.25</span><span class="p">,</span> <span class="mf">8.90</span><span class="p">,</span> <span class="mf">9.00</span><span class="p">},</span>
+        <span class="p">{</span><span class="mf">9.38</span><span class="p">,</span> <span class="mf">9.50</span><span class="p">,</span> <span class="mf">9.40</span><span class="p">,</span> <span class="mf">9.20</span><span class="p">,</span> <span class="mf">9.90</span><span class="p">,</span> <span class="mf">8.90</span><span class="p">},</span>
+        <span class="p">{</span><span class="mf">9.30</span><span class="p">,</span> <span class="mf">8.84</span><span class="p">,</span> <span class="mf">9.40</span><span class="p">,</span> <span class="mf">9.45</span><span class="p">,</span> <span class="mf">9.10</span><span class="p">,</span> <span class="mf">8.89</span><span class="p">}</span>
+    <span class="p">};</span>
+
+    <span class="c1">//二维数组冒泡排序</span>
+    <span class="k">for</span><span class="p">(</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">i</span><span class="o">&lt;</span><span class="mi">5</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">BubbleSort</span><span class="p">(</span> <span class="n">doubleSoreData</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="mi">6</span> <span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="c1">//初始化一个数组指针</span>
+    <span class="kt">float</span> <span class="p">(</span><span class="o">*</span><span class="n">p</span><span class="p">)[</span><span class="mi">6</span><span class="p">];</span>
+    <span class="n">p</span> <span class="o">=</span> <span class="n">doubleSoreData</span><span class="p">;</span>
+
+    <span class="c1">//声明每个选手的平均分</span>
+    <span class="kt">float</span> <span class="n">averagescore</span><span class="p">;</span>
+
+    <span class="c1">//循环读取数据</span>
+    <span class="k">for</span><span class="p">(</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">i</span><span class="o">&lt;</span><span class="mi">5</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="c1">//初始化每一个选手的平均分</span>
+        <span class="n">averagescore</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+
+        <span class="c1">//除去最高/低位的数据</span>
+        <span class="k">for</span><span class="p">(</span> <span class="n">j</span><span class="o">=</span><span class="mi">1</span><span class="p">;</span> <span class="n">j</span><span class="o">&lt;</span><span class="mi">5</span><span class="p">;</span> <span class="n">j</span><span class="o">++</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="cm">/**</span>
+<span class="cm">             * 利用数组读出数据</span>
+<span class="cm">             * printf( &quot;doubleSoreData[%d][%d]=[%f]\n&quot;, i, j, doubleSoreData[i][j] );</span>
+<span class="cm">             * averagescore += doubleSoreData[i][j];</span>
+<span class="cm">             */</span>
+
+            <span class="c1">//利用数组指针读出数据</span>
+            <span class="n">printf</span><span class="p">(</span> <span class="s">&quot;*((p+%d)[%d])=[%.2f]  &quot;</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="p">(</span><span class="o">*</span><span class="p">(</span><span class="n">p</span><span class="o">+</span><span class="n">i</span><span class="p">))[</span><span class="n">j</span><span class="p">]</span> <span class="p">);</span>
+            <span class="n">averagescore</span> <span class="o">+=</span> <span class="p">(</span><span class="o">*</span><span class="p">(</span><span class="n">p</span><span class="o">+</span><span class="n">i</span><span class="p">))[</span><span class="n">j</span><span class="p">];</span>
+        <span class="p">}</span>
+
+        <span class="c1">//打印出结果</span>
+        <span class="n">printf</span><span class="p">(</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">No.[%d] total scores are:[%f], average scores are:[%.2f]</span><span class="se">\n\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">averagescore</span><span class="p">,</span> <span class="n">averagescore</span><span class="o">/</span><span class="mi">4</span> <span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</td></tr></table>
+
+<p>测试结果：</p>
+<div class="highlight"><pre>*((p+0)[1])=[9.20]  *((p+0)[2])=[9.20]  *((p+0)[3])=[9.31]  *((p+0)[4])=[9.35]  
+No.[1] total scores are:[37.059998], average scores are:[9.26]
+
+*((p+1)[1])=[9.50]  *((p+1)[2])=[9.52]  *((p+1)[3])=[9.57]  *((p+1)[4])=[9.66]  
+No.[2] total scores are:[38.250000], average scores are:[9.56]
+
+*((p+2)[1])=[8.89]  *((p+2)[2])=[8.90]  *((p+2)[3])=[9.00]  *((p+2)[4])=[9.10]  
+No.[3] total scores are:[35.889999], average scores are:[8.97]
+
+*((p+3)[1])=[9.20]  *((p+3)[2])=[9.38]  *((p+3)[3])=[9.40]  *((p+3)[4])=[9.50]  
+No.[4] total scores are:[37.480000], average scores are:[9.37]
+
+*((p+4)[1])=[8.89]  *((p+4)[2])=[9.10]  *((p+4)[3])=[9.30]  *((p+4)[4])=[9.40]  
+No.[5] total scores are:[36.690002], average scores are:[9.17]
+</pre></div>
+
+
+<p><img alt="二维数组冒泡排序" src="https://dn-vfhky.qbox.me/2014/11/singerscore.png" title="二维数组冒泡排序" /></p>
+		    	<p class="tags">
+					<div class="post-share">
+						<ul class="post-shareul clearfix">
+							<li class="post-shareli">
+								<a href="http://note.youdao.com/memory/?url=https://typecodes.com/cseries/calculateaveragescore.html&title=去掉最高分和最低分求平均分数的问题" class="post-sharea ydshare" target="_blank" rel="nofollow">有道云笔记</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://v.t.sina.com.cn/share/share.php?url=https://typecodes.com/cseries/calculateaveragescore.html&title=去掉最高分和最低分求平均分数的问题&source=https://typecodes.com" class="post-sharea wbshare" target="_blank" rel="nofollow">新浪微博</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://v.t.qq.com/share/share.php?title=去掉最高分和最低分求平均分数的问题&url=https://typecodes.com/cseries/calculateaveragescore.html&site=https://typecodes.com" class="post-sharea twbshare" target="_blank" rel="nofollow">腾讯微博</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=https://typecodes.com/cseries/calculateaveragescore.html&title=去掉最高分和最低分求平均分数的问题&content='utf-8'" class="post-sharea qzoneshare" target="_blank" rel="nofollow">QZone</a>
+							</li>
+						</ul>
+					</div>
+					<div>
+						Tags: <a href="https://typecodes.com/tag/er-wei-shu-zu.html">二维数组</a>,<a href="https://typecodes.com/tag/mou-pao-pai-xu.html">冒泡排序</a>,<a href="https://typecodes.com/tag/shu-zu-zhi-zhen.html">数组指针</a>					</div>
+				</p>
+			</article>
+			
+			<div id="comments">
+				<h4 class="num">Comments &raquo;</h4>
+		    	<div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript></div>
+		    </div>
+		</div>
+		<!--3. right sider begin-->
+<div class="col-md-3" id="blog-secondary" role="complementary">
+	<section class="widget">
+		<ul class="widget-list">
+			<form id="search" method="get" action="https://typecodes.com/search.html">
+				<input type="text" name="q" id="s" size="20" x-webkit-speech="" x-webkit-grammar="builtin:search" onwebkitspeechchange="this.value = this.value.replace(this.defaultValue, '')" value="Google...." onfocus="this.value = (this.value == this.defaultValue) ? '' : this.value" onblur="this.value = (this.value == '') ? this.defaultValue : this.value">
+			</form>
+		</ul>
+	</section>
+	<section class="widget">
+		<h3 class="widget-title">Categories</h3>
+		<ul class="widget-list">
+		      <li class="current">
+		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (26)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/csharp/index.html">Csharp</a> (6)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/database/index.html">Database</a> (11)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/java/index.html">Java</a> (1)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/linux/index.html">Linux</a> (16)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/mix/index.html">Mix</a> (53)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/web/index.html">Web</a> (88)
+		      </li>
+		</ul>
+	</section>
+	<section class="widget">
+		<h3 class="widget-title">Recent Posts</h3>
+		<ul class="widget-list">
+			<li class="post">
+				<a href="https://typecodes.com/mix/sucesstypechotopelican.html">成功将博客从Typecho迁移到Pelican</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/mix/begintypechotopelican.html">准备将博客从Typecho迁移到Pelican</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/tcpconnectiontimedout.html">Linux TCP连接Connection Refused和Connection timed out的问题</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/mysqlerrornospace.html">博客MySQL服务惊魂记：Linux磁盘空间不足(Core Dump文件引爆)</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/mix/synweibophpmarkdownimgurl.html">升级博客文章同步微博的插件：PHP正则提取Markdown的图片地址</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/cppgeneralmakefile.html">Linux C/C++工程中可生成ELF、动/静态库文件的通用Makefile</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/libraryundefinedref.html">解决make编译链接动态库错误：libxx.so: undefined reference to xx</a>
+			</li>
+		</ul>
+	</section>
+	<section class="widget widget-feed">
+		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
+	</section>
+</div>
+				</div>
+			</div>
+		</div>
+		<!--4. bottom begin-->
+		<footer id="te-site-footer"><div class="container">
+	<div class="row" role="contentinfo">
+		<section class="col-md-2 col-md-offset-1">
+			<h3>Links</h3>
+			<ul><li><a href="http://diaosbook.com/" title="">diaosbook</a></li></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul>
+				<li><a href="https://typecodes.com/links.html">More..</a></li>
+			</ul>
+		</section>
+		<section class="col-md-2">
+			<h3>Following</h3>
+			<ul>
+				<li><a href="https://github.com/vfhky" class="following github" target="_blank" rel="external nofollow">GitHub</a></li>
+				<li><a href="http://weibo.com/typecodes" class="following weibo" target="_blank" rel="external nofollow">Weibo</a></li>
+				<li><a href="http://vfhky.sinaapp.com/" class="following sae" target="_blank" rel="external nofollow">SAE</a></li>
+				<li><a href="http://www.dwz.cn/mYiwa" class="following qqgroup" target="_blank" rel="external nofollow">Group</a></li>
+			</ul>
+		</section>
+		<div class="col-md-12 copyright">
+			<a href="#top"><i class="i-logo-s">TOP</i></a>
+			<p>
+				&copy; 2012-<script language="JavaScript">var date = new Date(); document.write(date.getFullYear());</script>							<a href="https://typecodes.com">TypeCodes</a>. All Rights Reserved<br>Powered by <a href="http://getpelican.com" rel="external" target="_blank">Pelican</a>. <a href="http://www.miitbeian.gov.cn/" rel="external nofollow" target="_blank">粤ICP备14050695号</a>
+			</p>
+		</div>
+	</div>
+</div>
+</footer>
+<script type="text/javascript">
+	var disqus_shortname = 'typecodes';
+	var disqus_identifier = '/cseries/calculateaveragescore.html';
+	var disqus_url = 'https://typecodes.com/cseries/calculateaveragescore.html';
+	var disqus_title = '去掉最高分和最低分求平均分数的问题';
+	(function() {
+		var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+		dsq.src = "//" + disqus_shortname + '.disqus.com/embed.js';
+		(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	 })();
+</script>
+	</body>
+</html>

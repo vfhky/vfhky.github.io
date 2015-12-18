@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="zh-CN" class="no-js">
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<title>取消WordPress的日志自动保存、修订版本、历史版本和文章不连续 &mdash; TypeCodes</title>
+		<meta name="author" content="vfhky">
+  		<link href="https://typecodes.com/atom.xml" type="application/atom+xml" rel="alternate" title="TypeCodes Atom Feed" />
+	  	<link href="https://typecodes.com/feed.xml" type="application/rss+xml" rel="alternate" title="TypeCodes RSS Feed" />
+		<meta name="HandheldFriendly" content="True">
+		<meta name="MobileOptimized" content="320">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="renderer" content="webkit">
+		<link rel="stylesheet" href="https://dn-vfhky.qbox.me/libs/css/pelican-vfhky.css">
+		<script>
+			var _hmt = _hmt || [];
+			(function() {
+			  var hm = document.createElement("script");
+			  hm.src = "//hm.baidu.com/hm.js?c15c4ab8e91ba9ac3d5a12293cc93359";
+			  var s = document.getElementsByTagName("script")[0]; 
+			  s.parentNode.insertBefore(hm, s);
+			})();
+		</script>
+	</head>
+	<body style>
+		<!--1. header navigation begin-->
+		<header role="banner" id="te-site-header">
+			<div class="container">
+				<a href="https://typecodes.com" class="te-site-logo" role="logo" target="_self"> TypeCodes</a>
+				<ul class="nav nav-pills" id="te-site-nav" role="navigation">
+					<li><a href="https://typecodes.com">Home</a></li><li><a href="https://typecodes.com/archives.html" title="Archives">Archives</a></li><li><a href="https://typecodes.com/about.html" title="About">About</a></li></ul>
+			</div>
+		</header>
+		<div class="te-headline">
+			<div class="container">
+				<h2 class="te-headline-title"> <a href="https://typecodes.com">TypeCodes</a></h2>
+			</div>
+		</div>
+		<div class="container">
+			<div class="row">
+		<!--2. left sider begin-->
+		<div class="col-md-9" id="blog-main" role="main">
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/web/cancelwpautosave.html">取消WordPress的日志自动保存、修订版本、历史版本和文章不连续</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2013-04-20 23:53 | 分类：<a href="https://typecodes.com/web/index.html">web</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>首先声明，这篇文章来源于我大百度，博主只是整理了一下，另外测试了一些bug，所以不负也付不起版权责任^^。开个玩笑，相信很多Wordpress用户在后台写文章的时候都会被文本框下面的自动保存当前文章为草稿的提示所困扰。另外，文章不多，但是文章链接地址中的ID却真的是“围起来可以绕地球一圈”了。再者，臃肿的数据库、后台修改文章的时候会让你从好几个历史版本中选择一个，等等这些真的很让人蛋疼。好吧，不罗嗦了，相信看这篇文章的都懂的，直接来过程。</p>
+
+
+<h5>1 配置wp-config.php</h5>
+<p>打开Wordpress根目录下面的wp-config.php文件，在代码中添加下面代码：</p>
+<div class="highlight"><pre>//取消Wordpress自动修订
+define(&#39;WP_POST_REVISIONS&#39;,false);
+//取消Wordpress自动保存
+define(&#39;AUTOSAVE_INTERVAL&#39;, false);
+</pre></div>
+
+
+<h5>2 修改post.php和post-new.php文件</h5>
+<p>打开wp-admin目录下的post.php和post-new.php，然后注释掉wp_enqueue_script( 'autosave' );</p>
+<div class="highlight"><pre><span class="x">//wp_enqueue_script( &#39;autosave&#39; );在post-new.php的第49行</span>
+<span class="x">//if ( &#39;attachment&#39; !== </span><span class="p">$</span><span class="nv">post_type</span><span class="x"> )在post.php的第173行</span>
+<span class="x">//wp_enqueue_script(&#39;autosave&#39;);在post.php的第174行</span>
+<span class="x">//网上写的只注释掉174行而不注释掉173行就会造成文章发布时的Bug，楼主亲测，版本是3.5.1！！！</span>
+</pre></div>
+
+
+<h5>3 修改default-filters.php</h5>
+<p>打开wp-includes目录下的default-filters.php，注释掉第252行：</p>
+<div class="highlight"><pre>//add_action( &#39;pre_post_update&#39;, &#39;wp_save_post_revision&#39;);
+</pre></div>
+
+
+<h5>4 【选做】来源于天朝外的代码</h5>
+<p>测试的Wp版本是3.3.2，改代码声称支持所有3.0+的版本。做法如下：在主题中的 functions.php 文件加入如下代码。</p>
+<div class="highlight"><pre><span class="nx">remove_action</span><span class="p">(</span><span class="s1">&#39;pre_post_update&#39;</span><span class="p">,</span> <span class="s1">&#39;wp_save_post_revision&#39;</span><span class="p">);</span>
+<span class="nx">add_action</span><span class="p">(</span><span class="s1">&#39;wp_print_scripts&#39;</span><span class="p">,</span> <span class="s1">&#39;disable_autosave&#39;</span><span class="p">);</span>
+<span class="kd">function</span> <span class="nx">disable_autosave</span><span class="p">()</span> <span class="p">{</span>
+    <span class="nx">wp_deregister_script</span><span class="p">(</span><span class="s1">&#39;autosave&#39;</span><span class="p">);</span> 
+<span class="p">}</span>
+</pre></div>
+
+
+<p>但是这个方法会产生一个小小的不便——后台编辑文章或者附件时，预览功能是不能用的，必须保存为草稿才能预览 。不过我经常都是用“文本”模式编辑，基本没用预览。</p>
+<h5>5 后记+文章不连续的问题</h5>
+<p>其实前面三个步骤完成再在后台装个“WP Cleaner”插件（用于删除已经存在的历史版本）就已经比较完美的解决WordPress的日志自动保存、修订版本和历史版本的问题了。另外，网上有用delete-revision插件的，经博主测试效果还是不如WP Cleaner。至于如果不想用插件删除历史版本的话，可以看看这篇文章 <a href="https://typecodes.com/web/phpsolvewparticleid.html" title="PHP程序解决WordPress重新排列不连续的文章ID">《PHP程序解决WordPress重新排列不连续的文章ID》</a> 。这个既可以删除历史版本，还可以解决文章ID不连续的问题，并且效果要比网络上的类似于以下的“粗暴”删除代码好，能做到安全不会误删wordpress有用的信息。</p>
+<div class="highlight"><pre>DELETE a,b,c FROM wp_posts a LEFT JOIN wp_term_relationships b ON (a.ID = b.object_id) LEFT JOIN wp_postmeta c ON (a.ID = c.post_id) WHERE a.post_type = &#39;revision&#39;;
+</pre></div>
+		    	<p class="tags">
+					<div class="post-share">
+						<ul class="post-shareul clearfix">
+							<li class="post-shareli">
+								<a href="http://note.youdao.com/memory/?url=https://typecodes.com/web/cancelwpautosave.html&title=取消WordPress的日志自动保存、修订版本、历史版本和文章不连续" class="post-sharea ydshare" target="_blank" rel="nofollow">有道云笔记</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://v.t.sina.com.cn/share/share.php?url=https://typecodes.com/web/cancelwpautosave.html&title=取消WordPress的日志自动保存、修订版本、历史版本和文章不连续&source=https://typecodes.com" class="post-sharea wbshare" target="_blank" rel="nofollow">新浪微博</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://v.t.qq.com/share/share.php?title=取消WordPress的日志自动保存、修订版本、历史版本和文章不连续&url=https://typecodes.com/web/cancelwpautosave.html&site=https://typecodes.com" class="post-sharea twbshare" target="_blank" rel="nofollow">腾讯微博</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=https://typecodes.com/web/cancelwpautosave.html&title=取消WordPress的日志自动保存、修订版本、历史版本和文章不连续&content='utf-8'" class="post-sharea qzoneshare" target="_blank" rel="nofollow">QZone</a>
+							</li>
+						</ul>
+					</div>
+					<div>
+						Tags: <a href="https://typecodes.com/tag/wordpresszi-dong-bao-cun.html">wordpress自动保存</a>					</div>
+				</p>
+			</article>
+			
+			<div id="comments">
+				<h4 class="num">Comments &raquo;</h4>
+		    	<div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript></div>
+		    </div>
+		</div>
+		<!--3. right sider begin-->
+<div class="col-md-3" id="blog-secondary" role="complementary">
+	<section class="widget">
+		<ul class="widget-list">
+			<form id="search" method="get" action="https://typecodes.com/search.html">
+				<input type="text" name="q" id="s" size="20" x-webkit-speech="" x-webkit-grammar="builtin:search" onwebkitspeechchange="this.value = this.value.replace(this.defaultValue, '')" value="Google...." onfocus="this.value = (this.value == this.defaultValue) ? '' : this.value" onblur="this.value = (this.value == '') ? this.defaultValue : this.value">
+			</form>
+		</ul>
+	</section>
+	<section class="widget">
+		<h3 class="widget-title">Categories</h3>
+		<ul class="widget-list">
+		      <li class="current">
+		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (26)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/csharp/index.html">Csharp</a> (6)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/database/index.html">Database</a> (11)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/java/index.html">Java</a> (1)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/linux/index.html">Linux</a> (16)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/mix/index.html">Mix</a> (53)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/web/index.html">Web</a> (88)
+		      </li>
+		</ul>
+	</section>
+	<section class="widget">
+		<h3 class="widget-title">Recent Posts</h3>
+		<ul class="widget-list">
+			<li class="post">
+				<a href="https://typecodes.com/mix/sucesstypechotopelican.html">成功将博客从Typecho迁移到Pelican</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/mix/begintypechotopelican.html">准备将博客从Typecho迁移到Pelican</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/tcpconnectiontimedout.html">Linux TCP连接Connection Refused和Connection timed out的问题</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/mysqlerrornospace.html">博客MySQL服务惊魂记：Linux磁盘空间不足(Core Dump文件引爆)</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/mix/synweibophpmarkdownimgurl.html">升级博客文章同步微博的插件：PHP正则提取Markdown的图片地址</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/cppgeneralmakefile.html">Linux C/C++工程中可生成ELF、动/静态库文件的通用Makefile</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/libraryundefinedref.html">解决make编译链接动态库错误：libxx.so: undefined reference to xx</a>
+			</li>
+		</ul>
+	</section>
+	<section class="widget widget-feed">
+		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
+	</section>
+</div>
+				</div>
+			</div>
+		</div>
+		<!--4. bottom begin-->
+		<footer id="te-site-footer"><div class="container">
+	<div class="row" role="contentinfo">
+		<section class="col-md-2 col-md-offset-1">
+			<h3>Links</h3>
+			<ul><li><a href="http://diaosbook.com/" title="">diaosbook</a></li></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul>
+				<li><a href="https://typecodes.com/links.html">More..</a></li>
+			</ul>
+		</section>
+		<section class="col-md-2">
+			<h3>Following</h3>
+			<ul>
+				<li><a href="https://github.com/vfhky" class="following github" target="_blank" rel="external nofollow">GitHub</a></li>
+				<li><a href="http://weibo.com/typecodes" class="following weibo" target="_blank" rel="external nofollow">Weibo</a></li>
+				<li><a href="http://vfhky.sinaapp.com/" class="following sae" target="_blank" rel="external nofollow">SAE</a></li>
+				<li><a href="http://www.dwz.cn/mYiwa" class="following qqgroup" target="_blank" rel="external nofollow">Group</a></li>
+			</ul>
+		</section>
+		<div class="col-md-12 copyright">
+			<a href="#top"><i class="i-logo-s">TOP</i></a>
+			<p>
+				&copy; 2012-<script language="JavaScript">var date = new Date(); document.write(date.getFullYear());</script>							<a href="https://typecodes.com">TypeCodes</a>. All Rights Reserved<br>Powered by <a href="http://getpelican.com" rel="external" target="_blank">Pelican</a>. <a href="http://www.miitbeian.gov.cn/" rel="external nofollow" target="_blank">粤ICP备14050695号</a>
+			</p>
+		</div>
+	</div>
+</div>
+</footer>
+<script type="text/javascript">
+	var disqus_shortname = 'typecodes';
+	var disqus_identifier = '/web/cancelwpautosave.html';
+	var disqus_url = 'https://typecodes.com/web/cancelwpautosave.html';
+	var disqus_title = '取消WordPress的日志自动保存、修订版本、历史版本和文章不连续';
+	(function() {
+		var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+		dsq.src = "//" + disqus_shortname + '.disqus.com/embed.js';
+		(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	 })();
+</script>
+	</body>
+</html>

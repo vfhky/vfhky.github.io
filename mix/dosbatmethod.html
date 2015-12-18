@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="zh-CN" class="no-js">
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<title>批处理文件（.bat）的写法——DOS命令大全 &mdash; TypeCodes</title>
+		<meta name="author" content="vfhky">
+  		<link href="https://typecodes.com/atom.xml" type="application/atom+xml" rel="alternate" title="TypeCodes Atom Feed" />
+	  	<link href="https://typecodes.com/feed.xml" type="application/rss+xml" rel="alternate" title="TypeCodes RSS Feed" />
+		<meta name="HandheldFriendly" content="True">
+		<meta name="MobileOptimized" content="320">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="renderer" content="webkit">
+		<link rel="stylesheet" href="https://dn-vfhky.qbox.me/libs/css/pelican-vfhky.css">
+		<script>
+			var _hmt = _hmt || [];
+			(function() {
+			  var hm = document.createElement("script");
+			  hm.src = "//hm.baidu.com/hm.js?c15c4ab8e91ba9ac3d5a12293cc93359";
+			  var s = document.getElementsByTagName("script")[0]; 
+			  s.parentNode.insertBefore(hm, s);
+			})();
+		</script>
+	</head>
+	<body style>
+		<!--1. header navigation begin-->
+		<header role="banner" id="te-site-header">
+			<div class="container">
+				<a href="https://typecodes.com" class="te-site-logo" role="logo" target="_self"> TypeCodes</a>
+				<ul class="nav nav-pills" id="te-site-nav" role="navigation">
+					<li><a href="https://typecodes.com">Home</a></li><li><a href="https://typecodes.com/archives.html" title="Archives">Archives</a></li><li><a href="https://typecodes.com/about.html" title="About">About</a></li></ul>
+			</div>
+		</header>
+		<div class="te-headline">
+			<div class="container">
+				<h2 class="te-headline-title"> <a href="https://typecodes.com">TypeCodes</a></h2>
+			</div>
+		</div>
+		<div class="container">
+			<div class="row">
+		<!--2. left sider begin-->
+		<div class="col-md-9" id="blog-main" role="main">
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/mix/dosbatmethod.html">批处理文件（.bat）的写法——DOS命令大全</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2013-11-26 23:14 | 分类：<a href="https://typecodes.com/mix/index.html">mix</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>最近看了下cmd命令，发觉有些用起来挺方便的。于是决定把这些DOS命令整理出来，方便以后写.bat批处理文件。</p>
+
+
+<h5>1 先来看看.cmd，.bat是什么：</h5>
+<div class="highlight"><pre><span class="na">.bat</span><span class="err">是</span><span class="no">dos</span><span class="err">下的批处理文件；</span>
+<span class="na">.cmd</span><span class="err">是</span><span class="no">nt</span><span class="err">内核命令行环境的另一种批处理文件；</span>
+
+<span class="err">因此，二者是没有本质区别。从更广义的角度来看，</span><span class="nf">unix</span><span class="err">的</span><span class="no">shell</span><span class="err">脚本以及其它操作系统甚至应用程序中由外壳进行解释执行的文本，都具有与批处理文件十分相似的作用，而且同样是由专用解释器以行为单位解释执行，这种文本形式更通用的称谓是脚本语言。</span>
+
+<span class="err">所以从某个程度分析，</span><span class="nf">batch</span><span class="p">,</span><span class="no">unixshell</span><span class="p">,</span><span class="no">awk</span><span class="p">,</span><span class="no">basic</span><span class="p">,</span><span class="no">perl</span><span class="err">等脚本语言都是一样的，只不过应用的范围和解释的平台各有不同而已。甚至有些应用程序仍然沿用批处理这一称呼，而其内容和扩展名与</span><span class="no">dos</span><span class="err">的批处理却又完全不同。</span>
+</pre></div>
+
+
+<p>接下来就是vfhky整理的DOS命令了。第一部分比较常用，第二部分用的不多。有了这些基本的DOS命令，那么写简单的.bat批处理文件也就不难了（实例见下篇文章用.bat批处理文件实现内外网多IP切换）。</p>
+<h5>2 第一部分：常用的DOS命令</h5>
+<div class="highlight"><pre><span class="err">@，屏幕不显示当前行的</span><span class="n">DOS</span><span class="err">命令</span>
+
+<span class="n">echo</span> <span class="n">off</span><span class="err">，屏幕不显示</span><span class="n">bat</span><span class="err">文件中所有的命令行</span>
+
+<span class="n">dir</span> <span class="nl">d</span><span class="p">:</span><span class="err">\</span><span class="o">*</span><span class="p">.</span><span class="o">*</span> <span class="o">&gt;</span><span class="n">filelist</span><span class="p">.</span><span class="n">txt</span><span class="err">，将</span><span class="n">d</span><span class="err">盘文件列表写入</span><span class="n">filelist</span><span class="p">.</span><span class="n">txt</span><span class="err">中</span>
+
+<span class="n">cls</span><span class="err">，清除显示器屏幕上的内容，使</span><span class="n">DOS</span><span class="err">提示符到屏幕左上角</span>
+
+<span class="n">color</span><span class="err">，设置控制台前景和背景颜色。具体可以在</span><span class="n">cmd</span><span class="err">下用“</span><span class="n">color</span> <span class="o">/?</span><span class="err">”查询</span>
+
+<span class="n">title</span><span class="err">，设置控制台窗口的标题。默认为“</span><span class="n">cmd</span><span class="err">”</span>
+
+<span class="n">cd</span><span class="err">，英文</span><span class="n">change</span> <span class="n">directory</span><span class="err">的缩写（切换目录）。例如</span><span class="n">cd</span> <span class="nl">d</span><span class="p">:</span><span class="err">\</span><span class="n">sybase</span><span class="err">，进入</span><span class="n">sybase</span><span class="err">目录</span>
+
+<span class="n">md</span><span class="err">，英文</span><span class="n">make</span> <span class="n">directory</span><span class="err">的缩写（创建目录。例如</span><span class="n">md</span> <span class="nl">c</span><span class="p">:</span><span class="err">\</span><span class="mi">123</span>
+
+<span class="n">rd</span><span class="err">，英文</span><span class="n">remove</span> <span class="n">directory</span><span class="err">的缩写（删除目录）。例如</span><span class="n">rd</span> <span class="nl">c</span><span class="p">:</span><span class="err">\</span><span class="mi">123</span>
+
+<span class="n">del</span><span class="err">，英文</span><span class="k">delete</span><span class="err">的缩写（删除）。用于删除指定磁盘、目录中的一个或一组文件，例如</span><span class="n">del</span> <span class="nl">D</span><span class="p">:</span><span class="err">\</span><span class="n">gvim</span><span class="p">.</span><span class="n">exe</span>
+
+<span class="n">ren</span><span class="err">，英文</span><span class="n">rename</span><span class="err">的缩写（重新命名）。用于对指定磁盘、目录中的一个文件或一组文件更改名称，</span><span class="p">[</span><span class="err">格式</span><span class="p">]</span> <span class="n">ren</span> <span class="p">[</span><span class="nl">C</span><span class="p">:][</span><span class="n">path</span><span class="p">]</span><span class="n">filename1</span><span class="p">[.</span><span class="n">ext</span><span class="p">]</span> <span class="n">filename2</span><span class="p">[.</span><span class="n">ext</span><span class="p">]</span>
+
+<span class="n">time</span><span class="err">，显示和设置</span><span class="n">DOS</span><span class="err">的系统时间。</span><span class="p">[</span><span class="err">格式</span><span class="p">]</span> <span class="n">time</span> <span class="p">[</span><span class="n">hh</span><span class="p">[</span><span class="o">:</span><span class="n">mm</span><span class="p">[</span><span class="o">:</span><span class="n">ss</span><span class="p">[.</span><span class="n">cc</span><span class="p">]]]</span>
+
+<span class="n">date</span><span class="err">，显示和设置</span><span class="n">DOS</span><span class="err">的系统日期。</span><span class="p">[</span><span class="err">格式</span><span class="p">]</span> <span class="n">date</span> <span class="p">[</span><span class="n">MM</span><span class="o">-</span><span class="n">DD</span><span class="o">-</span><span class="n">YY</span><span class="p">]</span>
+
+<span class="o">%</span><span class="err">，表示参数（在运行批处理文件时在文件名后加的字符串，例如</span><span class="o">%</span><span class="mi">1</span><span class="err">、</span><span class="o">%</span><span class="mi">2</span><span class="err">等）；</span>
+
+<span class="nf">%var</span><span class="o">%</span><span class="err">，变量</span><span class="n">var</span><span class="err">；</span>
+
+<span class="p">.</span><span class="err">，它与</span><span class="n">echo</span><span class="err">连用构成“</span><span class="n">echo</span><span class="p">.</span><span class="err">”，作用是换行；</span>
+
+<span class="n">call</span><span class="err">，用于从一个批处理程序调用另一个批处理程序，而不终止父批处理程序。例如：</span><span class="n">call</span> <span class="nl">d</span><span class="p">:</span><span class="err">\</span><span class="n">b</span><span class="p">.</span><span class="n">bat</span><span class="err">；</span>
+
+<span class="o">:</span><span class="k">goto</span> <span class="n">label</span><span class="err">，跳转到“</span><span class="o">:</span><span class="n">label</span><span class="err">”标签处；</span>
+
+<span class="n">rem</span><span class="err">，注释命令，相当于“</span><span class="o">::</span><span class="err">”命令；</span>
+
+<span class="n">pause</span><span class="err">，暂停命令。运行时，将显示下面的文字：</span> 
+<span class="n">Press</span> <span class="n">any</span> <span class="n">key</span> <span class="n">to</span> <span class="k">continue</span><span class="p">.</span> <span class="p">.</span> <span class="p">.(</span><span class="err">或者：请按任意键继续</span><span class="p">.</span> <span class="p">.</span> <span class="p">.)</span>
+<span class="n">pause</span> <span class="o">&gt;</span> <span class="n">nul</span><span class="err">的作用是同样的，区别是不显示“请按任意键继续</span><span class="p">.</span> <span class="p">.</span> <span class="p">.</span><span class="err">”</span>
+
+<span class="n">set</span><span class="err">，显示、设置或删除变量。有三种基本格式：</span><span class="n">set</span> <span class="o">/</span><span class="n">a</span> <span class="err">表达式；</span><span class="n">SET</span> <span class="p">[</span><span class="n">variable</span><span class="o">=</span><span class="p">[</span><span class="n">string</span><span class="p">]]</span><span class="err">；</span><span class="n">set</span> <span class="o">/</span><span class="n">p</span> <span class="n">variable</span><span class="o">=</span><span class="p">[</span><span class="n">promptString</span><span class="p">]</span><span class="err">（</span><span class="o">=</span><span class="err">号右边的</span><span class="n">promptString</span><span class="err">是提示语</span><span class="p">,</span><span class="err">不是变量的值）。</span>
+
+<span class="n">type</span><span class="err">，文本输出命令；</span>
+</pre></div>
+
+
+<h5>3 第二部分：相对用的少的DOS命令</h5>
+<div class="highlight"><pre>start，调用外部程序。例如start &quot;&quot; &quot;d:\gvim.exe&quot;
+
+format，磁盘格式化命令。[格式] [C:][path]format drive:[/S]
+
+discopy，磁盘复制，即复制出一个和原来磁盘内容一模一样的磁盘。[格式] diskcopy　源驱动器名　目的驱动器名
+
+deltree， 删除目录树（将整个指定目录树全部消灭，而不管它是否是只读、隐藏与否。）。[格式] [C:][path]DELTREE [C1:][path1] [[C2:][path2] […]]
+
+mem，英文memory的缩写，用来查看计算机内存大小以及内存的使用情况。[格式] 直接键入mem命令
+
+chkdsk，英文check disk的缩写，用来检查你的磁盘的使用情况。[格式] chkdsk　磁盘名
+
+find，搜索命令。用于在文件中搜索特定字符串。例如：
+type a.txt | find &quot;黄克业的博客&quot; <span class="err">&amp;&amp;</span> echo &quot;麻辣的视界&quot; 。
+该命令会在a.txt中搜索“黄克业的博客”，如果存在该内容，就会输出“麻辣的视界”。
+
+&gt;、&gt;&gt;
+二者都是输出重定向命令，即把前面命令的流文字重定向写入到一个文件中。二者的唯一区别是，&gt;命令在清除掉原有文件中的内容后才把新的内容写入原文件，而&gt;&gt;命令会另起一行把新的内容追加到原文件中。
+
+<span class="err">&lt;</span>、&gt;<span class="err">&amp;</span>、<span class="err">&lt;&amp;</span> ：三个管道命令（不常用）
+<span class="err">&lt;</span>，输入重定向命令。即从文件中读入命令输入，而不是从键盘中读入。  
+&gt;<span class="err">&amp;</span>，将一个句柄的输出写入到另一个句柄的输入中。
+<span class="err">&lt;&amp;</span>，刚好和&gt;<span class="err">&amp;</span>相反，从一个句柄读取输入并将其写入到另一个句柄输出中。
+
+<span class="err">&amp;</span>，组合连接命令。即它可以连接n个DOS命令，然后按顺序执行，并且会忽略执行失败的命令。
+
+<span class="err">&amp;&amp;</span> ，组合连接命令。它可以把它前后两个命令组合起来当一个命令来用。但是和<span class="err">&amp;</span>命令不同的是，<span class="err">&amp;&amp;</span>会检测是否有执行出错的命令，一旦发现出错后将不继续执行剩下的命令。
+
+|，作用是让前一命令的输出当做后一命令的输入。
+
+|| ，用法和<span class="err">&amp;&amp;</span>几乎一样，但作用恰恰相反：当遇到一个执行正确的命令时，就退出此命令组合，不再继续执行下面的命令。
+
+at，列出在指定的时间和日期在计算机上运行的已计划命令或计划命令和程序，例如at 12:00 “d:\abc.bat”。
+</pre></div>
+		    	<p class="tags">
+					<div class="post-share">
+						<ul class="post-shareul clearfix">
+							<li class="post-shareli">
+								<a href="http://note.youdao.com/memory/?url=https://typecodes.com/mix/dosbatmethod.html&title=批处理文件（.bat）的写法——DOS命令大全" class="post-sharea ydshare" target="_blank" rel="nofollow">有道云笔记</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://v.t.sina.com.cn/share/share.php?url=https://typecodes.com/mix/dosbatmethod.html&title=批处理文件（.bat）的写法——DOS命令大全&source=https://typecodes.com" class="post-sharea wbshare" target="_blank" rel="nofollow">新浪微博</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://v.t.qq.com/share/share.php?title=批处理文件（.bat）的写法——DOS命令大全&url=https://typecodes.com/mix/dosbatmethod.html&site=https://typecodes.com" class="post-sharea twbshare" target="_blank" rel="nofollow">腾讯微博</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=https://typecodes.com/mix/dosbatmethod.html&title=批处理文件（.bat）的写法——DOS命令大全&content='utf-8'" class="post-sharea qzoneshare" target="_blank" rel="nofollow">QZone</a>
+							</li>
+						</ul>
+					</div>
+					<div>
+						Tags: <a href="https://typecodes.com/tag/cmd.html">cmd</a>,<a href="https://typecodes.com/tag/pi-chu-li.html">批处理</a>					</div>
+				</p>
+			</article>
+			
+			<div id="comments">
+				<h4 class="num">Comments &raquo;</h4>
+		    	<div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript></div>
+		    </div>
+		</div>
+		<!--3. right sider begin-->
+<div class="col-md-3" id="blog-secondary" role="complementary">
+	<section class="widget">
+		<ul class="widget-list">
+			<form id="search" method="get" action="https://typecodes.com/search.html">
+				<input type="text" name="q" id="s" size="20" x-webkit-speech="" x-webkit-grammar="builtin:search" onwebkitspeechchange="this.value = this.value.replace(this.defaultValue, '')" value="Google...." onfocus="this.value = (this.value == this.defaultValue) ? '' : this.value" onblur="this.value = (this.value == '') ? this.defaultValue : this.value">
+			</form>
+		</ul>
+	</section>
+	<section class="widget">
+		<h3 class="widget-title">Categories</h3>
+		<ul class="widget-list">
+		      <li class="current">
+		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (26)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/csharp/index.html">Csharp</a> (6)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/database/index.html">Database</a> (11)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/java/index.html">Java</a> (1)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/linux/index.html">Linux</a> (16)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/mix/index.html">Mix</a> (53)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/web/index.html">Web</a> (88)
+		      </li>
+		</ul>
+	</section>
+	<section class="widget">
+		<h3 class="widget-title">Recent Posts</h3>
+		<ul class="widget-list">
+			<li class="post">
+				<a href="https://typecodes.com/mix/sucesstypechotopelican.html">成功将博客从Typecho迁移到Pelican</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/mix/begintypechotopelican.html">准备将博客从Typecho迁移到Pelican</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/tcpconnectiontimedout.html">Linux TCP连接Connection Refused和Connection timed out的问题</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/mysqlerrornospace.html">博客MySQL服务惊魂记：Linux磁盘空间不足(Core Dump文件引爆)</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/mix/synweibophpmarkdownimgurl.html">升级博客文章同步微博的插件：PHP正则提取Markdown的图片地址</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/cppgeneralmakefile.html">Linux C/C++工程中可生成ELF、动/静态库文件的通用Makefile</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/libraryundefinedref.html">解决make编译链接动态库错误：libxx.so: undefined reference to xx</a>
+			</li>
+		</ul>
+	</section>
+	<section class="widget widget-feed">
+		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
+	</section>
+</div>
+				</div>
+			</div>
+		</div>
+		<!--4. bottom begin-->
+		<footer id="te-site-footer"><div class="container">
+	<div class="row" role="contentinfo">
+		<section class="col-md-2 col-md-offset-1">
+			<h3>Links</h3>
+			<ul><li><a href="http://diaosbook.com/" title="">diaosbook</a></li></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul>
+				<li><a href="https://typecodes.com/links.html">More..</a></li>
+			</ul>
+		</section>
+		<section class="col-md-2">
+			<h3>Following</h3>
+			<ul>
+				<li><a href="https://github.com/vfhky" class="following github" target="_blank" rel="external nofollow">GitHub</a></li>
+				<li><a href="http://weibo.com/typecodes" class="following weibo" target="_blank" rel="external nofollow">Weibo</a></li>
+				<li><a href="http://vfhky.sinaapp.com/" class="following sae" target="_blank" rel="external nofollow">SAE</a></li>
+				<li><a href="http://www.dwz.cn/mYiwa" class="following qqgroup" target="_blank" rel="external nofollow">Group</a></li>
+			</ul>
+		</section>
+		<div class="col-md-12 copyright">
+			<a href="#top"><i class="i-logo-s">TOP</i></a>
+			<p>
+				&copy; 2012-<script language="JavaScript">var date = new Date(); document.write(date.getFullYear());</script>							<a href="https://typecodes.com">TypeCodes</a>. All Rights Reserved<br>Powered by <a href="http://getpelican.com" rel="external" target="_blank">Pelican</a>. <a href="http://www.miitbeian.gov.cn/" rel="external nofollow" target="_blank">粤ICP备14050695号</a>
+			</p>
+		</div>
+	</div>
+</div>
+</footer>
+<script type="text/javascript">
+	var disqus_shortname = 'typecodes';
+	var disqus_identifier = '/mix/dosbatmethod.html';
+	var disqus_url = 'https://typecodes.com/mix/dosbatmethod.html';
+	var disqus_title = '批处理文件（.bat）的写法——DOS命令大全';
+	(function() {
+		var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+		dsq.src = "//" + disqus_shortname + '.disqus.com/embed.js';
+		(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	 })();
+</script>
+	</body>
+</html>

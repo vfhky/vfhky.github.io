@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="zh-CN" class="no-js">
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<title>WordPress中Gravatar头像缓存至本地服务器——暨博客优化实录 &mdash; TypeCodes</title>
+		<meta name="author" content="vfhky">
+  		<link href="https://typecodes.com/atom.xml" type="application/atom+xml" rel="alternate" title="TypeCodes Atom Feed" />
+	  	<link href="https://typecodes.com/feed.xml" type="application/rss+xml" rel="alternate" title="TypeCodes RSS Feed" />
+		<meta name="HandheldFriendly" content="True">
+		<meta name="MobileOptimized" content="320">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="renderer" content="webkit">
+		<link rel="stylesheet" href="https://dn-vfhky.qbox.me/libs/css/pelican-vfhky.css">
+		<script>
+			var _hmt = _hmt || [];
+			(function() {
+			  var hm = document.createElement("script");
+			  hm.src = "//hm.baidu.com/hm.js?c15c4ab8e91ba9ac3d5a12293cc93359";
+			  var s = document.getElementsByTagName("script")[0]; 
+			  s.parentNode.insertBefore(hm, s);
+			})();
+		</script>
+	</head>
+	<body style>
+		<!--1. header navigation begin-->
+		<header role="banner" id="te-site-header">
+			<div class="container">
+				<a href="https://typecodes.com" class="te-site-logo" role="logo" target="_self"> TypeCodes</a>
+				<ul class="nav nav-pills" id="te-site-nav" role="navigation">
+					<li><a href="https://typecodes.com">Home</a></li><li><a href="https://typecodes.com/archives.html" title="Archives">Archives</a></li><li><a href="https://typecodes.com/about.html" title="About">About</a></li></ul>
+			</div>
+		</header>
+		<div class="te-headline">
+			<div class="container">
+				<h2 class="te-headline-title"> <a href="https://typecodes.com">TypeCodes</a></h2>
+			</div>
+		</div>
+		<div class="container">
+			<div class="row">
+		<!--2. left sider begin-->
+		<div class="col-md-9" id="blog-main" role="main">
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/web/wpgravatarcache.html">WordPress中Gravatar头像缓存至本地服务器——暨博客优化实录</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2012-11-27 00:45 | 分类：<a href="https://typecodes.com/web/index.html">web</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>从11月24开始，博客开始进行优化。一来是博客的服务器不是很好，访问速度比较慢；二来，个人越来越倾向简洁、实用、便捷的博客主题。之前博客的界面有些地方比较繁复，比如右侧栏有两处同时实现类似“最新评论”的功能；另外，博客首页的图片过多，像右侧栏的粉丝墙和最新评论中的头像每次打开博客都需要从gravatar.com下载头像到本地的服务器，加长了响应速度，这点对用户的体验造成了很大的影响。所以，这次的优化主要就是针对这两个方面进行的。</p>
+
+
+<h5>（一）去繁存简，使用便捷</h5>
+<p>1、主要针对右侧栏的界面优化，去掉“同步微博vs公告栏”字样，修改CSS以突出订阅栏目的四个小图标。</p>
+<p><img alt="右侧栏界面优化（对比图）" src="https://dn-vfhky.qbox.me/2012/11/compare1.jpg" title="右侧栏界面优化（对比图）" /></p>
+<p>2、优化一些PHP程序，例如博客主题在判断后台是否开启了头像缓存功能时，使用如下代码 &lt;?php if (get_option('swt_type') == 'Display') ?&gt; 。我直接删除该条语句，并用接下来（二）中的方法开启gravatar头像本地服务器缓存。效果如下图所示，大家可以右键查看图片的路径是否改成了博客服务器的文件路径。</p>
+<p><img alt="右侧栏“最新评论”的头像缓存" src="https://dn-vfhky.qbox.me/2012/11/opt1.png" title="右侧栏“最新评论”的头像缓存" /></p>
+<p><img alt="博客“留言吧”的头像缓存" src="https://dn-vfhky.qbox.me/2012/11/opt2.png" title="博客“留言吧”的头像缓存" /></p>
+<h5>（二）老生常谈，WordPress中的Gravatar头像本地服务器缓存，加快响应速度</h5>
+<p>先把下面的代码加入到主题的functions.php中，然后在需要的地方（例如，我的博客右侧栏的“读者粉丝墙”以及留言吧等等）调用这个my_avatar( )函数；然后在博客的主题下面新建一个avatar文件夹（用于保存头像），上传到空间后的权限是755。</p>
+<div class="highlight"><pre><span class="c1">//头像缓存 by vfhky</span>
+<span class="kd">function</span> <span class="nx">my_avatar</span><span class="p">(</span> <span class="nx">$email</span><span class="p">,</span> <span class="nx">$size</span> <span class="o">=</span> <span class="s1">&#39;40&#39;</span><span class="p">,</span> <span class="nx">$default</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="nx">$alt</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span> <span class="p">)</span> <span class="p">{</span>
+  <span class="c1">// $alt = (false === $alt) ? &#39;&#39; : esc_attr( $alt );</span>
+  <span class="nx">$alt</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;&#39;</span> <span class="o">==</span> <span class="nx">$alt</span><span class="p">)</span> <span class="o">?</span> <span class="s1">&#39;&#39;</span> <span class="o">:</span>  <span class="nx">$alt</span> <span class="p">;</span><span class="c1">//用于设置当鼠标移到头像上显示提示文字</span>
+  <span class="nx">$f</span> <span class="o">=</span> <span class="nx">md5</span><span class="p">(</span> <span class="nx">strtolower</span><span class="p">(</span> <span class="nx">$email</span> <span class="p">)</span> <span class="p">);</span><span class="c1">//根据email的值来生成一个md5变量值，作为本地.jpg头像的名字</span>
+  <span class="nx">$a</span> <span class="o">=</span> <span class="nx">get_bloginfo</span><span class="p">(</span><span class="s1">&#39;template_directory&#39;</span><span class="p">).</span><span class="s1">&#39;/avatar/&#39;</span><span class="p">.</span> <span class="nx">$f</span><span class="p">.</span> <span class="s1">&#39;.jpg&#39;</span><span class="p">;</span><span class="c1">//需要在主题下面新建一个avatar文件夹</span>
+  <span class="nx">$e</span> <span class="o">=</span> <span class="nx">ABSPATH</span><span class="p">.</span><span class="s1">&#39;wp-content/themes/weisaysimple/avatar/&#39;</span><span class="p">.</span> <span class="nx">$f</span><span class="p">.</span> <span class="s1">&#39;.jpg&#39;</span><span class="p">;</span><span class="c1">//缓存的头像的绝对路径</span>
+  <span class="nx">$default_random_abs</span> <span class="o">=</span> <span class="nx">ABSPATH</span> <span class="p">.</span><span class="s1">&#39;wp-content/themes/weisaysimple/avatar/default/&#39;</span><span class="p">;</span><span class="c1">//在avatar文件夹下新建一个default文件夹，用于保存博客预先自定义的头像</span>
+  <span class="nx">$default_random</span> <span class="o">=</span> <span class="nx">array</span><span class="p">(</span><span class="s1">&#39;default1.jpg&#39;</span><span class="p">,</span> <span class="s1">&#39;default2.jpg&#39;</span><span class="p">,</span><span class="s1">&#39;default3.jpg&#39;</span><span class="p">,</span><span class="s1">&#39;default4.jpg&#39;</span><span class="p">,</span><span class="s1">&#39;default5.jpg&#39;</span><span class="p">,</span><span class="s1">&#39;default6.jpg&#39;</span><span class="p">,</span><span class="s1">&#39;default7.jpg&#39;</span><span class="p">,</span><span class="s1">&#39;default8.jpg&#39;</span><span class="p">,</span><span class="s1">&#39;default9.jpg&#39;</span><span class="p">,</span><span class="s1">&#39;default10.jpg&#39;</span><span class="p">,</span><span class="s1">&#39;default12.jpg&#39;</span><span class="p">,</span><span class="s1">&#39;default13.jpg&#39;</span><span class="p">,</span><span class="s1">&#39;default14.jpg&#39;</span><span class="p">,</span><span class="s1">&#39;default15.jpg&#39;</span><span class="p">,</span><span class="s1">&#39;default16.jpg&#39;</span><span class="p">,</span><span class="s1">&#39;default17.jpg&#39;</span><span class="p">,</span><span class="s1">&#39;default18.jpg&#39;</span><span class="p">);</span> <span class="c1">//在default文件夹下添加18个自己喜欢的头像，作为没有gravatar头像的人使用</span>
+  <span class="nx">$default_random_num</span> <span class="o">=</span> <span class="nx">array_rand</span><span class="p">(</span><span class="nx">$default_random</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span> <span class="c1">//随机从上面18张头像中选出一张 </span>
+  <span class="nx">$t</span> <span class="o">=</span> <span class="mi">432000</span><span class="p">;</span> <span class="c1">//设置头像更新时间为5天</span>
+  <span class="k">if</span> <span class="p">(</span> <span class="nx">empty</span><span class="p">(</span><span class="nx">$default</span><span class="p">)</span> <span class="p">)</span> <span class="nx">$default</span> <span class="o">=</span> <span class="nx">$default_random_abs</span><span class="p">.</span><span class="nx">$default_random</span><span class="cp">[</span><span class="nv">$default_random_num</span><span class="cp">]</span><span class="p">;</span>
+  <span class="k">if</span> <span class="p">(</span> <span class="o">!</span><span class="nx">is_file</span><span class="p">(</span><span class="nx">$e</span><span class="p">)</span> <span class="o">||</span> <span class="p">(</span><span class="nx">time</span><span class="p">()</span> <span class="o">-</span> <span class="nx">filemtime</span><span class="p">(</span><span class="nx">$e</span><span class="p">))</span> <span class="o">&amp;</span><span class="nx">gt</span><span class="p">;</span> <span class="nx">$t</span> <span class="p">){</span> <span class="c1">//当头像不存在或文件不超过5天才更新</span>
+  <span class="c1">//$g = sprintf( &quot;http://%d.gravatar.com&quot;, ( hexdec( $f{0} ) % 2 ) ). &#39;/avatar/&#39;. $f. &#39;?s=&#39;. $size. &#39;&amp;d=&#39;. $default. &#39;&amp;r=&#39;. $r; // wp 3.0 的服务器</span>
+  <span class="nx">$g</span> <span class="o">=</span> <span class="s1">&#39;http://www.gravatar.com/avatar/&#39;</span><span class="p">.</span> <span class="nx">$f</span><span class="p">.</span> <span class="s1">&#39;?s=&#39;</span><span class="p">.</span> <span class="nx">$size</span><span class="p">.</span> <span class="s1">&#39;&amp;d=&#39;</span><span class="p">.</span> <span class="nx">$default</span><span class="p">.</span> <span class="s1">&#39;&amp;r=&#39;</span><span class="p">.</span> <span class="nx">$r</span><span class="p">;</span> <span class="c1">// 旧服务器 (哪个快就开哪个)</span>
+  <span class="nx">copy</span><span class="p">(</span><span class="nx">$g</span><span class="p">,</span> <span class="nx">$e</span><span class="p">);</span>
+  <span class="c1">//把$g中的值（也就是从gravatar.com获取的头像）复制到$e中保存（也就是缓存到本地服务器）</span>
+  <span class="nx">$a</span> <span class="o">=</span> <span class="nx">esc_attr</span><span class="p">(</span><span class="nx">$g</span><span class="p">);</span>
+  <span class="p">}</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nx">filesize</span><span class="p">(</span><span class="nx">$e</span><span class="p">)</span> <span class="o">&amp;</span><span class="nx">lt</span><span class="p">;</span> <span class="mi">500</span><span class="p">)</span> <span class="nx">copy</span><span class="p">(</span><span class="nx">$default</span><span class="p">,</span> <span class="nx">$e</span><span class="p">);</span><span class="c1">//如果没有gravatar头像（500不能改，粗糙地判断是否有gravatar头像），那么就把把$e中的值（也就是博客预先自定义的头像）复制到$e中保存（也就是缓存到本地服务器）</span>
+  <span class="nx">echo</span> <span class="s2">&quot;&amp;lt;img title=&#39;{$alt}&#39; alt=&#39;{$alt}&#39; src=&#39;{$a}&#39; class=&#39;avatar avatar-{$size} photo&#39; height=&#39;{$size}&#39; width=&#39;{$size}&#39; /&amp;gt;&quot;</span><span class="p">;</span><span class="c1">//直接输出头像</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<p><code>温馨提示：</code>上述代码和预先自定义的头像我已经放到了<a href="https://typecodes.com/about" title="about | TypeCodes">博客的共享资源区</a>（115网盘or百度云盘or谷歌托管代码），大家可以参考下。这步完成后，我们就可以在自己需要的地方调用了。例如，我博客中的<a href="https://typecodes.com/contributors" title="Contributors | TypeCodes">contributes</a>里面有段代码是调用get_avatar()函数来获取gravatar.com设置的头像的。</p>
+<div class="highlight"><pre><span class="x">foreach (</span><span class="p">$</span><span class="nv">wall</span><span class="x"> as </span><span class="p">$</span><span class="nv">comment</span><span class="x">)</span><span class="err">{</span><span class="x"></span>
+<span class="x">  if( </span><span class="p">$</span><span class="nv">comment</span><span class="x">-&amp;gt;comment_author_url )</span>
+<span class="x">  </span><span class="p">$</span><span class="nv">url</span><span class="x"> = </span><span class="p">$</span><span class="nv">comment</span><span class="x">-&amp;gt;comment_author_url;</span>
+<span class="x">  else </span><span class="p">$</span><span class="nv">url</span><span class="x">=&quot;</span><span class="err">#</span><span class="x">&quot;;</span>
+<span class="x">  </span><span class="p">$</span><span class="nv">r</span><span class="x">=&quot;rel=&#39;external nofollow&#39;&quot;;</span>
+<span class="x">  </span><span class="p">$</span><span class="nv">tmp</span><span class="x"> = &quot;&amp;lt;a href=&#39;&quot;.</span><span class="p">$</span><span class="nv">url</span><span class="x">.&quot;&#39; &#39;&quot;.</span><span class="p">$</span><span class="nv">r</span><span class="x">.&quot;&#39; title=&#39;&quot;.</span><span class="p">$</span><span class="nv">comment</span><span class="x">-&amp;gt;comment_author.&quot; (留下&quot;.</span><span class="p">$</span><span class="nv">comment</span><span class="x">-&amp;gt;cnt.&quot;个脚印)&#39;&amp;gt;&quot;.get_avatar(</span><span class="p">$</span><span class="nv">comment</span><span class="x">-&amp;gt;comment_author_email, 36).&quot;&amp;lt;/a&amp;gt;&quot;;</span>
+<span class="x">  </span><span class="p">$</span><span class="nv">output</span><span class="x"> .= </span><span class="p">$</span><span class="nv">tmp</span><span class="x">;//调用get_avatar()函数来获取gravatar.com设置的头像</span>
+<span class="x">}</span>
+<span class="x">echo </span><span class="p">$</span><span class="nv">output</span><span class="x"> ;</span>
+</pre></div>
+
+
+<p>那么，现在我就可以使用刚在functions.php定义的my_avatar( )函数来获取本地服务器缓存的头像了，修改如下：</p>
+<div class="highlight"><pre><span class="x">echo my_avatar(</span><span class="p">$</span><span class="nv">comment</span><span class="x">-&gt;comment_author_email, </span><span class="p">$</span><span class="nv">size</span><span class="x"> = &#39;36&#39; ,</span><span class="p">$</span><span class="nv">default</span><span class="x"> = &#39;&#39;,</span><span class="p">$</span><span class="nv">alt</span><span class="x">=&#39;&#39;);//其余代码省略，需要完整代码的话大家可以联系我</span>
+</pre></div>
+
+
+<h5>（三）结语：更简洁的界面、更快速的响应，更好的用户体验！</h5>
+<p><img alt="更快的响应速度，有木有！" src="https://dn-vfhky.qbox.me/2012/11/result.png" title="更快的响应速度，有木有！" /></p>
+<p>在把博客的“留言吧”优化后，顺势把右侧栏的“读者粉丝墙”和“最新评论”优化。完后，博客是不是更好看、更想用、更好用了呢O(∩_∩)O哈哈~</p>
+<h5>Update 2012-12-30</h5>
+<p>在（二）中谈到的Gravatar头像本地服务器缓存，上面的代码造成了一个比较严重的问题。具体解决方案见最新关于WordPress中Gravatar头像缓存至本地服务器的文章<a href="https://typecodes.com/web/againwpgravatarcache.html" title="再议Gravatar头像缓存至本地服务器">《再议Gravatar头像缓存至本地服务器》</a>。</p>
+		    	<p class="tags">
+					<div class="post-share">
+						<ul class="post-shareul clearfix">
+							<li class="post-shareli">
+								<a href="http://note.youdao.com/memory/?url=https://typecodes.com/web/wpgravatarcache.html&title=WordPress中Gravatar头像缓存至本地服务器——暨博客优化实录" class="post-sharea ydshare" target="_blank" rel="nofollow">有道云笔记</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://v.t.sina.com.cn/share/share.php?url=https://typecodes.com/web/wpgravatarcache.html&title=WordPress中Gravatar头像缓存至本地服务器——暨博客优化实录&source=https://typecodes.com" class="post-sharea wbshare" target="_blank" rel="nofollow">新浪微博</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://v.t.qq.com/share/share.php?title=WordPress中Gravatar头像缓存至本地服务器——暨博客优化实录&url=https://typecodes.com/web/wpgravatarcache.html&site=https://typecodes.com" class="post-sharea twbshare" target="_blank" rel="nofollow">腾讯微博</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=https://typecodes.com/web/wpgravatarcache.html&title=WordPress中Gravatar头像缓存至本地服务器——暨博客优化实录&content='utf-8'" class="post-sharea qzoneshare" target="_blank" rel="nofollow">QZone</a>
+							</li>
+						</ul>
+					</div>
+					<div>
+						Tags: <a href="https://typecodes.com/tag/wordpress.html">wordpress</a>,<a href="https://typecodes.com/tag/gravatartou-xiang-huan-cun.html">gravatar头像缓存</a>					</div>
+				</p>
+			</article>
+			
+			<div id="comments">
+				<h4 class="num">Comments &raquo;</h4>
+		    	<div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript></div>
+		    </div>
+		</div>
+		<!--3. right sider begin-->
+<div class="col-md-3" id="blog-secondary" role="complementary">
+	<section class="widget">
+		<ul class="widget-list">
+			<form id="search" method="get" action="https://typecodes.com/search.html">
+				<input type="text" name="q" id="s" size="20" x-webkit-speech="" x-webkit-grammar="builtin:search" onwebkitspeechchange="this.value = this.value.replace(this.defaultValue, '')" value="Google...." onfocus="this.value = (this.value == this.defaultValue) ? '' : this.value" onblur="this.value = (this.value == '') ? this.defaultValue : this.value">
+			</form>
+		</ul>
+	</section>
+	<section class="widget">
+		<h3 class="widget-title">Categories</h3>
+		<ul class="widget-list">
+		      <li class="current">
+		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (26)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/csharp/index.html">Csharp</a> (6)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/database/index.html">Database</a> (11)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/java/index.html">Java</a> (1)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/linux/index.html">Linux</a> (16)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/mix/index.html">Mix</a> (53)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/web/index.html">Web</a> (88)
+		      </li>
+		</ul>
+	</section>
+	<section class="widget">
+		<h3 class="widget-title">Recent Posts</h3>
+		<ul class="widget-list">
+			<li class="post">
+				<a href="https://typecodes.com/mix/sucesstypechotopelican.html">成功将博客从Typecho迁移到Pelican</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/mix/begintypechotopelican.html">准备将博客从Typecho迁移到Pelican</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/tcpconnectiontimedout.html">Linux TCP连接Connection Refused和Connection timed out的问题</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/mysqlerrornospace.html">博客MySQL服务惊魂记：Linux磁盘空间不足(Core Dump文件引爆)</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/mix/synweibophpmarkdownimgurl.html">升级博客文章同步微博的插件：PHP正则提取Markdown的图片地址</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/cppgeneralmakefile.html">Linux C/C++工程中可生成ELF、动/静态库文件的通用Makefile</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/libraryundefinedref.html">解决make编译链接动态库错误：libxx.so: undefined reference to xx</a>
+			</li>
+		</ul>
+	</section>
+	<section class="widget widget-feed">
+		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
+	</section>
+</div>
+				</div>
+			</div>
+		</div>
+		<!--4. bottom begin-->
+		<footer id="te-site-footer"><div class="container">
+	<div class="row" role="contentinfo">
+		<section class="col-md-2 col-md-offset-1">
+			<h3>Links</h3>
+			<ul><li><a href="http://diaosbook.com/" title="">diaosbook</a></li></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul>
+				<li><a href="https://typecodes.com/links.html">More..</a></li>
+			</ul>
+		</section>
+		<section class="col-md-2">
+			<h3>Following</h3>
+			<ul>
+				<li><a href="https://github.com/vfhky" class="following github" target="_blank" rel="external nofollow">GitHub</a></li>
+				<li><a href="http://weibo.com/typecodes" class="following weibo" target="_blank" rel="external nofollow">Weibo</a></li>
+				<li><a href="http://vfhky.sinaapp.com/" class="following sae" target="_blank" rel="external nofollow">SAE</a></li>
+				<li><a href="http://www.dwz.cn/mYiwa" class="following qqgroup" target="_blank" rel="external nofollow">Group</a></li>
+			</ul>
+		</section>
+		<div class="col-md-12 copyright">
+			<a href="#top"><i class="i-logo-s">TOP</i></a>
+			<p>
+				&copy; 2012-<script language="JavaScript">var date = new Date(); document.write(date.getFullYear());</script>							<a href="https://typecodes.com">TypeCodes</a>. All Rights Reserved<br>Powered by <a href="http://getpelican.com" rel="external" target="_blank">Pelican</a>. <a href="http://www.miitbeian.gov.cn/" rel="external nofollow" target="_blank">粤ICP备14050695号</a>
+			</p>
+		</div>
+	</div>
+</div>
+</footer>
+<script type="text/javascript">
+	var disqus_shortname = 'typecodes';
+	var disqus_identifier = '/web/wpgravatarcache.html';
+	var disqus_url = 'https://typecodes.com/web/wpgravatarcache.html';
+	var disqus_title = 'WordPress中Gravatar头像缓存至本地服务器——暨博客优化实录';
+	(function() {
+		var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+		dsq.src = "//" + disqus_shortname + '.disqus.com/embed.js';
+		(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	 })();
+</script>
+	</body>
+</html>

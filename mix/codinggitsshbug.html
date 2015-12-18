@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="zh-CN" class="no-js">
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<title>Coding.net上git仓库ssh地址的"bug" &mdash; TypeCodes</title>
+		<meta name="author" content="vfhky">
+  		<link href="https://typecodes.com/atom.xml" type="application/atom+xml" rel="alternate" title="TypeCodes Atom Feed" />
+	  	<link href="https://typecodes.com/feed.xml" type="application/rss+xml" rel="alternate" title="TypeCodes RSS Feed" />
+		<meta name="HandheldFriendly" content="True">
+		<meta name="MobileOptimized" content="320">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="renderer" content="webkit">
+		<link rel="stylesheet" href="https://dn-vfhky.qbox.me/libs/css/pelican-vfhky.css">
+		<script>
+			var _hmt = _hmt || [];
+			(function() {
+			  var hm = document.createElement("script");
+			  hm.src = "//hm.baidu.com/hm.js?c15c4ab8e91ba9ac3d5a12293cc93359";
+			  var s = document.getElementsByTagName("script")[0]; 
+			  s.parentNode.insertBefore(hm, s);
+			})();
+		</script>
+	</head>
+	<body style>
+		<!--1. header navigation begin-->
+		<header role="banner" id="te-site-header">
+			<div class="container">
+				<a href="https://typecodes.com" class="te-site-logo" role="logo" target="_self"> TypeCodes</a>
+				<ul class="nav nav-pills" id="te-site-nav" role="navigation">
+					<li><a href="https://typecodes.com">Home</a></li><li><a href="https://typecodes.com/archives.html" title="Archives">Archives</a></li><li><a href="https://typecodes.com/about.html" title="About">About</a></li></ul>
+			</div>
+		</header>
+		<div class="te-headline">
+			<div class="container">
+				<h2 class="te-headline-title"> <a href="https://typecodes.com">TypeCodes</a></h2>
+			</div>
+		</div>
+		<div class="container">
+			<div class="row">
+		<!--2. left sider begin-->
+		<div class="col-md-9" id="blog-main" role="main">
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/mix/codinggitsshbug.html">Coding.net上git仓库ssh地址的"bug"</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2015-06-28 19:34 | 分类：<a href="https://typecodes.com/mix/index.html">mix</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>前段时间在用Coding.net同步git仓库时，能正常使用非https的ssh协议，但是这两天在自己的Windows机器上push内容时，报如下图中的错误<code>Permission denied (publickey).</code>：</p>
+<p><img alt="Coding.net报错Permission denied (publickey)" src="https://dn-vfhky.qbox.me/2015/06/git_push_error.png" title="Coding.net报错Permission denied (publickey)" /></p>
+
+
+<h5>1 查找原因</h5>
+<p>查了下Coding.net上这个项目的ssh地址如图所示：</p>
+<p><img alt="Coding.net上这个项目的ssh地址" src="https://dn-vfhky.qbox.me/2015/06/coding_net_ssh_bug.png" title="Coding.net上这个项目的ssh地址" /></p>
+<p>它和我的Windows机器上该项目的<code>G:\php\htdocs\CodingNet\mylnmp\.git\config</code>文件中的配置是一样的（<code>url = git@git.coding.net:vfhky/mylnmp.git</code>），如下图所示：</p>
+<p><img alt="本地git项目的ssh地址" src="https://dn-vfhky.qbox.me/2015/06/git_client_config.png" title="本地git项目的ssh地址" /></p>
+<p>对于<code>Permission denied</code>错误，按理说git项目地址没问题，那只能是ssh公私钥不对了。于是又用Git Bash重新生成了一对SSH公私钥，并把公钥放到Coding.net上。结果执行<code>git push origin master</code>推送命令时，还是报一样的错误。</p>
+<p>在Google上找了好久都没找到原因所在，没办法就只能将仓库切换到https协议。这样每次push或者pull的时候，都需要输入用户名和密码，比较麻烦。</p>
+<h5>2 对比GitHub的ssh地址发现Coding.net的“bug”    【！！！经指正，其实是我自己弄错了！！！】</h5>
+<p>下午无意之间看到了自己GitHub上一个仓库的ssh命名<code>git@github.com:vfhky/mylnmp.git</code>，它和上面Coding.net的ssh地址是有区别的。Github的ssh地址中是直接<code>@域名</code>的，而Coding.net的ssh地址是<code>@git.域名</code>。</p>
+<h5>3 解决方法 【！！！经指正，该方法是错误的！！！】</h5>
+<p>于是，立马尝试把本地Coding.net项目中的ssh地址改成类似于GitHub的ssh地址：</p>
+<div class="highlight"><pre>######Coding.net上git仓库ssh地址的bug
+url = git@git.coding.net:vfhky/mylnmp.git
+改成正确的ssh地址
+url = git@coding.net:vfhky/mylnmp.git
+</pre></div>
+
+
+<h5>4 结束</h5>
+<p>改完之后，重新执行git push命令，就正常了。在遇到到如下错误时，基本可以从git地址和ssh公私钥是否都正确这两方面来解决。</p>
+<div class="highlight"><pre>vfhky@VFHKY-PC /g/php/htdocs/CodingNet/mylnmp (master)
+$ git push origin master
+Permission denied (publickey).
+fatal: Could not read from remote repository.
+
+Please make sure you have the correct access rights
+and the repository exists.
+
+vfhky@VFHKY-PC /g/php/htdocs/CodingNet/mylnmp (master)
+$
+</pre></div>
+
+
+<h5>4 update 2015.07.01 15:12    【正确的解决方法】</h5>
+<p>经过 @yucong sun 的指正，之前是由于本地Win机上的~/.ssh/config文件配置的主机名是<code>Host coding.net</code>而不是<code>Host git.coding.net</code>，所以git项目中配置的<code>url = git@git.coding.net:vfhky/mylnmp.git</code>，无法匹配到这个主机名Host。</p>
+<p>因此，只要把<code>~/.ssh/config</code>的<code>Host coding.net</code>改成<code>Host git.coding.net</code>就行了，如下图所示。这里由于自己的考虑不周，误会“小猴子”了，抱歉抱歉！</p>
+<p><img alt="Win机上的~/.ssh/config文件配置" src="https://dn-vfhky.qbox.me/2015/06/coding_net_git_config.png" title="Win机上的~/.ssh/config文件配置" /></p>
+		    	<p class="tags">
+					<div class="post-share">
+						<ul class="post-shareul clearfix">
+							<li class="post-shareli">
+								<a href="http://note.youdao.com/memory/?url=https://typecodes.com/mix/codinggitsshbug.html&title=Coding.net上git仓库ssh地址的"bug"" class="post-sharea ydshare" target="_blank" rel="nofollow">有道云笔记</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://v.t.sina.com.cn/share/share.php?url=https://typecodes.com/mix/codinggitsshbug.html&title=Coding.net上git仓库ssh地址的"bug"&source=https://typecodes.com" class="post-sharea wbshare" target="_blank" rel="nofollow">新浪微博</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://v.t.qq.com/share/share.php?title=Coding.net上git仓库ssh地址的"bug"&url=https://typecodes.com/mix/codinggitsshbug.html&site=https://typecodes.com" class="post-sharea twbshare" target="_blank" rel="nofollow">腾讯微博</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=https://typecodes.com/mix/codinggitsshbug.html&title=Coding.net上git仓库ssh地址的"bug"&content='utf-8'" class="post-sharea qzoneshare" target="_blank" rel="nofollow">QZone</a>
+							</li>
+						</ul>
+					</div>
+					<div>
+						Tags: <a href="https://typecodes.com/tag/git.html">git</a>,<a href="https://typecodes.com/tag/coding.html">coding</a>					</div>
+				</p>
+			</article>
+			
+			<div id="comments">
+				<h4 class="num">Comments &raquo;</h4>
+		    	<div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript></div>
+		    </div>
+		</div>
+		<!--3. right sider begin-->
+<div class="col-md-3" id="blog-secondary" role="complementary">
+	<section class="widget">
+		<ul class="widget-list">
+			<form id="search" method="get" action="https://typecodes.com/search.html">
+				<input type="text" name="q" id="s" size="20" x-webkit-speech="" x-webkit-grammar="builtin:search" onwebkitspeechchange="this.value = this.value.replace(this.defaultValue, '')" value="Google...." onfocus="this.value = (this.value == this.defaultValue) ? '' : this.value" onblur="this.value = (this.value == '') ? this.defaultValue : this.value">
+			</form>
+		</ul>
+	</section>
+	<section class="widget">
+		<h3 class="widget-title">Categories</h3>
+		<ul class="widget-list">
+		      <li class="current">
+		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (26)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/csharp/index.html">Csharp</a> (6)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/database/index.html">Database</a> (11)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/java/index.html">Java</a> (1)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/linux/index.html">Linux</a> (16)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/mix/index.html">Mix</a> (53)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/web/index.html">Web</a> (88)
+		      </li>
+		</ul>
+	</section>
+	<section class="widget">
+		<h3 class="widget-title">Recent Posts</h3>
+		<ul class="widget-list">
+			<li class="post">
+				<a href="https://typecodes.com/mix/sucesstypechotopelican.html">成功将博客从Typecho迁移到Pelican</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/mix/begintypechotopelican.html">准备将博客从Typecho迁移到Pelican</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/tcpconnectiontimedout.html">Linux TCP连接Connection Refused和Connection timed out的问题</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/mysqlerrornospace.html">博客MySQL服务惊魂记：Linux磁盘空间不足(Core Dump文件引爆)</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/mix/synweibophpmarkdownimgurl.html">升级博客文章同步微博的插件：PHP正则提取Markdown的图片地址</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/cppgeneralmakefile.html">Linux C/C++工程中可生成ELF、动/静态库文件的通用Makefile</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/libraryundefinedref.html">解决make编译链接动态库错误：libxx.so: undefined reference to xx</a>
+			</li>
+		</ul>
+	</section>
+	<section class="widget widget-feed">
+		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
+	</section>
+</div>
+				</div>
+			</div>
+		</div>
+		<!--4. bottom begin-->
+		<footer id="te-site-footer"><div class="container">
+	<div class="row" role="contentinfo">
+		<section class="col-md-2 col-md-offset-1">
+			<h3>Links</h3>
+			<ul><li><a href="http://diaosbook.com/" title="">diaosbook</a></li></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul>
+				<li><a href="https://typecodes.com/links.html">More..</a></li>
+			</ul>
+		</section>
+		<section class="col-md-2">
+			<h3>Following</h3>
+			<ul>
+				<li><a href="https://github.com/vfhky" class="following github" target="_blank" rel="external nofollow">GitHub</a></li>
+				<li><a href="http://weibo.com/typecodes" class="following weibo" target="_blank" rel="external nofollow">Weibo</a></li>
+				<li><a href="http://vfhky.sinaapp.com/" class="following sae" target="_blank" rel="external nofollow">SAE</a></li>
+				<li><a href="http://www.dwz.cn/mYiwa" class="following qqgroup" target="_blank" rel="external nofollow">Group</a></li>
+			</ul>
+		</section>
+		<div class="col-md-12 copyright">
+			<a href="#top"><i class="i-logo-s">TOP</i></a>
+			<p>
+				&copy; 2012-<script language="JavaScript">var date = new Date(); document.write(date.getFullYear());</script>							<a href="https://typecodes.com">TypeCodes</a>. All Rights Reserved<br>Powered by <a href="http://getpelican.com" rel="external" target="_blank">Pelican</a>. <a href="http://www.miitbeian.gov.cn/" rel="external nofollow" target="_blank">粤ICP备14050695号</a>
+			</p>
+		</div>
+	</div>
+</div>
+</footer>
+<script type="text/javascript">
+	var disqus_shortname = 'typecodes';
+	var disqus_identifier = '/mix/codinggitsshbug.html';
+	var disqus_url = 'https://typecodes.com/mix/codinggitsshbug.html';
+	var disqus_title = 'Coding.net上git仓库ssh地址的"bug"';
+	(function() {
+		var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+		dsq.src = "//" + disqus_shortname + '.disqus.com/embed.js';
+		(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	 })();
+</script>
+	</body>
+</html>

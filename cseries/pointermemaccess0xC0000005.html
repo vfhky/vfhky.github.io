@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="zh-CN" class="no-js">
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<title>再谈“0xC0000005读取写入位置冲突”——正确使用指针访问内存 &mdash; TypeCodes</title>
+		<meta name="author" content="vfhky">
+  		<link href="https://typecodes.com/atom.xml" type="application/atom+xml" rel="alternate" title="TypeCodes Atom Feed" />
+	  	<link href="https://typecodes.com/feed.xml" type="application/rss+xml" rel="alternate" title="TypeCodes RSS Feed" />
+		<meta name="HandheldFriendly" content="True">
+		<meta name="MobileOptimized" content="320">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="renderer" content="webkit">
+		<link rel="stylesheet" href="https://dn-vfhky.qbox.me/libs/css/pelican-vfhky.css">
+		<script>
+			var _hmt = _hmt || [];
+			(function() {
+			  var hm = document.createElement("script");
+			  hm.src = "//hm.baidu.com/hm.js?c15c4ab8e91ba9ac3d5a12293cc93359";
+			  var s = document.getElementsByTagName("script")[0]; 
+			  s.parentNode.insertBefore(hm, s);
+			})();
+		</script>
+	</head>
+	<body style>
+		<!--1. header navigation begin-->
+		<header role="banner" id="te-site-header">
+			<div class="container">
+				<a href="https://typecodes.com" class="te-site-logo" role="logo" target="_self"> TypeCodes</a>
+				<ul class="nav nav-pills" id="te-site-nav" role="navigation">
+					<li><a href="https://typecodes.com">Home</a></li><li><a href="https://typecodes.com/archives.html" title="Archives">Archives</a></li><li><a href="https://typecodes.com/about.html" title="About">About</a></li></ul>
+			</div>
+		</header>
+		<div class="te-headline">
+			<div class="container">
+				<h2 class="te-headline-title"> <a href="https://typecodes.com">TypeCodes</a></h2>
+			</div>
+		</div>
+		<div class="container">
+			<div class="row">
+		<!--2. left sider begin-->
+		<div class="col-md-9" id="blog-main" role="main">
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/cseries/pointermemaccess0xC0000005.html">再谈“0xC0000005读取写入位置冲突”——正确使用指针访问内存</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2014-09-03 22:26 | 分类：<a href="https://typecodes.com/cseries/index.html">cseries</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>在<a href="https://typecodes.com/cseries/trimspace0xC0000005.html" title="未经处理的异常:0xC0000005:读取/写入位置冲突——从去掉字符串所有空格说起">前面一篇文章</a>中，总结了错误使用指针指向一个字符串常量，然后对该字符串常量进行写入操作导致出错：“未经处理的异常：0xC0000005: 读取/写入位置发生访问冲突”。</p>
+<p>这篇文章继续使用指针来探索这个问题。</p>
+<h5>1 测试程序：“异常: 0xC0000005: 写入位置 0xxxxxxxxx 时发生访问冲突”</h5>
+
+
+<p>下面是一个测试程序，主要是字符串的“连接”——strcat函数，malloc有迷惑性。其中，指针p1指向malloc在堆上开辟的连续内存块，数组p3是一种正确的字符连接方法。</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24</pre></div></td><td class="code"><div class="highlight"><pre><span class="cm">/**</span>
+<span class="cm"> * @FileName :  pointermemaccess0xC0000005.c</span>
+<span class="cm"> * @Author   :  vfhky https://typecodes.com 2014.08.25 20:00</span>
+<span class="cm"> * @Functions:  不正确使用指针p1导致出现“异常: 0xC0000005”和正确使用数组实现字符串的连接</span>
+<span class="cm">*/</span>
+<span class="cp">#include &lt;stdio.h&gt;</span>
+<span class="cp">#include &lt;string.h&gt;</span>
+<span class="cp">#include &lt;stdlib.h&gt;</span>
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span> <span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span> <span class="n">argv</span><span class="p">[]</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="kt">char</span> <span class="o">*</span> <span class="n">p1</span> <span class="o">=</span> <span class="p">(</span><span class="kt">char</span> <span class="o">*</span><span class="p">)</span><span class="n">malloc</span><span class="p">(</span> <span class="k">sizeof</span><span class="p">(</span><span class="kt">char</span><span class="p">)</span><span class="o">*</span><span class="mi">20</span> <span class="p">);</span>
+    <span class="kt">char</span> <span class="n">p3</span><span class="p">[</span><span class="mi">20</span><span class="p">]</span><span class="o">=</span> <span class="s">&quot;igkl&quot;</span><span class="p">;</span>
+    <span class="kt">char</span> <span class="o">*</span> <span class="n">p2</span> <span class="o">=</span> <span class="s">&quot;efgh&quot;</span><span class="p">;</span>
+    <span class="n">p1</span> <span class="o">=</span> <span class="s">&quot;abcd&quot;</span><span class="p">;</span>        <span class="c1">//p1指向字符串&quot;abcd&quot;的首地址, 而不是把&quot;abcd&quot;拷贝到malloc开辟的内存块中</span>
+    <span class="n">strcat</span><span class="p">(</span> <span class="n">p1</span><span class="p">,</span> <span class="n">p2</span> <span class="p">);</span>   <span class="c1">//报错: 0xC0000005异常，访问冲突</span>
+    <span class="n">strcat</span><span class="p">(</span> <span class="n">p3</span><span class="p">,</span> <span class="n">p2</span> <span class="p">);</span>   <span class="c1">//正确</span>
+    <span class="n">printf</span><span class="p">(</span> <span class="s">&quot;p1=[%s], p2=[%s]</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">p1</span><span class="p">,</span> <span class="n">p2</span> <span class="p">);</span>
+    <span class="n">printf</span><span class="p">(</span> <span class="s">&quot;p3=[%s], p2=[%s]</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">p3</span><span class="p">,</span> <span class="n">p2</span> <span class="p">);</span>
+
+    <span class="c1">//释放内存</span>
+    <span class="n">free</span><span class="p">(</span> <span class="n">p1</span> <span class="p">);</span>
+    <span class="n">p1</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</td></tr></table>
+
+<h5>2 在vs中设置断点并调试</h5>
+<p>如下图设置好断点后，单步执行到第10行。此时指针变量p1的值是 0x008734c0 ，p2的值是 0x00d75774 ，数组p3的起始地址是 0x0036f928 。</p>
+<p><img alt="在vs中设置断点并单步调试" src="https://dn-vfhky.qbox.me/2014/09/vsbreakp0xc00000005.png" title="在vs中设置断点并单步调试" /></p>
+<h6>2.1详细查看指针变量p1、p2以及数组p3的内存情况：（第10行）</h6>
+<p>此时，指针变量p1通过语句 <code>char * p1 = (char *)malloc( sizeof(char)*20 );</code> 指向起始地址为 0x008734c0 到 地址 0x008734d3 的内存块（大小为 20 字节）。</p>
+<p><img alt="初始化指针变量p1的内存地址" src="https://dn-vfhky.qbox.me/2014/09/oldp1address0xc00000005.png" title="初始化指针变量p1的内存地址" /></p>
+<p>指针变量 p2 通过执行 <code>char * p2 = "efgh";</code> 指向起始地址为  0x00d75774 的字符串“efgh”（共占 4 字节）。</p>
+<p><img alt="初始化指针变量p2的内存地址" src="https://dn-vfhky.qbox.me/2014/09/oldp2address0xc00000005.png" title="初始化指针变量p2的内存地址" /></p>
+<p>数组 p3 通过 <code>char p3[20]= "igkl";</code> 开辟了起始地址为 0x0036f928 的内存块（共占 4 字节），存储字符串“igkl”。</p>
+<p><img alt="初始化数组p3的内存块" src="https://dn-vfhky.qbox.me/2014/09/oldp3address0xc00000005.png" title="初始化数组p3的内存块" /></p>
+<h6>2.2继续单步调试并查看内存情况：（第11行）</h6>
+<p>上述变量初始化完毕后，单步执行到第 11 行的断点。这时指针变量p1由最初的指向 0x008734c0 变成指向字符串“abcd”的地址 0x00d7576c 。p2 的地址仍不变（0x00d75774），p3的地址也不变（0x0036f928）。</p>
+<p><img alt="指针变量p1指向字符串“abcd”的首地址" src="https://dn-vfhky.qbox.me/2014/09/newpointeraddress0xc00000005.png" title="指针变量p1指向字符串“abcd”的首地址" /></p>
+<p>详细查看指针变量p1的内存情况：起始地址是 0x00d7576c ，该内存块存储的字符串是“abcd”。</p>
+<p><img alt="指针变量p1的内存情况" src="https://dn-vfhky.qbox.me/2014/09/newp1address0xc00000005.png" title="指针变量p1的内存情况" /></p>
+<h6>2.3继续单步调试并查看内存情况：（第12行）</h6>
+<p>然后，单步执行到第 12 行的断点，出现错误：test.exe 中的 0x0f85d2e9 (msvcr100d.dll) 处有未经处理的异常: 0xC0000005: 写入位置 0x00d75770 时发生访问冲突。</p>
+<p>也即在执行第11行的 <code>strcat( p1, p2 );</code> 语句时，发生内存访问错误。该语句是把作为src的指针变量p2（0x00d75774）指向的内存块中的字符串“efgh”拷贝一份，然后复制到作为dst的指针变量p1（0x00d7576c）所指向内存块中的的字符串常量“abcd”后面。调用堆栈可以看到，当执行 <code>msvcr100d.dll!strcat(unsigned char * dst, unsigned char * src)</code> 对应的strcat.asm汇编文件中第178行语句 <code>mov [edi], edx</code> 时出错。</p>
+<p><img alt="未经处理的异常: 0xC0000005: 写入位置 0x00d75770 时发生访问冲突" src="https://dn-vfhky.qbox.me/2014/09/asm0xc00000005error.png" title="未经处理的异常: 0xC0000005: 写入位置 0x00d75770 时发生访问冲突" /></p>
+<p><img alt="strcat.asm汇编文件mov指令出错" src="https://dn-vfhky.qbox.me/2014/09/strcatasm0xc00000005.png" title="strcat.asm汇编文件mov指令出错" /></p>
+<h5>3 原因分析</h5>
+<p>其实，通过上面的单步调试，我们也已经知道原因了。现总结一下：因为指针变量p1（0x00d7576c）所指向的字符串常量“abcd”后面，也即字符'd'的地址是 0x00d7576c+3=0x00d7576f 。</p>
+<p>而它后面以地址 0x00d75770 开始的内存块是不属于指针变量p1的，没有访问权限，所以把拷贝自指针变量p2（0x00d75774）指向的字符串“efgh”到以 0x00d75770 为起始地址的内存块中会报错。可以把语句 <code>p1 = "abcd";</code> 改成 <code>p1 = p3;</code>，然后直接使用 <code>strcat( p1, p2 );</code>，这样是合法的。</p>
+<p><img alt="地址 0x00d75770 不能写入操作" src="https://dn-vfhky.qbox.me/2014/09/write0x00d75770err.png" title="地址 0x00d75770 不能写入操作" /></p>
+		    	<p class="tags">
+					<div class="post-share">
+						<ul class="post-shareul clearfix">
+							<li class="post-shareli">
+								<a href="http://note.youdao.com/memory/?url=https://typecodes.com/cseries/pointermemaccess0xC0000005.html&title=再谈“0xC0000005读取写入位置冲突”——正确使用指针访问内存" class="post-sharea ydshare" target="_blank" rel="nofollow">有道云笔记</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://v.t.sina.com.cn/share/share.php?url=https://typecodes.com/cseries/pointermemaccess0xC0000005.html&title=再谈“0xC0000005读取写入位置冲突”——正确使用指针访问内存&source=https://typecodes.com" class="post-sharea wbshare" target="_blank" rel="nofollow">新浪微博</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://v.t.qq.com/share/share.php?title=再谈“0xC0000005读取写入位置冲突”——正确使用指针访问内存&url=https://typecodes.com/cseries/pointermemaccess0xC0000005.html&site=https://typecodes.com" class="post-sharea twbshare" target="_blank" rel="nofollow">腾讯微博</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=https://typecodes.com/cseries/pointermemaccess0xC0000005.html&title=再谈“0xC0000005读取写入位置冲突”——正确使用指针访问内存&content='utf-8'" class="post-sharea qzoneshare" target="_blank" rel="nofollow">QZone</a>
+							</li>
+						</ul>
+					</div>
+					<div>
+						Tags: <a href="https://typecodes.com/tag/yi-chang-0xc0000005.html">异常0xc0000005</a>,<a href="https://typecodes.com/tag/du-qu-xie-ru-wei-zhi-chong-tu.html">读取/写入位置冲突</a>					</div>
+				</p>
+			</article>
+			
+			<div id="comments">
+				<h4 class="num">Comments &raquo;</h4>
+		    	<div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript></div>
+		    </div>
+		</div>
+		<!--3. right sider begin-->
+<div class="col-md-3" id="blog-secondary" role="complementary">
+	<section class="widget">
+		<ul class="widget-list">
+			<form id="search" method="get" action="https://typecodes.com/search.html">
+				<input type="text" name="q" id="s" size="20" x-webkit-speech="" x-webkit-grammar="builtin:search" onwebkitspeechchange="this.value = this.value.replace(this.defaultValue, '')" value="Google...." onfocus="this.value = (this.value == this.defaultValue) ? '' : this.value" onblur="this.value = (this.value == '') ? this.defaultValue : this.value">
+			</form>
+		</ul>
+	</section>
+	<section class="widget">
+		<h3 class="widget-title">Categories</h3>
+		<ul class="widget-list">
+		      <li class="current">
+		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (26)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/csharp/index.html">Csharp</a> (6)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/database/index.html">Database</a> (11)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/java/index.html">Java</a> (1)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/linux/index.html">Linux</a> (16)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/mix/index.html">Mix</a> (53)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/web/index.html">Web</a> (88)
+		      </li>
+		</ul>
+	</section>
+	<section class="widget">
+		<h3 class="widget-title">Recent Posts</h3>
+		<ul class="widget-list">
+			<li class="post">
+				<a href="https://typecodes.com/mix/sucesstypechotopelican.html">成功将博客从Typecho迁移到Pelican</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/mix/begintypechotopelican.html">准备将博客从Typecho迁移到Pelican</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/tcpconnectiontimedout.html">Linux TCP连接Connection Refused和Connection timed out的问题</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/mysqlerrornospace.html">博客MySQL服务惊魂记：Linux磁盘空间不足(Core Dump文件引爆)</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/mix/synweibophpmarkdownimgurl.html">升级博客文章同步微博的插件：PHP正则提取Markdown的图片地址</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/cppgeneralmakefile.html">Linux C/C++工程中可生成ELF、动/静态库文件的通用Makefile</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/libraryundefinedref.html">解决make编译链接动态库错误：libxx.so: undefined reference to xx</a>
+			</li>
+		</ul>
+	</section>
+	<section class="widget widget-feed">
+		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
+	</section>
+</div>
+				</div>
+			</div>
+		</div>
+		<!--4. bottom begin-->
+		<footer id="te-site-footer"><div class="container">
+	<div class="row" role="contentinfo">
+		<section class="col-md-2 col-md-offset-1">
+			<h3>Links</h3>
+			<ul><li><a href="http://diaosbook.com/" title="">diaosbook</a></li></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul>
+				<li><a href="https://typecodes.com/links.html">More..</a></li>
+			</ul>
+		</section>
+		<section class="col-md-2">
+			<h3>Following</h3>
+			<ul>
+				<li><a href="https://github.com/vfhky" class="following github" target="_blank" rel="external nofollow">GitHub</a></li>
+				<li><a href="http://weibo.com/typecodes" class="following weibo" target="_blank" rel="external nofollow">Weibo</a></li>
+				<li><a href="http://vfhky.sinaapp.com/" class="following sae" target="_blank" rel="external nofollow">SAE</a></li>
+				<li><a href="http://www.dwz.cn/mYiwa" class="following qqgroup" target="_blank" rel="external nofollow">Group</a></li>
+			</ul>
+		</section>
+		<div class="col-md-12 copyright">
+			<a href="#top"><i class="i-logo-s">TOP</i></a>
+			<p>
+				&copy; 2012-<script language="JavaScript">var date = new Date(); document.write(date.getFullYear());</script>							<a href="https://typecodes.com">TypeCodes</a>. All Rights Reserved<br>Powered by <a href="http://getpelican.com" rel="external" target="_blank">Pelican</a>. <a href="http://www.miitbeian.gov.cn/" rel="external nofollow" target="_blank">粤ICP备14050695号</a>
+			</p>
+		</div>
+	</div>
+</div>
+</footer>
+<script type="text/javascript">
+	var disqus_shortname = 'typecodes';
+	var disqus_identifier = '/cseries/pointermemaccess0xC0000005.html';
+	var disqus_url = 'https://typecodes.com/cseries/pointermemaccess0xC0000005.html';
+	var disqus_title = '再谈“0xC0000005读取写入位置冲突”——正确使用指针访问内存';
+	(function() {
+		var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+		dsq.src = "//" + disqus_shortname + '.disqus.com/embed.js';
+		(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	 })();
+</script>
+	</body>
+</html>

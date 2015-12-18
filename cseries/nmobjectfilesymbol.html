@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="zh-CN" class="no-js">
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<title>Unix系统中nm命令展示目标文件符号的方法 &mdash; TypeCodes</title>
+		<meta name="author" content="vfhky">
+  		<link href="https://typecodes.com/atom.xml" type="application/atom+xml" rel="alternate" title="TypeCodes Atom Feed" />
+	  	<link href="https://typecodes.com/feed.xml" type="application/rss+xml" rel="alternate" title="TypeCodes RSS Feed" />
+		<meta name="HandheldFriendly" content="True">
+		<meta name="MobileOptimized" content="320">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="renderer" content="webkit">
+		<link rel="stylesheet" href="https://dn-vfhky.qbox.me/libs/css/pelican-vfhky.css">
+		<script>
+			var _hmt = _hmt || [];
+			(function() {
+			  var hm = document.createElement("script");
+			  hm.src = "//hm.baidu.com/hm.js?c15c4ab8e91ba9ac3d5a12293cc93359";
+			  var s = document.getElementsByTagName("script")[0]; 
+			  s.parentNode.insertBefore(hm, s);
+			})();
+		</script>
+	</head>
+	<body style>
+		<!--1. header navigation begin-->
+		<header role="banner" id="te-site-header">
+			<div class="container">
+				<a href="https://typecodes.com" class="te-site-logo" role="logo" target="_self"> TypeCodes</a>
+				<ul class="nav nav-pills" id="te-site-nav" role="navigation">
+					<li><a href="https://typecodes.com">Home</a></li><li><a href="https://typecodes.com/archives.html" title="Archives">Archives</a></li><li><a href="https://typecodes.com/about.html" title="About">About</a></li></ul>
+			</div>
+		</header>
+		<div class="te-headline">
+			<div class="container">
+				<h2 class="te-headline-title"> <a href="https://typecodes.com">TypeCodes</a></h2>
+			</div>
+		</div>
+		<div class="container">
+			<div class="row">
+		<!--2. left sider begin-->
+		<div class="col-md-9" id="blog-main" role="main">
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/cseries/nmobjectfilesymbol.html">Unix系统中nm命令展示目标文件符号的方法</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2015-08-12 00:07 | 分类：<a href="https://typecodes.com/cseries/index.html">cseries</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>在*nix系统中，通过gnu开源gcc或者g++工具生成的目标文件（object file），可以用<code>nm</code>、<code>objdump</code>和<code>readelf</code>这三个命令来查看。</p>
+<div class="highlight"><pre>nm：显示目标文件中的符号；
+objdump：打印目标文件中的详细信息；
+readelf：显示关于 ELF 目标文件的信息。
+</pre></div>
+
+
+<p>之前在调试makefile文件的时候，链接动态库出错：<code>libsrcpbl.so: undefined reference to 'gcProgramName'</code>。也就是变量gcProgramName没定义，后来通过<code>nm -u libsrcpbl.so</code>命令辅助排查解决了。</p>
+
+
+<p>为了更全面的了解一下这个命令，在自己的CentOS7.1机器上通过<code>man nm</code>操作查看gnu官方说明手册。同时，对里面涉及的一些opinion选项和nm命令显示的符号做了DESCRIPTION说明，供以后参考。</p>
+<div class="highlight"><pre><span class="err">######</span> <span class="nx">CentOS7</span><span class="p">.</span><span class="mi">1</span><span class="nx">上查看nm命令的man手册</span><span class="err">，</span><span class="nx">部分选项仍未能理解</span><span class="err">。</span><span class="nx">如有熟悉者请指教</span><span class="err">，</span><span class="nx">谢谢</span><span class="err">！</span>
+<span class="cp">[</span><span class="nx">root</span><span class="p">@</span><span class="nx">typecodes</span> <span class="nx">lib</span><span class="cp">]</span><span class="err">#</span> <span class="nx">man</span> <span class="nx">nm</span>
+<span class="nx">NM</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>                                                                  <span class="nx">GNU</span> <span class="nx">Development</span> <span class="nx">Tools</span>                                                                 <span class="nx">NM</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="nx">NAME</span>
+       <span class="nx">nm</span> <span class="o">-</span> <span class="nx">list</span> <span class="nx">symbols</span> <span class="nx">from</span> <span class="nx">object</span> <span class="nx">files</span>
+
+<span class="nx">SYNOPSIS</span><span class="err">【</span><span class="nx">纲要</span><span class="err">】</span>
+       <span class="nx">nm</span> <span class="cp">[</span><span class="na">-A</span><span class="o">|-</span><span class="nx">o</span><span class="o">|--</span><span class="nx">print</span><span class="na">-file-name</span><span class="cp">]</span> <span class="cp">[</span><span class="na">-a</span><span class="o">|--</span><span class="nx">debug</span><span class="na">-syms</span><span class="cp">]</span>
+          <span class="cp">[</span><span class="na">-B</span><span class="o">|--</span><span class="n">format</span><span class="o">=</span><span class="nx">bsd</span><span class="cp">]</span> <span class="cp">[</span><span class="na">-C</span><span class="o">|--</span><span class="nx">demangle</span><span class="err">[</span><span class="o">=</span><span class="nx">style</span><span class="cp">]</span><span class="p">]</span>
+          <span class="cp">[</span><span class="na">-D</span><span class="o">|--</span><span class="nx">dynamic</span><span class="cp">]</span> <span class="cp">[</span><span class="na">-fformat</span><span class="o">|--</span><span class="n">format</span><span class="o">=</span><span class="nx">format</span><span class="cp">]</span>
+          <span class="cp">[</span><span class="na">-g</span><span class="o">|--</span><span class="nx">extern</span><span class="na">-only</span><span class="cp">]</span> <span class="cp">[</span><span class="na">-h</span><span class="o">|--</span><span class="nx">help</span><span class="cp">]</span>
+          <span class="cp">[</span><span class="na">-l</span><span class="o">|--</span><span class="nx">line</span><span class="na">-numbers</span><span class="cp">]</span> <span class="cp">[</span><span class="na">-n</span><span class="o">|-</span><span class="nx">v</span><span class="o">|--</span><span class="nx">numeric</span><span class="na">-sort</span><span class="cp">]</span>
+          <span class="cp">[</span><span class="na">-P</span><span class="o">|--</span><span class="nx">portability</span><span class="cp">]</span> <span class="cp">[</span><span class="na">-p</span><span class="o">|--</span><span class="nx">no</span><span class="na">-sort</span><span class="cp">]</span>
+          <span class="cp">[</span><span class="na">-r</span><span class="o">|--</span><span class="nx">reverse</span><span class="na">-sort</span><span class="cp">]</span> <span class="cp">[</span><span class="na">-S</span><span class="o">|--</span><span class="nx">print</span><span class="na">-size</span><span class="cp">]</span>
+          <span class="cp">[</span><span class="na">-s</span><span class="o">|--</span><span class="nx">print</span><span class="na">-armap</span><span class="cp">]</span> <span class="cp">[</span><span class="na">-t</span> <span class="nx">radix</span><span class="o">|--</span><span class="n">radix</span><span class="o">=</span><span class="nx">radix</span><span class="cp">]</span>
+          <span class="cp">[</span><span class="na">-u</span><span class="o">|--</span><span class="nx">undefined</span><span class="na">-only</span><span class="cp">]</span> <span class="cp">[</span><span class="na">-V</span><span class="o">|--</span><span class="nx">version</span><span class="cp">]</span>
+          <span class="cp">[</span><span class="na">-X</span> <span class="mi">32</span><span class="nx">_64</span><span class="cp">]</span> <span class="cp">[</span><span class="o">--</span><span class="nx">defined</span><span class="na">-only</span><span class="cp">]</span> <span class="cp">[</span><span class="o">--</span><span class="nx">no</span><span class="na">-demangle</span><span class="cp">]</span>
+          <span class="cp">[</span><span class="o">--</span><span class="nx">plugin</span> <span class="nx">name</span><span class="cp">]</span> <span class="cp">[</span><span class="o">--</span><span class="nx">size</span><span class="na">-sort</span><span class="cp">]</span> <span class="cp">[</span><span class="o">--</span><span class="nx">special</span><span class="na">-syms</span><span class="cp">]</span>
+          <span class="cp">[</span><span class="o">--</span><span class="nx">synthetic</span><span class="cp">]</span> <span class="cp">[</span><span class="o">--</span><span class="n">target</span><span class="o">=</span><span class="nx">bfdname</span><span class="cp">]</span>
+          <span class="cp">[</span><span class="nx">objfile...</span><span class="cp">]</span>
+
+<span class="nx">DESCRIPTION</span>
+       <span class="nx">GNU</span> <span class="nx">nm</span> <span class="nx">lists</span> <span class="nx">the</span> <span class="nx">symbols</span> <span class="nx">from</span> <span class="nx">object</span> <span class="nx">files</span> <span class="nx">objfile</span><span class="p">....</span>  <span class="nx">If</span> <span class="nx">no</span> <span class="nx">object</span> <span class="nx">files</span> <span class="nx">are</span> <span class="nx">listed</span> <span class="nx">as</span> <span class="nx">arguments</span><span class="p">,</span> <span class="nx">nm</span> <span class="nx">assumes</span> <span class="nx">the</span> <span class="nx">file</span> <span class="nx">a</span><span class="p">.</span><span class="nx">out</span><span class="p">.</span><span class="err">【</span><span class="nx">GNU</span> <span class="nx">nm命令展示nm参数中的所有目标文件中的符号</span><span class="err">（</span><span class="nx">默认目标文件是a</span><span class="p">.</span><span class="nx">out</span><span class="err">）】</span>
+
+       <span class="nx">For</span> <span class="nx">each</span> <span class="nx">symbol</span><span class="p">,</span> <span class="nx">nm</span> <span class="nx">shows</span><span class="o">:</span>
+
+       <span class="nx">o</span>   <span class="nx">The</span> <span class="nx">symbol</span> <span class="nx">value</span><span class="p">,</span> <span class="k">in</span> <span class="nx">the</span> <span class="nx">radix</span> <span class="nx">selected</span> <span class="nx">by</span> <span class="nx">options</span> <span class="p">(</span><span class="nx">see</span> <span class="nx">below</span><span class="p">),</span> <span class="nx">or</span> <span class="nx">hexadecimal</span> <span class="nx">by</span> <span class="k">default</span><span class="p">.</span><span class="err">【</span><span class="nx">符号是按照下面radix进制</span><span class="err">（</span><span class="nx">默认十六进制</span><span class="err">）</span><span class="nx">显示</span><span class="err">】</span>
+
+       <span class="nx">o</span>   <span class="nx">The</span> <span class="nx">symbol</span> <span class="nx">type</span><span class="p">.</span>  <span class="nx">At</span> <span class="nx">least</span> <span class="nx">the</span> <span class="nx">following</span> <span class="nx">types</span> <span class="nx">are</span> <span class="nx">used</span><span class="p">;</span> <span class="nx">others</span> <span class="nx">are</span><span class="p">,</span> <span class="nx">as</span> <span class="nx">well</span><span class="p">,</span> <span class="nx">depending</span> <span class="nx">on</span> <span class="nx">the</span> <span class="nx">object</span> <span class="nx">file</span> <span class="nx">format</span><span class="p">.</span>  <span class="nx">If</span> <span class="nx">lowercase</span><span class="p">,</span> <span class="nx">the</span> <span class="nx">symbol</span> <span class="nx">is</span> <span class="nx">usually</span>
+           <span class="nx">local</span><span class="p">;</span> <span class="k">if</span> <span class="nx">uppercase</span><span class="p">,</span> <span class="nx">the</span> <span class="nx">symbol</span> <span class="nx">is</span> <span class="nx">global</span> <span class="p">(</span><span class="nx">external</span><span class="p">).</span>  <span class="nx">There</span> <span class="nx">are</span> <span class="nx">however</span> <span class="nx">a</span> <span class="nx">few</span> <span class="nx">lowercase</span> <span class="nx">symbols</span> <span class="nx">that</span> <span class="nx">are</span> <span class="nx">shown</span> <span class="k">for</span> <span class="nx">special</span> <span class="nx">global</span> <span class="nx">symbols</span> <span class="p">(</span><span class="s2">&quot;u&quot;</span><span class="p">,</span> <span class="s2">&quot;v&quot;</span>
+           <span class="nx">and</span> <span class="s2">&quot;w&quot;</span><span class="p">).</span><span class="err">【</span><span class="nx">小写符号通常表示值是局部的</span><span class="err">，</span><span class="nx">大写表示全局或外部的</span><span class="err">。</span><span class="nx">小写u</span><span class="p">,</span><span class="nx">v</span><span class="p">,</span><span class="nx">w除外</span><span class="err">】</span>
+
+           <span class="s2">&quot;A&quot;</span> <span class="nx">The</span> <span class="nx">symbol</span><span class="s1">&#39;s value is absolute, and will not be changed by further linking.【符号的值是绝对固定的，在后面的链接中也不会改变】</span>
+
+<span class="s1">           &quot;B&quot;</span>
+<span class="s1">           &quot;b&quot; The symbol is in the uninitialized data section (known as BSS).【符号位于内存中未初始化的区域，即BSS段】</span>
+
+<span class="s1">           &quot;C&quot; The symbol is common.  Common symbols are uninitialized data.  When linking, multiple common symbols may appear with the same name.  If the symbol</span>
+<span class="s1">               is defined anywhere, the common symbols are treated as undefined references.【C表示符号类型是未初始化的。当链接时，可能出现多个常用符号同名，这时如果该符号值都被定义了，那么会被当作未定义的引用（重定义错误）】</span>
+
+<span class="s1">           &quot;D&quot;</span>
+<span class="s1">           &quot;d&quot; The symbol is in the initialized data section.【已经初始化的数据段（全局变量）】</span>
+
+<span class="s1">           &quot;G&quot;</span>
+<span class="s1">           &quot;g&quot; The symbol is in an initialized data section for small objects.  Some object file formats permit more efficient access to small data objects, such</span>
+<span class="s1">               as a global int variable as opposed to a large global array.【小目标文件中的未初始化的数据段的符号】</span>
+
+<span class="s1">           &quot;i&quot; For PE format files this indicates that the symbol is in a section specific to the implementation of DLLs.  For ELF format files this indicates</span>
+<span class="s1">               that the symbol is an indirect function.  This is a GNU extension to the standard set of ELF symbol types.  It indicates a symbol which if</span>
+<span class="s1">               referenced by a relocation does not evaluate to its address, but instead must be invoked at runtime.  The runtime execution will then return the</span>
+<span class="s1">               value to be used in the relocation.</span>
+
+<span class="s1">           &quot;N&quot; The symbol is a debugging symbol.【N代表调试符号】</span>
+
+<span class="s1">           &quot;p&quot; The symbols is in a stack unwind section.【非重定向的栈区】</span>
+
+<span class="s1">           &quot;R&quot;</span>
+<span class="s1">           &quot;r&quot; The symbol is in a read only data section.【只读数据区】</span>
+
+<span class="s1">           &quot;S&quot;</span>
+<span class="s1">           &quot;s&quot; The symbol is in an uninitialized data section for small objects.【未初始化的数据区域】</span>
+
+<span class="s1">           &quot;T&quot;</span>
+<span class="s1">           &quot;t&quot; The symbol is in the text (code) section.【内存中代码文本段（通常是全局非静态函数等）】</span>
+
+<span class="s1">           &quot;U&quot; The symbol is undefined.【未定义的符号，需要从其它对象文件中链接进来】</span>
+
+<span class="s1">           &quot;u&quot; The symbol is a unique global symbol.  This is a GNU extension to the standard set of ELF symbol bindings.  For such a symbol the dynamic linker</span>
+<span class="s1">               will make sure that in the entire process there is just one symbol with this name and type in use.【链接器保证唯一性的符号】</span>
+
+<span class="s1">           &quot;V&quot;</span>
+<span class="s1">           &quot;v&quot; The symbol is a weak object.  When a weak defined symbol is linked with a normal defined symbol, the normal defined symbol is used with no error.</span>
+<span class="s1">               When a weak undefined symbol is linked and the symbol is not defined, the value of the weak symbol becomes zero with no error.  On some systems,</span>
+<span class="s1">               uppercase indicates that a default value has been specified.</span>
+
+<span class="s1">           &quot;W&quot;</span>
+<span class="s1">           &quot;w&quot; The symbol is a weak symbol that has not been specifically tagged as a weak object symbol.  When a weak defined symbol is linked with a normal</span>
+<span class="s1">               defined symbol, the normal defined symbol is used with no error.  When a weak undefined symbol is linked and the symbol is not defined, the value</span>
+<span class="s1">               of the symbol is determined in a system-specific manner without error.  On some systems, uppercase indicates that a default value has been</span>
+<span class="s1">               specified.【表示如果其他函数库中也有对这个符号的定义，则其他符号的定义可以覆盖这个定义】</span>
+
+<span class="s1">           &quot;-&quot; The symbol is a stabs symbol in an a.out object file.  In this case, the next values printed are the stabs other field, the stabs desc field, and</span>
+<span class="s1">               the stab type.  Stabs symbols are used to hold debugging information.</span>
+
+<span class="s1">           &quot;?&quot; The symbol type is unknown, or object file format specific.</span>
+
+<span class="s1">       o   The symbol name.</span>
+
+<span class="s1">OPTIONS     【nm 可以使用的参数】</span>
+<span class="s1">       The long and short forms of options, shown here as alternatives, are equivalent.【下面展示的分别以长、短形式的选项都是等效的】</span>
+
+<span class="s1">       -A</span>
+<span class="s1">       -o</span>
+<span class="s1">       --print-file-name</span>
+<span class="s1">           Precede each symbol by the name of the input file (or archive member) in which it was found, rather than identifying the input file once only, before</span>
+<span class="s1">           all of its symbols.【输出符号所对应的库的名字，便于查找符号对应的被定义的库】</span>
+
+<span class="s1">       -a</span>
+<span class="s1">       --debug-syms</span>
+<span class="s1">           Display all symbols, even debugger-only symbols; normally these are not listed.【展示所有的符号（包括默认不展示的调试符号）】</span>
+
+<span class="s1">       -B  The same as --format=bsd (for compatibility with the MIPS nm).</span>
+
+<span class="s1">       -C</span>
+<span class="s1">       --demangle</span><span class="cp">[</span><span class="o">=</span><span class="nx">style</span><span class="cp">]</span><span class="s1"></span>
+<span class="s1">           Decode (demangle) low-level symbol names into user-level names.  Besides removing any initial underscore prepended by the system, this makes C++</span>
+<span class="s1">           function names readable. Different compilers have different mangling styles. The optional demangling style argument can be used to choose an</span>
+<span class="s1">           appropriate demangling style for your compiler.【将低级符号名解码(demangle)成用户级的名字，使得C++函数名具有可读性。为了区分重载函数，c++编译器会将函数返回值/参数等信息附加到函数名称中去组成一个mangle过的符号。这里的-C选项就是做一个逆操作，输出其原始可理解的符号名称】</span>
+
+<span class="s1">       --no-demangle</span>
+<span class="s1">           Do not demangle low-level symbol names.  This is the default.</span>
+
+<span class="s1">       -D</span>
+<span class="s1">       --dynamic</span>
+<span class="s1">           Display the dynamic symbols rather than the normal symbols.  This is only meaningful for dynamic objects, such as certain types of shared libraries.【显示动态符号（只对动态目标有效，如特定类型的共享库）】</span>
+
+<span class="s1">       -f format</span>
+<span class="s1">       --format=format</span>
+<span class="s1">           Use the output format format, which can be &quot;bsd&quot;, &quot;sysv&quot;, or &quot;posix&quot;.  The default is &quot;bsd&quot;.  Only the first character of format is significant; it can</span>
+<span class="s1">           be either upper or lower case.【使用format格式输出】</span>
+
+<span class="s1">       -g</span>
+<span class="s1">       --extern-only</span>
+<span class="s1">           Display only external symbols.【仅显示外部符号】</span>
+
+<span class="s1">       -h</span>
+<span class="s1">       --help</span>
+<span class="s1">           Show a summary of the options to nm and exit.</span>
+
+<span class="s1">       -l</span>
+<span class="s1">       --line-numbers</span>
+<span class="s1">           For each symbol, use debugging information to try to find a filename and line number.  For a defined symbol, look for the line number of the address of</span>
+<span class="s1">           the symbol.  For an undefined symbol, look for the line number of a relocation entry which refers to the symbol.  If line number information can be</span>
+<span class="s1">           found, print it after the other symbol information.【对每个符号，使用调试信息（对象文件编译时增加-g选项）以便找到文件名和行号。对于已定义的符号，查找符号地址的行号。对于未定义符号，查找指向符号重定位入口的行号。如果可以找到行号信息，显示在符号信息之后】</span>
+
+<span class="s1">       -n</span>
+<span class="s1">       -v</span>
+<span class="s1">       --numeric-sort</span>
+<span class="s1">           Sort symbols numerically by their addresses, rather than alphabetically by their names.【按照符号对应的地址排序而不是字母】</span>
+
+<span class="s1">       -p</span>
+<span class="s1">       --no-sort</span>
+<span class="s1">           Do not bother to sort the symbols in any order; print them in the order encountered.【按目标文件中遇到的符号顺序显示】</span>
+
+<span class="s1">       -P</span>
+<span class="s1">       --portability</span>
+<span class="s1">           Use the POSIX.2 standard output format instead of the default format.  Equivalent to -f posix.【使用POSIX.2标准输出格式代替默认的输出格式。等同于使用任选项-f?posix】</span>
+
+<span class="s1">       -r</span>
+<span class="s1">       --reverse-sort</span>
+<span class="s1">           Reverse the order of the sort (whether numeric or alphabetic); let the last come first.【不管以数字或字母为基本，都反转排序】</span>
+
+<span class="s1">       -S</span>
+<span class="s1">       --print-size</span>
+<span class="s1">           Print both value and size of defined symbols for the &quot;bsd&quot; output style.  This option has no effect for object formats that do not record symbol sizes,</span>
+<span class="s1">           unless --size-sort is also used in which case a calculated size is displayed.</span>
+
+<span class="s1">       -s</span>
+<span class="s1">       --print-armap</span>
+<span class="s1">           When listing symbols from archive members, include the index: a mapping (stored in the archive by ar or ranlib) of which modules contain definitions</span>
+<span class="s1">           for which names.【当列出库中成员的符号时，包含索引（即哪些模块包含哪些名字的映射）】</span>
+
+<span class="s1">       -t radix</span>
+<span class="s1">       --radix=radix</span>
+<span class="s1">           Use radix as the radix for printing the symbol values.  It must be d for decimal, o for octal, or x for hexadecimal.【使用radix进制显示符号值。radix只能为―d(十进制)、―o(八进制)或―x(十六进制)】</span>
+
+<span class="s1">       -u</span>
+<span class="s1">       --undefined-only</span>
+<span class="s1">           Display only undefined symbols (those external to each object file).【仅显示未定义的符号（它们对目标文件都是外部的）】</span>
+
+<span class="s1">       -V</span>
+<span class="s1">       --version</span>
+<span class="s1">           Show the version number of nm and exit.【显示nm版本并退出】</span>
+
+<span class="s1">       -X  This option is ignored for compatibility with the AIX version of nm.  It takes one parameter which must be the string 32_64.  The default mode of AIX</span>
+<span class="s1">           nm corresponds to -X 32, which is not supported by GNU nm.</span>
+
+<span class="s1">       --defined-only</span>
+<span class="s1">           Display only defined symbols for each object file.【仅显示每个目标文件中已定义的符号】</span>
+
+<span class="s1">       --plugin name</span>
+<span class="s1">           Load the plugin called name to add support for extra target types.  This option is only available if the toolchain has been built with plugin support</span>
+<span class="s1">           enabled.</span>
+
+<span class="s1">       --size-sort</span>
+<span class="s1">           Sort symbols by size.  The size is computed as the difference between the value of the symbol and the value of the symbol with the next higher value.</span>
+<span class="s1">           If the &quot;bsd&quot; output format is used the size of the symbol is printed, rather than the value, and -S must be used in order both size and value to be</span>
+<span class="s1">           printed.【按大小排列符号顺序。该大小是按照一个符号的值与它下一个符号的值进行计算的】</span>
+
+<span class="s1">       --special-syms</span>
+<span class="s1">           Display symbols which have a target-specific special meaning.  These symbols are usually used by the target for some special processing and are not</span>
+<span class="s1">           normally helpful when included included in the normal symbol lists.  For example for ARM targets this option would skip the mapping symbols used to</span>
+<span class="s1">           mark transitions between ARM code, THUMB code and data.</span>
+
+<span class="s1">       --synthetic</span>
+<span class="s1">           Include synthetic symbols in the output.  These are special symbols created by the linker for various purposes.  They are not shown by default since</span>
+<span class="s1">           they are not part of the binary&#39;</span><span class="nx">s</span> <span class="nx">original</span> <span class="nx">source</span> <span class="nx">code</span><span class="p">.</span>
+
+       <span class="o">--</span><span class="nx">target</span><span class="o">=</span><span class="nx">bfdname</span>
+           <span class="nx">Specify</span> <span class="nx">an</span> <span class="nx">object</span> <span class="nx">code</span> <span class="nx">format</span> <span class="nx">other</span> <span class="nx">than</span> <span class="nx">your</span> <span class="nx">system</span><span class="err">&#39;</span><span class="nx">s</span> <span class="k">default</span> <span class="nx">format</span><span class="p">.</span><span class="err">【</span><span class="nx">指定一个目标代码的格式</span><span class="err">，</span><span class="nx">而非系统默认的格式</span><span class="err">】</span>
+
+       <span class="err">@</span><span class="nx">file</span>
+           <span class="nx">Read</span> <span class="nx">command</span><span class="o">-</span><span class="nx">line</span> <span class="nx">options</span> <span class="nx">from</span> <span class="nx">file</span><span class="p">.</span>  <span class="nx">The</span> <span class="nx">options</span> <span class="nx">read</span> <span class="nx">are</span> <span class="nx">inserted</span> <span class="k">in</span> <span class="nx">place</span> <span class="nx">of</span> <span class="nx">the</span> <span class="nx">original</span> <span class="err">@</span><span class="nx">file</span> <span class="nx">option</span><span class="p">.</span>  <span class="nx">If</span> <span class="nx">file</span> <span class="nx">does</span> <span class="nx">not</span> <span class="nx">exist</span><span class="p">,</span> <span class="nx">or</span> <span class="nx">cannot</span> <span class="nx">be</span> <span class="nx">read</span><span class="p">,</span>
+           <span class="nx">then</span> <span class="nx">the</span> <span class="nx">option</span> <span class="nx">will</span> <span class="nx">be</span> <span class="nx">treated</span> <span class="nx">literally</span><span class="p">,</span> <span class="nx">and</span> <span class="nx">not</span> <span class="nx">removed</span><span class="p">.</span>
+
+           <span class="nx">Options</span> <span class="k">in</span> <span class="nx">file</span> <span class="nx">are</span> <span class="nx">separated</span> <span class="nx">by</span> <span class="nx">whitespace</span><span class="p">.</span>  <span class="nx">A</span> <span class="nx">whitespace</span> <span class="nx">character</span> <span class="nx">may</span> <span class="nx">be</span> <span class="nx">included</span> <span class="k">in</span> <span class="nx">an</span> <span class="nx">option</span> <span class="nx">by</span> <span class="nx">surrounding</span> <span class="nx">the</span> <span class="nx">entire</span> <span class="nx">option</span> <span class="k">in</span> <span class="nx">either</span> <span class="nx">single</span> <span class="nx">or</span>
+           <span class="kr">double</span> <span class="nx">quotes</span><span class="p">.</span>  <span class="nx">Any</span> <span class="nx">character</span> <span class="p">(</span><span class="nx">including</span> <span class="nx">a</span> <span class="nx">backslash</span><span class="p">)</span> <span class="nx">may</span> <span class="nx">be</span> <span class="nx">included</span> <span class="nx">by</span> <span class="nx">prefixing</span> <span class="nx">the</span> <span class="nx">character</span> <span class="nx">to</span> <span class="nx">be</span> <span class="nx">included</span> <span class="kd">with</span> <span class="nx">a</span> <span class="nx">backslash</span><span class="p">.</span>  <span class="nx">The</span> <span class="nx">file</span> <span class="nx">may</span> <span class="nx">itself</span>
+           <span class="nx">contain</span> <span class="nx">additional</span> <span class="err">@</span><span class="nx">file</span> <span class="nx">options</span><span class="p">;</span> <span class="nx">any</span> <span class="nx">such</span> <span class="nx">options</span> <span class="nx">will</span> <span class="nx">be</span> <span class="nx">processed</span> <span class="nx">recursively</span><span class="p">.</span>
+
+<span class="nx">SEE</span> <span class="nx">ALSO</span>
+       <span class="nx">ar</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="nx">objdump</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="nx">ranlib</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="nx">and</span> <span class="nx">the</span> <span class="nx">Info</span> <span class="nx">entries</span> <span class="k">for</span> <span class="nx">binutils</span><span class="p">.</span>
+
+<span class="nx">COPYRIGHT</span>
+       <span class="nx">Copyright</span> <span class="p">(</span><span class="nx">c</span><span class="p">)</span> <span class="mi">1991</span><span class="o">-</span><span class="mi">2013</span> <span class="nx">Free</span> <span class="nx">Software</span> <span class="nx">Foundation</span><span class="p">,</span> <span class="nx">Inc</span><span class="p">.</span>
+
+       <span class="nx">Permission</span> <span class="nx">is</span> <span class="nx">granted</span> <span class="nx">to</span> <span class="nx">copy</span><span class="p">,</span> <span class="nx">distribute</span> <span class="nx">and</span><span class="o">/</span><span class="nx">or</span> <span class="nx">modify</span> <span class="k">this</span> <span class="nb">document</span> <span class="nx">under</span> <span class="nx">the</span> <span class="nx">terms</span> <span class="nx">of</span> <span class="nx">the</span> <span class="nx">GNU</span> <span class="nx">Free</span> <span class="nx">Documentation</span> <span class="nx">License</span><span class="p">,</span> <span class="nx">Version</span> <span class="mf">1.3</span> <span class="nx">or</span> <span class="nx">any</span> <span class="nx">later</span>
+       <span class="nx">version</span> <span class="nx">published</span> <span class="nx">by</span> <span class="nx">the</span> <span class="nx">Free</span> <span class="nx">Software</span> <span class="nx">Foundation</span><span class="p">;</span> <span class="kd">with</span> <span class="nx">no</span> <span class="nx">Invariant</span> <span class="nx">Sections</span><span class="p">,</span> <span class="kd">with</span> <span class="nx">no</span> <span class="nx">Front</span><span class="o">-</span><span class="nx">Cover</span> <span class="nx">Texts</span><span class="p">,</span> <span class="nx">and</span> <span class="kd">with</span> <span class="nx">no</span> <span class="nx">Back</span><span class="o">-</span><span class="nx">Cover</span> <span class="nx">Texts</span><span class="p">.</span>  <span class="nx">A</span> <span class="nx">copy</span> <span class="nx">of</span> <span class="nx">the</span>
+       <span class="nx">license</span> <span class="nx">is</span> <span class="nx">included</span> <span class="k">in</span> <span class="nx">the</span> <span class="nx">section</span> <span class="nx">entitled</span> <span class="s2">&quot;GNU Free Documentation License&quot;</span><span class="p">.</span>
+
+<span class="nx">binutils</span><span class="o">-</span><span class="mf">2.23</span><span class="p">.</span><span class="mf">52.0</span><span class="p">.</span><span class="mi">1</span>                                                        <span class="mi">2015</span><span class="o">-</span><span class="mi">05</span><span class="o">-</span><span class="mi">12</span>                                                                       <span class="nx">NM</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+ <span class="nx">Manual</span> <span class="nx">page</span> <span class="nx">nm</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="nx">line</span> <span class="mi">178</span><span class="o">/</span><span class="mi">223</span> <span class="p">(</span><span class="nx">END</span><span class="p">)</span> <span class="p">(</span><span class="nx">press</span> <span class="nx">h</span> <span class="k">for</span> <span class="nx">help</span> <span class="nx">or</span> <span class="nx">q</span> <span class="nx">to</span> <span class="nx">quit</span><span class="p">)</span>
+</pre></div>
+		    	<p class="tags">
+					<div class="post-share">
+						<ul class="post-shareul clearfix">
+							<li class="post-shareli">
+								<a href="http://note.youdao.com/memory/?url=https://typecodes.com/cseries/nmobjectfilesymbol.html&title=Unix系统中nm命令展示目标文件符号的方法" class="post-sharea ydshare" target="_blank" rel="nofollow">有道云笔记</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://v.t.sina.com.cn/share/share.php?url=https://typecodes.com/cseries/nmobjectfilesymbol.html&title=Unix系统中nm命令展示目标文件符号的方法&source=https://typecodes.com" class="post-sharea wbshare" target="_blank" rel="nofollow">新浪微博</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://v.t.qq.com/share/share.php?title=Unix系统中nm命令展示目标文件符号的方法&url=https://typecodes.com/cseries/nmobjectfilesymbol.html&site=https://typecodes.com" class="post-sharea twbshare" target="_blank" rel="nofollow">腾讯微博</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=https://typecodes.com/cseries/nmobjectfilesymbol.html&title=Unix系统中nm命令展示目标文件符号的方法&content='utf-8'" class="post-sharea qzoneshare" target="_blank" rel="nofollow">QZone</a>
+							</li>
+						</ul>
+					</div>
+					<div>
+						Tags: <a href="https://typecodes.com/tag/nm.html">nm</a>					</div>
+				</p>
+			</article>
+			
+			<div id="comments">
+				<h4 class="num">Comments &raquo;</h4>
+		    	<div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript></div>
+		    </div>
+		</div>
+		<!--3. right sider begin-->
+<div class="col-md-3" id="blog-secondary" role="complementary">
+	<section class="widget">
+		<ul class="widget-list">
+			<form id="search" method="get" action="https://typecodes.com/search.html">
+				<input type="text" name="q" id="s" size="20" x-webkit-speech="" x-webkit-grammar="builtin:search" onwebkitspeechchange="this.value = this.value.replace(this.defaultValue, '')" value="Google...." onfocus="this.value = (this.value == this.defaultValue) ? '' : this.value" onblur="this.value = (this.value == '') ? this.defaultValue : this.value">
+			</form>
+		</ul>
+	</section>
+	<section class="widget">
+		<h3 class="widget-title">Categories</h3>
+		<ul class="widget-list">
+		      <li class="current">
+		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (26)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/csharp/index.html">Csharp</a> (6)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/database/index.html">Database</a> (11)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/java/index.html">Java</a> (1)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/linux/index.html">Linux</a> (16)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/mix/index.html">Mix</a> (53)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/web/index.html">Web</a> (88)
+		      </li>
+		</ul>
+	</section>
+	<section class="widget">
+		<h3 class="widget-title">Recent Posts</h3>
+		<ul class="widget-list">
+			<li class="post">
+				<a href="https://typecodes.com/mix/sucesstypechotopelican.html">成功将博客从Typecho迁移到Pelican</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/mix/begintypechotopelican.html">准备将博客从Typecho迁移到Pelican</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/tcpconnectiontimedout.html">Linux TCP连接Connection Refused和Connection timed out的问题</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/mysqlerrornospace.html">博客MySQL服务惊魂记：Linux磁盘空间不足(Core Dump文件引爆)</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/mix/synweibophpmarkdownimgurl.html">升级博客文章同步微博的插件：PHP正则提取Markdown的图片地址</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/cppgeneralmakefile.html">Linux C/C++工程中可生成ELF、动/静态库文件的通用Makefile</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/libraryundefinedref.html">解决make编译链接动态库错误：libxx.so: undefined reference to xx</a>
+			</li>
+		</ul>
+	</section>
+	<section class="widget widget-feed">
+		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
+	</section>
+</div>
+				</div>
+			</div>
+		</div>
+		<!--4. bottom begin-->
+		<footer id="te-site-footer"><div class="container">
+	<div class="row" role="contentinfo">
+		<section class="col-md-2 col-md-offset-1">
+			<h3>Links</h3>
+			<ul><li><a href="http://diaosbook.com/" title="">diaosbook</a></li></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul>
+				<li><a href="https://typecodes.com/links.html">More..</a></li>
+			</ul>
+		</section>
+		<section class="col-md-2">
+			<h3>Following</h3>
+			<ul>
+				<li><a href="https://github.com/vfhky" class="following github" target="_blank" rel="external nofollow">GitHub</a></li>
+				<li><a href="http://weibo.com/typecodes" class="following weibo" target="_blank" rel="external nofollow">Weibo</a></li>
+				<li><a href="http://vfhky.sinaapp.com/" class="following sae" target="_blank" rel="external nofollow">SAE</a></li>
+				<li><a href="http://www.dwz.cn/mYiwa" class="following qqgroup" target="_blank" rel="external nofollow">Group</a></li>
+			</ul>
+		</section>
+		<div class="col-md-12 copyright">
+			<a href="#top"><i class="i-logo-s">TOP</i></a>
+			<p>
+				&copy; 2012-<script language="JavaScript">var date = new Date(); document.write(date.getFullYear());</script>							<a href="https://typecodes.com">TypeCodes</a>. All Rights Reserved<br>Powered by <a href="http://getpelican.com" rel="external" target="_blank">Pelican</a>. <a href="http://www.miitbeian.gov.cn/" rel="external nofollow" target="_blank">粤ICP备14050695号</a>
+			</p>
+		</div>
+	</div>
+</div>
+</footer>
+<script type="text/javascript">
+	var disqus_shortname = 'typecodes';
+	var disqus_identifier = '/cseries/nmobjectfilesymbol.html';
+	var disqus_url = 'https://typecodes.com/cseries/nmobjectfilesymbol.html';
+	var disqus_title = 'Unix系统中nm命令展示目标文件符号的方法';
+	(function() {
+		var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+		dsq.src = "//" + disqus_shortname + '.disqus.com/embed.js';
+		(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	 })();
+</script>
+	</body>
+</html>

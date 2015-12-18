@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="zh-CN" class="no-js">
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<title>完美解决Mysql导入数据库中文乱码的问题 &mdash; TypeCodes</title>
+		<meta name="author" content="vfhky">
+  		<link href="https://typecodes.com/atom.xml" type="application/atom+xml" rel="alternate" title="TypeCodes Atom Feed" />
+	  	<link href="https://typecodes.com/feed.xml" type="application/rss+xml" rel="alternate" title="TypeCodes RSS Feed" />
+		<meta name="HandheldFriendly" content="True">
+		<meta name="MobileOptimized" content="320">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="renderer" content="webkit">
+		<link rel="stylesheet" href="https://dn-vfhky.qbox.me/libs/css/pelican-vfhky.css">
+		<script>
+			var _hmt = _hmt || [];
+			(function() {
+			  var hm = document.createElement("script");
+			  hm.src = "//hm.baidu.com/hm.js?c15c4ab8e91ba9ac3d5a12293cc93359";
+			  var s = document.getElementsByTagName("script")[0]; 
+			  s.parentNode.insertBefore(hm, s);
+			})();
+		</script>
+	</head>
+	<body style>
+		<!--1. header navigation begin-->
+		<header role="banner" id="te-site-header">
+			<div class="container">
+				<a href="https://typecodes.com" class="te-site-logo" role="logo" target="_self"> TypeCodes</a>
+				<ul class="nav nav-pills" id="te-site-nav" role="navigation">
+					<li><a href="https://typecodes.com">Home</a></li><li><a href="https://typecodes.com/archives.html" title="Archives">Archives</a></li><li><a href="https://typecodes.com/about.html" title="About">About</a></li></ul>
+			</div>
+		</header>
+		<div class="te-headline">
+			<div class="container">
+				<h2 class="te-headline-title"> <a href="https://typecodes.com">TypeCodes</a></h2>
+			</div>
+		</div>
+		<div class="container">
+			<div class="row">
+		<!--2. left sider begin-->
+		<div class="col-md-9" id="blog-main" role="main">
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/web/mysqlimportmessy.html">完美解决Mysql导入数据库中文乱码的问题</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2014-08-18 22:24 | 分类：<a href="https://typecodes.com/web/index.html">web</a></li>
+</ul>
+<div class="post-content fmt">
+	<h5>1 问题由来：博客从 WordPress 转向 Typecho</h5>
+<p>在由 <a href="https://typecodes.com/mix/eventualwptotypecho.html" title="《终于从WordPress转向Typecho了》">WordPress 转向 Typecho</a> 的过程中，主要难点是将 WordPress 中的文章和评论数据用 <a href="http://plugins.typecho.me/plugins/wordpress-to-typecho.html" title="插件wordpress to typecho">wordpress to typecho</a> 插件剥离出来。经整理后再重新将文章转换为 markdown 格式发布到由ty搭建的本博客上，最后把评论导入到对应的文章下面，并对评论id重新排序。</p>
+<h5>2 本地编辑剥离出的文章和评论的.sql备份文件</h5>
+<p>通过插件把wordpress中文章和评论的数据转换成 typecho 形式的文章和评论数据，并导出为.sql备份文件。由于评论数据有1521条，对其id重新排序比较困难，所以博主将它们分拆为两个 .sql 文件（其中一个是utf-8格式的resultsql1.sql，另一个是gbk格式的resultsql2.sql）。</p>
+
+
+<p>由于当时没注意文件格式，在把这两个sql文件上传到主机空间后，执行命令<code>mysql -u typecodes -p typecodes&lt;/root/resultsql1.sql;</code>和<code>mysql -u typecho -p typecho&lt;/root/resultsql2.sql;</code>。前者导入后，博客页面显示正常，但是文件2导入后，出现了乱码。原因是博客初始建数据库时，默认的编码格式是 utf-8 ，而导入的文件resultsql2.sql是 gbk 的格式，所以出现了乱码现象。</p>
+<h5>3 解决方法：</h5>
+<p>思路：先在本地数据库将gbk的格式 resultsql2.sql 转换成<code>Unicode</code>格式，然后导入到本地数据库中，最后以utf-8的格式导出，再把导出的.sql文件导入到阿里云远程数据库中。这里用到了SQLog工具。</p>
+<p>1、在本地电脑打开SQLog软件，然后建立本地数据库连接。</p>
+<p><img alt="SQLog连接本地数据库 typecho " src="https://dn-vfhky.qbox.me/2014/08/sqloglinktosql.png" title="SQLog连接本地数据库 typecho " /></p>
+<p>2、将gbk文件 resultsql2.sql 用记事本打开，然后选择“另存为”，在底部的编码一栏中选择第二项<code>Unicode</code>。保存好后，再用记事本打开，然后复制所有内容；</p>
+<p>3、把刚才复制的信息粘贴到下图框中，然后点击左上角的双箭头按钮，或者快捷键“Ctrl + F9”执行所有复制的语句。</p>
+<p><img alt="SQLog执行所有sql语句 typecho " src="https://dn-vfhky.qbox.me/2014/08/sqllogimport.png" title="SQLog执行所有sql语句" /></p>
+<p>4、执行完步骤3中所有的SQL语句成功，就可以在SQLog底部看到下图所示“信息”。这时点击SQLog左上角的“刷新”按钮。然后用phpmyadmin查看表 typecho_comments 中的中文是否还是乱码。很庆幸，显示正常了。</p>
+<p><img alt="SQLog执行结果没有乱码的中文" src="https://dn-vfhky.qbox.me/2014/08/sqllogimpoinfo.png" title="SQLog执行结果没有乱码的中文" /></p>
+<p>5、最后一个步骤，如果本地数据库中的表 typecho_comments 没有乱码，那么就将这个表导出为 utf-8 格式的 resultsql2.sql 文件，然后上传到阿里云远程主机上，再执行以下命令导入到博客数据库中就解决了。</p>
+<div class="highlight"><pre>###### 一定要和创建数据库时设置的编码utf8一致
+[root@typecodes ~]# mysql -u typecodes -p typecodes &lt; /root/resultsql2.sql -f --default-character-set=utf8;
+Enter password:   #输入用户typecode的密码然后回车
+mysql&gt;    #然后就可以查看 typecho_comments 没有乱码的中文了
+</pre></div>
+		    	<p class="tags">
+					<div class="post-share">
+						<ul class="post-shareul clearfix">
+							<li class="post-shareli">
+								<a href="http://note.youdao.com/memory/?url=https://typecodes.com/web/mysqlimportmessy.html&title=完美解决Mysql导入数据库中文乱码的问题" class="post-sharea ydshare" target="_blank" rel="nofollow">有道云笔记</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://v.t.sina.com.cn/share/share.php?url=https://typecodes.com/web/mysqlimportmessy.html&title=完美解决Mysql导入数据库中文乱码的问题&source=https://typecodes.com" class="post-sharea wbshare" target="_blank" rel="nofollow">新浪微博</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://v.t.qq.com/share/share.php?title=完美解决Mysql导入数据库中文乱码的问题&url=https://typecodes.com/web/mysqlimportmessy.html&site=https://typecodes.com" class="post-sharea twbshare" target="_blank" rel="nofollow">腾讯微博</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=https://typecodes.com/web/mysqlimportmessy.html&title=完美解决Mysql导入数据库中文乱码的问题&content='utf-8'" class="post-sharea qzoneshare" target="_blank" rel="nofollow">QZone</a>
+							</li>
+						</ul>
+					</div>
+					<div>
+						Tags: <a href="https://typecodes.com/tag/mysql.html">mysql</a>,<a href="https://typecodes.com/tag/mysql-sqlog.html">mysql sqlog</a>					</div>
+				</p>
+			</article>
+			
+			<div id="comments">
+				<h4 class="num">Comments &raquo;</h4>
+		    	<div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript></div>
+		    </div>
+		</div>
+		<!--3. right sider begin-->
+<div class="col-md-3" id="blog-secondary" role="complementary">
+	<section class="widget">
+		<ul class="widget-list">
+			<form id="search" method="get" action="https://typecodes.com/search.html">
+				<input type="text" name="q" id="s" size="20" x-webkit-speech="" x-webkit-grammar="builtin:search" onwebkitspeechchange="this.value = this.value.replace(this.defaultValue, '')" value="Google...." onfocus="this.value = (this.value == this.defaultValue) ? '' : this.value" onblur="this.value = (this.value == '') ? this.defaultValue : this.value">
+			</form>
+		</ul>
+	</section>
+	<section class="widget">
+		<h3 class="widget-title">Categories</h3>
+		<ul class="widget-list">
+		      <li class="current">
+		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (26)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/csharp/index.html">Csharp</a> (6)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/database/index.html">Database</a> (11)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/java/index.html">Java</a> (1)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/linux/index.html">Linux</a> (16)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/mix/index.html">Mix</a> (53)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/web/index.html">Web</a> (88)
+		      </li>
+		</ul>
+	</section>
+	<section class="widget">
+		<h3 class="widget-title">Recent Posts</h3>
+		<ul class="widget-list">
+			<li class="post">
+				<a href="https://typecodes.com/mix/sucesstypechotopelican.html">成功将博客从Typecho迁移到Pelican</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/mix/begintypechotopelican.html">准备将博客从Typecho迁移到Pelican</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/tcpconnectiontimedout.html">Linux TCP连接Connection Refused和Connection timed out的问题</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/mysqlerrornospace.html">博客MySQL服务惊魂记：Linux磁盘空间不足(Core Dump文件引爆)</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/mix/synweibophpmarkdownimgurl.html">升级博客文章同步微博的插件：PHP正则提取Markdown的图片地址</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/cppgeneralmakefile.html">Linux C/C++工程中可生成ELF、动/静态库文件的通用Makefile</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/libraryundefinedref.html">解决make编译链接动态库错误：libxx.so: undefined reference to xx</a>
+			</li>
+		</ul>
+	</section>
+	<section class="widget widget-feed">
+		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
+	</section>
+</div>
+				</div>
+			</div>
+		</div>
+		<!--4. bottom begin-->
+		<footer id="te-site-footer"><div class="container">
+	<div class="row" role="contentinfo">
+		<section class="col-md-2 col-md-offset-1">
+			<h3>Links</h3>
+			<ul><li><a href="http://diaosbook.com/" title="">diaosbook</a></li></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul>
+				<li><a href="https://typecodes.com/links.html">More..</a></li>
+			</ul>
+		</section>
+		<section class="col-md-2">
+			<h3>Following</h3>
+			<ul>
+				<li><a href="https://github.com/vfhky" class="following github" target="_blank" rel="external nofollow">GitHub</a></li>
+				<li><a href="http://weibo.com/typecodes" class="following weibo" target="_blank" rel="external nofollow">Weibo</a></li>
+				<li><a href="http://vfhky.sinaapp.com/" class="following sae" target="_blank" rel="external nofollow">SAE</a></li>
+				<li><a href="http://www.dwz.cn/mYiwa" class="following qqgroup" target="_blank" rel="external nofollow">Group</a></li>
+			</ul>
+		</section>
+		<div class="col-md-12 copyright">
+			<a href="#top"><i class="i-logo-s">TOP</i></a>
+			<p>
+				&copy; 2012-<script language="JavaScript">var date = new Date(); document.write(date.getFullYear());</script>							<a href="https://typecodes.com">TypeCodes</a>. All Rights Reserved<br>Powered by <a href="http://getpelican.com" rel="external" target="_blank">Pelican</a>. <a href="http://www.miitbeian.gov.cn/" rel="external nofollow" target="_blank">粤ICP备14050695号</a>
+			</p>
+		</div>
+	</div>
+</div>
+</footer>
+<script type="text/javascript">
+	var disqus_shortname = 'typecodes';
+	var disqus_identifier = '/web/mysqlimportmessy.html';
+	var disqus_url = 'https://typecodes.com/web/mysqlimportmessy.html';
+	var disqus_title = '完美解决Mysql导入数据库中文乱码的问题';
+	(function() {
+		var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+		dsq.src = "//" + disqus_shortname + '.disqus.com/embed.js';
+		(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	 })();
+</script>
+	</body>
+</html>

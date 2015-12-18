@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="zh-CN" class="no-js">
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<title>折腾comment-ajax造成wordpress后台页面空白的BUG &mdash; TypeCodes</title>
+		<meta name="author" content="vfhky">
+  		<link href="https://typecodes.com/atom.xml" type="application/atom+xml" rel="alternate" title="TypeCodes Atom Feed" />
+	  	<link href="https://typecodes.com/feed.xml" type="application/rss+xml" rel="alternate" title="TypeCodes RSS Feed" />
+		<meta name="HandheldFriendly" content="True">
+		<meta name="MobileOptimized" content="320">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="renderer" content="webkit">
+		<link rel="stylesheet" href="https://dn-vfhky.qbox.me/libs/css/pelican-vfhky.css">
+		<script>
+			var _hmt = _hmt || [];
+			(function() {
+			  var hm = document.createElement("script");
+			  hm.src = "//hm.baidu.com/hm.js?c15c4ab8e91ba9ac3d5a12293cc93359";
+			  var s = document.getElementsByTagName("script")[0]; 
+			  s.parentNode.insertBefore(hm, s);
+			})();
+		</script>
+	</head>
+	<body style>
+		<!--1. header navigation begin-->
+		<header role="banner" id="te-site-header">
+			<div class="container">
+				<a href="https://typecodes.com" class="te-site-logo" role="logo" target="_self"> TypeCodes</a>
+				<ul class="nav nav-pills" id="te-site-nav" role="navigation">
+					<li><a href="https://typecodes.com">Home</a></li><li><a href="https://typecodes.com/archives.html" title="Archives">Archives</a></li><li><a href="https://typecodes.com/about.html" title="About">About</a></li></ul>
+			</div>
+		</header>
+		<div class="te-headline">
+			<div class="container">
+				<h2 class="te-headline-title"> <a href="https://typecodes.com">TypeCodes</a></h2>
+			</div>
+		</div>
+		<div class="container">
+			<div class="row">
+		<!--2. left sider begin-->
+		<div class="col-md-9" id="blog-main" role="main">
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/web/wpcommentajaxbug.html">折腾comment-ajax造成wordpress后台页面空白的BUG</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2013-09-05 23:51 | 分类：<a href="https://typecodes.com/web/index.html">web</a></li>
+</ul>
+<div class="post-content fmt">
+	<h5>1 折腾Willin Kan评论代码的一个“BUG”</h5>
+<p>前几天折腾了下Willin Kan的comment-ajax.php文件，改动了一些代码，结果博客好几天都没收到评论了。昨晚上还在纳闷，会不会是文章写得太烂了又或者是360的节点挂了？反正是百思不得其解。随便翻看着之前写的文章，突然想到了自己前几天修改了comment-ajax.php文件。会不会跟这个有关？赶紧UE打开看看！比较了下之前备份的comment_parentnt-ajax.php文件，发现最新的这份PHP文件中多出了下面几行代码。这个和前几天发现的一个BUG有关：查看了大多数有用Willin Kan大神的评论代码（comment-ajax.php、comment-ajax.js）的博客，只要在文章地址后面添加类似“?replytocom=1123'”的语句就会出现“BUG”（还在研究解决中，不多说了……）。</p>
+<div class="highlight"><pre><span class="x">//父评论不存在时，恶意提交评论</span>
+<span class="x">if(</span><span class="p">$</span><span class="nv">post</span><span class="x">-&gt;comment_parent == &quot;&quot;)</span><span class="err">{</span><span class="x"></span>
+<span class="x"> exit;  //直接退出，不给出提示</span>
+<span class="x">}</span>
+</pre></div>
+
+
+
+
+<h5>2 wordpress后台页面空白</h5>
+<p>于是，vfhky毫不犹豫地把上面的代码注释掉，然后在本地环境中测试，终于能正常发表评论了。紧接着，博主把修改好的这份文件覆盖掉线上的comment_ajax.php文件。改好后不久，博客就收到了来自 <a href="http://vfhky.sinaapp.com/it/743.html#comment-1390" title="查看 IT三两事 的评论">IT三两事</a> 的评论。</p>
+<p>经博主回复后，进入博客的后台却发现了异常情况：后台评论显示区域是空白的（如下图所示）。但是，博客前台还是能正常发送和接收评论。好吧，一事未完，一事又起，刚才的欢喜立马没了。遂百度了下“wordpress后台空白”，发现都是由于服务器搬家或者使用新主题造成的。和博主的情况完全不一样，在查看了其它PHP文件还是没有头绪。</p>
+<p><img alt="wordpress后台页面空白" src="https://dn-vfhky.qbox.me/2013/09/wordpress_center_error.jpg" title="wordpress后台页面空白" /></p>
+<h5>3 评论者的comment_parent值出错</h5>
+<p>晚上又在琢磨这个问题，后台页面的其它功能都正常，唯独评论无法正常显示。会不是数据库的问题呢？于是把博客的数据库备份到本地，然后对比之前备份的数据库文件。</p>
+<p>在用Beyond compare对比后，发现一个重要问题，那就是“两三事”的评论的comment_parent字段值竟然和博主回复的comment_parent是一样的1390！显然这个是错误的，comment_parent代表的是该条评论的主评论的ID，也就是博主回复的comment_parent值1390是正确的，而两三事的comment_parent应该是0！于是博主立马用phpmyadmin修改了该值。</p>
+<p><img alt="wordpress数据库的comment_parent字段出现BUG" src="https://dn-vfhky.qbox.me/2013/09/wordpress_comment_error.jpg" title="wordpress数据库的comment_parent字段出现BUG" /></p>
+<p>然后进入博客的后台，接下来就是见证奇迹的时刻！</p>
+<p><img alt="wordpress后台恢复正常" src="https://dn-vfhky.qbox.me/2013/09/wordpress_center_default.jpg" title="wordpress后台恢复正常" /></p>
+<h5>4 后记</h5>
+<p>由于急着解决Willin Kan评论代码的一个“BUG”，博主没考虑周全就把代码放到了线上，结果出现了博客无法评论的情况。在注释掉这行代码后，博客能正常评论，但是wordpress的后台界面又出现了BUG：竟然变成了“一片空白”。幸亏vfhky备份还比较勤快，在对比数据库后，发现是数据库的wp_comments表中的字段comment_parent值出现了问题。</p>
+		    	<p class="tags">
+					<div class="post-share">
+						<ul class="post-shareul clearfix">
+							<li class="post-shareli">
+								<a href="http://note.youdao.com/memory/?url=https://typecodes.com/web/wpcommentajaxbug.html&title=折腾comment-ajax造成wordpress后台页面空白的BUG" class="post-sharea ydshare" target="_blank" rel="nofollow">有道云笔记</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://v.t.sina.com.cn/share/share.php?url=https://typecodes.com/web/wpcommentajaxbug.html&title=折腾comment-ajax造成wordpress后台页面空白的BUG&source=https://typecodes.com" class="post-sharea wbshare" target="_blank" rel="nofollow">新浪微博</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://v.t.qq.com/share/share.php?title=折腾comment-ajax造成wordpress后台页面空白的BUG&url=https://typecodes.com/web/wpcommentajaxbug.html&site=https://typecodes.com" class="post-sharea twbshare" target="_blank" rel="nofollow">腾讯微博</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=https://typecodes.com/web/wpcommentajaxbug.html&title=折腾comment-ajax造成wordpress后台页面空白的BUG&content='utf-8'" class="post-sharea qzoneshare" target="_blank" rel="nofollow">QZone</a>
+							</li>
+						</ul>
+					</div>
+					<div>
+						Tags: <a href="https://typecodes.com/tag/php-curl.html">php curl</a>					</div>
+				</p>
+			</article>
+			
+			<div id="comments">
+				<h4 class="num">Comments &raquo;</h4>
+		    	<div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript></div>
+		    </div>
+		</div>
+		<!--3. right sider begin-->
+<div class="col-md-3" id="blog-secondary" role="complementary">
+	<section class="widget">
+		<ul class="widget-list">
+			<form id="search" method="get" action="https://typecodes.com/search.html">
+				<input type="text" name="q" id="s" size="20" x-webkit-speech="" x-webkit-grammar="builtin:search" onwebkitspeechchange="this.value = this.value.replace(this.defaultValue, '')" value="Google...." onfocus="this.value = (this.value == this.defaultValue) ? '' : this.value" onblur="this.value = (this.value == '') ? this.defaultValue : this.value">
+			</form>
+		</ul>
+	</section>
+	<section class="widget">
+		<h3 class="widget-title">Categories</h3>
+		<ul class="widget-list">
+		      <li class="current">
+		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (26)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/csharp/index.html">Csharp</a> (6)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/database/index.html">Database</a> (11)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/java/index.html">Java</a> (1)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/linux/index.html">Linux</a> (16)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/mix/index.html">Mix</a> (53)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/web/index.html">Web</a> (88)
+		      </li>
+		</ul>
+	</section>
+	<section class="widget">
+		<h3 class="widget-title">Recent Posts</h3>
+		<ul class="widget-list">
+			<li class="post">
+				<a href="https://typecodes.com/mix/sucesstypechotopelican.html">成功将博客从Typecho迁移到Pelican</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/mix/begintypechotopelican.html">准备将博客从Typecho迁移到Pelican</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/tcpconnectiontimedout.html">Linux TCP连接Connection Refused和Connection timed out的问题</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/mysqlerrornospace.html">博客MySQL服务惊魂记：Linux磁盘空间不足(Core Dump文件引爆)</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/mix/synweibophpmarkdownimgurl.html">升级博客文章同步微博的插件：PHP正则提取Markdown的图片地址</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/cppgeneralmakefile.html">Linux C/C++工程中可生成ELF、动/静态库文件的通用Makefile</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/libraryundefinedref.html">解决make编译链接动态库错误：libxx.so: undefined reference to xx</a>
+			</li>
+		</ul>
+	</section>
+	<section class="widget widget-feed">
+		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
+	</section>
+</div>
+				</div>
+			</div>
+		</div>
+		<!--4. bottom begin-->
+		<footer id="te-site-footer"><div class="container">
+	<div class="row" role="contentinfo">
+		<section class="col-md-2 col-md-offset-1">
+			<h3>Links</h3>
+			<ul><li><a href="http://diaosbook.com/" title="">diaosbook</a></li></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul>
+				<li><a href="https://typecodes.com/links.html">More..</a></li>
+			</ul>
+		</section>
+		<section class="col-md-2">
+			<h3>Following</h3>
+			<ul>
+				<li><a href="https://github.com/vfhky" class="following github" target="_blank" rel="external nofollow">GitHub</a></li>
+				<li><a href="http://weibo.com/typecodes" class="following weibo" target="_blank" rel="external nofollow">Weibo</a></li>
+				<li><a href="http://vfhky.sinaapp.com/" class="following sae" target="_blank" rel="external nofollow">SAE</a></li>
+				<li><a href="http://www.dwz.cn/mYiwa" class="following qqgroup" target="_blank" rel="external nofollow">Group</a></li>
+			</ul>
+		</section>
+		<div class="col-md-12 copyright">
+			<a href="#top"><i class="i-logo-s">TOP</i></a>
+			<p>
+				&copy; 2012-<script language="JavaScript">var date = new Date(); document.write(date.getFullYear());</script>							<a href="https://typecodes.com">TypeCodes</a>. All Rights Reserved<br>Powered by <a href="http://getpelican.com" rel="external" target="_blank">Pelican</a>. <a href="http://www.miitbeian.gov.cn/" rel="external nofollow" target="_blank">粤ICP备14050695号</a>
+			</p>
+		</div>
+	</div>
+</div>
+</footer>
+<script type="text/javascript">
+	var disqus_shortname = 'typecodes';
+	var disqus_identifier = '/web/wpcommentajaxbug.html';
+	var disqus_url = 'https://typecodes.com/web/wpcommentajaxbug.html';
+	var disqus_title = '折腾comment-ajax造成wordpress后台页面空白的BUG';
+	(function() {
+		var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+		dsq.src = "//" + disqus_shortname + '.disqus.com/embed.js';
+		(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	 })();
+</script>
+	</body>
+</html>

@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="zh-CN" class="no-js">
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<title>调试API接口的利器——获取返回数据中的信息提示字段 &mdash; TypeCodes</title>
+		<meta name="author" content="vfhky">
+  		<link href="https://typecodes.com/atom.xml" type="application/atom+xml" rel="alternate" title="TypeCodes Atom Feed" />
+	  	<link href="https://typecodes.com/feed.xml" type="application/rss+xml" rel="alternate" title="TypeCodes RSS Feed" />
+		<meta name="HandheldFriendly" content="True">
+		<meta name="MobileOptimized" content="320">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="renderer" content="webkit">
+		<link rel="stylesheet" href="https://dn-vfhky.qbox.me/libs/css/pelican-vfhky.css">
+		<script>
+			var _hmt = _hmt || [];
+			(function() {
+			  var hm = document.createElement("script");
+			  hm.src = "//hm.baidu.com/hm.js?c15c4ab8e91ba9ac3d5a12293cc93359";
+			  var s = document.getElementsByTagName("script")[0]; 
+			  s.parentNode.insertBefore(hm, s);
+			})();
+		</script>
+	</head>
+	<body style>
+		<!--1. header navigation begin-->
+		<header role="banner" id="te-site-header">
+			<div class="container">
+				<a href="https://typecodes.com" class="te-site-logo" role="logo" target="_self"> TypeCodes</a>
+				<ul class="nav nav-pills" id="te-site-nav" role="navigation">
+					<li><a href="https://typecodes.com">Home</a></li><li><a href="https://typecodes.com/archives.html" title="Archives">Archives</a></li><li><a href="https://typecodes.com/about.html" title="About">About</a></li></ul>
+			</div>
+		</header>
+		<div class="te-headline">
+			<div class="container">
+				<h2 class="te-headline-title"> <a href="https://typecodes.com">TypeCodes</a></h2>
+			</div>
+		</div>
+		<div class="container">
+			<div class="row">
+		<!--2. left sider begin-->
+		<div class="col-md-9" id="blog-main" role="main">
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/web/testapiedgetoolreturnmessage.html">调试API接口的利器——获取返回数据中的信息提示字段</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2013-08-29 21:03 | 分类：<a href="https://typecodes.com/web/index.html">web</a></li>
+</ul>
+<div class="post-content fmt">
+	<h5>1 调试腾讯开放平台QQ登录API</h5>
+<p>最近博主在测试腾讯开放平台的QQ登录API时，遇到了一个棘手问题。根据腾讯官方API文档，vfhky写了一个调用 <a href="http://wiki.connect.qq.com/get_info" title="查看腾讯官方关于get_info的API文档">get_info</a> 接口的程序。该接口能够获取QQ登录用户的微博信息，例如用户的出身日期、教育信息、FANS数目、微博内容等。具体大家也可以看看官方给出的API接口信息，地址是 http://wiki.connect.qq.com/get_info。</p>
+<p><img alt="腾讯后台API管理" src="https://dn-vfhky.qbox.me/2013/08/QQAPI_Oauth.png" title="腾讯后台API管理" /></p>
+
+
+<h5>2 调用 get_info 接口的程序</h5>
+<p>根据OAuth2.0协议，很容易写出调用get_info接口的程序，下面是vfhky测试程序的部分代码。由于还是在测试阶段，所以在好几API的调用代码段中都对返回数据是否合法加以判断。</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40</pre></div></td><td class="code"><div class="highlight"><pre><span class="x">//1、拼接请求URI，调用get_info接口    </span>
+<span class="x">$getuser_info_url =  &quot;https://graph.qq.com/user/get_info?access_token=&quot;.$params[&#39;access_token&#39;].&quot;&amp;oauth_consumer_key=&quot;.$app_id.&quot;&amp;openid=&quot;.$user-&gt;openid .&quot;&amp;format=json&quot; ;</span>
+
+<span class="x">/*************************************************</span>
+<span class="x">****由于代码较多，先略去获取API返回的数据步骤*****</span>
+<span class="x">****下面是官方API提供的返回的数据（Json格式）*****</span>
+<span class="x">**************************************************</span>
+<span class="x">Content-type: text/html; charset=utf-8</span>
+<span class="x">{</span>
+<span class="x">&quot;errcode&quot;:0,</span>
+<span class="x">&quot;msg&quot;:&quot;ok&quot;,</span>
+<span class="x">&quot;ret&quot;: 0,</span>
+<span class="x">&quot;data&quot;:</span>
+<span class="x">{</span>
+<span class="x"> &quot;birth_day&quot;:8,</span>
+<span class="x"> &quot;birth_month&quot;:8,</span>
+<span class="x"> &quot;birth_year&quot;:1987,</span>
+<span class="x"> &quot;city_code&quot;:&quot;1&quot;,</span>
+<span class="x"> &quot;comp&quot;:null,</span>
+<span class="x"> &quot;country_code&quot;:&quot;1&quot;,</span>
+<span class="x"> &quot;edu&quot;:[</span>
+<span class="x"> {</span>
+<span class="x">         &quot;departmentid&quot;:5319,</span>
+<span class="x">         &quot;id&quot;:24037,</span>
+<span class="x">         &quot;level&quot;:4,</span>
+<span class="x">         &quot;schoolid&quot;:10428,</span>
+<span class="x">         &quot;year&quot;:2007</span>
+<span class="x"> }],</span>
+<span class="x"> &quot;exp&quot;:730,</span>
+<span class="x"> &quot;fansnum&quot;:64,</span>
+
+<span class="x"> ****略去其它字段*****</span>
+<span class="x">}</span>
+<span class="x">*************************************************/</span>
+
+<span class="x">//2、根据API，从json数据中取得想要的字段</span>
+<span class="x">$tag =  $getuser_info_results-&gt;tag ;        //取得个性标签</span>
+
+<span class="x">//3、数据返回前台页面显示</span>
+<span class="x">echo  &quot;[生日：]&quot;. $getuser_info_results-&gt;birth_year . $getuser_info_results-&gt;birth_month. $getuser_info_results-&gt;birth_day;</span>
+</pre></div>
+</td></tr></table>
+
+<h5>3 DEBUG无任何结果</h5>
+<p>结果很郁闷的是：无论如何debug，总是一片空白，无法在前台显示对应的数据。上周末问了腾讯开放平台的工作人员，仍没得到结果。说是技术支持人员不是，让我上官方论坛提问。结果一上论坛，小伙伴们惊得目瞪口呆，广告和僵尸问题几乎占满了所有帖子。这场景让我想起了前几年的动易论坛，不知现在怎么样了……好吧，有问题还得自己扛住！</p>
+<p>晚上回来仔细再琢磨了下API文档，发现返回的数据可能是xml格式也可能是json格式的，那么上面的程序应该也没错。问题出在哪呢？无意间，突然注意到了“错误返回示例”中提到了一个“msg”字段，对应的数据表示数据返回的信息提示。于是，立马，把上面的第3个步骤改成。</p>
+<div class="highlight"><pre><span class="x">echo  &quot;[生日：]&quot;. </span><span class="p">$</span><span class="nv">getuser_info_results</span><span class="x">-&gt;msg;</span>
+</pre></div>
+
+
+<h5>4 曙光：获取返回数据中的信息提示字段</h5>
+<p><img alt="前台显示msg返回的信息" src="https://dn-vfhky.qbox.me/2013/08/QQAPI_errormsg.png" title="前台显示msg返回的信息" /></p>
+<p>结果终于出来了，如上图所示。提示信息为“this api without user authorization”，意思是“该API接口没有取得用户授权”。估计是由于先前在获取Authorization Code时，没有加入scope授权列表字段造成的。虽然说问题暂时还没解决，但是一个错误提示让博主看到了希望！激动不已，是以速成该文。所以在大家测试API接口的时候，千万不要忘了这把利器——获取返回数据中的信息提示字段！</p>
+		    	<p class="tags">
+					<div class="post-share">
+						<ul class="post-shareul clearfix">
+							<li class="post-shareli">
+								<a href="http://note.youdao.com/memory/?url=https://typecodes.com/web/testapiedgetoolreturnmessage.html&title=调试API接口的利器——获取返回数据中的信息提示字段" class="post-sharea ydshare" target="_blank" rel="nofollow">有道云笔记</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://v.t.sina.com.cn/share/share.php?url=https://typecodes.com/web/testapiedgetoolreturnmessage.html&title=调试API接口的利器——获取返回数据中的信息提示字段&source=https://typecodes.com" class="post-sharea wbshare" target="_blank" rel="nofollow">新浪微博</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://v.t.qq.com/share/share.php?title=调试API接口的利器——获取返回数据中的信息提示字段&url=https://typecodes.com/web/testapiedgetoolreturnmessage.html&site=https://typecodes.com" class="post-sharea twbshare" target="_blank" rel="nofollow">腾讯微博</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=https://typecodes.com/web/testapiedgetoolreturnmessage.html&title=调试API接口的利器——获取返回数据中的信息提示字段&content='utf-8'" class="post-sharea qzoneshare" target="_blank" rel="nofollow">QZone</a>
+							</li>
+						</ul>
+					</div>
+					<div>
+						Tags: <a href="https://typecodes.com/tag/teng-xun-kai-fang-ping-tai-api.html">腾讯开放平台api</a>,<a href="https://typecodes.com/tag/apidiao-shi.html">api调试</a>					</div>
+				</p>
+			</article>
+			
+			<div id="comments">
+				<h4 class="num">Comments &raquo;</h4>
+		    	<div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript></div>
+		    </div>
+		</div>
+		<!--3. right sider begin-->
+<div class="col-md-3" id="blog-secondary" role="complementary">
+	<section class="widget">
+		<ul class="widget-list">
+			<form id="search" method="get" action="https://typecodes.com/search.html">
+				<input type="text" name="q" id="s" size="20" x-webkit-speech="" x-webkit-grammar="builtin:search" onwebkitspeechchange="this.value = this.value.replace(this.defaultValue, '')" value="Google...." onfocus="this.value = (this.value == this.defaultValue) ? '' : this.value" onblur="this.value = (this.value == '') ? this.defaultValue : this.value">
+			</form>
+		</ul>
+	</section>
+	<section class="widget">
+		<h3 class="widget-title">Categories</h3>
+		<ul class="widget-list">
+		      <li class="current">
+		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (26)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/csharp/index.html">Csharp</a> (6)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/database/index.html">Database</a> (11)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/java/index.html">Java</a> (1)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/linux/index.html">Linux</a> (16)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/mix/index.html">Mix</a> (53)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/web/index.html">Web</a> (88)
+		      </li>
+		</ul>
+	</section>
+	<section class="widget">
+		<h3 class="widget-title">Recent Posts</h3>
+		<ul class="widget-list">
+			<li class="post">
+				<a href="https://typecodes.com/mix/sucesstypechotopelican.html">成功将博客从Typecho迁移到Pelican</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/mix/begintypechotopelican.html">准备将博客从Typecho迁移到Pelican</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/tcpconnectiontimedout.html">Linux TCP连接Connection Refused和Connection timed out的问题</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/mysqlerrornospace.html">博客MySQL服务惊魂记：Linux磁盘空间不足(Core Dump文件引爆)</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/mix/synweibophpmarkdownimgurl.html">升级博客文章同步微博的插件：PHP正则提取Markdown的图片地址</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/cppgeneralmakefile.html">Linux C/C++工程中可生成ELF、动/静态库文件的通用Makefile</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/libraryundefinedref.html">解决make编译链接动态库错误：libxx.so: undefined reference to xx</a>
+			</li>
+		</ul>
+	</section>
+	<section class="widget widget-feed">
+		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
+	</section>
+</div>
+				</div>
+			</div>
+		</div>
+		<!--4. bottom begin-->
+		<footer id="te-site-footer"><div class="container">
+	<div class="row" role="contentinfo">
+		<section class="col-md-2 col-md-offset-1">
+			<h3>Links</h3>
+			<ul><li><a href="http://diaosbook.com/" title="">diaosbook</a></li></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul>
+				<li><a href="https://typecodes.com/links.html">More..</a></li>
+			</ul>
+		</section>
+		<section class="col-md-2">
+			<h3>Following</h3>
+			<ul>
+				<li><a href="https://github.com/vfhky" class="following github" target="_blank" rel="external nofollow">GitHub</a></li>
+				<li><a href="http://weibo.com/typecodes" class="following weibo" target="_blank" rel="external nofollow">Weibo</a></li>
+				<li><a href="http://vfhky.sinaapp.com/" class="following sae" target="_blank" rel="external nofollow">SAE</a></li>
+				<li><a href="http://www.dwz.cn/mYiwa" class="following qqgroup" target="_blank" rel="external nofollow">Group</a></li>
+			</ul>
+		</section>
+		<div class="col-md-12 copyright">
+			<a href="#top"><i class="i-logo-s">TOP</i></a>
+			<p>
+				&copy; 2012-<script language="JavaScript">var date = new Date(); document.write(date.getFullYear());</script>							<a href="https://typecodes.com">TypeCodes</a>. All Rights Reserved<br>Powered by <a href="http://getpelican.com" rel="external" target="_blank">Pelican</a>. <a href="http://www.miitbeian.gov.cn/" rel="external nofollow" target="_blank">粤ICP备14050695号</a>
+			</p>
+		</div>
+	</div>
+</div>
+</footer>
+<script type="text/javascript">
+	var disqus_shortname = 'typecodes';
+	var disqus_identifier = '/web/testapiedgetoolreturnmessage.html';
+	var disqus_url = 'https://typecodes.com/web/testapiedgetoolreturnmessage.html';
+	var disqus_title = '调试API接口的利器——获取返回数据中的信息提示字段';
+	(function() {
+		var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+		dsq.src = "//" + disqus_shortname + '.disqus.com/embed.js';
+		(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	 })();
+</script>
+	</body>
+</html>

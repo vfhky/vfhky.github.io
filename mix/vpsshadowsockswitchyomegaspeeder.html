@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="zh-CN" class="no-js">
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<title>搭了个Shadowsocks+Proxy SwitchyOmega+net-speeder梯子 &mdash; TypeCodes</title>
+		<meta name="author" content="vfhky">
+  		<link href="https://typecodes.com/atom.xml" type="application/atom+xml" rel="alternate" title="TypeCodes Atom Feed" />
+	  	<link href="https://typecodes.com/feed.xml" type="application/rss+xml" rel="alternate" title="TypeCodes RSS Feed" />
+		<meta name="HandheldFriendly" content="True">
+		<meta name="MobileOptimized" content="320">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="renderer" content="webkit">
+		<link rel="stylesheet" href="https://dn-vfhky.qbox.me/libs/css/pelican-vfhky.css">
+		<script>
+			var _hmt = _hmt || [];
+			(function() {
+			  var hm = document.createElement("script");
+			  hm.src = "//hm.baidu.com/hm.js?c15c4ab8e91ba9ac3d5a12293cc93359";
+			  var s = document.getElementsByTagName("script")[0]; 
+			  s.parentNode.insertBefore(hm, s);
+			})();
+		</script>
+	</head>
+	<body style>
+		<!--1. header navigation begin-->
+		<header role="banner" id="te-site-header">
+			<div class="container">
+				<a href="https://typecodes.com" class="te-site-logo" role="logo" target="_self"> TypeCodes</a>
+				<ul class="nav nav-pills" id="te-site-nav" role="navigation">
+					<li><a href="https://typecodes.com">Home</a></li><li><a href="https://typecodes.com/archives.html" title="Archives">Archives</a></li><li><a href="https://typecodes.com/about.html" title="About">About</a></li></ul>
+			</div>
+		</header>
+		<div class="te-headline">
+			<div class="container">
+				<h2 class="te-headline-title"> <a href="https://typecodes.com">TypeCodes</a></h2>
+			</div>
+		</div>
+		<div class="container">
+			<div class="row">
+		<!--2. left sider begin-->
+		<div class="col-md-9" id="blog-main" role="main">
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/mix/vpsshadowsockswitchyomegaspeeder.html">搭了个Shadowsocks+Proxy SwitchyOmega+net-speeder梯子</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2015-08-09 14:09 | 分类：<a href="https://typecodes.com/mix/index.html">mix</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>前段时间以来，自己的GoAgent完全无法使用，估计是墙得厉害。后面用GitHub上的这个<a href="https://github.com/XX-net/XX-Net" title="GitHub查看该项目">XX-Net</a>，采用的依然是GoAgent+Proxy SwitchySharp。这个梯子效果不错，就是有时上谷歌会比较慢。</p>
+
+
+<h4>1 需要一把速度快的梯子</h4>
+<p>先前用amazon的免费云作一些开发测试，ssh速度几乎慢到BZ要崩溃了。没办法，前天打算买个国外VPS，一来用于一些小型的开发测试，二来弄个梯子（世界这么大，我也想去看看呀）。</p>
+<p>在v2ex搜了下大伙推荐的vps，大概集中在Linode、Digial Ocean、bandwagon、Azure HK这几个上，不过貌似Linode也被Q得厉害。网上搜了一个优惠码，在bandwagon上的选了个一年$19.99配置的VPS（竟然支持支付宝~）。</p>
+<p>在更换VPS的操作系统为CentOS7.1 64位后，网上找了些Shadowsocks的教程搭了个梯子（耗时不到1个小时）。</p>
+<p>已经用了三天，连接vps的ssh速度比较给力（BZ的最爱），通过Shadowsocks+Proxy SwitchyOmega+net-speeder梯子上谷歌也很快。</p>
+<p><img alt="Shadowsocks+Proxy SwitchyOmega+net-speeder梯子" src="https://dn-vfhky.qbox.me/2015/08/shadowsocks_proxyswitchyomega.png" title="Shadowsocks+Proxy SwitchyOmega+net-speeder梯子" /></p>
+<h4>2 分享下自己的操作过程</h4>
+<p>1、一台国外的VPS：BZ买的是<a href="https://bandwagonhost.com/vps-hosting.php" title="点击进入">搬瓦工(bandwagon) VPS</a>；</p>
+<p>2、搭Shadowsocks梯子的给力教程：来自<a href="https://www.ifshow.com/centos-7-installation-and-configuration-shadowsocks/" title="查看教程">boxwang</a>童鞋；</p>
+<p>3、net-speeder优化Shadowsocks梯子的给力教程：来自<a href="http://wuchong.me/blog/2015/02/02/shadowsocks-install-and-optimize/">Jark</a>童鞋；不过建议将net-speeder采用后台运行的模式，只要将<code>./net_speeder eth0 "ip"</code>改成<code>./net_speeder eth0 "ip" &amp;</code>即可。</p>
+<p>4、Chrome插件Proxy SwitchyOmega 2.3.15：<a href="https://dn-vfhky.qbox.me/libs/google/SwitchyOmega.crx" title="点击下载">本地备份下载</a>，完成后把它拖到Chrome浏览器中就行了；</p>
+<p>5、Shadowsocks的Windows GUI客户端：<a href="https://dn-vfhky.qbox.me/libs/google/Shadowsocks.exe" title="点击下载">本地备份下载</a>，完成后直接运行然后配置VPS服务器上Shadowsocks的IP、端口和密码就行了。话说GitHub上的<a href="https://github.com/shadowsocks/shadowsocks-windows" title="点击查看">C#源码</a>用vs编译不过去，不知道有没有遇到过的童鞋。</p>
+<h4>3 利用Crontab定时执行shell脚本清除tcp连接</h4>
+<p>net-speeder缺点就是如果同时连接Shadowsocks服务端的请求过多的话，会导致梯子速度变慢。如下图所示，Shadowsocks服务端tcp出现了很多<code>SYN_RECV</code>、<code>TIME_WAIT</code>等状态。</p>
+<p><img alt="Shadowsocks+Proxy SwitchyOmega+net-speeder梯子" src="https://dn-vfhky.qbox.me/2015/08/shadowsocks_netstat.png" title="Shadowsocks+Proxy SwitchyOmega+net-speeder梯子" /></p>
+<p>解决方法：先创建一个shell控制脚本，然后通过crontab定时执行关闭所有net-speeder进程后重启net-speeder。</p>
+<div class="highlight"><pre>[root@typecodes net_speeder]# pwd
+/root/net_speeder
+###### build.sh脚本用于gcc编译net_speeder.c生成net_speeder二进制文件
+[root@typecodes net_speeder]# ls
+build.sh  net_speeder  net_speeder.c
+###### 创建net_speeder_crontab.sh脚本（共4行）
+[root@typecodes net_speeder]# vim net_speeder_crontab.sh 
+#!/bin/bash
+
+killall net_speeder
+./net_speeder lo &quot;ip&quot; &amp;
+
+###### crontab设置每天凌晨1点自动执行net_speeder_crontab.sh 脚本
+[root@typecodes ~]# crontab -e
+no crontab for root - using an empty one
+0 1 * * * /root/net_speeder/net_speeder_crontab.sh &gt;/dev/null 2&gt;&amp;1
+</pre></div>
+		    	<p class="tags">
+					<div class="post-share">
+						<ul class="post-shareul clearfix">
+							<li class="post-shareli">
+								<a href="http://note.youdao.com/memory/?url=https://typecodes.com/mix/vpsshadowsockswitchyomegaspeeder.html&title=搭了个Shadowsocks+Proxy SwitchyOmega+net-speeder梯子" class="post-sharea ydshare" target="_blank" rel="nofollow">有道云笔记</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://v.t.sina.com.cn/share/share.php?url=https://typecodes.com/mix/vpsshadowsockswitchyomegaspeeder.html&title=搭了个Shadowsocks+Proxy SwitchyOmega+net-speeder梯子&source=https://typecodes.com" class="post-sharea wbshare" target="_blank" rel="nofollow">新浪微博</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://v.t.qq.com/share/share.php?title=搭了个Shadowsocks+Proxy SwitchyOmega+net-speeder梯子&url=https://typecodes.com/mix/vpsshadowsockswitchyomegaspeeder.html&site=https://typecodes.com" class="post-sharea twbshare" target="_blank" rel="nofollow">腾讯微博</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=https://typecodes.com/mix/vpsshadowsockswitchyomegaspeeder.html&title=搭了个Shadowsocks+Proxy SwitchyOmega+net-speeder梯子&content='utf-8'" class="post-sharea qzoneshare" target="_blank" rel="nofollow">QZone</a>
+							</li>
+						</ul>
+					</div>
+					<div>
+						Tags: <a href="https://typecodes.com/tag/shadowsocks.html">shadowsocks</a>,<a href="https://typecodes.com/tag/ti-zi.html">梯子</a>					</div>
+				</p>
+			</article>
+			
+			<div id="comments">
+				<h4 class="num">Comments &raquo;</h4>
+		    	<div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript></div>
+		    </div>
+		</div>
+		<!--3. right sider begin-->
+<div class="col-md-3" id="blog-secondary" role="complementary">
+	<section class="widget">
+		<ul class="widget-list">
+			<form id="search" method="get" action="https://typecodes.com/search.html">
+				<input type="text" name="q" id="s" size="20" x-webkit-speech="" x-webkit-grammar="builtin:search" onwebkitspeechchange="this.value = this.value.replace(this.defaultValue, '')" value="Google...." onfocus="this.value = (this.value == this.defaultValue) ? '' : this.value" onblur="this.value = (this.value == '') ? this.defaultValue : this.value">
+			</form>
+		</ul>
+	</section>
+	<section class="widget">
+		<h3 class="widget-title">Categories</h3>
+		<ul class="widget-list">
+		      <li class="current">
+		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (26)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/csharp/index.html">Csharp</a> (6)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/database/index.html">Database</a> (11)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/java/index.html">Java</a> (1)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/linux/index.html">Linux</a> (16)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/mix/index.html">Mix</a> (53)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/web/index.html">Web</a> (88)
+		      </li>
+		</ul>
+	</section>
+	<section class="widget">
+		<h3 class="widget-title">Recent Posts</h3>
+		<ul class="widget-list">
+			<li class="post">
+				<a href="https://typecodes.com/mix/sucesstypechotopelican.html">成功将博客从Typecho迁移到Pelican</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/mix/begintypechotopelican.html">准备将博客从Typecho迁移到Pelican</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/tcpconnectiontimedout.html">Linux TCP连接Connection Refused和Connection timed out的问题</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/mysqlerrornospace.html">博客MySQL服务惊魂记：Linux磁盘空间不足(Core Dump文件引爆)</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/mix/synweibophpmarkdownimgurl.html">升级博客文章同步微博的插件：PHP正则提取Markdown的图片地址</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/cppgeneralmakefile.html">Linux C/C++工程中可生成ELF、动/静态库文件的通用Makefile</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/libraryundefinedref.html">解决make编译链接动态库错误：libxx.so: undefined reference to xx</a>
+			</li>
+		</ul>
+	</section>
+	<section class="widget widget-feed">
+		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
+	</section>
+</div>
+				</div>
+			</div>
+		</div>
+		<!--4. bottom begin-->
+		<footer id="te-site-footer"><div class="container">
+	<div class="row" role="contentinfo">
+		<section class="col-md-2 col-md-offset-1">
+			<h3>Links</h3>
+			<ul><li><a href="http://diaosbook.com/" title="">diaosbook</a></li></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul>
+				<li><a href="https://typecodes.com/links.html">More..</a></li>
+			</ul>
+		</section>
+		<section class="col-md-2">
+			<h3>Following</h3>
+			<ul>
+				<li><a href="https://github.com/vfhky" class="following github" target="_blank" rel="external nofollow">GitHub</a></li>
+				<li><a href="http://weibo.com/typecodes" class="following weibo" target="_blank" rel="external nofollow">Weibo</a></li>
+				<li><a href="http://vfhky.sinaapp.com/" class="following sae" target="_blank" rel="external nofollow">SAE</a></li>
+				<li><a href="http://www.dwz.cn/mYiwa" class="following qqgroup" target="_blank" rel="external nofollow">Group</a></li>
+			</ul>
+		</section>
+		<div class="col-md-12 copyright">
+			<a href="#top"><i class="i-logo-s">TOP</i></a>
+			<p>
+				&copy; 2012-<script language="JavaScript">var date = new Date(); document.write(date.getFullYear());</script>							<a href="https://typecodes.com">TypeCodes</a>. All Rights Reserved<br>Powered by <a href="http://getpelican.com" rel="external" target="_blank">Pelican</a>. <a href="http://www.miitbeian.gov.cn/" rel="external nofollow" target="_blank">粤ICP备14050695号</a>
+			</p>
+		</div>
+	</div>
+</div>
+</footer>
+<script type="text/javascript">
+	var disqus_shortname = 'typecodes';
+	var disqus_identifier = '/mix/vpsshadowsockswitchyomegaspeeder.html';
+	var disqus_url = 'https://typecodes.com/mix/vpsshadowsockswitchyomegaspeeder.html';
+	var disqus_title = '搭了个Shadowsocks+Proxy SwitchyOmega+net-speeder梯子';
+	(function() {
+		var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+		dsq.src = "//" + disqus_shortname + '.disqus.com/embed.js';
+		(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	 })();
+</script>
+	</body>
+</html>

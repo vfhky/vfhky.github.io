@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="zh-CN" class="no-js">
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<title>分类 cseries 下的文章 - TypeCodes</title>
+		<meta name="author" content="vfhky">
+  		<link href="https://typecodes.com/atom.xml" type="application/atom+xml" rel="alternate" title="TypeCodes Atom Feed" />
+	  	<link href="https://typecodes.com/feed.xml" type="application/rss+xml" rel="alternate" title="TypeCodes RSS Feed" />
+		<meta name="HandheldFriendly" content="True">
+		<meta name="MobileOptimized" content="320">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="renderer" content="webkit">
+		<link rel="stylesheet" href="https://dn-vfhky.qbox.me/libs/css/pelican-vfhky.css">
+		<script>
+			var _hmt = _hmt || [];
+			(function() {
+			  var hm = document.createElement("script");
+			  hm.src = "//hm.baidu.com/hm.js?c15c4ab8e91ba9ac3d5a12293cc93359";
+			  var s = document.getElementsByTagName("script")[0]; 
+			  s.parentNode.insertBefore(hm, s);
+			})();
+		</script>
+	</head>
+	<body style>
+		<!--1. header navigation begin-->
+		<header role="banner" id="te-site-header">
+			<div class="container">
+				<a href="https://typecodes.com" class="te-site-logo" role="logo" target="_self"> TypeCodes</a>
+				<ul class="nav nav-pills" id="te-site-nav" role="navigation">
+					<li><a href="https://typecodes.com">Home</a></li><li><a href="https://typecodes.com/archives.html" title="Archives">Archives</a></li><li><a href="https://typecodes.com/about.html" title="About">About</a></li></ul>
+			</div>
+		</header>
+		<div class="te-headline">
+			<div class="container">
+				<h2 class="te-headline-title"> <a href="https://typecodes.com">TypeCodes</a></h2>
+			</div>
+		</div>
+		<div class="container">
+			<div class="row">
+		<!--2. left sider begin-->
+		<div class="col-md-9" id="blog-main" role="main">
+		  	<!--article recycle-->
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/cseries/cppgeneralmakefile.html">Linux C/C++工程中可生成ELF、动/静态库文件的通用Makefile</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2015-08-14 20:27 | 分类：<a href="https://typecodes.com/cseries/index.html">cseries</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>最近写了一个*nix环境下的Makefile文件，支持编译C/C++，同时能够通过参数配置生成ELF目标文件、动态链接库(.so)和静态链接库(.a)文件。</p>
+<p><img alt="Linux C/C++工程中可生成ELF、动/静态库文件的通用Makefile" src="https://dn-vfhky.qbox.me/2015/08/linux_general_makefile.png" title="Linux C/C++工程中可生成ELF、动/静态库文件的通用Makefile" /></p>
+
+	<p class="more"><a href="https://typecodes.com/cseries/cppgeneralmakefile.html" title="Linux C/C++工程中可生成ELF、动/静态库文件的通用Makefile">- 阅读剩余部分 -</a></p>
+			</article>
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/cseries/libraryundefinedref.html">解决make编译链接动态库错误：libxx.so: undefined reference to xx</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2015-08-13 21:05 | 分类：<a href="https://typecodes.com/cseries/index.html">cseries</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>最近在写一个Makefile，调试时遇到了<code>libsrcpbl.so: undefined reference to gcProgramName</code>的问题。在这个Makefile脚本里面，终极目标是通过链接一个自定义的动态库<code>libsrcpbl.so</code>生成一个ELF目标文件。</p>
+<p>由于链接生成libsrcpbl.so动态库的.o文件比较多，无法定位具体的错误程序文件和位置，所以折腾了较长时间。</p>
+
+	<p class="more"><a href="https://typecodes.com/cseries/libraryundefinedref.html" title="解决make编译链接动态库错误：libxx.so: undefined reference to xx">- 阅读剩余部分 -</a></p>
+			</article>
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/cseries/nmobjectfilesymbol.html">Unix系统中nm命令展示目标文件符号的方法</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2015-08-12 00:07 | 分类：<a href="https://typecodes.com/cseries/index.html">cseries</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>在*nix系统中，通过gnu开源gcc或者g++工具生成的目标文件（object file），可以用<code>nm</code>、<code>objdump</code>和<code>readelf</code>这三个命令来查看。</p>
+<div class="highlight"><pre>nm：显示目标文件中的符号；
+objdump：打印目标文件中的详细信息；
+readelf：显示关于 ELF 目标文件的信息。
+</pre></div>
+
+
+<p>之前在调试makefile文件的时候，链接动态库出错：<code>libsrcpbl.so: undefined reference to 'gcProgramName'</code>。也就是变量gcProgramName没定义，后来通过<code>nm -u libsrcpbl.so</code>命令辅助排查解决了。</p>
+
+	<p class="more"><a href="https://typecodes.com/cseries/nmobjectfilesymbol.html" title="Unix系统中nm命令展示目标文件符号的方法">- 阅读剩余部分 -</a></p>
+			</article>
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/cseries/gcclderrlibrarypath.html">Linux gcc链接动态库出错：LIBRARY_PATH和LD_LIBRARY_PATH的区别</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2015-08-08 22:51 | 分类：<a href="https://typecodes.com/cseries/index.html">cseries</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>昨天在自己的CentOs7.1上写makefile的时候，发现在一个C程序在编译并链接一个已生成好的lib动态库的时候出错。链接命令大概是这样的：</p>
+<div class="highlight"><pre>[root@typecodes tcpmsg]# gcc -o hello main.c -lmyhello
+/usr/bin/ld: cannot find -lmyhello
+collect2: error: ld returned 1 exit status
+</pre></div>
+
+
+<p><img alt="Linux gcc链接动态库出错" src="https://dn-vfhky.qbox.me/2015/08/gcc_linux.png" title="Linux gcc链接动态库出错" /></p>
+
+	<p class="more"><a href="https://typecodes.com/cseries/gcclderrlibrarypath.html" title="Linux gcc链接动态库出错：LIBRARY_PATH和LD_LIBRARY_PATH的区别">- 阅读剩余部分 -</a></p>
+			</article>
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/cseries/unixsigtermkill.html">Unix系统进程对SIGTERM、SIGUSR1和SIGUSR2信号处理</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2015-08-05 17:41 | 分类：<a href="https://typecodes.com/cseries/index.html">cseries</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>好久没更新博客了，写篇文章除除草。这篇文章主要通过简单的例子说明一下Unix/Linux进程中如果捕捉和处理<code>SIGTERM</code>、<code>SIGUSR1</code>和<code>SIGUSR2</code>信号。</p>
+<p>先说明一下这三个信号：</p>
+<div class="highlight"><pre>信号(signal)是*nix系统中进程之间通信(IPC)的一种常见方式。
+SIGTERM：进程终止信号，效果等同于*nix shell中不带-9的kill命令；
+SIGUSR1：保留给用户使用的信号；
+SIGUSR2：同SIGUSR1，保留给用户使用的信号。
+</pre></div>
+
+
+
+	<p class="more"><a href="https://typecodes.com/cseries/unixsigtermkill.html" title="Unix系统进程对SIGTERM、SIGUSR1和SIGUSR2信号处理">- 阅读剩余部分 -</a></p>
+			</article>
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/cseries/simplifychexstrtoint.html">视角：C语言将十六进制字符串转成十进制整数</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2015-05-30 07:58 | 分类：<a href="https://typecodes.com/cseries/index.html">cseries</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>在前文<a href="https://typecodes.com/cseries/againchexstrtointeger.html/comment-page-1#comment-1665" title="查看原文评论">《再议C语言将十六进制字符串转成十进制整数》</a>中 <a href="http://pewae.com/">@大致</a> 童鞋帮忙提了一个思路：直接将指针<code>p</code>读取的十六进制字符串中的单个字符转换后的结果保存在<code>iResult</code>中，而不是保存在指针p指向的内存中。这样思路更为简洁，下面是具体的两个实现程序。</p>
+
+	<p class="more"><a href="https://typecodes.com/cseries/simplifychexstrtoint.html" title="视角：C语言将十六进制字符串转成十进制整数">- 阅读剩余部分 -</a></p>
+			</article>
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/cseries/againchexstrtointeger.html">再议C语言将十六进制字符串转成十进制整数</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2015-05-14 19:55 | 分类：<a href="https://typecodes.com/cseries/index.html">cseries</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>前文<a href="https://typecodes.com/cseries/clanghexstrtointeger.html" title="查看原文">《C语言将十六进制字符串转成十进制整数》</a>讲述了将十六进制字符串中单个字符分别从高位到低位正序和从低位到高位逆序转换成对应的十进制数，今天在看原文的程序发现一个不好的地方：由于使用了<code>char * p = HexStr;</code>，也就是直接使用指针p将这个十六进制字符串进行了读取和<code>改写</code>。这样会造成在调用了<code>HexStr2Integer</code>转换函数后，就不能再次使用这个十六进制字符串了。</p>
+<p>因此，在转换过程中，可以考虑将原来的这个十六进制字符串在内存中复制一份，然后再对这个复制的<code>副本</code>进行读写，这样就产生副作用了。下面是根据原来的两个程序改进的的代码，主要通过<code>malloc</code>函数开辟一个内存空间，然后复制十六进制字符串中的数据到这个内存空间中，最后对它进行“读写”。</p>
+<p>在下面这两个改进的代码中，还考虑到了这个十六进制字符串以<code>0x</code>开头的形式出现，所以增加了这种情况的处理。</p>
+
+	<p class="more"><a href="https://typecodes.com/cseries/againchexstrtointeger.html" title="再议C语言将十六进制字符串转成十进制整数">- 阅读剩余部分 -</a></p>
+			</article>
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/cseries/doubledimensionalarray.html">指针数组和指针的指针（间级指针）实例分析</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2014-11-17 22:09 | 分类：<a href="https://typecodes.com/cseries/index.html">cseries</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>网上看到一个关于指向指针的指针变量（间级指针）和指针数组的分析题，感觉比较有代表性，所以摘录了下来自己分析了一番。</p>
+
+	<p class="more"><a href="https://typecodes.com/cseries/doubledimensionalarray.html" title="指针数组和指针的指针（间级指针）实例分析">- 阅读剩余部分 -</a></p>
+			</article>
+		  	<!--page navigation-->
+<ol class="page-navigator">
+<li class="current"><a href="https://typecodes.com/cseries/index.html">1</a><li><a href="https://typecodes.com/cseries/index2.html">2</a>
+       		</li><li><a href="https://typecodes.com/cseries/index3.html">3</a>
+       		</li><li><a href="https://typecodes.com/cseries/index4.html">4</a>
+       		</li><li class="next">
+       		<a href="https://typecodes.com/cseries/index2.html">后一页 &raquo;</a>
+       </li></ol>		</div>
+		<!--3. right sider begin-->
+<div class="col-md-3" id="blog-secondary" role="complementary">
+	<section class="widget">
+		<ul class="widget-list">
+			<form id="search" method="get" action="https://typecodes.com/search.html">
+				<input type="text" name="q" id="s" size="20" x-webkit-speech="" x-webkit-grammar="builtin:search" onwebkitspeechchange="this.value = this.value.replace(this.defaultValue, '')" value="Google...." onfocus="this.value = (this.value == this.defaultValue) ? '' : this.value" onblur="this.value = (this.value == '') ? this.defaultValue : this.value">
+			</form>
+		</ul>
+	</section>
+	<section class="widget">
+		<h3 class="widget-title">Categories</h3>
+		<ul class="widget-list">
+		      <li class="current">
+		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (26)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/csharp/index.html">Csharp</a> (6)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/database/index.html">Database</a> (11)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/java/index.html">Java</a> (1)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/linux/index.html">Linux</a> (16)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/mix/index.html">Mix</a> (53)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/web/index.html">Web</a> (88)
+		      </li>
+		</ul>
+	</section>
+	<section class="widget">
+		<h3 class="widget-title">Recent Posts</h3>
+		<ul class="widget-list">
+			<li class="post">
+				<a href="https://typecodes.com/cseries/cppgeneralmakefile.html">Linux C/C++工程中可生成ELF、动/静态库文件的通用Makefile</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/libraryundefinedref.html">解决make编译链接动态库错误：libxx.so: undefined reference to xx</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/nmobjectfilesymbol.html">Unix系统中nm命令展示目标文件符号的方法</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/gcclderrlibrarypath.html">Linux gcc链接动态库出错：LIBRARY_PATH和LD_LIBRARY_PATH的区别</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/unixsigtermkill.html">Unix系统进程对SIGTERM、SIGUSR1和SIGUSR2信号处理</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/simplifychexstrtoint.html">视角：C语言将十六进制字符串转成十进制整数</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/againchexstrtointeger.html">再议C语言将十六进制字符串转成十进制整数</a>
+			</li>
+		</ul>
+	</section>
+	<section class="widget widget-feed">
+		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
+	</section>
+</div>
+				</div>
+			</div>
+		</div>
+		<!--4. bottom begin-->
+		<footer id="te-site-footer"><div class="container">
+	<div class="row" role="contentinfo">
+		<section class="col-md-2 col-md-offset-1">
+			<h3>Links</h3>
+			<ul><li><a href="http://diaosbook.com/" title="">diaosbook</a></li></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul>
+				<li><a href="https://typecodes.com/links.html">More..</a></li>
+			</ul>
+		</section>
+		<section class="col-md-2">
+			<h3>Following</h3>
+			<ul>
+				<li><a href="https://github.com/vfhky" class="following github" target="_blank" rel="external nofollow">GitHub</a></li>
+				<li><a href="http://weibo.com/typecodes" class="following weibo" target="_blank" rel="external nofollow">Weibo</a></li>
+				<li><a href="http://vfhky.sinaapp.com/" class="following sae" target="_blank" rel="external nofollow">SAE</a></li>
+				<li><a href="http://www.dwz.cn/mYiwa" class="following qqgroup" target="_blank" rel="external nofollow">Group</a></li>
+			</ul>
+		</section>
+		<div class="col-md-12 copyright">
+			<a href="#top"><i class="i-logo-s">TOP</i></a>
+			<p>
+				&copy; 2012-<script language="JavaScript">var date = new Date(); document.write(date.getFullYear());</script>							<a href="https://typecodes.com">TypeCodes</a>. All Rights Reserved<br>Powered by <a href="http://getpelican.com" rel="external" target="_blank">Pelican</a>. <a href="http://www.miitbeian.gov.cn/" rel="external nofollow" target="_blank">粤ICP备14050695号</a>
+			</p>
+		</div>
+	</div>
+</div>
+</footer>
+<script type="text/javascript">
+	var disqus_shortname = 'typecodes';
+	(function() {
+		var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+		dsq.src = "//" + disqus_shortname + '.disqus.com/embed.js';
+		(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	 })();
+</script>
+	</body>
+</html>

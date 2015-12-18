@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="zh-CN" class="no-js">
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<title>wordpress添加滚动（单条或多条）公告 &mdash; TypeCodes</title>
+		<meta name="author" content="vfhky">
+  		<link href="https://typecodes.com/atom.xml" type="application/atom+xml" rel="alternate" title="TypeCodes Atom Feed" />
+	  	<link href="https://typecodes.com/feed.xml" type="application/rss+xml" rel="alternate" title="TypeCodes RSS Feed" />
+		<meta name="HandheldFriendly" content="True">
+		<meta name="MobileOptimized" content="320">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="renderer" content="webkit">
+		<link rel="stylesheet" href="https://dn-vfhky.qbox.me/libs/css/pelican-vfhky.css">
+		<script>
+			var _hmt = _hmt || [];
+			(function() {
+			  var hm = document.createElement("script");
+			  hm.src = "//hm.baidu.com/hm.js?c15c4ab8e91ba9ac3d5a12293cc93359";
+			  var s = document.getElementsByTagName("script")[0]; 
+			  s.parentNode.insertBefore(hm, s);
+			})();
+		</script>
+	</head>
+	<body style>
+		<!--1. header navigation begin-->
+		<header role="banner" id="te-site-header">
+			<div class="container">
+				<a href="https://typecodes.com" class="te-site-logo" role="logo" target="_self"> TypeCodes</a>
+				<ul class="nav nav-pills" id="te-site-nav" role="navigation">
+					<li><a href="https://typecodes.com">Home</a></li><li><a href="https://typecodes.com/archives.html" title="Archives">Archives</a></li><li><a href="https://typecodes.com/about.html" title="About">About</a></li></ul>
+			</div>
+		</header>
+		<div class="te-headline">
+			<div class="container">
+				<h2 class="te-headline-title"> <a href="https://typecodes.com">TypeCodes</a></h2>
+			</div>
+		</div>
+		<div class="container">
+			<div class="row">
+		<!--2. left sider begin-->
+		<div class="col-md-9" id="blog-main" role="main">
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/web/wpaddrollnotice.html">wordpress添加滚动（单条或多条）公告</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2012-09-26 13:56 | 分类：<a href="https://typecodes.com/web/index.html">web</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>其实想给自己的博客加个公告栏好久了，但是一直都没找到比较合适的方法。对于CMS，我总有种纠结的心情。一来，CMS系统确实给开发人员带来了快捷的网站系统雏形，这点大大节省了各种资源和时间的消耗；但是，我觉得CMS又降低了开发人员自主创新的能力（一家之言^^），总是想依赖点什么。对于wordpress我也总期望官方能够发布所有我想要的功能，然后我只要copy就行了。。。结果然后就木有结果了。不罗嗦了，最终效果如下</p>
+<p><img alt="wordpress添加滚动（单条或多条）公告" src="https://dn-vfhky.qbox.me/2012/09/12.jpg" title="wordpress添加滚动（单条或多条）公告" /></p>
+
+
+<p>1、实现思路：借用wordpress中的一个页面，把其中的评论作为博客的公告内容。然后用jQuery实现单条或多条滚动。接下来是具体过程。</p>
+<p>2、新建一篇文章或者一个单独页面（例如，博主是用自己制作的一个模板发布了“<a href="http://vfhky.sinaapp.com/notice" title="点击查看效果">同步微博</a>”页面），最好设置公开度为私密（这样访客就不能评论，从而公告只显示博主的评论）。后台发布后，鼠标移到页面的标题上，可以看浏览器左下角页面id。例如post.php?post=178&amp;action=edit。178就是这个页面的ID，记下来。</p>
+<p>3、在合适的位置添加公告栏，例如我把它添加在博客的侧栏，也就是在sidebar.php中添加代码</p>
+<div class="highlight"><pre><span class="c">&lt;!--notice by vfhky--&gt;</span>
+<span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;notice&quot;</span><span class="nt">&gt;</span>
+    <span class="cp">&lt;?php</span> <span class="k">include</span><span class="p">(</span><span class="s1">&#39;includes/notice.php&#39;</span><span class="p">);</span> <span class="cp">?&gt;</span><span class="c">&lt;!--引入notice.php文件--&gt;</span>
+<span class="nt">&lt;/div&gt;</span>
+</pre></div>
+
+
+<p>4、新建notice.php文件（调用评论内容），保存到自己主题文件夹下的include文件夹中</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19</pre></div></td><td class="code"><div class="highlight"><pre><span class="x">&lt;h3&gt;同步微博 vs 公告栏&lt; ?php if ($user_ID) echo &#39;&amp;nbsp;&amp;nbsp[&lt;a href=&quot;&#39; . get_page_link($page_ID) . &#39;#respond&quot; rel=&quot;nofollow&quot; &gt;发布公告]&#39;; ?&gt;&lt;/h3&gt;</span>
+<span class="x">&lt;ul class=&quot;notice&quot;&gt;</span>
+<span class="x">    </span><span class="cp">&lt;?php</span>
+        <span class="nv">$page_ID</span><span class="o">=</span><span class="mi">178</span><span class="p">;</span> <span class="c1">//用来作为公告栏的页面或者文章ID值</span>
+        <span class="nv">$num</span><span class="o">=</span><span class="mi">3</span><span class="p">;</span> <span class="c1">//显示公告的条数</span>
+        <span class="nv">$announcement</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">;</span><span class="c1">//设置变量值为空</span>
+        <span class="nv">$comments</span> <span class="o">=</span> <span class="nx">get_comments</span><span class="p">(</span><span class="s2">&quot;number=</span><span class="si">$num</span><span class="s2">&amp;post_id=</span><span class="si">$page_ID</span><span class="s2">&amp;user_id=1&quot;</span><span class="p">);</span><span class="c1">//获取评论（包括内容、链接等等）</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="o">!</span><span class="k">empty</span><span class="p">(</span><span class="nv">$comments</span><span class="p">)</span> <span class="p">)</span> <span class="p">{</span>
+            <span class="k">foreach</span> <span class="p">(</span><span class="nv">$comments</span> <span class="k">as</span> <span class="nv">$comment</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nv">$comment_result</span><span class="o">=</span><span class="nv">$comment</span><span class="o">-&gt;</span><span class="na">comment_content</span><span class="p">;</span><span class="c1">//获取评论内容</span>
+            <span class="k">if</span><span class="p">(</span><span class="nb">strlen</span><span class="p">(</span><span class="nv">$comment_result</span><span class="p">)</span><span class="o">&gt;</span><span class="mi">60</span><span class="p">){</span><span class="nv">$comment_result</span> <span class="o">=</span> <span class="nx">cut_str</span><span class="p">(</span><span class="nv">$comment_result</span><span class="p">,</span><span class="mi">60</span><span class="p">)</span><span class="o">.</span><span class="s2">&quot;....&quot;</span><span class="p">;}</span><span class="c1">//如果内容大于60，则截取60字并在后面跟上省略号</span>
+            <span class="nv">$comm_link</span> <span class="o">=</span> <span class="nx">get_comment_link</span><span class="p">(</span><span class="nv">$comment</span><span class="o">-&gt;</span><span class="na">comment_ID</span><span class="p">);</span><span class="c1">//获取评论链接</span>
+            <span class="nv">$announcement</span> <span class="o">.=</span> <span class="s1">&#39;&lt;li&gt;&lt;a rel=&quot;nofollow&quot; href=&#39;</span><span class="o">.</span><span class="nv">$comm_link</span><span class="o">.</span><span class="s1">&#39; style=&quot;color:#f90;font-size:1em;&quot;&gt;@ TypeCodes &lt;/a&gt;&#39;</span><span class="o">.</span> <span class="nx">convert_smilies</span><span class="p">(</span><span class="nv">$comment_result</span><span class="p">)</span> <span class="o">.</span> <span class="s1">&#39; &lt;span style=&quot;color:#999;&quot;&gt;(&#39;</span> <span class="o">.</span> <span class="nx">get_comment_date</span><span class="p">(</span><span class="s1">&#39;Y/m/d H:i&#39;</span><span class="p">,</span><span class="nv">$comment</span><span class="o">-&gt;</span><span class="na">comment_ID</span><span class="p">)</span> <span class="o">.</span> <span class="s1">&#39;)&lt;/span&gt;&lt;hr style=&quot;border:1px dashed #cccccc; height:1px&quot;/&gt;&lt;/li&gt;&#39;</span><span class="p">;</span>   
+            <span class="p">}</span>
+        <span class="p">}</span>
+        <span class="k">if</span> <span class="p">(</span> <span class="k">empty</span><span class="p">(</span><span class="nv">$announcement</span><span class="p">)</span> <span class="p">)</span> <span class="nv">$announcement</span> <span class="o">=</span> <span class="s1">&#39;&lt;li&gt;欢迎光临 TypeCodes ！&lt;/li&gt;&#39;</span><span class="p">;</span>
+            <span class="k">echo</span> <span class="nv">$announcement</span><span class="p">;</span>
+    <span class="cp">?&gt;</span><span class="x"></span>
+<span class="x">&lt;/ul&gt;</span>
+</pre></div>
+</td></tr></table>
+
+<p>5、这样，评论内容就变成了公告内容。接下来我们需要用jQUery让公告内容变成单条或多条滚动的形式。由于在前面几篇文章中，我已经上传了jquery.min.js（例如文章<a href="http://vfhky.sinaapp.com/cms/wordpress/225.html" title="如何在wordpress回复内容前面添加@方式">如何在wordpress回复内容前面添加@方式</a>），所以这个步骤我就不用做了。</p>
+<p>6、根据自己想要实现单条滚动还是多条滚动样式，选择以下jQuery代码中的一个，并命名为notice.js，然后保存到主题所在的js目录下。</p>
+<div class="highlight"><pre><span class="cm">/* @notice单条 js by vfhky */</span>
+<span class="nf">jQuery</span><span class="p">(</span><span class="s-Atom">document</span><span class="p">).</span><span class="nf">ready</span><span class="p">(</span><span class="nf">function</span><span class="p">(</span><span class="err">$</span><span class="p">){</span> <span class="o">//</span><span class="nv">Begin</span> <span class="s-Atom">jQuery</span>
+
+    <span class="err">$</span><span class="p">(</span><span class="s2">&quot;#notice li:not(:first)&quot;</span><span class="p">).</span><span class="nf">css</span><span class="p">(</span><span class="s2">&quot;display&quot;</span><span class="p">,</span><span class="s2">&quot;none&quot;</span><span class="p">);</span>
+    <span class="s-Atom">var</span> <span class="nv">B</span><span class="s-Atom">=</span><span class="err">$</span><span class="p">(</span><span class="s2">&quot;#notice li:last&quot;</span><span class="p">);</span>
+    <span class="s-Atom">var</span> <span class="nv">C</span><span class="s-Atom">=</span><span class="err">$</span><span class="p">(</span><span class="s2">&quot;#notice li:first&quot;</span><span class="p">);</span>
+    <span class="nf">setInterval</span><span class="p">(</span><span class="nf">function</span><span class="p">(){</span>
+    <span class="nf">if</span><span class="p">(</span><span class="nv">B</span><span class="p">.</span><span class="o">is</span><span class="p">(</span><span class="s2">&quot;:visible&quot;</span><span class="p">)){</span>
+    <span class="nv">C</span><span class="p">.</span><span class="nf">fadeIn</span><span class="p">(</span><span class="mi">500</span><span class="p">).</span><span class="nf">addClass</span><span class="p">(</span><span class="s2">&quot;in&quot;</span><span class="p">);</span><span class="nv">B</span><span class="p">.</span><span class="nf">hide</span><span class="p">()</span>
+    <span class="p">}</span><span class="s-Atom">else</span><span class="p">{</span>
+    <span class="err">$</span><span class="p">(</span><span class="s2">&quot;#notice li:visible&quot;</span><span class="p">).</span><span class="nf">addClass</span><span class="p">(</span><span class="s2">&quot;in&quot;</span><span class="p">);</span>
+    <span class="err">$</span><span class="p">(</span><span class="s2">&quot;#notice li.in&quot;</span><span class="p">).</span><span class="nf">next</span><span class="p">().</span><span class="nf">fadeIn</span><span class="p">(</span><span class="mi">500</span><span class="p">);</span>
+    <span class="err">$</span><span class="p">(</span><span class="s2">&quot;li.in&quot;</span><span class="p">).</span><span class="nf">hide</span><span class="p">().</span><span class="nf">removeClass</span><span class="p">(</span><span class="s2">&quot;in&quot;</span><span class="p">)}</span>
+    <span class="p">},</span><span class="mi">6000</span><span class="p">)</span> <span class="s-Atom">//每6秒钟切换一条，你可以根据需要更改</span>
+
+<span class="p">})</span>  <span class="o">//</span><span class="nv">End</span> <span class="s-Atom">jQuery</span>
+
+
+<span class="cm">/* @notice多条 js by vfhky */</span>
+<span class="nf">jQuery</span><span class="p">(</span><span class="s-Atom">document</span><span class="p">).</span><span class="nf">ready</span><span class="p">(</span><span class="nf">function</span><span class="p">(</span><span class="err">$</span><span class="p">){</span> <span class="o">//</span><span class="nv">Begin</span> <span class="s-Atom">jQuery</span>
+
+<span class="err">$</span><span class="p">(</span><span class="nf">function</span><span class="p">(){</span>
+<span class="s-Atom">var</span> <span class="k">_</span><span class="s-Atom">wrap=</span><span class="err">$</span><span class="p">(</span><span class="s-Atom">&#39;ul.notice&#39;</span><span class="p">);</span><span class="s-Atom">//定义滚动区域</span>
+<span class="s-Atom">var</span> <span class="k">_</span><span class="s-Atom">interval</span><span class="o">=</span><span class="mi">6000</span><span class="p">;</span><span class="s-Atom">//定义滚动间隙时间</span>
+<span class="s-Atom">var</span> <span class="k">_</span><span class="s-Atom">moving</span><span class="p">;</span><span class="s-Atom">//需要清除的动画</span>
+<span class="k">_</span><span class="s-Atom">wrap</span><span class="p">.</span><span class="nf">hover</span><span class="p">(</span><span class="nf">function</span><span class="p">(){</span>
+<span class="nf">clearInterval</span><span class="p">(</span><span class="k">_</span><span class="s-Atom">moving</span><span class="p">);</span><span class="s-Atom">//当鼠标在滚动区域中时</span><span class="p">,</span><span class="s-Atom">停止滚动</span>
+<span class="p">},</span><span class="nf">function</span><span class="p">(){</span>
+<span class="k">_</span><span class="s-Atom">moving</span><span class="o">=</span><span class="nf">setInterval</span><span class="p">(</span><span class="nf">function</span><span class="p">(){</span>
+<span class="s-Atom">var</span> <span class="k">_</span><span class="s-Atom">field=</span><span class="k">_</span><span class="s-Atom">wrap</span><span class="p">.</span><span class="nf">find</span><span class="p">(</span><span class="s-Atom">&#39;li:first&#39;</span><span class="p">);</span><span class="s-Atom">//此变量不可放置于函数起始处</span><span class="p">,</span><span class="nn">li</span><span class="p">:</span><span class="s-Atom">first取值是变化的</span>
+<span class="s-Atom">var</span> <span class="k">_</span><span class="s-Atom">h=</span><span class="k">_</span><span class="s-Atom">field</span><span class="p">.</span><span class="nf">height</span><span class="p">();</span><span class="s-Atom">//</span><span class="nf">取得每次滚动高度</span><span class="p">(</span><span class="s-Atom">多行滚动情况下</span><span class="p">,</span><span class="s-Atom">此变量不可置于开始处</span><span class="p">,</span><span class="s-Atom">否则会有间隔时长延时</span><span class="p">)</span>
+<span class="k">_</span><span class="s-Atom">field</span><span class="p">.</span><span class="nf">animate</span><span class="p">({</span><span class="nf">marginTop</span><span class="o">:-</span><span class="k">_</span><span class="s-Atom">h+&#39;px&#39;</span><span class="p">},</span><span class="mi">600</span><span class="p">,</span><span class="nf">function</span><span class="p">(){</span><span class="s-Atom">//通过取负margin值</span><span class="p">,</span><span class="s-Atom">隐藏第一行</span>
+<span class="k">_</span><span class="s-Atom">field</span><span class="p">.</span><span class="nf">css</span><span class="p">(</span><span class="s-Atom">&#39;marginTop&#39;</span><span class="p">,</span><span class="mi">0</span><span class="p">).</span><span class="nf">appendTo</span><span class="p">(</span><span class="k">_</span><span class="s-Atom">wrap</span><span class="p">);</span><span class="s-Atom">//隐藏后</span><span class="p">,</span><span class="s-Atom">将该行的margin值置零</span><span class="p">,</span><span class="s-Atom">并插入到最后</span><span class="p">,</span><span class="s-Atom">实现无缝滚动</span>
+<span class="p">})</span>
+<span class="p">},</span><span class="k">_</span><span class="s-Atom">interval</span><span class="p">)</span><span class="s-Atom">//滚动间隔时间取决于_interval</span>
+<span class="p">}).</span><span class="nf">trigger</span><span class="p">(</span><span class="s-Atom">&#39;mouseleave&#39;</span><span class="p">);</span><span class="s-Atom">//函数载入时</span><span class="p">,</span><span class="s-Atom">模拟执行mouseleave</span><span class="p">,</span><span class="s-Atom">即自动滚动</span>
+<span class="p">});</span>
+
+<span class="p">})</span>
+</pre></div>
+
+
+<p>7、加载jQuery库：依然在主题目录中找到header.php，再找到找到 &lt;?php wp_head()；?&gt; ，然后在它前面添加如下代码</p>
+<div class="highlight"><pre><span class="c">&lt;!--Google CDN提供的jQuery库的地址采用了协议相对路径，它可以很好的解决https引起的一些问题--&gt;</span>
+<span class="nt">&lt;script</span> <span class="na">type=</span><span class="s">&quot;text/javascript&quot;</span> <span class="na">src=</span><span class="s">&quot;//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js&quot;</span><span class="nt">&gt;&lt;/script&gt;</span>
+
+<span class="c">&lt;!--当谷歌提供的jquery都无法载入时，我们需要载入本地备份的jquery.min.js文件--&gt;</span>
+<span class="nt">&lt;script</span> <span class="na">type=</span><span class="s">&quot;text/javascript&quot;</span><span class="nt">&gt;</span>window.jQuery || document.write(&#39;<span class="nt">&lt;/script&gt;&lt;script</span> <span class="na">type=</span><span class="s">&quot;text/javascript&quot;</span> <span class="na">src=</span><span class="s">&quot;</span><span class="cp">&lt;?</span> <span class="nx">php</span> <span class="nx">bloginfo</span><span class="p">(</span><span class="s1">&#39;template_directory&#39;</span><span class="p">);</span> <span class="cp">?&gt;</span><span class="s">/js/jquery.min.js&quot;</span><span class="nt">&gt;</span>\x3C/script&gt;&#39;)<span class="nt">&lt;/script&gt;</span>
+
+<span class="nt">&lt;script</span> <span class="na">type=</span><span class="s">&quot;text/javascript&quot;</span> <span class="na">src=</span><span class="s">&quot;</span><span class="cp">&lt;?</span> <span class="nx">php</span> <span class="nx">bloginfo</span><span class="p">(</span><span class="s1">&#39;template_directory&#39;</span><span class="p">);</span> <span class="cp">?&gt;</span><span class="s">/js/notice.js&quot;</span><span class="nt">&gt;&lt;/script&gt;</span>
+</pre></div>
+
+
+<p>8、到这里，我们添加的公告内容就能滚动了。但是，公告内容会溢出公告栏目框。所以，我们还需要用CSS来隐藏溢出的公告内容，这样就perfect了！！！找到主题下面的style.css，然后添加</p>
+<div class="highlight"><pre><span class="na">.notice</span><span class="err">{</span><span class="no">overflow</span><span class="p">:</span><span class="no">hidden</span><span class="err">;</span><span class="no">height</span><span class="p">:</span><span class="mi">100</span><span class="no">px</span><span class="err">;</span><span class="no">line-height</span><span class="p">:</span><span class="mi">18</span><span class="no">px</span><span class="err">;</span><span class="no">font-size</span><span class="p">:</span><span class="mi">12</span><span class="no">px</span><span class="err">;}</span>
+</pre></div>
+
+
+<p>9、ok，慢慢欣赏下自己的成果吧^^（PS：由于要涉及数据库的查询，网页的载入速度会变慢。所以，对于使用国外空间的童鞋们，你们自己看着办咯）</p>
+<h6>————Update 2013.02.21————</h6>
+<p>近段时间琢磨着如何提高博客网页的载入速度，所以把右侧栏的公告完善了一下。由于php中include的方法比较耗资源，所以我把公告代码修改到主题functions.php中，然后在sidebar.php中调用即可。具体做法如下：</p>
+<p>（一）在sidebar.php中添加如下代码</p>
+<div class="highlight"><pre><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;notice&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;ul</span> <span class="na">class=</span><span class="s">&quot;notice&quot;</span><span class="nt">&gt;</span><span class="cp">&lt;?php</span> <span class="nx">get_notice</span><span class="p">();</span> <span class="cp">?&gt;</span><span class="nt">&lt;/ul&gt;</span>
+<span class="nt">&lt;/div&gt;</span>
+</pre></div>
+
+
+<p>（二）在主题functions.php中添加如下代码：</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17</pre></div></td><td class="code"><div class="highlight"><pre><span class="x">//blog notice by vfhky 0</span>
+<span class="x">function get_notice(){</span>
+<span class="x">    $page_ID=178; //用来作为公告栏的页面或者文章id</span>
+<span class="x">    $num=3; //显示公告的条数</span>
+<span class="x">    $announcement = &#39;&#39;;//设置变量值为空</span>
+<span class="x">    $comments = get_comments(&quot;number=$num&amp;post_id=$page_ID&amp;user_id=1$comment_parent=0&quot;);//获取评论（包括内容、链接等等）</span>
+<span class="x">    if ( !empty($comments) ) {</span>
+<span class="x">        $i = 1;</span>
+<span class="x">        foreach ($comments as $comment) {</span>
+<span class="x">        $comment_result = mb_strimwidth($comment-&gt;comment_content,0,200,&quot;....&quot;);</span>
+<span class="x">        $comm_link = get_comment_link($comment-&gt;comment_ID);//获取评论链接</span>
+<span class="x">        $announcement .= &#39;&lt;li&gt;&lt;a rel=&quot;nofollow&quot; href=&#39;.$comm_link.&#39; title=&quot;同步微博&quot; style=&quot;color:#f90;font-size:11px;&quot;&gt;@ TypeCodes +&#39;.$i.&#39;&lt;/a&gt;&lt;font size=&quot;1px&quot;&gt;&#39;. convert_smilies($comment_result) . &#39;&lt;/font&gt; &lt;span style=&quot;color:#999;font-size:10px;&quot;&gt;(&#39; . get_comment_date(&#39;Y-m-d H:i&#39;,$comment-&gt;comment_ID) . &#39;)&lt;/span&gt;&lt;div style=&quot;width:100%;border-top:1px dashed #cccccc;&quot;&gt;&lt;/div&gt;&lt;/li&gt;&#39;; </span>
+<span class="x">        $i += 1;}</span>
+<span class="x">    }</span>
+<span class="x">    if ( empty($announcement) ) $announcement = &#39;&lt;li&gt;欢迎光临 TypeCodes ！&lt;/li&gt;&#39;;</span>
+<span class="x">    echo $announcement;</span>
+<span class="x">}</span>
+</pre></div>
+</td></tr></table>
+
+<p>（三）OVER</p>
+		    	<p class="tags">
+					<div class="post-share">
+						<ul class="post-shareul clearfix">
+							<li class="post-shareli">
+								<a href="http://note.youdao.com/memory/?url=https://typecodes.com/web/wpaddrollnotice.html&title=wordpress添加滚动（单条或多条）公告" class="post-sharea ydshare" target="_blank" rel="nofollow">有道云笔记</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://v.t.sina.com.cn/share/share.php?url=https://typecodes.com/web/wpaddrollnotice.html&title=wordpress添加滚动（单条或多条）公告&source=https://typecodes.com" class="post-sharea wbshare" target="_blank" rel="nofollow">新浪微博</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://v.t.qq.com/share/share.php?title=wordpress添加滚动（单条或多条）公告&url=https://typecodes.com/web/wpaddrollnotice.html&site=https://typecodes.com" class="post-sharea twbshare" target="_blank" rel="nofollow">腾讯微博</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=https://typecodes.com/web/wpaddrollnotice.html&title=wordpress添加滚动（单条或多条）公告&content='utf-8'" class="post-sharea qzoneshare" target="_blank" rel="nofollow">QZone</a>
+							</li>
+						</ul>
+					</div>
+					<div>
+						Tags: <a href="https://typecodes.com/tag/wordpress.html">wordpress</a>,<a href="https://typecodes.com/tag/wordpressgun-dong-gong-gao.html">wordpress滚动公告</a>					</div>
+				</p>
+			</article>
+			
+			<div id="comments">
+				<h4 class="num">Comments &raquo;</h4>
+		    	<div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript></div>
+		    </div>
+		</div>
+		<!--3. right sider begin-->
+<div class="col-md-3" id="blog-secondary" role="complementary">
+	<section class="widget">
+		<ul class="widget-list">
+			<form id="search" method="get" action="https://typecodes.com/search.html">
+				<input type="text" name="q" id="s" size="20" x-webkit-speech="" x-webkit-grammar="builtin:search" onwebkitspeechchange="this.value = this.value.replace(this.defaultValue, '')" value="Google...." onfocus="this.value = (this.value == this.defaultValue) ? '' : this.value" onblur="this.value = (this.value == '') ? this.defaultValue : this.value">
+			</form>
+		</ul>
+	</section>
+	<section class="widget">
+		<h3 class="widget-title">Categories</h3>
+		<ul class="widget-list">
+		      <li class="current">
+		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (26)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/csharp/index.html">Csharp</a> (6)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/database/index.html">Database</a> (11)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/java/index.html">Java</a> (1)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/linux/index.html">Linux</a> (16)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/mix/index.html">Mix</a> (53)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/web/index.html">Web</a> (88)
+		      </li>
+		</ul>
+	</section>
+	<section class="widget">
+		<h3 class="widget-title">Recent Posts</h3>
+		<ul class="widget-list">
+			<li class="post">
+				<a href="https://typecodes.com/mix/sucesstypechotopelican.html">成功将博客从Typecho迁移到Pelican</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/mix/begintypechotopelican.html">准备将博客从Typecho迁移到Pelican</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/tcpconnectiontimedout.html">Linux TCP连接Connection Refused和Connection timed out的问题</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/mysqlerrornospace.html">博客MySQL服务惊魂记：Linux磁盘空间不足(Core Dump文件引爆)</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/mix/synweibophpmarkdownimgurl.html">升级博客文章同步微博的插件：PHP正则提取Markdown的图片地址</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/cppgeneralmakefile.html">Linux C/C++工程中可生成ELF、动/静态库文件的通用Makefile</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/libraryundefinedref.html">解决make编译链接动态库错误：libxx.so: undefined reference to xx</a>
+			</li>
+		</ul>
+	</section>
+	<section class="widget widget-feed">
+		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
+	</section>
+</div>
+				</div>
+			</div>
+		</div>
+		<!--4. bottom begin-->
+		<footer id="te-site-footer"><div class="container">
+	<div class="row" role="contentinfo">
+		<section class="col-md-2 col-md-offset-1">
+			<h3>Links</h3>
+			<ul><li><a href="http://diaosbook.com/" title="">diaosbook</a></li></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul>
+				<li><a href="https://typecodes.com/links.html">More..</a></li>
+			</ul>
+		</section>
+		<section class="col-md-2">
+			<h3>Following</h3>
+			<ul>
+				<li><a href="https://github.com/vfhky" class="following github" target="_blank" rel="external nofollow">GitHub</a></li>
+				<li><a href="http://weibo.com/typecodes" class="following weibo" target="_blank" rel="external nofollow">Weibo</a></li>
+				<li><a href="http://vfhky.sinaapp.com/" class="following sae" target="_blank" rel="external nofollow">SAE</a></li>
+				<li><a href="http://www.dwz.cn/mYiwa" class="following qqgroup" target="_blank" rel="external nofollow">Group</a></li>
+			</ul>
+		</section>
+		<div class="col-md-12 copyright">
+			<a href="#top"><i class="i-logo-s">TOP</i></a>
+			<p>
+				&copy; 2012-<script language="JavaScript">var date = new Date(); document.write(date.getFullYear());</script>							<a href="https://typecodes.com">TypeCodes</a>. All Rights Reserved<br>Powered by <a href="http://getpelican.com" rel="external" target="_blank">Pelican</a>. <a href="http://www.miitbeian.gov.cn/" rel="external nofollow" target="_blank">粤ICP备14050695号</a>
+			</p>
+		</div>
+	</div>
+</div>
+</footer>
+<script type="text/javascript">
+	var disqus_shortname = 'typecodes';
+	var disqus_identifier = '/web/wpaddrollnotice.html';
+	var disqus_url = 'https://typecodes.com/web/wpaddrollnotice.html';
+	var disqus_title = 'wordpress添加滚动（单条或多条）公告';
+	(function() {
+		var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+		dsq.src = "//" + disqus_shortname + '.disqus.com/embed.js';
+		(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	 })();
+</script>
+	</body>
+</html>

@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="zh-CN" class="no-js">
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<title>PHP7中php.ini、php-fpm和www.conf的配置 &mdash; TypeCodes</title>
+		<meta name="author" content="vfhky">
+  		<link href="https://typecodes.com/atom.xml" type="application/atom+xml" rel="alternate" title="TypeCodes Atom Feed" />
+	  	<link href="https://typecodes.com/feed.xml" type="application/rss+xml" rel="alternate" title="TypeCodes RSS Feed" />
+		<meta name="HandheldFriendly" content="True">
+		<meta name="MobileOptimized" content="320">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="renderer" content="webkit">
+		<link rel="stylesheet" href="https://dn-vfhky.qbox.me/libs/css/pelican-vfhky.css">
+		<script>
+			var _hmt = _hmt || [];
+			(function() {
+			  var hm = document.createElement("script");
+			  hm.src = "//hm.baidu.com/hm.js?c15c4ab8e91ba9ac3d5a12293cc93359";
+			  var s = document.getElementsByTagName("script")[0]; 
+			  s.parentNode.insertBefore(hm, s);
+			})();
+		</script>
+	</head>
+	<body style>
+		<!--1. header navigation begin-->
+		<header role="banner" id="te-site-header">
+			<div class="container">
+				<a href="https://typecodes.com" class="te-site-logo" role="logo" target="_self"> TypeCodes</a>
+				<ul class="nav nav-pills" id="te-site-nav" role="navigation">
+					<li><a href="https://typecodes.com">Home</a></li><li><a href="https://typecodes.com/archives.html" title="Archives">Archives</a></li><li><a href="https://typecodes.com/about.html" title="About">About</a></li></ul>
+			</div>
+		</header>
+		<div class="te-headline">
+			<div class="container">
+				<h2 class="te-headline-title"> <a href="https://typecodes.com">TypeCodes</a></h2>
+			</div>
+		</div>
+		<div class="container">
+			<div class="row">
+		<!--2. left sider begin-->
+		<div class="col-md-9" id="blog-main" role="main">
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/web/php7configure.html">PHP7中php.ini、php-fpm和www.conf的配置</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2015-06-27 19:05 | 分类：<a href="https://typecodes.com/web/index.html">web</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>根据前文<a href="https://typecodes.com/web/centos7compilephp7.html" title="查看原文">《2015博客升级记(五)：CentOS 7.1编译安装PHP7》</a>的<code>configure</code>编译参数设定，安装后的PHP7配置文件所在路径是<code>/usr/local/php7/etc</code>。该目录下会有两个配置文件：<code>php-fpm.conf</code>和<code>php.ini</code>，以及一个文件夹<code>php-fpm.d</code>（包含<code>www.conf</code>文件）。</p>
+<p>因此，这篇文章主要对这三个PHP配置文件的进行简单说明，具体的配置过程见本文末尾的<code>附录</code>部分。</p>
+
+
+<h5>1 配置php.ini</h5>
+<p>php.ini是php运行核心配置文件：</p>
+<div class="highlight"><pre>######避免PHP信息暴露在http头中
+expose_php = Off
+
+######避免暴露php调用mysql的错误信息
+display_errors = Off
+
+######在关闭display_errors后开启PHP错误日志（路径在php-fpm.conf中配置）
+log_errors = On
+
+######设置PHP的扩展库路径
+extension_dir = &quot;/usr/local/php7/lib/php/extensions/no-debug-non-zts-20141001/&quot;
+
+######设置PHP的opcache和mysql动态库
+zend_extension=opcache.so
+extension=mysqli.so
+extension=pdo_mysql.so
+
+######设置PHP的时区
+date.timezone = PRC
+
+######开启opcache
+[opcache]
+; Determines if Zend OPCache is enabled
+opcache.enable=1
+
+######设置PHP脚本允许访问的目录（需要根据实际情况配置）
+;open_basedir = /usr/share/nginx/html;
+</pre></div>
+
+
+<h5>2 配置php-fpm.conf</h5>
+<p>php-fpm.conf是<code>php-fpm</code>进程服务的配置文件：</p>
+<div class="highlight"><pre>######设置错误日志的路径
+error_log = /var/log/php-fpm/error.log
+######引入www.conf文件中的配置
+include=/usr/local/php7/etc/php-fpm.d/*.conf
+</pre></div>
+
+
+<h5>3 配置www.conf（在php-fpm.d目录下）</h5>
+<p>www.conf这是<code>php-fpm</code>进程服务的扩展配置文件：</p>
+<div class="highlight"><pre><span class="err">######设置用户和用户组</span>
+<span class="nt">user</span> <span class="o">=</span> <span class="nt">nginx</span>
+<span class="nt">group</span> <span class="o">=</span> <span class="nt">nginx</span>
+
+<span class="err">######根据</span><span class="nt">nginx</span><span class="nc">.conf</span><span class="err">中的配置</span><span class="nt">fastcgi_pass</span> <span class="nt">unix</span><span class="o">:/</span><span class="nt">var</span><span class="o">/</span><span class="nt">run</span><span class="o">/</span><span class="nt">php-fpm</span><span class="o">/</span><span class="nt">php-fpm</span><span class="nc">.sock</span><span class="o">;</span><span class="err">设置</span><span class="nt">PHP</span><span class="err">监听</span>
+<span class="o">;</span> <span class="nt">listen</span> <span class="o">=</span> <span class="nt">127</span><span class="nc">.0.0.1</span><span class="nd">:9000</span>   <span class="err">#####不建议使用</span>
+<span class="nt">listen</span> <span class="o">=</span> <span class="o">/</span><span class="nt">var</span><span class="o">/</span><span class="nt">run</span><span class="o">/</span><span class="nt">php-fpm</span><span class="o">/</span><span class="nt">php-fpm</span><span class="nc">.sock</span>
+
+<span class="err">######开启慢日志</span>
+<span class="nt">slowlog</span> <span class="o">=</span> <span class="o">/</span><span class="nt">var</span><span class="o">/</span><span class="nt">log</span><span class="o">/</span><span class="nt">php-fpm</span><span class="o">/$</span><span class="nt">pool-slow</span><span class="nc">.log</span>
+<span class="nt">request_slowlog_timeout</span> <span class="o">=</span> <span class="nt">10s</span>
+
+<span class="err">######设置</span><span class="nt">php</span><span class="err">的</span><span class="nt">session</span><span class="err">目录（所属用户和用户组都是</span><span class="nt">nginx</span><span class="err">）</span>
+<span class="nt">php_value</span><span class="cp">[</span><span class="nx">session.save_handler</span><span class="cp">]</span> <span class="o">=</span> <span class="nt">files</span>
+<span class="nt">php_value</span><span class="cp">[</span><span class="nx">session.save_path</span><span class="cp">]</span> <span class="o">=</span> <span class="o">/</span><span class="nt">var</span><span class="o">/</span><span class="nt">lib</span><span class="o">/</span><span class="nt">php</span><span class="o">/</span><span class="nt">session</span>
+</pre></div>
+
+
+<h5>4 附录</h5>
+<p>在前文<a href="https://typecodes.com/web/centos7nginxhttpsspdy.html" title="查看原文">《2015博客升级记(六)：Nginx配置HTTPS和SPDY实战》</a>和<a href="https://typecodes.com/web/centosmysqlconfig.html" title="查看原文">《CentOS系统MySQL的配置文件my.cnf》</a>已经说明了，目前已经把这个关于Nginx、MySQL和PHP配置的全部托管在GitHub和coding.net上，地址如下：</p>
+<p>GitHub地址：<a href="https://github.com/vfhky/mylnmp" title="点击进入">https://github.com/vfhky/mylnmp</a>；</p>
+<p>Coding地址：<a href="https://coding.net/u/vfhky/p/mylnmp/git" title="点击进入">https://coding.net/u/vfhky/p/mylnmp/git</a>。</p>
+<p>最后，附上工程的截图：</p>
+<p><img alt="GitHub上关于LNMP的常用配置" src="https://dn-vfhky.qbox.me/2015/06/github_vfhky_mylnp.png" title="GitHub上关于LNMP的常用配置" /></p>
+		    	<p class="tags">
+					<div class="post-share">
+						<ul class="post-shareul clearfix">
+							<li class="post-shareli">
+								<a href="http://note.youdao.com/memory/?url=https://typecodes.com/web/php7configure.html&title=PHP7中php.ini、php-fpm和www.conf的配置" class="post-sharea ydshare" target="_blank" rel="nofollow">有道云笔记</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://v.t.sina.com.cn/share/share.php?url=https://typecodes.com/web/php7configure.html&title=PHP7中php.ini、php-fpm和www.conf的配置&source=https://typecodes.com" class="post-sharea wbshare" target="_blank" rel="nofollow">新浪微博</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://v.t.qq.com/share/share.php?title=PHP7中php.ini、php-fpm和www.conf的配置&url=https://typecodes.com/web/php7configure.html&site=https://typecodes.com" class="post-sharea twbshare" target="_blank" rel="nofollow">腾讯微博</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=https://typecodes.com/web/php7configure.html&title=PHP7中php.ini、php-fpm和www.conf的配置&content='utf-8'" class="post-sharea qzoneshare" target="_blank" rel="nofollow">QZone</a>
+							</li>
+						</ul>
+					</div>
+					<div>
+						Tags: <a href="https://typecodes.com/tag/php7.html">php7</a>					</div>
+				</p>
+			</article>
+			
+			<div id="comments">
+				<h4 class="num">Comments &raquo;</h4>
+		    	<div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript></div>
+		    </div>
+		</div>
+		<!--3. right sider begin-->
+<div class="col-md-3" id="blog-secondary" role="complementary">
+	<section class="widget">
+		<ul class="widget-list">
+			<form id="search" method="get" action="https://typecodes.com/search.html">
+				<input type="text" name="q" id="s" size="20" x-webkit-speech="" x-webkit-grammar="builtin:search" onwebkitspeechchange="this.value = this.value.replace(this.defaultValue, '')" value="Google...." onfocus="this.value = (this.value == this.defaultValue) ? '' : this.value" onblur="this.value = (this.value == '') ? this.defaultValue : this.value">
+			</form>
+		</ul>
+	</section>
+	<section class="widget">
+		<h3 class="widget-title">Categories</h3>
+		<ul class="widget-list">
+		      <li class="current">
+		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (26)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/csharp/index.html">Csharp</a> (6)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/database/index.html">Database</a> (11)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/java/index.html">Java</a> (1)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/linux/index.html">Linux</a> (16)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/mix/index.html">Mix</a> (53)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/web/index.html">Web</a> (88)
+		      </li>
+		</ul>
+	</section>
+	<section class="widget">
+		<h3 class="widget-title">Recent Posts</h3>
+		<ul class="widget-list">
+			<li class="post">
+				<a href="https://typecodes.com/mix/sucesstypechotopelican.html">成功将博客从Typecho迁移到Pelican</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/mix/begintypechotopelican.html">准备将博客从Typecho迁移到Pelican</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/tcpconnectiontimedout.html">Linux TCP连接Connection Refused和Connection timed out的问题</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/mysqlerrornospace.html">博客MySQL服务惊魂记：Linux磁盘空间不足(Core Dump文件引爆)</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/mix/synweibophpmarkdownimgurl.html">升级博客文章同步微博的插件：PHP正则提取Markdown的图片地址</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/cppgeneralmakefile.html">Linux C/C++工程中可生成ELF、动/静态库文件的通用Makefile</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/libraryundefinedref.html">解决make编译链接动态库错误：libxx.so: undefined reference to xx</a>
+			</li>
+		</ul>
+	</section>
+	<section class="widget widget-feed">
+		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
+	</section>
+</div>
+				</div>
+			</div>
+		</div>
+		<!--4. bottom begin-->
+		<footer id="te-site-footer"><div class="container">
+	<div class="row" role="contentinfo">
+		<section class="col-md-2 col-md-offset-1">
+			<h3>Links</h3>
+			<ul><li><a href="http://diaosbook.com/" title="">diaosbook</a></li></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul>
+				<li><a href="https://typecodes.com/links.html">More..</a></li>
+			</ul>
+		</section>
+		<section class="col-md-2">
+			<h3>Following</h3>
+			<ul>
+				<li><a href="https://github.com/vfhky" class="following github" target="_blank" rel="external nofollow">GitHub</a></li>
+				<li><a href="http://weibo.com/typecodes" class="following weibo" target="_blank" rel="external nofollow">Weibo</a></li>
+				<li><a href="http://vfhky.sinaapp.com/" class="following sae" target="_blank" rel="external nofollow">SAE</a></li>
+				<li><a href="http://www.dwz.cn/mYiwa" class="following qqgroup" target="_blank" rel="external nofollow">Group</a></li>
+			</ul>
+		</section>
+		<div class="col-md-12 copyright">
+			<a href="#top"><i class="i-logo-s">TOP</i></a>
+			<p>
+				&copy; 2012-<script language="JavaScript">var date = new Date(); document.write(date.getFullYear());</script>							<a href="https://typecodes.com">TypeCodes</a>. All Rights Reserved<br>Powered by <a href="http://getpelican.com" rel="external" target="_blank">Pelican</a>. <a href="http://www.miitbeian.gov.cn/" rel="external nofollow" target="_blank">粤ICP备14050695号</a>
+			</p>
+		</div>
+	</div>
+</div>
+</footer>
+<script type="text/javascript">
+	var disqus_shortname = 'typecodes';
+	var disqus_identifier = '/web/php7configure.html';
+	var disqus_url = 'https://typecodes.com/web/php7configure.html';
+	var disqus_title = 'PHP7中php.ini、php-fpm和www.conf的配置';
+	(function() {
+		var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+		dsq.src = "//" + disqus_shortname + '.disqus.com/embed.js';
+		(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	 })();
+</script>
+	</body>
+</html>

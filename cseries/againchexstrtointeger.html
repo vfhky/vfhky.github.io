@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="zh-CN" class="no-js">
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<title>再议C语言将十六进制字符串转成十进制整数 &mdash; TypeCodes</title>
+		<meta name="author" content="vfhky">
+  		<link href="https://typecodes.com/atom.xml" type="application/atom+xml" rel="alternate" title="TypeCodes Atom Feed" />
+	  	<link href="https://typecodes.com/feed.xml" type="application/rss+xml" rel="alternate" title="TypeCodes RSS Feed" />
+		<meta name="HandheldFriendly" content="True">
+		<meta name="MobileOptimized" content="320">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="renderer" content="webkit">
+		<link rel="stylesheet" href="https://dn-vfhky.qbox.me/libs/css/pelican-vfhky.css">
+		<script>
+			var _hmt = _hmt || [];
+			(function() {
+			  var hm = document.createElement("script");
+			  hm.src = "//hm.baidu.com/hm.js?c15c4ab8e91ba9ac3d5a12293cc93359";
+			  var s = document.getElementsByTagName("script")[0]; 
+			  s.parentNode.insertBefore(hm, s);
+			})();
+		</script>
+	</head>
+	<body style>
+		<!--1. header navigation begin-->
+		<header role="banner" id="te-site-header">
+			<div class="container">
+				<a href="https://typecodes.com" class="te-site-logo" role="logo" target="_self"> TypeCodes</a>
+				<ul class="nav nav-pills" id="te-site-nav" role="navigation">
+					<li><a href="https://typecodes.com">Home</a></li><li><a href="https://typecodes.com/archives.html" title="Archives">Archives</a></li><li><a href="https://typecodes.com/about.html" title="About">About</a></li></ul>
+			</div>
+		</header>
+		<div class="te-headline">
+			<div class="container">
+				<h2 class="te-headline-title"> <a href="https://typecodes.com">TypeCodes</a></h2>
+			</div>
+		</div>
+		<div class="container">
+			<div class="row">
+		<!--2. left sider begin-->
+		<div class="col-md-9" id="blog-main" role="main">
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/cseries/againchexstrtointeger.html">再议C语言将十六进制字符串转成十进制整数</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2015-05-14 19:55 | 分类：<a href="https://typecodes.com/cseries/index.html">cseries</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>前文<a href="https://typecodes.com/cseries/clanghexstrtointeger.html" title="查看原文">《C语言将十六进制字符串转成十进制整数》</a>讲述了将十六进制字符串中单个字符分别从高位到低位正序和从低位到高位逆序转换成对应的十进制数，今天在看原文的程序发现一个不好的地方：由于使用了<code>char * p = HexStr;</code>，也就是直接使用指针p将这个十六进制字符串进行了读取和<code>改写</code>。这样会造成在调用了<code>HexStr2Integer</code>转换函数后，就不能再次使用这个十六进制字符串了。</p>
+<p>因此，在转换过程中，可以考虑将原来的这个十六进制字符串在内存中复制一份，然后再对这个复制的<code>副本</code>进行读写，这样就产生副作用了。下面是根据原来的两个程序改进的的代码，主要通过<code>malloc</code>函数开辟一个内存空间，然后复制十六进制字符串中的数据到这个内存空间中，最后对它进行“读写”。</p>
+<p>在下面这两个改进的代码中，还考虑到了这个十六进制字符串以<code>0x</code>开头的形式出现，所以增加了这种情况的处理。</p>
+
+
+<h5>1 从高位到低位单个字符转换</h5>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97</pre></div></td><td class="code"><div class="highlight"><pre><span class="cp">#include &lt;stdio.h&gt;</span>
+<span class="cp">#include &lt;string.h&gt;</span>
+<span class="cp">#include &lt;malloc.h&gt;</span>
+
+<span class="cm">/** </span>
+<span class="cm"> * @FileName  HexStr2Integer.c</span>
+<span class="cm"> * @author    vfhky 2015.05.14 https://typecodes.com/cseries/againchexstrtointeger.html</span>
+<span class="cm"> * @param     [in]HexStr 十六进制字符串（例如&quot;eE2&quot;、&quot;Fa1&quot;、&quot;2011&quot;、&quot;-eE2&quot;、&quot;+eE2&quot;等） </span>
+<span class="cm"> * @return    -1:字符串为空; -2:分配内存出错; -3:字符串中包含非十六进制的字符; 其它:转换后的十进制整数</span>
+<span class="cm"> */</span>
+<span class="kt">int</span> <span class="nf">HexStr2Integer</span><span class="p">(</span> <span class="kt">char</span> <span class="o">*</span> <span class="n">HexStr</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="kt">int</span> <span class="n">iResult</span><span class="p">,</span> <span class="n">iCycle</span><span class="p">,</span> <span class="n">iHexStrLen</span><span class="p">;</span>
+    <span class="n">iResult</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="n">iCycle</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+    <span class="n">iHexStrLen</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="c1">//正负数的标识，1正 -1负</span>
+    <span class="kt">int</span> <span class="n">iFlag</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+
+    <span class="c1">//获取十六进制字符串的长度</span>
+    <span class="n">iHexStrLen</span> <span class="o">=</span> <span class="n">strlen</span><span class="p">(</span> <span class="n">HexStr</span> <span class="p">);</span>
+
+    <span class="c1">//判断字符串是否合法</span>
+    <span class="k">if</span><span class="p">(</span> <span class="n">iHexStrLen</span> <span class="o">==</span> <span class="mi">0</span> <span class="o">||</span> <span class="p">(</span> <span class="o">*</span><span class="n">HexStr</span> <span class="o">==</span> <span class="sc">&#39;+&#39;</span> <span class="o">&amp;&amp;</span> <span class="n">iHexStrLen</span> <span class="o">==</span> <span class="mi">1</span> <span class="p">)</span> <span class="o">||</span> <span class="p">(</span> <span class="o">*</span><span class="n">HexStr</span> <span class="o">==</span> <span class="sc">&#39;-&#39;</span> <span class="o">&amp;&amp;</span> <span class="n">iHexStrLen</span> <span class="o">==</span> <span class="mi">1</span> <span class="p">)</span> 
+        <span class="o">||</span> <span class="p">(</span> <span class="o">*</span><span class="n">HexStr</span> <span class="o">==</span> <span class="mh">0x30</span> <span class="o">&amp;&amp;</span> <span class="o">*</span><span class="p">(</span><span class="n">HexStr</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span> <span class="o">==</span> <span class="mh">0x78</span> <span class="o">&amp;&amp;</span> <span class="n">iHexStrLen</span> <span class="o">==</span> <span class="mi">2</span> <span class="p">)</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="c1">//复制一份十六进制字符串HexStr到内存空间</span>
+    <span class="kt">char</span> <span class="o">*</span> <span class="n">cHexStrPt</span><span class="p">;</span>
+    <span class="k">if</span><span class="p">(</span> <span class="p">(</span> <span class="n">cHexStrPt</span> <span class="o">=</span> <span class="p">(</span><span class="kt">char</span> <span class="o">*</span><span class="p">)</span><span class="n">malloc</span><span class="p">(</span> <span class="k">sizeof</span><span class="p">(</span><span class="kt">char</span><span class="p">)</span><span class="o">*</span><span class="n">iHexStrLen</span> <span class="o">+</span> <span class="mi">1</span> <span class="p">)</span> <span class="p">)</span> <span class="o">==</span> <span class="nb">NULL</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="o">-</span><span class="mi">2</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="n">memset</span><span class="p">(</span> <span class="n">cHexStrPt</span><span class="p">,</span> <span class="mh">0x00</span><span class="p">,</span> <span class="n">iHexStrLen</span><span class="o">+</span><span class="mi">1</span> <span class="p">);</span>
+    <span class="n">memcpy</span><span class="p">(</span> <span class="n">cHexStrPt</span><span class="p">,</span> <span class="n">HexStr</span><span class="p">,</span> <span class="n">iHexStrLen</span> <span class="p">);</span>
+
+    <span class="c1">//设置临时指针p</span>
+    <span class="kt">char</span> <span class="o">*</span> <span class="n">p</span> <span class="o">=</span> <span class="n">cHexStrPt</span><span class="p">;</span>
+
+    <span class="c1">//长度去掉正负号，并设置字符数的标识</span>
+    <span class="k">if</span><span class="p">(</span> <span class="p">(</span> <span class="o">*</span><span class="n">p</span> <span class="o">==</span> <span class="sc">&#39;+&#39;</span> <span class="p">)</span> <span class="o">||</span> <span class="p">(</span> <span class="o">*</span><span class="n">p</span> <span class="o">==</span> <span class="sc">&#39;-&#39;</span> <span class="p">)</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="o">--</span><span class="n">iHexStrLen</span><span class="p">;</span>
+        <span class="k">if</span><span class="p">(</span> <span class="o">*</span><span class="n">p</span> <span class="o">==</span> <span class="sc">&#39;-&#39;</span> <span class="p">)</span>
+            <span class="n">iFlag</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+        <span class="o">++</span><span class="n">p</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="c1">//长度去掉&quot;0x&quot;开头的十六进制标识符</span>
+    <span class="k">else</span> <span class="k">if</span><span class="p">(</span> <span class="o">*</span><span class="n">p</span> <span class="o">==</span> <span class="mh">0x30</span> <span class="o">&amp;&amp;</span> <span class="o">*</span><span class="p">(</span><span class="n">p</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span> <span class="o">==</span> <span class="mh">0x78</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">iHexStrLen</span> <span class="o">-=</span> <span class="mi">2</span><span class="p">;</span>
+        <span class="n">p</span> <span class="o">+=</span> <span class="mi">2</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="c1">//循环将每个十六进制的字符转换成对应的十进制整数，出现非法字符则直接返回</span>
+    <span class="k">while</span><span class="p">(</span> <span class="n">iCycle</span> <span class="o">&lt;=</span> <span class="n">iHexStrLen</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span><span class="p">(</span> <span class="p">(</span> <span class="o">*</span><span class="n">p</span> <span class="o">&gt;=</span> <span class="mi">48</span> <span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="p">(</span> <span class="o">*</span><span class="n">p</span> <span class="o">&lt;=</span> <span class="mi">57</span> <span class="p">)</span> <span class="p">)</span>
+            <span class="o">*</span><span class="n">p</span> <span class="o">-=</span> <span class="mi">48</span><span class="p">;</span>
+        <span class="k">else</span> <span class="k">if</span><span class="p">(</span> <span class="p">(</span> <span class="o">*</span><span class="n">p</span> <span class="o">&gt;=</span> <span class="mi">65</span> <span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="p">(</span> <span class="o">*</span><span class="n">p</span> <span class="o">&lt;=</span> <span class="mi">70</span> <span class="p">)</span> <span class="p">)</span>
+            <span class="o">*</span><span class="n">p</span> <span class="o">-=</span> <span class="mi">65</span> <span class="o">-</span> <span class="mi">10</span><span class="p">;</span>
+        <span class="k">else</span> <span class="k">if</span><span class="p">(</span> <span class="p">(</span> <span class="o">*</span><span class="n">p</span> <span class="o">&gt;=</span> <span class="mi">97</span> <span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="p">(</span> <span class="o">*</span><span class="n">p</span> <span class="o">&lt;=</span> <span class="mi">102</span> <span class="p">)</span> <span class="p">)</span>
+            <span class="o">*</span><span class="n">p</span> <span class="o">-=</span> <span class="mi">97</span> <span class="o">-</span> <span class="mi">10</span><span class="p">;</span>
+        <span class="k">else</span>
+        <span class="p">{</span>
+            <span class="n">free</span><span class="p">(</span> <span class="n">cHexStrPt</span> <span class="p">);</span>
+            <span class="n">cHexStrPt</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>
+            <span class="k">return</span> <span class="o">-</span><span class="mi">3</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="c1">//iResult = *p + iResult*16; 经过 @大致 的提醒，使用移位运算</span>
+        <span class="n">iResult</span> <span class="o">=</span> <span class="o">*</span><span class="n">p</span> <span class="o">+</span> <span class="p">(</span><span class="n">iResult</span><span class="o">&lt;&lt;</span><span class="mi">4</span><span class="p">);</span>
+        <span class="o">++</span><span class="n">iCycle</span><span class="p">;</span>
+        <span class="o">++</span><span class="n">p</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="c1">//释放内存</span>
+    <span class="n">free</span><span class="p">(</span> <span class="n">cHexStrPt</span> <span class="p">);</span>
+    <span class="n">cHexStrPt</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>
+
+    <span class="c1">//返回转换后的整数</span>
+    <span class="k">return</span> <span class="n">iFlag</span><span class="o">*</span><span class="n">iResult</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span> <span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span> <span class="n">argv</span><span class="p">[]</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="kt">char</span> <span class="n">cHexString</span><span class="p">[</span><span class="mi">200</span><span class="o">+</span><span class="mi">1</span><span class="p">];</span>
+    <span class="k">while</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">memset</span><span class="p">(</span> <span class="n">cHexString</span><span class="p">,</span> <span class="mh">0x00</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">cHexString</span><span class="p">)</span> <span class="p">);</span>
+        <span class="n">printf</span><span class="p">(</span> <span class="s">&quot;Please input a HexString with length less than 200:</span><span class="se">\n</span><span class="s">&quot;</span> <span class="p">);</span>
+        <span class="n">scanf</span><span class="p">(</span> <span class="s">&quot;%s&quot;</span><span class="p">,</span> <span class="n">cHexString</span> <span class="p">);</span>
+        <span class="n">printf</span><span class="p">(</span> <span class="s">&quot;----&gt;[%d]</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">HexStr2Integer</span><span class="p">(</span><span class="n">cHexString</span><span class="p">)</span> <span class="p">);</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</td></tr></table>
+
+<p>如下图所示，用GCC编译(<code>gcc HexStr2Integer.c -o HexStr2Integer</code>)测试程序并执行，结果将三个测试用的十六进制的字符串"eE2"、"Fa1"、"2011"、"-eE2"、"+eE2"分别转换成了对应的十进制整数：3810、4001、8209、-3810、3810。</p>
+<p><img alt="十六进制字符串转成十进制整数" src="https://dn-vfhky.qbox.me/2015/05/clanghexstrtointeger.png" title="十六进制字符串转成十进制整数" /></p>
+<h5>2 从低位到高位单个字符转换</h5>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98</pre></div></td><td class="code"><div class="highlight"><pre><span class="cp">#include &lt;stdio.h&gt;</span>
+<span class="cp">#include &lt;string.h&gt;</span>
+<span class="cp">#include &lt;malloc.h&gt;</span>
+
+<span class="cm">/**</span>
+<span class="cm"> * @FileName  HexStr2Integer2.c</span>
+<span class="cm"> * @author    vfhky 2015.05.14 https://typecodes.com/cseries/againchexstrtointeger.html</span>
+<span class="cm"> * @param     [in]    HexStr 十六进制字符串（例如&quot;eE2&quot;、&quot;Fa1&quot;、&quot;2011&quot;、&quot;-eE2&quot;、&quot;+eE2&quot;等）</span>
+<span class="cm"> * @return    -1:字符串为空; -2:分配内存出错; -3:字符串中包含非十六进制的字符; 其它:转换后的十进制整数</span>
+<span class="cm"> */</span>
+<span class="kt">int</span> <span class="nf">HexStr2Integer</span><span class="p">(</span> <span class="kt">char</span> <span class="o">*</span> <span class="n">HexStr</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="kt">int</span> <span class="n">iResult</span><span class="p">,</span> <span class="n">iCycle</span><span class="p">,</span> <span class="n">iHexStrLen</span><span class="p">;</span>
+    <span class="n">iResult</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="n">iCycle</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+    <span class="n">iHexStrLen</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="c1">//正负数的标识，1正 -1负</span>
+    <span class="kt">int</span> <span class="n">iFlag</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+
+    <span class="c1">//获取十六进制字符串的长度</span>
+    <span class="n">iHexStrLen</span> <span class="o">=</span> <span class="n">strlen</span><span class="p">(</span> <span class="n">HexStr</span> <span class="p">);</span>
+
+    <span class="c1">//判断字符串是否合法</span>
+    <span class="k">if</span><span class="p">(</span> <span class="n">iHexStrLen</span> <span class="o">==</span> <span class="mi">0</span> <span class="o">||</span> <span class="p">(</span> <span class="o">*</span><span class="n">HexStr</span> <span class="o">==</span> <span class="sc">&#39;+&#39;</span> <span class="o">&amp;&amp;</span> <span class="n">iHexStrLen</span> <span class="o">==</span> <span class="mi">1</span> <span class="p">)</span> <span class="o">||</span> <span class="p">(</span> <span class="o">*</span><span class="n">HexStr</span> <span class="o">==</span> <span class="sc">&#39;-&#39;</span> <span class="o">&amp;&amp;</span> <span class="n">iHexStrLen</span> <span class="o">==</span> <span class="mi">1</span> <span class="p">)</span> 
+        <span class="o">||</span> <span class="p">(</span> <span class="o">*</span><span class="n">HexStr</span> <span class="o">==</span> <span class="mh">0x30</span> <span class="o">&amp;&amp;</span> <span class="o">*</span><span class="p">(</span><span class="n">HexStr</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span> <span class="o">==</span> <span class="mh">0x78</span> <span class="o">&amp;&amp;</span> <span class="n">iHexStrLen</span> <span class="o">==</span> <span class="mi">2</span> <span class="p">)</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="c1">//复制一份十六进制字符串HexStr到内存空间</span>
+    <span class="kt">char</span> <span class="o">*</span> <span class="n">cHexStrPt</span><span class="p">;</span>
+    <span class="k">if</span><span class="p">(</span> <span class="p">(</span> <span class="n">cHexStrPt</span> <span class="o">=</span> <span class="p">(</span><span class="kt">char</span> <span class="o">*</span><span class="p">)</span><span class="n">malloc</span><span class="p">(</span> <span class="k">sizeof</span><span class="p">(</span><span class="kt">char</span><span class="p">)</span><span class="o">*</span><span class="n">iHexStrLen</span> <span class="o">+</span> <span class="mi">1</span> <span class="p">)</span> <span class="p">)</span> <span class="o">==</span> <span class="nb">NULL</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="o">-</span><span class="mi">2</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="n">memset</span><span class="p">(</span> <span class="n">cHexStrPt</span><span class="p">,</span> <span class="mh">0x00</span><span class="p">,</span> <span class="n">iHexStrLen</span><span class="o">+</span><span class="mi">1</span> <span class="p">);</span>
+    <span class="n">memcpy</span><span class="p">(</span> <span class="n">cHexStrPt</span><span class="p">,</span> <span class="n">HexStr</span><span class="p">,</span> <span class="n">iHexStrLen</span> <span class="p">);</span>
+
+    <span class="c1">//设置临时指针p</span>
+    <span class="kt">char</span> <span class="o">*</span> <span class="n">p</span> <span class="o">=</span> <span class="n">cHexStrPt</span><span class="p">;</span>
+
+    <span class="c1">//将指向这块内存空间的末尾</span>
+    <span class="n">p</span> <span class="o">+=</span> <span class="n">iHexStrLen</span><span class="p">;</span>
+
+    <span class="c1">//长度去掉正负号，并设置字符数的标识</span>
+    <span class="k">if</span><span class="p">(</span> <span class="p">(</span> <span class="o">*</span><span class="n">HexStr</span> <span class="o">==</span> <span class="sc">&#39;+&#39;</span> <span class="p">)</span> <span class="o">||</span> <span class="p">(</span> <span class="o">*</span><span class="n">HexStr</span> <span class="o">==</span> <span class="sc">&#39;-&#39;</span> <span class="p">)</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="o">--</span><span class="n">iHexStrLen</span><span class="p">;</span>
+        <span class="k">if</span><span class="p">(</span> <span class="o">*</span><span class="n">HexStr</span> <span class="o">==</span> <span class="sc">&#39;-&#39;</span> <span class="p">)</span>
+            <span class="n">iFlag</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="c1">//长度去掉&quot;0x&quot;开头的十六进制标识符</span>
+    <span class="k">else</span> <span class="k">if</span><span class="p">(</span> <span class="o">*</span><span class="n">HexStr</span> <span class="o">==</span> <span class="mh">0x30</span> <span class="o">&amp;&amp;</span> <span class="o">*</span><span class="p">(</span><span class="n">HexStr</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span> <span class="o">==</span> <span class="mh">0x78</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">iHexStrLen</span> <span class="o">-=</span> <span class="mi">2</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="c1">//循环将每个十六进制的字符转换成对应的十进制整数</span>
+    <span class="k">while</span><span class="p">(</span> <span class="n">iHexStrLen</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="o">--</span><span class="n">p</span><span class="p">;</span>
+        <span class="k">if</span><span class="p">(</span> <span class="p">(</span> <span class="o">*</span><span class="n">p</span> <span class="o">&gt;=</span> <span class="mi">48</span> <span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="p">(</span> <span class="o">*</span><span class="n">p</span> <span class="o">&lt;=</span> <span class="mi">57</span> <span class="p">)</span> <span class="p">)</span>
+            <span class="o">*</span><span class="n">p</span> <span class="o">-=</span> <span class="mi">48</span><span class="p">;</span>
+        <span class="k">else</span> <span class="k">if</span><span class="p">(</span> <span class="p">(</span> <span class="o">*</span><span class="n">p</span> <span class="o">&gt;=</span> <span class="mi">65</span> <span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="p">(</span> <span class="o">*</span><span class="n">p</span> <span class="o">&lt;=</span> <span class="mi">70</span> <span class="p">)</span> <span class="p">)</span>
+            <span class="o">*</span><span class="n">p</span> <span class="o">-=</span> <span class="mi">65</span> <span class="o">-</span> <span class="mi">10</span><span class="p">;</span>
+        <span class="k">else</span> <span class="k">if</span><span class="p">(</span> <span class="p">(</span> <span class="o">*</span><span class="n">p</span> <span class="o">&gt;=</span> <span class="mi">97</span> <span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="p">(</span> <span class="o">*</span><span class="n">p</span> <span class="o">&lt;=</span> <span class="mi">102</span> <span class="p">)</span> <span class="p">)</span>
+            <span class="o">*</span><span class="n">p</span> <span class="o">-=</span> <span class="mi">97</span> <span class="o">-</span> <span class="mi">10</span><span class="p">;</span>
+        <span class="k">else</span>
+        <span class="p">{</span>
+            <span class="n">free</span><span class="p">(</span> <span class="n">cHexStrPt</span> <span class="p">);</span>
+            <span class="n">cHexStrPt</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>
+            <span class="k">return</span> <span class="o">-</span><span class="mi">3</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="n">iResult</span> <span class="o">+=</span> <span class="o">*</span><span class="n">p</span><span class="o">*</span><span class="n">iCycle</span><span class="p">;</span>
+        <span class="n">iCycle</span> <span class="o">*=</span> <span class="mi">16</span><span class="p">;</span>
+        <span class="o">--</span><span class="n">iHexStrLen</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="c1">//释放内存</span>
+    <span class="n">free</span><span class="p">(</span> <span class="n">cHexStrPt</span> <span class="p">);</span>
+    <span class="n">cHexStrPt</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>
+
+    <span class="c1">//返回转换后的整数</span>
+    <span class="k">return</span> <span class="n">iFlag</span><span class="o">*</span><span class="n">iResult</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span> <span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span> <span class="n">argv</span><span class="p">[]</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="kt">char</span> <span class="n">cHexString</span><span class="p">[</span><span class="mi">200</span><span class="o">+</span><span class="mi">1</span><span class="p">];</span>
+    <span class="k">while</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">memset</span><span class="p">(</span> <span class="n">cHexString</span><span class="p">,</span> <span class="mh">0x00</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">cHexString</span><span class="p">)</span> <span class="p">);</span>
+        <span class="n">printf</span><span class="p">(</span> <span class="s">&quot;Please input a HexString with length less than 200:</span><span class="se">\n</span><span class="s">&quot;</span> <span class="p">);</span>
+        <span class="n">scanf</span><span class="p">(</span> <span class="s">&quot;%s&quot;</span><span class="p">,</span> <span class="n">cHexString</span> <span class="p">);</span>
+        <span class="n">printf</span><span class="p">(</span> <span class="s">&quot;----&gt;[%d]</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">HexStr2Integer</span><span class="p">(</span><span class="n">cHexString</span><span class="p">)</span> <span class="p">);</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</td></tr></table>
+
+<p>同样使用GCC编译后，输入十六进制字符串数据进行测试，结果如下图所示：</p>
+<p><img alt="十六进制字符串转成十进制整数" src="https://dn-vfhky.qbox.me/2015/05/clanghexstrtointeger2.png" title="十六进制字符串转成十进制整数" /></p>
+<p>最后，需要注意的是：</p>
+<div class="highlight"><pre>1、使用`malloc`函数开辟内存时，需要判断当前操作系统是否能够分配多余的空间；
+2、在`malloc`函数开辟内存使用完后，使用`free`释放掉这块内存的控制权。
+</pre></div>
+		    	<p class="tags">
+					<div class="post-share">
+						<ul class="post-shareul clearfix">
+							<li class="post-shareli">
+								<a href="http://note.youdao.com/memory/?url=https://typecodes.com/cseries/againchexstrtointeger.html&title=再议C语言将十六进制字符串转成十进制整数" class="post-sharea ydshare" target="_blank" rel="nofollow">有道云笔记</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://v.t.sina.com.cn/share/share.php?url=https://typecodes.com/cseries/againchexstrtointeger.html&title=再议C语言将十六进制字符串转成十进制整数&source=https://typecodes.com" class="post-sharea wbshare" target="_blank" rel="nofollow">新浪微博</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://v.t.qq.com/share/share.php?title=再议C语言将十六进制字符串转成十进制整数&url=https://typecodes.com/cseries/againchexstrtointeger.html&site=https://typecodes.com" class="post-sharea twbshare" target="_blank" rel="nofollow">腾讯微博</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=https://typecodes.com/cseries/againchexstrtointeger.html&title=再议C语言将十六进制字符串转成十进制整数&content='utf-8'" class="post-sharea qzoneshare" target="_blank" rel="nofollow">QZone</a>
+							</li>
+						</ul>
+					</div>
+					<div>
+						Tags: <a href="https://typecodes.com/tag/shi-liu-jin-zhi-zi-fu-chuan.html">十六进制字符串</a>,<a href="https://typecodes.com/tag/shi-liu-jin-zhi-zhuan-shi-jin-zhi.html">十六进制转十进制</a>,<a href="https://typecodes.com/tag/zi-fu-chuan-zhuan-huan.html">字符串转换</a>					</div>
+				</p>
+			</article>
+			
+			<div id="comments">
+				<h4 class="num">Comments &raquo;</h4>
+		    	<div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript></div>
+		    </div>
+		</div>
+		<!--3. right sider begin-->
+<div class="col-md-3" id="blog-secondary" role="complementary">
+	<section class="widget">
+		<ul class="widget-list">
+			<form id="search" method="get" action="https://typecodes.com/search.html">
+				<input type="text" name="q" id="s" size="20" x-webkit-speech="" x-webkit-grammar="builtin:search" onwebkitspeechchange="this.value = this.value.replace(this.defaultValue, '')" value="Google...." onfocus="this.value = (this.value == this.defaultValue) ? '' : this.value" onblur="this.value = (this.value == '') ? this.defaultValue : this.value">
+			</form>
+		</ul>
+	</section>
+	<section class="widget">
+		<h3 class="widget-title">Categories</h3>
+		<ul class="widget-list">
+		      <li class="current">
+		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (26)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/csharp/index.html">Csharp</a> (6)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/database/index.html">Database</a> (11)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/java/index.html">Java</a> (1)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/linux/index.html">Linux</a> (16)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/mix/index.html">Mix</a> (53)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/web/index.html">Web</a> (88)
+		      </li>
+		</ul>
+	</section>
+	<section class="widget">
+		<h3 class="widget-title">Recent Posts</h3>
+		<ul class="widget-list">
+			<li class="post">
+				<a href="https://typecodes.com/mix/sucesstypechotopelican.html">成功将博客从Typecho迁移到Pelican</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/mix/begintypechotopelican.html">准备将博客从Typecho迁移到Pelican</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/tcpconnectiontimedout.html">Linux TCP连接Connection Refused和Connection timed out的问题</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/mysqlerrornospace.html">博客MySQL服务惊魂记：Linux磁盘空间不足(Core Dump文件引爆)</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/mix/synweibophpmarkdownimgurl.html">升级博客文章同步微博的插件：PHP正则提取Markdown的图片地址</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/cppgeneralmakefile.html">Linux C/C++工程中可生成ELF、动/静态库文件的通用Makefile</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/libraryundefinedref.html">解决make编译链接动态库错误：libxx.so: undefined reference to xx</a>
+			</li>
+		</ul>
+	</section>
+	<section class="widget widget-feed">
+		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
+	</section>
+</div>
+				</div>
+			</div>
+		</div>
+		<!--4. bottom begin-->
+		<footer id="te-site-footer"><div class="container">
+	<div class="row" role="contentinfo">
+		<section class="col-md-2 col-md-offset-1">
+			<h3>Links</h3>
+			<ul><li><a href="http://diaosbook.com/" title="">diaosbook</a></li></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul>
+				<li><a href="https://typecodes.com/links.html">More..</a></li>
+			</ul>
+		</section>
+		<section class="col-md-2">
+			<h3>Following</h3>
+			<ul>
+				<li><a href="https://github.com/vfhky" class="following github" target="_blank" rel="external nofollow">GitHub</a></li>
+				<li><a href="http://weibo.com/typecodes" class="following weibo" target="_blank" rel="external nofollow">Weibo</a></li>
+				<li><a href="http://vfhky.sinaapp.com/" class="following sae" target="_blank" rel="external nofollow">SAE</a></li>
+				<li><a href="http://www.dwz.cn/mYiwa" class="following qqgroup" target="_blank" rel="external nofollow">Group</a></li>
+			</ul>
+		</section>
+		<div class="col-md-12 copyright">
+			<a href="#top"><i class="i-logo-s">TOP</i></a>
+			<p>
+				&copy; 2012-<script language="JavaScript">var date = new Date(); document.write(date.getFullYear());</script>							<a href="https://typecodes.com">TypeCodes</a>. All Rights Reserved<br>Powered by <a href="http://getpelican.com" rel="external" target="_blank">Pelican</a>. <a href="http://www.miitbeian.gov.cn/" rel="external nofollow" target="_blank">粤ICP备14050695号</a>
+			</p>
+		</div>
+	</div>
+</div>
+</footer>
+<script type="text/javascript">
+	var disqus_shortname = 'typecodes';
+	var disqus_identifier = '/cseries/againchexstrtointeger.html';
+	var disqus_url = 'https://typecodes.com/cseries/againchexstrtointeger.html';
+	var disqus_title = '再议C语言将十六进制字符串转成十进制整数';
+	(function() {
+		var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+		dsq.src = "//" + disqus_shortname + '.disqus.com/embed.js';
+		(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	 })();
+</script>
+	</body>
+</html>

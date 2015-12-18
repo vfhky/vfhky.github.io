@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="zh-CN" class="no-js">
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<title>WordPress使用淘宝IP地址库的API显示评论者的位置信息（三） &mdash; TypeCodes</title>
+		<meta name="author" content="vfhky">
+  		<link href="https://typecodes.com/atom.xml" type="application/atom+xml" rel="alternate" title="TypeCodes Atom Feed" />
+	  	<link href="https://typecodes.com/feed.xml" type="application/rss+xml" rel="alternate" title="TypeCodes RSS Feed" />
+		<meta name="HandheldFriendly" content="True">
+		<meta name="MobileOptimized" content="320">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="renderer" content="webkit">
+		<link rel="stylesheet" href="https://dn-vfhky.qbox.me/libs/css/pelican-vfhky.css">
+		<script>
+			var _hmt = _hmt || [];
+			(function() {
+			  var hm = document.createElement("script");
+			  hm.src = "//hm.baidu.com/hm.js?c15c4ab8e91ba9ac3d5a12293cc93359";
+			  var s = document.getElementsByTagName("script")[0]; 
+			  s.parentNode.insertBefore(hm, s);
+			})();
+		</script>
+	</head>
+	<body style>
+		<!--1. header navigation begin-->
+		<header role="banner" id="te-site-header">
+			<div class="container">
+				<a href="https://typecodes.com" class="te-site-logo" role="logo" target="_self"> TypeCodes</a>
+				<ul class="nav nav-pills" id="te-site-nav" role="navigation">
+					<li><a href="https://typecodes.com">Home</a></li><li><a href="https://typecodes.com/archives.html" title="Archives">Archives</a></li><li><a href="https://typecodes.com/about.html" title="About">About</a></li></ul>
+			</div>
+		</header>
+		<div class="te-headline">
+			<div class="container">
+				<h2 class="te-headline-title"> <a href="https://typecodes.com">TypeCodes</a></h2>
+			</div>
+		</div>
+		<div class="container">
+			<div class="row">
+		<!--2. left sider begin-->
+		<div class="col-md-9" id="blog-main" role="main">
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/web/wptaoiplibapithree.html">WordPress使用淘宝IP地址库的API显示评论者的位置信息（三）</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2013-09-01 15:49 | 分类：<a href="https://typecodes.com/web/index.html">web</a></li>
+</ul>
+<div class="post-content fmt">
+	<h5>1 PHP版本的淘宝IP地址库接口说明</h5>
+<p>在上一篇文章<a href="https://typecodes.com/web/wptaoiplibapitwo.html" title="《WordPress使用淘宝IP地址库的API显示评论者的位置信息（二）》">《WordPress使用淘宝IP地址库的API显示评论者的位置信息（二）》</a>中，vfhky使用了jQuery来获取淘宝的API接口返回的数据。那么这篇文章就接着写如何直接使用PHP实现WordPress调用淘宝IP地址库的API显示评论者的位置信息。相比上一个jQuery的版本，这个PHP版本的代码就简单得多了用。只需两步就可以实现。</p>
+
+
+<h5>2.1 在主题functions.php添加API调用函数</h5>
+<p>在主题文件目录下的functions.php文件中添加如下代码，其作用是拼接调用淘宝API的请求URL地址并获取返回的jQuery数据信息。</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22</pre></div></td><td class="code"><div class="highlight"><pre><span class="x">/************</span>
+<span class="x"> *** @Function：PHP获取淘宝IP地址库API返回的信息</span>
+<span class="x"> *** @Author：vfhky http://vfhky.sinaapp.com 20130825</span>
+<span class="x"> *** @param string $ip   IP地址     </span>
+<span class="x"> *** @return string &quot;中国江苏南京 电信&quot;</span>
+<span class="x">************/</span>
+<span class="x">function ipdata($ip)</span>
+<span class="x">{</span>
+<span class="x">  //prevent the sql-injection（From：http://vfhky.sinaapp.com/web/php/20.html）</span>
+<span class="x">  $ip = trim($ip);</span>
+<span class="x">  $ip = strip_tags($ip,&quot;&quot;);</span>
+<span class="x">  $ip = str_replace(&quot;\n&quot;, &quot;&quot;, str_replace(&quot; &quot;, &quot;&quot;, $ip));</span>
+<span class="x">  $ip = str_replace(&quot;\t&quot;,&quot;&quot;,$ip);</span>
+<span class="x">  $ip = str_replace(&quot;\r\n&quot;,&quot;&quot;,$ip);</span>
+<span class="x">  $ip = str_replace(&quot;\r&quot;,&quot;&quot;,$ip);</span>
+<span class="x">  $url=&quot;http://ip.taobao.com/service/getIpInfo.php?ip=&quot;;</span>
+<span class="x">  $data=json_decode(file_get_contents($url.$ip));</span>
+
+<span class="x">  //建议不启用debug模式，即默认$data-&gt;code的值为0，淘宝API正常响应。（测试时可以考虑$data-&gt;code为1的情况）</span>
+<span class="x">  $ipdata=$data-&gt;data;</span>
+<span class="x">  return $ipdata-&gt;country.$ipdata-&gt;region.$ipdata-&gt;city.$ipdata-&gt;isp;</span>
+<span class="x">}</span>
+</pre></div>
+</td></tr></table>
+
+<h5>2.2 在WP主题评论者信息的相应位置调用函数</h5>
+<p>在WordPress主题的评论者信息的相应位置调用上面的函数即可显示由淘宝IP地址库返回来的API数据。简单示例：</p>
+<div class="highlight"><pre><span class="x">//</span><span class="p">$</span><span class="nv">ipaddress</span><span class="x">是从数据库中查找出评论者的IP地址</span>
+<span class="x">echo ipdata(</span><span class="p">$</span><span class="nv">ipaddress</span><span class="x">);</span>
+</pre></div>
+
+
+<h5>3 后记</h5>
+<p>两步就搞定了，而且代码简单得很！所以，PHP版本的《WordPress使用淘宝IP地址库的API显示评论者的位置信息（三）》很适合PV量不是很大的blog使用，响应速度估计可能比jQuery版本的还要快一些。不过，淘宝的这个API是有请求频率限制的：为了保障服务正常运行，每个用户的访问频率需小于10qps。什么是QPS？博主网上查找了一些资料，整理如下，算是给自己的一个科普。</p>
+<div class="highlight"><pre>QPS每秒查询率(Query Per Second)
+每秒查询率QPS是对一个特定的查询服务器在规定时间内所处理流量多少的衡量标准，在因特网上，作为域名系统服务器的机器的性能经常用每秒查询率来衡量。
+
+术语说明：
+QPS = req/sec = 请求数/秒
+
+【QPS计算PV和机器的方式】
+
+QPS统计方式 [一般使用 http_load 进行统计]
+QPS = 总请求数 / ( 进程总数 * 请求时间 )
+QPS: 单个进程每秒请求服务器的成功次数
+
+单台服务器每天PV计算
+公式1：每天总PV = QPS * 3600 * 6
+公式2：每天总PV = QPS * 3600 * 8
+
+服务器计算
+服务器数量 = ceil( 每天总PV / 单台服务器每天总PV )
+
+【峰值QPS和机器计算公式】
+
+原理：每天80%的访问集中在20%的时间里，这20%时间叫做峰值时间
+公式：( 总PV数 * 80% ) / ( 每天秒数 * 20% ) = 峰值时间每秒请求数(QPS)
+机器：峰值时间每秒QPS / 单台机器的QPS = 需要的机器
+
+问：每天300w PV 的在单台机器上，这台机器需要多少QPS？
+答：( 3000000 * 0.8 ) / (86400 * 0.2 ) = 139 (QPS)
+
+问：如果一台机器的QPS是58，需要几台机器来支持？
+答：139 / 58 = 3
+</pre></div>
+		    	<p class="tags">
+					<div class="post-share">
+						<ul class="post-shareul clearfix">
+							<li class="post-shareli">
+								<a href="http://note.youdao.com/memory/?url=https://typecodes.com/web/wptaoiplibapithree.html&title=WordPress使用淘宝IP地址库的API显示评论者的位置信息（三）" class="post-sharea ydshare" target="_blank" rel="nofollow">有道云笔记</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://v.t.sina.com.cn/share/share.php?url=https://typecodes.com/web/wptaoiplibapithree.html&title=WordPress使用淘宝IP地址库的API显示评论者的位置信息（三）&source=https://typecodes.com" class="post-sharea wbshare" target="_blank" rel="nofollow">新浪微博</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://v.t.qq.com/share/share.php?title=WordPress使用淘宝IP地址库的API显示评论者的位置信息（三）&url=https://typecodes.com/web/wptaoiplibapithree.html&site=https://typecodes.com" class="post-sharea twbshare" target="_blank" rel="nofollow">腾讯微博</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=https://typecodes.com/web/wptaoiplibapithree.html&title=WordPress使用淘宝IP地址库的API显示评论者的位置信息（三）&content='utf-8'" class="post-sharea qzoneshare" target="_blank" rel="nofollow">QZone</a>
+							</li>
+						</ul>
+					</div>
+					<div>
+						Tags: <a href="https://typecodes.com/tag/wordpresstao-bao-ipku.html">wordpress淘宝ip库</a>					</div>
+				</p>
+			</article>
+			
+			<div id="comments">
+				<h4 class="num">Comments &raquo;</h4>
+		    	<div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript></div>
+		    </div>
+		</div>
+		<!--3. right sider begin-->
+<div class="col-md-3" id="blog-secondary" role="complementary">
+	<section class="widget">
+		<ul class="widget-list">
+			<form id="search" method="get" action="https://typecodes.com/search.html">
+				<input type="text" name="q" id="s" size="20" x-webkit-speech="" x-webkit-grammar="builtin:search" onwebkitspeechchange="this.value = this.value.replace(this.defaultValue, '')" value="Google...." onfocus="this.value = (this.value == this.defaultValue) ? '' : this.value" onblur="this.value = (this.value == '') ? this.defaultValue : this.value">
+			</form>
+		</ul>
+	</section>
+	<section class="widget">
+		<h3 class="widget-title">Categories</h3>
+		<ul class="widget-list">
+		      <li class="current">
+		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (26)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/csharp/index.html">Csharp</a> (6)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/database/index.html">Database</a> (11)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/java/index.html">Java</a> (1)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/linux/index.html">Linux</a> (16)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/mix/index.html">Mix</a> (53)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/web/index.html">Web</a> (88)
+		      </li>
+		</ul>
+	</section>
+	<section class="widget">
+		<h3 class="widget-title">Recent Posts</h3>
+		<ul class="widget-list">
+			<li class="post">
+				<a href="https://typecodes.com/mix/sucesstypechotopelican.html">成功将博客从Typecho迁移到Pelican</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/mix/begintypechotopelican.html">准备将博客从Typecho迁移到Pelican</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/tcpconnectiontimedout.html">Linux TCP连接Connection Refused和Connection timed out的问题</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/mysqlerrornospace.html">博客MySQL服务惊魂记：Linux磁盘空间不足(Core Dump文件引爆)</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/mix/synweibophpmarkdownimgurl.html">升级博客文章同步微博的插件：PHP正则提取Markdown的图片地址</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/cppgeneralmakefile.html">Linux C/C++工程中可生成ELF、动/静态库文件的通用Makefile</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/libraryundefinedref.html">解决make编译链接动态库错误：libxx.so: undefined reference to xx</a>
+			</li>
+		</ul>
+	</section>
+	<section class="widget widget-feed">
+		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
+	</section>
+</div>
+				</div>
+			</div>
+		</div>
+		<!--4. bottom begin-->
+		<footer id="te-site-footer"><div class="container">
+	<div class="row" role="contentinfo">
+		<section class="col-md-2 col-md-offset-1">
+			<h3>Links</h3>
+			<ul><li><a href="http://diaosbook.com/" title="">diaosbook</a></li></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul>
+				<li><a href="https://typecodes.com/links.html">More..</a></li>
+			</ul>
+		</section>
+		<section class="col-md-2">
+			<h3>Following</h3>
+			<ul>
+				<li><a href="https://github.com/vfhky" class="following github" target="_blank" rel="external nofollow">GitHub</a></li>
+				<li><a href="http://weibo.com/typecodes" class="following weibo" target="_blank" rel="external nofollow">Weibo</a></li>
+				<li><a href="http://vfhky.sinaapp.com/" class="following sae" target="_blank" rel="external nofollow">SAE</a></li>
+				<li><a href="http://www.dwz.cn/mYiwa" class="following qqgroup" target="_blank" rel="external nofollow">Group</a></li>
+			</ul>
+		</section>
+		<div class="col-md-12 copyright">
+			<a href="#top"><i class="i-logo-s">TOP</i></a>
+			<p>
+				&copy; 2012-<script language="JavaScript">var date = new Date(); document.write(date.getFullYear());</script>							<a href="https://typecodes.com">TypeCodes</a>. All Rights Reserved<br>Powered by <a href="http://getpelican.com" rel="external" target="_blank">Pelican</a>. <a href="http://www.miitbeian.gov.cn/" rel="external nofollow" target="_blank">粤ICP备14050695号</a>
+			</p>
+		</div>
+	</div>
+</div>
+</footer>
+<script type="text/javascript">
+	var disqus_shortname = 'typecodes';
+	var disqus_identifier = '/web/wptaoiplibapithree.html';
+	var disqus_url = 'https://typecodes.com/web/wptaoiplibapithree.html';
+	var disqus_title = 'WordPress使用淘宝IP地址库的API显示评论者的位置信息（三）';
+	(function() {
+		var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+		dsq.src = "//" + disqus_shortname + '.disqus.com/embed.js';
+		(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	 })();
+</script>
+	</body>
+</html>

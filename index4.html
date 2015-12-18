@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="zh-CN" class="no-js">
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<title>TypeCodes</title>
+		<meta name="author" content="vfhky">
+  		<link href="https://typecodes.com/atom.xml" type="application/atom+xml" rel="alternate" title="TypeCodes Atom Feed" />
+	  	<link href="https://typecodes.com/feed.xml" type="application/rss+xml" rel="alternate" title="TypeCodes RSS Feed" />
+		<meta name="HandheldFriendly" content="True">
+		<meta name="MobileOptimized" content="320">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="renderer" content="webkit">
+		<link rel="stylesheet" href="https://dn-vfhky.qbox.me/libs/css/pelican-vfhky.css">
+		<script>
+			var _hmt = _hmt || [];
+			(function() {
+			  var hm = document.createElement("script");
+			  hm.src = "//hm.baidu.com/hm.js?c15c4ab8e91ba9ac3d5a12293cc93359";
+			  var s = document.getElementsByTagName("script")[0]; 
+			  s.parentNode.insertBefore(hm, s);
+			})();
+		</script>
+	</head>
+	<body style>
+		<!--1. header navigation begin-->
+		<header role="banner" id="te-site-header">
+			<div class="container">
+				<a href="https://typecodes.com" class="te-site-logo" role="logo" target="_self"> TypeCodes</a>
+				<ul class="nav nav-pills" id="te-site-nav" role="navigation">
+					<li><a href="https://typecodes.com">Home</a></li><li><a href="https://typecodes.com/archives.html" title="Archives">Archives</a></li><li><a href="https://typecodes.com/about.html" title="About">About</a></li></ul>
+			</div>
+		</header>
+		<div class="te-headline">
+			<div class="container">
+				<h2 class="te-headline-title"> <a href="https://typecodes.com">TypeCodes</a></h2>
+			</div>
+		</div>
+		<div class="container">
+			<div class="row">
+		<!--2. left sider begin-->
+		<div class="col-md-9" id="blog-main" role="main">
+		  	<!--article recycle-->
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/web/centos7compilemysql.html">2015博客升级记(四)：CentOS 7.1编译安装MySQL5.7.7rc</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2015-06-21 00:53 | 分类：<a href="https://typecodes.com/web/index.html">web</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>这是<a href="https://typecodes.com/mix/2015updateblog.html" title="查看原文">《2015年博客升级记》</a>系列文章的第四篇，主要记录在Linux系统中如何编译安装MySql数据库。</p>
+<h5>1 创建mysql用户和用户组，并下载MySQL5.7.7 Release Candidate版本</h5>
+<p>首先创建一个名为mysql且<code>没有登录权限</code>的用户和一个名为mysql的用户组，然后去mysql官网下载MySQL5.7.7rc版本。</p>
+<div class="highlight"><pre>#######新建mysql用户和mysql组
+[root@typecodes ~]# groupadd -r mysql &amp;&amp; useradd -r -g mysql -s /bin/false -M mysql
+
+######从官网或者博客备份地址下载MySQL5.7.7 Release Candidate版本
+[root@typecodes ~]# wget -c http://cdn.mysql.com/Downloads/MySQL-5.7/mysql-5.7.7-rc.tar.gz
+[root@typecodes ~]# wget -c http://git.typecodes.com/libs/mysql/mysql-5.7.7-rc.tar.gz
+[root@typecodes ~]# md5sum mysql-5.7.7-rc.tar.gz        [MD5校验]
+36a96021a93ca236e76f5c90ae19cd44  mysql-5.7.7-rc.tar.gz
+######开始解压MySQL5.7.7
+[root@typecodes ~]# tar -zxf mysql-5.7.7-rc.tar.gz &amp;&amp; cd mysql-5.7.7-rc
+######下载gmock：google的c++mock框架，从mysql 5.6开始支持
+[root@typecodes mysql-5.7.7-rc]# wget -c http://git.typecodes.com/libs/ccpp/gmock-1.6.0.zip
+######将其解压到MySQL5.7.7的source_downloads目录下
+[root@typecodes mysql-5.7.7-rc]# unzip gmock-1.6.0.zip -d source_downloads
+</pre></div>
+
+
+
+	<p class="more"><a href="https://typecodes.com/web/centos7compilemysql.html" title="2015博客升级记(四)：CentOS 7.1编译安装MySQL5.7.7rc">- 阅读剩余部分 -</a></p>
+			</article>
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/linux/centoscoredumpcfgshell.html">CentOS开启coredump转储并生成core文件的配置</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2015-06-11 21:47 | 分类：<a href="https://typecodes.com/linux/index.html">linux</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>在CentOS或者suse等Linux系统中默认是关闭coredump核心转储的，也就不会产生core文件。由于在C/C++开发中会用到gdb调试，所以需要开启coredump功能。下面是具体的配置命令，可以保存为一个简单的shell脚本执行。</p>
+
+	<p class="more"><a href="https://typecodes.com/linux/centoscoredumpcfgshell.html" title="CentOS开启coredump转储并生成core文件的配置">- 阅读剩余部分 -</a></p>
+			</article>
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/mix/typechoexmailconfig.html">Typecho评论邮件通知插件中使用腾讯企业邮箱SSL功能</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2015-06-06 19:45 | 分类：<a href="https://typecodes.com/mix/index.html">mix</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>前段时间，在查看博客绑定的腾讯企业邮箱时，发现POP3/SMTP协议支持SSL。由于正好使用了Typecho版的CommentToMail评论邮件通知插件，就顺便也升级成SSL协议。</p>
+<p><img alt="腾讯企业邮箱SSL配置" src="https://dn-vfhky.qbox.me/2015/06/exmailsslconfig.png" title="腾讯企业邮箱SSL配置" /></p>
+
+	<p class="more"><a href="https://typecodes.com/mix/typechoexmailconfig.html" title="Typecho评论邮件通知插件中使用腾讯企业邮箱SSL功能">- 阅读剩余部分 -</a></p>
+			</article>
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/web/nginxserviceoptshell.html">Nginx服务启动、停止和重启等操作的SHELL脚本</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2015-06-06 13:42 | 分类：<a href="https://typecodes.com/web/index.html">web</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>由于使用源码编译安装Nginx，不会像yum install那样自动生成Nginx服务控制脚本，所以需要自己添加一个操作脚本。谷歌上搜了一下，shell脚本的代码基本类似，因此自己稍微整理改动了下。</p>
+<p>下面的shell脚本内容，需要根据Nginx实际编译安装的配置，修改<code>NGINX_CONF_FILE="/etc/nginx/nginx.conf"</code>和<code>lockfile=/var/lock/nginx.lock</code>这两个参数（即前文<a href="https://typecodes.com/web/centos7compilenginx.html" title="查看原文">《2015博客升级记(三)：CentOS 7.1编译安装Nginx1.9.0》</a>中的configure配置）。</p>
+
+	<p class="more"><a href="https://typecodes.com/web/nginxserviceoptshell.html" title="Nginx服务启动、停止和重启等操作的SHELL脚本">- 阅读剩余部分 -</a></p>
+			</article>
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/web/centos7compilenginx.html">2015博客升级记(三)：CentOS 7.1编译安装Nginx1.9.0</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2015-06-03 16:06 | 分类：<a href="https://typecodes.com/web/index.html">web</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>这是<a href="https://typecodes.com/mix/2015updateblog.html" title="查看原文">《2015年博客升级记》</a>系列文章的第三篇，主要记录如何在CentOS 7.1中编译安装Nginx官方最新的1.9.0版本。由于像Nginx、Mysql和PHP7的的源码都是用C/C++写的，所以自己的CentOS 7.1服务器上必须要安装gcc和g++软件（CentOS 7系列会自带这两个编译软件）。</p>
+<p><img alt="CentOS 7.1编译安装Nginx1.9.0" src="https://dn-vfhky.qbox.me/2015/05/nginxlogo.png" title="CentOS 7.1编译安装Nginx1.9.0" /></p>
+
+	<p class="more"><a href="https://typecodes.com/web/centos7compilenginx.html" title="2015博客升级记(三)：CentOS 7.1编译安装Nginx1.9.0">- 阅读剩余部分 -</a></p>
+			</article>
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/mix/typechocommentmarkdown.html">Typecho评论中开启和使用Markdown的方法</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2015-05-31 18:20 | 分类：<a href="https://typecodes.com/mix/index.html">mix</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>轻量级的博客程序Typecho，还有一个很舒适的体验，那就是支持Markdown语法，不论是在文章或是评论中。这篇文章主要是说明如何在博客中使用Markdown写作以及如何在评论中使用Markdown语法。</p>
+<p><img alt="Typecho评论中开启和使用Markdown的方法" src="https://dn-vfhky.qbox.me/2015/05/typechomarkdown.png" title="Typecho评论中开启和使用Markdown的方法" /></p>
+
+	<p class="more"><a href="https://typecodes.com/mix/typechocommentmarkdown.html" title="Typecho评论中开启和使用Markdown的方法">- 阅读剩余部分 -</a></p>
+			</article>
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/cseries/simplifychexstrtoint.html">视角：C语言将十六进制字符串转成十进制整数</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2015-05-30 07:58 | 分类：<a href="https://typecodes.com/cseries/index.html">cseries</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>在前文<a href="https://typecodes.com/cseries/againchexstrtointeger.html/comment-page-1#comment-1665" title="查看原文评论">《再议C语言将十六进制字符串转成十进制整数》</a>中 <a href="http://pewae.com/">@大致</a> 童鞋帮忙提了一个思路：直接将指针<code>p</code>读取的十六进制字符串中的单个字符转换后的结果保存在<code>iResult</code>中，而不是保存在指针p指向的内存中。这样思路更为简洁，下面是具体的两个实现程序。</p>
+
+	<p class="more"><a href="https://typecodes.com/cseries/simplifychexstrtoint.html" title="视角：C语言将十六进制字符串转成十进制整数">- 阅读剩余部分 -</a></p>
+			</article>
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/linux/centos7fdiskmountswap.html">2015博客升级记(二)：Linux系统磁盘分区挂载和交换空间</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2015-05-27 19:31 | 分类：<a href="https://typecodes.com/linux/index.html">linux</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>这是<a href="https://typecodes.com/mix/2015updateblog.html" title="查看原文">《2015年博客升级记》</a>系列文章的第二篇，主要记录在Linux系统中如何将磁盘进行分区和挂载。</p>
+<div class="highlight"><pre>------------操作说明------------               
+Linux系统：       阿里云CentOS 7.1（20G）
+操作工具：        SecureCRT 7.0
+待挂载的数据盘：   24G
+分区目标：        先分4G作为CentOS7.1系统的交换空间，剩余20G作为普通物理空间
+</pre></div>
+
+
+
+	<p class="more"><a href="https://typecodes.com/linux/centos7fdiskmountswap.html" title="2015博客升级记(二)：Linux系统磁盘分区挂载和交换空间">- 阅读剩余部分 -</a></p>
+			</article>
+		  	<!--page navigation-->
+<ol class="page-navigator">
+<li class="prev"><a href="https://typecodes.com/index3.html">&laquo; 前一页</a></li><li><a href="https://typecodes.com/index.html">1</a>
+       <li><a href="https://typecodes.com/index2.html">2</a>
+       		</li><li><a href="https://typecodes.com/index3.html">3</a>
+       		</li><li class="current"><a href="https://typecodes.com/index4.html">4</a>
+       		</li><li><a href="https://typecodes.com/index5.html">5</a>
+       		</li><li><a href="https://typecodes.com/index6.html">6</a>
+       		</li><li><a href="https://typecodes.com/index7.html">7</a>
+       		</li><li><span>...</span></li><li><a href="https://typecodes.com/index25.html">25</a>
+       		</li><li><a href="https://typecodes.com/index26.html">26</a>
+       		</li><li class="next">
+       		<a href="https://typecodes.com/index5.html">后一页 &raquo;</a>
+       </li></ol>		</div>
+		<!--3. right sider begin-->
+<div class="col-md-3" id="blog-secondary" role="complementary">
+	<section class="widget">
+		<ul class="widget-list">
+			<form id="search" method="get" action="https://typecodes.com/search.html">
+				<input type="text" name="q" id="s" size="20" x-webkit-speech="" x-webkit-grammar="builtin:search" onwebkitspeechchange="this.value = this.value.replace(this.defaultValue, '')" value="Google...." onfocus="this.value = (this.value == this.defaultValue) ? '' : this.value" onblur="this.value = (this.value == '') ? this.defaultValue : this.value">
+			</form>
+		</ul>
+	</section>
+	<section class="widget">
+		<h3 class="widget-title">Categories</h3>
+		<ul class="widget-list">
+		      <li class="current">
+		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (26)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/csharp/index.html">Csharp</a> (6)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/database/index.html">Database</a> (11)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/java/index.html">Java</a> (1)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/linux/index.html">Linux</a> (16)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/mix/index.html">Mix</a> (53)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/web/index.html">Web</a> (88)
+		      </li>
+		</ul>
+	</section>
+	<section class="widget">
+		<h3 class="widget-title">Recent Posts</h3>
+		<ul class="widget-list">
+			<li class="post">
+				<a href="https://typecodes.com/mix/sucesstypechotopelican.html">成功将博客从Typecho迁移到Pelican</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/mix/begintypechotopelican.html">准备将博客从Typecho迁移到Pelican</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/tcpconnectiontimedout.html">Linux TCP连接Connection Refused和Connection timed out的问题</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/mysqlerrornospace.html">博客MySQL服务惊魂记：Linux磁盘空间不足(Core Dump文件引爆)</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/mix/synweibophpmarkdownimgurl.html">升级博客文章同步微博的插件：PHP正则提取Markdown的图片地址</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/cppgeneralmakefile.html">Linux C/C++工程中可生成ELF、动/静态库文件的通用Makefile</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/libraryundefinedref.html">解决make编译链接动态库错误：libxx.so: undefined reference to xx</a>
+			</li>
+		</ul>
+	</section>
+	<section class="widget widget-feed">
+		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
+	</section>
+</div>
+				</div>
+			</div>
+		</div>
+		<!--4. bottom begin-->
+		<footer id="te-site-footer"><div class="container">
+	<div class="row" role="contentinfo">
+		<section class="col-md-2 col-md-offset-1">
+			<h3>Links</h3>
+			<ul><li><a href="http://diaosbook.com/" title="">diaosbook</a></li></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul>
+				<li><a href="https://typecodes.com/links.html">More..</a></li>
+			</ul>
+		</section>
+		<section class="col-md-2">
+			<h3>Following</h3>
+			<ul>
+				<li><a href="https://github.com/vfhky" class="following github" target="_blank" rel="external nofollow">GitHub</a></li>
+				<li><a href="http://weibo.com/typecodes" class="following weibo" target="_blank" rel="external nofollow">Weibo</a></li>
+				<li><a href="http://vfhky.sinaapp.com/" class="following sae" target="_blank" rel="external nofollow">SAE</a></li>
+				<li><a href="http://www.dwz.cn/mYiwa" class="following qqgroup" target="_blank" rel="external nofollow">Group</a></li>
+			</ul>
+		</section>
+		<div class="col-md-12 copyright">
+			<a href="#top"><i class="i-logo-s">TOP</i></a>
+			<p>
+				&copy; 2012-<script language="JavaScript">var date = new Date(); document.write(date.getFullYear());</script>							<a href="https://typecodes.com">TypeCodes</a>. All Rights Reserved<br>Powered by <a href="http://getpelican.com" rel="external" target="_blank">Pelican</a>. <a href="http://www.miitbeian.gov.cn/" rel="external nofollow" target="_blank">粤ICP备14050695号</a>
+			</p>
+		</div>
+	</div>
+</div>
+</footer>
+<script type="text/javascript">
+	var disqus_shortname = 'typecodes';
+	(function() {
+		var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+		dsq.src = "//" + disqus_shortname + '.disqus.com/embed.js';
+		(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	 })();
+</script>
+	</body>
+</html>

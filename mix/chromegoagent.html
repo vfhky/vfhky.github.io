@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="zh-CN" class="no-js">
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<title>翻越那道墙，用谷歌Goagent打造自己的chrome利器 &mdash; TypeCodes</title>
+		<meta name="author" content="vfhky">
+  		<link href="https://typecodes.com/atom.xml" type="application/atom+xml" rel="alternate" title="TypeCodes Atom Feed" />
+	  	<link href="https://typecodes.com/feed.xml" type="application/rss+xml" rel="alternate" title="TypeCodes RSS Feed" />
+		<meta name="HandheldFriendly" content="True">
+		<meta name="MobileOptimized" content="320">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="renderer" content="webkit">
+		<link rel="stylesheet" href="https://dn-vfhky.qbox.me/libs/css/pelican-vfhky.css">
+		<script>
+			var _hmt = _hmt || [];
+			(function() {
+			  var hm = document.createElement("script");
+			  hm.src = "//hm.baidu.com/hm.js?c15c4ab8e91ba9ac3d5a12293cc93359";
+			  var s = document.getElementsByTagName("script")[0]; 
+			  s.parentNode.insertBefore(hm, s);
+			})();
+		</script>
+	</head>
+	<body style>
+		<!--1. header navigation begin-->
+		<header role="banner" id="te-site-header">
+			<div class="container">
+				<a href="https://typecodes.com" class="te-site-logo" role="logo" target="_self"> TypeCodes</a>
+				<ul class="nav nav-pills" id="te-site-nav" role="navigation">
+					<li><a href="https://typecodes.com">Home</a></li><li><a href="https://typecodes.com/archives.html" title="Archives">Archives</a></li><li><a href="https://typecodes.com/about.html" title="About">About</a></li></ul>
+			</div>
+		</header>
+		<div class="te-headline">
+			<div class="container">
+				<h2 class="te-headline-title"> <a href="https://typecodes.com">TypeCodes</a></h2>
+			</div>
+		</div>
+		<div class="container">
+			<div class="row">
+		<!--2. left sider begin-->
+		<div class="col-md-9" id="blog-main" role="main">
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/mix/chromegoagent.html">翻越那道墙，用谷歌Goagent打造自己的chrome利器</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2012-07-25 22:10 | 分类：<a href="https://typecodes.com/mix/index.html">mix</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>网络的crossover，有很多方法。比如，通用的Free Gate软件等，也有用vpn代理的。对于第一种方法，一般这种软件都比较贱，非要在你使用的时候，时不时地打开一些网页来提醒你它的存在；对于第二种方法，免费的vpn已经比较少了，就算有也是有流量限制或者网速限制的。这篇文章推荐使用谷歌的Goagent代理，来打造自己的cross利器！废话少说，具体步骤如下说明：</p>
+<h5>1 全过程需要有自己的Gmail账号</h5>
+<p>没有的话，请点击以下链接：<a href="https://mail.google.com/mail/signup" title="Gmail注册">Gmail注册</a>。</p>
+
+
+<h5>2 在谷歌GAE里创建APP应用</h5>
+<p>废话：Google App Engine（简称GAE）是一个开发、托管网络应用程序的平台，使用 Google 管理的数据中心。它使用了云计算技术。它跨越多个服务器和数据中心来虚拟化应用程序。其他基于云的平台还有 Amazon Web Services 和微软的 Azure 服务平台等。而且在用户使用一定的资源时是免费的。支付额外的费用可以获得应用程序所需的更多的存储空间、带宽或是CPU负载。GAE当前支持的编程语言是 Python 和 Java。</p>
+<p>重点：登录并创建APP应用：<a href="https://appengine.google.com/start/createapp" title="登录并创建谷歌APP应用">https://appengine.google.com/start/createapp</a>，第一次创建需要手机验证，填写+86 12345678912即可。手机验证后会出现一个应用填表，主要填写Application Identifier（APP应用标识号）和Application Title（APP应用名称），其余选项保持默认。</p>
+<p><img alt="翻越那道墙，用谷歌Goagent打造自己的chrome利器-1" src="https://dn-vfhky.qbox.me/2012/07/11.jpg" title="翻越那道墙，用谷歌Goagent打造自己的chrome利器-1" /></p>
+<h5>3 下载谷歌Goagent代理工具</h5>
+<p>废话：goagent是一个使用Python和Google Appengine SDK编写的代理软件。
+重点：下载谷歌Goagent：<a href="https://code.google.com/p/goagent/" title="下载谷歌Goagent">https://code.google.com/p/goagent/</a>。解压后会得到两个文件夹：“local”（用来配置本地客户端）和“server”（用来配置服务端）。</p>
+<h5>4 上传goagent服务端和配置客户端</h5>
+<h6>4.1 上传服务端</h6>
+<p>如果是第一次建立这个应用的话，需要把配置文件上传到服务端；如果已建立这个应用，可以跳过这一步，直接进入下一步，即配置客户端。打开server/python路径下的“app.yaml”，将第一行的“application: “改成”application:1-vfhky（即自己创建的APP标识名称）”的形式。然后点击的“uploader.bat”，这时弹出一个DOS界面提示输入“AppID:”，填写开始创建的那个APP标识名称（例如1-vfhky）。输入正确后，又会提示输入你的Gmail的账号和密码（在输入密码时，DOS窗口不会显示密码，不用管，只要输入正确即可。然后按回车，等上传完毕后输入任意键关闭）。</p>
+<h6>4.2 配置客户端</h6>
+<p>用记事本等文本工具打开local文件夹里面的“proxy.ini”文件，把[gae]栏目下的appid=goagent换成你的AppID，例如appid = 1-vfhky。</p>
+<h5>5 配置浏览器</h5>
+<p>在自己的chrome浏览器中下载Proxy SwitchySharp插件：<a href="https://chrome.google.com/webstore/detail/dpplabbmogkhghncfbfdeeokoefdjegm" title="下载谷歌Proxy SwitchySharp插件">https://chrome.google.com/webstore/detail/dpplabbmogkhghncfbfdeeokoefdjegm</a>
+安装后打开Proxy SwitchySharp插件的选项：在“导入/导出”栏目的最下行，“在线恢复备份”栏输入：https://raw.github.com/phus/phus-config/master/SwitchyOptions.bak或者https://goagent.googlecode.com/files/SwitchyOptions.bak，最后点击“在线恢复备份” 。</p>
+<p><img alt="翻越那道墙，用谷歌Goagent打造自己的chrome利器-2" src="https://dn-vfhky.qbox.me/2012/07/2.jpg" title="翻越那道墙，用谷歌Goagent打造自己的chrome利器-2" /></p>
+<h5>6 开始翻越（启动goagent.exe）</h5>
+<p>1、点击“local”文件夹下的goagent.exe（第一次运行可能需要管理员权限）。ps：如果觉得每次都要点击这个文件麻烦的话，可以设置goagent程序开机自启动，运行“local”文件夹下的“addto-startup.vbs”文件即可。</p>
+<p>2、正式翻越，一般是在chrome浏览器的地址输入栏或者插件栏可以看到Proxy SwitchySharp插件上点击选择GoAgent，然后就可以看youtube.com，facebook.com，twitter.com以及真正的谷歌大神google.com等等。</p>
+<p><img alt="翻越那道墙，用谷歌Goagent打造自己的chrome利器-3" src="https://dn-vfhky.qbox.me/2012/07/3.jpg" title="翻越那道墙，用谷歌Goagent打造自己的chrome利器-3" /></p>
+<h5>7 说明</h5>
+<p>Google App Engine提供给免费用户的流量是每天1GB，而且每天的流量重新清零的时间好像是北京时间下午16点整（不是24点额）。</p>
+<h5>8 UPDATE 2012.10.08</h5>
+<p>如果嫌上述操作比较麻烦，可以下载我用自己的配置好的Goagent文件，然后直接从第五步操作执行就行了。下载地址：</p>
+<p>百度云盘：http://pan.baidu.com/share/link?shareid=78704&amp;uk=1879910561</p>
+<h5>9 UPDATE 2013.10.17 21:14</h5>
+<p>如果goagent软件、Proxy SwitchySharp插件和.bak文件被墙无法下载，请移步到上面网盘地址下载。</p>
+		    	<p class="tags">
+					<div class="post-share">
+						<ul class="post-shareul clearfix">
+							<li class="post-shareli">
+								<a href="http://note.youdao.com/memory/?url=https://typecodes.com/mix/chromegoagent.html&title=翻越那道墙，用谷歌Goagent打造自己的chrome利器" class="post-sharea ydshare" target="_blank" rel="nofollow">有道云笔记</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://v.t.sina.com.cn/share/share.php?url=https://typecodes.com/mix/chromegoagent.html&title=翻越那道墙，用谷歌Goagent打造自己的chrome利器&source=https://typecodes.com" class="post-sharea wbshare" target="_blank" rel="nofollow">新浪微博</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://v.t.qq.com/share/share.php?title=翻越那道墙，用谷歌Goagent打造自己的chrome利器&url=https://typecodes.com/mix/chromegoagent.html&site=https://typecodes.com" class="post-sharea twbshare" target="_blank" rel="nofollow">腾讯微博</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=https://typecodes.com/mix/chromegoagent.html&title=翻越那道墙，用谷歌Goagent打造自己的chrome利器&content='utf-8'" class="post-sharea qzoneshare" target="_blank" rel="nofollow">QZone</a>
+							</li>
+						</ul>
+					</div>
+					<div>
+						Tags: <a href="https://typecodes.com/tag/goagent.html">goagent</a>,<a href="https://typecodes.com/tag/ti-zi.html">梯子</a>					</div>
+				</p>
+			</article>
+			
+			<div id="comments">
+				<h4 class="num">Comments &raquo;</h4>
+		    	<div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript></div>
+		    </div>
+		</div>
+		<!--3. right sider begin-->
+<div class="col-md-3" id="blog-secondary" role="complementary">
+	<section class="widget">
+		<ul class="widget-list">
+			<form id="search" method="get" action="https://typecodes.com/search.html">
+				<input type="text" name="q" id="s" size="20" x-webkit-speech="" x-webkit-grammar="builtin:search" onwebkitspeechchange="this.value = this.value.replace(this.defaultValue, '')" value="Google...." onfocus="this.value = (this.value == this.defaultValue) ? '' : this.value" onblur="this.value = (this.value == '') ? this.defaultValue : this.value">
+			</form>
+		</ul>
+	</section>
+	<section class="widget">
+		<h3 class="widget-title">Categories</h3>
+		<ul class="widget-list">
+		      <li class="current">
+		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (26)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/csharp/index.html">Csharp</a> (6)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/database/index.html">Database</a> (11)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/java/index.html">Java</a> (1)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/linux/index.html">Linux</a> (16)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/mix/index.html">Mix</a> (53)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/web/index.html">Web</a> (88)
+		      </li>
+		</ul>
+	</section>
+	<section class="widget">
+		<h3 class="widget-title">Recent Posts</h3>
+		<ul class="widget-list">
+			<li class="post">
+				<a href="https://typecodes.com/mix/sucesstypechotopelican.html">成功将博客从Typecho迁移到Pelican</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/mix/begintypechotopelican.html">准备将博客从Typecho迁移到Pelican</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/tcpconnectiontimedout.html">Linux TCP连接Connection Refused和Connection timed out的问题</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/mysqlerrornospace.html">博客MySQL服务惊魂记：Linux磁盘空间不足(Core Dump文件引爆)</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/mix/synweibophpmarkdownimgurl.html">升级博客文章同步微博的插件：PHP正则提取Markdown的图片地址</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/cppgeneralmakefile.html">Linux C/C++工程中可生成ELF、动/静态库文件的通用Makefile</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/libraryundefinedref.html">解决make编译链接动态库错误：libxx.so: undefined reference to xx</a>
+			</li>
+		</ul>
+	</section>
+	<section class="widget widget-feed">
+		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
+	</section>
+</div>
+				</div>
+			</div>
+		</div>
+		<!--4. bottom begin-->
+		<footer id="te-site-footer"><div class="container">
+	<div class="row" role="contentinfo">
+		<section class="col-md-2 col-md-offset-1">
+			<h3>Links</h3>
+			<ul><li><a href="http://diaosbook.com/" title="">diaosbook</a></li></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul>
+				<li><a href="https://typecodes.com/links.html">More..</a></li>
+			</ul>
+		</section>
+		<section class="col-md-2">
+			<h3>Following</h3>
+			<ul>
+				<li><a href="https://github.com/vfhky" class="following github" target="_blank" rel="external nofollow">GitHub</a></li>
+				<li><a href="http://weibo.com/typecodes" class="following weibo" target="_blank" rel="external nofollow">Weibo</a></li>
+				<li><a href="http://vfhky.sinaapp.com/" class="following sae" target="_blank" rel="external nofollow">SAE</a></li>
+				<li><a href="http://www.dwz.cn/mYiwa" class="following qqgroup" target="_blank" rel="external nofollow">Group</a></li>
+			</ul>
+		</section>
+		<div class="col-md-12 copyright">
+			<a href="#top"><i class="i-logo-s">TOP</i></a>
+			<p>
+				&copy; 2012-<script language="JavaScript">var date = new Date(); document.write(date.getFullYear());</script>							<a href="https://typecodes.com">TypeCodes</a>. All Rights Reserved<br>Powered by <a href="http://getpelican.com" rel="external" target="_blank">Pelican</a>. <a href="http://www.miitbeian.gov.cn/" rel="external nofollow" target="_blank">粤ICP备14050695号</a>
+			</p>
+		</div>
+	</div>
+</div>
+</footer>
+<script type="text/javascript">
+	var disqus_shortname = 'typecodes';
+	var disqus_identifier = '/mix/chromegoagent.html';
+	var disqus_url = 'https://typecodes.com/mix/chromegoagent.html';
+	var disqus_title = '翻越那道墙，用谷歌Goagent打造自己的chrome利器';
+	(function() {
+		var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+		dsq.src = "//" + disqus_shortname + '.disqus.com/embed.js';
+		(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	 })();
+</script>
+	</body>
+</html>

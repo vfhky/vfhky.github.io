@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="zh-CN" class="no-js">
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<title>Wordpress使用淘宝IP地址库的API显示评论者的位置信息（一） &mdash; TypeCodes</title>
+		<meta name="author" content="vfhky">
+  		<link href="https://typecodes.com/atom.xml" type="application/atom+xml" rel="alternate" title="TypeCodes Atom Feed" />
+	  	<link href="https://typecodes.com/feed.xml" type="application/rss+xml" rel="alternate" title="TypeCodes RSS Feed" />
+		<meta name="HandheldFriendly" content="True">
+		<meta name="MobileOptimized" content="320">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="renderer" content="webkit">
+		<link rel="stylesheet" href="https://dn-vfhky.qbox.me/libs/css/pelican-vfhky.css">
+		<script>
+			var _hmt = _hmt || [];
+			(function() {
+			  var hm = document.createElement("script");
+			  hm.src = "//hm.baidu.com/hm.js?c15c4ab8e91ba9ac3d5a12293cc93359";
+			  var s = document.getElementsByTagName("script")[0]; 
+			  s.parentNode.insertBefore(hm, s);
+			})();
+		</script>
+	</head>
+	<body style>
+		<!--1. header navigation begin-->
+		<header role="banner" id="te-site-header">
+			<div class="container">
+				<a href="https://typecodes.com" class="te-site-logo" role="logo" target="_self"> TypeCodes</a>
+				<ul class="nav nav-pills" id="te-site-nav" role="navigation">
+					<li><a href="https://typecodes.com">Home</a></li><li><a href="https://typecodes.com/archives.html" title="Archives">Archives</a></li><li><a href="https://typecodes.com/about.html" title="About">About</a></li></ul>
+			</div>
+		</header>
+		<div class="te-headline">
+			<div class="container">
+				<h2 class="te-headline-title"> <a href="https://typecodes.com">TypeCodes</a></h2>
+			</div>
+		</div>
+		<div class="container">
+			<div class="row">
+		<!--2. left sider begin-->
+		<div class="col-md-9" id="blog-main" role="main">
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/web/wptaoiplibapione.html">Wordpress使用淘宝IP地址库的API显示评论者的位置信息（一）</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2013-08-26 23:20 | 分类：<a href="https://typecodes.com/web/index.html">web</a></li>
+</ul>
+<div class="post-content fmt">
+	<h5>1 跟风API</h5>
+<p>最近各种云平台很是火爆，博主也跟了一把风。之前博客主题的评论列表信息栏处，调用的是<a href="http://int.dpool.sina.com.cn/iplookup/iplookup.php" title="查看详情">新浪IP地址查询接口</a>。新浪的这个IP接口早在2009年就开放了，不过貌似查询的结果准确性不是很高，不像纯真的IP库更新得那么及时。所以，vfhky寻思换个其它的IP查询接口提高博客的评论信息准确度。</p>
+
+
+<h5>2 选择淘宝IP地址库</h5>
+<p>网上查看了下资料，提供IP查询接口的有这么几个：腾讯、搜狐、淘宝和有道。不过，腾讯已经把接口（http://fw.qq.com/ipaddress）封掉了，只限企鹅自家使用。题外话：对于腾讯的做法咱们习惯就好，早已无力吐槽了。相对于搜狐和有道的IP接口，淘宝肯定具有优势。谁都不能低估淘宝帝国对于掌握用户信息深度的强烈渴望和决心，而IP地址就是用户的足迹线所在。在查看了淘宝IP地址库的API官方资料（地址【<a href="http://ip.taobao.com/accurancy.php">http://ip.taobao.com/accurancy.php</a>】），vfhky毅然决定把新浪的IP查询接口改成淘宝的IP查询接口。</p>
+<p><img alt="淘宝IP地址库的API接口" src="https://dn-vfhky.qbox.me/2013/08/TaobaoIP_API.png" /></p>
+<h5>3 需要考虑的问题</h5>
+<p>博客主题评论列表的IP信息是通过Jquery加载的，而淘宝提供的API接口返回的数据是Json格式。相对于直接通过PHP获取Json数据而言，这种Ajax交互方式比较难一点。博主就先卖个关子，具体的实现代码将在下一篇文章贴出。这里贴出之前用新浪IP地址查询接口获取IP信息的代码，评论列表的IP信息同样是通过Jquery加载处理后的新浪IP查询接口返回的JS数据。</p>
+<h5>4.1 修改functions.php文件</h5>
+<p>找到评论信息显示列表的那个文件（博主的是functions.php），在相应的位置加上如下代码。其作用是在jQuery获取IP信息之前，显示“正在查询……”的字样。代码中的waiting.gif是上面的省略号动态图片，这个看个人喜好来决定需不需要用；$ip代表从数据查询出来的评论者的IP数据。</p>
+<div class="highlight"><pre><span class="nt">&lt;span</span> <span class="na">class=</span><span class="s">&quot;vfhkyipquery&quot;</span> <span class="na">data-ip=</span><span class="s">&quot;&#39; . $ip . &#39;&quot;</span><span class="nt">&gt;</span>正在查询<span class="nt">&lt;img</span> <span class="na">src=</span><span class="s">&quot;&#39; . get_bloginfo(&#39;template_url&#39;) . &#39;/images/waiting.gif&quot;</span> <span class="na">alt=</span><span class="s">&quot;...&quot;</span> <span class="na">style=</span><span class="s">&quot;vertical-align:baseline;&quot;</span> <span class="nt">/&gt;&lt;/span&gt;</span>
+</pre></div>
+
+
+<h5>4.2 修改JS文件</h5>
+<p>在主题的一个js文件中添加以下代码，注意该js文件一定要是会在文章页面加载的哦！最终的效果会类似于：中国广东深圳 电信。</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20</pre></div></td><td class="code"><div class="highlight"><pre><span class="nx">jQuery</span><span class="p">(</span><span class="nb">document</span><span class="p">).</span><span class="nx">ready</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">$</span><span class="p">){</span>
+    <span class="kd">function</span> <span class="nx">vfhkyipquery</span><span class="p">(){</span>
+        <span class="nx">$</span><span class="p">(</span><span class="s2">&quot;.vfhkyipquery&quot;</span><span class="p">).</span><span class="nx">each</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span>
+            <span class="kd">var</span> <span class="nx">c</span><span class="o">=</span><span class="nx">$</span><span class="p">.</span><span class="nx">trim</span><span class="p">(</span><span class="nx">$</span><span class="p">(</span><span class="k">this</span><span class="p">).</span><span class="nx">attr</span><span class="p">(</span><span class="s2">&quot;data-ip&quot;</span><span class="p">)),</span><span class="nx">t</span><span class="o">=</span><span class="nx">$</span><span class="p">(</span><span class="k">this</span><span class="p">),</span><span class="nx">i</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">;</span>
+            <span class="nx">$</span><span class="p">.</span><span class="nx">getScript</span><span class="p">(</span><span class="s2">&quot;http://int.dpool.sina.com.cn/iplookup/iplookup.php?format=js&amp;ip=&quot;</span><span class="o">+</span><span class="nx">c</span><span class="p">,</span><span class="kd">function</span><span class="p">(){</span>
+                <span class="k">if</span><span class="p">(</span><span class="nx">remote_ip_info</span><span class="p">.</span><span class="nx">ret</span><span class="o">==</span><span class="mi">1</span><span class="p">){</span>
+                    <span class="kd">var</span> <span class="nx">h</span><span class="o">=</span><span class="nx">remote_ip_info</span><span class="p">.</span><span class="nx">country</span><span class="p">,</span><span class="nx">f</span><span class="o">=</span><span class="nx">remote_ip_info</span><span class="p">.</span><span class="nx">province</span><span class="p">,</span><span class="nx">e</span><span class="o">=</span><span class="nx">remote_ip_info</span><span class="p">.</span><span class="nx">city</span><span class="p">,</span><span class="nx">g</span><span class="o">=</span><span class="s2">&quot; &quot;</span><span class="o">+</span><span class="nx">remote_ip_info</span><span class="p">.</span><span class="nx">isp</span><span class="p">;</span>
+                    <span class="nx">i</span><span class="o">+=</span><span class="nx">h</span><span class="p">;</span>
+                    <span class="nx">i</span><span class="o">+=</span><span class="nx">f</span><span class="o">==</span><span class="nx">e</span><span class="o">?</span><span class="nx">e</span><span class="o">:</span><span class="nx">f</span><span class="o">+</span><span class="nx">e</span><span class="p">;</span>
+                    <span class="nx">i</span><span class="o">+=</span><span class="nx">g</span><span class="p">;</span>
+                <span class="p">}</span>
+                <span class="k">else</span><span class="p">{</span>
+                    <span class="nx">i</span><span class="o">=</span><span class="s2">&quot;未知IP地址&quot;</span><span class="p">;</span>
+                <span class="p">}</span>
+                <span class="nx">t</span><span class="p">.</span><span class="nx">replaceWith</span><span class="p">(</span><span class="s1">&#39;&lt;span class=&quot;ipinfo&quot;&gt;&#39;</span><span class="o">+</span><span class="nx">i</span><span class="o">+</span><span class="s2">&quot;&lt;/span&gt;&quot;</span><span class="p">);</span>
+            <span class="p">})</span>
+        <span class="p">})</span>
+    <span class="p">}</span>
+    <span class="nx">$</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span><span class="nx">vfhkyipquery</span><span class="p">()})</span>
+<span class="p">});</span>
+</pre></div>
+</td></tr></table>
+
+<h5>5 后记</h5>
+<p>搞定，很简单吧！由此可见，新浪IP地址查询接口返回的js数据很容易通过jQuery加载到PHP文件中去。<a href="https://typecodes.com/web/wptaoiplibapitwo.html" title="《WordPress使用淘宝IP地址库的API显示评论者的位置信息（二）》">下一篇</a>文章将会贴出如何使用淘宝IP地址库的API接口在wordpress中显示评论者的位置信息。</p>
+		    	<p class="tags">
+					<div class="post-share">
+						<ul class="post-shareul clearfix">
+							<li class="post-shareli">
+								<a href="http://note.youdao.com/memory/?url=https://typecodes.com/web/wptaoiplibapione.html&title=Wordpress使用淘宝IP地址库的API显示评论者的位置信息（一）" class="post-sharea ydshare" target="_blank" rel="nofollow">有道云笔记</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://v.t.sina.com.cn/share/share.php?url=https://typecodes.com/web/wptaoiplibapione.html&title=Wordpress使用淘宝IP地址库的API显示评论者的位置信息（一）&source=https://typecodes.com" class="post-sharea wbshare" target="_blank" rel="nofollow">新浪微博</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://v.t.qq.com/share/share.php?title=Wordpress使用淘宝IP地址库的API显示评论者的位置信息（一）&url=https://typecodes.com/web/wptaoiplibapione.html&site=https://typecodes.com" class="post-sharea twbshare" target="_blank" rel="nofollow">腾讯微博</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=https://typecodes.com/web/wptaoiplibapione.html&title=Wordpress使用淘宝IP地址库的API显示评论者的位置信息（一）&content='utf-8'" class="post-sharea qzoneshare" target="_blank" rel="nofollow">QZone</a>
+							</li>
+						</ul>
+					</div>
+					<div>
+						Tags: <a href="https://typecodes.com/tag/wordpresstao-bao-ipku.html">wordpress淘宝ip库</a>					</div>
+				</p>
+			</article>
+			
+			<div id="comments">
+				<h4 class="num">Comments &raquo;</h4>
+		    	<div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript></div>
+		    </div>
+		</div>
+		<!--3. right sider begin-->
+<div class="col-md-3" id="blog-secondary" role="complementary">
+	<section class="widget">
+		<ul class="widget-list">
+			<form id="search" method="get" action="https://typecodes.com/search.html">
+				<input type="text" name="q" id="s" size="20" x-webkit-speech="" x-webkit-grammar="builtin:search" onwebkitspeechchange="this.value = this.value.replace(this.defaultValue, '')" value="Google...." onfocus="this.value = (this.value == this.defaultValue) ? '' : this.value" onblur="this.value = (this.value == '') ? this.defaultValue : this.value">
+			</form>
+		</ul>
+	</section>
+	<section class="widget">
+		<h3 class="widget-title">Categories</h3>
+		<ul class="widget-list">
+		      <li class="current">
+		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (26)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/csharp/index.html">Csharp</a> (6)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/database/index.html">Database</a> (11)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/java/index.html">Java</a> (1)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/linux/index.html">Linux</a> (16)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/mix/index.html">Mix</a> (53)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/web/index.html">Web</a> (88)
+		      </li>
+		</ul>
+	</section>
+	<section class="widget">
+		<h3 class="widget-title">Recent Posts</h3>
+		<ul class="widget-list">
+			<li class="post">
+				<a href="https://typecodes.com/mix/sucesstypechotopelican.html">成功将博客从Typecho迁移到Pelican</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/mix/begintypechotopelican.html">准备将博客从Typecho迁移到Pelican</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/tcpconnectiontimedout.html">Linux TCP连接Connection Refused和Connection timed out的问题</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/mysqlerrornospace.html">博客MySQL服务惊魂记：Linux磁盘空间不足(Core Dump文件引爆)</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/mix/synweibophpmarkdownimgurl.html">升级博客文章同步微博的插件：PHP正则提取Markdown的图片地址</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/cppgeneralmakefile.html">Linux C/C++工程中可生成ELF、动/静态库文件的通用Makefile</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/libraryundefinedref.html">解决make编译链接动态库错误：libxx.so: undefined reference to xx</a>
+			</li>
+		</ul>
+	</section>
+	<section class="widget widget-feed">
+		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
+	</section>
+</div>
+				</div>
+			</div>
+		</div>
+		<!--4. bottom begin-->
+		<footer id="te-site-footer"><div class="container">
+	<div class="row" role="contentinfo">
+		<section class="col-md-2 col-md-offset-1">
+			<h3>Links</h3>
+			<ul><li><a href="http://diaosbook.com/" title="">diaosbook</a></li></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul>
+				<li><a href="https://typecodes.com/links.html">More..</a></li>
+			</ul>
+		</section>
+		<section class="col-md-2">
+			<h3>Following</h3>
+			<ul>
+				<li><a href="https://github.com/vfhky" class="following github" target="_blank" rel="external nofollow">GitHub</a></li>
+				<li><a href="http://weibo.com/typecodes" class="following weibo" target="_blank" rel="external nofollow">Weibo</a></li>
+				<li><a href="http://vfhky.sinaapp.com/" class="following sae" target="_blank" rel="external nofollow">SAE</a></li>
+				<li><a href="http://www.dwz.cn/mYiwa" class="following qqgroup" target="_blank" rel="external nofollow">Group</a></li>
+			</ul>
+		</section>
+		<div class="col-md-12 copyright">
+			<a href="#top"><i class="i-logo-s">TOP</i></a>
+			<p>
+				&copy; 2012-<script language="JavaScript">var date = new Date(); document.write(date.getFullYear());</script>							<a href="https://typecodes.com">TypeCodes</a>. All Rights Reserved<br>Powered by <a href="http://getpelican.com" rel="external" target="_blank">Pelican</a>. <a href="http://www.miitbeian.gov.cn/" rel="external nofollow" target="_blank">粤ICP备14050695号</a>
+			</p>
+		</div>
+	</div>
+</div>
+</footer>
+<script type="text/javascript">
+	var disqus_shortname = 'typecodes';
+	var disqus_identifier = '/web/wptaoiplibapione.html';
+	var disqus_url = 'https://typecodes.com/web/wptaoiplibapione.html';
+	var disqus_title = 'Wordpress使用淘宝IP地址库的API显示评论者的位置信息（一）';
+	(function() {
+		var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+		dsq.src = "//" + disqus_shortname + '.disqus.com/embed.js';
+		(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	 })();
+</script>
+	</body>
+</html>

@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="zh-CN" class="no-js">
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<title>MySQL编译安装时常见错误分析 &mdash; TypeCodes</title>
+		<meta name="author" content="vfhky">
+  		<link href="https://typecodes.com/atom.xml" type="application/atom+xml" rel="alternate" title="TypeCodes Atom Feed" />
+	  	<link href="https://typecodes.com/feed.xml" type="application/rss+xml" rel="alternate" title="TypeCodes RSS Feed" />
+		<meta name="HandheldFriendly" content="True">
+		<meta name="MobileOptimized" content="320">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="renderer" content="webkit">
+		<link rel="stylesheet" href="https://dn-vfhky.qbox.me/libs/css/pelican-vfhky.css">
+		<script>
+			var _hmt = _hmt || [];
+			(function() {
+			  var hm = document.createElement("script");
+			  hm.src = "//hm.baidu.com/hm.js?c15c4ab8e91ba9ac3d5a12293cc93359";
+			  var s = document.getElementsByTagName("script")[0]; 
+			  s.parentNode.insertBefore(hm, s);
+			})();
+		</script>
+	</head>
+	<body style>
+		<!--1. header navigation begin-->
+		<header role="banner" id="te-site-header">
+			<div class="container">
+				<a href="https://typecodes.com" class="te-site-logo" role="logo" target="_self"> TypeCodes</a>
+				<ul class="nav nav-pills" id="te-site-nav" role="navigation">
+					<li><a href="https://typecodes.com">Home</a></li><li><a href="https://typecodes.com/archives.html" title="Archives">Archives</a></li><li><a href="https://typecodes.com/about.html" title="About">About</a></li></ul>
+			</div>
+		</header>
+		<div class="te-headline">
+			<div class="container">
+				<h2 class="te-headline-title"> <a href="https://typecodes.com">TypeCodes</a></h2>
+			</div>
+		</div>
+		<div class="container">
+			<div class="row">
+		<!--2. left sider begin-->
+		<div class="col-md-9" id="blog-main" role="main">
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/web/solvemysqlcompileerror.html">MySQL编译安装时常见错误分析</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2015-06-23 19:20 | 分类：<a href="https://typecodes.com/web/index.html">web</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>这篇文章主要是关于MySQL在编译安装时，可能出现的错误的解决方法。MySQL正确的编译安装操作见前文<a href="https://typecodes.com/web/centos7compilemysql.html" title="查看原文">《2015博客升级记(四)：CentOS 7.1编译安装MySQL5.7.7rc》</a>。</p>
+
+
+<h5>1 没有安装MySQL所需要的boost库</h5>
+<p>测试发现编译MySQL5.7以及更高的版本时，都需要下载并引用或者直接安装boost库，否则在执行<code>cmake</code>命令时会报如下错误：</p>
+<div class="highlight"><pre>-- Running cmake version 3.2.1
+-- Configuring with MAX_INDEXES = 64U
+-- SIZEOF_VOIDP 8
+-- MySQL 5.7.6-m16          [MySQL版本]
+-- Packaging as: mysql-5.7.6-m16-Linux-x86_64
+-- Looked for boost/version.hpp in  and 
+-- BOOST_INCLUDE_DIR BOOST_INCLUDE_DIR-NOTFOUND
+-- LOCAL_BOOST_DIR 
+-- LOCAL_BOOST_ZIP 
+-- Could not find (the correct version of) boost.       [关键错误信息]
+-- MySQL currently requires boost_1_57_0                    [解决办法]
+
+CMake Error at cmake/boost.cmake:76 (MESSAGE):          [具体错误和解决方法]
+  You can download it with -DDOWNLOAD_BOOST=1 -DWITH_BOOST=&lt;directory&gt;
+
+  This CMake script will look for boost in &lt;directory&gt;.  If it is not there,
+  it will download and unpack it (in that directory) for you.
+
+  If you are inside a firewall, you may need to use an http proxy:
+
+  export http_proxy=http://example.com:80
+
+Call Stack (most recent call first):
+  cmake/boost.cmake:228 (COULD_NOT_FIND_BOOST)
+  CMakeLists.txt:452 (INCLUDE)
+
+
+-- Configuring incomplete, errors occurred!
+See also &quot;/mydata/mysql-5.7.6-m16/CMakeFiles/CMakeOutput.log&quot;.
+</pre></div>
+
+
+<p>解决方法：直接按照前文<a href="https://typecodes.com/web/centos7compilemysql.html" title="查看原文">《2015博客升级记(四)：CentOS 7.1编译安装MySQL5.7.7rc》</a>小节2中的方法安装Boost库即可。或者先下载Boost库，然后通过在cmake命令后面添加参数<code>-DDOWNLOAD_BOOST=1 -DWITH_BOOST=Boost库路径</code>即可。</p>
+<h5>2 执行cmake时缺少Ncurses库的支持</h5>
+<p>Ncurses提供功能键定义(快捷键)，屏幕绘制以及基于文本终端的图形互动功能的动态库。</p>
+<div class="highlight"><pre>[root@typecodes ~]# yum -y install ncurses-devel
+
+-- Could NOT find Curses (missing:  CURSES_LIBRARY CURSES_INCLUDE_PATH) 
+CMake Error at cmake/readline.cmake:64 (MESSAGE):
+  Curses library not found.  Please install appropriate package,
+
+      remove CMakeCache.txt and rerun cmake.On Debian/Ubuntu, package name is libncurses5-dev, on Redhat and derivates it is ncurses-devel.
+Call Stack (most recent call first):
+  cmake/readline.cmake:107 (FIND_CURSES)
+  cmake/readline.cmake:181 (MYSQL_USE_BUNDLED_EDITLINE)
+  CMakeLists.txt:480 (MYSQL_CHECK_EDITLINE)
+
+
+-- Configuring incomplete, errors occurred!
+See also &quot;/mydata/mysql-5.7.6-m16/CMakeFiles/CMakeOutput.log&quot;.
+See also &quot;/mydata/mysql-5.7.6-m16/CMakeFiles/CMakeError.log&quot;.
+</pre></div>
+
+
+<p>解决方法：直接执行命令<code>yum -y install ncurses-devel</code>安装Ncurses即可。</p>
+<h5>3 安装MySQL完后，无法正常启动服务</h5>
+<p>在安装完MySQL后，执行命令<code>service mysqld start</code>失败，也即无法正常启动MySQL服务。</p>
+<p><img alt="无法正常启动MySQL服务" src="https://dn-vfhky.qbox.me/2015/06/mysql_start_error.png" title="无法正常启动MySQL服务" /></p>
+<p>解决方法：主要通过命令<code>systemctl status mysqld.service</code>和MySQL的日志来分析。如上图所示，在日志文件<code>/var/log/mysql/error.log</code>中可以看到具体的<code>ERROR</code>信息：Could not create unix socket lock file /var/run/mysql/mysql.sock.lock。这种错误一般都是目录不存在或者权限不足，所以我们直接使用命令<code>mkdir -p /var/log/mysql/</code>创建该目录即可，然后可以设置目录权限<code>chown -R mysql:mysql /var/log/mysql/</code>。</p>
+<h5>4 操作MySQL时，报错You must SET PASSWORD before executing this statement</h5>
+<p>用MySQL的root用户登录数据库后，如果之前没有设置密码，那么执行任何操作命令时，会提示如下错误信息。</p>
+<div class="highlight"><pre>mysql&gt; CREATE DATABASE `testmysqldatabase` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
+ERROR 1820 (HY000): You must SET PASSWORD before executing this statement
+</pre></div>
+
+
+<p>常规的使用MySQL安全模式的解决方法如下，但是在MySQL5.7以及更高版本下是行不通的。</p>
+<div class="highlight"><pre>[root@typecodes ~]# service mysqld stop
+Shutting down MySQL..[  OK  ]
+[root@typecodes ~]# /mydata/mysql/bin/mysqld_safe --user=mysql --skip-networking --skip-grant-tables &amp;
+[1] 3688
+[root@typecodes ~]# 150409 23:02:02 mysqld_safe Logging to &#39;/var/log/mysql/error.log&#39;.
+150409 23:02:02 mysqld_safe Starting mysqld daemon with databases from /mydata/mysql/data
+######重新登录mysql后，设置root密码
+mysql&gt; set password=&#39;this is a password sample&#39;;
+ERROR 1290 (HY000): The MySQL server is running with the --skip-grant-tables option so it cannot execute this statement
+</pre></div>
+
+
+<p>有效的解决方法：</p>
+<div class="highlight"><pre><span class="k">[root@typecodes ~]# mysql -u root -p            [使用root用户登录]</span>
+<span class="err">Enter</span> <span class="err">password:</span>                             <span class="k">[无密码，直接回车]</span>
+<span class="err">Welcome</span> <span class="err">to</span> <span class="err">the</span> <span class="err">MySQL</span> <span class="err">monitor.</span>  <span class="err">Commands</span> <span class="err">end</span> <span class="err">with</span> <span class="c1">; or \g.</span>
+<span class="err">Your</span> <span class="err">MySQL</span> <span class="err">connection</span> <span class="err">id</span> <span class="err">is</span> <span class="err">3</span>
+<span class="err">Server</span> <span class="err">version:</span> <span class="err">5.7.6-m16</span>
+
+<span class="err">Copyright</span> <span class="err">(c)</span> <span class="err">2000,</span> <span class="err">2015,</span> <span class="err">Oracle</span> <span class="err">and/or</span> <span class="err">its</span> <span class="err">affiliates.</span> <span class="err">All</span> <span class="err">rights</span> <span class="err">reserved.</span>
+
+<span class="err">Oracle</span> <span class="err">is</span> <span class="err">a</span> <span class="err">registered</span> <span class="err">trademark</span> <span class="err">of</span> <span class="err">Oracle</span> <span class="err">Corporation</span> <span class="err">and/or</span> <span class="err">its</span>
+<span class="err">affiliates.</span> <span class="err">Other</span> <span class="err">names</span> <span class="err">may</span> <span class="err">be</span> <span class="err">trademarks</span> <span class="err">of</span> <span class="err">their</span> <span class="err">respective</span>
+<span class="err">owners.</span>
+
+<span class="err">Type</span> <span class="err">&#39;help</span><span class="c1">;&#39; or &#39;\h&#39; for help. Type &#39;\c&#39; to clear the current input statement.</span>
+
+<span class="err">mysql&gt;</span> <span class="err">select</span> <span class="err">*</span> <span class="err">from</span> <span class="err">mysql.user</span><span class="c1">;</span>
+<span class="err">ERROR</span> <span class="err">1820</span> <span class="err">(HY000):</span> <span class="err">You</span> <span class="err">must</span> <span class="err">SET</span> <span class="err">PASSWORD</span> <span class="err">before</span> <span class="err">executing</span> <span class="err">this</span> <span class="err">statement</span>
+<span class="na">mysql&gt; set password</span><span class="o">=</span><span class="s">&#39;this is a password sample&#39;;</span>
+<span class="err">ERROR</span> <span class="err">1819</span> <span class="err">(HY000):</span> <span class="err">Your</span> <span class="err">password</span> <span class="err">does</span> <span class="err">not</span> <span class="err">satisfy</span> <span class="err">the</span> <span class="err">current</span> <span class="err">policy</span> <span class="err">requirements</span>
+<span class="c1">######设置当前root用户密码</span>
+<span class="na">mysql&gt; set password</span><span class="o">=</span><span class="s">&#39;your password&#39;;</span>
+<span class="err">Query</span> <span class="err">OK,</span> <span class="err">0</span> <span class="err">rows</span> <span class="err">affected</span> <span class="err">(0.00</span> <span class="err">sec)</span>
+
+<span class="err">mysql&gt;</span> <span class="err">flush</span> <span class="err">privileges</span><span class="c1">;</span>
+<span class="err">Query</span> <span class="err">OK,</span> <span class="err">0</span> <span class="err">rows</span> <span class="err">affected</span> <span class="err">(0.00</span> <span class="err">sec)</span>
+</pre></div>
+
+
+<p>需要说明的是，修改用户密码的SQL语句在不同的MySQL版本中是不同的。下面这3种是MySQL5.5以下的版本的修改方法，但是不适用于MySQL5.7以及更高版本。</p>
+<div class="highlight"><pre>mysql&gt; update mysql.user set PASSWORD=&#39;your password&#39; where User=&#39;root&#39;;
+
+mysql&gt; SET PASSWORD for root@&#39;localhost&#39; = PASSWORD(&#39;your password&#39;);
+
+mysql&gt; SET PASSWORD = PASSWORD(&#39;your password&#39;);
+</pre></div>
+		    	<p class="tags">
+					<div class="post-share">
+						<ul class="post-shareul clearfix">
+							<li class="post-shareli">
+								<a href="http://note.youdao.com/memory/?url=https://typecodes.com/web/solvemysqlcompileerror.html&title=MySQL编译安装时常见错误分析" class="post-sharea ydshare" target="_blank" rel="nofollow">有道云笔记</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://v.t.sina.com.cn/share/share.php?url=https://typecodes.com/web/solvemysqlcompileerror.html&title=MySQL编译安装时常见错误分析&source=https://typecodes.com" class="post-sharea wbshare" target="_blank" rel="nofollow">新浪微博</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://v.t.qq.com/share/share.php?title=MySQL编译安装时常见错误分析&url=https://typecodes.com/web/solvemysqlcompileerror.html&site=https://typecodes.com" class="post-sharea twbshare" target="_blank" rel="nofollow">腾讯微博</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=https://typecodes.com/web/solvemysqlcompileerror.html&title=MySQL编译安装时常见错误分析&content='utf-8'" class="post-sharea qzoneshare" target="_blank" rel="nofollow">QZone</a>
+							</li>
+						</ul>
+					</div>
+					<div>
+						Tags: <a href="https://typecodes.com/tag/mysql.html">mysql</a>					</div>
+				</p>
+			</article>
+			
+			<div id="comments">
+				<h4 class="num">Comments &raquo;</h4>
+		    	<div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript></div>
+		    </div>
+		</div>
+		<!--3. right sider begin-->
+<div class="col-md-3" id="blog-secondary" role="complementary">
+	<section class="widget">
+		<ul class="widget-list">
+			<form id="search" method="get" action="https://typecodes.com/search.html">
+				<input type="text" name="q" id="s" size="20" x-webkit-speech="" x-webkit-grammar="builtin:search" onwebkitspeechchange="this.value = this.value.replace(this.defaultValue, '')" value="Google...." onfocus="this.value = (this.value == this.defaultValue) ? '' : this.value" onblur="this.value = (this.value == '') ? this.defaultValue : this.value">
+			</form>
+		</ul>
+	</section>
+	<section class="widget">
+		<h3 class="widget-title">Categories</h3>
+		<ul class="widget-list">
+		      <li class="current">
+		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (26)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/csharp/index.html">Csharp</a> (6)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/database/index.html">Database</a> (11)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/java/index.html">Java</a> (1)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/linux/index.html">Linux</a> (16)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/mix/index.html">Mix</a> (53)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/web/index.html">Web</a> (88)
+		      </li>
+		</ul>
+	</section>
+	<section class="widget">
+		<h3 class="widget-title">Recent Posts</h3>
+		<ul class="widget-list">
+			<li class="post">
+				<a href="https://typecodes.com/mix/sucesstypechotopelican.html">成功将博客从Typecho迁移到Pelican</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/mix/begintypechotopelican.html">准备将博客从Typecho迁移到Pelican</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/tcpconnectiontimedout.html">Linux TCP连接Connection Refused和Connection timed out的问题</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/mysqlerrornospace.html">博客MySQL服务惊魂记：Linux磁盘空间不足(Core Dump文件引爆)</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/mix/synweibophpmarkdownimgurl.html">升级博客文章同步微博的插件：PHP正则提取Markdown的图片地址</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/cppgeneralmakefile.html">Linux C/C++工程中可生成ELF、动/静态库文件的通用Makefile</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/libraryundefinedref.html">解决make编译链接动态库错误：libxx.so: undefined reference to xx</a>
+			</li>
+		</ul>
+	</section>
+	<section class="widget widget-feed">
+		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
+	</section>
+</div>
+				</div>
+			</div>
+		</div>
+		<!--4. bottom begin-->
+		<footer id="te-site-footer"><div class="container">
+	<div class="row" role="contentinfo">
+		<section class="col-md-2 col-md-offset-1">
+			<h3>Links</h3>
+			<ul><li><a href="http://diaosbook.com/" title="">diaosbook</a></li></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul>
+				<li><a href="https://typecodes.com/links.html">More..</a></li>
+			</ul>
+		</section>
+		<section class="col-md-2">
+			<h3>Following</h3>
+			<ul>
+				<li><a href="https://github.com/vfhky" class="following github" target="_blank" rel="external nofollow">GitHub</a></li>
+				<li><a href="http://weibo.com/typecodes" class="following weibo" target="_blank" rel="external nofollow">Weibo</a></li>
+				<li><a href="http://vfhky.sinaapp.com/" class="following sae" target="_blank" rel="external nofollow">SAE</a></li>
+				<li><a href="http://www.dwz.cn/mYiwa" class="following qqgroup" target="_blank" rel="external nofollow">Group</a></li>
+			</ul>
+		</section>
+		<div class="col-md-12 copyright">
+			<a href="#top"><i class="i-logo-s">TOP</i></a>
+			<p>
+				&copy; 2012-<script language="JavaScript">var date = new Date(); document.write(date.getFullYear());</script>							<a href="https://typecodes.com">TypeCodes</a>. All Rights Reserved<br>Powered by <a href="http://getpelican.com" rel="external" target="_blank">Pelican</a>. <a href="http://www.miitbeian.gov.cn/" rel="external nofollow" target="_blank">粤ICP备14050695号</a>
+			</p>
+		</div>
+	</div>
+</div>
+</footer>
+<script type="text/javascript">
+	var disqus_shortname = 'typecodes';
+	var disqus_identifier = '/web/solvemysqlcompileerror.html';
+	var disqus_url = 'https://typecodes.com/web/solvemysqlcompileerror.html';
+	var disqus_title = 'MySQL编译安装时常见错误分析';
+	(function() {
+		var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+		dsq.src = "//" + disqus_shortname + '.disqus.com/embed.js';
+		(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	 })();
+</script>
+	</body>
+</html>

@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="zh-CN" class="no-js">
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<title>解决阿里云无法安装typecho 1.0，页面全变空白 &mdash; TypeCodes</title>
+		<meta name="author" content="vfhky">
+  		<link href="https://typecodes.com/atom.xml" type="application/atom+xml" rel="alternate" title="TypeCodes Atom Feed" />
+	  	<link href="https://typecodes.com/feed.xml" type="application/rss+xml" rel="alternate" title="TypeCodes RSS Feed" />
+		<meta name="HandheldFriendly" content="True">
+		<meta name="MobileOptimized" content="320">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="renderer" content="webkit">
+		<link rel="stylesheet" href="https://dn-vfhky.qbox.me/libs/css/pelican-vfhky.css">
+		<script>
+			var _hmt = _hmt || [];
+			(function() {
+			  var hm = document.createElement("script");
+			  hm.src = "//hm.baidu.com/hm.js?c15c4ab8e91ba9ac3d5a12293cc93359";
+			  var s = document.getElementsByTagName("script")[0]; 
+			  s.parentNode.insertBefore(hm, s);
+			})();
+		</script>
+	</head>
+	<body style>
+		<!--1. header navigation begin-->
+		<header role="banner" id="te-site-header">
+			<div class="container">
+				<a href="https://typecodes.com" class="te-site-logo" role="logo" target="_self"> TypeCodes</a>
+				<ul class="nav nav-pills" id="te-site-nav" role="navigation">
+					<li><a href="https://typecodes.com">Home</a></li><li><a href="https://typecodes.com/archives.html" title="Archives">Archives</a></li><li><a href="https://typecodes.com/about.html" title="About">About</a></li></ul>
+			</div>
+		</header>
+		<div class="te-headline">
+			<div class="container">
+				<h2 class="te-headline-title"> <a href="https://typecodes.com">TypeCodes</a></h2>
+			</div>
+		</div>
+		<div class="container">
+			<div class="row">
+		<!--2. left sider begin-->
+		<div class="col-md-9" id="blog-main" role="main">
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/web/installtypechofail.html">解决阿里云无法安装typecho 1.0，页面全变空白</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2014-08-17 21:33 | 分类：<a href="https://typecodes.com/web/index.html">web</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>在Windows中安装 typecho 比较简单，只要先创建了数据库，然后安装过程和wordpress也类似。但是之前博主在自己的阿里云CentOS 6.5系统中安装 typecho，却出现了问题。</p>
+<h5>1 问题描述</h5>
+<p>先用 mysql 的一个用户创建了一个数据库，然后进入typecho的安装页面，填写好相关信息。typecho 会自动检测输入的数据库信息是否正确。如果正确，那么就会出现下图的页面。因为博客的根目录权限是不可写的，所以typecho程序无法自动生成配置文件 config.inc.php 。于是把里面的代码复制出来，并在根目录下新建文件 config.inc.php ，然后把复制的代码粘贴进去。结果在点击“创建完毕，继续安装”后，安装页面就跳转到空白页面了。</p>
+<p><img alt="点击“创建完毕，继续安装”后，安装页面就跳转到空白页面" src="https://dn-vfhky.qbox.me/2014/08/typechoconfig.png" title="点击“创建完毕，继续安装”后，安装页面就跳转到空白页面" /></p>
+
+
+<h5>2 问题解决</h5>
+<p>初步看了下typecho的安装代码文件 install.php ，主要是初始化数据库、生成配置文件等，然后看了下 php-fpm 的错误日志 error.log 。结果发现很多 warning 信息，原来和 session 有关：找不到需要的 session 文件(no such file)、无法写入 session 内容。</p>
+<p><img alt="session 警告和错误" src="https://dn-vfhky.qbox.me/2014/08/typechosessionfail.png" title="session 警告和错误" /></p>
+<p>linux 文件的读写问题，肯定跟权限有关。于是查看 php 默认的 session 文件保存路径：在配置文件 /etc/php.ini 的第 1267 行可以看到是 /var/lib/php/session 。</p>
+<div class="highlight"><pre>1264 ; where MODE is the octal representation of the mode. Note that this
+1265 ; does not overwrite the process&#39;s umask.
+1266 ; http://www.php.net/manual/en/session.configuration.php#ini.session.save-path
+1267 session.save_path = &quot;/var/lib/php/session&quot;
+</pre></div>
+
+
+<p>于是查看 /var/lib/php/session 目录的权限设置，增加写入权限：</p>
+<div class="highlight"><pre>###### 默认权限为 755
+[root@typecodes php]# ls -l
+total 4
+drwxr-xr-x 2 root apache 4096 Jul 26 19:02 session
+###### 修改权限为 770
+[root@typecodes php]# chmod 775 -R session
+total 4
+drwxrwx--- 2 root apache 4096 Jul 26 19:02 session
+</pre></div>
+
+
+<h5>3 后记</h5>
+<p>问题就这样解决了，安装 typecho 比较关键的是自己要先创建一个数据库，这点和wordpress是不同的。至于安装过程中出现的问题，大家可以通过 php 的日志查看是否存在错误或警告信息。至于前面提到的 “安装页面就跳转到空白页面了” 原因是：typecho的安装程序 install.php 的第 58 行，对 $_SESSION['typecho'] 做了判断，即为空则直接 exit，页面不显示任何内容。另外，php的错误日志 error.log 中产生的 warning 信息，也都是由 install.php 中相应的代码导致的，就不多说了。</p>
+<div class="highlight"><pre><span class="x">//判断是否已经安装</span>
+<span class="x">if (!isset(</span><span class="p">$</span><span class="nv">_GET</span><span class="x">[&#39;finish&#39;]) &amp;&amp; file_exists(__TYPECHO_ROOT_DIR__ . &#39;/config.inc.php&#39;) &amp;&amp; empty(</span><span class="p">$</span><span class="nv">_SESSION</span><span class="x">[&#39;typecho&#39;])) </span><span class="err">{</span><span class="x"></span>
+<span class="x">    exit;</span>
+<span class="x">}</span>
+</pre></div>
+		    	<p class="tags">
+					<div class="post-share">
+						<ul class="post-shareul clearfix">
+							<li class="post-shareli">
+								<a href="http://note.youdao.com/memory/?url=https://typecodes.com/web/installtypechofail.html&title=解决阿里云无法安装typecho 1.0，页面全变空白" class="post-sharea ydshare" target="_blank" rel="nofollow">有道云笔记</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://v.t.sina.com.cn/share/share.php?url=https://typecodes.com/web/installtypechofail.html&title=解决阿里云无法安装typecho 1.0，页面全变空白&source=https://typecodes.com" class="post-sharea wbshare" target="_blank" rel="nofollow">新浪微博</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://v.t.qq.com/share/share.php?title=解决阿里云无法安装typecho 1.0，页面全变空白&url=https://typecodes.com/web/installtypechofail.html&site=https://typecodes.com" class="post-sharea twbshare" target="_blank" rel="nofollow">腾讯微博</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=https://typecodes.com/web/installtypechofail.html&title=解决阿里云无法安装typecho 1.0，页面全变空白&content='utf-8'" class="post-sharea qzoneshare" target="_blank" rel="nofollow">QZone</a>
+							</li>
+						</ul>
+					</div>
+					<div>
+						Tags: <a href="https://typecodes.com/tag/a-li-yun-centos.html">阿里云 centos</a>,<a href="https://typecodes.com/tag/typecho.html">typecho</a>					</div>
+				</p>
+			</article>
+			
+			<div id="comments">
+				<h4 class="num">Comments &raquo;</h4>
+		    	<div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript></div>
+		    </div>
+		</div>
+		<!--3. right sider begin-->
+<div class="col-md-3" id="blog-secondary" role="complementary">
+	<section class="widget">
+		<ul class="widget-list">
+			<form id="search" method="get" action="https://typecodes.com/search.html">
+				<input type="text" name="q" id="s" size="20" x-webkit-speech="" x-webkit-grammar="builtin:search" onwebkitspeechchange="this.value = this.value.replace(this.defaultValue, '')" value="Google...." onfocus="this.value = (this.value == this.defaultValue) ? '' : this.value" onblur="this.value = (this.value == '') ? this.defaultValue : this.value">
+			</form>
+		</ul>
+	</section>
+	<section class="widget">
+		<h3 class="widget-title">Categories</h3>
+		<ul class="widget-list">
+		      <li class="current">
+		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (26)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/csharp/index.html">Csharp</a> (6)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/database/index.html">Database</a> (11)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/java/index.html">Java</a> (1)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/linux/index.html">Linux</a> (16)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/mix/index.html">Mix</a> (53)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/web/index.html">Web</a> (88)
+		      </li>
+		</ul>
+	</section>
+	<section class="widget">
+		<h3 class="widget-title">Recent Posts</h3>
+		<ul class="widget-list">
+			<li class="post">
+				<a href="https://typecodes.com/mix/sucesstypechotopelican.html">成功将博客从Typecho迁移到Pelican</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/mix/begintypechotopelican.html">准备将博客从Typecho迁移到Pelican</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/tcpconnectiontimedout.html">Linux TCP连接Connection Refused和Connection timed out的问题</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/mysqlerrornospace.html">博客MySQL服务惊魂记：Linux磁盘空间不足(Core Dump文件引爆)</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/mix/synweibophpmarkdownimgurl.html">升级博客文章同步微博的插件：PHP正则提取Markdown的图片地址</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/cppgeneralmakefile.html">Linux C/C++工程中可生成ELF、动/静态库文件的通用Makefile</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/libraryundefinedref.html">解决make编译链接动态库错误：libxx.so: undefined reference to xx</a>
+			</li>
+		</ul>
+	</section>
+	<section class="widget widget-feed">
+		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
+	</section>
+</div>
+				</div>
+			</div>
+		</div>
+		<!--4. bottom begin-->
+		<footer id="te-site-footer"><div class="container">
+	<div class="row" role="contentinfo">
+		<section class="col-md-2 col-md-offset-1">
+			<h3>Links</h3>
+			<ul><li><a href="http://diaosbook.com/" title="">diaosbook</a></li></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul>
+				<li><a href="https://typecodes.com/links.html">More..</a></li>
+			</ul>
+		</section>
+		<section class="col-md-2">
+			<h3>Following</h3>
+			<ul>
+				<li><a href="https://github.com/vfhky" class="following github" target="_blank" rel="external nofollow">GitHub</a></li>
+				<li><a href="http://weibo.com/typecodes" class="following weibo" target="_blank" rel="external nofollow">Weibo</a></li>
+				<li><a href="http://vfhky.sinaapp.com/" class="following sae" target="_blank" rel="external nofollow">SAE</a></li>
+				<li><a href="http://www.dwz.cn/mYiwa" class="following qqgroup" target="_blank" rel="external nofollow">Group</a></li>
+			</ul>
+		</section>
+		<div class="col-md-12 copyright">
+			<a href="#top"><i class="i-logo-s">TOP</i></a>
+			<p>
+				&copy; 2012-<script language="JavaScript">var date = new Date(); document.write(date.getFullYear());</script>							<a href="https://typecodes.com">TypeCodes</a>. All Rights Reserved<br>Powered by <a href="http://getpelican.com" rel="external" target="_blank">Pelican</a>. <a href="http://www.miitbeian.gov.cn/" rel="external nofollow" target="_blank">粤ICP备14050695号</a>
+			</p>
+		</div>
+	</div>
+</div>
+</footer>
+<script type="text/javascript">
+	var disqus_shortname = 'typecodes';
+	var disqus_identifier = '/web/installtypechofail.html';
+	var disqus_url = 'https://typecodes.com/web/installtypechofail.html';
+	var disqus_title = '解决阿里云无法安装typecho 1.0，页面全变空白';
+	(function() {
+		var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+		dsq.src = "//" + disqus_shortname + '.disqus.com/embed.js';
+		(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	 })();
+</script>
+	</body>
+</html>

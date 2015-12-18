@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="zh-CN" class="no-js">
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<title>标签 十六进制字符串 下的文章 - TypeCodes</title>
+		<meta name="author" content="vfhky">
+  		<link href="https://typecodes.com/atom.xml" type="application/atom+xml" rel="alternate" title="TypeCodes Atom Feed" />
+	  	<link href="https://typecodes.com/feed.xml" type="application/rss+xml" rel="alternate" title="TypeCodes RSS Feed" />
+		<meta name="HandheldFriendly" content="True">
+		<meta name="MobileOptimized" content="320">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="renderer" content="webkit">
+		<link rel="stylesheet" href="https://dn-vfhky.qbox.me/libs/css/pelican-vfhky.css">
+		<script>
+			var _hmt = _hmt || [];
+			(function() {
+			  var hm = document.createElement("script");
+			  hm.src = "//hm.baidu.com/hm.js?c15c4ab8e91ba9ac3d5a12293cc93359";
+			  var s = document.getElementsByTagName("script")[0]; 
+			  s.parentNode.insertBefore(hm, s);
+			})();
+		</script>
+	</head>
+	<body style>
+		<!--1. header navigation begin-->
+		<header role="banner" id="te-site-header">
+			<div class="container">
+				<a href="https://typecodes.com" class="te-site-logo" role="logo" target="_self"> TypeCodes</a>
+				<ul class="nav nav-pills" id="te-site-nav" role="navigation">
+					<li><a href="https://typecodes.com">Home</a></li><li><a href="https://typecodes.com/archives.html" title="Archives">Archives</a></li><li><a href="https://typecodes.com/about.html" title="About">About</a></li></ul>
+			</div>
+		</header>
+		<div class="te-headline">
+			<div class="container">
+				<h2 class="te-headline-title"> <a href="https://typecodes.com">TypeCodes</a></h2>
+			</div>
+		</div>
+		<div class="container">
+			<div class="row">
+		<!--2. left sider begin-->
+		<div class="col-md-9" id="blog-main" role="main">
+		  	<!--article recycle-->
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/cseries/simplifychexstrtoint.html">视角：C语言将十六进制字符串转成十进制整数</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2015-05-30 07:58 | 分类：<a href="https://typecodes.com/cseries/index.html">cseries</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>在前文<a href="https://typecodes.com/cseries/againchexstrtointeger.html/comment-page-1#comment-1665" title="查看原文评论">《再议C语言将十六进制字符串转成十进制整数》</a>中 <a href="http://pewae.com/">@大致</a> 童鞋帮忙提了一个思路：直接将指针<code>p</code>读取的十六进制字符串中的单个字符转换后的结果保存在<code>iResult</code>中，而不是保存在指针p指向的内存中。这样思路更为简洁，下面是具体的两个实现程序。</p>
+
+	<p class="more"><a href="https://typecodes.com/cseries/simplifychexstrtoint.html" title="视角：C语言将十六进制字符串转成十进制整数">- 阅读剩余部分 -</a></p>
+			</article>
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/cseries/againchexstrtointeger.html">再议C语言将十六进制字符串转成十进制整数</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2015-05-14 19:55 | 分类：<a href="https://typecodes.com/cseries/index.html">cseries</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>前文<a href="https://typecodes.com/cseries/clanghexstrtointeger.html" title="查看原文">《C语言将十六进制字符串转成十进制整数》</a>讲述了将十六进制字符串中单个字符分别从高位到低位正序和从低位到高位逆序转换成对应的十进制数，今天在看原文的程序发现一个不好的地方：由于使用了<code>char * p = HexStr;</code>，也就是直接使用指针p将这个十六进制字符串进行了读取和<code>改写</code>。这样会造成在调用了<code>HexStr2Integer</code>转换函数后，就不能再次使用这个十六进制字符串了。</p>
+<p>因此，在转换过程中，可以考虑将原来的这个十六进制字符串在内存中复制一份，然后再对这个复制的<code>副本</code>进行读写，这样就产生副作用了。下面是根据原来的两个程序改进的的代码，主要通过<code>malloc</code>函数开辟一个内存空间，然后复制十六进制字符串中的数据到这个内存空间中，最后对它进行“读写”。</p>
+<p>在下面这两个改进的代码中，还考虑到了这个十六进制字符串以<code>0x</code>开头的形式出现，所以增加了这种情况的处理。</p>
+
+	<p class="more"><a href="https://typecodes.com/cseries/againchexstrtointeger.html" title="再议C语言将十六进制字符串转成十进制整数">- 阅读剩余部分 -</a></p>
+			</article>
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/csharp/hexstringxor2.html">C#实现十六进制字符串异或（一）</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2014-12-31 11:45 | 分类：<a href="https://typecodes.com/csharp/index.html">csharp</a></li>
+</ul>
+<div class="post-content fmt">
+	<p><a href="https://typecodes.com/csharp/hexstringxor1.html" title="《C#实现十六进制字符串异或（一）》">上一篇文章</a>主要利用C#自带的<code>Convert.ToInt32(HexString, 16)</code>方法实现了两个十六进制字符串异或的操作。这篇文章主要利用C#字节数组来实现这个功能。</p>
+<h5>1 实现思路</h5>
+<p>现将这两个十六进制字符串都转换成对应的字节数组，然后通过数组中每个元素进行异或得到一个0~15范围内的整数，最后将这个整数转换成对应的十六进制字符即可。这个思路和前文<a href="https://typecodes.com/cseries/hexstrxor.html" title="查看原文">《C语言实现十六进制字符串异或》</a>是类似的。</p>
+<p>需要注意的是：在调用<code>HexStrToBytes( String HexStr )</code>方法将将16进制字符串转换成字节数组时，需要捕获异常，避免这个十六进制字符串包含不是十六进制的字符。</p>
+
+	<p class="more"><a href="https://typecodes.com/csharp/hexstringxor2.html" title="C#实现十六进制字符串异或（一）">- 阅读剩余部分 -</a></p>
+			</article>
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/csharp/hexstringxor1.html">C#实现十六进制字符串异或（一）</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2014-12-29 21:52 | 分类：<a href="https://typecodes.com/csharp/index.html">csharp</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>前面用C/C++实现了两个十六进制的字符串进行异或（<a href="https://typecodes.com/cseries/hexstrxor.html" title="《C语言实现十六进制字符串异或》">查看该文</a>），这篇文章利用C#来实现这个功能。由于C#命名空间里已经封装好了很多类和方法，不用像之前用C实现十六进制字符串异或那样，需要自己写相关的函数，所以能够利用C#很快完成这个字符串异或功能。</p>
+<p>用C#实现两个十六进制的字符串进行异或和用C/C++实现两个十六进制的字符串进行异或的思路是一样的，对比着之前用C实现的那篇文章，可以很好理解。</p>
+
+	<p class="more"><a href="https://typecodes.com/csharp/hexstringxor1.html" title="C#实现十六进制字符串异或（一）">- 阅读剩余部分 -</a></p>
+			</article>
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/cseries/studymfchexstrxortool2.html">图文实例说MFC制作工具的心得（二）</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2014-11-14 23:58 | 分类：<a href="https://typecodes.com/cseries/index.html">cseries</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>继前文<a href="https://typecodes.com/cseries/studymfchexstrxortool1.html" title="点击查看">《图文实例说MFC制作工具的心得（一）》</a>，这篇文章继续写几点心得。</p>
+<h5>1 如何将CString转换成char *指针</h5>
+<p>由于异或的时候可以直接调用<a href="https://typecodes.com/cseries/hexstrxor.html" title="《十六进制字符串异或》">《十六进制字符串异或》</a>一文中的十六进制字符串异或方法<code>void hexstrxor(char * HexStr1, char * HexStr2, char * HexStr)</code>。</p>
+<p>但是<code>Edit Control</code>控件添加变量<code>HexStr1</code>、<code>HexStr2</code>都是CString类型，所以需要转换。由于项目的字符集是<code>使用多字节字符集</code>，所以可以通过<code>(LPSTR)(LPCTSTR)CString</code>方法强制将CString数据转换成char *指针类型，这样就可以直接调用了<code>hexstrxor((LPSTR)(LPCTSTR)HexStr1, (LPSTR)(LPCTSTR)HexStr2, HexStrXorResult);</code>。</p>
+
+	<p class="more"><a href="https://typecodes.com/cseries/studymfchexstrxortool2.html" title="图文实例说MFC制作工具的心得（二）">- 阅读剩余部分 -</a></p>
+			</article>
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/cseries/studymfchexstrxortool1.html">图文实例说MFC制作工具的心得（一）</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2014-11-13 22:06 | 分类：<a href="https://typecodes.com/cseries/index.html">cseries</a></li>
+</ul>
+<div class="post-content fmt">
+	<p><a href="https://typecodes.com/cseries/mfchexstrxortool.html" title="《MFC写了一个十六进制异或的工具》">上篇文章</a>说了用MFC制作一个十六进制字符串异或的工具，这篇文章就以这个工具为演示总结一下自己的学习心得。</p>
+<p><img alt="MFC十六进制异或工具" src="https://dn-vfhky.qbox.me/2014/11/mfchexstrxortool.png" title="MFC十六进制异或工具" /></p>
+
+	<p class="more"><a href="https://typecodes.com/cseries/studymfchexstrxortool1.html" title="图文实例说MFC制作工具的心得（一）">- 阅读剩余部分 -</a></p>
+			</article>
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/cseries/mfchexstrxortool.html">MFC写了一个十六进制字符串异或的工具</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2014-11-12 23:57 | 分类：<a href="https://typecodes.com/cseries/index.html">cseries</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>在写完上一篇文章<a href="https://typecodes.com/cseries/hexstrxor.html" title="查看详情">《十六进制字符串异或》</a>后，网上查了下貌似没有十六进制字符串异或的工具，于是想自己用C++写一个。由于之前没弄过MFC，所以周末花了两天时间边学边做，最后效果如下：</p>
+<p><img alt="MFC十六进制异或的工具初始界面" src="https://dn-vfhky.qbox.me/2014/11/mfchexstrtoolini.png" title="MFC十六进制异或的工具初始界面" /></p>
+
+	<p class="more"><a href="https://typecodes.com/cseries/mfchexstrxortool.html" title="MFC写了一个十六进制字符串异或的工具">- 阅读剩余部分 -</a></p>
+			</article>
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/cseries/hexstrxor.html">十六进制字符串异或</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2014-11-10 22:20 | 分类：<a href="https://typecodes.com/cseries/index.html">cseries</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>十六进制字符串异或是C/C++工作中经常遇到的情况，因此自己写了一个异或方法。程序中关键的三点：</p>
+<h5>1 关键点一</h5>
+<p>弄清十六进制字符串异或的思路：一个十六进制字符其实表示的是一个字节的低4位，但是在ASCII码表中，它是作为一个字符，即占用了1个字节。所以需要先把这个字符转换成对应的十进制数（范围是0~15），这个就是<code>int char2int( char input )</code>函数所做的工作；同理在异或完后，需要根据ASCII码表将范围是0~15的<code>字符</code>转换成对应的占用1字节的字符串中的字符，这个就是<code>int int2char( char input )</code>函数所做的工作。</p>
+<p>PS：这其实就是前面这两篇文章的提炼——
+<a href="https://typecodes.com/cseries/clangintegerstrtointeger.html" title="《C语言将十进制字符串转成十进制整数》">《C语言将十进制字符串转成十进制整数》</a>、<a href="https://typecodes.com/cseries/clanghexstrtointeger.html" title="《C语言将十六进制字符串转成十进制整数》">《C语言将十六进制字符串转成十进制整数》</a>。</p>
+
+	<p class="more"><a href="https://typecodes.com/cseries/hexstrxor.html" title="十六进制字符串异或">- 阅读剩余部分 -</a></p>
+			</article>
+		  	<!--page navigation-->
+<ol class="page-navigator">
+<li class="current"><a href="https://typecodes.com/tag/shi-liu-jin-zhi-zi-fu-chuan.html">1</a><li><a href="https://typecodes.com/tag/shi-liu-jin-zhi-zi-fu-chuan2.html">2</a>
+       		</li><li class="next">
+       		<a href="https://typecodes.com/tag/shi-liu-jin-zhi-zi-fu-chuan2.html">后一页 &raquo;</a>
+       </li></ol>		</div>
+		<!--3. right sider begin-->
+<div class="col-md-3" id="blog-secondary" role="complementary">
+	<section class="widget">
+		<ul class="widget-list">
+			<form id="search" method="get" action="https://typecodes.com/search.html">
+				<input type="text" name="q" id="s" size="20" x-webkit-speech="" x-webkit-grammar="builtin:search" onwebkitspeechchange="this.value = this.value.replace(this.defaultValue, '')" value="Google...." onfocus="this.value = (this.value == this.defaultValue) ? '' : this.value" onblur="this.value = (this.value == '') ? this.defaultValue : this.value">
+			</form>
+		</ul>
+	</section>
+	<section class="widget">
+		<h3 class="widget-title">Categories</h3>
+		<ul class="widget-list">
+		      <li class="current">
+		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (26)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/csharp/index.html">Csharp</a> (6)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/database/index.html">Database</a> (11)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/java/index.html">Java</a> (1)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/linux/index.html">Linux</a> (16)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/mix/index.html">Mix</a> (53)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/web/index.html">Web</a> (88)
+		      </li>
+		</ul>
+	</section>
+	<section class="widget">
+		<h3 class="widget-title">Recent Posts</h3>
+		<ul class="widget-list">
+			<li class="post">
+				<a href="https://typecodes.com/cseries/simplifychexstrtoint.html">视角：C语言将十六进制字符串转成十进制整数</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/againchexstrtointeger.html">再议C语言将十六进制字符串转成十进制整数</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/csharp/hexstringxor2.html">C#实现十六进制字符串异或（一）</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/csharp/hexstringxor1.html">C#实现十六进制字符串异或（一）</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/studymfchexstrxortool2.html">图文实例说MFC制作工具的心得（二）</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/studymfchexstrxortool1.html">图文实例说MFC制作工具的心得（一）</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/mfchexstrxortool.html">MFC写了一个十六进制字符串异或的工具</a>
+			</li>
+		</ul>
+	</section>
+	<section class="widget widget-feed">
+		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
+	</section>
+</div>
+				</div>
+			</div>
+		</div>
+		<!--4. bottom begin-->
+		<footer id="te-site-footer"><div class="container">
+	<div class="row" role="contentinfo">
+		<section class="col-md-2 col-md-offset-1">
+			<h3>Links</h3>
+			<ul><li><a href="http://diaosbook.com/" title="">diaosbook</a></li></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul>
+				<li><a href="https://typecodes.com/links.html">More..</a></li>
+			</ul>
+		</section>
+		<section class="col-md-2">
+			<h3>Following</h3>
+			<ul>
+				<li><a href="https://github.com/vfhky" class="following github" target="_blank" rel="external nofollow">GitHub</a></li>
+				<li><a href="http://weibo.com/typecodes" class="following weibo" target="_blank" rel="external nofollow">Weibo</a></li>
+				<li><a href="http://vfhky.sinaapp.com/" class="following sae" target="_blank" rel="external nofollow">SAE</a></li>
+				<li><a href="http://www.dwz.cn/mYiwa" class="following qqgroup" target="_blank" rel="external nofollow">Group</a></li>
+			</ul>
+		</section>
+		<div class="col-md-12 copyright">
+			<a href="#top"><i class="i-logo-s">TOP</i></a>
+			<p>
+				&copy; 2012-<script language="JavaScript">var date = new Date(); document.write(date.getFullYear());</script>							<a href="https://typecodes.com">TypeCodes</a>. All Rights Reserved<br>Powered by <a href="http://getpelican.com" rel="external" target="_blank">Pelican</a>. <a href="http://www.miitbeian.gov.cn/" rel="external nofollow" target="_blank">粤ICP备14050695号</a>
+			</p>
+		</div>
+	</div>
+</div>
+</footer>
+<script type="text/javascript">
+	var disqus_shortname = 'typecodes';
+	(function() {
+		var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+		dsq.src = "//" + disqus_shortname + '.disqus.com/embed.js';
+		(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	 })();
+</script>
+	</body>
+</html>

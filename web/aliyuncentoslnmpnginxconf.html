@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="zh-CN" class="no-js">
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<title>阿里云CentOS主机 LNMP 环境配置之Nginx篇 &mdash; TypeCodes</title>
+		<meta name="author" content="vfhky">
+  		<link href="https://typecodes.com/atom.xml" type="application/atom+xml" rel="alternate" title="TypeCodes Atom Feed" />
+	  	<link href="https://typecodes.com/feed.xml" type="application/rss+xml" rel="alternate" title="TypeCodes RSS Feed" />
+		<meta name="HandheldFriendly" content="True">
+		<meta name="MobileOptimized" content="320">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="renderer" content="webkit">
+		<link rel="stylesheet" href="https://dn-vfhky.qbox.me/libs/css/pelican-vfhky.css">
+		<script>
+			var _hmt = _hmt || [];
+			(function() {
+			  var hm = document.createElement("script");
+			  hm.src = "//hm.baidu.com/hm.js?c15c4ab8e91ba9ac3d5a12293cc93359";
+			  var s = document.getElementsByTagName("script")[0]; 
+			  s.parentNode.insertBefore(hm, s);
+			})();
+		</script>
+	</head>
+	<body style>
+		<!--1. header navigation begin-->
+		<header role="banner" id="te-site-header">
+			<div class="container">
+				<a href="https://typecodes.com" class="te-site-logo" role="logo" target="_self"> TypeCodes</a>
+				<ul class="nav nav-pills" id="te-site-nav" role="navigation">
+					<li><a href="https://typecodes.com">Home</a></li><li><a href="https://typecodes.com/archives.html" title="Archives">Archives</a></li><li><a href="https://typecodes.com/about.html" title="About">About</a></li></ul>
+			</div>
+		</header>
+		<div class="te-headline">
+			<div class="container">
+				<h2 class="te-headline-title"> <a href="https://typecodes.com">TypeCodes</a></h2>
+			</div>
+		</div>
+		<div class="container">
+			<div class="row">
+		<!--2. left sider begin-->
+		<div class="col-md-9" id="blog-main" role="main">
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/web/aliyuncentoslnmpnginxconf.html">阿里云CentOS主机 LNMP 环境配置之Nginx篇</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2014-08-13 23:22 | 分类：<a href="https://typecodes.com/web/index.html">web</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>上一篇文章主要分享了<a href="https://typecodes.com/web/aliyuncentoslnmpmysqlconf.html" title="阿里云CentOS主机 LNMP 环境配置之Mysql篇">LNMP 环境如何简单配置 Mysql</a>。这篇文章简要说说如何配置 Nginx 。是其默认配置文件是<code>nginx.conf</code>和<code>default.conf</code>。</p>
+<h5>1 nginx.conf配置文件</h5>
+<p>在 nginx.conf 文件中，会看到 nginx 默认的错误日志保存文件：error.log。它记录了服务器端由nginx处理的错误信息，例如永久跳转301、页面不存在404错误、服务器错误500错误等等。</p>
+
+
+<div class="highlight"><pre>###### 错误日志文件error.log, 可重新定义路径
+error_log  /var/log/nginx/error.log warn;
+
+###### 客户端请求处理记录文件access.log, 可重新定义路径
+access_log  /var/log/nginx/access.log
+</pre></div>
+
+
+<p>在 CentOS 系统中的很多配置文件都会用到“引用文件”，其效果就像C/C++或PHP等语言中的 include 文件预处理。在 nginx.conf 中定义的 http 属性中同样可以看到示例：</p>
+<div class="highlight"><pre>###### Multipurpose Internet Mail Extensions, 定义不同文件后缀对应的MIME类型
+include  /etc/nginx/mime.types;
+</pre></div>
+
+
+<p>重点来了，如何为站点开启 Gzip 压缩呢？方法很简单，在 http 属性中添加</p>
+<div class="highlight"><pre>#support gzip
+gzip on;
+
+###### 压缩条件:页面最小字节数(从header头中的content-length获取)大于1K
+gzip_min_length 1k;
+
+gzip_buffers 16 64k;
+gzip_http_version 1.1;
+
+###### gzip压缩比例, 1到9, 9压缩比最大但处理速度最慢
+gzip_comp_level 6;
+
+###### 需要压缩的文件类型,  text/javascript是js压缩, 不要漏掉
+gzip_types text/plain application/x-javascript text/css application/javascript text/javascript image/jpeg image/gif image/png application/xml application/json;
+
+###### 浏览器支持,则开启 Gzip 压缩
+gzip_vary on;
+
+###### 去掉 IE6 以下系列浏览器的支持, 避免 nginx 出错
+gzip_disable &quot;MSIE [1-6].(?!.*SV1)&quot;;
+</pre></div>
+
+
+<h5>2 default.conf配置文件</h5>
+<p>在 nginx.conf 中通过<code>include /etc/nginx/conf.d/\*.conf;</code>引入了 default.conf 这个server配置文件。它用来详细配置整个web站点的Server信息。下面是一个完整的 default.conf 配置文件示例，要点已注释。</p>
+<div class="highlight"><pre><span class="nt">server</span> <span class="p">{</span>
+    <span class="err">######</span>  <span class="err">监听</span><span class="m">80</span><span class="err">端口</span>
+    <span class="n">listen</span>       <span class="m">80</span><span class="p">;</span>
+    <span class="n">server_name</span>  <span class="n">www</span><span class="o">.</span><span class="n">typecodes</span><span class="o">.</span><span class="n">com</span><span class="p">;</span>
+
+    <span class="m">#http</span>  <span class="m">301</span> <span class="n">redirect</span>
+    <span class="n">if</span> <span class="p">(</span> <span class="err">$</span><span class="n">host</span> <span class="o">!=</span> <span class="s1">&#39;www.typecodes.com&#39;</span> <span class="p">)</span> <span class="err">{</span>
+        <span class="n">rewrite</span> <span class="o">^/</span><span class="p">(</span><span class="o">.*</span><span class="p">)</span><span class="err">$</span> <span class="n">https</span><span class="o">://</span><span class="n">www</span><span class="o">.</span><span class="n">typecodes</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="err">$</span><span class="m">1</span> <span class="n">permanent</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="err">#####</span>  <span class="nt">web</span><span class="err">站点的根路径</span><span class="o">,</span> <span class="err">大家可自定义</span>
+    <span class="nt">root</span>   <span class="o">/</span><span class="nt">usr</span><span class="o">/</span><span class="nt">wwwroot</span><span class="o">/</span><span class="nt">typecho</span><span class="o">;</span>
+    <span class="nt">index</span>  <span class="nt">index</span><span class="nc">.php</span> <span class="nt">index</span><span class="nc">.html</span><span class="o">;</span>
+
+    <span class="err">#####</span>  <span class="nt">css</span><span class="o">/</span><span class="nt">javascript</span><span class="o">/</span><span class="err">图片等静态资源缓存的天数</span>
+    <span class="nt">location</span> <span class="o">~</span> <span class="o">.*</span><span class="err">\</span><span class="o">.(</span><span class="nt">css</span><span class="o">|</span><span class="nt">js</span><span class="o">|</span><span class="nt">ico</span><span class="o">|</span><span class="nt">png</span><span class="o">|</span><span class="nt">gif</span><span class="o">|</span><span class="nt">jpg</span><span class="o">|</span><span class="nt">json</span><span class="o">|</span><span class="nt">mp3</span><span class="o">|</span><span class="nt">mp4</span><span class="o">|</span><span class="nt">flv</span><span class="o">|</span><span class="nt">swf</span><span class="o">)(.*)</span> <span class="p">{</span>
+        <span class="n">expires</span> <span class="m">60</span><span class="n">d</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="err">#####</span>  <span class="err">禁止执行某个目录下面的</span><span class="nt">php</span><span class="err">脚本</span><span class="o">(</span><span class="err">此示例是针对</span><span class="nt">wordpress</span><span class="o">/</span><span class="nt">typecho</span><span class="err">的插件目录</span><span class="o">)</span>
+    <span class="nt">location</span> <span class="o">~</span> <span class="o">.*/</span><span class="nt">plugins</span><span class="o">/.*</span><span class="err">\</span><span class="o">.(</span><span class="nt">php</span><span class="o">|</span><span class="nt">php5</span><span class="o">|</span><span class="nt">html</span><span class="o">)$</span> <span class="p">{</span>
+        <span class="n">deny</span>  <span class="n">all</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="err">#####</span>  <span class="nt">Rewrite</span><span class="err">的伪静态法则</span><span class="o">(</span><span class="err">针对</span><span class="nt">wordpress</span><span class="o">/</span><span class="nt">typecho</span><span class="o">)</span>
+    <span class="nt">location</span> <span class="o">/</span> <span class="p">{</span>
+        <span class="n">if</span> <span class="p">(</span><span class="o">-</span><span class="n">f</span> <span class="err">$</span><span class="n">request_filename</span><span class="o">/</span><span class="n">index</span><span class="o">.</span><span class="n">html</span><span class="p">)</span><span class="err">{</span>
+            <span class="n">rewrite</span> <span class="p">(</span><span class="o">.*</span><span class="p">)</span> <span class="err">$</span><span class="m">1</span><span class="o">/</span><span class="n">index</span><span class="o">.</span><span class="n">html</span> <span class="n">break</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="nt">if</span> <span class="o">(</span><span class="nt">-f</span> <span class="o">$</span><span class="nt">request_filename</span><span class="o">/</span><span class="nt">index</span><span class="nc">.php</span><span class="o">)</span><span class="p">{</span>
+            <span class="n">rewrite</span> <span class="p">(</span><span class="o">.*</span><span class="p">)</span> <span class="err">$</span><span class="m">1</span><span class="o">/</span><span class="n">index</span><span class="o">.</span><span class="n">php</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="nt">if</span> <span class="o">(!</span><span class="nt">-f</span> <span class="o">$</span><span class="nt">request_filename</span><span class="o">)</span><span class="p">{</span>
+            <span class="n">rewrite</span> <span class="p">(</span><span class="o">.*</span><span class="p">)</span> <span class="o">/</span><span class="n">index</span><span class="o">.</span><span class="n">php</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="err">}</span>
+
+    <span class="err">#####</span>  <span class="nt">redirect</span> <span class="nt">server</span> <span class="nt">error</span> <span class="nt">pages</span> <span class="nt">to</span> <span class="nt">the</span> <span class="nt">static</span> <span class="nt">page</span> <span class="o">/</span><span class="nt">50x</span><span class="nc">.html</span>
+    <span class="nt">error_page</span>   <span class="nt">500</span> <span class="nt">502</span> <span class="nt">503</span> <span class="nt">504</span>  <span class="o">/</span><span class="nt">50x</span><span class="nc">.html</span><span class="o">;</span>
+    <span class="nt">location</span> <span class="o">=</span> <span class="o">/</span><span class="nt">50x</span><span class="nc">.html</span> <span class="p">{</span>
+        <span class="n">root</span>   <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">share</span><span class="o">/</span><span class="n">nginx</span><span class="o">/</span><span class="n">html</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="err">#####</span>  <span class="err">依葫芦画瓢设置</span> <span class="nt">http</span> <span class="nt">403</span><span class="err">、</span><span class="nt">404</span><span class="err">响应码的处理页面</span>
+    <span class="nt">error_page</span>  <span class="nt">403</span> <span class="nt">404</span>              <span class="o">/</span><span class="nt">40x</span><span class="nc">.html</span><span class="o">;</span>
+    <span class="nt">location</span> <span class="o">=</span> <span class="o">/</span><span class="nt">40x</span><span class="nc">.html</span> <span class="p">{</span>
+        <span class="n">root</span>   <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">share</span><span class="o">/</span><span class="n">nginx</span><span class="o">/</span><span class="n">html</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="err">#####</span>  <span class="nt">pass</span> <span class="nt">the</span> <span class="nt">PHP</span> <span class="nt">scripts</span> <span class="nt">to</span> <span class="nt">FastCGI</span> <span class="nt">server</span> <span class="nt">listening</span> <span class="nt">on</span> <span class="nt">127</span><span class="nc">.0.0.1</span><span class="nd">:9000</span>
+    <span class="nt">location</span>  <span class="o">~</span> <span class="o">.*</span><span class="err">\</span><span class="nc">.php</span><span class="o">(</span><span class="err">\</span><span class="o">/.*)*$</span> <span class="p">{</span>
+        <span class="n">fastcgi_split_path_info</span> <span class="o">^</span><span class="p">(</span><span class="o">.+</span><span class="err">\</span><span class="o">.</span><span class="n">php</span><span class="p">)(</span><span class="o">/.+</span><span class="p">)</span><span class="err">$</span><span class="p">;</span>
+        <span class="n">fastcgi_pass</span>   <span class="m">127</span><span class="o">.</span><span class="m">0</span><span class="o">.</span><span class="m">0</span><span class="o">.</span><span class="m">1</span><span class="o">:</span><span class="m">9000</span><span class="p">;</span>
+        <span class="n">fastcgi_index</span>  <span class="n">index</span><span class="o">.</span><span class="n">php</span><span class="p">;</span>
+        <span class="err">#####</span>  <span class="err">$</span><span class="n">document_root</span><span class="err">代表开头的</span> <span class="n">root</span> <span class="err">定义的</span><span class="n">web</span><span class="err">根路径</span>
+        <span class="n">fastcgi_param</span>  <span class="n">SCRIPT_FILENAME</span>  <span class="err">$</span><span class="n">document_root</span><span class="err">$</span><span class="n">fastcgi_script_name</span><span class="p">;</span>
+        <span class="n">include</span>        <span class="n">fastcgi_params</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="err">######</span> <span class="err">禁止访问某个重要文件</span><span class="o">(</span><span class="err">示例是禁止</span> <span class="nc">.htxxx</span> <span class="err">文件</span><span class="o">),</span> <span class="err">记得举一反三</span>
+    <span class="nt">location</span> <span class="o">~</span> <span class="o">/</span><span class="err">\</span><span class="nc">.ht</span> <span class="p">{</span>
+        <span class="n">deny</span>  <span class="n">all</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="err">}</span>
+</pre></div>
+
+
+<h5>3关于网站空白页面如何显示404错误</h5>
+<p>上面配置的404页面，只能在访问服务器上不存在的静态资源(例如.html、js、css等)时，才会通过 40x.html 显示错误提示。当访问服务器上不存在的 .php 文件时，站点会显示空白页面，即设置的 40x.html 没生效。原因是在 nginx.conf 配置文件中的 http 属性没有设置<code>fastcgi_intercept_errors on;</code>导致的。其作用是当 FastCGI 后端服务器处理请求给出 http 响应码为 4xx 和 5xx 时，就转发给 nginx，由 default.conf 配置的 error_page 项来处理，最后响应给客户端。这样就将由于不存在的 .php 脚本文件出现的404错误也引导至 40x.html 页面处理了。</p>
+<h5>4关于网站如何显示服务器500等错误</h5>
+<p>原理一样，通过上面的设置，http状态码为500等错误时，也会引导至 50x.html 页面处理。最后请注意，在一个 http 中可以启动多个 server；在一个server中，可以有多个location配置，这样就有了Nginx多站点的配置（略去）。</p>
+		    	<p class="tags">
+					<div class="post-share">
+						<ul class="post-shareul clearfix">
+							<li class="post-shareli">
+								<a href="http://note.youdao.com/memory/?url=https://typecodes.com/web/aliyuncentoslnmpnginxconf.html&title=阿里云CentOS主机 LNMP 环境配置之Nginx篇" class="post-sharea ydshare" target="_blank" rel="nofollow">有道云笔记</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://v.t.sina.com.cn/share/share.php?url=https://typecodes.com/web/aliyuncentoslnmpnginxconf.html&title=阿里云CentOS主机 LNMP 环境配置之Nginx篇&source=https://typecodes.com" class="post-sharea wbshare" target="_blank" rel="nofollow">新浪微博</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://v.t.qq.com/share/share.php?title=阿里云CentOS主机 LNMP 环境配置之Nginx篇&url=https://typecodes.com/web/aliyuncentoslnmpnginxconf.html&site=https://typecodes.com" class="post-sharea twbshare" target="_blank" rel="nofollow">腾讯微博</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=https://typecodes.com/web/aliyuncentoslnmpnginxconf.html&title=阿里云CentOS主机 LNMP 环境配置之Nginx篇&content='utf-8'" class="post-sharea qzoneshare" target="_blank" rel="nofollow">QZone</a>
+							</li>
+						</ul>
+					</div>
+					<div>
+						Tags: <a href="https://typecodes.com/tag/a-li-yun-centos.html">阿里云 centos</a>,<a href="https://typecodes.com/tag/lnmp.html">lnmp</a>,<a href="https://typecodes.com/tag/nginx.html">nginx</a>					</div>
+				</p>
+			</article>
+			
+			<div id="comments">
+				<h4 class="num">Comments &raquo;</h4>
+		    	<div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript></div>
+		    </div>
+		</div>
+		<!--3. right sider begin-->
+<div class="col-md-3" id="blog-secondary" role="complementary">
+	<section class="widget">
+		<ul class="widget-list">
+			<form id="search" method="get" action="https://typecodes.com/search.html">
+				<input type="text" name="q" id="s" size="20" x-webkit-speech="" x-webkit-grammar="builtin:search" onwebkitspeechchange="this.value = this.value.replace(this.defaultValue, '')" value="Google...." onfocus="this.value = (this.value == this.defaultValue) ? '' : this.value" onblur="this.value = (this.value == '') ? this.defaultValue : this.value">
+			</form>
+		</ul>
+	</section>
+	<section class="widget">
+		<h3 class="widget-title">Categories</h3>
+		<ul class="widget-list">
+		      <li class="current">
+		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (26)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/csharp/index.html">Csharp</a> (6)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/database/index.html">Database</a> (11)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/java/index.html">Java</a> (1)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/linux/index.html">Linux</a> (16)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/mix/index.html">Mix</a> (53)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/web/index.html">Web</a> (88)
+		      </li>
+		</ul>
+	</section>
+	<section class="widget">
+		<h3 class="widget-title">Recent Posts</h3>
+		<ul class="widget-list">
+			<li class="post">
+				<a href="https://typecodes.com/mix/sucesstypechotopelican.html">成功将博客从Typecho迁移到Pelican</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/mix/begintypechotopelican.html">准备将博客从Typecho迁移到Pelican</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/tcpconnectiontimedout.html">Linux TCP连接Connection Refused和Connection timed out的问题</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/mysqlerrornospace.html">博客MySQL服务惊魂记：Linux磁盘空间不足(Core Dump文件引爆)</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/mix/synweibophpmarkdownimgurl.html">升级博客文章同步微博的插件：PHP正则提取Markdown的图片地址</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/cppgeneralmakefile.html">Linux C/C++工程中可生成ELF、动/静态库文件的通用Makefile</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/libraryundefinedref.html">解决make编译链接动态库错误：libxx.so: undefined reference to xx</a>
+			</li>
+		</ul>
+	</section>
+	<section class="widget widget-feed">
+		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
+	</section>
+</div>
+				</div>
+			</div>
+		</div>
+		<!--4. bottom begin-->
+		<footer id="te-site-footer"><div class="container">
+	<div class="row" role="contentinfo">
+		<section class="col-md-2 col-md-offset-1">
+			<h3>Links</h3>
+			<ul><li><a href="http://diaosbook.com/" title="">diaosbook</a></li></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul>
+				<li><a href="https://typecodes.com/links.html">More..</a></li>
+			</ul>
+		</section>
+		<section class="col-md-2">
+			<h3>Following</h3>
+			<ul>
+				<li><a href="https://github.com/vfhky" class="following github" target="_blank" rel="external nofollow">GitHub</a></li>
+				<li><a href="http://weibo.com/typecodes" class="following weibo" target="_blank" rel="external nofollow">Weibo</a></li>
+				<li><a href="http://vfhky.sinaapp.com/" class="following sae" target="_blank" rel="external nofollow">SAE</a></li>
+				<li><a href="http://www.dwz.cn/mYiwa" class="following qqgroup" target="_blank" rel="external nofollow">Group</a></li>
+			</ul>
+		</section>
+		<div class="col-md-12 copyright">
+			<a href="#top"><i class="i-logo-s">TOP</i></a>
+			<p>
+				&copy; 2012-<script language="JavaScript">var date = new Date(); document.write(date.getFullYear());</script>							<a href="https://typecodes.com">TypeCodes</a>. All Rights Reserved<br>Powered by <a href="http://getpelican.com" rel="external" target="_blank">Pelican</a>. <a href="http://www.miitbeian.gov.cn/" rel="external nofollow" target="_blank">粤ICP备14050695号</a>
+			</p>
+		</div>
+	</div>
+</div>
+</footer>
+<script type="text/javascript">
+	var disqus_shortname = 'typecodes';
+	var disqus_identifier = '/web/aliyuncentoslnmpnginxconf.html';
+	var disqus_url = 'https://typecodes.com/web/aliyuncentoslnmpnginxconf.html';
+	var disqus_title = '阿里云CentOS主机 LNMP 环境配置之Nginx篇';
+	(function() {
+		var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+		dsq.src = "//" + disqus_shortname + '.disqus.com/embed.js';
+		(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	 })();
+</script>
+	</body>
+</html>

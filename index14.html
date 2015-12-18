@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="zh-CN" class="no-js">
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<title>TypeCodes</title>
+		<meta name="author" content="vfhky">
+  		<link href="https://typecodes.com/atom.xml" type="application/atom+xml" rel="alternate" title="TypeCodes Atom Feed" />
+	  	<link href="https://typecodes.com/feed.xml" type="application/rss+xml" rel="alternate" title="TypeCodes RSS Feed" />
+		<meta name="HandheldFriendly" content="True">
+		<meta name="MobileOptimized" content="320">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="renderer" content="webkit">
+		<link rel="stylesheet" href="https://dn-vfhky.qbox.me/libs/css/pelican-vfhky.css">
+		<script>
+			var _hmt = _hmt || [];
+			(function() {
+			  var hm = document.createElement("script");
+			  hm.src = "//hm.baidu.com/hm.js?c15c4ab8e91ba9ac3d5a12293cc93359";
+			  var s = document.getElementsByTagName("script")[0]; 
+			  s.parentNode.insertBefore(hm, s);
+			})();
+		</script>
+	</head>
+	<body style>
+		<!--1. header navigation begin-->
+		<header role="banner" id="te-site-header">
+			<div class="container">
+				<a href="https://typecodes.com" class="te-site-logo" role="logo" target="_self"> TypeCodes</a>
+				<ul class="nav nav-pills" id="te-site-nav" role="navigation">
+					<li><a href="https://typecodes.com">Home</a></li><li><a href="https://typecodes.com/archives.html" title="Archives">Archives</a></li><li><a href="https://typecodes.com/about.html" title="About">About</a></li></ul>
+			</div>
+		</header>
+		<div class="te-headline">
+			<div class="container">
+				<h2 class="te-headline-title"> <a href="https://typecodes.com">TypeCodes</a></h2>
+			</div>
+		</div>
+		<div class="container">
+			<div class="row">
+		<!--2. left sider begin-->
+		<div class="col-md-9" id="blog-main" role="main">
+		  	<!--article recycle-->
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/web/wplimitnogravatar.html">wordpress中限制没有Gravatar头像的访客提交评论</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2013-09-15 12:13 | 分类：<a href="https://typecodes.com/web/index.html">web</a></li>
+</ul>
+<div class="post-content fmt">
+	<h5>1 为何限制没有Gravatar头像的访客</h5>
+<p>前几天博主就一直在想着是否要限制没有gravatar头像的用户在博客留言，主要原因有三点：</p>
+<p>1、博客使用的是wordpress程序，而Gravatar早在07年就被Automattic公司收购并在wp程序上发扬光大。所以，wp博客和gravatar头像天生就是一对，当然要让他们在一起了。</p>
+<p>2、屏蔽广告。很多spamer都是没有gravatar头像的，限制没有gravatar头像的访客就等于过滤掉了相当一部分的垃圾广告。扯远一点，多说插件为众多广告商做出了巨大贡献。</p>
+
+	<p class="more"><a href="https://typecodes.com/web/wplimitnogravatar.html" title="wordpress中限制没有Gravatar头像的访客提交评论">- 阅读剩余部分 -</a></p>
+			</article>
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/mix/collectallqqapi.html">集齐腾讯开放平台的所有API接口权限</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2013-09-09 23:15 | 分类：<a href="https://typecodes.com/mix/index.html">mix</a></li>
+</ul>
+<div class="post-content fmt">
+	<h5>1 申请到第一个腾讯开放平台应用</h5>
+<p>在2012年6月份的时候，博主当时跟风申请了一个腾讯开放平台的应用。这个时候博客刚建立不久，而且当时腾讯开放平台的API授权还用的是Oauth1.0，集中在discuz论坛登录应用。所以，这个应用也一直荒废着。到今年8月底，博主看到各个云平台都打得火热，于是也想试试。因此就琢磨着申请将这个应用上线（虽然一点代码都没写）。</p>
+<h5>2 申请将应用上线</h5>
+<p>记得第一次腾讯把申请上线的应用给退了回来，原因大致是“QQ登录不规范”。应该是因为我就在wordpress后台的登录页面添加了一个QQ登录的图标，然后腾讯不同意。于是又找到官方文档（http://wiki.connect.qq.com/网站前端页面规范），细细看了一遍，最后改用了腾讯官方提供的JS SDK开发包方式放置登录按钮。只需简单两步就可以实现常见的QQ登录方式，这也是JS SDK开发包的优势所在。</p>
+
+	<p class="more"><a href="https://typecodes.com/mix/collectallqqapi.html" title="集齐腾讯开放平台的所有API接口权限">- 阅读剩余部分 -</a></p>
+			</article>
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/web/wpcommentajaxbug.html">折腾comment-ajax造成wordpress后台页面空白的BUG</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2013-09-05 23:51 | 分类：<a href="https://typecodes.com/web/index.html">web</a></li>
+</ul>
+<div class="post-content fmt">
+	<h5>1 折腾Willin Kan评论代码的一个“BUG”</h5>
+<p>前几天折腾了下Willin Kan的comment-ajax.php文件，改动了一些代码，结果博客好几天都没收到评论了。昨晚上还在纳闷，会不会是文章写得太烂了又或者是360的节点挂了？反正是百思不得其解。随便翻看着之前写的文章，突然想到了自己前几天修改了comment-ajax.php文件。会不会跟这个有关？赶紧UE打开看看！比较了下之前备份的comment_parentnt-ajax.php文件，发现最新的这份PHP文件中多出了下面几行代码。这个和前几天发现的一个BUG有关：查看了大多数有用Willin Kan大神的评论代码（comment-ajax.php、comment-ajax.js）的博客，只要在文章地址后面添加类似“?replytocom=1123'”的语句就会出现“BUG”（还在研究解决中，不多说了……）。</p>
+<div class="highlight"><pre><span class="x">//父评论不存在时，恶意提交评论</span>
+<span class="x">if(</span><span class="p">$</span><span class="nv">post</span><span class="x">-&gt;comment_parent == &quot;&quot;)</span><span class="err">{</span><span class="x"></span>
+<span class="x"> exit;  //直接退出，不给出提示</span>
+<span class="x">}</span>
+</pre></div>
+
+
+
+	<p class="more"><a href="https://typecodes.com/web/wpcommentajaxbug.html" title="折腾comment-ajax造成wordpress后台页面空白的BUG">- 阅读剩余部分 -</a></p>
+			</article>
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/web/qqapifollowweibo.html">PHP中的cURL请求及示例</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2013-09-04 00:17 | 分类：<a href="https://typecodes.com/web/index.html">web</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>经过近段时间的努力，博主研究的腾讯开放平台API接口终于有所“突破”了。今天正式上线第一个测试版的接口应用：收听腾讯微博用户。先上效果图（也是add_idol接口调用的整个流程），希望大家提提意见。</p>
+<h5>1 add_idol接口调用流程</h5>
+<p>（1）点击博客右侧栏的“腾讯微博”图标，准备接口调用。</p>
+<p><img alt="腾讯API调用接口" src="https://dn-vfhky.qbox.me/2013/09/qq_weibo_idol.png" /></p>
+
+	<p class="more"><a href="https://typecodes.com/web/qqapifollowweibo.html" title="PHP中的cURL请求及示例">- 阅读剩余部分 -</a></p>
+			</article>
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/web/phpcurlrequestsample.html">PHP中的cURL请求及示例</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2013-09-01 18:34 | 分类：<a href="https://typecodes.com/web/index.html">web</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>最近在学习腾讯开放平台API接口的过程中，看到了一个很强大的PHP库——cURL。它是利用URL语法在命令行方式下工作的文件传输工具。这篇文章是博主直接从国外一个博客翻译过来的，原文地址是：<a href="http://codular.com/curl-with-php" title="点击查看原文">http://codular.com/curl-with-php</a>。这篇文章讲的很基础，但条理很清晰，知识比较系统和全面，所以转过来收藏了！（下面的有些标题是博主画蛇添足的，大家近乎可以忽略。）</p>
+<h5>1 定义：什么是cURL</h5>
+<p>cURL允许数据传输跨广泛的协议,是一个非常强大的系统。它广泛用于跨网站发送数据，包括诸如API交互和oAuth。cURL是在它的应用范围内几乎是无所不能的，从基本的HTTP请求，到更为复杂的FTP上传或封闭式HTTPS网站的交互验证。让我们一起来看看发送一个GET和POST请求和处理返回的响应的简单区别，以及一些重要的参数说明。</p>
+
+	<p class="more"><a href="https://typecodes.com/web/phpcurlrequestsample.html" title="PHP中的cURL请求及示例">- 阅读剩余部分 -</a></p>
+			</article>
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/web/wptaoiplibapithree.html">WordPress使用淘宝IP地址库的API显示评论者的位置信息（三）</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2013-09-01 15:49 | 分类：<a href="https://typecodes.com/web/index.html">web</a></li>
+</ul>
+<div class="post-content fmt">
+	<h5>1 PHP版本的淘宝IP地址库接口说明</h5>
+<p>在上一篇文章<a href="https://typecodes.com/web/wptaoiplibapitwo.html" title="《WordPress使用淘宝IP地址库的API显示评论者的位置信息（二）》">《WordPress使用淘宝IP地址库的API显示评论者的位置信息（二）》</a>中，vfhky使用了jQuery来获取淘宝的API接口返回的数据。那么这篇文章就接着写如何直接使用PHP实现WordPress调用淘宝IP地址库的API显示评论者的位置信息。相比上一个jQuery的版本，这个PHP版本的代码就简单得多了用。只需两步就可以实现。</p>
+
+	<p class="more"><a href="https://typecodes.com/web/wptaoiplibapithree.html" title="WordPress使用淘宝IP地址库的API显示评论者的位置信息（三）">- 阅读剩余部分 -</a></p>
+			</article>
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/web/wptaoiplibapitwo.html">WordPress使用淘宝IP地址库的API显示评论者的位置信息（二）</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2013-09-01 15:03 | 分类：<a href="https://typecodes.com/web/index.html">web</a></li>
+</ul>
+<div class="post-content fmt">
+	<h5>1 淘宝IP地址库的接口说明</h5>
+<p>在上一篇文章<a href="https://typecodes.com/web/wptaoiplibapione.html" title="查看详情">《WordPress使用淘宝IP地址库的API显示评论者的位置信息（一）》</a>中，vfhky使用了新浪工具提供的这个IP接口显示博客评论者的位置信息。那么这篇文章就接着写在WordPress中使用淘宝IP地址库的API显示评论者的位置信息。这个功能的实现需要储备一些jQuery、json等基础知识，所以如果说上一篇是jQuery版本的新浪IP地址库的API应用，那么这篇文章就是jQuery版本的淘宝IP地址库的API应用。淘宝IP地址库的接口说明文档地址是：<a href="http://ip.taobao.com/instructions.php" title="淘宝IP地址库的接口说明文档地址">http://ip.taobao.com/instructions.php</a>，大家可以去参考下。下面是在WP博客中如何利用淘宝IP地址库实现评论者位置详情的显示。</p>
+
+	<p class="more"><a href="https://typecodes.com/web/wptaoiplibapitwo.html" title="WordPress使用淘宝IP地址库的API显示评论者的位置信息（二）">- 阅读剩余部分 -</a></p>
+			</article>
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/web/testapiedgetoolreturnmessage.html">调试API接口的利器——获取返回数据中的信息提示字段</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2013-08-29 21:03 | 分类：<a href="https://typecodes.com/web/index.html">web</a></li>
+</ul>
+<div class="post-content fmt">
+	<h5>1 调试腾讯开放平台QQ登录API</h5>
+<p>最近博主在测试腾讯开放平台的QQ登录API时，遇到了一个棘手问题。根据腾讯官方API文档，vfhky写了一个调用 <a href="http://wiki.connect.qq.com/get_info" title="查看腾讯官方关于get_info的API文档">get_info</a> 接口的程序。该接口能够获取QQ登录用户的微博信息，例如用户的出身日期、教育信息、FANS数目、微博内容等。具体大家也可以看看官方给出的API接口信息，地址是 http://wiki.connect.qq.com/get_info。</p>
+<p><img alt="腾讯后台API管理" src="https://dn-vfhky.qbox.me/2013/08/QQAPI_Oauth.png" title="腾讯后台API管理" /></p>
+
+	<p class="more"><a href="https://typecodes.com/web/testapiedgetoolreturnmessage.html" title="调试API接口的利器——获取返回数据中的信息提示字段">- 阅读剩余部分 -</a></p>
+			</article>
+		  	<!--page navigation-->
+<ol class="page-navigator">
+<li class="prev"><a href="https://typecodes.com/index13.html">&laquo; 前一页</a></li><li><a href="https://typecodes.com/index.html">1</a>
+       <li><a href="https://typecodes.com/index2.html">2</a>
+       		</li><li><span>...</span></li><li><a href="https://typecodes.com/index12.html">12</a>
+       		</li><li><a href="https://typecodes.com/index13.html">13</a>
+       		</li><li class="current"><a href="https://typecodes.com/index14.html">14</a>
+       		</li><li><a href="https://typecodes.com/index15.html">15</a>
+       		</li><li><span>...</span></li><li><a href="https://typecodes.com/index25.html">25</a>
+       		</li><li><a href="https://typecodes.com/index26.html">26</a>
+       		</li><li class="next">
+       		<a href="https://typecodes.com/index15.html">后一页 &raquo;</a>
+       </li></ol>		</div>
+		<!--3. right sider begin-->
+<div class="col-md-3" id="blog-secondary" role="complementary">
+	<section class="widget">
+		<ul class="widget-list">
+			<form id="search" method="get" action="https://typecodes.com/search.html">
+				<input type="text" name="q" id="s" size="20" x-webkit-speech="" x-webkit-grammar="builtin:search" onwebkitspeechchange="this.value = this.value.replace(this.defaultValue, '')" value="Google...." onfocus="this.value = (this.value == this.defaultValue) ? '' : this.value" onblur="this.value = (this.value == '') ? this.defaultValue : this.value">
+			</form>
+		</ul>
+	</section>
+	<section class="widget">
+		<h3 class="widget-title">Categories</h3>
+		<ul class="widget-list">
+		      <li class="current">
+		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (26)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/csharp/index.html">Csharp</a> (6)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/database/index.html">Database</a> (11)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/java/index.html">Java</a> (1)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/linux/index.html">Linux</a> (16)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/mix/index.html">Mix</a> (53)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/web/index.html">Web</a> (88)
+		      </li>
+		</ul>
+	</section>
+	<section class="widget">
+		<h3 class="widget-title">Recent Posts</h3>
+		<ul class="widget-list">
+			<li class="post">
+				<a href="https://typecodes.com/mix/sucesstypechotopelican.html">成功将博客从Typecho迁移到Pelican</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/mix/begintypechotopelican.html">准备将博客从Typecho迁移到Pelican</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/tcpconnectiontimedout.html">Linux TCP连接Connection Refused和Connection timed out的问题</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/mysqlerrornospace.html">博客MySQL服务惊魂记：Linux磁盘空间不足(Core Dump文件引爆)</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/mix/synweibophpmarkdownimgurl.html">升级博客文章同步微博的插件：PHP正则提取Markdown的图片地址</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/cppgeneralmakefile.html">Linux C/C++工程中可生成ELF、动/静态库文件的通用Makefile</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/libraryundefinedref.html">解决make编译链接动态库错误：libxx.so: undefined reference to xx</a>
+			</li>
+		</ul>
+	</section>
+	<section class="widget widget-feed">
+		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
+	</section>
+</div>
+				</div>
+			</div>
+		</div>
+		<!--4. bottom begin-->
+		<footer id="te-site-footer"><div class="container">
+	<div class="row" role="contentinfo">
+		<section class="col-md-2 col-md-offset-1">
+			<h3>Links</h3>
+			<ul><li><a href="http://diaosbook.com/" title="">diaosbook</a></li></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul>
+				<li><a href="https://typecodes.com/links.html">More..</a></li>
+			</ul>
+		</section>
+		<section class="col-md-2">
+			<h3>Following</h3>
+			<ul>
+				<li><a href="https://github.com/vfhky" class="following github" target="_blank" rel="external nofollow">GitHub</a></li>
+				<li><a href="http://weibo.com/typecodes" class="following weibo" target="_blank" rel="external nofollow">Weibo</a></li>
+				<li><a href="http://vfhky.sinaapp.com/" class="following sae" target="_blank" rel="external nofollow">SAE</a></li>
+				<li><a href="http://www.dwz.cn/mYiwa" class="following qqgroup" target="_blank" rel="external nofollow">Group</a></li>
+			</ul>
+		</section>
+		<div class="col-md-12 copyright">
+			<a href="#top"><i class="i-logo-s">TOP</i></a>
+			<p>
+				&copy; 2012-<script language="JavaScript">var date = new Date(); document.write(date.getFullYear());</script>							<a href="https://typecodes.com">TypeCodes</a>. All Rights Reserved<br>Powered by <a href="http://getpelican.com" rel="external" target="_blank">Pelican</a>. <a href="http://www.miitbeian.gov.cn/" rel="external nofollow" target="_blank">粤ICP备14050695号</a>
+			</p>
+		</div>
+	</div>
+</div>
+</footer>
+<script type="text/javascript">
+	var disqus_shortname = 'typecodes';
+	(function() {
+		var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+		dsq.src = "//" + disqus_shortname + '.disqus.com/embed.js';
+		(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	 })();
+</script>
+	</body>
+</html>

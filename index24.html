@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="zh-CN" class="no-js">
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<title>TypeCodes</title>
+		<meta name="author" content="vfhky">
+  		<link href="https://typecodes.com/atom.xml" type="application/atom+xml" rel="alternate" title="TypeCodes Atom Feed" />
+	  	<link href="https://typecodes.com/feed.xml" type="application/rss+xml" rel="alternate" title="TypeCodes RSS Feed" />
+		<meta name="HandheldFriendly" content="True">
+		<meta name="MobileOptimized" content="320">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="renderer" content="webkit">
+		<link rel="stylesheet" href="https://dn-vfhky.qbox.me/libs/css/pelican-vfhky.css">
+		<script>
+			var _hmt = _hmt || [];
+			(function() {
+			  var hm = document.createElement("script");
+			  hm.src = "//hm.baidu.com/hm.js?c15c4ab8e91ba9ac3d5a12293cc93359";
+			  var s = document.getElementsByTagName("script")[0]; 
+			  s.parentNode.insertBefore(hm, s);
+			})();
+		</script>
+	</head>
+	<body style>
+		<!--1. header navigation begin-->
+		<header role="banner" id="te-site-header">
+			<div class="container">
+				<a href="https://typecodes.com" class="te-site-logo" role="logo" target="_self"> TypeCodes</a>
+				<ul class="nav nav-pills" id="te-site-nav" role="navigation">
+					<li><a href="https://typecodes.com">Home</a></li><li><a href="https://typecodes.com/archives.html" title="Archives">Archives</a></li><li><a href="https://typecodes.com/about.html" title="About">About</a></li></ul>
+			</div>
+		</header>
+		<div class="te-headline">
+			<div class="container">
+				<h2 class="te-headline-title"> <a href="https://typecodes.com">TypeCodes</a></h2>
+			</div>
+		</div>
+		<div class="container">
+			<div class="row">
+		<!--2. left sider begin-->
+		<div class="col-md-9" id="blog-main" role="main">
+		  	<!--article recycle-->
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/mix/chromegoagent.html">翻越那道墙，用谷歌Goagent打造自己的chrome利器</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2012-07-25 22:10 | 分类：<a href="https://typecodes.com/mix/index.html">mix</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>网络的crossover，有很多方法。比如，通用的Free Gate软件等，也有用vpn代理的。对于第一种方法，一般这种软件都比较贱，非要在你使用的时候，时不时地打开一些网页来提醒你它的存在；对于第二种方法，免费的vpn已经比较少了，就算有也是有流量限制或者网速限制的。这篇文章推荐使用谷歌的Goagent代理，来打造自己的cross利器！废话少说，具体步骤如下说明：</p>
+<h5>1 全过程需要有自己的Gmail账号</h5>
+<p>没有的话，请点击以下链接：<a href="https://mail.google.com/mail/signup" title="Gmail注册">Gmail注册</a>。</p>
+
+	<p class="more"><a href="https://typecodes.com/mix/chromegoagent.html" title="翻越那道墙，用谷歌Goagent打造自己的chrome利器">- 阅读剩余部分 -</a></p>
+			</article>
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/web/crlfloophole.html">配置IIS出现错误的解决方法</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2012-07-24 13:31 | 分类：<a href="https://typecodes.com/web/index.html">web</a></li>
+</ul>
+<div class="post-content fmt">
+	<h5>1 问题描述</h5>
+<p>昨天博客重新改用了一个插件，这个插件虽然也是wordpress官方插件，但是在安装之后网站就出现了一个高危漏洞。根据WASC Threat Classification的说明，该漏洞名称叫做“HTTP响应拆分漏洞”，也叫“CRLF注入攻击”。CR、LF分别对应回车（%0d）、换行（%0a）字符。HTTP头由很多被CRLF组合分离的行构成，每行的结构都是“键：值”。如果用户输入的值部分注入了CRLF字符，它有可能改变的HTTP报头结构。</p>
+<p>HTTP响应拆分是一个新的应用程序的攻击技术，使网页缓存中毒，跨用户涂改，如各种新的攻击，劫持用户的敏感信息和跨站点脚本（XSS）的网页。</p>
+
+	<p class="more"><a href="https://typecodes.com/web/crlfloophole.html" title="配置IIS出现错误的解决方法">- 阅读剩余部分 -</a></p>
+			</article>
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/web/siterobotshtaccess.html">网站的robots和.htaccess应该如何写</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2012-07-19 11:36 | 分类：<a href="https://typecodes.com/web/index.html">web</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>首先，我们了解一下robots和.htacces这两个文件是什么：①robots即文件robots.txt，存放位置为网站的根目录。它是搜索引擎中访问网站的时候要查看的第一个文件。robots.txt文件告诉蜘蛛程序在服务器上什么文件是可以被查看并收录的，而什么文件又是不能让这些搜索引擎查看和收录的。因为一旦一些服务器上的重要文件目录或者文件被别有用心的人搜索到的话，会构成网站安全的巨大威胁。所以有必要写好网站的robots。②.htaccess文件是Apache服务器中的一个配置文件，它负责相关目录下的网页配置。通过htaccess文件，可以帮我们实现：网页301重定向、自定义404错误页面、改变文件扩展名、允许/阻止特定的用户(ip)或者目录的访问、禁止目录列表、配置默认文档等功能。</p>
+
+	<p class="more"><a href="https://typecodes.com/web/siterobotshtaccess.html" title="网站的robots和.htaccess应该如何写">- 阅读剩余部分 -</a></p>
+			</article>
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/web/combinededediscuz.html">DEDE织梦和Discuz整合方法</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2012-07-04 13:40 | 分类：<a href="https://typecodes.com/web/index.html">web</a></li>
+</ul>
+<div class="post-content fmt">
+	<h5>1 本地织梦和dz安装目录如下：127.0.0.1/dd，127.0.0.1/dz</h5>
+<p>其中dz已经安装了ucenter（在127.0.0.1/dz/uc_server），在dz后台的“应用管理”中可以看到有个“Discuz！Board”通信成功的应用。</p>
+
+	<p class="more"><a href="https://typecodes.com/web/combinededediscuz.html" title="DEDE织梦和Discuz整合方法">- 阅读剩余部分 -</a></p>
+			</article>
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/csharp/exeflashacross.html">解决C#生成的.exe文件“一闪而过”的问题</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2012-07-04 13:02 | 分类：<a href="https://typecodes.com/csharp/index.html">csharp</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>在点击用C#命令提示工具生成.exe文件时，很可能会出现“一闪而过”的问题。</p>
+<p>方法1：这个方法是通用的：在.CS代码的最后加上这句 Console.ReadLine(); ，它的作用是“等待用户输入”，这样DOS窗口直到你敲击回车键才会关闭；或者在程序最后加上一句 Console.ReadKey(); ，这样DOS窗口接收一个字符才会退出。</p>
+<p>方法2 ...</p>
+	<p class="more"><a href="https://typecodes.com/csharp/exeflashacross.html" title="解决C#生成的.exe文件“一闪而过”的问题">- 阅读剩余部分 -</a></p>
+			</article>
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/mix/delwin7surpic.html">如何删除Win7任务栏上通知区域中的多余图标</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2012-07-04 12:24 | 分类：<a href="https://typecodes.com/mix/index.html">mix</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>在Win7桌面右下角的通知区域图标中，会看到很多通知图标，但很多人会遇到这样的情况，那就是自己明明已经删除了的软件，但是它还是会以通知图标的形式出现在这个通知区域内。那么我们又如何删除这些图标从而得到一个简洁的通知图标呢？</p>
+<p>步骤1 按住 "win+R" 打开"运行"窗口，然后输入 “regedit” 打开注册表编辑器。</p>
+
+	<p class="more"><a href="https://typecodes.com/mix/delwin7surpic.html" title="如何删除Win7任务栏上通知区域中的多余图标">- 阅读剩余部分 -</a></p>
+			</article>
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/web/configiiserr.html">配置IIS出现错误的解决方法</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2012-07-03 22:40 | 分类：<a href="https://typecodes.com/web/index.html">web</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>在给ASP或者ASP.NET等需要配置IIS服务器的过程中，很可能会遇到以下两种错误。尤其是用Win7系统的，配置IIS7.0版本比用XP系统配置IIS5.1版本而言要复杂复杂一些。当同时需要配置ASP和ASP.NET共存的IIS服务器环境时会更有挑战性。下面是我的两个总结:</p>
+<h5>1 错误提示：ADODB.Connection 错误 '800a0e7a'，未找到提供程序。</h5>
+<p>解决：原来的网站是在32位的windows环境中生成的导致在win764位中出现错误（IIS7应用程序池默认没有启用32位程序，也就是说如果使用的是64位操作系统，而没有64位的Jet 4.0驱动程序，那么就要在IIS7中启用32位程序）。此时点击IIS管理器左边的“应用程序池”在“启用32位应用程序”选择“True”。</p>
+
+	<p class="more"><a href="https://typecodes.com/web/configiiserr.html" title="配置IIS出现错误的解决方法">- 阅读剩余部分 -</a></p>
+			</article>
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/database/phpaspconndb.html">PHP和ASP的数据库连接代码</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2012-07-01 13:27 | 分类：<a href="https://typecodes.com/database/index.html">database</a></li>
+</ul>
+<div class="post-content fmt">
+	<h5>（一）PHP的连接代码</h5>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8</pre></div></td><td class="code"><div class="highlight"><pre><span class="cp">&lt;?php</span>
+    <span class="nv">$hostname</span><span class="o">=</span><span class="s2">&quot;hostname&quot;</span><span class="p">;</span><span class="c1">//MySQL主机/服务器名</span>
+    <span class="nv">$dbname</span><span class="o">=</span><span class="s2">&quot;dbname&quot;</span><span class="p">;</span><span class="c1">//MySQL数据库名</span>
+    <span class="nv">$username</span><span class="o">=</span><span class="s2">&quot;username&quot;</span><span class="p">;</span><span class="c1">//MySQL用户名</span>
+    <span class="nv">$password</span><span class="o">=</span><span class="s2">&quot;password&quot;</span><span class="p">;</span><span class="c1">//MySQL密码</span>
+    <span class="nv">$conn</span><span class="o">=</span><span class="nb">mysql_connect</span><span class="p">(</span><span class="nv">$hostname</span><span class="p">,</span><span class="nv">$username</span><span class="p">,</span><span class="nv">$password</span><span class="p">)</span> <span class="k">or</span> <span class="nb">trigger_error</span><span class="p">(</span><span class="nb">mysql_error</span><span class="p">(),</span><span class="nx">E_USER_ERROR</span><span class="p">);</span><span class="c1">//登录并连接MySQL</span>
+    <span class="nb">mysql_select_db</span><span class="p">(</span><span class="nv">$dbname</span><span class="p">);</span><span class="c1">//选择数据库dbname</span>
+<span class="cp">?&gt;</span><span class="x"></span>
+</pre></div>
+</td></tr></table>
+
+<p>将上述代码另存为conn.php，就可以通过在页面加入 require("conn.php"); 调用了。</p>
+
+	<p class="more"><a href="https://typecodes.com/database/phpaspconndb.html" title="PHP和ASP的数据库连接代码">- 阅读剩余部分 -</a></p>
+			</article>
+		  	<!--page navigation-->
+<ol class="page-navigator">
+<li class="prev"><a href="https://typecodes.com/index23.html">&laquo; 前一页</a></li><li><a href="https://typecodes.com/index.html">1</a>
+       <li><a href="https://typecodes.com/index2.html">2</a>
+       		</li><li><span>...</span></li><li><a href="https://typecodes.com/index20.html">20</a>
+       		</li><li><a href="https://typecodes.com/index21.html">21</a>
+       		</li><li><a href="https://typecodes.com/index22.html">22</a>
+       		</li><li><a href="https://typecodes.com/index23.html">23</a>
+       		</li><li class="current"><a href="https://typecodes.com/index24.html">24</a>
+       		</li><li><a href="https://typecodes.com/index25.html">25</a>
+       		</li><li><a href="https://typecodes.com/index26.html">26</a>
+       		</li><li class="next">
+       		<a href="https://typecodes.com/index25.html">后一页 &raquo;</a>
+       </li></ol>		</div>
+		<!--3. right sider begin-->
+<div class="col-md-3" id="blog-secondary" role="complementary">
+	<section class="widget">
+		<ul class="widget-list">
+			<form id="search" method="get" action="https://typecodes.com/search.html">
+				<input type="text" name="q" id="s" size="20" x-webkit-speech="" x-webkit-grammar="builtin:search" onwebkitspeechchange="this.value = this.value.replace(this.defaultValue, '')" value="Google...." onfocus="this.value = (this.value == this.defaultValue) ? '' : this.value" onblur="this.value = (this.value == '') ? this.defaultValue : this.value">
+			</form>
+		</ul>
+	</section>
+	<section class="widget">
+		<h3 class="widget-title">Categories</h3>
+		<ul class="widget-list">
+		      <li class="current">
+		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (26)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/csharp/index.html">Csharp</a> (6)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/database/index.html">Database</a> (11)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/java/index.html">Java</a> (1)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/linux/index.html">Linux</a> (16)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/mix/index.html">Mix</a> (53)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/web/index.html">Web</a> (88)
+		      </li>
+		</ul>
+	</section>
+	<section class="widget">
+		<h3 class="widget-title">Recent Posts</h3>
+		<ul class="widget-list">
+			<li class="post">
+				<a href="https://typecodes.com/mix/sucesstypechotopelican.html">成功将博客从Typecho迁移到Pelican</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/mix/begintypechotopelican.html">准备将博客从Typecho迁移到Pelican</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/tcpconnectiontimedout.html">Linux TCP连接Connection Refused和Connection timed out的问题</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/mysqlerrornospace.html">博客MySQL服务惊魂记：Linux磁盘空间不足(Core Dump文件引爆)</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/mix/synweibophpmarkdownimgurl.html">升级博客文章同步微博的插件：PHP正则提取Markdown的图片地址</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/cppgeneralmakefile.html">Linux C/C++工程中可生成ELF、动/静态库文件的通用Makefile</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/libraryundefinedref.html">解决make编译链接动态库错误：libxx.so: undefined reference to xx</a>
+			</li>
+		</ul>
+	</section>
+	<section class="widget widget-feed">
+		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
+	</section>
+</div>
+				</div>
+			</div>
+		</div>
+		<!--4. bottom begin-->
+		<footer id="te-site-footer"><div class="container">
+	<div class="row" role="contentinfo">
+		<section class="col-md-2 col-md-offset-1">
+			<h3>Links</h3>
+			<ul><li><a href="http://diaosbook.com/" title="">diaosbook</a></li></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul>
+				<li><a href="https://typecodes.com/links.html">More..</a></li>
+			</ul>
+		</section>
+		<section class="col-md-2">
+			<h3>Following</h3>
+			<ul>
+				<li><a href="https://github.com/vfhky" class="following github" target="_blank" rel="external nofollow">GitHub</a></li>
+				<li><a href="http://weibo.com/typecodes" class="following weibo" target="_blank" rel="external nofollow">Weibo</a></li>
+				<li><a href="http://vfhky.sinaapp.com/" class="following sae" target="_blank" rel="external nofollow">SAE</a></li>
+				<li><a href="http://www.dwz.cn/mYiwa" class="following qqgroup" target="_blank" rel="external nofollow">Group</a></li>
+			</ul>
+		</section>
+		<div class="col-md-12 copyright">
+			<a href="#top"><i class="i-logo-s">TOP</i></a>
+			<p>
+				&copy; 2012-<script language="JavaScript">var date = new Date(); document.write(date.getFullYear());</script>							<a href="https://typecodes.com">TypeCodes</a>. All Rights Reserved<br>Powered by <a href="http://getpelican.com" rel="external" target="_blank">Pelican</a>. <a href="http://www.miitbeian.gov.cn/" rel="external nofollow" target="_blank">粤ICP备14050695号</a>
+			</p>
+		</div>
+	</div>
+</div>
+</footer>
+<script type="text/javascript">
+	var disqus_shortname = 'typecodes';
+	(function() {
+		var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+		dsq.src = "//" + disqus_shortname + '.disqus.com/embed.js';
+		(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	 })();
+</script>
+	</body>
+</html>

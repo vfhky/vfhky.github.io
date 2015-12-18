@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="zh-CN" class="no-js">
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<title>分类 web 下的文章 - TypeCodes</title>
+		<meta name="author" content="vfhky">
+  		<link href="https://typecodes.com/atom.xml" type="application/atom+xml" rel="alternate" title="TypeCodes Atom Feed" />
+	  	<link href="https://typecodes.com/feed.xml" type="application/rss+xml" rel="alternate" title="TypeCodes RSS Feed" />
+		<meta name="HandheldFriendly" content="True">
+		<meta name="MobileOptimized" content="320">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="renderer" content="webkit">
+		<link rel="stylesheet" href="https://dn-vfhky.qbox.me/libs/css/pelican-vfhky.css">
+		<script>
+			var _hmt = _hmt || [];
+			(function() {
+			  var hm = document.createElement("script");
+			  hm.src = "//hm.baidu.com/hm.js?c15c4ab8e91ba9ac3d5a12293cc93359";
+			  var s = document.getElementsByTagName("script")[0]; 
+			  s.parentNode.insertBefore(hm, s);
+			})();
+		</script>
+	</head>
+	<body style>
+		<!--1. header navigation begin-->
+		<header role="banner" id="te-site-header">
+			<div class="container">
+				<a href="https://typecodes.com" class="te-site-logo" role="logo" target="_self"> TypeCodes</a>
+				<ul class="nav nav-pills" id="te-site-nav" role="navigation">
+					<li><a href="https://typecodes.com">Home</a></li><li><a href="https://typecodes.com/archives.html" title="Archives">Archives</a></li><li><a href="https://typecodes.com/about.html" title="About">About</a></li></ul>
+			</div>
+		</header>
+		<div class="te-headline">
+			<div class="container">
+				<h2 class="te-headline-title"> <a href="https://typecodes.com">TypeCodes</a></h2>
+			</div>
+		</div>
+		<div class="container">
+			<div class="row">
+		<!--2. left sider begin-->
+		<div class="col-md-9" id="blog-main" role="main">
+		  	<!--article recycle-->
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/web/typechomp3player.html">音乐播放器PlayAtWill for typecho插件（移植自wordpress）</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2014-09-05 22:53 | 分类：<a href="https://typecodes.com/web/index.html">web</a></li>
+</ul>
+<div class="post-content fmt">
+	<h5>1 移植wordpress音乐播放器到typecho</h5>
+<p>在之前的wordpress主题 [vfhky] 中，集成了三款不同风格的<a href="https://typecodes.com/mix/vfhkyinsertmusicplayer.html" title="教程：主题【vfhky】如何在文章中插入音乐播放器">音乐播放器</a>，觉得挺不错的。于是想把它们移植到typecho中，顺便学习一下typecho插件的制作。</p>
+<p>由于typecho不能像wordpress那样可直接在functions.php中使用hook，它只能以插件plugins的形式实现。</p>
+
+	<p class="more"><a href="https://typecodes.com/web/typechomp3player.html" title="音乐播放器PlayAtWill for typecho插件（移植自wordpress）">- 阅读剩余部分 -</a></p>
+			</article>
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/web/phpunixtimeconvert.html">PHP中将Unix timestamp时间戳转换成北京时间</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2014-08-19 22:12 | 分类：<a href="https://typecodes.com/web/index.html">web</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>由于博客刚从wordpress转到typecho，所以对之前的数据库需要处理。在wordpress数据库中，文章和评论的时间记录形式和typecho不同：wordpress中登记的是北京时间，形如 2014-08-19 21:05:27；而typecho数据库中登记的是时间戳Unix timestamp，形如1408456593（对应标准北京时间是 2014/8/19 21:56:33 ）。</p>
+<p>于是，我在typecho中用<code>date('Y-m-d H:i', $older_date)</code>函数把从数据库读取出来的Unix timestamp格式的<code>$older_date</code>转换成形如 2014-08-19 21:05 的北京时间后，发现比当前的北京时间少了8个小时。GG一番，原来是时区导致的：格林威治时间与中国东八区本地时间相差8个时差。解决方法如下：</p>
+
+	<p class="more"><a href="https://typecodes.com/web/phpunixtimeconvert.html" title="PHP中将Unix timestamp时间戳转换成北京时间">- 阅读剩余部分 -</a></p>
+			</article>
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/web/mysqlimportmessy.html">完美解决Mysql导入数据库中文乱码的问题</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2014-08-18 22:24 | 分类：<a href="https://typecodes.com/web/index.html">web</a></li>
+</ul>
+<div class="post-content fmt">
+	<h5>1 问题由来：博客从 WordPress 转向 Typecho</h5>
+<p>在由 <a href="https://typecodes.com/mix/eventualwptotypecho.html" title="《终于从WordPress转向Typecho了》">WordPress 转向 Typecho</a> 的过程中，主要难点是将 WordPress 中的文章和评论数据用 <a href="http://plugins.typecho.me/plugins/wordpress-to-typecho.html" title="插件wordpress to typecho">wordpress to typecho</a> 插件剥离出来。经整理后再重新将文章转换为 markdown 格式发布到由ty搭建的本博客上，最后把评论导入到对应的文章下面，并对评论id重新排序。</p>
+<h5>2 本地编辑剥离出的文章和评论的.sql备份文件</h5>
+<p>通过插件把wordpress中文章和评论的数据转换成 typecho 形式的文章和评论数据，并导出为.sql备份文件。由于评论数据有1521条，对其id重新排序比较困难，所以博主将它们分拆为两个 .sql 文件（其中一个是utf-8格式的resultsql1.sql，另一个是gbk格式的resultsql2.sql）。</p>
+
+	<p class="more"><a href="https://typecodes.com/web/mysqlimportmessy.html" title="完美解决Mysql导入数据库中文乱码的问题">- 阅读剩余部分 -</a></p>
+			</article>
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/web/installtypechofail.html">解决阿里云无法安装typecho 1.0，页面全变空白</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2014-08-17 21:33 | 分类：<a href="https://typecodes.com/web/index.html">web</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>在Windows中安装 typecho 比较简单，只要先创建了数据库，然后安装过程和wordpress也类似。但是之前博主在自己的阿里云CentOS 6.5系统中安装 typecho，却出现了问题。</p>
+<h5>1 问题描述</h5>
+<p>先用 mysql 的一个用户创建了一个数据库，然后进入typecho的安装页面，填写好相关信息。typecho 会自动检测输入的数据库信息是否正确。如果正确，那么就会出现下图的页面。因为博客的根目录权限是不可写的，所以typecho程序无法自动生成配置文件 config.inc.php 。于是把里面的代码复制出来，并在根目录下新建文件 config.inc.php ，然后把复制的代码粘贴进去。结果在点击“创建完毕，继续安装”后，安装页面就跳转到空白页面了。</p>
+<p><img alt="点击“创建完毕，继续安装”后，安装页面就跳转到空白页面" src="https://dn-vfhky.qbox.me/2014/08/typechoconfig.png" title="点击“创建完毕，继续安装”后，安装页面就跳转到空白页面" /></p>
+
+	<p class="more"><a href="https://typecodes.com/web/installtypechofail.html" title="解决阿里云无法安装typecho 1.0，页面全变空白">- 阅读剩余部分 -</a></p>
+			</article>
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/web/iptablessshnologin.html">阿里云iptables防火墙配置出错导致ssh无法远程登录</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2014-08-16 23:19 | 分类：<a href="https://typecodes.com/web/index.html">web</a></li>
+</ul>
+<div class="post-content fmt">
+	<h5>1 悲催的 iptables 探索</h5>
+<p>由于之前对 iptables 不熟悉，所以在配置 iptables 的时候，直接执行命令<code>iptables -F</code>。结果导致 Securecrt 中所有连接远端服务器的窗口都断掉了，而且博客的所有页面都无法打开。心中顿时一慌，ssh无法登录，即使博客中的程序和数据库已经备份了也无法取出了。</p>
+<p>网上搜了一下，原来在使用这个命令之前一定要先执行命令<code>iptables -P INPUT ACCEPT</code>。</p>
+<div class="highlight"><pre>###### 即先把 policy 设定为 ACCEPT, 允许所有的封包传输. 否则, 当前连接远程服务器的终端会立即断掉
+[root@typecodes ~]# iptables -P INPUT ACCEPT
+###### 可以通过清除所有规则来暂时停止防火墙：(警告：这只适合在没有配置防火墙的环境中，如果已经配置过默认规则为deny的环境，此步骤将使系统的所有网络访问中断)
+[root@typecodes ~]# iptables -F
+</pre></div>
+
+
+
+	<p class="more"><a href="https://typecodes.com/web/iptablessshnologin.html" title="阿里云iptables防火墙配置出错导致ssh无法远程登录">- 阅读剩余部分 -</a></p>
+			</article>
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/web/aliyuncentoslnmpiptables.html">阿里云CentOS主机 LNMP 环境之主机安全篇二</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2014-08-16 20:26 | 分类：<a href="https://typecodes.com/web/index.html">web</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>在<a href="https://typecodes.com/web/aliyuncentoslnmphostssh.html" title="阿里云CentOS主机 LNMP 环境之主机安全篇一">前面一篇文章</a>介绍了阿里云的 CentOS 系统，用户如何通过 ssh 登陆方式降低主机被入侵的几率。那么这篇文章主要分享通过配置 iptables 防火墙来进一步强化 linux 主机防护。</p>
+<p>之前在探索 iptables 也发生过惨案，详见<a href="https://typecodes.com/web/iptablessshnologin.html" title="阿里云iptables防火墙配置出错导致ssh无法远程登录">此文</a>。</p>
+
+	<p class="more"><a href="https://typecodes.com/web/aliyuncentoslnmpiptables.html" title="阿里云CentOS主机 LNMP 环境之主机安全篇二">- 阅读剩余部分 -</a></p>
+			</article>
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/web/aliyuncentoslnmphostssh.html">阿里云CentOS主机 LNMP 环境之主机安全篇一</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2014-08-16 16:32 | 分类：<a href="https://typecodes.com/web/index.html">web</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>在<a href="https://typecodes.com/web/aliyuncentoslnmpwebsafeconf.html" title="阿里云CentOS主机 LNMP 环境之web安全篇">前面一篇文章</a>介绍了阿里云的CentOS 6.5系统 LNMP 环境下，如何让 web 站点的更为安全。这篇文章主要从用户登录主机方式入手，简单分享下如何让自己的 Linux 主机更安全。</p>
+<h5>1 禁止 CentOS 系统中除 root 外的用户登录</h5>
+<div class="highlight"><pre>###### 查看 CentOS 系统中的所有用户
+[root@typecodes ~]# cat /etc/passwd
+root:x:0:0:root:/root:/bin/bash
+bin:x:1:1:bin:/bin:/sbin/nologin
+###### 只需简单在 /etc 目录下建立 nologin 文件即可禁止除root外的用户登录
+[root@typecodes ~]# touch /etc/nologin
+</pre></div>
+
+
+
+	<p class="more"><a href="https://typecodes.com/web/aliyuncentoslnmphostssh.html" title="阿里云CentOS主机 LNMP 环境之主机安全篇一">- 阅读剩余部分 -</a></p>
+			</article>
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/web/aliyuncentoslnmpwebsafeconf.html">阿里云CentOS主机 LNMP 环境之web安全篇</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2014-08-15 21:25 | 分类：<a href="https://typecodes.com/web/index.html">web</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>前面几篇文章介绍了阿里云的CentOS 6.5系统中如何搭建和配置 LNMP 环境，这篇文章主要说说 web 站点的安全配置。</p>
+<h5>1 修改 CentOS 系统的主机名(关系不大, 看个人喜好)</h5>
+<p>默认同开通的阿里云 Linux 主机都是以 AY+随机数 命名的，修改方法如下：</p>
+<div class="highlight"><pre>[root@typecodes ~]# vi /etc/sysconfig/network
+###### 修改主机名HOSTNAME, 例如 HOSTNAME=typecodes , 然后:wq保存退出
+HOSTNAME=typecodes
+###### 接着执行 hostname 命令
+[root@typecodes ~]# hostname typecodes
+###### 退出ssh, 然后重新登录即可
+</pre></div>
+
+
+
+	<p class="more"><a href="https://typecodes.com/web/aliyuncentoslnmpwebsafeconf.html" title="阿里云CentOS主机 LNMP 环境之web安全篇">- 阅读剩余部分 -</a></p>
+			</article>
+		  	<!--page navigation-->
+<ol class="page-navigator">
+<li class="prev"><a href="https://typecodes.com/web/index2.html">&laquo; 前一页</a></li><li><a href="https://typecodes.com/web/index.html">1</a>
+       <li><a href="https://typecodes.com/web/index2.html">2</a>
+       		</li><li class="current"><a href="https://typecodes.com/web/index3.html">3</a>
+       		</li><li><a href="https://typecodes.com/web/index4.html">4</a>
+       		</li><li><a href="https://typecodes.com/web/index5.html">5</a>
+       		</li><li><a href="https://typecodes.com/web/index6.html">6</a>
+       		</li><li><a href="https://typecodes.com/web/index7.html">7</a>
+       		</li><li><span>...</span></li><li><a href="https://typecodes.com/web/index10.html">10</a>
+       		</li><li><a href="https://typecodes.com/web/index11.html">11</a>
+       		</li><li class="next">
+       		<a href="https://typecodes.com/web/index4.html">后一页 &raquo;</a>
+       </li></ol>		</div>
+		<!--3. right sider begin-->
+<div class="col-md-3" id="blog-secondary" role="complementary">
+	<section class="widget">
+		<ul class="widget-list">
+			<form id="search" method="get" action="https://typecodes.com/search.html">
+				<input type="text" name="q" id="s" size="20" x-webkit-speech="" x-webkit-grammar="builtin:search" onwebkitspeechchange="this.value = this.value.replace(this.defaultValue, '')" value="Google...." onfocus="this.value = (this.value == this.defaultValue) ? '' : this.value" onblur="this.value = (this.value == '') ? this.defaultValue : this.value">
+			</form>
+		</ul>
+	</section>
+	<section class="widget">
+		<h3 class="widget-title">Categories</h3>
+		<ul class="widget-list">
+		      <li class="current">
+		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (26)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/csharp/index.html">Csharp</a> (6)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/database/index.html">Database</a> (11)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/java/index.html">Java</a> (1)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/linux/index.html">Linux</a> (16)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/mix/index.html">Mix</a> (53)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/web/index.html">Web</a> (88)
+		      </li>
+		</ul>
+	</section>
+	<section class="widget">
+		<h3 class="widget-title">Recent Posts</h3>
+		<ul class="widget-list">
+			<li class="post">
+				<a href="https://typecodes.com/web/php7configure.html">PHP7中php.ini、php-fpm和www.conf的配置</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/web/centos7compilephp7.html">2015博客升级记(五)：CentOS 7.1编译安装PHP7</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/web/centos7yuminstallmysql5.html">阿里云CentOS 7.1使用yum安装MySql5.6.24</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/web/centos7compilemysql5.html">阿里云CentOS 7.1编译安装MySql5.6.24</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/web/solvemysqlcompileerror.html">MySQL编译安装时常见错误分析</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/web/centosmysqlconfig.html">CentOS系统MySQL的配置文件my.cnf</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/web/solvenginxcompileerror.html">Nginx编译安装时常见错误分析</a>
+			</li>
+		</ul>
+	</section>
+	<section class="widget widget-feed">
+		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
+	</section>
+</div>
+				</div>
+			</div>
+		</div>
+		<!--4. bottom begin-->
+		<footer id="te-site-footer"><div class="container">
+	<div class="row" role="contentinfo">
+		<section class="col-md-2 col-md-offset-1">
+			<h3>Links</h3>
+			<ul><li><a href="http://diaosbook.com/" title="">diaosbook</a></li></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul>
+				<li><a href="https://typecodes.com/links.html">More..</a></li>
+			</ul>
+		</section>
+		<section class="col-md-2">
+			<h3>Following</h3>
+			<ul>
+				<li><a href="https://github.com/vfhky" class="following github" target="_blank" rel="external nofollow">GitHub</a></li>
+				<li><a href="http://weibo.com/typecodes" class="following weibo" target="_blank" rel="external nofollow">Weibo</a></li>
+				<li><a href="http://vfhky.sinaapp.com/" class="following sae" target="_blank" rel="external nofollow">SAE</a></li>
+				<li><a href="http://www.dwz.cn/mYiwa" class="following qqgroup" target="_blank" rel="external nofollow">Group</a></li>
+			</ul>
+		</section>
+		<div class="col-md-12 copyright">
+			<a href="#top"><i class="i-logo-s">TOP</i></a>
+			<p>
+				&copy; 2012-<script language="JavaScript">var date = new Date(); document.write(date.getFullYear());</script>							<a href="https://typecodes.com">TypeCodes</a>. All Rights Reserved<br>Powered by <a href="http://getpelican.com" rel="external" target="_blank">Pelican</a>. <a href="http://www.miitbeian.gov.cn/" rel="external nofollow" target="_blank">粤ICP备14050695号</a>
+			</p>
+		</div>
+	</div>
+</div>
+</footer>
+<script type="text/javascript">
+	var disqus_shortname = 'typecodes';
+	(function() {
+		var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+		dsq.src = "//" + disqus_shortname + '.disqus.com/embed.js';
+		(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	 })();
+</script>
+	</body>
+</html>

@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="zh-CN" class="no-js">
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<title>阿里云CentOS主机 LNMP 环境配置之Mysql篇 &mdash; TypeCodes</title>
+		<meta name="author" content="vfhky">
+  		<link href="https://typecodes.com/atom.xml" type="application/atom+xml" rel="alternate" title="TypeCodes Atom Feed" />
+	  	<link href="https://typecodes.com/feed.xml" type="application/rss+xml" rel="alternate" title="TypeCodes RSS Feed" />
+		<meta name="HandheldFriendly" content="True">
+		<meta name="MobileOptimized" content="320">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="renderer" content="webkit">
+		<link rel="stylesheet" href="https://dn-vfhky.qbox.me/libs/css/pelican-vfhky.css">
+		<script>
+			var _hmt = _hmt || [];
+			(function() {
+			  var hm = document.createElement("script");
+			  hm.src = "//hm.baidu.com/hm.js?c15c4ab8e91ba9ac3d5a12293cc93359";
+			  var s = document.getElementsByTagName("script")[0]; 
+			  s.parentNode.insertBefore(hm, s);
+			})();
+		</script>
+	</head>
+	<body style>
+		<!--1. header navigation begin-->
+		<header role="banner" id="te-site-header">
+			<div class="container">
+				<a href="https://typecodes.com" class="te-site-logo" role="logo" target="_self"> TypeCodes</a>
+				<ul class="nav nav-pills" id="te-site-nav" role="navigation">
+					<li><a href="https://typecodes.com">Home</a></li><li><a href="https://typecodes.com/archives.html" title="Archives">Archives</a></li><li><a href="https://typecodes.com/about.html" title="About">About</a></li></ul>
+			</div>
+		</header>
+		<div class="te-headline">
+			<div class="container">
+				<h2 class="te-headline-title"> <a href="https://typecodes.com">TypeCodes</a></h2>
+			</div>
+		</div>
+		<div class="container">
+			<div class="row">
+		<!--2. left sider begin-->
+		<div class="col-md-9" id="blog-main" role="main">
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/web/aliyuncentoslnmpmysqlconf.html">阿里云CentOS主机 LNMP 环境配置之Mysql篇</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2014-08-12 22:41 | 分类：<a href="https://typecodes.com/web/index.html">web</a></li>
+</ul>
+<div class="post-content fmt">
+	<p><a href="https://typecodes.com/web/aliyuncentos6creatlnmp.html" title="阿里云CentOS 6.5搭建LNMP环境（非一键脚本）">上文中</a>分享了在aliyun主机 CentOS 6.5 系统上搭建了 LNMP 环境，其实就是很简单的一行 yum install 命令搞定了。这篇文章简要说说 LNMP 环境下 Mysql 数据库的一些配置和使用，当然以后我们还得主动去学习数据库安全、优化等知识。</p>
+<h5>1 掌握 Linux(包括CentOS) 系统下基本的mysql操作命令</h5>
+
+
+<p>在刚搭好的 LNMP 环境中，mysql和linux主机一样会默认创建一个管理员，而且都叫<code>root</code>（千万不要混淆!）。但是mysql数据库的管理员 root 默认是没有设密码的，因此第一件事就是为它设置一个密码：</p>
+<div class="highlight"><pre>[root@typecodes ~]# mysqladmin -u root password  &#39;你想设置的 root 用户密码&#39;* 。那么接下来我们很可能会用到的 mysql 操作命令。
+
+###### 使用root管理员身份登录mysql
+[root@typecodes ~]# mysql -u root -p
+Enter password:         #输入root用户的密码然后回车即可
+
+###### 登陆成功后, 如果觉得之前的root密码不合适, 可以如下命令修改
+mysql&gt; UPDATE user SET Password=PASSWORD(&#39;new_root_passwd&#39;) where USER=&#39;root&#39;;
+mysql&gt; flush privileges ;
+
+###### 查看当前mysql所有的数据库
+mysql&gt; show databases;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| mysql              |
+| test               |
++--------------------+
+5 rows in set (0.00 sec)
+
+###### 选择要操作的数据库
+mysql&gt; use mysql;
+Database changed
+
+###### 查看这个数据库中所有的表
+mysql&gt; show tables;
++---------------------------+
+| Tables_in_mysql           |
++---------------------------+
+| columns_priv              |
+*********略去部分表名********
+| user                      |
++---------------------------+
+
+###### 删除某个不需要的数据库
+mysql&gt; drop database database_name;
+
+###### 重新创建这个数据库, 默认编码设置为utf8/GBK等（避免以后乱码）
+mysql&gt; CREATE DATABASE `database_name` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
+
+###### 管理员root授权密码为123abc的用户database_user, 拥有数据库database_name的所有管理权限(为安全起见,大家根据实际设置) 
+mysql&gt; grant all privileges on database_name.* to database_user@localhost identified by &#39;123abc&#39;;
+
+###### 记得刷新
+mysql&gt; flush privileges;
+</pre></div>
+
+
+<h5>2 为数据库导入已备份的.sql文件</h5>
+<p>在上面步骤中，我们知道了创建用户和数据库，那么以后经常遇到数据库还原的问题，它的命令也很简单：</p>
+<div class="highlight"><pre>###### database_user是用户名, databasename是数据库名, backup.sql是备份的数据库文件
+       utf8一定要和创建数据库时设置的编码一致
+[root@typecodes ~]# mysql -u database_user -p databasename &lt; /root/backup.sql -f --default-character-set=utf8;
+Enter password:   #输入database_user的密码然后回车即可
+mysql&gt;    #然后你就可以按照步骤1中查看是否还原成功
+</pre></div>
+
+
+<h5>3 将数据库备份导出为.sql文件</h5>
+<p>知道mysql数据库的还原，当然还得知道数据库备份：</p>
+<div class="highlight"><pre>###### 导出数据库的表结构和数据, database_user用户名, databasename数据库名
+       backup为导出的sql文件名
+[root@typecodes ~]# mysqldump -u database_user -p databasename &gt; backup.sql;
+Enter password:     #输入database_user的密码然后回车即可
+</pre></div>
+
+
+<h5>4 后记</h5>
+<p>这样，我们就在阿里云的 CentOS 系统上简单配置好了 LNMP 环境中的 Mysql 数据库。对于 phpmyadmin 扩展，博主认为受够了虚拟主机的童鞋可以不用了。平常需要注意的是数据库编码、安全设置和效率优化的问题，需要我们进一步的学习！</p>
+		    	<p class="tags">
+					<div class="post-share">
+						<ul class="post-shareul clearfix">
+							<li class="post-shareli">
+								<a href="http://note.youdao.com/memory/?url=https://typecodes.com/web/aliyuncentoslnmpmysqlconf.html&title=阿里云CentOS主机 LNMP 环境配置之Mysql篇" class="post-sharea ydshare" target="_blank" rel="nofollow">有道云笔记</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://v.t.sina.com.cn/share/share.php?url=https://typecodes.com/web/aliyuncentoslnmpmysqlconf.html&title=阿里云CentOS主机 LNMP 环境配置之Mysql篇&source=https://typecodes.com" class="post-sharea wbshare" target="_blank" rel="nofollow">新浪微博</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://v.t.qq.com/share/share.php?title=阿里云CentOS主机 LNMP 环境配置之Mysql篇&url=https://typecodes.com/web/aliyuncentoslnmpmysqlconf.html&site=https://typecodes.com" class="post-sharea twbshare" target="_blank" rel="nofollow">腾讯微博</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=https://typecodes.com/web/aliyuncentoslnmpmysqlconf.html&title=阿里云CentOS主机 LNMP 环境配置之Mysql篇&content='utf-8'" class="post-sharea qzoneshare" target="_blank" rel="nofollow">QZone</a>
+							</li>
+						</ul>
+					</div>
+					<div>
+						Tags: <a href="https://typecodes.com/tag/a-li-yun-centos.html">阿里云 centos</a>,<a href="https://typecodes.com/tag/lnmp.html">lnmp</a>,<a href="https://typecodes.com/tag/mysql.html">mysql</a>					</div>
+				</p>
+			</article>
+			
+			<div id="comments">
+				<h4 class="num">Comments &raquo;</h4>
+		    	<div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript></div>
+		    </div>
+		</div>
+		<!--3. right sider begin-->
+<div class="col-md-3" id="blog-secondary" role="complementary">
+	<section class="widget">
+		<ul class="widget-list">
+			<form id="search" method="get" action="https://typecodes.com/search.html">
+				<input type="text" name="q" id="s" size="20" x-webkit-speech="" x-webkit-grammar="builtin:search" onwebkitspeechchange="this.value = this.value.replace(this.defaultValue, '')" value="Google...." onfocus="this.value = (this.value == this.defaultValue) ? '' : this.value" onblur="this.value = (this.value == '') ? this.defaultValue : this.value">
+			</form>
+		</ul>
+	</section>
+	<section class="widget">
+		<h3 class="widget-title">Categories</h3>
+		<ul class="widget-list">
+		      <li class="current">
+		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (26)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/csharp/index.html">Csharp</a> (6)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/database/index.html">Database</a> (11)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/java/index.html">Java</a> (1)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/linux/index.html">Linux</a> (16)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/mix/index.html">Mix</a> (53)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/web/index.html">Web</a> (88)
+		      </li>
+		</ul>
+	</section>
+	<section class="widget">
+		<h3 class="widget-title">Recent Posts</h3>
+		<ul class="widget-list">
+			<li class="post">
+				<a href="https://typecodes.com/mix/sucesstypechotopelican.html">成功将博客从Typecho迁移到Pelican</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/mix/begintypechotopelican.html">准备将博客从Typecho迁移到Pelican</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/tcpconnectiontimedout.html">Linux TCP连接Connection Refused和Connection timed out的问题</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/mysqlerrornospace.html">博客MySQL服务惊魂记：Linux磁盘空间不足(Core Dump文件引爆)</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/mix/synweibophpmarkdownimgurl.html">升级博客文章同步微博的插件：PHP正则提取Markdown的图片地址</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/cppgeneralmakefile.html">Linux C/C++工程中可生成ELF、动/静态库文件的通用Makefile</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/libraryundefinedref.html">解决make编译链接动态库错误：libxx.so: undefined reference to xx</a>
+			</li>
+		</ul>
+	</section>
+	<section class="widget widget-feed">
+		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
+	</section>
+</div>
+				</div>
+			</div>
+		</div>
+		<!--4. bottom begin-->
+		<footer id="te-site-footer"><div class="container">
+	<div class="row" role="contentinfo">
+		<section class="col-md-2 col-md-offset-1">
+			<h3>Links</h3>
+			<ul><li><a href="http://diaosbook.com/" title="">diaosbook</a></li></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul>
+				<li><a href="https://typecodes.com/links.html">More..</a></li>
+			</ul>
+		</section>
+		<section class="col-md-2">
+			<h3>Following</h3>
+			<ul>
+				<li><a href="https://github.com/vfhky" class="following github" target="_blank" rel="external nofollow">GitHub</a></li>
+				<li><a href="http://weibo.com/typecodes" class="following weibo" target="_blank" rel="external nofollow">Weibo</a></li>
+				<li><a href="http://vfhky.sinaapp.com/" class="following sae" target="_blank" rel="external nofollow">SAE</a></li>
+				<li><a href="http://www.dwz.cn/mYiwa" class="following qqgroup" target="_blank" rel="external nofollow">Group</a></li>
+			</ul>
+		</section>
+		<div class="col-md-12 copyright">
+			<a href="#top"><i class="i-logo-s">TOP</i></a>
+			<p>
+				&copy; 2012-<script language="JavaScript">var date = new Date(); document.write(date.getFullYear());</script>							<a href="https://typecodes.com">TypeCodes</a>. All Rights Reserved<br>Powered by <a href="http://getpelican.com" rel="external" target="_blank">Pelican</a>. <a href="http://www.miitbeian.gov.cn/" rel="external nofollow" target="_blank">粤ICP备14050695号</a>
+			</p>
+		</div>
+	</div>
+</div>
+</footer>
+<script type="text/javascript">
+	var disqus_shortname = 'typecodes';
+	var disqus_identifier = '/web/aliyuncentoslnmpmysqlconf.html';
+	var disqus_url = 'https://typecodes.com/web/aliyuncentoslnmpmysqlconf.html';
+	var disqus_title = '阿里云CentOS主机 LNMP 环境配置之Mysql篇';
+	(function() {
+		var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+		dsq.src = "//" + disqus_shortname + '.disqus.com/embed.js';
+		(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	 })();
+</script>
+	</body>
+</html>

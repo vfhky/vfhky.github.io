@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="zh-CN" class="no-js">
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<title>wordpress中限制没有Gravatar头像的访客提交评论 &mdash; TypeCodes</title>
+		<meta name="author" content="vfhky">
+  		<link href="https://typecodes.com/atom.xml" type="application/atom+xml" rel="alternate" title="TypeCodes Atom Feed" />
+	  	<link href="https://typecodes.com/feed.xml" type="application/rss+xml" rel="alternate" title="TypeCodes RSS Feed" />
+		<meta name="HandheldFriendly" content="True">
+		<meta name="MobileOptimized" content="320">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="renderer" content="webkit">
+		<link rel="stylesheet" href="https://dn-vfhky.qbox.me/libs/css/pelican-vfhky.css">
+		<script>
+			var _hmt = _hmt || [];
+			(function() {
+			  var hm = document.createElement("script");
+			  hm.src = "//hm.baidu.com/hm.js?c15c4ab8e91ba9ac3d5a12293cc93359";
+			  var s = document.getElementsByTagName("script")[0]; 
+			  s.parentNode.insertBefore(hm, s);
+			})();
+		</script>
+	</head>
+	<body style>
+		<!--1. header navigation begin-->
+		<header role="banner" id="te-site-header">
+			<div class="container">
+				<a href="https://typecodes.com" class="te-site-logo" role="logo" target="_self"> TypeCodes</a>
+				<ul class="nav nav-pills" id="te-site-nav" role="navigation">
+					<li><a href="https://typecodes.com">Home</a></li><li><a href="https://typecodes.com/archives.html" title="Archives">Archives</a></li><li><a href="https://typecodes.com/about.html" title="About">About</a></li></ul>
+			</div>
+		</header>
+		<div class="te-headline">
+			<div class="container">
+				<h2 class="te-headline-title"> <a href="https://typecodes.com">TypeCodes</a></h2>
+			</div>
+		</div>
+		<div class="container">
+			<div class="row">
+		<!--2. left sider begin-->
+		<div class="col-md-9" id="blog-main" role="main">
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/web/wplimitnogravatar.html">wordpress中限制没有Gravatar头像的访客提交评论</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2013-09-15 12:13 | 分类：<a href="https://typecodes.com/web/index.html">web</a></li>
+</ul>
+<div class="post-content fmt">
+	<h5>1 为何限制没有Gravatar头像的访客</h5>
+<p>前几天博主就一直在想着是否要限制没有gravatar头像的用户在博客留言，主要原因有三点：</p>
+<p>1、博客使用的是wordpress程序，而Gravatar早在07年就被Automattic公司收购并在wp程序上发扬光大。所以，wp博客和gravatar头像天生就是一对，当然要让他们在一起了。</p>
+<p>2、屏蔽广告。很多spamer都是没有gravatar头像的，限制没有gravatar头像的访客就等于过滤掉了相当一部分的垃圾广告。扯远一点，多说插件为众多广告商做出了巨大贡献。</p>
+
+
+<p>3、屏蔽毫无意义的评论。一般没有gravatar头像的访客不会活跃在博客圈。大多是有问题就找你，一解决就拍屁股走人。博主深有体会，之前写了一篇<a href="https://typecodes.com/mix/sfinvitationcode.html" title="查看文章">《动易官方论坛的邀请码》</a>，很多人拿到邀请码后连句谢谢都没有。博客本来就是一个交流的平台，失去了和用户的交互，那就没有任何意义了。所以，为了提升博客整体质量，需要屏蔽这部分访客。</p>
+<p>那么接下来就说说实现“wordpress中限制没有Gravatar头像的访客提交评论”的具体方法：</p>
+<h5>2 判断是否具有Gravatar头像的函数</h5>
+<p>在functions.php中添加下面的函数，其作用是根据提交的email字段判断该留言者是否具有gravatar头像。还有种方法是通过http://www.gravatar.com/avatar/获取到头像文件的大小值是否为2637k来判断，具体方法大家可以参考<a href="https://typecodes.com/web/againwpgravatarcache.html" title="再议Gravatar头像缓存至本地服务器">《再议Gravatar头像缓存至本地服务器》</a>中的代码。</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14</pre></div></td><td class="code"><div class="highlight"><pre><span class="x">/*</span>
+<span class="x"> * @author：vfhky  2013年09月11日20:23</span>
+<span class="x"> * @param string $email       用户提交的表单中的email字段</span>
+<span class="x"> * @return int  0:无gravatar头像;  1:有gravatar头像</span>
+<span class="x"> **/</span>
+<span class="x">function vfhky_checkgravatar($email){</span>
+<span class="x">   $email_hash = md5(strtolower(trim($email)));</span>
+<span class="x">   $check_uri = &#39;http://www.gravatar.com/avatar/&#39; . $email_hash . &#39;?d=404&#39;;</span>
+<span class="x">   $headers = @get_headers($check_uri);</span>
+<span class="x">   if (!preg_match(&quot;|200|&quot;, $headers[0])) </span>
+<span class="x">      return 0;</span>
+<span class="x">   else</span>
+<span class="x">      return 1;</span>
+<span class="x">}</span>
+</pre></div>
+</td></tr></table>
+
+<h5>3 在comments-ajax.php中调用判断函数</h5>
+<p>gravatar头像判断函数完成后，就可以在Willin Kan大神的comments-ajax.php文件中调用了。大概在该文件的90行处，在原代码中加入判断函数进行调用即可。</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12</pre></div></td><td class="code"><div class="highlight"><pre><span class="x">/*</span>
+<span class="x"> * @author：vfhky  2013年09月11日20:30</span>
+<span class="x"> * @param string $comment_author_email  用户提交的表单中的email字段</span>
+<span class="x"> **/</span>
+<span class="x">if ( !$user-&gt;ID ) {</span>
+<span class="x">  if ( 6 &gt; strlen($comment_author_email) || &#39;&#39; == $comment_author )</span>
+<span class="x">      err( __(&#39;提示：必须填写昵称及邮件。&#39;) );</span>
+<span class="x">  elseif ( !is_email($comment_author_email))</span>
+<span class="x">      err( __(&#39;提示：请输入一个有效的电子邮件地址。&#39;) );</span>
+<span class="x">  elseif (vfhky_checkgravatar($comment_author_email) == 0)</span>
+<span class="x">      err( __(&#39;请使用Gravatar头像留言。&#39;) );</span>
+<span class="x">}</span>
+</pre></div>
+</td></tr></table>
+
+<h5>4 后记</h5>
+<p><img alt="wordpress中限制没有Gravatar头像的访客提交评论" src="https://dn-vfhky.qbox.me/2013/09/wordpress_no_gravatar.png" title="wordpress中限制没有Gravatar头像的访客提交评论" /></p>
+<p>简单两步就实现了限制没有Gravatar头像的访客提交评论，最终效果如上图所示。当然，这个功能也可以用jquery实现。不过，一旦用户浏览器屏蔽了js，那么也就没效果了。所以，综合考虑还是用服务器端判断更为安全可靠，虽然增加了额外资源的消耗。</p>
+<h5>更新： UPDATE ON 2014-03-15 22:59</h5>
+<p>由于 羽中 童鞋对 get_headers 函数的效率提出质疑，于是另起文章来讨论下：<a href="https://typecodes.com/web/againwplimitnogravatar.html" title="《再议wordpress中限制没有Gravatar头像的访客提交评论》">《再议wordpress中限制没有Gravatar头像的访客提交评论》</a>。</p>
+		    	<p class="tags">
+					<div class="post-share">
+						<ul class="post-shareul clearfix">
+							<li class="post-shareli">
+								<a href="http://note.youdao.com/memory/?url=https://typecodes.com/web/wplimitnogravatar.html&title=wordpress中限制没有Gravatar头像的访客提交评论" class="post-sharea ydshare" target="_blank" rel="nofollow">有道云笔记</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://v.t.sina.com.cn/share/share.php?url=https://typecodes.com/web/wplimitnogravatar.html&title=wordpress中限制没有Gravatar头像的访客提交评论&source=https://typecodes.com" class="post-sharea wbshare" target="_blank" rel="nofollow">新浪微博</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://v.t.qq.com/share/share.php?title=wordpress中限制没有Gravatar头像的访客提交评论&url=https://typecodes.com/web/wplimitnogravatar.html&site=https://typecodes.com" class="post-sharea twbshare" target="_blank" rel="nofollow">腾讯微博</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=https://typecodes.com/web/wplimitnogravatar.html&title=wordpress中限制没有Gravatar头像的访客提交评论&content='utf-8'" class="post-sharea qzoneshare" target="_blank" rel="nofollow">QZone</a>
+							</li>
+						</ul>
+					</div>
+					<div>
+						Tags: <a href="https://typecodes.com/tag/gravatartou-xiang.html">gravatar头像</a>					</div>
+				</p>
+			</article>
+			
+			<div id="comments">
+				<h4 class="num">Comments &raquo;</h4>
+		    	<div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript></div>
+		    </div>
+		</div>
+		<!--3. right sider begin-->
+<div class="col-md-3" id="blog-secondary" role="complementary">
+	<section class="widget">
+		<ul class="widget-list">
+			<form id="search" method="get" action="https://typecodes.com/search.html">
+				<input type="text" name="q" id="s" size="20" x-webkit-speech="" x-webkit-grammar="builtin:search" onwebkitspeechchange="this.value = this.value.replace(this.defaultValue, '')" value="Google...." onfocus="this.value = (this.value == this.defaultValue) ? '' : this.value" onblur="this.value = (this.value == '') ? this.defaultValue : this.value">
+			</form>
+		</ul>
+	</section>
+	<section class="widget">
+		<h3 class="widget-title">Categories</h3>
+		<ul class="widget-list">
+		      <li class="current">
+		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (26)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/csharp/index.html">Csharp</a> (6)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/database/index.html">Database</a> (11)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/java/index.html">Java</a> (1)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/linux/index.html">Linux</a> (16)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/mix/index.html">Mix</a> (53)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/web/index.html">Web</a> (88)
+		      </li>
+		</ul>
+	</section>
+	<section class="widget">
+		<h3 class="widget-title">Recent Posts</h3>
+		<ul class="widget-list">
+			<li class="post">
+				<a href="https://typecodes.com/mix/sucesstypechotopelican.html">成功将博客从Typecho迁移到Pelican</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/mix/begintypechotopelican.html">准备将博客从Typecho迁移到Pelican</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/tcpconnectiontimedout.html">Linux TCP连接Connection Refused和Connection timed out的问题</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/mysqlerrornospace.html">博客MySQL服务惊魂记：Linux磁盘空间不足(Core Dump文件引爆)</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/mix/synweibophpmarkdownimgurl.html">升级博客文章同步微博的插件：PHP正则提取Markdown的图片地址</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/cppgeneralmakefile.html">Linux C/C++工程中可生成ELF、动/静态库文件的通用Makefile</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/libraryundefinedref.html">解决make编译链接动态库错误：libxx.so: undefined reference to xx</a>
+			</li>
+		</ul>
+	</section>
+	<section class="widget widget-feed">
+		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
+	</section>
+</div>
+				</div>
+			</div>
+		</div>
+		<!--4. bottom begin-->
+		<footer id="te-site-footer"><div class="container">
+	<div class="row" role="contentinfo">
+		<section class="col-md-2 col-md-offset-1">
+			<h3>Links</h3>
+			<ul><li><a href="http://diaosbook.com/" title="">diaosbook</a></li></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul>
+				<li><a href="https://typecodes.com/links.html">More..</a></li>
+			</ul>
+		</section>
+		<section class="col-md-2">
+			<h3>Following</h3>
+			<ul>
+				<li><a href="https://github.com/vfhky" class="following github" target="_blank" rel="external nofollow">GitHub</a></li>
+				<li><a href="http://weibo.com/typecodes" class="following weibo" target="_blank" rel="external nofollow">Weibo</a></li>
+				<li><a href="http://vfhky.sinaapp.com/" class="following sae" target="_blank" rel="external nofollow">SAE</a></li>
+				<li><a href="http://www.dwz.cn/mYiwa" class="following qqgroup" target="_blank" rel="external nofollow">Group</a></li>
+			</ul>
+		</section>
+		<div class="col-md-12 copyright">
+			<a href="#top"><i class="i-logo-s">TOP</i></a>
+			<p>
+				&copy; 2012-<script language="JavaScript">var date = new Date(); document.write(date.getFullYear());</script>							<a href="https://typecodes.com">TypeCodes</a>. All Rights Reserved<br>Powered by <a href="http://getpelican.com" rel="external" target="_blank">Pelican</a>. <a href="http://www.miitbeian.gov.cn/" rel="external nofollow" target="_blank">粤ICP备14050695号</a>
+			</p>
+		</div>
+	</div>
+</div>
+</footer>
+<script type="text/javascript">
+	var disqus_shortname = 'typecodes';
+	var disqus_identifier = '/web/wplimitnogravatar.html';
+	var disqus_url = 'https://typecodes.com/web/wplimitnogravatar.html';
+	var disqus_title = 'wordpress中限制没有Gravatar头像的访客提交评论';
+	(function() {
+		var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+		dsq.src = "//" + disqus_shortname + '.disqus.com/embed.js';
+		(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	 })();
+</script>
+	</body>
+</html>

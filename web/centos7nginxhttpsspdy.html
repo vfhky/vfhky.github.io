@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="zh-CN" class="no-js">
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<title>2015博客升级记(六)：Nginx配置HTTPS和SPDY实战 &mdash; TypeCodes</title>
+		<meta name="author" content="vfhky">
+  		<link href="https://typecodes.com/atom.xml" type="application/atom+xml" rel="alternate" title="TypeCodes Atom Feed" />
+	  	<link href="https://typecodes.com/feed.xml" type="application/rss+xml" rel="alternate" title="TypeCodes RSS Feed" />
+		<meta name="HandheldFriendly" content="True">
+		<meta name="MobileOptimized" content="320">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="renderer" content="webkit">
+		<link rel="stylesheet" href="https://dn-vfhky.qbox.me/libs/css/pelican-vfhky.css">
+		<script>
+			var _hmt = _hmt || [];
+			(function() {
+			  var hm = document.createElement("script");
+			  hm.src = "//hm.baidu.com/hm.js?c15c4ab8e91ba9ac3d5a12293cc93359";
+			  var s = document.getElementsByTagName("script")[0]; 
+			  s.parentNode.insertBefore(hm, s);
+			})();
+		</script>
+	</head>
+	<body style>
+		<!--1. header navigation begin-->
+		<header role="banner" id="te-site-header">
+			<div class="container">
+				<a href="https://typecodes.com" class="te-site-logo" role="logo" target="_self"> TypeCodes</a>
+				<ul class="nav nav-pills" id="te-site-nav" role="navigation">
+					<li><a href="https://typecodes.com">Home</a></li><li><a href="https://typecodes.com/archives.html" title="Archives">Archives</a></li><li><a href="https://typecodes.com/about.html" title="About">About</a></li></ul>
+			</div>
+		</header>
+		<div class="te-headline">
+			<div class="container">
+				<h2 class="te-headline-title"> <a href="https://typecodes.com">TypeCodes</a></h2>
+			</div>
+		</div>
+		<div class="container">
+			<div class="row">
+		<!--2. left sider begin-->
+		<div class="col-md-9" id="blog-main" role="main">
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/web/centos7nginxhttpsspdy.html">2015博客升级记(六)：Nginx配置HTTPS和SPDY实战</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2015-06-21 22:39 | 分类：<a href="https://typecodes.com/web/index.html">web</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>这是<a href="https://typecodes.com/mix/2015updateblog.html" title="查看原文">《2015年博客升级记》</a>系列文章的第六篇，主要记录如何在CentOS 7.1中Nginx如何配置HTTPS和SPDY。关于具体如何编译安装Nginx，可以查看文章<a href="https://typecodes.com/web/centos7compilenginx.html" title="查看原文">《2015博客升级记(三)：CentOS 7.1编译安装Nginx1.9.0》</a>。</p>
+
+
+<h5>1 重点：Nginx配置文件nginx.conf的具体内容</h5>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>  1
+  2
+  3
+  4
+  5
+  6
+  7
+  8
+  9
+ 10
+ 11
+ 12
+ 13
+ 14
+ 15
+ 16
+ 17
+ 18
+ 19
+ 20
+ 21
+ 22
+ 23
+ 24
+ 25
+ 26
+ 27
+ 28
+ 29
+ 30
+ 31
+ 32
+ 33
+ 34
+ 35
+ 36
+ 37
+ 38
+ 39
+ 40
+ 41
+ 42
+ 43
+ 44
+ 45
+ 46
+ 47
+ 48
+ 49
+ 50
+ 51
+ 52
+ 53
+ 54
+ 55
+ 56
+ 57
+ 58
+ 59
+ 60
+ 61
+ 62
+ 63
+ 64
+ 65
+ 66
+ 67
+ 68
+ 69
+ 70
+ 71
+ 72
+ 73
+ 74
+ 75
+ 76
+ 77
+ 78
+ 79
+ 80
+ 81
+ 82
+ 83
+ 84
+ 85
+ 86
+ 87
+ 88
+ 89
+ 90
+ 91
+ 92
+ 93
+ 94
+ 95
+ 96
+ 97
+ 98
+ 99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150
+151
+152
+153
+154
+155
+156
+157
+158
+159
+160
+161
+162
+163
+164
+165
+166
+167
+168
+169
+170
+171
+172
+173
+174
+175
+176
+177
+178
+179
+180
+181
+182
+183
+184
+185
+186
+187
+188
+189
+190
+191
+192
+193
+194
+195
+196
+197
+198
+199
+200
+201
+202
+203
+204
+205
+206
+207
+208
+209
+210
+211
+212
+213
+214
+215
+216
+217</pre></div></td><td class="code"><div class="highlight"><pre>######
+###  Description: The config file of Nginx with ssl, spdy, no-www redircting, gzip functions
+###  Author:  vfhky  2015.05.05  https://typecodes.com/web/centos7nginxhttpsspdy.html
+######
+user  nginx nginx;
+worker_processes  1;
+
+error_log  /var/log/nginx/error.log;
+#error_log  logs/error.log  notice;
+#error_log  logs/error.log  info;
+
+pid        /var/run/nginx/nginx.pid;
+
+
+events {
+    worker_connections  1024;
+}
+
+
+http {
+    include       mime.types;
+    default_type  application/octet-stream;
+
+    log_format  main  &#39;$remote_addr - $remote_user [$time_local] &quot;$request&quot; &#39;
+                      &#39;$status $body_bytes_sent &quot;$http_referer&quot; &#39;
+                      &#39;&quot;$http_user_agent&quot; &quot;$http_x_forwarded_for&quot;&#39;;
+
+    access_log  /var/log/nginx/access.log  main;
+
+    sendfile        on;
+    #tcp_nopush     on;
+
+    #keepalive_timeout  0;
+    keepalive_timeout  65;
+
+    #隐藏Nginx版本信息，禁止网站目录浏览
+    server_tokens off;
+    autoindex off;
+    #当FastCGI后端服务器处理请求给出http响应码为4xx和5xx时，就转发给nginx
+    fastcgi_intercept_errors on;
+
+    #关于fastcgi的配置
+    fastcgi_connect_timeout 300;    
+    fastcgi_send_timeout 300;    
+    fastcgi_read_timeout 300;    
+    fastcgi_buffer_size 64k;    
+    fastcgi_buffers 4 64k;    
+    fastcgi_busy_buffers_size 128k;    
+    fastcgi_temp_file_write_size 128k;
+
+    #支持gzip压缩
+    gzip on;
+    gzip_min_length 1k;
+    gzip_buffers 16 64k;
+    gzip_http_version 1.1;
+    gzip_comp_level 6;
+    gzip_types text/plain application/x-javascript text/css application/javascript text/javascript image/jpeg image/gif image/png application/xml application/json;
+    gzip_vary on;
+    gzip_disable &quot;MSIE [1-6].(?!.*SV1)&quot;;
+
+    #
+    # 重定向所有带www请求到非www的请求
+    #
+    server {
+        listen               *:80;
+        listen               *:443 ssl spdy;
+        server_name www.typecodes.com;
+        # ssl证书配置见文章 https://typecodes.com/web/lnmppositivessl.html
+        ssl_certificate /etc/nginx/ssl/typecodes.crt;
+        # ssl密钥文件见文章 https://typecodes.com/web/lnmppositivessl.html
+        ssl_certificate_key /etc/nginx/ssl/typecodes.key;
+        # 不产生日志
+        access_log off;
+
+        # 访问favicon.ico和robots.txt不跳转（把这两个文件存放在上级目录html中）
+        location ~* ^/(favicon.ico|robots.txt)$ {
+            root html;
+            expires max;
+            log_not_found off;
+            break;
+        }
+
+        location / {
+            return 301 https://typecodes.com$request_uri;
+        }
+    }
+
+    #
+    # 将所有http请求重定向到https
+    #
+    server {
+        listen               *:80;
+        server_name          typecodes.com;
+        # 不产生日志
+        access_log off;
+
+        # 访问favicon.ico和robots.txt不跳转（把这两个文件存放在上级目录html中）
+        location ~* ^/(favicon.ico|robots.txt)$ {
+            root html;
+            expires max;
+            log_not_found off;
+            break;
+        }
+
+        location / {
+            return 301 https://typecodes.com$request_uri;
+        }
+    }
+
+    #
+    # HTTPS server
+    #
+    server {
+        listen               *:443 ssl spdy;
+        server_name typecodes.com;
+
+        # ssl证书配置见文章 https://typecodes.com/web/lnmppositivessl.html
+        ssl_certificate /etc/nginx/ssl/typecodes.crt;
+        # ssl密钥文件见文章 https://typecodes.com/web/lnmppositivessl.html
+        ssl_certificate_key /etc/nginx/ssl/typecodes.key;
+        ssl_session_cache shared:SSL:20m;
+        ssl_session_timeout 10m;
+        ssl_ciphers ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:DHE-DSS-AES128-GCM-SHA256:kEDH+AESGCM:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA:ECDHE-ECDSA-AES128-SHA:ECDHE-RSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA384:ECDHE-RSA-AES256-SHA:ECDHE-ECDSA-AES256-SHA:DHE-RSA-AES128-SHA256:DHE-RSA-AES128-SHA:DHE-DSS-AES128-SHA256:DHE-RSA-AES256-SHA256:DHE-DSS-AES256-SHA:DHE-RSA-AES256-SHA:AES128-GCM-SHA256:AES256-GCM-SHA384:AES128-SHA256:AES256-SHA256:AES128-SHA:AES256-SHA:AES:CAMELLIA:DES-CBC3-SHA:!aNULL:!eNULL:!EXPORT:!DES:!RC4:!MD5:!PSK:!aECDH:!EDH-DSS-DES-CBC3-SHA:!EDH-RSA-DES-CBC3-SHA:!KRB5-DES-CBC3-SHA:!CAMELLIA;
+        ssl_protocols TLSv1 TLSv1.1 TLSv1.2; #enables TLSv1, but not SSLv2, SSLv3 which is weak and should no longer be used.
+        ssl_prefer_server_ciphers on;
+        # 开启spdy功能
+        add_header Alternate-Protocol 443:npn-spdy/3.1;
+        # 严格的https访问
+        add_header Strict-Transport-Security &quot;max-age=31536000; includeSubdomains;&quot;;
+
+        #设置网站根目录
+        root   /usr/share/nginx/html/typecodes;
+        index  index.php index.html;
+
+        charset utf-8;
+
+        #access_log  /var/log/nginx/log/host.access.log  main;
+
+        #设置css/javascript/图片等静态资源的缓存时间
+        location ~ .*\.(css|js|ico|png|gif|jpg|json|mp3|mp4|flv|swf)(.*) {
+            expires 60d;
+        }
+
+        # include /etc/nginx/default.d/*.conf;
+        # 设置typecho博客的config文章不被访问，保证安全
+        location = /config.inc.php{
+            deny  all;
+        }
+
+        # keep the uploads directory safe by excluding php, php5, html file accessing. Applying to wordpress and typecho.
+        # location ~ .*/uploads/.*\.(php|php5|html)$ {
+        #   deny  all;
+        # }
+
+        # 设置wordpress和typecho博客中，插件目录无法直接访问php或者html文件
+        location ~ .*/plugins/.*\.(php|php5|html)$ {
+            deny  all;
+        }
+
+        #Rewrite的伪静态(针对wordpress/typecho)，url地址去掉index.php
+        location / {
+            if (-f $request_filename/index.html){
+                rewrite (.*) $1/index.html break;
+            }
+            if (-f $request_filename/index.php){
+                rewrite (.*) $1/index.php;
+            }
+        if (!-f $request_filename){
+                rewrite (.*) /index.php;
+            }
+        }
+
+        #访问favicon.ico时不产生日志
+        location = /favicon.ico {
+            access_log off;
+        }
+
+        #设置40系列错误的应答文件为40x.html
+        error_page  400 401 402 403 404  /40x.html;
+        location = /40x.html {
+                root   html;
+                index  index.html index.htm;
+        }
+
+        #设置50系列错误的应答文件为50x.html
+        #
+        error_page   500 501 502 503 504  /50x.html;
+        location = /50x.html {
+            root   html;
+            index  index.html index.htm;
+        }
+
+        # proxy the PHP scripts to Apache listening on 127.0.0.1:80
+        #
+        #location ~ \.php$ {
+        #    proxy_pass   http://127.0.0.1;
+        #}
+
+        # 设置Nginx和php通信机制为tcp的socket模式，而不是直接监听9000端口
+        location  ~ .*\.php(\/.*)*$ {
+             fastcgi_split_path_info ^(.+\.php)(/.+)$;
+             #fastcgi_pass   127.0.0.1:9000;
+             # the better form of fastcgi_pass than before
+             fastcgi_pass   unix:/var/run/php-fpm/php-fpm.sock;
+             fastcgi_index  index.php;
+             fastcgi_param  SCRIPT_FILENAME  $document_root$fastcgi_script_name;
+             include        fastcgi_params;
+        }
+
+        # deny access to .htaccess files, if Apache&#39;s document root
+        # concurs with nginx&#39;s one
+        #
+        #location ~ /\.ht {
+        #    deny  all;
+        #}
+    }
+}
+</pre></div>
+</td></tr></table>
+
+<h5>2 Nginx开启spdy功能</h5>
+<p>如下图所示，在chrome浏览器的地址栏中输入<code>chrome://net-internals/#spdy</code>抓取访问事件，然后新建一个页面打开自己的博客，这样就会被第一个页面抓取到了。</p>
+<p><img alt="Nginx开启Google Chrome的SPDY功能" src="https://dn-vfhky.qbox.me/2015/06/google_chrome_spdy.png" title="Nginx开启Google Chrome的SPDY功能" /></p>
+<h5>3 Nginx中url地址中，将带www的二级域名跳转到不带www顶级域名</h5>
+<p>博客目前将http访问全部定向到https，同时将https://www.typecodes.com重定向到https://typecodes.com上。前文<a href="https://typecodes.com/web/lnmppositivessl.html" title="查看原文">《阿里云CentOS 6.5系统LNMP环境安装SSL证书》</a>中，只做了http跳转到https。需要注意的是，在Nginx配置中最好不要包含过多的<code>if</code>判断语句；另外，处理不同的server_name时，官方建议<code>写在多个server块</code>中，就像小节1中的那样。</p>
+<h5>4 其他说明</h5>
+<p>由于LNMP配置比较繁琐，所以我建了一个关于Nginx、MySQL和PHP配置的git工程，方便查询。目前这个工程托管在GitHub和coding.net上，地址如下：</p>
+<p>GitHub地址：<a href="https://github.com/vfhky/mylnmp" title="点击进入">https://github.com/vfhky/mylnmp</a> ；</p>
+<p>Coding地址：<a href="https://coding.net/u/vfhky/p/mylnmp/git" title="点击进入">https://coding.net/u/vfhky/p/mylnmp/git</a> 。</p>
+		    	<p class="tags">
+					<div class="post-share">
+						<ul class="post-shareul clearfix">
+							<li class="post-shareli">
+								<a href="http://note.youdao.com/memory/?url=https://typecodes.com/web/centos7nginxhttpsspdy.html&title=2015博客升级记(六)：Nginx配置HTTPS和SPDY实战" class="post-sharea ydshare" target="_blank" rel="nofollow">有道云笔记</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://v.t.sina.com.cn/share/share.php?url=https://typecodes.com/web/centos7nginxhttpsspdy.html&title=2015博客升级记(六)：Nginx配置HTTPS和SPDY实战&source=https://typecodes.com" class="post-sharea wbshare" target="_blank" rel="nofollow">新浪微博</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://v.t.qq.com/share/share.php?title=2015博客升级记(六)：Nginx配置HTTPS和SPDY实战&url=https://typecodes.com/web/centos7nginxhttpsspdy.html&site=https://typecodes.com" class="post-sharea twbshare" target="_blank" rel="nofollow">腾讯微博</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=https://typecodes.com/web/centos7nginxhttpsspdy.html&title=2015博客升级记(六)：Nginx配置HTTPS和SPDY实战&content='utf-8'" class="post-sharea qzoneshare" target="_blank" rel="nofollow">QZone</a>
+							</li>
+						</ul>
+					</div>
+					<div>
+						Tags: <a href="https://typecodes.com/tag/bo-ke-cheng-chang-lu.html">博客成长录</a>,<a href="https://typecodes.com/tag/nginx.html">nginx</a>					</div>
+				</p>
+			</article>
+			
+			<div id="comments">
+				<h4 class="num">Comments &raquo;</h4>
+		    	<div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript></div>
+		    </div>
+		</div>
+		<!--3. right sider begin-->
+<div class="col-md-3" id="blog-secondary" role="complementary">
+	<section class="widget">
+		<ul class="widget-list">
+			<form id="search" method="get" action="https://typecodes.com/search.html">
+				<input type="text" name="q" id="s" size="20" x-webkit-speech="" x-webkit-grammar="builtin:search" onwebkitspeechchange="this.value = this.value.replace(this.defaultValue, '')" value="Google...." onfocus="this.value = (this.value == this.defaultValue) ? '' : this.value" onblur="this.value = (this.value == '') ? this.defaultValue : this.value">
+			</form>
+		</ul>
+	</section>
+	<section class="widget">
+		<h3 class="widget-title">Categories</h3>
+		<ul class="widget-list">
+		      <li class="current">
+		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (26)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/csharp/index.html">Csharp</a> (6)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/database/index.html">Database</a> (11)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/java/index.html">Java</a> (1)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/linux/index.html">Linux</a> (16)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/mix/index.html">Mix</a> (53)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/web/index.html">Web</a> (88)
+		      </li>
+		</ul>
+	</section>
+	<section class="widget">
+		<h3 class="widget-title">Recent Posts</h3>
+		<ul class="widget-list">
+			<li class="post">
+				<a href="https://typecodes.com/mix/sucesstypechotopelican.html">成功将博客从Typecho迁移到Pelican</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/mix/begintypechotopelican.html">准备将博客从Typecho迁移到Pelican</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/tcpconnectiontimedout.html">Linux TCP连接Connection Refused和Connection timed out的问题</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/mysqlerrornospace.html">博客MySQL服务惊魂记：Linux磁盘空间不足(Core Dump文件引爆)</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/mix/synweibophpmarkdownimgurl.html">升级博客文章同步微博的插件：PHP正则提取Markdown的图片地址</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/cppgeneralmakefile.html">Linux C/C++工程中可生成ELF、动/静态库文件的通用Makefile</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/libraryundefinedref.html">解决make编译链接动态库错误：libxx.so: undefined reference to xx</a>
+			</li>
+		</ul>
+	</section>
+	<section class="widget widget-feed">
+		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
+	</section>
+</div>
+				</div>
+			</div>
+		</div>
+		<!--4. bottom begin-->
+		<footer id="te-site-footer"><div class="container">
+	<div class="row" role="contentinfo">
+		<section class="col-md-2 col-md-offset-1">
+			<h3>Links</h3>
+			<ul><li><a href="http://diaosbook.com/" title="">diaosbook</a></li></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul>
+				<li><a href="https://typecodes.com/links.html">More..</a></li>
+			</ul>
+		</section>
+		<section class="col-md-2">
+			<h3>Following</h3>
+			<ul>
+				<li><a href="https://github.com/vfhky" class="following github" target="_blank" rel="external nofollow">GitHub</a></li>
+				<li><a href="http://weibo.com/typecodes" class="following weibo" target="_blank" rel="external nofollow">Weibo</a></li>
+				<li><a href="http://vfhky.sinaapp.com/" class="following sae" target="_blank" rel="external nofollow">SAE</a></li>
+				<li><a href="http://www.dwz.cn/mYiwa" class="following qqgroup" target="_blank" rel="external nofollow">Group</a></li>
+			</ul>
+		</section>
+		<div class="col-md-12 copyright">
+			<a href="#top"><i class="i-logo-s">TOP</i></a>
+			<p>
+				&copy; 2012-<script language="JavaScript">var date = new Date(); document.write(date.getFullYear());</script>							<a href="https://typecodes.com">TypeCodes</a>. All Rights Reserved<br>Powered by <a href="http://getpelican.com" rel="external" target="_blank">Pelican</a>. <a href="http://www.miitbeian.gov.cn/" rel="external nofollow" target="_blank">粤ICP备14050695号</a>
+			</p>
+		</div>
+	</div>
+</div>
+</footer>
+<script type="text/javascript">
+	var disqus_shortname = 'typecodes';
+	var disqus_identifier = '/web/centos7nginxhttpsspdy.html';
+	var disqus_url = 'https://typecodes.com/web/centos7nginxhttpsspdy.html';
+	var disqus_title = '2015博客升级记(六)：Nginx配置HTTPS和SPDY实战';
+	(function() {
+		var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+		dsq.src = "//" + disqus_shortname + '.disqus.com/embed.js';
+		(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	 })();
+</script>
+	</body>
+</html>

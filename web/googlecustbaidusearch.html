@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="zh-CN" class="no-js">
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<title>博客优化第二波(一)：同时使用谷歌自定义搜索和百度站内搜索 &mdash; TypeCodes</title>
+		<meta name="author" content="vfhky">
+  		<link href="https://typecodes.com/atom.xml" type="application/atom+xml" rel="alternate" title="TypeCodes Atom Feed" />
+	  	<link href="https://typecodes.com/feed.xml" type="application/rss+xml" rel="alternate" title="TypeCodes RSS Feed" />
+		<meta name="HandheldFriendly" content="True">
+		<meta name="MobileOptimized" content="320">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="renderer" content="webkit">
+		<link rel="stylesheet" href="https://dn-vfhky.qbox.me/libs/css/pelican-vfhky.css">
+		<script>
+			var _hmt = _hmt || [];
+			(function() {
+			  var hm = document.createElement("script");
+			  hm.src = "//hm.baidu.com/hm.js?c15c4ab8e91ba9ac3d5a12293cc93359";
+			  var s = document.getElementsByTagName("script")[0]; 
+			  s.parentNode.insertBefore(hm, s);
+			})();
+		</script>
+	</head>
+	<body style>
+		<!--1. header navigation begin-->
+		<header role="banner" id="te-site-header">
+			<div class="container">
+				<a href="https://typecodes.com" class="te-site-logo" role="logo" target="_self"> TypeCodes</a>
+				<ul class="nav nav-pills" id="te-site-nav" role="navigation">
+					<li><a href="https://typecodes.com">Home</a></li><li><a href="https://typecodes.com/archives.html" title="Archives">Archives</a></li><li><a href="https://typecodes.com/about.html" title="About">About</a></li></ul>
+			</div>
+		</header>
+		<div class="te-headline">
+			<div class="container">
+				<h2 class="te-headline-title"> <a href="https://typecodes.com">TypeCodes</a></h2>
+			</div>
+		</div>
+		<div class="container">
+			<div class="row">
+		<!--2. left sider begin-->
+		<div class="col-md-9" id="blog-main" role="main">
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/web/googlecustbaidusearch.html">博客优化第二波(一)：同时使用谷歌自定义搜索和百度站内搜索</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2012-12-11 23:33 | 分类：<a href="https://typecodes.com/web/index.html">web</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>之前我写过一篇关于谷歌自定义搜索的文章：<a href="https://typecodes.com/web/googlecustomsearch.html" title="查看原文">《如何把自己的站内搜索改用强大的谷歌搜索》</a>。使用自定义的谷歌搜索引擎，完全满足任何一个站点的搜索，更何况是区区一个wordpress程序。某大会召开之前，谷歌.HK还是可以用的，而且借助谷歌goagent和Proxy SwitchySharp插件，博客的站内搜索体验效果还不错。之后，.HK果断给Qiang了……</p>
+
+
+<p>尝试同时使用谷歌自定义搜索和百度站内搜索。概念如下：博客优先使用谷歌搜索（考虑到一些VPN用户或者说不定哪天TC不玩河蟹了），若5秒内谷歌没自动显示出结果，说明仍被Qiang中；这时，用户只需要在百度的搜索框中输入要搜索的内容，点击搜索按钮之后就可以使用百度进行站内搜索了。效果如下面三幅图片所示，当然大家可以在博客的右上角亲自动手试一试！</p>
+<p><img alt="敢进入搜索页面" src="https://dn-vfhky.qbox.me/2012/12/11.png" title="刚进入搜索页面" /></p>
+<p><img alt="5秒内谷歌没显示搜索结果" src="https://dn-vfhky.qbox.me/2012/12/21.png" title="5秒内谷歌没显示搜索结果" /></p>
+<p><img alt="谷歌搜索正常显示结果" src="https://dn-vfhky.qbox.me/2012/12/31.png" title="谷歌搜索正常显示结果" /></p>
+<p>不多说了，代码如下（为了方便理解，大家可以结合博客中的搜索页面进行比较查看）</p>
+<div class="highlight"><pre><span class="c">&lt;!--开始调用谷歌站内搜索--&gt;</span>
+<span class="nt">&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;&lt;br</span> <span class="nt">/&gt;&lt;/p&gt;</span>
+<span class="nt">&lt;font</span> <span class="na">color=</span><span class="s">&quot;#FF0000&quot;</span> <span class="na">face=</span><span class="s">&quot;微软雅黑&quot;</span> <span class="na">size=</span><span class="s">&quot;4px&quot;</span><span class="nt">&gt;</span>搜索<span class="nt">&lt;/font&gt;&lt;font</span> <span class="na">color=</span><span class="s">&quot;#0000FF&quot;</span> <span class="na">face=</span><span class="s">&quot;微软雅黑&quot;</span><span class="nt">&gt;</span>“<span class="cp">&lt;?php</span> <span class="nx">the_search_query</span><span class="p">();</span> <span class="cp">?&gt;</span>”<span class="nt">&lt;/font&gt;</span>的结果
+<span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">&quot;cse&quot;</span> <span class="na">style=</span><span class="s">&quot;width: 100%;&quot;</span><span class="nt">&gt;</span><span class="c">&lt;!--开始调用百度站内搜索--&gt;</span>
+    <span class="nt">&lt;form</span> <span class="na">action=</span><span class="s">&quot;http://www.baidu.com/baidu&quot;</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;table</span> <span class="na">bgcolor=</span><span class="s">&quot;#C78DCC&quot;</span> <span class="na">style=</span><span class="s">&quot;font-size:10pt;margin: 30px auto;&quot;</span><span class="nt">&gt;</span>
+            <span class="nt">&lt;tr</span> <span class="na">height=</span><span class="s">&quot;60&quot;</span><span class="nt">&gt;</span>
+                <span class="nt">&lt;td&gt;</span>
+                    <span class="nt">&lt;input</span> <span class="na">name=</span><span class="s">&quot;word&quot;</span> <span class="na">style=</span><span class="s">&quot;width: 405px;height: 32px;font: 16px/22px arial;background: white;outline: none;-webkit-appearance: none;background: url(</span><span class="cp">&lt;?php</span> <span class="nx">bloginfo</span><span class="p">(</span><span class="s1">&#39;template_directory&#39;</span><span class="p">);</span> <span class="o">?/&gt;/</span><span class="nx">images</span><span class="o">/</span><span class="nx">bdsearch</span><span class="o">.</span><span class="nx">png</span><span class="p">)</span> <span class="nx">no</span><span class="o">-</span><span class="nx">repeat</span> <span class="o">-</span><span class="mi">304</span><span class="nx">px</span> <span class="mi">0</span><span class="p">;</span><span class="s2">&quot;  onfocus=&quot;</span><span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="o">.</span><span class="nx">value</span> <span class="o">!=</span> <span class="s1">&#39;&#39;</span><span class="p">)</span> <span class="p">{</span><span class="k">this</span><span class="o">.</span><span class="nx">value</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">;}</span><span class="s2">&quot; onblur=&quot;</span><span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="o">.</span><span class="nx">value</span> <span class="o">==</span> <span class="s1">&#39;&#39;</span><span class="p">)</span> <span class="p">{</span><span class="k">this</span><span class="o">.</span><span class="nx">value</span> <span class="o">=</span> <span class="s1">&#39;谷歌努力搜索中……若5秒内无结果，请换百度&#39;</span><span class="p">;}</span><span class="s2">&quot; value=&quot;</span><span class="nx">谷歌努力搜索中……若5秒内无结果，请换百度</span><span class="s2">&quot;&gt;</span>
+<span class="s2">                    &lt;span style=&quot;</span><span class="nx">width</span><span class="o">:</span> <span class="mi">96</span><span class="nx">px</span><span class="p">;</span><span class="nx">height</span><span class="o">:</span> <span class="mi">33</span><span class="nx">px</span><span class="p">;</span><span class="nx">display</span><span class="o">:</span> <span class="nx">inline</span><span class="o">-</span><span class="nx">block</span><span class="p">;</span><span class="nx">background</span><span class="o">:</span> <span class="nx">url</span><span class="p">(</span><span class="o">&lt;?</span><span class="nx">php</span> <span class="nx">bloginfo</span><span class="p">(</span><span class="s1">&#39;template_directory&#39;</span><span class="p">);</span> <span class="cp">?&gt;</span><span class="s">/images/bdsearch.png) no-repeat -202px 0;z-index: 0;vertical-align: top;&quot;</span><span class="nt">&gt;</span>
+                        <span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">&quot;submit&quot;</span> <span class="na">value=</span><span class="s">&quot;百度试试&quot;</span> <span class="na">style=</span><span class="s">&quot;width:</span> <span class="err">95px;height:</span> <span class="err">32px;padding-top:</span> <span class="err">2px;font-size:</span> <span class="err">14px;background:</span> <span class="err">#DDD</span> <span class="err">url(</span><span class="cp">&lt;?php</span> <span class="nx">bloginfo</span><span class="p">(</span><span class="s1">&#39;template_directory&#39;</span><span class="p">);</span> <span class="o">?/&gt;/</span><span class="nx">images</span><span class="o">/</span><span class="nx">bdsearch</span><span class="o">.</span><span class="nx">png</span><span class="p">);</span><span class="nx">cursor</span><span class="o">:</span> <span class="nx">pointer</span><span class="p">;</span><span class="s2">&quot;&gt;</span>
+<span class="s2">                    &lt;/span&gt;</span>
+<span class="s2">                    &lt;input name=tn type=hidden value=&quot;</span><span class="nx">bds</span><span class="s2">&quot;/&gt;</span>
+<span class="s2">                    &lt;input name=cl type=hidden value=&quot;</span><span class="mi">3</span><span class="s2">&quot;/&gt;</span>
+<span class="s2">                    &lt;input name=ct type=hidden value=&quot;</span><span class="mi">2097152</span><span class="s2">&quot;/&gt;</span>
+<span class="s2">                    &lt;input name=si type=hidden value=&quot;</span><span class="nx">typecodes</span><span class="o">.</span><span class="nx">com</span><span class="s2">&quot;/&gt;</span>
+<span class="s2">                &lt;/td&gt;</span>
+<span class="s2">            &lt;/tr&gt;</span>
+<span class="s2">        &lt;/table&gt;</span>
+<span class="s2">    &lt;/form&gt;&lt;!--结束调用百度站内搜索--&gt;</span>
+<span class="s2">&lt;/div&gt;</span>
+<span class="s2">&lt;font color=&quot;</span><span class="c1">#FF0000&quot; face=&quot;微软雅黑&quot; size=&quot;4px&quot;&gt;搜索&lt;/font&gt;&lt;font color=&quot;#0000FF&quot; face=&quot;微软雅黑&quot;&gt;“&lt;?php the_search_query(); ?&gt;”&lt;/font&gt;的结果</span>
+<span class="o">&lt;!--</span><span class="nx">结束调用谷歌站内搜索</span><span class="o">--&gt;</span>
+</pre></div>
+
+
+<h5>下面这段JS代码是从谷歌自定义搜索中复制的，它的作用就是显示搜索结果。</h5>
+<p>大家可以把它放在自己的搜索页面的最后面，以便加快载入速度。例如，黄克业的博客中的站内搜索search.php就把它放在 &lt;?php get_footer(); ?&gt; 的后面。search.php的下载地址见文章的末尾处。</p>
+<div class="highlight"><pre><span class="nt">&lt;script</span> <span class="na">src=</span><span class="s">&quot;http://www.google.com.hk/jsapi&quot;</span> <span class="na">type=</span><span class="s">&quot;text/javascript&quot;</span><span class="nt">&gt;&lt;/script&gt;</span>
+<span class="nt">&lt;script</span> <span class="na">type=</span><span class="s">&quot;text/javascript&quot;</span><span class="nt">&gt;</span> 
+  google.load(&#39;search&#39;, &#39;1&#39;, {language : &#39;zh-CN&#39;, style : google.loader.themes.BUBBLEGUM});
+  google.setOnLoadCallback(function() {
+    var customSearchOptions = {};
+    var orderByOptions = {};
+    orderByOptions[&#39;keys&#39;] = [{label: &#39;相关性&#39;, key: &#39;&#39;},{label: &#39;日期&#39;, key: &#39;date&#39;}];
+    customSearchOptions[&#39;enableOrderBy&#39;] = true;
+    customSearchOptions[&#39;orderByOptions&#39;] = orderByOptions;
+    var imageSearchOptions = {};
+    imageSearchOptions[&#39;layout&#39;] = google.search.ImageSearch.LAYOUT_POPUP;
+    customSearchOptions[&#39;enableImageSearch&#39;] = true;
+    customSearchOptions[&#39;imageSearchOptions&#39;] = imageSearchOptions;  var customSearchControl = new google.search.CustomSearchControl(
+      &#39;009679826070314366499:n0657hze3po&#39;, customSearchOptions);
+    customSearchControl.setResultSetSize(google.search.Search.FILTERED_CSE_RESULTSET);
+    var options = new google.search.DrawOptions();
+    options.setAutoComplete(true);
+    options.enableSearchResultsOnly(); 
+    customSearchControl.draw(&#39;cse&#39;, options);
+    function parseParamsFromUrl() {
+      var params = {};
+      var parts = window.location.search.substr(1).split(&#39;\x26&#39;);
+      for (var i = 0; i <span class="nt">&lt; parts.length</span><span class="err">;</span> <span class="err">i++)</span> <span class="err">{</span>
+        <span class="err">var</span> <span class="na">keyValuePair =</span> <span class="s">parts[i].split(&#39;=&#39;);</span>
+        <span class="err">var</span> <span class="na">key =</span> <span class="s">decodeURIComponent(keyValuePair[0]);</span>
+        <span class="err">params[key]</span> <span class="err">=</span> <span class="err">keyValuePair[1]</span> <span class="err">?</span> <span class="err">decodeURIComponent(keyValuePair[1].replace(/\+/g,</span> <span class="err">&#39;</span> <span class="err">&#39;))</span> <span class="err">:</span> <span class="err">keyValuePair[1];</span>
+      <span class="err">}</span>
+      <span class="err">return</span> <span class="err">params;</span>
+    <span class="err">}</span>
+
+    <span class="err">var</span> <span class="na">urlParams =</span> <span class="s">parseParamsFromUrl();</span>
+    <span class="err">var</span> <span class="na">queryParamName =</span> <span class="s">&quot;s&quot;</span><span class="err">;</span>
+    <span class="err">if</span> <span class="err">(urlParams[queryParamName])</span> <span class="err">{</span>
+      <span class="err">customSearchControl.execute(urlParams[queryParamName]);</span>
+    <span class="err">}</span>
+  <span class="err">},</span> <span class="err">true);</span>
+<span class="err">&lt;/script</span><span class="nt">&gt;</span>
+
+<span class="nt">&lt;style</span> <span class="na">type=</span><span class="s">&quot;text/css&quot;</span><span class="nt">&gt;</span>//设置搜索结果显示的样式，大家可以自己修改
+  .gsc-control-cse {
+    font-family: Arial, sans-serif;
+    border-color: #C78DCC;
+    background-color: #fafafa;
+  }
+  .gsc-control-cse .gsc-table-result {
+    font-family: Arial, sans-serif;
+  }
+  .gsc-tabHeader{   font-size:20px;}
+  .gsc-tabHeader.gsc-tabhInactive {
+
+    border-color: #DECAFF;
+    background-color: #DECAFF;
+  }
+  .gsc-tabHeader.gsc-tabhActive {
+    border-color: #C78DCC;
+    background-color: #C78DCC;
+  }
+  .gsc-tabsArea {
+    border-color: #C78DCC;
+  }
+  .gsc-webResult.gsc-result,
+  .gsc-results .gsc-imageResult {
+    border-color: #C78DCC;
+    background-color: #F9F5FF;
+        margin:0px 0px 15px 0px ;
+  }
+  .gsc-webResult.gsc-result:hover,
+  .gsc-imageResult:hover {
+    border-color: #DECAFF;
+    background-color: #FFFFFF;
+  }
+  .gsc-webResult.gsc-result.gsc-promotion:hover {
+    border-color: #DECAFF;
+    background-color: #FFFFFF;
+  }
+  .gs-webResult.gs-result a.gs-title:link,
+  .gs-webResult.gs-result a.gs-title:link b,
+  .gs-imageResult a.gs-title:link,
+  .gs-imageResult a.gs-title:link b {
+    color: #0066CC;
+  }
+  .gs-webResult.gs-result a.gs-title:visited,
+  .gs-webResult.gs-result a.gs-title:visited b,
+  .gs-imageResult a.gs-title:visited,
+  .gs-imageResult a.gs-title:visited b {
+    color: #0066CC;
+  }
+  .gs-webResult.gs-result a.gs-title:hover,
+  .gs-webResult.gs-result a.gs-title:hover b,
+  .gs-imageResult a.gs-title:hover,
+  .gs-imageResult a.gs-title:hover b {
+    color: #0066CC;
+  }
+  .gs-webResult.gs-result a.gs-title:active,
+  .gs-webResult.gs-result a.gs-title:active b,
+  .gs-imageResult a.gs-title:active,
+  .gs-imageResult a.gs-title:active b {
+    color: #0066CC;
+  }
+  .gsc-cursor-page {
+    color: #0066CC;
+  }
+  a.gsc-trailing-more-results:link {
+    color: #0066CC;
+  }
+  .gs-webResult .gs-snippet,
+  .gs-imageResult .gs-snippet,
+  .gs-fileFormatType {
+    color: #000000;
+  }
+  .gs-webResult div.gs-visibleUrl,
+  .gs-imageResult div.gs-visibleUrl {
+    color: #009933;
+  }
+  .gs-webResult div.gs-visibleUrl-short {
+    color: #009933;
+  }
+  .gs-webResult div.gs-visibleUrl-short {
+    display: none;
+  }
+  .gs-webResult div.gs-visibleUrl-long {
+    display: block;
+  }
+  .gs-promotion div.gs-visibleUrl-short {
+    display: none;
+  }
+  .gs-promotion div.gs-visibleUrl-long {
+    display: block;
+  }
+  .gsc-cursor-box {
+    border-color: #F9F5FF;
+  }
+  .gsc-results .gsc-cursor-box .gsc-cursor-page {
+    border-color: #DECAFF;
+    background-color: #F9F5FF;
+    color: #0066CC;
+  }
+  .gsc-results .gsc-cursor-box .gsc-cursor-current-page {
+    border-color: #C78DCC;
+    background-color: #C78DCC;
+    color: #0066CC;
+  }
+  .gsc-webResult.gsc-result.gsc-promotion {
+    border-color: #DECAFF;
+    background-color: #F0E9FF;
+  }
+  .gsc-completion-title {
+    color: #0066CC;
+  }
+  .gsc-completion-snippet {
+    color: #000000;
+  }
+  .gs-promotion a.gs-title:link,
+  .gs-promotion a.gs-title:link *,
+  .gs-promotion .gs-snippet a:link {
+    color: #0066CC;
+  }
+  .gs-promotion a.gs-title:visited,
+  .gs-promotion a.gs-title:visited *,
+  .gs-promotion .gs-snippet a:visited {
+    color: #0066CC;
+  }
+  .gs-promotion a.gs-title:hover,
+  .gs-promotion a.gs-title:hover *,
+  .gs-promotion .gs-snippet a:hover {
+    color: #0066CC;
+  }
+  .gs-promotion a.gs-title:active,
+  .gs-promotion a.gs-title:active *,
+  .gs-promotion .gs-snippet a:active {
+    color: #0066CC;
+  }
+  .gs-promotion .gs-snippet,
+  .gs-promotion .gs-title .gs-promotion-title-right,
+  .gs-promotion .gs-title .gs-promotion-title-right *  {
+    color: #000000;
+  }
+  .gs-promotion .gs-visibleUrl,
+  .gs-promotion .gs-visibleUrl-short {
+    color: #CC7A9F;
+  }
+  <span class="nt">&lt;/style&gt;</span>
+ <span class="nt">&lt;/script&gt;</span>
+</pre></div>
+
+
+<h5>search.php的下载地址:</h5>
+<p>http://pan.baidu.com/share/link?shareid=78704&amp;uk=1879910561</p>
+		    	<p class="tags">
+					<div class="post-share">
+						<ul class="post-shareul clearfix">
+							<li class="post-shareli">
+								<a href="http://note.youdao.com/memory/?url=https://typecodes.com/web/googlecustbaidusearch.html&title=博客优化第二波(一)：同时使用谷歌自定义搜索和百度站内搜索" class="post-sharea ydshare" target="_blank" rel="nofollow">有道云笔记</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://v.t.sina.com.cn/share/share.php?url=https://typecodes.com/web/googlecustbaidusearch.html&title=博客优化第二波(一)：同时使用谷歌自定义搜索和百度站内搜索&source=https://typecodes.com" class="post-sharea wbshare" target="_blank" rel="nofollow">新浪微博</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://v.t.qq.com/share/share.php?title=博客优化第二波(一)：同时使用谷歌自定义搜索和百度站内搜索&url=https://typecodes.com/web/googlecustbaidusearch.html&site=https://typecodes.com" class="post-sharea twbshare" target="_blank" rel="nofollow">腾讯微博</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=https://typecodes.com/web/googlecustbaidusearch.html&title=博客优化第二波(一)：同时使用谷歌自定义搜索和百度站内搜索&content='utf-8'" class="post-sharea qzoneshare" target="_blank" rel="nofollow">QZone</a>
+							</li>
+						</ul>
+					</div>
+					<div>
+						Tags: <a href="https://typecodes.com/tag/gu-ge-zi-ding-yi-sou-suo.html">谷歌自定义搜索</a>,<a href="https://typecodes.com/tag/bai-du-zhan-nei-sou-suo.html">百度站内搜索</a>					</div>
+				</p>
+			</article>
+			
+			<div id="comments">
+				<h4 class="num">Comments &raquo;</h4>
+		    	<div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript></div>
+		    </div>
+		</div>
+		<!--3. right sider begin-->
+<div class="col-md-3" id="blog-secondary" role="complementary">
+	<section class="widget">
+		<ul class="widget-list">
+			<form id="search" method="get" action="https://typecodes.com/search.html">
+				<input type="text" name="q" id="s" size="20" x-webkit-speech="" x-webkit-grammar="builtin:search" onwebkitspeechchange="this.value = this.value.replace(this.defaultValue, '')" value="Google...." onfocus="this.value = (this.value == this.defaultValue) ? '' : this.value" onblur="this.value = (this.value == '') ? this.defaultValue : this.value">
+			</form>
+		</ul>
+	</section>
+	<section class="widget">
+		<h3 class="widget-title">Categories</h3>
+		<ul class="widget-list">
+		      <li class="current">
+		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (26)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/csharp/index.html">Csharp</a> (6)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/database/index.html">Database</a> (11)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/java/index.html">Java</a> (1)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/linux/index.html">Linux</a> (16)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/mix/index.html">Mix</a> (53)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/web/index.html">Web</a> (88)
+		      </li>
+		</ul>
+	</section>
+	<section class="widget">
+		<h3 class="widget-title">Recent Posts</h3>
+		<ul class="widget-list">
+			<li class="post">
+				<a href="https://typecodes.com/mix/sucesstypechotopelican.html">成功将博客从Typecho迁移到Pelican</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/mix/begintypechotopelican.html">准备将博客从Typecho迁移到Pelican</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/tcpconnectiontimedout.html">Linux TCP连接Connection Refused和Connection timed out的问题</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/mysqlerrornospace.html">博客MySQL服务惊魂记：Linux磁盘空间不足(Core Dump文件引爆)</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/mix/synweibophpmarkdownimgurl.html">升级博客文章同步微博的插件：PHP正则提取Markdown的图片地址</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/cppgeneralmakefile.html">Linux C/C++工程中可生成ELF、动/静态库文件的通用Makefile</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/libraryundefinedref.html">解决make编译链接动态库错误：libxx.so: undefined reference to xx</a>
+			</li>
+		</ul>
+	</section>
+	<section class="widget widget-feed">
+		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
+	</section>
+</div>
+				</div>
+			</div>
+		</div>
+		<!--4. bottom begin-->
+		<footer id="te-site-footer"><div class="container">
+	<div class="row" role="contentinfo">
+		<section class="col-md-2 col-md-offset-1">
+			<h3>Links</h3>
+			<ul><li><a href="http://diaosbook.com/" title="">diaosbook</a></li></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul>
+				<li><a href="https://typecodes.com/links.html">More..</a></li>
+			</ul>
+		</section>
+		<section class="col-md-2">
+			<h3>Following</h3>
+			<ul>
+				<li><a href="https://github.com/vfhky" class="following github" target="_blank" rel="external nofollow">GitHub</a></li>
+				<li><a href="http://weibo.com/typecodes" class="following weibo" target="_blank" rel="external nofollow">Weibo</a></li>
+				<li><a href="http://vfhky.sinaapp.com/" class="following sae" target="_blank" rel="external nofollow">SAE</a></li>
+				<li><a href="http://www.dwz.cn/mYiwa" class="following qqgroup" target="_blank" rel="external nofollow">Group</a></li>
+			</ul>
+		</section>
+		<div class="col-md-12 copyright">
+			<a href="#top"><i class="i-logo-s">TOP</i></a>
+			<p>
+				&copy; 2012-<script language="JavaScript">var date = new Date(); document.write(date.getFullYear());</script>							<a href="https://typecodes.com">TypeCodes</a>. All Rights Reserved<br>Powered by <a href="http://getpelican.com" rel="external" target="_blank">Pelican</a>. <a href="http://www.miitbeian.gov.cn/" rel="external nofollow" target="_blank">粤ICP备14050695号</a>
+			</p>
+		</div>
+	</div>
+</div>
+</footer>
+<script type="text/javascript">
+	var disqus_shortname = 'typecodes';
+	var disqus_identifier = '/web/googlecustbaidusearch.html';
+	var disqus_url = 'https://typecodes.com/web/googlecustbaidusearch.html';
+	var disqus_title = '博客优化第二波(一)：同时使用谷歌自定义搜索和百度站内搜索';
+	(function() {
+		var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+		dsq.src = "//" + disqus_shortname + '.disqus.com/embed.js';
+		(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	 })();
+</script>
+	</body>
+</html>

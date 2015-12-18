@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="zh-CN" class="no-js">
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<title>Sybase客户端打开SQL Advantage 12.5.1报错：Internal failure while initializing SQL Advantage(一) &mdash; TypeCodes</title>
+		<meta name="author" content="vfhky">
+  		<link href="https://typecodes.com/atom.xml" type="application/atom+xml" rel="alternate" title="TypeCodes Atom Feed" />
+	  	<link href="https://typecodes.com/feed.xml" type="application/rss+xml" rel="alternate" title="TypeCodes RSS Feed" />
+		<meta name="HandheldFriendly" content="True">
+		<meta name="MobileOptimized" content="320">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="renderer" content="webkit">
+		<link rel="stylesheet" href="https://dn-vfhky.qbox.me/libs/css/pelican-vfhky.css">
+		<script>
+			var _hmt = _hmt || [];
+			(function() {
+			  var hm = document.createElement("script");
+			  hm.src = "//hm.baidu.com/hm.js?c15c4ab8e91ba9ac3d5a12293cc93359";
+			  var s = document.getElementsByTagName("script")[0]; 
+			  s.parentNode.insertBefore(hm, s);
+			})();
+		</script>
+	</head>
+	<body style>
+		<!--1. header navigation begin-->
+		<header role="banner" id="te-site-header">
+			<div class="container">
+				<a href="https://typecodes.com" class="te-site-logo" role="logo" target="_self"> TypeCodes</a>
+				<ul class="nav nav-pills" id="te-site-nav" role="navigation">
+					<li><a href="https://typecodes.com">Home</a></li><li><a href="https://typecodes.com/archives.html" title="Archives">Archives</a></li><li><a href="https://typecodes.com/about.html" title="About">About</a></li></ul>
+			</div>
+		</header>
+		<div class="te-headline">
+			<div class="container">
+				<h2 class="te-headline-title"> <a href="https://typecodes.com">TypeCodes</a></h2>
+			</div>
+		</div>
+		<div class="container">
+			<div class="row">
+		<!--2. left sider begin-->
+		<div class="col-md-9" id="blog-main" role="main">
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/database/sqladvatage12internalfailureone.html">Sybase客户端打开SQL Advantage 12.5.1报错：Internal failure while initializing SQL Advantage(一)</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2013-11-17 20:32 | 分类：<a href="https://typecodes.com/database/index.html">database</a></li>
+</ul>
+<div class="post-content fmt">
+	<h5>1 打开SQL Advantage报错：Internal failure while initializing SQL Advantage</h5>
+<p>前几天在用sybase win客户端（OC 12.5.1）的时候，遇到了一个问题。每次打开SQL Advantage 12.5.1后，如果强制关闭窗口（例如有时界面卡死强退），那么再次打开就会报错：</p>
+<div class="highlight"><pre>Internal failure while initializing SQL Advantage. 
+Please check that Open Client is configured correctly.
+</pre></div>
+
+
+<p>正如下图所示，奇怪的是如果这时候重启电脑的话，那么打开SQL Advantage就正常。</p>
+<p><img alt="sybase客户端打开SQL Advantage 12.5.1报错" src="https://dn-vfhky.qbox.me/2013/11/sybase.jpg" title="sybase客户端打开SQL Advantage 12.5.1报错" /></p>
+
+
+<h5>2 查看报错信息：sybinit.err文件</h5>
+<p>正如下图所示，每次初始化SQL Advantage失败后，都会在这个文件中显示：</p>
+<div class="highlight"><pre>The context allocation routine failed when it tried to load localization files!!
+One or more following problems may caused the failure。按照文件中的提示，检查了SYBASE的环境变量值确实是D:\sybase，同时在D:\sybase\locales\locales.dat文件中LANG的值也为zh_CN。
+</pre></div>
+
+
+<p><img alt="报错信息sybinit.err文件" src="https://dn-vfhky.qbox.me/2013/11/sybinit.err_.png" title="报错信息sybinit.err文件" /></p>
+<h5>3 猜想：OC客户端产生系统临时文件</h5>
+<p>在GG和BD无果后，寻思为什么SQL Advantage在电脑重启后又能够正常工作？当时“最可能”的猜想就是：在强制关闭前，OC端会产生一些临时文件，保存一些配置信息，电脑关闭后会自动清除这些文件。于是做了一个测试，在报错之后，立马使用CCleaner清理系统文件。然后再次打开SQL Advantage，结果还是报错。猜想失败！！！</p>
+<h5>4 系统环境变量：windows中“/”和“\”</h5>
+<p>折腾了几次，还是没找到方法。大致看了下GG的搜索结果，提到了PATH环境变量。于是查看了下自己的。结果发现关于SYBASE需要的几个配置全部都有而且也都对。认真比较了几次，还是没发现异常。突然发现在PATH配置内容的末尾竟然出现了不和谐因素：“/”。如图所示，这是之前在安装jdk时，配置的环境变量。平常没注意在windows中设置目录要使用“\”，而不是“/”，不然会导致出现找不到路径的错误。于是把PATH变量中的两个“/”改成“\”，然后打开SQL Advantage，竟然正常了！</p>
+<p><img alt="系统环境变量PATH" src="https://dn-vfhky.qbox.me/2013/11/environment.png" title="系统环境变量PATH" /></p>
+<h5>5 延伸：其它不当配置也会报同样的错误</h5>
+<p>在搞定后，特地上GG搜索了下。其中，sybase官方论坛上的两个提问比较有代表性。限于篇幅，大家可以移步到下一篇文章一起探讨一下：<a href="https://typecodes.com/database/sqladvatage12internalfailuretwo.html" title="《Sybase客户端打开SQL Advantage 12.5.1报错：Internal failure while initializing SQL Advantage(二)》">《Sybase客户端打开SQL Advantage 12.5.1报错：Internal failure while initializing SQL Advantage(二)》</a>。</p>
+		    	<p class="tags">
+					<div class="post-share">
+						<ul class="post-shareul clearfix">
+							<li class="post-shareli">
+								<a href="http://note.youdao.com/memory/?url=https://typecodes.com/database/sqladvatage12internalfailureone.html&title=Sybase客户端打开SQL Advantage 12.5.1报错：Internal failure while initializing SQL Advantage(一)" class="post-sharea ydshare" target="_blank" rel="nofollow">有道云笔记</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://v.t.sina.com.cn/share/share.php?url=https://typecodes.com/database/sqladvatage12internalfailureone.html&title=Sybase客户端打开SQL Advantage 12.5.1报错：Internal failure while initializing SQL Advantage(一)&source=https://typecodes.com" class="post-sharea wbshare" target="_blank" rel="nofollow">新浪微博</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://v.t.qq.com/share/share.php?title=Sybase客户端打开SQL Advantage 12.5.1报错：Internal failure while initializing SQL Advantage(一)&url=https://typecodes.com/database/sqladvatage12internalfailureone.html&site=https://typecodes.com" class="post-sharea twbshare" target="_blank" rel="nofollow">腾讯微博</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=https://typecodes.com/database/sqladvatage12internalfailureone.html&title=Sybase客户端打开SQL Advantage 12.5.1报错：Internal failure while initializing SQL Advantage(一)&content='utf-8'" class="post-sharea qzoneshare" target="_blank" rel="nofollow">QZone</a>
+							</li>
+						</ul>
+					</div>
+					<div>
+						Tags: <a href="https://typecodes.com/tag/sqladvatage.html">sqladvatage</a>,<a href="https://typecodes.com/tag/sybase-internal-failure.html">sybase internal failure</a>					</div>
+				</p>
+			</article>
+			
+			<div id="comments">
+				<h4 class="num">Comments &raquo;</h4>
+		    	<div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript></div>
+		    </div>
+		</div>
+		<!--3. right sider begin-->
+<div class="col-md-3" id="blog-secondary" role="complementary">
+	<section class="widget">
+		<ul class="widget-list">
+			<form id="search" method="get" action="https://typecodes.com/search.html">
+				<input type="text" name="q" id="s" size="20" x-webkit-speech="" x-webkit-grammar="builtin:search" onwebkitspeechchange="this.value = this.value.replace(this.defaultValue, '')" value="Google...." onfocus="this.value = (this.value == this.defaultValue) ? '' : this.value" onblur="this.value = (this.value == '') ? this.defaultValue : this.value">
+			</form>
+		</ul>
+	</section>
+	<section class="widget">
+		<h3 class="widget-title">Categories</h3>
+		<ul class="widget-list">
+		      <li class="current">
+		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (26)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/csharp/index.html">Csharp</a> (6)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/database/index.html">Database</a> (11)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/java/index.html">Java</a> (1)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/linux/index.html">Linux</a> (16)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/mix/index.html">Mix</a> (53)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/web/index.html">Web</a> (88)
+		      </li>
+		</ul>
+	</section>
+	<section class="widget">
+		<h3 class="widget-title">Recent Posts</h3>
+		<ul class="widget-list">
+			<li class="post">
+				<a href="https://typecodes.com/mix/sucesstypechotopelican.html">成功将博客从Typecho迁移到Pelican</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/mix/begintypechotopelican.html">准备将博客从Typecho迁移到Pelican</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/tcpconnectiontimedout.html">Linux TCP连接Connection Refused和Connection timed out的问题</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/mysqlerrornospace.html">博客MySQL服务惊魂记：Linux磁盘空间不足(Core Dump文件引爆)</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/mix/synweibophpmarkdownimgurl.html">升级博客文章同步微博的插件：PHP正则提取Markdown的图片地址</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/cppgeneralmakefile.html">Linux C/C++工程中可生成ELF、动/静态库文件的通用Makefile</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/libraryundefinedref.html">解决make编译链接动态库错误：libxx.so: undefined reference to xx</a>
+			</li>
+		</ul>
+	</section>
+	<section class="widget widget-feed">
+		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
+	</section>
+</div>
+				</div>
+			</div>
+		</div>
+		<!--4. bottom begin-->
+		<footer id="te-site-footer"><div class="container">
+	<div class="row" role="contentinfo">
+		<section class="col-md-2 col-md-offset-1">
+			<h3>Links</h3>
+			<ul><li><a href="http://diaosbook.com/" title="">diaosbook</a></li></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul>
+				<li><a href="https://typecodes.com/links.html">More..</a></li>
+			</ul>
+		</section>
+		<section class="col-md-2">
+			<h3>Following</h3>
+			<ul>
+				<li><a href="https://github.com/vfhky" class="following github" target="_blank" rel="external nofollow">GitHub</a></li>
+				<li><a href="http://weibo.com/typecodes" class="following weibo" target="_blank" rel="external nofollow">Weibo</a></li>
+				<li><a href="http://vfhky.sinaapp.com/" class="following sae" target="_blank" rel="external nofollow">SAE</a></li>
+				<li><a href="http://www.dwz.cn/mYiwa" class="following qqgroup" target="_blank" rel="external nofollow">Group</a></li>
+			</ul>
+		</section>
+		<div class="col-md-12 copyright">
+			<a href="#top"><i class="i-logo-s">TOP</i></a>
+			<p>
+				&copy; 2012-<script language="JavaScript">var date = new Date(); document.write(date.getFullYear());</script>							<a href="https://typecodes.com">TypeCodes</a>. All Rights Reserved<br>Powered by <a href="http://getpelican.com" rel="external" target="_blank">Pelican</a>. <a href="http://www.miitbeian.gov.cn/" rel="external nofollow" target="_blank">粤ICP备14050695号</a>
+			</p>
+		</div>
+	</div>
+</div>
+</footer>
+<script type="text/javascript">
+	var disqus_shortname = 'typecodes';
+	var disqus_identifier = '/database/sqladvatage12internalfailureone.html';
+	var disqus_url = 'https://typecodes.com/database/sqladvatage12internalfailureone.html';
+	var disqus_title = 'Sybase客户端打开SQL Advantage 12.5.1报错：Internal failure while initializing SQL Advantage(一)';
+	(function() {
+		var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+		dsq.src = "//" + disqus_shortname + '.disqus.com/embed.js';
+		(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	 })();
+</script>
+	</body>
+</html>

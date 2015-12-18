@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="zh-CN" class="no-js">
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<title>理解有符号和无符号的字符数和整数的转换 &mdash; TypeCodes</title>
+		<meta name="author" content="vfhky">
+  		<link href="https://typecodes.com/atom.xml" type="application/atom+xml" rel="alternate" title="TypeCodes Atom Feed" />
+	  	<link href="https://typecodes.com/feed.xml" type="application/rss+xml" rel="alternate" title="TypeCodes RSS Feed" />
+		<meta name="HandheldFriendly" content="True">
+		<meta name="MobileOptimized" content="320">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="renderer" content="webkit">
+		<link rel="stylesheet" href="https://dn-vfhky.qbox.me/libs/css/pelican-vfhky.css">
+		<script>
+			var _hmt = _hmt || [];
+			(function() {
+			  var hm = document.createElement("script");
+			  hm.src = "//hm.baidu.com/hm.js?c15c4ab8e91ba9ac3d5a12293cc93359";
+			  var s = document.getElementsByTagName("script")[0]; 
+			  s.parentNode.insertBefore(hm, s);
+			})();
+		</script>
+	</head>
+	<body style>
+		<!--1. header navigation begin-->
+		<header role="banner" id="te-site-header">
+			<div class="container">
+				<a href="https://typecodes.com" class="te-site-logo" role="logo" target="_self"> TypeCodes</a>
+				<ul class="nav nav-pills" id="te-site-nav" role="navigation">
+					<li><a href="https://typecodes.com">Home</a></li><li><a href="https://typecodes.com/archives.html" title="Archives">Archives</a></li><li><a href="https://typecodes.com/about.html" title="About">About</a></li></ul>
+			</div>
+		</header>
+		<div class="te-headline">
+			<div class="container">
+				<h2 class="te-headline-title"> <a href="https://typecodes.com">TypeCodes</a></h2>
+			</div>
+		</div>
+		<div class="container">
+			<div class="row">
+		<!--2. left sider begin-->
+		<div class="col-md-9" id="blog-main" role="main">
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/cseries/signedunsignedcharconvint.html">理解有符号和无符号的字符数和整数的转换</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2014-11-07 21:52 | 分类：<a href="https://typecodes.com/cseries/index.html">cseries</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>网上关于有符号、无符号字符转换成有符号、无符号整形数据的问题，自己写了一个测试程序，分析了下，挺有意思的。</p>
+<h5>1 测试说明</h5>
+<p>用的是自己的win7 64位系统，处理器当然是Intel的，因此是前文提到的<code>小端模式</code>。默认按32位（总线）处理，即一个整型4个字节，长度共 2^32 = 4294967296 字节；有符号字符char类型数据的范围是 -128~127 （对应二进制 11111111~01111111），无符号字符 unsinged char 类型数据范围是 0~255（对应二进制 00000000~11111111）。</p>
+<p><img alt="C语言有符号和无符号数" src="https://dn-vfhky.qbox.me/2014/11/clangsignedandunsigned.png" title="C语言有符号和无符号数" /></p>
+
+
+<h5>2 测试程序</h5>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30</pre></div></td><td class="code"><div class="highlight"><pre><span class="cm">/**</span>
+<span class="cm"> * @FileName :  signedandunsigned.c</span>
+<span class="cm"> * @Author   :  vfhky 2014.10.21 https://typecodes.com/cseries/signedunsignedcharconvint.html</span>
+<span class="cm"> * @Function :  对有符号和无符号数的测试</span>
+<span class="cm"> */</span>
+<span class="cp">#include &lt;stdio.h&gt;</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span> <span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span> <span class="n">argv</span><span class="p">[]</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="kt">char</span> <span class="o">*</span> <span class="n">a</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">b</span><span class="p">;</span>
+
+    <span class="c1">//情形1，b的值在有符号字符型数据范围内</span>
+    <span class="n">b</span> <span class="o">=</span> <span class="o">-</span><span class="mi">2</span><span class="p">;</span>
+    <span class="n">a</span> <span class="o">=</span> <span class="p">(</span><span class="kt">char</span> <span class="o">*</span><span class="p">)</span><span class="o">&amp;</span><span class="n">b</span><span class="p">;</span>
+    <span class="n">printf</span><span class="p">(</span> <span class="s">&quot;*a=[%d]</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="o">*</span><span class="n">a</span> <span class="p">);</span>      <span class="c1">//输出 *a=[-2]</span>
+    <span class="n">printf</span><span class="p">(</span> <span class="s">&quot;*a=[%u]</span><span class="se">\n\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="o">*</span><span class="n">a</span> <span class="p">);</span>    <span class="c1">//输出 *a=[4294967294]</span>
+
+    <span class="c1">//情形2，b的值不在无符号字符型数据范围内</span>
+    <span class="n">b</span> <span class="o">=</span> <span class="mi">254</span><span class="p">;</span>
+    <span class="n">printf</span><span class="p">(</span> <span class="s">&quot;*a=[%d]</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="o">*</span><span class="n">a</span> <span class="p">);</span>      <span class="c1">//输出 *a=[-2]</span>
+    <span class="n">printf</span><span class="p">(</span> <span class="s">&quot;*a=[%u]</span><span class="se">\n\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="o">*</span><span class="n">a</span> <span class="p">);</span>    <span class="c1">//输出 *a=[4294967294]</span>
+
+    <span class="c1">//情形3，b的值在无符号字符型数据范围内</span>
+    <span class="n">b</span> <span class="o">=</span> <span class="mi">129</span><span class="p">;</span>
+    <span class="n">printf</span><span class="p">(</span> <span class="s">&quot;*a=[%d]</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="o">*</span><span class="n">a</span> <span class="p">);</span>      <span class="c1">//输出 *a=[-127]</span>
+    <span class="n">printf</span><span class="p">(</span> <span class="s">&quot;*a=[%u]</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="o">*</span><span class="n">a</span> <span class="p">);</span>      <span class="c1">//输出 *a=[4294967169]</span>
+
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</td></tr></table>
+
+<p><img alt="对有符号signed和无符号unsigned数的测试" src="https://dn-vfhky.qbox.me/2014/11/signedandunsigned.png" title="对有符号signed和无符号unsigned数的测试" /></p>
+<h5>3 三种情形所得结果的分析</h5>
+<h6>3.1 情形1：b = -2</h6>
+<p>执行<code>b = -2;</code>后，整型变量b的值 -2 在内存单元中的形式是<code>1111 1111 1111 1111 1111 1111 1111 1110</code>（共4字节，十六进制<code>0xfffffffe</code>）。而当执行<code>a = (char *)&amp;b;</code>后，由于CPU是<code>小端模式</code>，所以指针变量a指向b的首地址（低地址/低字节1111 1110所在的地址）。由于有符号字符型数据占一个字节(范围<code>-128~127</code>)，所以刚好是变量b的第一个字节<code>1111 1110（十六进制的fe）</code>。它对应有符号字符型数据<code>-2</code>，即<code>*a</code>的值为<code>-2</code>。然后在打印<code>printf( "*a=[%d]\n", *a );</code>时，也就是将有符号整型-2以有符号整型数据输出，也就是<code>-2</code>。</p>
+<p>而打印<code>printf( "*a=[%u]\n", *a );</code>时，是将有符号整型-2以无符号整型数据输出，即求-2的补码形式：已知-2在内存单元中的形式是<code>1111 1111 1111 1111 1111 1111 11111110</code>（共4字节），由于此时是无符号整数，即最高位1不是符号位，所以值是<code>(2^32 - 1) - 1 = 4294967296 - 2 = 4294967294</code>。</p>
+<h6>3.2 情形2：b = 254</h6>
+<p>执行<code>b = 254;</code>后，整型变量b的值 254 在内存单元中的形式是<code>0000 0000 0000 0000 0000 0000 1111 1110</code>（共4字节，十六进制<code>0x000000fe</code>）。此时指针变量a仍旧指向b的首地址（低地址/低字节1111 1110，即十六进制的fe）。由于有符号字符型数据占一个字节(范围<code>-128~127</code>)，所以刚好是变量b的第一个字节<code>1111 1110（十六进制的fe）</code>。它对应有符号字符型数据<code>-2</code>，所以<code>*a</code>的值为<code>-2</code>。然后在打印<code>printf( "*a=[%d]\n", *a );</code>时，也就是将有符号整型-2以有符号整型数据输出，也就是<code>-2</code>。</p>
+<p>同情形1，<code>printf( "*a=[%u]\n", *a );</code>输出的内容也是<code>4294967294</code>。</p>
+<h6>3.3 情形3：b = 129</h6>
+<p>执行<code>b = 129;</code>后，整型变量 b 的值 129 在内存中的形式是<code>0000 0000 0000 0000 0000 0000 1000 0001</code>（共4字节，十六进制<code>0x00000081</code>）。此时指针变量a仍旧指向b的首地址（低地址/低字节1000 0001所在的地址）。由于有符号字符型数据占一个字节(范围<code>-128~127</code>)，所以刚好是变量b的第一个字节<code>1000 0001（十六进制的a1）</code>。它对应有符号字符型数据<code>-0x7f（即十进制的-127）</code>，所以<code>*a</code>的值为<code>-127</code>。然后在打印<code>printf( "*a=[%d]\n", *a );</code>时，也就是将有符号整型-127以有符号整型数据输出，也就是<code>-127</code>。</p>
+<p>而打印<code>printf( "*a=[%u]\n", *a );</code>时，是将有符号整型-127以无符号整型数据输出，即求-127的补码形式：-127的绝对值127的内存单元为<code>0000 0000 0000 0000 0000 0000 0111 1111</code>（4字节），然后取反得到<code>1111 1111 1111 1111 1111 1111 1000 0000</code>（共4字节），然后加1得到<code>1111 1111 1111 1111 1111 1111 1000 0001</code>（共4字节），由于此时是无符号，即最高位1不是符号位，所以共 (2^32 - 1) - （255 - 128 - 1） = 4294967296 -1 - 126 = 4294967169。</p>
+		    	<p class="tags">
+					<div class="post-share">
+						<ul class="post-shareul clearfix">
+							<li class="post-shareli">
+								<a href="http://note.youdao.com/memory/?url=https://typecodes.com/cseries/signedunsignedcharconvint.html&title=理解有符号和无符号的字符数和整数的转换" class="post-sharea ydshare" target="_blank" rel="nofollow">有道云笔记</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://v.t.sina.com.cn/share/share.php?url=https://typecodes.com/cseries/signedunsignedcharconvint.html&title=理解有符号和无符号的字符数和整数的转换&source=https://typecodes.com" class="post-sharea wbshare" target="_blank" rel="nofollow">新浪微博</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://v.t.qq.com/share/share.php?title=理解有符号和无符号的字符数和整数的转换&url=https://typecodes.com/cseries/signedunsignedcharconvint.html&site=https://typecodes.com" class="post-sharea twbshare" target="_blank" rel="nofollow">腾讯微博</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=https://typecodes.com/cseries/signedunsignedcharconvint.html&title=理解有符号和无符号的字符数和整数的转换&content='utf-8'" class="post-sharea qzoneshare" target="_blank" rel="nofollow">QZone</a>
+							</li>
+						</ul>
+					</div>
+					<div>
+						Tags: <a href="https://typecodes.com/tag/you-fu-hao-zi-fu-signed.html">有符号字符signed</a>,<a href="https://typecodes.com/tag/wu-fu-hao-zi-fu-unsigned.html">无符号字符unsigned</a>					</div>
+				</p>
+			</article>
+			
+			<div id="comments">
+				<h4 class="num">Comments &raquo;</h4>
+		    	<div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript></div>
+		    </div>
+		</div>
+		<!--3. right sider begin-->
+<div class="col-md-3" id="blog-secondary" role="complementary">
+	<section class="widget">
+		<ul class="widget-list">
+			<form id="search" method="get" action="https://typecodes.com/search.html">
+				<input type="text" name="q" id="s" size="20" x-webkit-speech="" x-webkit-grammar="builtin:search" onwebkitspeechchange="this.value = this.value.replace(this.defaultValue, '')" value="Google...." onfocus="this.value = (this.value == this.defaultValue) ? '' : this.value" onblur="this.value = (this.value == '') ? this.defaultValue : this.value">
+			</form>
+		</ul>
+	</section>
+	<section class="widget">
+		<h3 class="widget-title">Categories</h3>
+		<ul class="widget-list">
+		      <li class="current">
+		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (26)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/csharp/index.html">Csharp</a> (6)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/database/index.html">Database</a> (11)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/java/index.html">Java</a> (1)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/linux/index.html">Linux</a> (16)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/mix/index.html">Mix</a> (53)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/web/index.html">Web</a> (88)
+		      </li>
+		</ul>
+	</section>
+	<section class="widget">
+		<h3 class="widget-title">Recent Posts</h3>
+		<ul class="widget-list">
+			<li class="post">
+				<a href="https://typecodes.com/mix/sucesstypechotopelican.html">成功将博客从Typecho迁移到Pelican</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/mix/begintypechotopelican.html">准备将博客从Typecho迁移到Pelican</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/tcpconnectiontimedout.html">Linux TCP连接Connection Refused和Connection timed out的问题</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/mysqlerrornospace.html">博客MySQL服务惊魂记：Linux磁盘空间不足(Core Dump文件引爆)</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/mix/synweibophpmarkdownimgurl.html">升级博客文章同步微博的插件：PHP正则提取Markdown的图片地址</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/cppgeneralmakefile.html">Linux C/C++工程中可生成ELF、动/静态库文件的通用Makefile</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/libraryundefinedref.html">解决make编译链接动态库错误：libxx.so: undefined reference to xx</a>
+			</li>
+		</ul>
+	</section>
+	<section class="widget widget-feed">
+		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
+	</section>
+</div>
+				</div>
+			</div>
+		</div>
+		<!--4. bottom begin-->
+		<footer id="te-site-footer"><div class="container">
+	<div class="row" role="contentinfo">
+		<section class="col-md-2 col-md-offset-1">
+			<h3>Links</h3>
+			<ul><li><a href="http://diaosbook.com/" title="">diaosbook</a></li></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul>
+				<li><a href="https://typecodes.com/links.html">More..</a></li>
+			</ul>
+		</section>
+		<section class="col-md-2">
+			<h3>Following</h3>
+			<ul>
+				<li><a href="https://github.com/vfhky" class="following github" target="_blank" rel="external nofollow">GitHub</a></li>
+				<li><a href="http://weibo.com/typecodes" class="following weibo" target="_blank" rel="external nofollow">Weibo</a></li>
+				<li><a href="http://vfhky.sinaapp.com/" class="following sae" target="_blank" rel="external nofollow">SAE</a></li>
+				<li><a href="http://www.dwz.cn/mYiwa" class="following qqgroup" target="_blank" rel="external nofollow">Group</a></li>
+			</ul>
+		</section>
+		<div class="col-md-12 copyright">
+			<a href="#top"><i class="i-logo-s">TOP</i></a>
+			<p>
+				&copy; 2012-<script language="JavaScript">var date = new Date(); document.write(date.getFullYear());</script>							<a href="https://typecodes.com">TypeCodes</a>. All Rights Reserved<br>Powered by <a href="http://getpelican.com" rel="external" target="_blank">Pelican</a>. <a href="http://www.miitbeian.gov.cn/" rel="external nofollow" target="_blank">粤ICP备14050695号</a>
+			</p>
+		</div>
+	</div>
+</div>
+</footer>
+<script type="text/javascript">
+	var disqus_shortname = 'typecodes';
+	var disqus_identifier = '/cseries/signedunsignedcharconvint.html';
+	var disqus_url = 'https://typecodes.com/cseries/signedunsignedcharconvint.html';
+	var disqus_title = '理解有符号和无符号的字符数和整数的转换';
+	(function() {
+		var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+		dsq.src = "//" + disqus_shortname + '.disqus.com/embed.js';
+		(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	 })();
+</script>
+	</body>
+</html>

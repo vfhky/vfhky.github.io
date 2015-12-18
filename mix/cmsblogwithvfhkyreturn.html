@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="zh-CN" class="no-js">
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<title>启用CMS类型的博客主题，vfhky再次回归 &mdash; TypeCodes</title>
+		<meta name="author" content="vfhky">
+  		<link href="https://typecodes.com/atom.xml" type="application/atom+xml" rel="alternate" title="TypeCodes Atom Feed" />
+	  	<link href="https://typecodes.com/feed.xml" type="application/rss+xml" rel="alternate" title="TypeCodes RSS Feed" />
+		<meta name="HandheldFriendly" content="True">
+		<meta name="MobileOptimized" content="320">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="renderer" content="webkit">
+		<link rel="stylesheet" href="https://dn-vfhky.qbox.me/libs/css/pelican-vfhky.css">
+		<script>
+			var _hmt = _hmt || [];
+			(function() {
+			  var hm = document.createElement("script");
+			  hm.src = "//hm.baidu.com/hm.js?c15c4ab8e91ba9ac3d5a12293cc93359";
+			  var s = document.getElementsByTagName("script")[0]; 
+			  s.parentNode.insertBefore(hm, s);
+			})();
+		</script>
+	</head>
+	<body style>
+		<!--1. header navigation begin-->
+		<header role="banner" id="te-site-header">
+			<div class="container">
+				<a href="https://typecodes.com" class="te-site-logo" role="logo" target="_self"> TypeCodes</a>
+				<ul class="nav nav-pills" id="te-site-nav" role="navigation">
+					<li><a href="https://typecodes.com">Home</a></li><li><a href="https://typecodes.com/archives.html" title="Archives">Archives</a></li><li><a href="https://typecodes.com/about.html" title="About">About</a></li></ul>
+			</div>
+		</header>
+		<div class="te-headline">
+			<div class="container">
+				<h2 class="te-headline-title"> <a href="https://typecodes.com">TypeCodes</a></h2>
+			</div>
+		</div>
+		<div class="container">
+			<div class="row">
+		<!--2. left sider begin-->
+		<div class="col-md-9" id="blog-main" role="main">
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/mix/cmsblogwithvfhkyreturn.html">启用CMS类型的博客主题，vfhky再次回归</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2013-07-14 22:12 | 分类：<a href="https://typecodes.com/mix/index.html">mix</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>由于种种原因，原定于5月底更换的主题未能正常上线。本以为最迟应该可以在6月份完成的，但是毕业设计、毕业旅行、回家……种种的种种，让我不得不停下来；本以为毕业后时间还很长，就像刚进大学时候觉得大学四年会很漫长，结果就是后知后觉了。好吧，不罗嗦了，直接进入主题：</p>
+
+
+<h5>1 主题变更缘由</h5>
+<p>博客从12年6月12开始至今，一直用的是<a href="http://www.weisay.com/blog/wordpress-theme-weisay-simple.html" title="点击查看 威少官方主题 ">威少的主题weisaysimple</a>，简洁明了，很适合IT类的博客。但是随着博客主要内容的拓展，感觉还是将这种博客类型的wordpress主题改成CMS系列的主题比较合适。在今年4月份博客申请huangkeye.com、huangkeye.cn两个域名备案期间，vfhky测试过很多CMS类型的wordpress主题，最后选择了 huishao 的 <a href="http://www.zuifengyun.com/fengyun-2-1.html" title="查看 风云时代主题 ">风云时代主题</a>。在CMS类型的博客主题中，huishao的这款也是很简洁明了，因此vfhky也特别中意。都是很优秀的两款wordpress主题，威少和huishao的设计真心不错，再次感谢两位！</p>
+<h5>2 主题源程序改进</h5>
+<p>huishao的这款风云时代主题主程序比较庞大，比如主程序和include两个文件夹中有较多的代码是可以合并、删除、简化的。另外后台功能，例如：博客、cms风格的选择以及视频功能等，也是可以删掉的。vfhky所做的主要是两个方面，一个是代码的精简优化，另一个是功能的丰富、便捷以及实用化。这中间参考了vfhky之前改进后的威少的这款主题以及自己动手实现的几个功能。那么接下来就说说vfhky对这款主题几个比较重要的个性化改进的具体过程。</p>
+<h6>2.1 主题代码的精简</h6>
+<p>代码的优化改进，其目的还是更好的用户体验。页面的快速加载、使用的便捷清晰以及功能的丰富实用化等等，这些都是奔着用户体验去的。当然，代码的简化直观的体现可以从程序文件看出来。原先风云时代的程序共有191个文件（包括程序和文件）和12个文件夹，经过精简优化后，减少了近30个文件。另外，程序的体积也大大减小，源程序共有721K，优化后只有461K了。</p>
+<h6>2.2.1 功能改进之搜索</h6>
+<p>原主题采用后台设置使用博客自带的搜索还是使用谷歌自定义搜索功能。考虑到若是使用博客自带的搜索，会增加服务器的负担，再者自带的搜索功能也不是很精准，因此决定采用“谷歌自定义搜索+百度站内搜索”结合的模式。一来可以减轻服务器的负担，二来可以使搜索功能更强大，改善用户体验。另外对搜索的样式也采用jquery优化，应该比之前好看些吧？嘿嘿</p>
+<h6>2.2.2 功能改进之右侧栏</h6>
+<p>原主题会在后台设置很多小工具的选项，但是vfhky在使用的过程中总是需要对照着huishao的主题说明来拖拽小工具，这与喜欢清晰简洁风格的我不太合口味。因此，通过对functions.php和theme_options.php和widget.php等文件的修改，删掉一些不需要的功能。然后新建一个php文件，把一些需要用到的小功能整合在一起。于是形成了右侧栏的两个jquery自动从左向右滚动的TAB栏目。另外对”最新评论“也采用了jquery功能实现滚动浏览，方便用户浏览。</p>
+<h6>2.2.3 功能改进之广告加载</h6>
+<p>原主题对广告采用了直接加载模式，但是如今的广告都是通过外部加载JS来实现的。然而WEB的加载模式一般是按顺序来加载的，因此，当网络状况较差的时候会导致广告内容一直在加载而博客内容却无法加载的情况。因此，新建一个addelay.php文件来决定在不同页面加载不同广告以及在文本内容加载完后才加载广告（大体思路是：通过wordpress页面判断函数以及用javascript在footer.php末尾加载广告JS代码）。</p>
+<h6>2.2.4 功能改进之评论列表</h6>
+<p>摒弃使用WP-UserAgent插件来显示评论者的所属国家、操作系统、浏览器、ISP服务商等信息，通过在functions.php添加相关代码实现。其中，ISP服务商的显示是通过JS调用新浪IP库并延迟加载实现的，减少网页的整体载入速度。</p>
+<h6>2.2.5 功能改进之评论框</h6>
+<p>增加评论验证码来防止机器人评论；通过jquery增加评论框的编辑器功能，插入表情、插入图片更为方便，同时读者能更便捷的编辑自己的评论内容；最大限度开放评论HTML标签功能，通过span style标签能实现很多功能哟。</p>
+<h6>2.2.6 功能改进之正文代码显示</h6>
+<p>原先vfhky改进的威少的主题在正文中贴代码是通过wp-codebox插件实现的。这个国产插件体积比较庞大（当然功能确实是杠杠的），所以为了加快页面载入速度，决定摒弃代码高亮插件，采用google code pretty实现。</p>
+<h6>2.2.7 功能改进之内链审查</h6>
+<p>相信很多博客都遭遇过一些无聊spamer在评论中写一些广告或者其它无关文章主题的内容。他们目的当然是增加自己的广告或者而已软件的曝光率，但是对博主来说来说这些带有外部广告链接的评论信息会大大降低博客的整体形象，对来访的用户造成不良印象。所以，vfhky决定对外链进行审核认证，最终对广大读者公开显示这些链接信息的审核认证的结果。所以希望那些发广告的童鞋要还是好好读一下文章，广告可以发专门的广告论坛嘛！当然，希望那些优质的IT、社区空间、程序设计类的站点提交自己的站点给大家分享分享哦！</p>
+<p><img alt="外链安全访问提示" src="https://dn-vfhky.qbox.me/2013/07/URL_CHECK.jpg" title="外链安全访问提示" /></p>
+<h5>3 后续</h5>
+<p>本次主题的界面CSS优化改进是基于1366 * 768屏幕分辨率+IE9+FF22.0+360极速（基于Chrome26.0）+Chromium28.0浏览器测试的，所有页面均显示正常（IE7及以下的浏览器不作考虑）。当然，由于vfhky对界面CSS不太熟悉，所以也不敢说解决了浏览器的兼容问题。因此，推荐大家在访问博客时使用Google Chrome 26.0（及以上的版本）+1366 * 768的屏幕分辨率来获取最佳体验。另外，考虑到博客的安全性问题，决定不采用在线投稿的功能了，但是vfhky特别希望大家给黄克业的博客投稿。投稿方式可以通过注册博客的会员（评论时会出现博客的认证图标），也可以通过邮件vfhky@qq.com投稿。当然投稿内容需要符合博客的整体风格，但一定要是原创性的文章（特别稀饭编程技术类的原创文章）。投稿可以保留作者的一切权利，包括文章的外部链接等。</p>
+<h5>4 结语</h5>
+<p>从4月备案通过、做301域名跳转huangkeye.com到huangkeye.cn，到今天博客启用新主题，整整3个月了。这之间没怎么写文章，百度的收录也骤降，但是GG的收录还是挺好的。后面的话，vfhky会在周末定期更新文章。最后，希望广大读者对在博客阅览时遇到的Bug予以反馈，我会及时修复更正，先谢谢咯！</p>
+<h5>5 另附：威少主题改进终极版</h5>
+<p>之前博客用的威少的主题，经过vfhky的几次修改，提供终结版下载，新主题中用到了这里面较多的源代码，有兴趣的童鞋可以参考下。下载地址是：</p>
+<p>http://pan.baidu.com/share/link?shareid=164552794&amp;uk=1879910561</p>
+		    	<p class="tags">
+					<div class="post-share">
+						<ul class="post-shareul clearfix">
+							<li class="post-shareli">
+								<a href="http://note.youdao.com/memory/?url=https://typecodes.com/mix/cmsblogwithvfhkyreturn.html&title=启用CMS类型的博客主题，vfhky再次回归" class="post-sharea ydshare" target="_blank" rel="nofollow">有道云笔记</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://v.t.sina.com.cn/share/share.php?url=https://typecodes.com/mix/cmsblogwithvfhkyreturn.html&title=启用CMS类型的博客主题，vfhky再次回归&source=https://typecodes.com" class="post-sharea wbshare" target="_blank" rel="nofollow">新浪微博</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://v.t.qq.com/share/share.php?title=启用CMS类型的博客主题，vfhky再次回归&url=https://typecodes.com/mix/cmsblogwithvfhkyreturn.html&site=https://typecodes.com" class="post-sharea twbshare" target="_blank" rel="nofollow">腾讯微博</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=https://typecodes.com/mix/cmsblogwithvfhkyreturn.html&title=启用CMS类型的博客主题，vfhky再次回归&content='utf-8'" class="post-sharea qzoneshare" target="_blank" rel="nofollow">QZone</a>
+							</li>
+						</ul>
+					</div>
+					<div>
+						Tags: <a href="https://typecodes.com/tag/bo-ke-cheng-chang-lu.html">博客成长录</a>					</div>
+				</p>
+			</article>
+			
+			<div id="comments">
+				<h4 class="num">Comments &raquo;</h4>
+		    	<div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript></div>
+		    </div>
+		</div>
+		<!--3. right sider begin-->
+<div class="col-md-3" id="blog-secondary" role="complementary">
+	<section class="widget">
+		<ul class="widget-list">
+			<form id="search" method="get" action="https://typecodes.com/search.html">
+				<input type="text" name="q" id="s" size="20" x-webkit-speech="" x-webkit-grammar="builtin:search" onwebkitspeechchange="this.value = this.value.replace(this.defaultValue, '')" value="Google...." onfocus="this.value = (this.value == this.defaultValue) ? '' : this.value" onblur="this.value = (this.value == '') ? this.defaultValue : this.value">
+			</form>
+		</ul>
+	</section>
+	<section class="widget">
+		<h3 class="widget-title">Categories</h3>
+		<ul class="widget-list">
+		      <li class="current">
+		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (26)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/csharp/index.html">Csharp</a> (6)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/database/index.html">Database</a> (11)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/java/index.html">Java</a> (1)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/linux/index.html">Linux</a> (16)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/mix/index.html">Mix</a> (53)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/web/index.html">Web</a> (88)
+		      </li>
+		</ul>
+	</section>
+	<section class="widget">
+		<h3 class="widget-title">Recent Posts</h3>
+		<ul class="widget-list">
+			<li class="post">
+				<a href="https://typecodes.com/mix/sucesstypechotopelican.html">成功将博客从Typecho迁移到Pelican</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/mix/begintypechotopelican.html">准备将博客从Typecho迁移到Pelican</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/tcpconnectiontimedout.html">Linux TCP连接Connection Refused和Connection timed out的问题</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/mysqlerrornospace.html">博客MySQL服务惊魂记：Linux磁盘空间不足(Core Dump文件引爆)</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/mix/synweibophpmarkdownimgurl.html">升级博客文章同步微博的插件：PHP正则提取Markdown的图片地址</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/cppgeneralmakefile.html">Linux C/C++工程中可生成ELF、动/静态库文件的通用Makefile</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/libraryundefinedref.html">解决make编译链接动态库错误：libxx.so: undefined reference to xx</a>
+			</li>
+		</ul>
+	</section>
+	<section class="widget widget-feed">
+		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
+	</section>
+</div>
+				</div>
+			</div>
+		</div>
+		<!--4. bottom begin-->
+		<footer id="te-site-footer"><div class="container">
+	<div class="row" role="contentinfo">
+		<section class="col-md-2 col-md-offset-1">
+			<h3>Links</h3>
+			<ul><li><a href="http://diaosbook.com/" title="">diaosbook</a></li></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul>
+				<li><a href="https://typecodes.com/links.html">More..</a></li>
+			</ul>
+		</section>
+		<section class="col-md-2">
+			<h3>Following</h3>
+			<ul>
+				<li><a href="https://github.com/vfhky" class="following github" target="_blank" rel="external nofollow">GitHub</a></li>
+				<li><a href="http://weibo.com/typecodes" class="following weibo" target="_blank" rel="external nofollow">Weibo</a></li>
+				<li><a href="http://vfhky.sinaapp.com/" class="following sae" target="_blank" rel="external nofollow">SAE</a></li>
+				<li><a href="http://www.dwz.cn/mYiwa" class="following qqgroup" target="_blank" rel="external nofollow">Group</a></li>
+			</ul>
+		</section>
+		<div class="col-md-12 copyright">
+			<a href="#top"><i class="i-logo-s">TOP</i></a>
+			<p>
+				&copy; 2012-<script language="JavaScript">var date = new Date(); document.write(date.getFullYear());</script>							<a href="https://typecodes.com">TypeCodes</a>. All Rights Reserved<br>Powered by <a href="http://getpelican.com" rel="external" target="_blank">Pelican</a>. <a href="http://www.miitbeian.gov.cn/" rel="external nofollow" target="_blank">粤ICP备14050695号</a>
+			</p>
+		</div>
+	</div>
+</div>
+</footer>
+<script type="text/javascript">
+	var disqus_shortname = 'typecodes';
+	var disqus_identifier = '/mix/cmsblogwithvfhkyreturn.html';
+	var disqus_url = 'https://typecodes.com/mix/cmsblogwithvfhkyreturn.html';
+	var disqus_title = '启用CMS类型的博客主题，vfhky再次回归';
+	(function() {
+		var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+		dsq.src = "//" + disqus_shortname + '.disqus.com/embed.js';
+		(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	 })();
+</script>
+	</body>
+</html>

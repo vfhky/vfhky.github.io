@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="zh-CN" class="no-js">
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<title>Linux TCP连接Connection Refused和Connection timed out的问题 &mdash; TypeCodes</title>
+		<meta name="author" content="vfhky">
+  		<link href="https://typecodes.com/atom.xml" type="application/atom+xml" rel="alternate" title="TypeCodes Atom Feed" />
+	  	<link href="https://typecodes.com/feed.xml" type="application/rss+xml" rel="alternate" title="TypeCodes RSS Feed" />
+		<meta name="HandheldFriendly" content="True">
+		<meta name="MobileOptimized" content="320">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="renderer" content="webkit">
+		<link rel="stylesheet" href="https://dn-vfhky.qbox.me/libs/css/pelican-vfhky.css">
+		<script>
+			var _hmt = _hmt || [];
+			(function() {
+			  var hm = document.createElement("script");
+			  hm.src = "//hm.baidu.com/hm.js?c15c4ab8e91ba9ac3d5a12293cc93359";
+			  var s = document.getElementsByTagName("script")[0]; 
+			  s.parentNode.insertBefore(hm, s);
+			})();
+		</script>
+	</head>
+	<body style>
+		<!--1. header navigation begin-->
+		<header role="banner" id="te-site-header">
+			<div class="container">
+				<a href="https://typecodes.com" class="te-site-logo" role="logo" target="_self"> TypeCodes</a>
+				<ul class="nav nav-pills" id="te-site-nav" role="navigation">
+					<li><a href="https://typecodes.com">Home</a></li><li><a href="https://typecodes.com/archives.html" title="Archives">Archives</a></li><li><a href="https://typecodes.com/about.html" title="About">About</a></li></ul>
+			</div>
+		</header>
+		<div class="te-headline">
+			<div class="container">
+				<h2 class="te-headline-title"> <a href="https://typecodes.com">TypeCodes</a></h2>
+			</div>
+		</div>
+		<div class="container">
+			<div class="row">
+		<!--2. left sider begin-->
+		<div class="col-md-9" id="blog-main" role="main">
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/linux/tcpconnectiontimedout.html">Linux TCP连接Connection Refused和Connection timed out的问题</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2015-09-12 22:39 | 分类：<a href="https://typecodes.com/linux/index.html">linux</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>前段时间和其它系统做联调测试，对方系统采用的是负载均衡模式。调试时采用的是多台手机作为客户端发送到对方负载均衡服务器，然后再把报文转发送到我这边的服务端。在测试的时候，对方测试人员说有的手机客户端会偶尔出现报文发不过来的情况。</p>
+<p>故事有点长，先发一张tcp三次握手的过程图镇楼~</p>
+<p><img alt="Linux tcp三次握手" src="https://dn-vfhky.qbox.me/2015/09/tcp_handshake.png" title="Linux tcp三次握手" /></p>
+
+
+<h5>1 自己服务端的socket监听出现问题</h5>
+<p>一开始认为可能是自己作为服务端的监听有问题，因为后面排查监听端口的时候发现了<code>close_wait</code>的情况。当时没多想，认为对方负载均衡不会出错（先前跟其它系统联调过了），就急着解决close_wait的问题去了。</p>
+<p>可是后面测试的时候，尽管服务端监听没有任何异常，但是手机APP还是有发包失败的情况，而且怪异的是服务端日志也没打印请求包内容。</p>
+<h5>2 防火墙只收到对方系统的一个IP记录</h5>
+<p>折腾了很久还是没找到原因所在，后面联系了对方系统测试人员得到回复说他们的日志报错：</p>
+<div class="highlight"><pre>java.net.SocketTimeoutException: SocketTimeoutException invoking https://123.123.123.214:7070: connect timed out
+</pre></div>
+
+
+<p>于是联系网络管理员，看防火墙是否拒掉了对方请求报文。结果网管回复防火墙正常，但是只收到对方的一台IP记录，另一IP没有发送过报文。</p>
+<p>立即反映给对方开发人员，结果对方发现是负载均衡系统的一台服务器连接我这边系统的网络有问题。</p>
+<h5>3 问题的总结</h5>
+<p>到这里问题已经解决了，但是自己对于tcp出现<code>Connection timed out</code>的错误认识不足，只想到是自己服务端<code>close_wait</code>引起的问题。下面是自己对tcp握手过程中出现<code>Connection refused</code>和<code>Connection timed out</code>的总结。</p>
+<h6>3.1 Connection refused</h6>
+<p>使用telnet来检查tcp链路时，如果遇到"Connection refused"的错误，那么表示从本地客户端到目标IP地址的路由是正常的，但是该目标端口没有进程在监听，然后服务端拒绝掉了连接。</p>
+<p>一个成功的tcp链接将会看到<code>Syn</code>，<code>Syn-Ack</code>，<code>Ack</code>，这也就是我们预期的TCP三次握手。当使用<code>tcpdump</code>或<code>wireshark</code>抓包工具来探测发送过来的请求报文包时，<code>Connection refused</code>将会看到<code>Syn</code>,<code>Rst</code>。</p>
+<h6>3.2 Connection timed out</h6>
+<p>如果telnet的时候，TCP路由不正常，那么会得到一个<code>Connection timed out</code>的错误。"Couldn't connect"原因有很多，可能是服务器无法ping通，可能是服务器（防火墙等）丢弃了该请求报文包，也可能是服务器应答太慢，又或者存在间歇性的问题（这种情况很难从日志文件中排查问题）。</p>
+<p>下面演示“Connection timed out”的情况：</p>
+<div class="highlight"><pre># 先打开一个ssh会话，telnet任意一个不存在IP
+[root@typecodes ~]# telnet 10.10.223.123 9010
+Trying 10.10.223.123...
+
+# 然后打开另一个ssh会话，netstat服务器上tcp连接状况
+[root@typecodes ~]# netstat -anpt
+tcp        0      1 10.169.218.97:53794     10.10.223.123:9010      SYN_SENT    4271/telnet
+</pre></div>
+
+
+<p>由下图可知，telnet进程作为客户端发送SYN包后，进入<code>SYN_SENT</code>状态，等待服务端应答。</p>
+<p><img alt="netstat查看tcp连接状态" src="https://dn-vfhky.qbox.me/2015/09/linux_netstat_antp.png" title="netstat查看tcp连接状态" /></p>
+<p>但是由于客户端和目标IP的路由无法建立（也就是BZ遇到的情况），所以在3分钟后该tcp链路显示<code>Connection timed out</code>。</p>
+<p><img alt="Linux telenet connection timed out" src="https://dn-vfhky.qbox.me/2015/09/linux_telnet_timeout.png" title="Linux telenet connection timed out" /></p>
+		    	<p class="tags">
+					<div class="post-share">
+						<ul class="post-shareul clearfix">
+							<li class="post-shareli">
+								<a href="http://note.youdao.com/memory/?url=https://typecodes.com/linux/tcpconnectiontimedout.html&title=Linux TCP连接Connection Refused和Connection timed out的问题" class="post-sharea ydshare" target="_blank" rel="nofollow">有道云笔记</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://v.t.sina.com.cn/share/share.php?url=https://typecodes.com/linux/tcpconnectiontimedout.html&title=Linux TCP连接Connection Refused和Connection timed out的问题&source=https://typecodes.com" class="post-sharea wbshare" target="_blank" rel="nofollow">新浪微博</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://v.t.qq.com/share/share.php?title=Linux TCP连接Connection Refused和Connection timed out的问题&url=https://typecodes.com/linux/tcpconnectiontimedout.html&site=https://typecodes.com" class="post-sharea twbshare" target="_blank" rel="nofollow">腾讯微博</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=https://typecodes.com/linux/tcpconnectiontimedout.html&title=Linux TCP连接Connection Refused和Connection timed out的问题&content='utf-8'" class="post-sharea qzoneshare" target="_blank" rel="nofollow">QZone</a>
+							</li>
+						</ul>
+					</div>
+					<div>
+						Tags: <a href="https://typecodes.com/tag/tcp.html">tcp</a>,<a href="https://typecodes.com/tag/connection-refused.html">connection refused</a>,<a href="https://typecodes.com/tag/connection-timed-out.html">connection timed out</a>					</div>
+				</p>
+			</article>
+			
+			<div id="comments">
+				<h4 class="num">Comments &raquo;</h4>
+		    	<div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript></div>
+		    </div>
+		</div>
+		<!--3. right sider begin-->
+<div class="col-md-3" id="blog-secondary" role="complementary">
+	<section class="widget">
+		<ul class="widget-list">
+			<form id="search" method="get" action="https://typecodes.com/search.html">
+				<input type="text" name="q" id="s" size="20" x-webkit-speech="" x-webkit-grammar="builtin:search" onwebkitspeechchange="this.value = this.value.replace(this.defaultValue, '')" value="Google...." onfocus="this.value = (this.value == this.defaultValue) ? '' : this.value" onblur="this.value = (this.value == '') ? this.defaultValue : this.value">
+			</form>
+		</ul>
+	</section>
+	<section class="widget">
+		<h3 class="widget-title">Categories</h3>
+		<ul class="widget-list">
+		      <li class="current">
+		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (26)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/csharp/index.html">Csharp</a> (6)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/database/index.html">Database</a> (11)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/java/index.html">Java</a> (1)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/linux/index.html">Linux</a> (16)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/mix/index.html">Mix</a> (53)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/web/index.html">Web</a> (88)
+		      </li>
+		</ul>
+	</section>
+	<section class="widget">
+		<h3 class="widget-title">Recent Posts</h3>
+		<ul class="widget-list">
+			<li class="post">
+				<a href="https://typecodes.com/mix/sucesstypechotopelican.html">成功将博客从Typecho迁移到Pelican</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/mix/begintypechotopelican.html">准备将博客从Typecho迁移到Pelican</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/tcpconnectiontimedout.html">Linux TCP连接Connection Refused和Connection timed out的问题</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/mysqlerrornospace.html">博客MySQL服务惊魂记：Linux磁盘空间不足(Core Dump文件引爆)</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/mix/synweibophpmarkdownimgurl.html">升级博客文章同步微博的插件：PHP正则提取Markdown的图片地址</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/cppgeneralmakefile.html">Linux C/C++工程中可生成ELF、动/静态库文件的通用Makefile</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/libraryundefinedref.html">解决make编译链接动态库错误：libxx.so: undefined reference to xx</a>
+			</li>
+		</ul>
+	</section>
+	<section class="widget widget-feed">
+		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
+	</section>
+</div>
+				</div>
+			</div>
+		</div>
+		<!--4. bottom begin-->
+		<footer id="te-site-footer"><div class="container">
+	<div class="row" role="contentinfo">
+		<section class="col-md-2 col-md-offset-1">
+			<h3>Links</h3>
+			<ul><li><a href="http://diaosbook.com/" title="">diaosbook</a></li></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul>
+				<li><a href="https://typecodes.com/links.html">More..</a></li>
+			</ul>
+		</section>
+		<section class="col-md-2">
+			<h3>Following</h3>
+			<ul>
+				<li><a href="https://github.com/vfhky" class="following github" target="_blank" rel="external nofollow">GitHub</a></li>
+				<li><a href="http://weibo.com/typecodes" class="following weibo" target="_blank" rel="external nofollow">Weibo</a></li>
+				<li><a href="http://vfhky.sinaapp.com/" class="following sae" target="_blank" rel="external nofollow">SAE</a></li>
+				<li><a href="http://www.dwz.cn/mYiwa" class="following qqgroup" target="_blank" rel="external nofollow">Group</a></li>
+			</ul>
+		</section>
+		<div class="col-md-12 copyright">
+			<a href="#top"><i class="i-logo-s">TOP</i></a>
+			<p>
+				&copy; 2012-<script language="JavaScript">var date = new Date(); document.write(date.getFullYear());</script>							<a href="https://typecodes.com">TypeCodes</a>. All Rights Reserved<br>Powered by <a href="http://getpelican.com" rel="external" target="_blank">Pelican</a>. <a href="http://www.miitbeian.gov.cn/" rel="external nofollow" target="_blank">粤ICP备14050695号</a>
+			</p>
+		</div>
+	</div>
+</div>
+</footer>
+<script type="text/javascript">
+	var disqus_shortname = 'typecodes';
+	var disqus_identifier = '/linux/tcpconnectiontimedout.html';
+	var disqus_url = 'https://typecodes.com/linux/tcpconnectiontimedout.html';
+	var disqus_title = 'Linux TCP连接Connection Refused和Connection timed out的问题';
+	(function() {
+		var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+		dsq.src = "//" + disqus_shortname + '.disqus.com/embed.js';
+		(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	 })();
+</script>
+	</body>
+</html>

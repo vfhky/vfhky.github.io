@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="zh-CN" class="no-js">
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<title>标签 php curl 下的文章 - TypeCodes</title>
+		<meta name="author" content="vfhky">
+  		<link href="https://typecodes.com/atom.xml" type="application/atom+xml" rel="alternate" title="TypeCodes Atom Feed" />
+	  	<link href="https://typecodes.com/feed.xml" type="application/rss+xml" rel="alternate" title="TypeCodes RSS Feed" />
+		<meta name="HandheldFriendly" content="True">
+		<meta name="MobileOptimized" content="320">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="renderer" content="webkit">
+		<link rel="stylesheet" href="https://dn-vfhky.qbox.me/libs/css/pelican-vfhky.css">
+		<script>
+			var _hmt = _hmt || [];
+			(function() {
+			  var hm = document.createElement("script");
+			  hm.src = "//hm.baidu.com/hm.js?c15c4ab8e91ba9ac3d5a12293cc93359";
+			  var s = document.getElementsByTagName("script")[0]; 
+			  s.parentNode.insertBefore(hm, s);
+			})();
+		</script>
+	</head>
+	<body style>
+		<!--1. header navigation begin-->
+		<header role="banner" id="te-site-header">
+			<div class="container">
+				<a href="https://typecodes.com" class="te-site-logo" role="logo" target="_self"> TypeCodes</a>
+				<ul class="nav nav-pills" id="te-site-nav" role="navigation">
+					<li><a href="https://typecodes.com">Home</a></li><li><a href="https://typecodes.com/archives.html" title="Archives">Archives</a></li><li><a href="https://typecodes.com/about.html" title="About">About</a></li></ul>
+			</div>
+		</header>
+		<div class="te-headline">
+			<div class="container">
+				<h2 class="te-headline-title"> <a href="https://typecodes.com">TypeCodes</a></h2>
+			</div>
+		</div>
+		<div class="container">
+			<div class="row">
+		<!--2. left sider begin-->
+		<div class="col-md-9" id="blog-main" role="main">
+		  	<!--article recycle-->
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/web/wpcommentajaxbug.html">折腾comment-ajax造成wordpress后台页面空白的BUG</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2013-09-05 23:51 | 分类：<a href="https://typecodes.com/web/index.html">web</a></li>
+</ul>
+<div class="post-content fmt">
+	<h5>1 折腾Willin Kan评论代码的一个“BUG”</h5>
+<p>前几天折腾了下Willin Kan的comment-ajax.php文件，改动了一些代码，结果博客好几天都没收到评论了。昨晚上还在纳闷，会不会是文章写得太烂了又或者是360的节点挂了？反正是百思不得其解。随便翻看着之前写的文章，突然想到了自己前几天修改了comment-ajax.php文件。会不会跟这个有关？赶紧UE打开看看！比较了下之前备份的comment_parentnt-ajax.php文件，发现最新的这份PHP文件中多出了下面几行代码。这个和前几天发现的一个BUG有关：查看了大多数有用Willin Kan大神的评论代码（comment-ajax.php、comment-ajax.js）的博客，只要在文章地址后面添加类似“?replytocom=1123'”的语句就会出现“BUG”（还在研究解决中，不多说了……）。</p>
+<div class="highlight"><pre><span class="x">//父评论不存在时，恶意提交评论</span>
+<span class="x">if(</span><span class="p">$</span><span class="nv">post</span><span class="x">-&gt;comment_parent == &quot;&quot;)</span><span class="err">{</span><span class="x"></span>
+<span class="x"> exit;  //直接退出，不给出提示</span>
+<span class="x">}</span>
+</pre></div>
+
+
+
+	<p class="more"><a href="https://typecodes.com/web/wpcommentajaxbug.html" title="折腾comment-ajax造成wordpress后台页面空白的BUG">- 阅读剩余部分 -</a></p>
+			</article>
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/web/phpcurlrequestsample.html">PHP中的cURL请求及示例</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2013-09-01 18:34 | 分类：<a href="https://typecodes.com/web/index.html">web</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>最近在学习腾讯开放平台API接口的过程中，看到了一个很强大的PHP库——cURL。它是利用URL语法在命令行方式下工作的文件传输工具。这篇文章是博主直接从国外一个博客翻译过来的，原文地址是：<a href="http://codular.com/curl-with-php" title="点击查看原文">http://codular.com/curl-with-php</a>。这篇文章讲的很基础，但条理很清晰，知识比较系统和全面，所以转过来收藏了！（下面的有些标题是博主画蛇添足的，大家近乎可以忽略。）</p>
+<h5>1 定义：什么是cURL</h5>
+<p>cURL允许数据传输跨广泛的协议,是一个非常强大的系统。它广泛用于跨网站发送数据，包括诸如API交互和oAuth。cURL是在它的应用范围内几乎是无所不能的，从基本的HTTP请求，到更为复杂的FTP上传或封闭式HTTPS网站的交互验证。让我们一起来看看发送一个GET和POST请求和处理返回的响应的简单区别，以及一些重要的参数说明。</p>
+
+	<p class="more"><a href="https://typecodes.com/web/phpcurlrequestsample.html" title="PHP中的cURL请求及示例">- 阅读剩余部分 -</a></p>
+			</article>
+		  	<!--page navigation-->
+<ol class="page-navigator">
+</ol>		</div>
+		<!--3. right sider begin-->
+<div class="col-md-3" id="blog-secondary" role="complementary">
+	<section class="widget">
+		<ul class="widget-list">
+			<form id="search" method="get" action="https://typecodes.com/search.html">
+				<input type="text" name="q" id="s" size="20" x-webkit-speech="" x-webkit-grammar="builtin:search" onwebkitspeechchange="this.value = this.value.replace(this.defaultValue, '')" value="Google...." onfocus="this.value = (this.value == this.defaultValue) ? '' : this.value" onblur="this.value = (this.value == '') ? this.defaultValue : this.value">
+			</form>
+		</ul>
+	</section>
+	<section class="widget">
+		<h3 class="widget-title">Categories</h3>
+		<ul class="widget-list">
+		      <li class="current">
+		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (26)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/csharp/index.html">Csharp</a> (6)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/database/index.html">Database</a> (11)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/java/index.html">Java</a> (1)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/linux/index.html">Linux</a> (16)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/mix/index.html">Mix</a> (53)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/web/index.html">Web</a> (88)
+		      </li>
+		</ul>
+	</section>
+	<section class="widget">
+		<h3 class="widget-title">Recent Posts</h3>
+		<ul class="widget-list">
+			<li class="post">
+				<a href="https://typecodes.com/web/wpcommentajaxbug.html">折腾comment-ajax造成wordpress后台页面空白的BUG</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/web/phpcurlrequestsample.html">PHP中的cURL请求及示例</a>
+			</li>
+		</ul>
+	</section>
+	<section class="widget widget-feed">
+		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
+	</section>
+</div>
+				</div>
+			</div>
+		</div>
+		<!--4. bottom begin-->
+		<footer id="te-site-footer"><div class="container">
+	<div class="row" role="contentinfo">
+		<section class="col-md-2 col-md-offset-1">
+			<h3>Links</h3>
+			<ul><li><a href="http://diaosbook.com/" title="">diaosbook</a></li></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul>
+				<li><a href="https://typecodes.com/links.html">More..</a></li>
+			</ul>
+		</section>
+		<section class="col-md-2">
+			<h3>Following</h3>
+			<ul>
+				<li><a href="https://github.com/vfhky" class="following github" target="_blank" rel="external nofollow">GitHub</a></li>
+				<li><a href="http://weibo.com/typecodes" class="following weibo" target="_blank" rel="external nofollow">Weibo</a></li>
+				<li><a href="http://vfhky.sinaapp.com/" class="following sae" target="_blank" rel="external nofollow">SAE</a></li>
+				<li><a href="http://www.dwz.cn/mYiwa" class="following qqgroup" target="_blank" rel="external nofollow">Group</a></li>
+			</ul>
+		</section>
+		<div class="col-md-12 copyright">
+			<a href="#top"><i class="i-logo-s">TOP</i></a>
+			<p>
+				&copy; 2012-<script language="JavaScript">var date = new Date(); document.write(date.getFullYear());</script>							<a href="https://typecodes.com">TypeCodes</a>. All Rights Reserved<br>Powered by <a href="http://getpelican.com" rel="external" target="_blank">Pelican</a>. <a href="http://www.miitbeian.gov.cn/" rel="external nofollow" target="_blank">粤ICP备14050695号</a>
+			</p>
+		</div>
+	</div>
+</div>
+</footer>
+<script type="text/javascript">
+	var disqus_shortname = 'typecodes';
+	(function() {
+		var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+		dsq.src = "//" + disqus_shortname + '.disqus.com/embed.js';
+		(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	 })();
+</script>
+	</body>
+</html>

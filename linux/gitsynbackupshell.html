@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="zh-CN" class="no-js">
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<title>CentOS中将备份文件同步到BitBucket、GitHub和Coding的shell脚本 &mdash; TypeCodes</title>
+		<meta name="author" content="vfhky">
+  		<link href="https://typecodes.com/atom.xml" type="application/atom+xml" rel="alternate" title="TypeCodes Atom Feed" />
+	  	<link href="https://typecodes.com/feed.xml" type="application/rss+xml" rel="alternate" title="TypeCodes RSS Feed" />
+		<meta name="HandheldFriendly" content="True">
+		<meta name="MobileOptimized" content="320">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="renderer" content="webkit">
+		<link rel="stylesheet" href="https://dn-vfhky.qbox.me/libs/css/pelican-vfhky.css">
+		<script>
+			var _hmt = _hmt || [];
+			(function() {
+			  var hm = document.createElement("script");
+			  hm.src = "//hm.baidu.com/hm.js?c15c4ab8e91ba9ac3d5a12293cc93359";
+			  var s = document.getElementsByTagName("script")[0]; 
+			  s.parentNode.insertBefore(hm, s);
+			})();
+		</script>
+	</head>
+	<body style>
+		<!--1. header navigation begin-->
+		<header role="banner" id="te-site-header">
+			<div class="container">
+				<a href="https://typecodes.com" class="te-site-logo" role="logo" target="_self"> TypeCodes</a>
+				<ul class="nav nav-pills" id="te-site-nav" role="navigation">
+					<li><a href="https://typecodes.com">Home</a></li><li><a href="https://typecodes.com/archives.html" title="Archives">Archives</a></li><li><a href="https://typecodes.com/about.html" title="About">About</a></li></ul>
+			</div>
+		</header>
+		<div class="te-headline">
+			<div class="container">
+				<h2 class="te-headline-title"> <a href="https://typecodes.com">TypeCodes</a></h2>
+			</div>
+		</div>
+		<div class="container">
+			<div class="row">
+		<!--2. left sider begin-->
+		<div class="col-md-9" id="blog-main" role="main">
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/linux/gitsynbackupshell.html">CentOS中将备份文件同步到BitBucket、GitHub和Coding的shell脚本</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2015-07-07 00:30 | 分类：<a href="https://typecodes.com/linux/index.html">linux</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>在<a href="https://typecodes.com/linux/gitaccountconfig.html" title="《CentOS系统BitBucket、GitHub和Coding等多git账户的配置》">上一篇文章</a>讲述了如何在Linux系统中配置BitBucket、GitHub和Coding这三个平台的git账户，这篇文章就分享如何通过shell脚本定时获取自己的CentOS7.1服务器上的备份文件，然后使用git命令同步到这三个平台仓库上。</p>
+<p><img alt="CentOS中git同步的shell脚本" src="https://dn-vfhky.qbox.me/2015/07/linux_git.png" title="CentOS中git同步的shell脚本" /></p>
+
+
+<h5>1 功能需求描述</h5>
+<p>我自己为这个shell同步脚本设定了以下三个需求功能点：</p>
+<div class="highlight"><pre>1、自动获取数据库备份目和程序备份目录下自动生成的最新的备份文件；
+2、将获取到的最新的备份数据库和程序文件自动同步到BitBucket、GitHub和Coding这三个Git平台；
+3、生成相应的执行日志文件。
+</pre></div>
+
+
+<h5>2 shell脚本的思路和流程</h5>
+<p>根据上面的需求，整理出脚本思路：先获取最新的备份文件，然后复制到本地的BitBucket、GitHub和Coding仓库目录下，然后通过Git命令同步到远端仓库即可，整个过程执行的命令以追加的方式保存到同一个日志文件中。</p>
+<p>脚本的主要流程：</p>
+<div class="highlight"><pre>1、先声明变量`Source_DB_Dir`、`Source_PRG_Dir`表示自己的CentOS服务器上的数据库和程序备份目录，然后`Git_Err_Log_Dir`是生成的执行日志目录。
+
+2、接着声明BitBucket、GitHub和Coding这3个Git平台的本地仓库所在目录（主要是数据库DB目录和程序PRG目录）；
+
+3、后面的三个函数`ERROR`、`NOTICE`和`RUNCMD`对应着不同的操作命令级别并生成相应的日志文件；
+
+4、函数`Get_last_file`功能是获取该目录下面最新的文件；
+
+5、`Git_Commit`函数主要会先通过`git pull`获取远端仓库的最新内容到本地仓库，然后再将本地仓库更新的备份文件同步到远端仓库中。
+</pre></div>
+
+
+<h5>3 完整的脚本内容</h5>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>  1
+  2
+  3
+  4
+  5
+  6
+  7
+  8
+  9
+ 10
+ 11
+ 12
+ 13
+ 14
+ 15
+ 16
+ 17
+ 18
+ 19
+ 20
+ 21
+ 22
+ 23
+ 24
+ 25
+ 26
+ 27
+ 28
+ 29
+ 30
+ 31
+ 32
+ 33
+ 34
+ 35
+ 36
+ 37
+ 38
+ 39
+ 40
+ 41
+ 42
+ 43
+ 44
+ 45
+ 46
+ 47
+ 48
+ 49
+ 50
+ 51
+ 52
+ 53
+ 54
+ 55
+ 56
+ 57
+ 58
+ 59
+ 60
+ 61
+ 62
+ 63
+ 64
+ 65
+ 66
+ 67
+ 68
+ 69
+ 70
+ 71
+ 72
+ 73
+ 74
+ 75
+ 76
+ 77
+ 78
+ 79
+ 80
+ 81
+ 82
+ 83
+ 84
+ 85
+ 86
+ 87
+ 88
+ 89
+ 90
+ 91
+ 92
+ 93
+ 94
+ 95
+ 96
+ 97
+ 98
+ 99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140</pre></div></td><td class="code"><div class="highlight"><pre><span class="c">#!/bin/bash</span>
+<span class="c"># TypeCodes Git Synchronous Script v1.0.0</span>
+<span class="c"># (c) 2015 vfhky https://typecodes.com/linux/gitsynbackupshell.html</span>
+
+
+<span class="nv">Source_DB_Dir</span><span class="o">=</span>/mydata/backups/data/mysql
+<span class="nv">Source_PRG_Dir</span><span class="o">=</span>/mydata/backups/data/typecodes
+<span class="nv">Git_Err_Log_Dir</span><span class="o">=</span>/mydata/backups/logs/git
+
+<span class="c"># Coding.net</span>
+<span class="nv">CodingNet_DB_Dir</span><span class="o">=</span>/mydata/GitBang/CodingNet/myblog/db
+<span class="nv">CodingNet_PRG_Dir</span><span class="o">=</span>/mydata/GitBang/CodingNet/myblog/program
+
+<span class="c"># BitBucket.org</span>
+<span class="nv">BitBucket_Dir</span><span class="o">=</span>/mydata/GitBang/BitBucket/myblog/db
+<span class="nv">BitBucket_PRG_Dir</span><span class="o">=</span>/mydata/GitBang/BitBucket/myblog/program
+
+<span class="c"># GitHub.com</span>
+<span class="nv">GitHub_Dir</span><span class="o">=</span>/mydata/GitBang/GitHub/myblog/db
+<span class="nv">GitHub_PRG_Dir</span><span class="o">=</span>/mydata/GitBang/GitHub/myblog/program
+
+<span class="c"># Get the newest file name</span>
+<span class="c">#Newest_File=&quot;ls -lrt| tail -n 1 | awk &#39;{print $9}&#39;&quot;</span>
+
+<span class="c"># Space separated list of databases</span>
+<span class="nv">PRGNAME</span><span class="o">=</span><span class="s2">&quot;Git_Synchronous&quot;</span>
+
+<span class="c"># Current date format: e.g 20150505_2015</span>
+<span class="nv">Current_Date</span><span class="o">=</span><span class="sb">`</span>date +%Y%m%d_%H%M<span class="sb">`</span>
+
+<span class="k">function</span> USAGE<span class="o">()</span> <span class="o">{</span>
+cat <span class="s">&lt;&lt; EOF</span>
+<span class="s">usage: $0 options</span>
+
+<span class="s">This script synchronize the backup files to BitBucket, GitHub and Coding.</span>
+
+<span class="s">OPTIONS:</span>
+<span class="s">  -h    Show this message</span>
+<span class="s">  -n    Number of days to keep backups</span>
+<span class="s">EOF</span>
+<span class="o">}</span>
+
+<span class="k">while</span> <span class="nb">getopts</span> <span class="s2">&quot;hal:n:&quot;</span> opt<span class="p">;</span> <span class="k">do</span>
+  <span class="k">case</span> <span class="nv">$opt</span> in
+    a<span class="o">)</span>
+      <span class="nv">PRGNAME</span><span class="o">=</span><span class="s2">&quot;&quot;</span>
+      <span class="p">;;</span>
+    h<span class="o">)</span>
+      USAGE
+      <span class="nb">exit </span>1
+      <span class="p">;;</span>
+    l<span class="o">)</span>
+      <span class="nv">PRGNAME</span><span class="o">=</span><span class="s2">&quot;</span><span class="nv">$OPTARG</span><span class="s2">&quot;</span>
+      <span class="p">;;</span>
+    n<span class="o">)</span>
+      <span class="nv">NUMDAYS</span><span class="o">=</span><span class="nv">$OPTARG</span>
+      <span class="p">;;</span>
+    <span class="se">\?</span><span class="o">)</span>
+      USAGE
+      <span class="nb">exit</span>
+      <span class="p">;;</span>
+    :<span class="o">)</span>
+      <span class="nb">echo</span> <span class="s2">&quot;Option -</span><span class="nv">$OPTARG</span><span class="s2"> requires an argument.&quot;</span> &gt;<span class="p">&amp;</span>2
+      <span class="nb">exit </span>1
+      <span class="p">;;</span>
+  <span class="k">esac</span>
+<span class="k">done</span>
+
+<span class="k">function</span> ERROR<span class="o">()</span> <span class="o">{</span>
+  <span class="nb">echo</span> <span class="o">&amp;&amp;</span> <span class="nb">echo</span> <span class="s2">&quot;[error] </span><span class="nv">$@</span><span class="s2">&quot;</span> &gt;&gt; <span class="nv">$Git_Err_Log_Dir</span>/Git_<span class="nv">$Current_Date</span>.log
+  <span class="nb">exit </span>1
+<span class="o">}</span>
+
+<span class="k">function</span> NOTICE<span class="o">()</span> <span class="o">{</span>
+  <span class="nb">echo</span> <span class="o">&amp;&amp;</span> <span class="nb">echo</span> <span class="s2">&quot;[notice] </span><span class="nv">$@</span><span class="s2">&quot;</span> &gt;&gt; <span class="nv">$Git_Err_Log_Dir</span>/Git_<span class="nv">$Current_Date</span>.log
+<span class="o">}</span>
+
+<span class="k">function</span> RUNCMD<span class="o">()</span> <span class="o">{</span>
+  <span class="nb">echo</span> <span class="nv">$@</span> &gt;&gt; <span class="nv">$Git_Err_Log_Dir</span>/Git_<span class="nv">$Current_Date</span>.log
+  <span class="nb">eval</span> <span class="nv">$@</span>
+<span class="o">}</span>
+
+<span class="c"># Git commit command function</span>
+<span class="k">function</span> Git_Commit<span class="o">(){</span>
+  <span class="k">if</span> <span class="o">[</span> <span class="nv">$# </span>-ne <span class="m">0</span> -a <span class="nv">$# </span>-ne <span class="m">1</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+    ERROR <span class="s2">&quot;Usage: Git_Commit or Git_Commit file_path!&quot;</span>
+    <span class="nb">exit </span>1<span class="p">;</span>
+  <span class="k">elif</span> <span class="o">[</span> <span class="nv">$# </span>-lt <span class="m">1</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+    RUNCMD git pull <span class="o">&amp;&amp;</span> git add --all <span class="o">&amp;&amp;</span> git commit -m <span class="s2">&quot;Backup from TypeCodes.com [Time:</span><span class="nv">$Current_Date</span><span class="s2">]&quot;</span> <span class="o">&amp;&amp;</span> git push origin master
+  <span class="k">else</span>
+    RUNCMD git pull <span class="o">&amp;&amp;</span> git add <span class="nv">$1</span> <span class="o">&amp;&amp;</span> git commit -m <span class="s2">&quot;Backup from TypeCodes.com [Time:</span><span class="nv">$Current_Date</span><span class="s2">]&quot;</span> <span class="o">&amp;&amp;</span> git push origin master
+  <span class="k">fi</span>
+<span class="o">}</span>
+
+<span class="c"># $1:path  $2:filter file-type</span>
+<span class="k">function</span> Get_last_file<span class="o">(){</span>
+  <span class="k">if</span> <span class="o">[</span> <span class="nv">$# </span>-ne <span class="m">1</span> -a <span class="nv">$# </span>-ne <span class="m">2</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+    ERROR <span class="s2">&quot;Usage: Get_last_file file_path or Get_last_file file_path file_type!&quot;</span>
+    <span class="nb">exit </span>1<span class="p">;</span>
+  <span class="k">elif</span> <span class="o">[</span> <span class="nv">$# </span>-lt <span class="m">2</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+    ls -lrt <span class="nv">$1</span> <span class="p">|</span> tail -n <span class="m">1</span> <span class="p">|</span> awk <span class="s1">&#39;{print $9}&#39;</span>
+  <span class="k">else</span>
+    ls -lrt <span class="nv">$1</span> <span class="p">|</span> awk <span class="s2">&quot;/</span><span class="nv">$2</span><span class="s2">/&quot;</span> <span class="p">|</span> tail -n <span class="m">1</span> <span class="p">|</span> awk <span class="s1">&#39;{print $9}&#39;</span>
+  <span class="k">fi</span>
+<span class="o">}</span>
+
+<span class="k">if</span> <span class="o">[</span> ! -d <span class="nv">$Git_Err_Log_Dir</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+  mkdir -p <span class="nv">$Git_Err_Log_Dir</span>
+<span class="k">fi</span>
+
+
+NOTICE <span class="s2">&quot;Start copy the db_file to git index&quot;</span>
+<span class="nv">RC</span><span class="o">=</span>0
+<span class="nv">Last_Source_DB_File</span><span class="o">=</span><span class="k">$(</span>Get_last_file <span class="nv">$Source_DB_Dir</span><span class="k">)</span>
+RUNCMD <span class="s2">&quot;cd </span><span class="nv">$Source_DB_Dir</span><span class="s2"> &amp;&amp; \cp -rf </span><span class="nv">$Last_Source_DB_File</span><span class="s2"> </span><span class="nv">$CodingNet_DB_Dir</span><span class="s2"> &amp;&amp; \cp -rf </span><span class="nv">$Last_Source_DB_File</span><span class="s2"> </span><span class="nv">$BitBucket_Dir</span><span class="s2"> &amp;&amp; \cp -rf </span><span class="nv">$Last_Source_DB_File</span><span class="s2"> </span><span class="nv">$GitHub_Dir</span><span class="s2">&quot;</span>
+
+<span class="nv">RC</span><span class="o">=</span><span class="nv">$?</span>
+<span class="k">if</span> <span class="o">[</span> <span class="nv">$RC</span> -gt <span class="m">0</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+  ERROR <span class="s2">&quot;Copy db_file failed!&quot;</span>
+<span class="k">fi</span>
+
+NOTICE <span class="s2">&quot;Start copy the program_file to git index&quot;</span>
+<span class="nv">Last_Program_DB_File</span><span class="o">=</span><span class="k">$(</span>Get_last_file <span class="nv">$Source_PRG_Dir</span><span class="k">)</span>
+RUNCMD <span class="s2">&quot;cd </span><span class="nv">$Source_PRG_Dir</span><span class="s2"> &amp;&amp; \cp -rf </span><span class="nv">$Last_Program_DB_File</span><span class="s2"> </span><span class="nv">$CodingNet_PRG_Dir</span><span class="s2"> &amp;&amp; \cp -rf </span><span class="nv">$Last_Program_DB_File</span><span class="s2"> </span><span class="nv">$BitBucket_PRG_Dir</span><span class="s2"> &amp;&amp; \cp -rf </span><span class="nv">$Last_Program_DB_File</span><span class="s2"> </span><span class="nv">$GitHub_PRG_Dir</span><span class="s2">&quot;</span>
+
+<span class="nv">RC</span><span class="o">=</span><span class="nv">$?</span>
+<span class="k">if</span> <span class="o">[</span> <span class="nv">$RC</span> -gt <span class="m">0</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+  ERROR <span class="s2">&quot;Copy program_file failed!&quot;</span>
+<span class="k">fi</span>
+
+NOTICE <span class="s2">&quot;Start push to CodingNet&quot;</span>
+RUNCMD <span class="s2">&quot;cd </span><span class="nv">$CodingNet_PRG_Dir</span><span class="s2"> &amp;&amp; tar -zxf </span><span class="k">$(</span>Get_last_file <span class="nv">$CodingNet_PRG_Dir</span> .tar.gz<span class="k">)</span><span class="s2"> &amp;&amp; cd ../ &amp;&amp; Git_Commit&quot;</span>
+
+NOTICE <span class="s2">&quot;Start push to BitBucket&quot;</span>
+RUNCMD <span class="s2">&quot;cd </span><span class="nv">$BitBucket_PRG_Dir</span><span class="s2"> &amp;&amp; tar -zxf </span><span class="k">$(</span>Get_last_file <span class="nv">$BitBucket_PRG_Dir</span> .tar.gz<span class="k">)</span><span class="s2"> &amp;&amp; cd ../ &amp;&amp; Git_Commit&quot;</span>
+
+NOTICE <span class="s2">&quot;Start push to GitHub&quot;</span>
+RUNCMD <span class="s2">&quot;cd </span><span class="nv">$GitHub_PRG_Dir</span><span class="s2"> &amp;&amp; tar -zxf </span><span class="k">$(</span>Get_last_file <span class="nv">$GitHub_PRG_Dir</span> .tar.gz<span class="k">)</span><span class="s2"> &amp;&amp; cd ../ &amp;&amp; Git_Commit&quot;</span>
+
+<span class="c"># exit 0</span>
+</pre></div>
+</td></tr></table>
+
+<h5>4 单独执行该shell脚本</h5>
+<p>可以将这个脚本保存为git.sh，然后使用时通过<code>chmod +x git.sh</code>命令添加执行权限，最后通过<code>./git.sh</code>执行该脚本即可。附图如下：</p>
+<p>同步到BitBucket仓库时的截图：
+<img alt="同步到BitBucket仓库时" src="https://dn-vfhky.qbox.me/2015/07/git_shell_bitbucket_syn.png" title="同步到BitBucket仓库时" /></p>
+<p>同步到GitHub仓库时的截图：
+<img alt="同步到GitHub仓库时" src="https://dn-vfhky.qbox.me/2015/07/git_shell_github_syn.png" title="同步到GitHub仓库时" /></p>
+<h5>5 定时执行该shell脚本</h5>
+<p>利用Linux系统的crontab定时任务工具执行该脚本，例如下面这个配置就是每天凌晨1点的时候执行该shell脚本。</p>
+<div class="highlight"><pre>[root@typecodes bak_list]# crontab -e
+0 1 * * * /mydata/backups/bak_list/git.sh
+</pre></div>
+
+
+<p>根据脚本中的配置，生成的日志类似于<code>/mydata/backups/logs/git/Git_20150706_0100.log</code>：</p>
+<p><img alt="git同步的shell脚本执行生成的日志" src="https://dn-vfhky.qbox.me/2015/07/git_syn_log.png" title="git同步的shell脚本执行生成的日志" /></p>
+		    	<p class="tags">
+					<div class="post-share">
+						<ul class="post-shareul clearfix">
+							<li class="post-shareli">
+								<a href="http://note.youdao.com/memory/?url=https://typecodes.com/linux/gitsynbackupshell.html&title=CentOS中将备份文件同步到BitBucket、GitHub和Coding的shell脚本" class="post-sharea ydshare" target="_blank" rel="nofollow">有道云笔记</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://v.t.sina.com.cn/share/share.php?url=https://typecodes.com/linux/gitsynbackupshell.html&title=CentOS中将备份文件同步到BitBucket、GitHub和Coding的shell脚本&source=https://typecodes.com" class="post-sharea wbshare" target="_blank" rel="nofollow">新浪微博</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://v.t.qq.com/share/share.php?title=CentOS中将备份文件同步到BitBucket、GitHub和Coding的shell脚本&url=https://typecodes.com/linux/gitsynbackupshell.html&site=https://typecodes.com" class="post-sharea twbshare" target="_blank" rel="nofollow">腾讯微博</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=https://typecodes.com/linux/gitsynbackupshell.html&title=CentOS中将备份文件同步到BitBucket、GitHub和Coding的shell脚本&content='utf-8'" class="post-sharea qzoneshare" target="_blank" rel="nofollow">QZone</a>
+							</li>
+						</ul>
+					</div>
+					<div>
+						Tags: <a href="https://typecodes.com/tag/git.html">git</a>,<a href="https://typecodes.com/tag/shell.html">shell</a>					</div>
+				</p>
+			</article>
+			
+			<div id="comments">
+				<h4 class="num">Comments &raquo;</h4>
+		    	<div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript></div>
+		    </div>
+		</div>
+		<!--3. right sider begin-->
+<div class="col-md-3" id="blog-secondary" role="complementary">
+	<section class="widget">
+		<ul class="widget-list">
+			<form id="search" method="get" action="https://typecodes.com/search.html">
+				<input type="text" name="q" id="s" size="20" x-webkit-speech="" x-webkit-grammar="builtin:search" onwebkitspeechchange="this.value = this.value.replace(this.defaultValue, '')" value="Google...." onfocus="this.value = (this.value == this.defaultValue) ? '' : this.value" onblur="this.value = (this.value == '') ? this.defaultValue : this.value">
+			</form>
+		</ul>
+	</section>
+	<section class="widget">
+		<h3 class="widget-title">Categories</h3>
+		<ul class="widget-list">
+		      <li class="current">
+		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (26)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/csharp/index.html">Csharp</a> (6)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/database/index.html">Database</a> (11)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/java/index.html">Java</a> (1)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/linux/index.html">Linux</a> (16)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/mix/index.html">Mix</a> (53)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/web/index.html">Web</a> (88)
+		      </li>
+		</ul>
+	</section>
+	<section class="widget">
+		<h3 class="widget-title">Recent Posts</h3>
+		<ul class="widget-list">
+			<li class="post">
+				<a href="https://typecodes.com/mix/sucesstypechotopelican.html">成功将博客从Typecho迁移到Pelican</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/mix/begintypechotopelican.html">准备将博客从Typecho迁移到Pelican</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/tcpconnectiontimedout.html">Linux TCP连接Connection Refused和Connection timed out的问题</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/mysqlerrornospace.html">博客MySQL服务惊魂记：Linux磁盘空间不足(Core Dump文件引爆)</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/mix/synweibophpmarkdownimgurl.html">升级博客文章同步微博的插件：PHP正则提取Markdown的图片地址</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/cppgeneralmakefile.html">Linux C/C++工程中可生成ELF、动/静态库文件的通用Makefile</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/libraryundefinedref.html">解决make编译链接动态库错误：libxx.so: undefined reference to xx</a>
+			</li>
+		</ul>
+	</section>
+	<section class="widget widget-feed">
+		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
+	</section>
+</div>
+				</div>
+			</div>
+		</div>
+		<!--4. bottom begin-->
+		<footer id="te-site-footer"><div class="container">
+	<div class="row" role="contentinfo">
+		<section class="col-md-2 col-md-offset-1">
+			<h3>Links</h3>
+			<ul><li><a href="http://diaosbook.com/" title="">diaosbook</a></li></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul>
+				<li><a href="https://typecodes.com/links.html">More..</a></li>
+			</ul>
+		</section>
+		<section class="col-md-2">
+			<h3>Following</h3>
+			<ul>
+				<li><a href="https://github.com/vfhky" class="following github" target="_blank" rel="external nofollow">GitHub</a></li>
+				<li><a href="http://weibo.com/typecodes" class="following weibo" target="_blank" rel="external nofollow">Weibo</a></li>
+				<li><a href="http://vfhky.sinaapp.com/" class="following sae" target="_blank" rel="external nofollow">SAE</a></li>
+				<li><a href="http://www.dwz.cn/mYiwa" class="following qqgroup" target="_blank" rel="external nofollow">Group</a></li>
+			</ul>
+		</section>
+		<div class="col-md-12 copyright">
+			<a href="#top"><i class="i-logo-s">TOP</i></a>
+			<p>
+				&copy; 2012-<script language="JavaScript">var date = new Date(); document.write(date.getFullYear());</script>							<a href="https://typecodes.com">TypeCodes</a>. All Rights Reserved<br>Powered by <a href="http://getpelican.com" rel="external" target="_blank">Pelican</a>. <a href="http://www.miitbeian.gov.cn/" rel="external nofollow" target="_blank">粤ICP备14050695号</a>
+			</p>
+		</div>
+	</div>
+</div>
+</footer>
+<script type="text/javascript">
+	var disqus_shortname = 'typecodes';
+	var disqus_identifier = '/linux/gitsynbackupshell.html';
+	var disqus_url = 'https://typecodes.com/linux/gitsynbackupshell.html';
+	var disqus_title = 'CentOS中将备份文件同步到BitBucket、GitHub和Coding的shell脚本';
+	(function() {
+		var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+		dsq.src = "//" + disqus_shortname + '.disqus.com/embed.js';
+		(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	 })();
+</script>
+	</body>
+</html>

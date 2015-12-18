@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="zh-CN" class="no-js">
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<title>2015博客升级记(五)：CentOS 7.1编译安装PHP7 &mdash; TypeCodes</title>
+		<meta name="author" content="vfhky">
+  		<link href="https://typecodes.com/atom.xml" type="application/atom+xml" rel="alternate" title="TypeCodes Atom Feed" />
+	  	<link href="https://typecodes.com/feed.xml" type="application/rss+xml" rel="alternate" title="TypeCodes RSS Feed" />
+		<meta name="HandheldFriendly" content="True">
+		<meta name="MobileOptimized" content="320">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="renderer" content="webkit">
+		<link rel="stylesheet" href="https://dn-vfhky.qbox.me/libs/css/pelican-vfhky.css">
+		<script>
+			var _hmt = _hmt || [];
+			(function() {
+			  var hm = document.createElement("script");
+			  hm.src = "//hm.baidu.com/hm.js?c15c4ab8e91ba9ac3d5a12293cc93359";
+			  var s = document.getElementsByTagName("script")[0]; 
+			  s.parentNode.insertBefore(hm, s);
+			})();
+		</script>
+	</head>
+	<body style>
+		<!--1. header navigation begin-->
+		<header role="banner" id="te-site-header">
+			<div class="container">
+				<a href="https://typecodes.com" class="te-site-logo" role="logo" target="_self"> TypeCodes</a>
+				<ul class="nav nav-pills" id="te-site-nav" role="navigation">
+					<li><a href="https://typecodes.com">Home</a></li><li><a href="https://typecodes.com/archives.html" title="Archives">Archives</a></li><li><a href="https://typecodes.com/about.html" title="About">About</a></li></ul>
+			</div>
+		</header>
+		<div class="te-headline">
+			<div class="container">
+				<h2 class="te-headline-title"> <a href="https://typecodes.com">TypeCodes</a></h2>
+			</div>
+		</div>
+		<div class="container">
+			<div class="row">
+		<!--2. left sider begin-->
+		<div class="col-md-9" id="blog-main" role="main">
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/web/centos7compilephp7.html">2015博客升级记(五)：CentOS 7.1编译安装PHP7</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2015-06-26 19:16 | 分类：<a href="https://typecodes.com/web/index.html">web</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>这是<a href="https://typecodes.com/mix/2015updateblog.html" title="查看原文">《2015年博客升级记》</a>系列文章的第五篇，主要记录在Linux系统中如何编译安装PHP7。</p>
+<h5>1 创建php用户和用户组，并在github下载php7源码</h5>
+<p>首先创建一个名为php且<code>没有登录权限</code>的用户和一个名为php的用户组，然后去GitHub下载php7源码包。</p>
+<div class="highlight"><pre>#######新建php用户和php组
+[root@typecodes ~]# groupadd -r php &amp;&amp; useradd -r -g php -s /bin/false -d /usr/local/php7 -M php
+######从GitHub下载php7安装包
+[root@typecodes ~]# wget -c --no-check-certificate -O php7-src-master.zip https://github.com/php/php-src/archive/master.zip
+######开始解压php7包
+[root@typecodes ~]# unzip -q php7-src-master.zip &amp;&amp; cd php-src-master
+#####安装编译php7时需要的依赖包
+[root@typecodes php-src-master]# yum -y install libxml2 libxml2-devel openssl openssl-devel curl-devel libjpeg-devel libpng-devel freetype-devel libmcrypt-devel
+</pre></div>
+
+
+
+
+<h5>2 PHP7编译参数的配置</h5>
+<p>准备工作做好后，就开始正式配置php7的安装明细了。注意，操作时一定要先把下面反斜杠“\”后面添加的注释文字去掉！！！</p>
+<div class="highlight"><pre>######开始生成配置文件
+[root@typecodes php-src-master]# ./buildconf
+buildconf: checking installation...
+buildconf: autoconf version 2.69 (ok)
+rebuilding aclocal.m4
+rebuilding configure
+rebuilding main/php_config.h.in
+######开始配置
+[root@typecodes php-src-master]# ./configure \
+--prefix=/usr/local/php7 \                              [PHP7安装的根目录]
+--exec-prefix=/usr/local/php7 \
+--bindir=/usr/local/php7/bin \
+--sbindir=/usr/local/php7/sbin \
+--includedir=/usr/local/php7/include \
+--libdir=/usr/local/php7/lib/php \
+--mandir=/usr/local/php7/php/man \
+--with-config-file-path=/usr/local/php7/etc \           [PHP7的配置目录]
+--with-mysql-sock=/var/run/mysql/mysql.sock \           [PHP7的Unix socket通信文件]
+--with-mcrypt=/usr/include \
+--with-mhash \
+--with-openssl \
+--with-mysql=shared,mysqlnd \                           [PHP7依赖mysql库]              
+--with-mysqli=shared,mysqlnd \                          [PHP7依赖mysql库]
+--with-pdo-mysql=shared,mysqlnd \                       [PHP7依赖mysql库]
+--with-gd \
+--with-iconv \
+--with-zlib \
+--enable-zip \
+--enable-inline-optimization \
+--disable-debug \
+--disable-rpath \
+--enable-shared \
+--enable-xml \
+--enable-bcmath \
+--enable-shmop \
+--enable-sysvsem \
+--enable-mbregex \
+--enable-mbstring \
+--enable-ftp \
+--enable-gd-native-ttf \
+--enable-pcntl \
+--enable-sockets \
+--with-xmlrpc \
+--enable-soap \
+--without-pear \
+--with-gettext \
+--enable-session \                                      [允许php会话session]
+--with-curl \                                           [允许curl扩展]
+--with-jpeg-dir \
+--with-freetype-dir \
+--enable-opcache \                                      [使用opcache缓存]
+--enable-fpm \
+--enable-fastcgi \
+--with-fpm-user=nginx \                                 [php-fpm的用户]
+--with-fpm-group=nginx \                                [php-fpm的用户组]
+--without-gdbm \
+--disable-fileinfo
+</pre></div>
+
+
+<p>执行上面的配置命令的结果如下图所示：</p>
+<p><img alt="PHP7编译参数的配置" src="https://dn-vfhky.qbox.me/2015/06/compile_php7_config.png" title="PHP7编译参数的配置" /></p>
+<h5>3 开始编译和安装PHP7</h5>
+<p>相对编译安装MySQL的大量CPU和内存消耗，PHP7的编译安装轻松多了，整个过程大约1个小时左右。</p>
+<div class="highlight"><pre>[root@typecodes php-src-master]# make clean &amp;&amp; make &amp;&amp; make install
+</pre></div>
+
+
+<p>看到下图就代表已经编译安装好了PHP7！</p>
+<p><img alt="安装php5.7.7rc的make install命令执行结果" src="https://dn-vfhky.qbox.me/2015/06/compile_php7_sucess.png" title="安装php5.7.7rc的make install命令执行结果" /></p>
+<h5>4 选做步骤：执行make test命令进行测试</h5>
+<p>这是一个非必需的操作步骤，执行<code>make test</code>命令。</p>
+<p><img alt="开始执行make test命令进行测试" src="https://dn-vfhky.qbox.me/2015/06/php7_make_test.png" title="开始执行make test命令进行测试" /></p>
+<p>有趣的一件事就是：在test期间，会和一个IP地址72.52.91.14建立tcp连接，它对应着php官网http://www.php.net。</p>
+<p><img alt="和PHP官网交互" src="https://dn-vfhky.qbox.me/2015/06/php7_make_test_tcp.png" title="和PHP官网交互" /></p>
+<p>执行完<code>make test</code>命令后，最终的结果如下：</p>
+<p><img alt="make test结果" src="https://dn-vfhky.qbox.me/2015/06/php7_make_test_result.png" title="make test结果" /></p>
+<h5>5  查看编译成功后的PHP7安装目录</h5>
+<p>由于需要和MySQL进行通信，所以需要特别查看PHP7安装后的lib扩展库目录（/usr/local/php7/lib/php/extensions/no-debug-non-zts-20141001/）。需要确保至少存在<code>mysqli.so</code>、<code>pdo_mysql.so</code>这两个动态库文件，如下图所示。</p>
+<p><img alt="PHP7的lib扩展库" src="https://dn-vfhky.qbox.me/2015/06/php7_mysql_lib.png" title="PHP7的lib扩展库" /></p>
+<h5>6 开始设置PHP7的配置文件php.ini、php-fpm.conf、www.conf和php-fpm脚本</h5>
+<p>可以用编译后的配置文件复制到PHP7的配置目录（/usr/local/php7/etc/），推荐使用<a href="https://typecodes.com/web/php7configure.html" title="查看原文">《PHP7中php.ini、php-fpm和www.conf的配置》</a>文中整理的3个PHP7配置文件和php-fpm服务控制脚本。</p>
+<div class="highlight"><pre>#######方法一：直接使用编译后未经优化处理的配置
+[root@typecodes php-src-master]# cp php.ini-production /usr/local/php7/etc/php.ini
+[root@typecodes php-src-master]# cp /root/php-src-master/sapi/fpm/init.d.php-fpm /etc/init.d/php-fpm
+[root@typecodes php-src-master]# cp /usr/local/php7/etc/php-fpm.conf.default /usr/local/php7/etc/php-fpm.conf
+[root@typecodes php-src-master]# cp /usr/local/php7/etc/php-fpm.d/www.conf.default /usr/local/php7/etc/php-fpm.d/www.conf
+#######方法二：使用https://typecodes.com/web/php7configure.html文中的配置 
+[root@typecodes php-src-master]# mv ~/php.ini /usr/local/php7/etc/php.ini &amp;&amp; mv ~/php-fpm /etc/init.d/php-fpm
+[root@typecodes php-src-master]# mv ~/php-fpm.conf /usr/local/php7/etc/php-fpm.conf &amp;&amp; mv ~/www.conf /usr/local/php7/etc/php-fpm.d/www.conf
+</pre></div>
+
+
+<h5>7 添加php的环境变量</h5>
+<p>将php编译生成的bin目录添加到当前Linux系统的环境变量中</p>
+<div class="highlight"><pre><span class="x">[root@typecodes ~]</span><span class="err">#</span><span class="x"> echo -e &#39;\nexport PATH=/usr/local/php7/bin:/usr/local/php7/sbin:</span><span class="p">$</span><span class="nv">PATH</span><span class="x">\n&#39; &gt;&gt; /etc/profile &amp;&amp; source /etc/profile</span>
+</pre></div>
+
+
+<h5>8 设置PHP日志目录和php-fpm进程文件（php-fpm.sock）目录</h5>
+<p>其中，设置php-fpm进程目录的用户和用户组为<code>nginx</code>，并创建php会话session目录。</p>
+<div class="highlight"><pre>#######设置PHP日志目录和php-fpm的运行进程ID文件（php-fpm.sock）目录
+[root@typecodes ~]# mkdir -p /var/log/php-fpm/ &amp;&amp; mkdir -p /var/run/php-fpm &amp;&amp; cd /var/run/ &amp;&amp; chown -R nginx:nginx php-fpm
+#######修改session的目录配置
+[root@typecodes etc]# mkdir -p /var/lib/php/session
+[root@typecodes etc]# chown -R nginx:nginx /var/lib/php
+</pre></div>
+
+
+<h5>9 设置PHP开机启动以及测试配置文件是否正确</h5>
+<div class="highlight"><pre>######配置开机自启动，增加到主机sysV服务
+[root@typecodes php-src-master]# chmod +x /etc/init.d/php-fpm
+[root@typecodes php-src-master]# chkconfig --add php-fpm
+[root@typecodes php-src-master]# chkconfig php-fpm on
+######测试PHP的配置文件是否正确合法
+[root@typecodes sbin]# php-fpm -t
+[03-May-2015 17:50:04] NOTICE: configuration file /usr/local/php7/etc/php-fpm.conf test is successful
+</pre></div>
+
+
+<h5>10 启动php服务</h5>
+<p>在完成上面的操作后，就可以正式使用php服务了。启动php进程服务的命令如下：</p>
+<div class="highlight"><pre>[root@typecodes sbin]# service php-fpm start
+Starting php-fpm  done
+</pre></div>
+
+
+<p>然后可以通过命令<code>ps -aux|grep php</code>查看是否成功（图中的php-fpm进程数和进程用户nginx都是由www.conf中pm.start_servers和user的值分别决定的）：</p>
+<p><img alt="查看php服务进程" src="https://dn-vfhky.qbox.me/2015/06/php_process.png" title="查看php服务进程" /></p>
+<h5>11 查看PHP7版本信息</h5>
+<p>最后，可以通过命令<code>php -v</code>查看当前PHP版本信息，图中可以看到当前PHP7还使用了Zend OPcache缓存，是因为在php.ini文件中添加了<code>zend_extension=opcache.so</code>配置。</p>
+<p><img alt="查看PHP7版本信息" src="https://dn-vfhky.qbox.me/2015/06/php7_version_info.png" title="查看PHP7版本信息" /></p>
+		    	<p class="tags">
+					<div class="post-share">
+						<ul class="post-shareul clearfix">
+							<li class="post-shareli">
+								<a href="http://note.youdao.com/memory/?url=https://typecodes.com/web/centos7compilephp7.html&title=2015博客升级记(五)：CentOS 7.1编译安装PHP7" class="post-sharea ydshare" target="_blank" rel="nofollow">有道云笔记</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://v.t.sina.com.cn/share/share.php?url=https://typecodes.com/web/centos7compilephp7.html&title=2015博客升级记(五)：CentOS 7.1编译安装PHP7&source=https://typecodes.com" class="post-sharea wbshare" target="_blank" rel="nofollow">新浪微博</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://v.t.qq.com/share/share.php?title=2015博客升级记(五)：CentOS 7.1编译安装PHP7&url=https://typecodes.com/web/centos7compilephp7.html&site=https://typecodes.com" class="post-sharea twbshare" target="_blank" rel="nofollow">腾讯微博</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=https://typecodes.com/web/centos7compilephp7.html&title=2015博客升级记(五)：CentOS 7.1编译安装PHP7&content='utf-8'" class="post-sharea qzoneshare" target="_blank" rel="nofollow">QZone</a>
+							</li>
+						</ul>
+					</div>
+					<div>
+						Tags: <a href="https://typecodes.com/tag/bo-ke-cheng-chang-lu.html">博客成长录</a>,<a href="https://typecodes.com/tag/php7.html">php7</a>					</div>
+				</p>
+			</article>
+			
+			<div id="comments">
+				<h4 class="num">Comments &raquo;</h4>
+		    	<div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript></div>
+		    </div>
+		</div>
+		<!--3. right sider begin-->
+<div class="col-md-3" id="blog-secondary" role="complementary">
+	<section class="widget">
+		<ul class="widget-list">
+			<form id="search" method="get" action="https://typecodes.com/search.html">
+				<input type="text" name="q" id="s" size="20" x-webkit-speech="" x-webkit-grammar="builtin:search" onwebkitspeechchange="this.value = this.value.replace(this.defaultValue, '')" value="Google...." onfocus="this.value = (this.value == this.defaultValue) ? '' : this.value" onblur="this.value = (this.value == '') ? this.defaultValue : this.value">
+			</form>
+		</ul>
+	</section>
+	<section class="widget">
+		<h3 class="widget-title">Categories</h3>
+		<ul class="widget-list">
+		      <li class="current">
+		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (26)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/csharp/index.html">Csharp</a> (6)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/database/index.html">Database</a> (11)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/java/index.html">Java</a> (1)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/linux/index.html">Linux</a> (16)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/mix/index.html">Mix</a> (53)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/web/index.html">Web</a> (88)
+		      </li>
+		</ul>
+	</section>
+	<section class="widget">
+		<h3 class="widget-title">Recent Posts</h3>
+		<ul class="widget-list">
+			<li class="post">
+				<a href="https://typecodes.com/mix/sucesstypechotopelican.html">成功将博客从Typecho迁移到Pelican</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/mix/begintypechotopelican.html">准备将博客从Typecho迁移到Pelican</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/tcpconnectiontimedout.html">Linux TCP连接Connection Refused和Connection timed out的问题</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/mysqlerrornospace.html">博客MySQL服务惊魂记：Linux磁盘空间不足(Core Dump文件引爆)</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/mix/synweibophpmarkdownimgurl.html">升级博客文章同步微博的插件：PHP正则提取Markdown的图片地址</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/cppgeneralmakefile.html">Linux C/C++工程中可生成ELF、动/静态库文件的通用Makefile</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/libraryundefinedref.html">解决make编译链接动态库错误：libxx.so: undefined reference to xx</a>
+			</li>
+		</ul>
+	</section>
+	<section class="widget widget-feed">
+		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
+	</section>
+</div>
+				</div>
+			</div>
+		</div>
+		<!--4. bottom begin-->
+		<footer id="te-site-footer"><div class="container">
+	<div class="row" role="contentinfo">
+		<section class="col-md-2 col-md-offset-1">
+			<h3>Links</h3>
+			<ul><li><a href="http://diaosbook.com/" title="">diaosbook</a></li></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul>
+				<li><a href="https://typecodes.com/links.html">More..</a></li>
+			</ul>
+		</section>
+		<section class="col-md-2">
+			<h3>Following</h3>
+			<ul>
+				<li><a href="https://github.com/vfhky" class="following github" target="_blank" rel="external nofollow">GitHub</a></li>
+				<li><a href="http://weibo.com/typecodes" class="following weibo" target="_blank" rel="external nofollow">Weibo</a></li>
+				<li><a href="http://vfhky.sinaapp.com/" class="following sae" target="_blank" rel="external nofollow">SAE</a></li>
+				<li><a href="http://www.dwz.cn/mYiwa" class="following qqgroup" target="_blank" rel="external nofollow">Group</a></li>
+			</ul>
+		</section>
+		<div class="col-md-12 copyright">
+			<a href="#top"><i class="i-logo-s">TOP</i></a>
+			<p>
+				&copy; 2012-<script language="JavaScript">var date = new Date(); document.write(date.getFullYear());</script>							<a href="https://typecodes.com">TypeCodes</a>. All Rights Reserved<br>Powered by <a href="http://getpelican.com" rel="external" target="_blank">Pelican</a>. <a href="http://www.miitbeian.gov.cn/" rel="external nofollow" target="_blank">粤ICP备14050695号</a>
+			</p>
+		</div>
+	</div>
+</div>
+</footer>
+<script type="text/javascript">
+	var disqus_shortname = 'typecodes';
+	var disqus_identifier = '/web/centos7compilephp7.html';
+	var disqus_url = 'https://typecodes.com/web/centos7compilephp7.html';
+	var disqus_title = '2015博客升级记(五)：CentOS 7.1编译安装PHP7';
+	(function() {
+		var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+		dsq.src = "//" + disqus_shortname + '.disqus.com/embed.js';
+		(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	 })();
+</script>
+	</body>
+</html>

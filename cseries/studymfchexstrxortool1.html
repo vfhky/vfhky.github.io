@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="zh-CN" class="no-js">
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<title>图文实例说MFC制作工具的心得（一） &mdash; TypeCodes</title>
+		<meta name="author" content="vfhky">
+  		<link href="https://typecodes.com/atom.xml" type="application/atom+xml" rel="alternate" title="TypeCodes Atom Feed" />
+	  	<link href="https://typecodes.com/feed.xml" type="application/rss+xml" rel="alternate" title="TypeCodes RSS Feed" />
+		<meta name="HandheldFriendly" content="True">
+		<meta name="MobileOptimized" content="320">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="renderer" content="webkit">
+		<link rel="stylesheet" href="https://dn-vfhky.qbox.me/libs/css/pelican-vfhky.css">
+		<script>
+			var _hmt = _hmt || [];
+			(function() {
+			  var hm = document.createElement("script");
+			  hm.src = "//hm.baidu.com/hm.js?c15c4ab8e91ba9ac3d5a12293cc93359";
+			  var s = document.getElementsByTagName("script")[0]; 
+			  s.parentNode.insertBefore(hm, s);
+			})();
+		</script>
+	</head>
+	<body style>
+		<!--1. header navigation begin-->
+		<header role="banner" id="te-site-header">
+			<div class="container">
+				<a href="https://typecodes.com" class="te-site-logo" role="logo" target="_self"> TypeCodes</a>
+				<ul class="nav nav-pills" id="te-site-nav" role="navigation">
+					<li><a href="https://typecodes.com">Home</a></li><li><a href="https://typecodes.com/archives.html" title="Archives">Archives</a></li><li><a href="https://typecodes.com/about.html" title="About">About</a></li></ul>
+			</div>
+		</header>
+		<div class="te-headline">
+			<div class="container">
+				<h2 class="te-headline-title"> <a href="https://typecodes.com">TypeCodes</a></h2>
+			</div>
+		</div>
+		<div class="container">
+			<div class="row">
+		<!--2. left sider begin-->
+		<div class="col-md-9" id="blog-main" role="main">
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/cseries/studymfchexstrxortool1.html">图文实例说MFC制作工具的心得（一）</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2014-11-13 22:06 | 分类：<a href="https://typecodes.com/cseries/index.html">cseries</a></li>
+</ul>
+<div class="post-content fmt">
+	<p><a href="https://typecodes.com/cseries/mfchexstrxortool.html" title="《MFC写了一个十六进制异或的工具》">上篇文章</a>说了用MFC制作一个十六进制字符串异或的工具，这篇文章就以这个工具为演示总结一下自己的学习心得。</p>
+<p><img alt="MFC十六进制异或工具" src="https://dn-vfhky.qbox.me/2014/11/mfchexstrxortool.png" title="MFC十六进制异或工具" /></p>
+
+
+<h5>1 控制用户输入数据的长度</h5>
+<p>在给用于用户输入十六进制字符串数据的<code>Edit Control</code>控件添加变量时，可以在“最大字符数”这个选项中填入一个整数，例如这个工具最大字节就限制在500内。这样就会生成如下代码，作用是在数据交互时自动截取前面500个字符。</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13</pre></div></td><td class="code"><div class="highlight"><pre><span class="kt">void</span> <span class="n">CHexStrXorDlg</span><span class="o">::</span><span class="n">DoDataExchange</span><span class="p">(</span><span class="n">CDataExchange</span><span class="o">*</span> <span class="n">pDX</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">CDialogEx</span><span class="o">::</span><span class="n">DoDataExchange</span><span class="p">(</span><span class="n">pDX</span><span class="p">);</span>
+    <span class="c1">//用于控件1和第一个十六进制字符串变量交互</span>
+    <span class="n">DDX_Text</span><span class="p">(</span><span class="n">pDX</span><span class="p">,</span> <span class="n">IDC_EDIT1</span><span class="p">,</span> <span class="n">HexStr1</span><span class="p">);</span>
+    <span class="n">DDV_MaxChars</span><span class="p">(</span><span class="n">pDX</span><span class="p">,</span> <span class="n">HexStr1</span><span class="p">,</span> <span class="mi">500</span><span class="p">);</span>
+    <span class="c1">//用于控件2和第二个十六进制字符串变量交互</span>
+    <span class="n">DDX_Text</span><span class="p">(</span><span class="n">pDX</span><span class="p">,</span> <span class="n">IDC_EDIT2</span><span class="p">,</span> <span class="n">HexStr2</span><span class="p">);</span>
+    <span class="n">DDV_MaxChars</span><span class="p">(</span><span class="n">pDX</span><span class="p">,</span> <span class="n">HexStr2</span><span class="p">,</span> <span class="mi">500</span><span class="p">);</span>
+    <span class="c1">//用于控件3和异或结果变量交互</span>
+    <span class="n">DDX_Text</span><span class="p">(</span><span class="n">pDX</span><span class="p">,</span> <span class="n">IDC_EDIT3</span><span class="p">,</span> <span class="n">HexStr</span><span class="p">);</span>
+    <span class="n">DDV_MaxChars</span><span class="p">(</span><span class="n">pDX</span><span class="p">,</span> <span class="n">HexStr</span><span class="p">,</span> <span class="mi">500</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</td></tr></table>
+
+<p>但是，这样只是截取用户输入的字符串前面的500字节，而不是提示用户输入的数据不合法。</p>
+<p>所以，改进的方法就是为控件1和控件2添加对应的<code>EN_KILLFOCUS</code>控件事件（OnEnKillfocusEdit1、OnEnKillfocusEdit2）。然后自己写了一个验证方法<code>CheckInputHex</code>，用于检查长度和字符串中是否都是十六进制字符，完整的实现代码如下：</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51</pre></div></td><td class="code"><div class="highlight"><pre><span class="c1">//检查输入的十六进制字符串是否合法</span>
+<span class="kt">int</span> <span class="nf">CheckInputHex</span><span class="p">(</span><span class="n">CEdit</span><span class="o">*</span> <span class="n">pEdit</span><span class="p">,</span> <span class="n">CString</span> <span class="n">HexInput</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="c1">//获取字符串的长度</span>
+    <span class="kt">int</span> <span class="n">i</span><span class="p">,</span> <span class="n">HexInputLen</span><span class="p">;</span>
+    <span class="n">HexInputLen</span> <span class="o">=</span> <span class="n">HexInput</span><span class="p">.</span><span class="n">GetLength</span><span class="p">();</span>
+
+    <span class="c1">//检查长度是否合适</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">HexInputLen</span> <span class="o">&gt;</span> <span class="mi">500</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="c1">//弹出一个错误框，提示用户输入的数据不合法</span>
+        <span class="n">AfxMessageBox</span><span class="p">(</span><span class="n">_T</span><span class="p">(</span><span class="s">&quot;长度不能大于500!&quot;</span><span class="p">));</span>
+        <span class="c1">//重新将焦点聚集在这个数据不合法的控件框内</span>
+        <span class="n">pEdit</span><span class="o">-&gt;</span><span class="n">SetFocus</span><span class="p">();</span>
+        <span class="n">pEdit</span><span class="o">-&gt;</span><span class="n">SetSel</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">HexInputLen</span><span class="p">);</span>
+        <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="c1">//检查是否是十六进制字符</span>
+    <span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">HexInputLen</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">HexInput</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">&lt;</span><span class="mh">0x30</span> <span class="o">||</span> <span class="p">(</span><span class="n">HexInput</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">&gt;</span><span class="mh">0x39</span> <span class="o">&amp;&amp;</span> <span class="n">HexInput</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">&lt;</span><span class="mh">0x41</span><span class="p">)</span> <span class="o">||</span> <span class="p">(</span><span class="n">HexInput</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">&gt;</span><span class="mh">0x46</span> <span class="o">&amp;&amp;</span> <span class="n">HexInput</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">&lt;</span><span class="mh">0x61</span><span class="p">)</span> <span class="o">||</span> <span class="n">HexInput</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">&gt;</span> <span class="mh">0x66</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">AfxMessageBox</span><span class="p">(</span><span class="n">_T</span><span class="p">(</span><span class="s">&quot;请输入正确的十六进制字符串!&quot;</span><span class="p">));</span>
+            <span class="n">pEdit</span><span class="o">-&gt;</span><span class="n">SetFocus</span><span class="p">();</span>
+            <span class="n">pEdit</span><span class="o">-&gt;</span><span class="n">SetSel</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">HexInputLen</span><span class="p">);</span>
+            <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">CHexStrXorDlg</span><span class="o">::</span><span class="n">OnEnKillfocusEdit1</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="c1">// TODO:  在此添加控件通知处理程序代码</span>
+    <span class="n">CEdit</span><span class="o">*</span> <span class="n">pEdit</span><span class="p">;</span>
+
+    <span class="c1">//获得第一个字符串控件 </span>
+    <span class="n">pEdit</span> <span class="o">=</span> <span class="p">(</span><span class="n">CEdit</span><span class="o">*</span><span class="p">)</span><span class="n">GetDlgItem</span><span class="p">(</span><span class="n">IDC_EDIT1</span><span class="p">);</span>
+
+    <span class="c1">//获取Edit Control内的内容，即第一个十六进制字符串  </span>
+    <span class="n">pEdit</span><span class="o">-&gt;</span><span class="n">GetWindowText</span><span class="p">(</span><span class="n">HexStr1</span><span class="p">);</span>
+
+    <span class="c1">//检查合法性</span>
+    <span class="kt">int</span> <span class="n">iCheckData</span><span class="p">;</span>
+    <span class="n">iCheckData</span> <span class="o">=</span> <span class="n">CheckInputHex</span><span class="p">(</span><span class="n">pEdit</span><span class="p">,</span> <span class="n">HexStr1</span><span class="p">);</span>
+
+    <span class="c1">//出错则直接返回</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">iCheckData</span><span class="p">)</span>
+        <span class="k">return</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</td></tr></table>
+
+<h5>2 检测用户输入数据是否合法</h5>
+<p>因为用户输入的数据并不一定是你设想的，可能还是<code>有害</code>的，所以在使用前必须予以检查。由于我的这个工具要求用户输入的必须是十六进制字符串，所以必须要检查每个字符是否合法。检查方法已经包含在上面<code>CheckInputHex</code>方法了，如果用户输入了非法字符，例如'G'、'h'等非十六进制字符，那么就会弹出错误框如下</p>
+<p><img alt="检测用户输入数据是否合法的十六进制字符串" src="https://dn-vfhky.qbox.me/2014/11/mfchexstrxorerrornotify.png" title="检测用户输入数据是否合法的十六进制字符串" /></p>
+<h5>3 统计用户输入字符串的长度</h5>
+<p>如果用户输入了一个合法的字符串，然后离开了输入框，这时应该自动在输入框的右侧统计出用户输入的字符串的长度。方法依然是在控件对应的<code>EN_KILLFOCUS</code>事件处理方法<code>OnEnKillfocusEdit1</code>中实现：</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12</pre></div></td><td class="code"><div class="highlight"><pre><span class="kt">void</span> <span class="n">CHexStrXorDlg</span><span class="o">::</span><span class="n">OnEnKillfocusEdit1</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="o">/**</span>
+     <span class="o">*</span> <span class="err">省略小节</span><span class="mi">1</span><span class="err">中的</span><span class="n">OnEnKillfocusEdit1</span><span class="p">()</span><span class="err">已有的代码</span>
+     <span class="o">*</span> <span class="o">/</span>
+
+    <span class="c1">//更新长度</span>
+    <span class="n">CString</span> <span class="n">UpdateHexStr1Len</span><span class="p">;</span>
+    <span class="n">UpdateHexStr1Len</span><span class="p">.</span><span class="n">Format</span><span class="p">(</span><span class="s">&quot;%s%d%s&quot;</span><span class="p">,</span> <span class="s">&quot;字节=[&quot;</span><span class="p">,</span> <span class="n">HexStr1</span><span class="p">.</span><span class="n">GetLength</span><span class="p">(),</span> <span class="s">&quot;]&quot;</span><span class="p">);</span>
+    <span class="c1">//SetDlgItemText(IDC_STATIC_STR1, UpdateHexStr1Len );</span>
+    <span class="n">GetDlgItem</span><span class="p">(</span><span class="n">IDC_STATIC_STR1</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">SetWindowTextA</span><span class="p">(</span><span class="n">UpdateHexStr1Len</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</td></tr></table>
+
+<h5>4 设置TAB键切换连续输入</h5>
+<p>如何让用户在输入完第一个字符串后，按TAB键直接跳到第二个十六进制字符串输入框中？这个就涉及到对话框中所有空间的排序了。在visual studio 2013中按“Ctrl+D”就会显示对话框所有空间的序号了，分别点击两个不同的控件，就能交换二者的序号。</p>
+<p>如图所示，只要将第一个字符串输入框控件和第二个字符串输入框控件的序号设置为1、2这两个连续的序号即可实现TAB键连续输入，而不用使用鼠标了。</p>
+<p><img alt="mfc设置控件序号实现TAB键切换连续输入" src="https://dn-vfhky.qbox.me/2014/11/mfchexstrxordesign.png" title="mfc设置控件序号实现TAB键切换连续输入" /></p>
+<h5>5 避免回车键直接关闭工具（对话框）</h5>
+<p>直接将“进行异或”这个按钮属性中的<code>Default Button</code>设置为"TRUE"，这样如果用户直接回车就不会关闭工具（对话框）了。</p>
+<p>同时，用户的回车会直接触发这个按钮对应的事件<code>OnBnClickedButton1</code>，也就相当于用户点击了这个按钮，直接对这两个字符串进行异或处理。</p>
+<p><img alt="设置按钮属性中的Default Button为TRUE" src="https://dn-vfhky.qbox.me/2014/11/mfchexstrxordefaultbutton.png" title="设置按钮属性中的Default Button为TRUE" /></p>
+<h5>6 结语</h5>
+<p>由于篇幅较长，所以把剩余内容放在了<a href="https://typecodes.com/cseries/studymfchexstrxortool2.html" title="《图文实例说MFC制作工具的心得（二）》">第二部分</a>。</p>
+		    	<p class="tags">
+					<div class="post-share">
+						<ul class="post-shareul clearfix">
+							<li class="post-shareli">
+								<a href="http://note.youdao.com/memory/?url=https://typecodes.com/cseries/studymfchexstrxortool1.html&title=图文实例说MFC制作工具的心得（一）" class="post-sharea ydshare" target="_blank" rel="nofollow">有道云笔记</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://v.t.sina.com.cn/share/share.php?url=https://typecodes.com/cseries/studymfchexstrxortool1.html&title=图文实例说MFC制作工具的心得（一）&source=https://typecodes.com" class="post-sharea wbshare" target="_blank" rel="nofollow">新浪微博</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://v.t.qq.com/share/share.php?title=图文实例说MFC制作工具的心得（一）&url=https://typecodes.com/cseries/studymfchexstrxortool1.html&site=https://typecodes.com" class="post-sharea twbshare" target="_blank" rel="nofollow">腾讯微博</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=https://typecodes.com/cseries/studymfchexstrxortool1.html&title=图文实例说MFC制作工具的心得（一）&content='utf-8'" class="post-sharea qzoneshare" target="_blank" rel="nofollow">QZone</a>
+							</li>
+						</ul>
+					</div>
+					<div>
+						Tags: <a href="https://typecodes.com/tag/shi-liu-jin-zhi-zi-fu-chuan.html">十六进制字符串</a>,<a href="https://typecodes.com/tag/zi-fu-chuan-yi-huo.html">字符串异或</a>,<a href="https://typecodes.com/tag/mfc.html">mfc</a>					</div>
+				</p>
+			</article>
+			
+			<div id="comments">
+				<h4 class="num">Comments &raquo;</h4>
+		    	<div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript></div>
+		    </div>
+		</div>
+		<!--3. right sider begin-->
+<div class="col-md-3" id="blog-secondary" role="complementary">
+	<section class="widget">
+		<ul class="widget-list">
+			<form id="search" method="get" action="https://typecodes.com/search.html">
+				<input type="text" name="q" id="s" size="20" x-webkit-speech="" x-webkit-grammar="builtin:search" onwebkitspeechchange="this.value = this.value.replace(this.defaultValue, '')" value="Google...." onfocus="this.value = (this.value == this.defaultValue) ? '' : this.value" onblur="this.value = (this.value == '') ? this.defaultValue : this.value">
+			</form>
+		</ul>
+	</section>
+	<section class="widget">
+		<h3 class="widget-title">Categories</h3>
+		<ul class="widget-list">
+		      <li class="current">
+		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (26)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/csharp/index.html">Csharp</a> (6)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/database/index.html">Database</a> (11)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/java/index.html">Java</a> (1)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/linux/index.html">Linux</a> (16)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/mix/index.html">Mix</a> (53)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/web/index.html">Web</a> (88)
+		      </li>
+		</ul>
+	</section>
+	<section class="widget">
+		<h3 class="widget-title">Recent Posts</h3>
+		<ul class="widget-list">
+			<li class="post">
+				<a href="https://typecodes.com/mix/sucesstypechotopelican.html">成功将博客从Typecho迁移到Pelican</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/mix/begintypechotopelican.html">准备将博客从Typecho迁移到Pelican</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/tcpconnectiontimedout.html">Linux TCP连接Connection Refused和Connection timed out的问题</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/mysqlerrornospace.html">博客MySQL服务惊魂记：Linux磁盘空间不足(Core Dump文件引爆)</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/mix/synweibophpmarkdownimgurl.html">升级博客文章同步微博的插件：PHP正则提取Markdown的图片地址</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/cppgeneralmakefile.html">Linux C/C++工程中可生成ELF、动/静态库文件的通用Makefile</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/libraryundefinedref.html">解决make编译链接动态库错误：libxx.so: undefined reference to xx</a>
+			</li>
+		</ul>
+	</section>
+	<section class="widget widget-feed">
+		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
+	</section>
+</div>
+				</div>
+			</div>
+		</div>
+		<!--4. bottom begin-->
+		<footer id="te-site-footer"><div class="container">
+	<div class="row" role="contentinfo">
+		<section class="col-md-2 col-md-offset-1">
+			<h3>Links</h3>
+			<ul><li><a href="http://diaosbook.com/" title="">diaosbook</a></li></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul>
+				<li><a href="https://typecodes.com/links.html">More..</a></li>
+			</ul>
+		</section>
+		<section class="col-md-2">
+			<h3>Following</h3>
+			<ul>
+				<li><a href="https://github.com/vfhky" class="following github" target="_blank" rel="external nofollow">GitHub</a></li>
+				<li><a href="http://weibo.com/typecodes" class="following weibo" target="_blank" rel="external nofollow">Weibo</a></li>
+				<li><a href="http://vfhky.sinaapp.com/" class="following sae" target="_blank" rel="external nofollow">SAE</a></li>
+				<li><a href="http://www.dwz.cn/mYiwa" class="following qqgroup" target="_blank" rel="external nofollow">Group</a></li>
+			</ul>
+		</section>
+		<div class="col-md-12 copyright">
+			<a href="#top"><i class="i-logo-s">TOP</i></a>
+			<p>
+				&copy; 2012-<script language="JavaScript">var date = new Date(); document.write(date.getFullYear());</script>							<a href="https://typecodes.com">TypeCodes</a>. All Rights Reserved<br>Powered by <a href="http://getpelican.com" rel="external" target="_blank">Pelican</a>. <a href="http://www.miitbeian.gov.cn/" rel="external nofollow" target="_blank">粤ICP备14050695号</a>
+			</p>
+		</div>
+	</div>
+</div>
+</footer>
+<script type="text/javascript">
+	var disqus_shortname = 'typecodes';
+	var disqus_identifier = '/cseries/studymfchexstrxortool1.html';
+	var disqus_url = 'https://typecodes.com/cseries/studymfchexstrxortool1.html';
+	var disqus_title = '图文实例说MFC制作工具的心得（一）';
+	(function() {
+		var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+		dsq.src = "//" + disqus_shortname + '.disqus.com/embed.js';
+		(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	 })();
+</script>
+	</body>
+</html>

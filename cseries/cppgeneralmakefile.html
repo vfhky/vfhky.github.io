@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="zh-CN" class="no-js">
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<title>Linux C/C++工程中可生成ELF、动/静态库文件的通用Makefile &mdash; TypeCodes</title>
+		<meta name="author" content="vfhky">
+  		<link href="https://typecodes.com/atom.xml" type="application/atom+xml" rel="alternate" title="TypeCodes Atom Feed" />
+	  	<link href="https://typecodes.com/feed.xml" type="application/rss+xml" rel="alternate" title="TypeCodes RSS Feed" />
+		<meta name="HandheldFriendly" content="True">
+		<meta name="MobileOptimized" content="320">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="renderer" content="webkit">
+		<link rel="stylesheet" href="https://dn-vfhky.qbox.me/libs/css/pelican-vfhky.css">
+		<script>
+			var _hmt = _hmt || [];
+			(function() {
+			  var hm = document.createElement("script");
+			  hm.src = "//hm.baidu.com/hm.js?c15c4ab8e91ba9ac3d5a12293cc93359";
+			  var s = document.getElementsByTagName("script")[0]; 
+			  s.parentNode.insertBefore(hm, s);
+			})();
+		</script>
+	</head>
+	<body style>
+		<!--1. header navigation begin-->
+		<header role="banner" id="te-site-header">
+			<div class="container">
+				<a href="https://typecodes.com" class="te-site-logo" role="logo" target="_self"> TypeCodes</a>
+				<ul class="nav nav-pills" id="te-site-nav" role="navigation">
+					<li><a href="https://typecodes.com">Home</a></li><li><a href="https://typecodes.com/archives.html" title="Archives">Archives</a></li><li><a href="https://typecodes.com/about.html" title="About">About</a></li></ul>
+			</div>
+		</header>
+		<div class="te-headline">
+			<div class="container">
+				<h2 class="te-headline-title"> <a href="https://typecodes.com">TypeCodes</a></h2>
+			</div>
+		</div>
+		<div class="container">
+			<div class="row">
+		<!--2. left sider begin-->
+		<div class="col-md-9" id="blog-main" role="main">
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/cseries/cppgeneralmakefile.html">Linux C/C++工程中可生成ELF、动/静态库文件的通用Makefile</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2015-08-14 20:27 | 分类：<a href="https://typecodes.com/cseries/index.html">cseries</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>最近写了一个*nix环境下的Makefile文件，支持编译C/C++，同时能够通过参数配置生成ELF目标文件、动态链接库(.so)和静态链接库(.a)文件。</p>
+<p><img alt="Linux C/C++工程中可生成ELF、动/静态库文件的通用Makefile" src="https://dn-vfhky.qbox.me/2015/08/linux_general_makefile.png" title="Linux C/C++工程中可生成ELF、动/静态库文件的通用Makefile" /></p>
+
+
+<h4>1 Makefile文件配置说明</h4>
+<p>首先，根据生成的目标文件类型（ELF可执行文件，动态链接库文件或静态链接库文件），配置<code>GEN_LIBS</code>、<code>GEN_DYN_LIB</code>、<code>EXCUTE_BIN</code>、<code>STATIC_LIBS</code>和<code>DYNAMIC_LIBS</code>等变量。</p>
+<p>其次，如果生成的目标文件依赖其它库文件，那么只要将<code>LD_LIB_DIR</code>设置成该动态库所在的目录，<code>LD_LIBS</code>设置成要链接的动态库文件名即可。更建议的做法是在当前C/C++工程的配置文件中设置<code>LIBPATH</code>参数为动态库所在的目录，这样就不用在设置变量<code>LD_LIB_DIR</code>的值了，例如：</p>
+<div class="highlight"><pre>export LIBPATH=/usr/lib64/:<span class="cp">${</span><span class="n">LIBPATH</span><span class="cp">}</span>:/home/typecodes/lib
+</pre></div>
+
+
+<p>最后需要说明的是，变量<code>$(PROJECT_DIR)</code>表示当前C/C++工程的根路径，可以直接将本Makefile文件中的命令<code># PROJECT_DIR   := /home/typecodes</code>前面的<code>#</code>号去掉，然后设置成自己的工程根目录即可。同样，更建议在工程的配置文件中配置，例如：</p>
+<div class="highlight"><pre>export PROJECT_DIR=/home/typecodes
+</pre></div>
+
+
+<h4>2 使用方法</h4>
+<p>在配置好Makefile文件中的变量对应的值后，直接将该文件放置在需要编译的C/C++工程目录下面，然后执行<code>make</code>或者<code>make all</code>就可以了。伪目标<code>clean</code>对应的命令<code>make clean</code>能够清除上次执行make命令产生的影响；伪目标<code>help</code>对应的命令<code>make help</code>能够在界面上输出Makefile文件中的重要变量的值，方便调试。</p>
+<p>执行完make命令后，在当前目录下会生成.o目标文件以及.d依赖文件，ELF可执行文件放在工程的bin目录下，动/静态库文件放在工程的lib目录下。</p>
+<h4>3 附录：Makefile文件源码</h4>
+<p>已将下面的Makefile源文件托管到两个仓库中：</p>
+<p>1、GitHub： <a href="https://github.com/vfhky/General_Makefile" title="点击查看">https://github.com/vfhky/General_Makefile</a>；</p>
+<p>2、Coding： <a href="https://coding.net/u/vfhky/p/General_Makefile/git" title="点击查看">https://coding.net/u/vfhky/p/General_Makefile/git</a>。</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>  1
+  2
+  3
+  4
+  5
+  6
+  7
+  8
+  9
+ 10
+ 11
+ 12
+ 13
+ 14
+ 15
+ 16
+ 17
+ 18
+ 19
+ 20
+ 21
+ 22
+ 23
+ 24
+ 25
+ 26
+ 27
+ 28
+ 29
+ 30
+ 31
+ 32
+ 33
+ 34
+ 35
+ 36
+ 37
+ 38
+ 39
+ 40
+ 41
+ 42
+ 43
+ 44
+ 45
+ 46
+ 47
+ 48
+ 49
+ 50
+ 51
+ 52
+ 53
+ 54
+ 55
+ 56
+ 57
+ 58
+ 59
+ 60
+ 61
+ 62
+ 63
+ 64
+ 65
+ 66
+ 67
+ 68
+ 69
+ 70
+ 71
+ 72
+ 73
+ 74
+ 75
+ 76
+ 77
+ 78
+ 79
+ 80
+ 81
+ 82
+ 83
+ 84
+ 85
+ 86
+ 87
+ 88
+ 89
+ 90
+ 91
+ 92
+ 93
+ 94
+ 95
+ 96
+ 97
+ 98
+ 99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150
+151
+152
+153
+154
+155
+156
+157
+158
+159
+160
+161
+162
+163
+164
+165
+166
+167
+168
+169
+170</pre></div></td><td class="code"><div class="highlight"><pre><span class="c">##################################################################</span>
+<span class="c">#</span>
+<span class="c"># FILENAME   :  Makefile</span>
+<span class="c"># DESCRIPT   :  A general makefile to generate an ELF or a</span>
+<span class="c">#                   dynamic or a static library for C/C++ project.</span>
+<span class="c"># AUTHOR     :  vfhky  2015.08.07</span>
+<span class="c"># URI        :  https://typecodes.com/cseries/cppgeneralmakefile.html</span>
+<span class="c">#</span>
+<span class="c">##################################################################</span>
+
+<span class="nf">.PHONY</span><span class="o">:</span> <span class="n">all</span> <span class="n">clean</span> <span class="n">help</span>
+<span class="nf">all</span><span class="o">:</span>
+
+<span class="c"># Some important on-off settings. You can not be too careful about them.</span>
+<span class="nv">DEBUG</span>           <span class="o">:=</span> y
+<span class="c"># Flag of generate a dynamic lib or a static lib: y means yes. If the target is a excutable file, it should be blank!</span>
+<span class="nv">GEN_LIBS</span>        <span class="o">:=</span> y
+<span class="c"># Flag of generate a dynamic lib: y means yes. It should be blank unless you want to generate a dynamic lib!</span>
+<span class="nv">GEN_DYN_LIB</span>     <span class="o">:=</span> y
+<span class="c"># The name of target bin file.Please let it be blank unless the target is a excutable file. </span>
+<span class="nv">EXCUTE_BIN</span>      <span class="o">:=</span> 
+<span class="c"># Name of the static lib. It should be blank unless the target is a static lib, then the GEN_LIBS is y and GEN_DYN_LIB is blank.</span>
+<span class="c"># STATIC_LIBS       := libsrcpbl.a</span>
+<span class="c"># Name of the dynamic lib. It should be blank unless the target is a dynamic lib, then the GEN_LIBS is y and GEN_DYN_LIB is y.</span>
+<span class="nv">DYNAMIC_LIBS</span>    <span class="o">:=</span> libsrcpbl.so
+
+<span class="c"># Environment settings. The value of PROJECT_DIR shoule be set in the *nix system as the the absolute dir path of your project.</span>
+<span class="c"># PROJECT_DIR   := /home/typecodes</span>
+<span class="c">#CURDIR         := $(PROJECT_DIR)/src/pbl</span>
+<span class="nv">CURDIR</span>          <span class="o">:=</span> <span class="k">$(</span>shell <span class="nb">pwd</span><span class="k">)</span>
+<span class="nv">PRG_BIN_DIR</span>     <span class="o">:=</span> <span class="k">$(</span>PROJECT_DIR<span class="k">)</span>/bin
+<span class="nv">PRG_LIB_DIR</span>     <span class="o">:=</span> <span class="k">$(</span>PROJECT_DIR<span class="k">)</span>/lib
+<span class="nv">PRG_INC_DIR</span>     <span class="o">:=</span> <span class="k">$(</span>PROJECT_DIR<span class="k">)</span>/include
+
+<span class="c"># Cross compile tools defined. You needn&#39;t modify these vars below generally.</span>
+<span class="nv">AS</span>      <span class="o">:=</span> as
+<span class="nv">LD</span>      <span class="o">:=</span> ld
+<span class="nv">CC</span>      <span class="o">:=</span> gcc
+<span class="nv">CXX</span>     <span class="o">:=</span> g++
+<span class="nv">CPP</span>     <span class="o">:=</span> <span class="k">$(</span>CC<span class="k">)</span> -E
+<span class="nv">AR</span>      <span class="o">:=</span> ar rcs
+<span class="nv">NM</span>      <span class="o">:=</span> nm
+<span class="nv">STRIP</span>   <span class="o">:=</span> strip
+<span class="nv">RANLIB</span>  <span class="o">:=</span> ranlib
+<span class="nv">STD_OPT</span> <span class="o">:=</span> -std<span class="o">=</span>c99 -D_GNU_SOURCE 
+<span class="nv">CC</span>      <span class="o">+=</span> <span class="k">$(</span>STD_OPT<span class="k">)</span>
+<span class="nv">CXX</span>     <span class="o">+=</span> <span class="k">$(</span>STD_OPT<span class="k">)</span>
+
+<span class="c"># *nix system tools defined. You needn&#39;t modify these vars below generally.</span>
+<span class="nv">CP</span>      <span class="o">:=</span> cp
+<span class="nv">SED</span>     <span class="o">:=</span> sed
+<span class="nv">FIND</span>    <span class="o">:=</span> find
+<span class="nv">MKDIR</span>   <span class="o">:=</span> mkdir -p
+<span class="nv">XARGS</span>   <span class="o">:=</span> xargs
+<span class="nv">MV</span>      <span class="o">:=</span> mv
+<span class="nv">RM</span>      <span class="o">:=</span> rm -rf
+
+
+<span class="c"># Get .c, .cpp source files by searching from current directory.</span>
+<span class="nv">CUR_SRC_DIR</span> <span class="o">=</span> <span class="k">$(</span>shell ls -AxR <span class="k">$(</span>CURDIR<span class="k">)</span><span class="p">|</span>grep <span class="s2">&quot;:&quot;</span><span class="p">|</span>tr -d <span class="s1">&#39;:&#39;</span><span class="k">)</span>
+<span class="nv">CUR_SRC</span>     <span class="o">:=</span> <span class="k">$(</span>foreach subdir,<span class="k">$(</span>CUR_SRC_DIR<span class="k">)</span>,<span class="k">$(</span>wildcard <span class="k">$(</span>subdir<span class="k">)</span>/*.c <span class="k">$(</span>subdir<span class="k">)</span>/*.cpp<span class="k">))</span>
+<span class="c">#CUR_SRC    := $(shell find . -name &quot;*.c&quot; -o -name &quot;*.cpp&quot;|sed -e &#39;s,./,,&#39;)</span>
+<span class="nv">CUR_C</span>       <span class="o">:=</span> <span class="k">$(</span>filter %.c, <span class="k">$(</span>CUR_SRC<span class="k">))</span>
+<span class="nv">CUR_CPP</span>     <span class="o">:=</span> <span class="k">$(</span>filter %.cpp, <span class="k">$(</span>CUR_SRC<span class="k">))</span>
+
+<span class="c"># Get the include files, object files, dependent files by searching from PRG_INC_DIR.</span>
+<span class="nv">CUR_INC_DIR</span> <span class="o">=</span> <span class="k">$(</span>shell ls -AxR <span class="k">$(</span>PRG_INC_DIR<span class="k">)</span><span class="p">|</span>grep <span class="s2">&quot;:&quot;</span><span class="p">|</span>tr -d <span class="s1">&#39;:&#39;</span><span class="k">)</span>
+<span class="nv">CUR_INC</span>     <span class="o">:=</span> <span class="k">$(</span>foreach subdir,<span class="k">$(</span>CUR_INC_DIR<span class="k">)</span>,<span class="k">$(</span>subdir<span class="k">)</span>/*.h<span class="k">)</span>
+<span class="nv">SRC_H</span>       <span class="o">:=</span> <span class="k">$(</span>filter %.h, <span class="k">$(</span>CUR_INC<span class="k">))</span>
+<span class="c">#CUR_OBJ    := $(addprefix $(PRG_BIN_DIR)/,$(strip $(CUR_CPP:.cpp=.o) $(CUR_C:.c=.o)))</span>
+<span class="c">#CUR_OBJ    := $(addprefix $(PRG_BIN_DIR)/,$(notdir $(CUR_CPP:.cpp=.o) $(CUR_C:.c=.o)))</span>
+<span class="nv">CUR_OBJ</span>     <span class="o">:=</span> <span class="k">$(</span>strip <span class="k">$(</span>CUR_CPP:.cpp<span class="o">=</span>.o<span class="k">)</span> <span class="k">$(</span>CUR_C:.c<span class="o">=</span>.o<span class="k">))</span>
+<span class="c">#CUR_DEP    := $(addprefix $(PRG_BIN_DIR)/,$(notdir $(CUR_CPP:.cpp=.d) $(CUR_C:.c=.d)))</span>
+<span class="nv">CUR_DEP</span>     <span class="o">:=</span> <span class="k">$(</span>strip <span class="k">$(</span>CUR_CPP:.cpp<span class="o">=</span>.d<span class="k">)</span> <span class="k">$(</span>CUR_C:.c<span class="o">=</span>.d<span class="k">))</span>
+
+<span class="c"># Create directory in the header files, bin and library directory.</span>
+<span class="k">$(</span><span class="nv">foreach</span> <span class="nv">dirname</span>,<span class="k">$</span>(<span class="nv">sort</span> <span class="k">$</span>(<span class="nv">PRG_INC_DIR</span><span class="k">)</span> <span class="k">$(</span><span class="nv">PRG_BIN_DIR</span><span class="k">)</span> <span class="k">$(</span><span class="nv">PRG_LIB_DIR</span><span class="k">)</span><span class="err">),\</span>
+  <span class="k">$(</span><span class="nv">shell</span> <span class="k">$</span>(<span class="nv">MKDIR</span><span class="k">)</span> <span class="k">$(</span><span class="nv">dirname</span><span class="k">)</span><span class="err">))</span>
+
+<span class="c"># Complie and link variables. LD_LIBS means the dynamic or static library needed for the object file.</span>
+<span class="nv">CFLAGS</span>      <span class="o">:=</span> <span class="k">$(if</span> <span class="k">$(</span>DEBUG<span class="k">)</span>,-g -Wall, -O2 -Wall<span class="k">)</span>
+<span class="nv">CFLAGS</span>      <span class="o">+=</span> <span class="k">$(if</span> <span class="k">$(</span>GEN_DYN_LIB<span class="k">)</span>, <span class="k">$(</span>addprefix -fPIC -I ,<span class="k">$(</span>sort <span class="k">$(</span>dir <span class="k">$(</span>SRC_H<span class="k">))))</span>, <span class="k">$(</span>addprefix -I ,<span class="k">$(</span>sort <span class="k">$(</span>dir <span class="k">$(</span>SRC_H<span class="k">)))))</span>
+<span class="nv">CXXFLAGS</span>    <span class="o">=</span> <span class="k">$(</span>CFLAGS<span class="k">)</span>
+<span class="nv">LDFLAGS</span>     <span class="o">:=</span> 
+<span class="nv">LD_LIB_DIR</span>  <span class="o">:=</span> <span class="c">#-L $(PRG_LIB_DIR)</span>
+<span class="nv">LD_LIBS</span>     <span class="o">:=</span> <span class="c">#-lsrcpbl -lmysqlclient</span>
+<span class="nv">XLD_FLG</span>     <span class="o">:=</span> -Xlinker <span class="s2">&quot;-(&quot;</span> <span class="k">$(</span>LDFLAGS<span class="k">)</span> -Xlinker <span class="s2">&quot;-)&quot;</span>
+
+<span class="c"># Add vpath.</span>
+<span class="cp">vpath %.h $(sort $(dir $(SRC_H)))</span>
+<span class="cp">vpath %.c $(sort $(dir $(CUR_C)))</span>
+<span class="cp">vpath %.cpp $(sort $(dir $(CUR_CPP)))</span>
+
+<span class="c"># Generate depend files.</span>
+<span class="cp">ifneq &quot;$(MAKECMDGOALS)&quot; &quot;clean&quot;</span>
+<span class="err">sinclude</span> <span class="k">$(</span><span class="nv">CUR_DEP</span><span class="k">)</span>
+<span class="cp">endif</span>
+
+<span class="c"># Gen_depend(depend-file,source-file,object-file,cc). This command-package is used to generate a depend file with a postfix of .d.</span>
+<span class="cp">define gen_depend</span>
+  <span class="err">@set</span> <span class="err">-e;</span>                                      <span class="err">\</span>
+  <span class="k">$(</span><span class="nv">RM</span><span class="k">)</span> <span class="err">$1;</span>                                     <span class="err">\</span>
+  <span class="err">$4</span> <span class="k">$(</span><span class="nv">CFLAGS</span><span class="k">)</span> <span class="err">-MM</span> <span class="err">$2</span> <span class="err">|</span>                         <span class="err">\</span>
+  <span class="nf">$(SED) &#39;s,\($(notdir $3)\)</span><span class="o">:</span> <span class="p">,</span>$3: <span class="p">,</span>&#39; &gt; $1.<span class="n">tmp</span>; \
+  <span class="k">$(</span><span class="nv">SED</span><span class="k">)</span> -<span class="n">e</span> &#39;<span class="n">s</span>/<span class="c">#.*//&#39;                           \</span>
+         -e <span class="s1">&#39;s/^[^:]*: *//&#39;</span>                     <span class="se">\</span>
+         -e <span class="s1">&#39;s/ *\\$$//&#39;</span>                        <span class="se">\</span>
+         -e <span class="s1">&#39;/^$$/ d&#39;</span>                           <span class="se">\</span>
+         -e <span class="s1">&#39;s/$$/ :/&#39;</span> &lt; <span class="nv">$1</span>.tmp &gt;&gt; <span class="nv">$1</span>.tmp<span class="p">;</span>      <span class="se">\</span>
+  <span class="k">$(</span>MV<span class="k">)</span> <span class="nv">$1</span>.tmp <span class="nv">$1</span><span class="p">;</span>
+<span class="cp">endef</span>
+
+<span class="c"># Rules to generate objects file(.o) from .c or .cpp files.</span>
+<span class="nf">$(CURDIR)/%.o</span><span class="o">:</span> %.<span class="n">c</span>
+    @<span class="k">$(</span>call gen_depend,<span class="k">$(</span>patsubst %.o,%.d,<span class="nv">$@</span><span class="k">)</span>,<span class="nv">$&lt;</span>,<span class="nv">$@</span>,<span class="k">$(</span>CC<span class="k">))</span>
+    <span class="k">$(</span>CC<span class="k">)</span> <span class="k">$(</span>CFLAGS<span class="k">)</span> -o <span class="nv">$@</span> -c <span class="nv">$&lt;</span>
+
+<span class="nf">$(CURDIR)/%.o</span><span class="o">:</span> %.<span class="n">cpp</span>
+    @<span class="k">$(</span>call gen_depend,<span class="k">$(</span>patsubst %.o,%.d,<span class="nv">$@</span><span class="k">)</span>,<span class="nv">$&lt;</span>,<span class="nv">$@</span>,<span class="k">$(</span>CXX<span class="k">))</span>
+    <span class="k">$(</span>CXX<span class="k">)</span> <span class="k">$(</span>CXXFLAGS<span class="k">)</span> -o <span class="nv">$@</span> -c <span class="nv">$&lt;</span>
+
+<span class="c"># Gen_excbin(target,CUR_OBJ,cc). This command-package is used to generate a excutable file.</span>
+<span class="cp">define gen_excbin</span>
+  ULT_BIN +<span class="o">=</span> <span class="k">$(</span>PRG_BIN_DIR<span class="k">)</span>/<span class="nv">$1</span>
+  <span class="k">$(</span>PRG_BIN_DIR<span class="k">)</span>/<span class="nv">$1</span>: <span class="nv">$2</span>
+    <span class="nv">$3</span> <span class="k">$(</span>LDFLAGS<span class="k">)</span> <span class="nv">$$</span>^ <span class="k">$(</span>LD_LIB_DIR<span class="k">)</span> <span class="k">$(</span>LD_LIBS<span class="k">)</span> <span class="k">$(</span>XLD_FLG<span class="k">)</span> -o <span class="nv">$$</span>@
+<span class="cp">endef</span>
+
+<span class="c"># Gen_libs(libs,CUR_OBJ,cc). This command-package is used to generate a dynamic lib or a static lib.</span>
+<span class="cp">define gen_libs</span>
+  ULT_LIBS +<span class="o">=</span> <span class="k">$(</span>PRG_LIB_DIR<span class="k">)</span>/<span class="nv">$1</span>
+  <span class="k">$(</span>PRG_LIB_DIR<span class="k">)</span>/<span class="nv">$1</span>: <span class="nv">$2</span>
+    <span class="nv">$3</span> <span class="k">$(if</span> <span class="k">$(</span>GEN_DYN_LIB<span class="k">)</span>,-shared <span class="nv">$$</span>^ <span class="k">$(</span>CXXFLAGS<span class="k">)</span> <span class="k">$(</span>LD_LIB_DIR<span class="k">)</span> <span class="k">$(</span>LD_LIBS<span class="k">)</span> <span class="k">$(</span>XLD_FLG<span class="k">)</span> -o <span class="nv">$$</span>@,<span class="nv">$$</span>@ <span class="nv">$$</span>^<span class="k">)</span>
+<span class="cp">endef</span>
+
+<span class="c"># Call gen_excbin to generate a excutale file.</span>
+<span class="k">$(</span><span class="nv">foreach</span> <span class="nv">bin</span>,<span class="k">$</span>(<span class="nv">EXCUTE_BIN</span><span class="k">)</span><span class="err">,</span><span class="k">$(</span><span class="nv">eval</span> <span class="k">$</span>(<span class="nv">call</span> <span class="nv">gen_excbin</span>,<span class="k">$</span>(<span class="nv">bin</span><span class="k">)</span><span class="err">,</span><span class="k">$(</span><span class="nv">CUR_OBJ</span><span class="k">)</span><span class="err">,</span><span class="k">$(</span><span class="nv">CXX</span><span class="k">)</span><span class="err">)))</span>
+
+<span class="c"># Call gen_libs to generate a dynamic lib.</span>
+<span class="k">$(</span><span class="nv">foreach</span> <span class="nv">lib</span>,<span class="k">$</span>(<span class="nv">DYNAMIC_LIBS</span><span class="k">)</span><span class="err">,</span><span class="k">$(</span><span class="nv">eval</span> <span class="k">$</span>(<span class="nv">call</span> <span class="nv">gen_libs</span>,<span class="k">$</span>(<span class="nv">lib</span><span class="k">)</span><span class="err">,</span><span class="k">$(</span><span class="nv">CUR_OBJ</span><span class="k">)</span><span class="err">,</span><span class="k">$(</span><span class="nv">CXX</span><span class="k">)</span><span class="err">)))</span>
+
+<span class="c"># Call gen_libs to generate a static lib.</span>
+<span class="k">$(</span><span class="nv">foreach</span> <span class="nv">lib</span>,<span class="k">$</span>(<span class="nv">STATIC_LIBS</span><span class="k">)</span><span class="err">,</span><span class="k">$(</span><span class="nv">eval</span> <span class="k">$</span>(<span class="nv">call</span> <span class="nv">gen_libs</span>,<span class="k">$</span>(<span class="nv">lib</span><span class="k">)</span><span class="err">,</span><span class="k">$(</span><span class="nv">CUR_OBJ</span><span class="k">)</span><span class="err">,</span><span class="k">$(</span><span class="nv">AR</span><span class="k">)</span><span class="err">)))</span>
+
+
+<span class="nf">all</span><span class="o">:</span> <span class="k">$(</span><span class="nv">ULT_BIN</span><span class="k">)</span> <span class="k">$(</span><span class="nv">ULT_LIBS</span><span class="k">)</span>
+
+
+<span class="nf">clean</span><span class="o">:</span> 
+    -<span class="k">$(</span>FIND<span class="k">)</span> <span class="k">$(</span>CURDIR<span class="k">)</span> -name <span class="s2">&quot;*.o&quot;</span> -o -name <span class="s2">&quot;*.d&quot;</span> <span class="p">|</span> <span class="k">$(</span>XARGS<span class="k">)</span> <span class="k">$(</span>RM<span class="k">)</span>
+    -<span class="k">$(</span>RM<span class="k">)</span> <span class="k">$(</span>ULT_BIN<span class="k">)</span>
+    -<span class="k">$(</span>RM<span class="k">)</span> <span class="k">$(</span>ULT_LIBS<span class="k">)</span>
+
+
+<span class="nf">help</span><span class="o">:</span>
+    @echo <span class="nv">PROJECT_DIR</span><span class="o">=[</span><span class="k">$(</span>PROJECT_DIR<span class="k">)</span><span class="o">]</span>
+    @echo <span class="nv">CURDIR</span><span class="o">=[</span><span class="k">$(</span>CURDIR<span class="k">)</span><span class="o">]</span>
+    @echo <span class="nv">PRG_BIN_DIR</span><span class="o">=[</span><span class="k">$(</span>PRG_BIN_DIR<span class="k">)</span><span class="o">]</span>
+    @echo <span class="nv">PRG_LIB_DIR</span><span class="o">=[</span><span class="k">$(</span>PRG_LIB_DIR<span class="k">)</span><span class="o">]</span>
+    @echo <span class="nv">PRG_INC_DIR</span><span class="o">=[</span><span class="k">$(</span>PRG_INC_DIR<span class="k">)</span><span class="o">]</span>
+    @echo <span class="nv">CUR_SRC_DIR</span><span class="o">=[</span><span class="k">$(</span>CUR_SRC_DIR<span class="k">)</span><span class="o">]</span>
+    @echo <span class="nv">CUR_SRC</span><span class="o">=[</span><span class="k">$(</span>CUR_SRC<span class="k">)</span><span class="o">]</span>
+    @echo <span class="nv">CUR_C</span><span class="o">=[</span><span class="k">$(</span>CUR_C<span class="k">)</span><span class="o">]</span>
+    @echo <span class="nv">CUR_CPP</span><span class="o">=[</span><span class="k">$(</span>CUR_CPP<span class="k">)</span><span class="o">]</span>
+    @echo <span class="nv">CUR_OBJ</span><span class="o">=[</span><span class="k">$(</span>CUR_OBJ<span class="k">)</span><span class="o">]</span>
+    @echo <span class="nv">CUR_DEP</span><span class="o">=[</span><span class="k">$(</span>CUR_DEP<span class="k">)</span><span class="o">]</span>
+    @echo <span class="nv">STD_OPT</span><span class="o">=[</span><span class="k">$(</span>STD_OPT<span class="k">)</span><span class="o">]</span>
+    @echo <span class="nv">CFLAGS</span><span class="o">=[</span><span class="k">$(</span>CFLAGS<span class="k">)</span><span class="o">]</span>
+    @echo <span class="nv">STATIC_LIBS</span><span class="o">=[</span><span class="k">$(</span>STATIC_LIBS<span class="k">)</span><span class="o">]</span>
+    @echo <span class="nv">DYNAMIC_LIBS</span><span class="o">=[</span><span class="k">$(</span>DYNAMIC_LIBS<span class="k">)</span><span class="o">]</span>
+</pre></div>
+</td></tr></table>
+		    	<p class="tags">
+					<div class="post-share">
+						<ul class="post-shareul clearfix">
+							<li class="post-shareli">
+								<a href="http://note.youdao.com/memory/?url=https://typecodes.com/cseries/cppgeneralmakefile.html&title=Linux C/C++工程中可生成ELF、动/静态库文件的通用Makefile" class="post-sharea ydshare" target="_blank" rel="nofollow">有道云笔记</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://v.t.sina.com.cn/share/share.php?url=https://typecodes.com/cseries/cppgeneralmakefile.html&title=Linux C/C++工程中可生成ELF、动/静态库文件的通用Makefile&source=https://typecodes.com" class="post-sharea wbshare" target="_blank" rel="nofollow">新浪微博</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://v.t.qq.com/share/share.php?title=Linux C/C++工程中可生成ELF、动/静态库文件的通用Makefile&url=https://typecodes.com/cseries/cppgeneralmakefile.html&site=https://typecodes.com" class="post-sharea twbshare" target="_blank" rel="nofollow">腾讯微博</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=https://typecodes.com/cseries/cppgeneralmakefile.html&title=Linux C/C++工程中可生成ELF、动/静态库文件的通用Makefile&content='utf-8'" class="post-sharea qzoneshare" target="_blank" rel="nofollow">QZone</a>
+							</li>
+						</ul>
+					</div>
+					<div>
+						Tags: <a href="https://typecodes.com/tag/makefile.html">makefile</a>					</div>
+				</p>
+			</article>
+			
+			<div id="comments">
+				<h4 class="num">Comments &raquo;</h4>
+		    	<div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript></div>
+		    </div>
+		</div>
+		<!--3. right sider begin-->
+<div class="col-md-3" id="blog-secondary" role="complementary">
+	<section class="widget">
+		<ul class="widget-list">
+			<form id="search" method="get" action="https://typecodes.com/search.html">
+				<input type="text" name="q" id="s" size="20" x-webkit-speech="" x-webkit-grammar="builtin:search" onwebkitspeechchange="this.value = this.value.replace(this.defaultValue, '')" value="Google...." onfocus="this.value = (this.value == this.defaultValue) ? '' : this.value" onblur="this.value = (this.value == '') ? this.defaultValue : this.value">
+			</form>
+		</ul>
+	</section>
+	<section class="widget">
+		<h3 class="widget-title">Categories</h3>
+		<ul class="widget-list">
+		      <li class="current">
+		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (26)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/csharp/index.html">Csharp</a> (6)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/database/index.html">Database</a> (11)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/java/index.html">Java</a> (1)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/linux/index.html">Linux</a> (16)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/mix/index.html">Mix</a> (53)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/web/index.html">Web</a> (88)
+		      </li>
+		</ul>
+	</section>
+	<section class="widget">
+		<h3 class="widget-title">Recent Posts</h3>
+		<ul class="widget-list">
+			<li class="post">
+				<a href="https://typecodes.com/mix/sucesstypechotopelican.html">成功将博客从Typecho迁移到Pelican</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/mix/begintypechotopelican.html">准备将博客从Typecho迁移到Pelican</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/tcpconnectiontimedout.html">Linux TCP连接Connection Refused和Connection timed out的问题</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/mysqlerrornospace.html">博客MySQL服务惊魂记：Linux磁盘空间不足(Core Dump文件引爆)</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/mix/synweibophpmarkdownimgurl.html">升级博客文章同步微博的插件：PHP正则提取Markdown的图片地址</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/cppgeneralmakefile.html">Linux C/C++工程中可生成ELF、动/静态库文件的通用Makefile</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/libraryundefinedref.html">解决make编译链接动态库错误：libxx.so: undefined reference to xx</a>
+			</li>
+		</ul>
+	</section>
+	<section class="widget widget-feed">
+		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
+	</section>
+</div>
+				</div>
+			</div>
+		</div>
+		<!--4. bottom begin-->
+		<footer id="te-site-footer"><div class="container">
+	<div class="row" role="contentinfo">
+		<section class="col-md-2 col-md-offset-1">
+			<h3>Links</h3>
+			<ul><li><a href="http://diaosbook.com/" title="">diaosbook</a></li></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul>
+				<li><a href="https://typecodes.com/links.html">More..</a></li>
+			</ul>
+		</section>
+		<section class="col-md-2">
+			<h3>Following</h3>
+			<ul>
+				<li><a href="https://github.com/vfhky" class="following github" target="_blank" rel="external nofollow">GitHub</a></li>
+				<li><a href="http://weibo.com/typecodes" class="following weibo" target="_blank" rel="external nofollow">Weibo</a></li>
+				<li><a href="http://vfhky.sinaapp.com/" class="following sae" target="_blank" rel="external nofollow">SAE</a></li>
+				<li><a href="http://www.dwz.cn/mYiwa" class="following qqgroup" target="_blank" rel="external nofollow">Group</a></li>
+			</ul>
+		</section>
+		<div class="col-md-12 copyright">
+			<a href="#top"><i class="i-logo-s">TOP</i></a>
+			<p>
+				&copy; 2012-<script language="JavaScript">var date = new Date(); document.write(date.getFullYear());</script>							<a href="https://typecodes.com">TypeCodes</a>. All Rights Reserved<br>Powered by <a href="http://getpelican.com" rel="external" target="_blank">Pelican</a>. <a href="http://www.miitbeian.gov.cn/" rel="external nofollow" target="_blank">粤ICP备14050695号</a>
+			</p>
+		</div>
+	</div>
+</div>
+</footer>
+<script type="text/javascript">
+	var disqus_shortname = 'typecodes';
+	var disqus_identifier = '/cseries/cppgeneralmakefile.html';
+	var disqus_url = 'https://typecodes.com/cseries/cppgeneralmakefile.html';
+	var disqus_title = 'Linux C/C++工程中可生成ELF、动/静态库文件的通用Makefile';
+	(function() {
+		var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+		dsq.src = "//" + disqus_shortname + '.disqus.com/embed.js';
+		(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	 })();
+</script>
+	</body>
+</html>

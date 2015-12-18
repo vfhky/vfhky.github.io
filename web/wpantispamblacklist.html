@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="zh-CN" class="no-js">
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<title>wordpress关键词黑名单：反垃圾评论再升级（非插件） &mdash; TypeCodes</title>
+		<meta name="author" content="vfhky">
+  		<link href="https://typecodes.com/atom.xml" type="application/atom+xml" rel="alternate" title="TypeCodes Atom Feed" />
+	  	<link href="https://typecodes.com/feed.xml" type="application/rss+xml" rel="alternate" title="TypeCodes RSS Feed" />
+		<meta name="HandheldFriendly" content="True">
+		<meta name="MobileOptimized" content="320">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="renderer" content="webkit">
+		<link rel="stylesheet" href="https://dn-vfhky.qbox.me/libs/css/pelican-vfhky.css">
+		<script>
+			var _hmt = _hmt || [];
+			(function() {
+			  var hm = document.createElement("script");
+			  hm.src = "//hm.baidu.com/hm.js?c15c4ab8e91ba9ac3d5a12293cc93359";
+			  var s = document.getElementsByTagName("script")[0]; 
+			  s.parentNode.insertBefore(hm, s);
+			})();
+		</script>
+	</head>
+	<body style>
+		<!--1. header navigation begin-->
+		<header role="banner" id="te-site-header">
+			<div class="container">
+				<a href="https://typecodes.com" class="te-site-logo" role="logo" target="_self"> TypeCodes</a>
+				<ul class="nav nav-pills" id="te-site-nav" role="navigation">
+					<li><a href="https://typecodes.com">Home</a></li><li><a href="https://typecodes.com/archives.html" title="Archives">Archives</a></li><li><a href="https://typecodes.com/about.html" title="About">About</a></li></ul>
+			</div>
+		</header>
+		<div class="te-headline">
+			<div class="container">
+				<h2 class="te-headline-title"> <a href="https://typecodes.com">TypeCodes</a></h2>
+			</div>
+		</div>
+		<div class="container">
+			<div class="row">
+		<!--2. left sider begin-->
+		<div class="col-md-9" id="blog-main" role="main">
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/web/wpantispamblacklist.html">wordpress关键词黑名单：反垃圾评论再升级（非插件）</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2013-09-22 22:55 | 分类：<a href="https://typecodes.com/web/index.html">web</a></li>
+</ul>
+<div class="post-content fmt">
+	<h5>1 老话题：wordpress垃圾评论</h5>
+<p>wordpress垃圾评论由来已久，在各位博主的有力反抗下，垃圾评论完成了一次又一次的升级。对wp新手来说，肯定不会想到自己的博客会被spam盯上。甚至还可能真认为是某老外关顾了自己的文章（博主曾经就二逼的用英文回复过）。等垃圾评论越来越多时，才仿然大悟。对于一些用wp时间也比较长的博主来说，一些与文章话题无关的评论也是很烦人。为了增强wordpress免疫力，尽量从根源上解决wordpress博客中的垃圾评论，博主也不能闲着，下面就贡献小小的一份力量。</p>
+
+
+<h5>2 博主的反wordpress垃圾评论历程</h5>
+<p>1、博客刚建立时，用的是wordpress垃圾评论屏蔽神器——Akismet，确实效果很好；</p>
+<p>2、不过后来由于博主对插件不太看好，所以就改用了Willin Kan写的非插件的方法，效果也是挺不错的，就是代码量稍微有点大。具体大家可以参考一下：<a href="https://typecodes.com/web/antiwpspamplugorno.html" title="屏蔽wordpress垃圾评论的方法（插件和非插件）">《屏蔽wordpress垃圾评论的方法（插件和非插件）》</a>。</p>
+<p>3、之后没用Willin Kan的小墻工具了，直接使用验证码，发觉挺管用的。详见文章<a href="https://typecodes.com/web/againwpmathverifycode.html" title="博客优化第二波(三)：wordpress评论添加算术验证码">《博客优化第二波(三)：wordpress评论添加算术验证码》</a>。</p>
+<p>4、启用这个新主题后，集成 “访问安全提示” 和 “网站安全认证” 的功能，效果也不错。详见文章<a href="https://typecodes.com/mix/commentlinksitecertification.html" title="关于博客评论的链接审查、网站认证的声明">《关于博客评论的链接审查、网站认证的声明》</a>。</p>
+<p>5、最近设置无Gravatar头像的用户无法提交评论，大家反馈意见不一。详见文章：<a href="https://typecodes.com/web/wplimitnogravatar.html" title="wordpress中限制没有Gravatar头像的访客提交评论">《wordpress中限制没有Gravatar头像的访客提交评论》</a>。</p>
+<p>6、昨天再次升级防护，新增用户昵称、评论内容提交时的黑名单中的关键词验证。也是本篇文章的主题，下面是具体的实现代码。</p>
+<h5>3 修改主题comments-ajax.php文件</h5>
+<p>在主题目录下的comments-ajax.php文件中，大概60行左右的位置（刚取得用户提交的评论表单中的$_POST['author']等字段）。然后在该文件中加上下面的代码：</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15</pre></div></td><td class="code"><div class="highlight"><pre><span class="x">/*</span>
+<span class="x"> * @Author：  vfhky 2013年09月21日22:13</span>
+<span class="x"> * @Variable string $word:  黑名单中的关键词，用户可自行按规律进行增加或减少</span>
+<span class="x"> * @Variable string $comment_author:  用户提交的$_POST[&#39;author&#39;]字段值，表示昵称</span>
+<span class="x"> * @Variable string $comment_content:  用户提交的$_POST[&#39;comment&#39;]字段值，表示评论内容</span>
+<span class="x"> **/</span>
+<span class="x">$words = &quot;com,cn,info,net,www,http,cc,host,代理,移动,电,国,港,器,服,医,肥,药,农,信,贷,日,盈,网,票,域,销,黄,司,企,机,租,人,钱,设,购,播&quot;;</span>
+<span class="x">$word = explode(&#39;,&#39;, $words);</span>
+<span class="x">$num = count($word);</span>
+<span class="x">for($i=0;$i&lt; $num ;$i++){</span>
+<span class="x">   if (strpos($comment_author,$word[$i],0) || strpos($comment_content,$word[$i],0)){</span>
+<span class="x">       err( __(&#39;广告必删，多谢理解!&#39;) );</span>
+<span class="x">       break;</span>
+<span class="x">   } </span>
+<span class="x">}</span>
+</pre></div>
+</td></tr></table>
+
+<h5>4 后记</h5>
+<p>通过上面这段简单代码，我们就实现了提交对评论输入的用户昵称、评论内容进行了黑名单中的关键词的校验。一旦匹配到了上面的任何一个词语，例如出现了www，那么就提示用户“广告必删，多谢理解!”，效果如下图所示。这样算是又给博客上了一道保险，增强了wordpress反垃圾评论的免疫力，而且还是非插件的方法实现的哟！</p>
+<p><img alt="wordpress关键词黑名单：反垃圾评论再升级（非插件）" src="https://dn-vfhky.qbox.me/2013/09/badwords_comment.png" title="wordpress关键词黑名单：反垃圾评论再升级（非插件）" /></p>
+<h5>5 BUG修复：Update 2013.09.24 20:20</h5>
+<p>经过 @坏坏博客 童鞋的邪恶回复测试，发现上面代码有未考虑周全之处。正在修改中，具体见下一篇文章<a href="https://typecodes.com/web/wpantispamstrpoerror.html" title="再议wordpress反垃圾评论：都是strpos函数惹的祸">《再议wordpress反垃圾评论：都是strpos函数惹的祸》</a>。最后向 @坏坏博客 童鞋致敬！</p>
+		    	<p class="tags">
+					<div class="post-share">
+						<ul class="post-shareul clearfix">
+							<li class="post-shareli">
+								<a href="http://note.youdao.com/memory/?url=https://typecodes.com/web/wpantispamblacklist.html&title=wordpress关键词黑名单：反垃圾评论再升级（非插件）" class="post-sharea ydshare" target="_blank" rel="nofollow">有道云笔记</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://v.t.sina.com.cn/share/share.php?url=https://typecodes.com/web/wpantispamblacklist.html&title=wordpress关键词黑名单：反垃圾评论再升级（非插件）&source=https://typecodes.com" class="post-sharea wbshare" target="_blank" rel="nofollow">新浪微博</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://v.t.qq.com/share/share.php?title=wordpress关键词黑名单：反垃圾评论再升级（非插件）&url=https://typecodes.com/web/wpantispamblacklist.html&site=https://typecodes.com" class="post-sharea twbshare" target="_blank" rel="nofollow">腾讯微博</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=https://typecodes.com/web/wpantispamblacklist.html&title=wordpress关键词黑名单：反垃圾评论再升级（非插件）&content='utf-8'" class="post-sharea qzoneshare" target="_blank" rel="nofollow">QZone</a>
+							</li>
+						</ul>
+					</div>
+					<div>
+						Tags: <a href="https://typecodes.com/tag/wordpressla-ji-ping-lun.html">wordpress垃圾评论</a>					</div>
+				</p>
+			</article>
+			
+			<div id="comments">
+				<h4 class="num">Comments &raquo;</h4>
+		    	<div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript></div>
+		    </div>
+		</div>
+		<!--3. right sider begin-->
+<div class="col-md-3" id="blog-secondary" role="complementary">
+	<section class="widget">
+		<ul class="widget-list">
+			<form id="search" method="get" action="https://typecodes.com/search.html">
+				<input type="text" name="q" id="s" size="20" x-webkit-speech="" x-webkit-grammar="builtin:search" onwebkitspeechchange="this.value = this.value.replace(this.defaultValue, '')" value="Google...." onfocus="this.value = (this.value == this.defaultValue) ? '' : this.value" onblur="this.value = (this.value == '') ? this.defaultValue : this.value">
+			</form>
+		</ul>
+	</section>
+	<section class="widget">
+		<h3 class="widget-title">Categories</h3>
+		<ul class="widget-list">
+		      <li class="current">
+		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (26)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/csharp/index.html">Csharp</a> (6)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/database/index.html">Database</a> (11)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/java/index.html">Java</a> (1)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/linux/index.html">Linux</a> (16)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/mix/index.html">Mix</a> (53)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/web/index.html">Web</a> (88)
+		      </li>
+		</ul>
+	</section>
+	<section class="widget">
+		<h3 class="widget-title">Recent Posts</h3>
+		<ul class="widget-list">
+			<li class="post">
+				<a href="https://typecodes.com/mix/sucesstypechotopelican.html">成功将博客从Typecho迁移到Pelican</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/mix/begintypechotopelican.html">准备将博客从Typecho迁移到Pelican</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/tcpconnectiontimedout.html">Linux TCP连接Connection Refused和Connection timed out的问题</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/mysqlerrornospace.html">博客MySQL服务惊魂记：Linux磁盘空间不足(Core Dump文件引爆)</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/mix/synweibophpmarkdownimgurl.html">升级博客文章同步微博的插件：PHP正则提取Markdown的图片地址</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/cppgeneralmakefile.html">Linux C/C++工程中可生成ELF、动/静态库文件的通用Makefile</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/libraryundefinedref.html">解决make编译链接动态库错误：libxx.so: undefined reference to xx</a>
+			</li>
+		</ul>
+	</section>
+	<section class="widget widget-feed">
+		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
+	</section>
+</div>
+				</div>
+			</div>
+		</div>
+		<!--4. bottom begin-->
+		<footer id="te-site-footer"><div class="container">
+	<div class="row" role="contentinfo">
+		<section class="col-md-2 col-md-offset-1">
+			<h3>Links</h3>
+			<ul><li><a href="http://diaosbook.com/" title="">diaosbook</a></li></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul>
+				<li><a href="https://typecodes.com/links.html">More..</a></li>
+			</ul>
+		</section>
+		<section class="col-md-2">
+			<h3>Following</h3>
+			<ul>
+				<li><a href="https://github.com/vfhky" class="following github" target="_blank" rel="external nofollow">GitHub</a></li>
+				<li><a href="http://weibo.com/typecodes" class="following weibo" target="_blank" rel="external nofollow">Weibo</a></li>
+				<li><a href="http://vfhky.sinaapp.com/" class="following sae" target="_blank" rel="external nofollow">SAE</a></li>
+				<li><a href="http://www.dwz.cn/mYiwa" class="following qqgroup" target="_blank" rel="external nofollow">Group</a></li>
+			</ul>
+		</section>
+		<div class="col-md-12 copyright">
+			<a href="#top"><i class="i-logo-s">TOP</i></a>
+			<p>
+				&copy; 2012-<script language="JavaScript">var date = new Date(); document.write(date.getFullYear());</script>							<a href="https://typecodes.com">TypeCodes</a>. All Rights Reserved<br>Powered by <a href="http://getpelican.com" rel="external" target="_blank">Pelican</a>. <a href="http://www.miitbeian.gov.cn/" rel="external nofollow" target="_blank">粤ICP备14050695号</a>
+			</p>
+		</div>
+	</div>
+</div>
+</footer>
+<script type="text/javascript">
+	var disqus_shortname = 'typecodes';
+	var disqus_identifier = '/web/wpantispamblacklist.html';
+	var disqus_url = 'https://typecodes.com/web/wpantispamblacklist.html';
+	var disqus_title = 'wordpress关键词黑名单：反垃圾评论再升级（非插件）';
+	(function() {
+		var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+		dsq.src = "//" + disqus_shortname + '.disqus.com/embed.js';
+		(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	 })();
+</script>
+	</body>
+</html>

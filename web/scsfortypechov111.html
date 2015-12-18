@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="zh-CN" class="no-js">
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<title>更新新浪云存储(SCS) for Typecho 插件版本V1.1.0 &mdash; TypeCodes</title>
+		<meta name="author" content="vfhky">
+  		<link href="https://typecodes.com/atom.xml" type="application/atom+xml" rel="alternate" title="TypeCodes Atom Feed" />
+	  	<link href="https://typecodes.com/feed.xml" type="application/rss+xml" rel="alternate" title="TypeCodes RSS Feed" />
+		<meta name="HandheldFriendly" content="True">
+		<meta name="MobileOptimized" content="320">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="renderer" content="webkit">
+		<link rel="stylesheet" href="https://dn-vfhky.qbox.me/libs/css/pelican-vfhky.css">
+		<script>
+			var _hmt = _hmt || [];
+			(function() {
+			  var hm = document.createElement("script");
+			  hm.src = "//hm.baidu.com/hm.js?c15c4ab8e91ba9ac3d5a12293cc93359";
+			  var s = document.getElementsByTagName("script")[0]; 
+			  s.parentNode.insertBefore(hm, s);
+			})();
+		</script>
+	</head>
+	<body style>
+		<!--1. header navigation begin-->
+		<header role="banner" id="te-site-header">
+			<div class="container">
+				<a href="https://typecodes.com" class="te-site-logo" role="logo" target="_self"> TypeCodes</a>
+				<ul class="nav nav-pills" id="te-site-nav" role="navigation">
+					<li><a href="https://typecodes.com">Home</a></li><li><a href="https://typecodes.com/archives.html" title="Archives">Archives</a></li><li><a href="https://typecodes.com/about.html" title="About">About</a></li></ul>
+			</div>
+		</header>
+		<div class="te-headline">
+			<div class="container">
+				<h2 class="te-headline-title"> <a href="https://typecodes.com">TypeCodes</a></h2>
+			</div>
+		</div>
+		<div class="container">
+			<div class="row">
+		<!--2. left sider begin-->
+		<div class="col-md-9" id="blog-main" role="main">
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/web/scsfortypechov111.html">更新新浪云存储(SCS) for Typecho 插件版本V1.1.0</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2014-09-20 11:34 | 分类：<a href="https://typecodes.com/web/index.html">web</a></li>
+</ul>
+<div class="post-content fmt">
+	<h5>1 更新说明</h5>
+<p>感谢 @奇趣铺 的使用反馈，插件版本更新至最新的V1.1.1。更新内容如下：</p>
+<div class="highlight"><pre>1、更新官方SDK文件；
+2、增加SCS存储路径参数配置，用户能更自由定义SCS存储路径；
+3、取消SCS附件前缀用Unix time stamp格式命名，保持原附件名称不变。
+</pre></div>
+
+
+<h5>2 版本升级方法</h5>
+<p>下面对于 Linux主机 和 Windows主机 的升级方法同样适用于之前没有安装该插件的童鞋，步骤完全一样。</p>
+
+
+<h6>2.1 Linux主机（推荐）</h6>
+<div class="highlight"><pre>###### 进入插件目录，然后获取github上最新的插件版本
+[root@typecodes plugins]# wget -c https://github.com/vfhky/SCS/archive/master.zip
+###### 将下载的master.zip解压得到SCS-master文件夹
+[root@typecodes plugins]# unzip master.zip
+###### 删除之前的SCS版本，然后重命名SCS-master文件夹为SCS
+[root@typecodes plugins]# rm -rf SCS;mv SCS-master SCS
+###### 版本更新完毕，进入typecho后台启用即可
+</pre></div>
+
+
+<h6>2.2 Windows主机</h6>
+<p>对于Windows主机，可以上github上下载插件最新版本，或者下载目前最新的版本
+<a href="https://github.com/vfhky/SCS/archive/v1.1.1.tar.gz" title="github版本V1.1.1下载">SCS for Typecho V1.1.1</a>，然后ftp上传到服务器，<code>重命名文件夹为SCS</code> 即可。</p>
+<h5>3 插件使用教程</h5>
+<p>插件的基本设置和之前版本V1.0.4、V1.1.0一样。这里只对SCS存储路径参数配置和保持SCS附件名称这两个元素进行说明。</p>
+<h6>3.1 SCS存储路径参数配置</h6>
+<p>之前V1.1.0版本在日期方面是固定的 <code>年份/月份/附件上传的时间戳.后缀</code> 这种样式，根据@奇趣铺的反馈，希望增加 <code>年份/原附件名.后缀</code> 的形式。于是在插件中新增三个配置参数：{year}代表年份、{month}代表月份、{day}代表天数，用户可任意选择使用。因此，对于单纯的 <code>年份</code> 这种形式，只需要在“自定义SCS路径”这项中输入 <code>{year}</code> 就行了。</p>
+<p>同时，和之前的版本一样，如果“自定义SCS路径”这一项不填的话，那么SCS附件的路径依然是默认的 <code>年份/月份</code> 形式。最后，对于混合样式，例如 <code>{year}/a目录/{month}/b目录/{day}</code> 等等，插件也都支持。</p>
+<p><img alt="自定义SCS路径参数配置" src="https://dn-vfhky.qbox.me/2014/09/scs111set.png" title="自定义SCS路径参数配置" /></p>
+<h6>3.2 取消SCS附件的Unix time stamp命名方式，以原附件名称替代</h6>
+<p>考虑到和typecho上传附件的命名方式一致，之前插件所有版本都将上传至SCS的附件以Unix time stamp的值作为名称保存的，例如上面这张图片的名称就是4218153884.png。为了利于附件的识别，现决定在附件上传时，保持其名称不变，例如将本地一张名为a.png的图片上传至SCS，那么SCS上的文件名也还是a.png，而不会类似于之前的4218153884.png。</p>
+<h5>4 反馈和建议</h5>
+<p>本版本V1.1.1已经在SAE和BAE平台测试通过，目前博客也正在使用。任何问题，大家可以在这里反馈和讨论下。</p>
+		    	<p class="tags">
+					<div class="post-share">
+						<ul class="post-shareul clearfix">
+							<li class="post-shareli">
+								<a href="http://note.youdao.com/memory/?url=https://typecodes.com/web/scsfortypechov111.html&title=更新新浪云存储(SCS) for Typecho 插件版本V1.1.0" class="post-sharea ydshare" target="_blank" rel="nofollow">有道云笔记</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://v.t.sina.com.cn/share/share.php?url=https://typecodes.com/web/scsfortypechov111.html&title=更新新浪云存储(SCS) for Typecho 插件版本V1.1.0&source=https://typecodes.com" class="post-sharea wbshare" target="_blank" rel="nofollow">新浪微博</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://v.t.qq.com/share/share.php?title=更新新浪云存储(SCS) for Typecho 插件版本V1.1.0&url=https://typecodes.com/web/scsfortypechov111.html&site=https://typecodes.com" class="post-sharea twbshare" target="_blank" rel="nofollow">腾讯微博</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=https://typecodes.com/web/scsfortypechov111.html&title=更新新浪云存储(SCS) for Typecho 插件版本V1.1.0&content='utf-8'" class="post-sharea qzoneshare" target="_blank" rel="nofollow">QZone</a>
+							</li>
+						</ul>
+					</div>
+					<div>
+						Tags: <a href="https://typecodes.com/tag/xin-lang-yun-cun-chu-scs.html">新浪云存储scs</a>,<a href="https://typecodes.com/tag/typechocha-jian.html">typecho插件</a>					</div>
+				</p>
+			</article>
+			
+			<div id="comments">
+				<h4 class="num">Comments &raquo;</h4>
+		    	<div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript></div>
+		    </div>
+		</div>
+		<!--3. right sider begin-->
+<div class="col-md-3" id="blog-secondary" role="complementary">
+	<section class="widget">
+		<ul class="widget-list">
+			<form id="search" method="get" action="https://typecodes.com/search.html">
+				<input type="text" name="q" id="s" size="20" x-webkit-speech="" x-webkit-grammar="builtin:search" onwebkitspeechchange="this.value = this.value.replace(this.defaultValue, '')" value="Google...." onfocus="this.value = (this.value == this.defaultValue) ? '' : this.value" onblur="this.value = (this.value == '') ? this.defaultValue : this.value">
+			</form>
+		</ul>
+	</section>
+	<section class="widget">
+		<h3 class="widget-title">Categories</h3>
+		<ul class="widget-list">
+		      <li class="current">
+		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (26)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/csharp/index.html">Csharp</a> (6)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/database/index.html">Database</a> (11)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/java/index.html">Java</a> (1)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/linux/index.html">Linux</a> (16)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/mix/index.html">Mix</a> (53)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/web/index.html">Web</a> (88)
+		      </li>
+		</ul>
+	</section>
+	<section class="widget">
+		<h3 class="widget-title">Recent Posts</h3>
+		<ul class="widget-list">
+			<li class="post">
+				<a href="https://typecodes.com/mix/sucesstypechotopelican.html">成功将博客从Typecho迁移到Pelican</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/mix/begintypechotopelican.html">准备将博客从Typecho迁移到Pelican</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/tcpconnectiontimedout.html">Linux TCP连接Connection Refused和Connection timed out的问题</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/mysqlerrornospace.html">博客MySQL服务惊魂记：Linux磁盘空间不足(Core Dump文件引爆)</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/mix/synweibophpmarkdownimgurl.html">升级博客文章同步微博的插件：PHP正则提取Markdown的图片地址</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/cppgeneralmakefile.html">Linux C/C++工程中可生成ELF、动/静态库文件的通用Makefile</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/libraryundefinedref.html">解决make编译链接动态库错误：libxx.so: undefined reference to xx</a>
+			</li>
+		</ul>
+	</section>
+	<section class="widget widget-feed">
+		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
+	</section>
+</div>
+				</div>
+			</div>
+		</div>
+		<!--4. bottom begin-->
+		<footer id="te-site-footer"><div class="container">
+	<div class="row" role="contentinfo">
+		<section class="col-md-2 col-md-offset-1">
+			<h3>Links</h3>
+			<ul><li><a href="http://diaosbook.com/" title="">diaosbook</a></li></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul>
+				<li><a href="https://typecodes.com/links.html">More..</a></li>
+			</ul>
+		</section>
+		<section class="col-md-2">
+			<h3>Following</h3>
+			<ul>
+				<li><a href="https://github.com/vfhky" class="following github" target="_blank" rel="external nofollow">GitHub</a></li>
+				<li><a href="http://weibo.com/typecodes" class="following weibo" target="_blank" rel="external nofollow">Weibo</a></li>
+				<li><a href="http://vfhky.sinaapp.com/" class="following sae" target="_blank" rel="external nofollow">SAE</a></li>
+				<li><a href="http://www.dwz.cn/mYiwa" class="following qqgroup" target="_blank" rel="external nofollow">Group</a></li>
+			</ul>
+		</section>
+		<div class="col-md-12 copyright">
+			<a href="#top"><i class="i-logo-s">TOP</i></a>
+			<p>
+				&copy; 2012-<script language="JavaScript">var date = new Date(); document.write(date.getFullYear());</script>							<a href="https://typecodes.com">TypeCodes</a>. All Rights Reserved<br>Powered by <a href="http://getpelican.com" rel="external" target="_blank">Pelican</a>. <a href="http://www.miitbeian.gov.cn/" rel="external nofollow" target="_blank">粤ICP备14050695号</a>
+			</p>
+		</div>
+	</div>
+</div>
+</footer>
+<script type="text/javascript">
+	var disqus_shortname = 'typecodes';
+	var disqus_identifier = '/web/scsfortypechov111.html';
+	var disqus_url = 'https://typecodes.com/web/scsfortypechov111.html';
+	var disqus_title = '更新新浪云存储(SCS) for Typecho 插件版本V1.1.0';
+	(function() {
+		var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+		dsq.src = "//" + disqus_shortname + '.disqus.com/embed.js';
+		(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	 })();
+</script>
+	</body>
+</html>

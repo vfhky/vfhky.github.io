@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="zh-CN" class="no-js">
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<title>博客MySQL服务惊魂记：Linux磁盘空间不足(Core Dump文件引爆) &mdash; TypeCodes</title>
+		<meta name="author" content="vfhky">
+  		<link href="https://typecodes.com/atom.xml" type="application/atom+xml" rel="alternate" title="TypeCodes Atom Feed" />
+	  	<link href="https://typecodes.com/feed.xml" type="application/rss+xml" rel="alternate" title="TypeCodes RSS Feed" />
+		<meta name="HandheldFriendly" content="True">
+		<meta name="MobileOptimized" content="320">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="renderer" content="webkit">
+		<link rel="stylesheet" href="https://dn-vfhky.qbox.me/libs/css/pelican-vfhky.css">
+		<script>
+			var _hmt = _hmt || [];
+			(function() {
+			  var hm = document.createElement("script");
+			  hm.src = "//hm.baidu.com/hm.js?c15c4ab8e91ba9ac3d5a12293cc93359";
+			  var s = document.getElementsByTagName("script")[0]; 
+			  s.parentNode.insertBefore(hm, s);
+			})();
+		</script>
+	</head>
+	<body style>
+		<!--1. header navigation begin-->
+		<header role="banner" id="te-site-header">
+			<div class="container">
+				<a href="https://typecodes.com" class="te-site-logo" role="logo" target="_self"> TypeCodes</a>
+				<ul class="nav nav-pills" id="te-site-nav" role="navigation">
+					<li><a href="https://typecodes.com">Home</a></li><li><a href="https://typecodes.com/archives.html" title="Archives">Archives</a></li><li><a href="https://typecodes.com/about.html" title="About">About</a></li></ul>
+			</div>
+		</header>
+		<div class="te-headline">
+			<div class="container">
+				<h2 class="te-headline-title"> <a href="https://typecodes.com">TypeCodes</a></h2>
+			</div>
+		</div>
+		<div class="container">
+			<div class="row">
+		<!--2. left sider begin-->
+		<div class="col-md-9" id="blog-main" role="main">
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/linux/mysqlerrornospace.html">博客MySQL服务惊魂记：Linux磁盘空间不足(Core Dump文件引爆)</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2015-08-17 22:33 | 分类：<a href="https://typecodes.com/linux/index.html">linux</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>昨天在更新完文章<a href="https://typecodes.com/mix/synweibophpmarkdownimgurl.html">《升级博客文章同步微博的插件：PHP正则提取Markdown的图片地址》</a>后，博客突然无法访问了。</p>
+<p><img alt="MySQL的错误日志" src="https://dn-vfhky.qbox.me/2015/08/mysql_space_error.png" title="MySQL的错误日志" /></p>
+
+
+<h4>1 查看Nginx的错误日志error.log</h4>
+<p>惊愕之余，换了多个浏览器打开博客首页无果(一直显示加载状态)，最终报内部服务器500的错误。立即查看Nginx服务的错误日志：</p>
+<div class="highlight"><pre>[root@typecodes nginx]# vim error.log 
+........
+[error] 19620#0: *1 FastCGI sent in stderr: &quot;PHP message: SQLSTATE[HY000] [2002] No such file or directory&quot; while reading response header from php-fpm.sock:&quot;, host: &quot;typecodes.com&quot;
+........
+</pre></div>
+
+
+<p><img alt="Nginx的错误日志" src="https://dn-vfhky.qbox.me/2015/08/php_cannot_mysql.png" title="Nginx的错误日志" /></p>
+<h4>2 查看MySQL的错误日志error.log</h4>
+<p>从上面的Nginx错误日志中可以看出，可能是MySQL的错误。于是查看MySQL的错误日志error.log，但是当时没注意到下面这条重要错误信息提示：<code>No space left on device</code>。</p>
+<div class="highlight"><pre><span class="err">####</span> <span class="nx">查看MySQL的错误日志error</span><span class="p">.</span><span class="nx">log</span>
+<span class="cp">[</span><span class="nx">root</span><span class="p">@</span><span class="nx">typecodes</span> <span class="nx">mysql</span><span class="cp">]</span><span class="err">#</span> <span class="nx">ls</span>
+<span class="nx">error</span><span class="p">.</span><span class="nx">log</span>  <span class="nx">mysql</span><span class="p">.</span><span class="nx">pid</span>
+<span class="cp">[</span><span class="nx">root</span><span class="p">@</span><span class="nx">typecodes</span> <span class="nx">mysql</span><span class="cp">]</span><span class="err">#</span> <span class="nx">vim</span> <span class="nx">error</span><span class="p">.</span><span class="nx">log</span> 
+<span class="cp">[</span><span class="mi">02</span><span class="p">:</span><span class="mi">47</span><span class="p">:</span><span class="mi">34</span><span class="cp">]</span> <span class="cp">[</span><span class="mi">20150816</span><span class="nx">_02</span><span class="p">:</span><span class="mi">47</span><span class="p">:</span><span class="mi">34</span><span class="cp">]</span> <span class="mi">103</span> <span class="mi">2015</span><span class="o">-</span><span class="mi">08</span><span class="o">-</span><span class="mi">15</span><span class="nx">T18</span><span class="o">:</span><span class="mi">47</span><span class="o">:</span><span class="mf">11.843790</span><span class="nx">Z</span> <span class="mi">0</span> <span class="cp">[</span><span class="nx">ERROR</span><span class="cp">]</span> <span class="nx">InnoDB</span><span class="o">:</span> <span class="nb">Error</span> <span class="nx">number</span> <span class="mi">28</span> <span class="nx">means</span> <span class="s1">&#39;No space left on device&#39;</span><span class="p">.</span>
+<span class="cp">[</span><span class="mi">02</span><span class="p">:</span><span class="mi">47</span><span class="p">:</span><span class="mi">34</span><span class="cp">]</span> <span class="cp">[</span><span class="mi">20150816</span><span class="nx">_02</span><span class="p">:</span><span class="mi">47</span><span class="p">:</span><span class="mi">34</span><span class="cp">]</span>     <span class="nx">es</span><span class="p">.</span><span class="nx">html</span>
+<span class="cp">[</span><span class="mi">02</span><span class="p">:</span><span class="mi">47</span><span class="p">:</span><span class="mi">34</span><span class="cp">]</span> <span class="cp">[</span><span class="mi">20150816</span><span class="nx">_02</span><span class="p">:</span><span class="mi">47</span><span class="p">:</span><span class="mi">34</span><span class="cp">]</span> <span class="mi">105</span> <span class="mi">2015</span><span class="o">-</span><span class="mi">08</span><span class="o">-</span><span class="mi">15</span><span class="nx">T18</span><span class="o">:</span><span class="mi">47</span><span class="o">:</span><span class="mf">11.843805</span><span class="nx">Z</span> <span class="mi">0</span> <span class="cp">[</span><span class="nx">Warning</span><span class="cp">]</span> <span class="nx">InnoDB</span><span class="o">:</span> <span class="nx">Retry</span> <span class="nx">attempts</span> <span class="k">for</span> <span class="nx">writing</span> <span class="nx">partial</span> <span class="nx">data</span> <span class="nx">failed</span><span class="p">.</span>
+<span class="cp">[</span><span class="mi">02</span><span class="p">:</span><span class="mi">47</span><span class="p">:</span><span class="mi">34</span><span class="cp">]</span> <span class="cp">[</span><span class="mi">20150816</span><span class="nx">_02</span><span class="p">:</span><span class="mi">47</span><span class="p">:</span><span class="mi">34</span><span class="cp">]</span> <span class="mi">106</span> <span class="mi">2015</span><span class="o">-</span><span class="mi">08</span><span class="o">-</span><span class="mi">15</span><span class="nx">T18</span><span class="o">:</span><span class="mi">47</span><span class="o">:</span><span class="mf">11.843812</span><span class="nx">Z</span> <span class="mi">0</span> <span class="cp">[</span><span class="nx">ERROR</span><span class="cp">]</span> <span class="nx">InnoDB</span><span class="o">:</span> <span class="nx">Write</span> <span class="nx">to</span> <span class="nx">file</span> <span class="p">.</span><span class="o">/</span><span class="nx">ibtmp1</span> <span class="nx">failed</span> <span class="nx">at</span> <span class="nx">offset</span> <span class="mi">11534336</span><span class="p">.</span> <span class="mi">1048576</span> <span class="nx">bytes</span> <span class="nx">should</span> <span class="nx">have</span> <span class="nx">been</span> <span class="nx">written</span><span class="p">,</span> <span class="nx">only</span> <span class="mi">1044480</span> <span class="nx">were</span> <span class="nx">written</span><span class="p">.</span>
+<span class="cp">[</span><span class="mi">02</span><span class="p">:</span><span class="mi">47</span><span class="p">:</span><span class="mi">34</span><span class="cp">]</span> <span class="cp">[</span><span class="mi">20150816</span><span class="nx">_02</span><span class="p">:</span><span class="mi">47</span><span class="p">:</span><span class="mi">34</span><span class="cp">]</span>     <span class="nx">Check</span> <span class="nx">that</span> <span class="nx">your</span> <span class="nx">OS</span> <span class="nx">and</span> <span class="nx">file</span> <span class="nx">system</span> <span class="nx">support</span> <span class="nx">files</span> <span class="nx">of</span>  <span class="k">this</span> <span class="nx">size</span><span class="p">.</span> <span class="nx">Check</span> <span class="nx">also</span> <span class="nx">that</span> <span class="nx">the</span> <span class="nx">disk</span> <span class="nx">is</span> <span class="nx">not</span> <span class="nx">full</span> <span class="nx">or</span> <span class="nx">a</span> <span class="nx">disk</span> <span class="nx">quota</span>  <span class="nx">exceeded</span><span class="p">.</span>
+<span class="cp">[</span><span class="mi">02</span><span class="p">:</span><span class="mi">47</span><span class="p">:</span><span class="mi">34</span><span class="cp">]</span> <span class="cp">[</span><span class="mi">20150816</span><span class="nx">_02</span><span class="p">:</span><span class="mi">47</span><span class="p">:</span><span class="mi">34</span><span class="cp">]</span> <span class="mi">107</span> <span class="mi">2015</span><span class="o">-</span><span class="mi">08</span><span class="o">-</span><span class="mi">15</span><span class="nx">T18</span><span class="o">:</span><span class="mi">47</span><span class="o">:</span><span class="mf">11.843821</span><span class="nx">Z</span> <span class="mi">0</span> <span class="cp">[</span><span class="nx">ERROR</span><span class="cp">]</span> <span class="nx">InnoDB</span><span class="o">:</span> <span class="nx">Could</span> <span class="nx">not</span> <span class="nx">set</span> <span class="nx">the</span> <span class="nx">file</span> <span class="nx">size</span> <span class="nx">of</span> <span class="s1">&#39;./ibtmp1&#39;</span><span class="p">.</span> <span class="nx">Probably</span> <span class="nx">out</span> <span class="nx">of</span> <span class="nx">disk</span> <span class="nx">space</span>
+<span class="cp">[</span><span class="mi">02</span><span class="p">:</span><span class="mi">47</span><span class="p">:</span><span class="mi">34</span><span class="cp">]</span> <span class="cp">[</span><span class="mi">20150816</span><span class="nx">_02</span><span class="p">:</span><span class="mi">47</span><span class="p">:</span><span class="mi">34</span><span class="cp">]</span> <span class="mi">108</span> <span class="mi">2015</span><span class="o">-</span><span class="mi">08</span><span class="o">-</span><span class="mi">15</span><span class="nx">T18</span><span class="o">:</span><span class="mi">47</span><span class="o">:</span><span class="mf">11.843828</span><span class="nx">Z</span> <span class="mi">0</span> <span class="cp">[</span><span class="nx">ERROR</span><span class="cp">]</span> <span class="nx">InnoDB</span><span class="o">:</span> <span class="nx">Unable</span> <span class="nx">to</span> <span class="nx">create</span> <span class="nx">the</span> <span class="nx">shared</span> <span class="nx">innodb_temporary</span>
+<span class="cp">[</span><span class="mi">02</span><span class="p">:</span><span class="mi">47</span><span class="p">:</span><span class="mi">34</span><span class="cp">]</span> <span class="cp">[</span><span class="mi">20150816</span><span class="nx">_02</span><span class="p">:</span><span class="mi">47</span><span class="p">:</span><span class="mi">34</span><span class="cp">]</span> <span class="mi">109</span> <span class="mi">2015</span><span class="o">-</span><span class="mi">08</span><span class="o">-</span><span class="mi">15</span><span class="nx">T18</span><span class="o">:</span><span class="mi">47</span><span class="o">:</span><span class="mf">11.947045</span><span class="nx">Z</span> <span class="mi">0</span> <span class="cp">[</span><span class="nx">Note</span><span class="cp">]</span> <span class="nx">InnoDB</span><span class="o">:</span> <span class="nx">Removed</span> <span class="nx">temporary</span> <span class="nx">tablespace</span> <span class="nx">data</span> <span class="nx">file</span><span class="o">:</span> <span class="s2">&quot;ibtmp1&quot;</span>
+<span class="cp">[</span><span class="mi">02</span><span class="p">:</span><span class="mi">47</span><span class="p">:</span><span class="mi">34</span><span class="cp">]</span> <span class="cp">[</span><span class="mi">20150816</span><span class="nx">_02</span><span class="p">:</span><span class="mi">47</span><span class="p">:</span><span class="mi">34</span><span class="cp">]</span> <span class="mi">110</span> <span class="mi">2015</span><span class="o">-</span><span class="mi">08</span><span class="o">-</span><span class="mi">15</span><span class="nx">T18</span><span class="o">:</span><span class="mi">47</span><span class="o">:</span><span class="mf">11.947081</span><span class="nx">Z</span> <span class="mi">0</span> <span class="cp">[</span><span class="nx">ERROR</span><span class="cp">]</span> <span class="nx">Plugin</span> <span class="s1">&#39;InnoDB&#39;</span> <span class="nx">init</span> <span class="kd">function</span> <span class="nx">returned</span> <span class="nx">error</span><span class="p">.</span>
+<span class="cp">[</span><span class="mi">02</span><span class="p">:</span><span class="mi">47</span><span class="p">:</span><span class="mi">34</span><span class="cp">]</span> <span class="cp">[</span><span class="mi">20150816</span><span class="nx">_02</span><span class="p">:</span><span class="mi">47</span><span class="p">:</span><span class="mi">34</span><span class="cp">]</span> <span class="mi">111</span> <span class="mi">2015</span><span class="o">-</span><span class="mi">08</span><span class="o">-</span><span class="mi">15</span><span class="nx">T18</span><span class="o">:</span><span class="mi">47</span><span class="o">:</span><span class="mf">11.947089</span><span class="nx">Z</span> <span class="mi">0</span> <span class="cp">[</span><span class="nx">ERROR</span><span class="cp">]</span> <span class="nx">Plugin</span> <span class="s1">&#39;InnoDB&#39;</span> <span class="nx">registration</span> <span class="nx">as</span> <span class="nx">a</span> <span class="nx">STORAGE</span> <span class="nx">ENGINE</span> <span class="nx">failed</span><span class="p">.</span>
+<span class="cp">[</span><span class="mi">02</span><span class="p">:</span><span class="mi">47</span><span class="p">:</span><span class="mi">34</span><span class="cp">]</span> <span class="cp">[</span><span class="mi">20150816</span><span class="nx">_02</span><span class="p">:</span><span class="mi">47</span><span class="p">:</span><span class="mi">34</span><span class="cp">]</span> <span class="mi">112</span> <span class="mi">2015</span><span class="o">-</span><span class="mi">08</span><span class="o">-</span><span class="mi">15</span><span class="nx">T18</span><span class="o">:</span><span class="mi">47</span><span class="o">:</span><span class="mf">11.947098</span><span class="nx">Z</span> <span class="mi">0</span> <span class="cp">[</span><span class="nx">ERROR</span><span class="cp">]</span> <span class="nx">Failed</span> <span class="nx">to</span> <span class="nx">initialize</span> <span class="nx">plugins</span><span class="p">.</span>
+<span class="cp">[</span><span class="mi">02</span><span class="p">:</span><span class="mi">47</span><span class="p">:</span><span class="mi">34</span><span class="cp">]</span> <span class="cp">[</span><span class="mi">20150816</span><span class="nx">_02</span><span class="p">:</span><span class="mi">47</span><span class="p">:</span><span class="mi">34</span><span class="cp">]</span> <span class="mi">113</span> <span class="mi">2015</span><span class="o">-</span><span class="mi">08</span><span class="o">-</span><span class="mi">15</span><span class="nx">T18</span><span class="o">:</span><span class="mi">47</span><span class="o">:</span><span class="mf">11.947143</span><span class="nx">Z</span> <span class="mi">0</span> <span class="cp">[</span><span class="nx">ERROR</span><span class="cp">]</span> <span class="nx">Aborting</span>
+<span class="cp">[</span><span class="mi">02</span><span class="p">:</span><span class="mi">47</span><span class="p">:</span><span class="mi">34</span><span class="cp">]</span> <span class="cp">[</span><span class="mi">20150816</span><span class="nx">_02</span><span class="p">:</span><span class="mi">47</span><span class="p">:</span><span class="mi">34</span><span class="cp">]</span> <span class="mi">114</span> 
+<span class="cp">[</span><span class="mi">02</span><span class="p">:</span><span class="mi">47</span><span class="p">:</span><span class="mi">34</span><span class="cp">]</span> <span class="cp">[</span><span class="mi">20150816</span><span class="nx">_02</span><span class="p">:</span><span class="mi">47</span><span class="p">:</span><span class="mi">34</span><span class="cp">]</span> <span class="mi">115</span> <span class="mi">2015</span><span class="o">-</span><span class="mi">08</span><span class="o">-</span><span class="mi">15</span><span class="nx">T18</span><span class="o">:</span><span class="mi">47</span><span class="o">:</span><span class="mf">11.947154</span><span class="nx">Z</span> <span class="mi">0</span> <span class="cp">[</span><span class="nx">Note</span><span class="cp">]</span> <span class="nx">Binlog</span> <span class="nx">end</span>
+<span class="cp">[</span><span class="mi">02</span><span class="p">:</span><span class="mi">47</span><span class="p">:</span><span class="mi">34</span><span class="cp">]</span> <span class="cp">[</span><span class="mi">20150816</span><span class="nx">_02</span><span class="p">:</span><span class="mi">47</span><span class="p">:</span><span class="mi">34</span><span class="cp">]</span> <span class="mi">116</span> <span class="mi">2015</span><span class="o">-</span><span class="mi">08</span><span class="o">-</span><span class="mi">15</span><span class="nx">T18</span><span class="o">:</span><span class="mi">47</span><span class="o">:</span><span class="mf">11.947598</span><span class="nx">Z</span> <span class="mi">0</span> <span class="cp">[</span><span class="nx">Note</span><span class="cp">]</span> <span class="o">/</span><span class="nx">usr</span><span class="o">/</span><span class="nx">local</span><span class="o">/</span><span class="nx">mysql</span><span class="o">/</span><span class="nx">bin</span><span class="o">/</span><span class="nx">mysqld</span><span class="o">:</span> <span class="nx">Shutdown</span> <span class="nx">complete</span>
+</pre></div>
+
+
+<p>由于本能反应（BZ的CentOS7.1服务器20G系统盘+20G数据盘），服务器不可能会出现磁盘空间不足的问题。结果再一次忽略了<code>No space left on device</code>提示。</p>
+<div class="highlight"><pre>[root@typecodes mysql]# vim error.log 
+........
+mysql/data
+etting it to a valid, non-empty path.
+rc-log) starting as process 22504 ...
+c builtins
+2015-08-15T18:49:59.921545Z 0 [Note] InnoDB: Uses event mutexes
+) is used for memory barrier
+2015-08-15T18:49:59.921559Z 0 [Note] InnoDB: Compressed tables use zlib 1.2.3
+2015-08-15T18:49:59.922232Z 0 [Note] InnoDB: Number of pools: 1
+2015-08-15T18:49:59.922362Z 0 [Note] InnoDB: Using CPU crc32 instructions
+ze = 128M, instances = 1, chunk size = 128M
+pool
+e distribution
+user: &#39;TypeCodes_test&#39; host: &#39;localhost&#39; (Got an error reading communication packets)
+user: &#39;TypeCodes_test&#39; host: &#39;localhost&#39; (Got an error reading communication packets)
+pecodes.log&#39; (errno: 28 - No space left on device)
+00 secs
+s)
+s)
+.......
+2015-08-16T14:36:25.977210Z 831 [ERROR] Retry in 60 secs. Message reprinted in
+</pre></div>
+
+
+<p>后面尝试使用一个MySQL测试用户登录数据库，还是报错：</p>
+<div class="highlight"><pre>[root@typecodes ~]# mysql -u TypeCodes_test -p
+[02:43:32] [20150816_02:43:32] Enter password: 
+[02:43:32] [20150816_02:43:32] ERROR 2002 (HY000): Can&#39;t connect to local MySQL server through socket &#39;/var/run/mysql/mysql.sock&#39; (2)
+</pre></div>
+
+
+<p>找不到方法，只能先重启一下MySQL服务，结果一直报<code>The server quit without updating PID file</code>的错误。又一次查看日志，最终确认从问题<code>No space left on device</code>入手。</p>
+<h4>3 查看Linux磁盘空间信息</h4>
+<p>根据上面MySQL的<code>No space left on device</code>提示，立马使用<code>df -hl</code>命令查看当前CentOS7.1服务器的磁盘空间信息。结果很明显，挂载在<code>/dev/xvdb2</code>数据盘下面的分区<code>/mydata</code>只剩的<code>12M</code>的空间了！而mysql得数据文件正好存放在mydata分区中，悲剧！</p>
+<p><img alt="CentOS7.1服务器上查看磁盘空间" src="https://dn-vfhky.qbox.me/2015/08/centos_space.png" title="CentOS7.1服务器上查看磁盘空间]" /></p>
+<p>接着进入到<code>/mydata</code>分区，使用命令<code>du -sh</code>查看当前目录下各个子目录所占用的空间大小。结果太出乎意料了，竟然是存放Core Dump文件的corefile目录占用了16G的空间！</p>
+<p><img alt="Core Dump文件占用空间过大" src="https://dn-vfhky.qbox.me/2015/08/corefile_too_large.png" title="Core Dump文件占用空间过大" /></p>
+<p>这才想起在<a href="https://typecodes.com/linux/centoscoredumpcfgshell.html" title="查看原文">《CentOS开启coredump转储并生成core文件的配置》</a>文中，设置了Core Dump文件大小为<code>unlimited</code>。日积月累，终于把MySQL搞挂掉了！</p>
+<h4>4 解决</h4>
+<p>先删掉corefile目录下面的大部分Core Dump文件，然后使用命令<code>ulimit -c 10240</code>设置coredump file-size为10M。最后，使用命令<code>service mysqld start</code>成功启动MySQL服务！看了下时间，从发现问题到解决用了40多分钟，还好只是个个人博客~</p>
+		    	<p class="tags">
+					<div class="post-share">
+						<ul class="post-shareul clearfix">
+							<li class="post-shareli">
+								<a href="http://note.youdao.com/memory/?url=https://typecodes.com/linux/mysqlerrornospace.html&title=博客MySQL服务惊魂记：Linux磁盘空间不足(Core Dump文件引爆)" class="post-sharea ydshare" target="_blank" rel="nofollow">有道云笔记</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://v.t.sina.com.cn/share/share.php?url=https://typecodes.com/linux/mysqlerrornospace.html&title=博客MySQL服务惊魂记：Linux磁盘空间不足(Core Dump文件引爆)&source=https://typecodes.com" class="post-sharea wbshare" target="_blank" rel="nofollow">新浪微博</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://v.t.qq.com/share/share.php?title=博客MySQL服务惊魂记：Linux磁盘空间不足(Core Dump文件引爆)&url=https://typecodes.com/linux/mysqlerrornospace.html&site=https://typecodes.com" class="post-sharea twbshare" target="_blank" rel="nofollow">腾讯微博</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=https://typecodes.com/linux/mysqlerrornospace.html&title=博客MySQL服务惊魂记：Linux磁盘空间不足(Core Dump文件引爆)&content='utf-8'" class="post-sharea qzoneshare" target="_blank" rel="nofollow">QZone</a>
+							</li>
+						</ul>
+					</div>
+					<div>
+						Tags: <a href="https://typecodes.com/tag/coredump.html">coredump</a>,<a href="https://typecodes.com/tag/mysql.html">mysql</a>					</div>
+				</p>
+			</article>
+			
+			<div id="comments">
+				<h4 class="num">Comments &raquo;</h4>
+		    	<div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript></div>
+		    </div>
+		</div>
+		<!--3. right sider begin-->
+<div class="col-md-3" id="blog-secondary" role="complementary">
+	<section class="widget">
+		<ul class="widget-list">
+			<form id="search" method="get" action="https://typecodes.com/search.html">
+				<input type="text" name="q" id="s" size="20" x-webkit-speech="" x-webkit-grammar="builtin:search" onwebkitspeechchange="this.value = this.value.replace(this.defaultValue, '')" value="Google...." onfocus="this.value = (this.value == this.defaultValue) ? '' : this.value" onblur="this.value = (this.value == '') ? this.defaultValue : this.value">
+			</form>
+		</ul>
+	</section>
+	<section class="widget">
+		<h3 class="widget-title">Categories</h3>
+		<ul class="widget-list">
+		      <li class="current">
+		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (26)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/csharp/index.html">Csharp</a> (6)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/database/index.html">Database</a> (11)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/java/index.html">Java</a> (1)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/linux/index.html">Linux</a> (16)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/mix/index.html">Mix</a> (53)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/web/index.html">Web</a> (88)
+		      </li>
+		</ul>
+	</section>
+	<section class="widget">
+		<h3 class="widget-title">Recent Posts</h3>
+		<ul class="widget-list">
+			<li class="post">
+				<a href="https://typecodes.com/mix/sucesstypechotopelican.html">成功将博客从Typecho迁移到Pelican</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/mix/begintypechotopelican.html">准备将博客从Typecho迁移到Pelican</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/tcpconnectiontimedout.html">Linux TCP连接Connection Refused和Connection timed out的问题</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/mysqlerrornospace.html">博客MySQL服务惊魂记：Linux磁盘空间不足(Core Dump文件引爆)</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/mix/synweibophpmarkdownimgurl.html">升级博客文章同步微博的插件：PHP正则提取Markdown的图片地址</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/cppgeneralmakefile.html">Linux C/C++工程中可生成ELF、动/静态库文件的通用Makefile</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/libraryundefinedref.html">解决make编译链接动态库错误：libxx.so: undefined reference to xx</a>
+			</li>
+		</ul>
+	</section>
+	<section class="widget widget-feed">
+		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
+	</section>
+</div>
+				</div>
+			</div>
+		</div>
+		<!--4. bottom begin-->
+		<footer id="te-site-footer"><div class="container">
+	<div class="row" role="contentinfo">
+		<section class="col-md-2 col-md-offset-1">
+			<h3>Links</h3>
+			<ul><li><a href="http://diaosbook.com/" title="">diaosbook</a></li></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul>
+				<li><a href="https://typecodes.com/links.html">More..</a></li>
+			</ul>
+		</section>
+		<section class="col-md-2">
+			<h3>Following</h3>
+			<ul>
+				<li><a href="https://github.com/vfhky" class="following github" target="_blank" rel="external nofollow">GitHub</a></li>
+				<li><a href="http://weibo.com/typecodes" class="following weibo" target="_blank" rel="external nofollow">Weibo</a></li>
+				<li><a href="http://vfhky.sinaapp.com/" class="following sae" target="_blank" rel="external nofollow">SAE</a></li>
+				<li><a href="http://www.dwz.cn/mYiwa" class="following qqgroup" target="_blank" rel="external nofollow">Group</a></li>
+			</ul>
+		</section>
+		<div class="col-md-12 copyright">
+			<a href="#top"><i class="i-logo-s">TOP</i></a>
+			<p>
+				&copy; 2012-<script language="JavaScript">var date = new Date(); document.write(date.getFullYear());</script>							<a href="https://typecodes.com">TypeCodes</a>. All Rights Reserved<br>Powered by <a href="http://getpelican.com" rel="external" target="_blank">Pelican</a>. <a href="http://www.miitbeian.gov.cn/" rel="external nofollow" target="_blank">粤ICP备14050695号</a>
+			</p>
+		</div>
+	</div>
+</div>
+</footer>
+<script type="text/javascript">
+	var disqus_shortname = 'typecodes';
+	var disqus_identifier = '/linux/mysqlerrornospace.html';
+	var disqus_url = 'https://typecodes.com/linux/mysqlerrornospace.html';
+	var disqus_title = '博客MySQL服务惊魂记：Linux磁盘空间不足(Core Dump文件引爆)';
+	(function() {
+		var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+		dsq.src = "//" + disqus_shortname + '.disqus.com/embed.js';
+		(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	 })();
+</script>
+	</body>
+</html>
