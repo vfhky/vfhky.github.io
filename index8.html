@@ -3,13 +3,8 @@
 	<head>
 		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
 		<title>TypeCodes</title>
-		<meta name="author" content="vfhky">
   		<link href="https://typecodes.com/atom.xml" type="application/atom+xml" rel="alternate" title="TypeCodes Atom Feed" />
 	  	<link href="https://typecodes.com/feed.xml" type="application/rss+xml" rel="alternate" title="TypeCodes RSS Feed" />
-		<meta name="HandheldFriendly" content="True">
-		<meta name="MobileOptimized" content="320">
-		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<meta name="renderer" content="webkit">
 		<link rel="stylesheet" href="https://dn-vfhky.qbox.me/libs/css/pelican-vfhky.css">
 		<script>
 			var _hmt = _hmt || [];
@@ -21,7 +16,7 @@
 			})();
 		</script>
 	</head>
-	<body style>
+	<body>
 		<!--1. header navigation begin-->
 		<header role="banner" id="te-site-header">
 			<div class="container">
@@ -40,6 +35,68 @@
 		<!--2. left sider begin-->
 		<div class="col-md-9" id="blog-main" role="main">
 		  	<!--article recycle-->
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/cseries/clanghexstrtointeger.html">C语言将十六进制字符串转成十进制整数</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2014-11-04 22:22 | 分类：<a href="https://typecodes.com/cseries/index.html">cseries</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>C/C++处理十六进制文件中的报文内容时，经常会遇到先读取报文头中的长度（例如"E2"、"1F"、"-eE2"等等），再读取报文体中的内容的情况。那么就需要把报文头中表示长度的十六进制字符串转换成十进制的整形数据。</p>
+<p>转换方法有两种，一种是正向从字符串低位到高位依次转换，另一种是逆向从字符串高位到低位依次转换。原理都是利用指针变量依次指向十六进制字符串中的单个字符，然后通过ASCII码表转换成对应的整数。考虑到十进制的字符串中可能会出现正负号，即转换后可能出现负整数，所以增加了对这种情况的处理。下面是两种方法的具体代码：</p>
+
+	<p class="more"><a href="https://typecodes.com/cseries/clanghexstrtointeger.html" title="C语言将十六进制字符串转成十进制整数">- 阅读剩余部分 -</a></p>
+			</article>
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/web/shutdownblogssl.html">决定关闭博客使用SSL证书访问</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2014-10-17 23:37 | 分类：<a href="https://typecodes.com/web/index.html">web</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>前几天博客使用了NameCheap的证书，将原来的http访问改成了https访问（详戳<a href="https://typecodes.com/web/lnmppositivessl.html" title="阿里云CentOS 6.5系统LNMP环境安装SSL证书">这里</a>）。由于下面的原因，现决定不再使用SSL证书，恢复http访问。</p>
+<p><img alt="使用SSL证书访问博客" src="https://dn-vfhky.qbox.me/2014/10/blogbeginusessl.png" title="使用SSL证书访问博客" /></p>
+<h5>1 无法通过https加载站外静态资源文件</h5>
+<p>主要是因为目前博客所有的静态资源文件，如css样式文件、js脚本文件、图片文件等，都使用了新浪SCS云存储。最初，博客程序中还存在类似于<code>https://dn-vfhky.qbox.me/libs/img/typecodes.png</code>这种http请求，所以浏览器地址栏会出现黄色警告图标。后来将所有的http请求全部改成https，结果浏览器地址栏图标变成正常的绿色图标了。</p>
+
+	<p class="more"><a href="https://typecodes.com/web/shutdownblogssl.html" title="决定关闭博客使用SSL证书访问">- 阅读剩余部分 -</a></p>
+			</article>
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/web/lnmppositivessl.html">阿里云CentOS 6.5系统LNMP环境安装SSL证书</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2014-10-15 00:02 | 分类：<a href="https://typecodes.com/web/index.html">web</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>近期参加了github的一项<a href="https://education.github.com/pack" title="GitHub Education Student pack">优惠活动</a>，获得了一年免费的SSL证书。下面是具体的安装过程，当然SSL证书的安装跟博客程序（不管是wordpress或者typecho等等）无关，只是跟服务器的类型（比如Nginx、Apache或者IIS等）有关。</p>
+<div class="highlight"><pre>----------操作说明----------               
+系统：            阿里云CentOS 6.5
+环境：            LNMP（只需配置Nginx服务器就行）
+操作工具：        SecureCRT 7.0
+博客程序：        Typecho 14.10
+SSL证书提供商：    PositiveSSL from Namecheap
+</pre></div>
+
+
+
+	<p class="more"><a href="https://typecodes.com/web/lnmppositivessl.html" title="阿里云CentOS 6.5系统LNMP环境安装SSL证书">- 阅读剩余部分 -</a></p>
+			</article>
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/web/scsfortypechov111.html">更新新浪云存储(SCS) for Typecho 插件版本V1.1.0</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2014-09-20 11:34 | 分类：<a href="https://typecodes.com/web/index.html">web</a></li>
+</ul>
+<div class="post-content fmt">
+	<h5>1 更新说明</h5>
+<p>感谢 @奇趣铺 的使用反馈，插件版本更新至最新的V1.1.1。更新内容如下：</p>
+<div class="highlight"><pre>1、更新官方SDK文件；
+2、增加SCS存储路径参数配置，用户能更自由定义SCS存储路径；
+3、取消SCS附件前缀用Unix time stamp格式命名，保持原附件名称不变。
+</pre></div>
+
+
+<h5>2 版本升级方法</h5>
+<p>下面对于 Linux主机 和 Windows主机 的升级方法同样适用于之前没有安装该插件的童鞋，步骤完全一样。</p>
+
+	<p class="more"><a href="https://typecodes.com/web/scsfortypechov111.html" title="更新新浪云存储(SCS) for Typecho 插件版本V1.1.0">- 阅读剩余部分 -</a></p>
+			</article>
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/web/scsfortypechov110.html">更新新浪云存储(SCS) for Typecho 插件版本V1.1.0</a></h2>
 <ul class="post-meta">
@@ -95,52 +152,6 @@
 
 	<p class="more"><a href="https://typecodes.com/cseries/pointermemaccess0xC0000005.html" title="再谈“0xC0000005读取写入位置冲突”——正确使用指针访问内存">- 阅读剩余部分 -</a></p>
 			</article>
-			<article class="post">
-<h2 class="post-title"><a href="https://typecodes.com/mix/getsaegift.html">千里佳音，收到新浪云(SAE)的一份礼物</a></h2>
-<ul class="post-meta">
-	<li>作者：vfhky | 时间：2014-08-31 13:54 | 分类：<a href="https://typecodes.com/mix/index.html">mix</a></li>
-</ul>
-<div class="post-content fmt">
-	<p>去年4月份，博主参与了百度知道的一个活动，很意外的收到了<a href="https://typecodes.com/mix/getbaidugift.html" title="《千里佳音，竟然收到百度的一份GIFT》">百度无线的一个gift</a>。上周末，因为参与了<a href="http://weibo.com/saet" title="SAE新浪官方微博">SAE</a>在7月22日的一个活动，又收到了一件来自新浪云的抱枕。</p>
-<p>由于之前也用过<a href="https://console.developers.google.com/start/appengine" title="Google App Engine官方地址">GAE</a>、<a href="http://developer.baidu.com/cloud/rt" title="Baidu App Engine官方地址">BAE</a>和<a href="http://sae.sina.com.cn/" title="Sina App Engine官方地址">SAE</a>以及正在申请公测资格的<a href="http://www.aliyun.com/product/ace/" title="阿里ACE官方地址">阿里云引擎ACE</a>，下面简单说说自己在这几款<code>PaaS（平台即服务）</code>上的体验。</p>
-
-	<p class="more"><a href="https://typecodes.com/mix/getsaegift.html" title="千里佳音，收到新浪云(SAE)的一份礼物">- 阅读剩余部分 -</a></p>
-			</article>
-			<article class="post">
-<h2 class="post-title"><a href="https://typecodes.com/cseries/trimspace0xC0000005.html">未经处理的异常:0xC0000005:读取/写入位置冲突——从去掉字符串所有空格说起</a></h2>
-<ul class="post-meta">
-	<li>作者：vfhky | 时间：2014-08-30 13:17 | 分类：<a href="https://typecodes.com/cseries/index.html">cseries</a></li>
-</ul>
-<div class="post-content fmt">
-	<p>在c/c++中，有时会遇到c0xC0000005: 读取/写入位置冲突的问题。明明编译器编译通过，但是在执行的时候就出现<code>Segmentation fault(coredump)</code>了。</p>
-<p>该错误是由于内存访问出错引起的，最常见于指针的错误使用和数组越界等。下面是博主之前的一个经历——去掉一个字符串前后的所有空格。</p>
-
-	<p class="more"><a href="https://typecodes.com/cseries/trimspace0xC0000005.html" title="未经处理的异常:0xC0000005:读取/写入位置冲突——从去掉字符串所有空格说起">- 阅读剩余部分 -</a></p>
-			</article>
-			<article class="post">
-<h2 class="post-title"><a href="https://typecodes.com/web/phpunixtimeconvert.html">PHP中将Unix timestamp时间戳转换成北京时间</a></h2>
-<ul class="post-meta">
-	<li>作者：vfhky | 时间：2014-08-19 22:12 | 分类：<a href="https://typecodes.com/web/index.html">web</a></li>
-</ul>
-<div class="post-content fmt">
-	<p>由于博客刚从wordpress转到typecho，所以对之前的数据库需要处理。在wordpress数据库中，文章和评论的时间记录形式和typecho不同：wordpress中登记的是北京时间，形如 2014-08-19 21:05:27；而typecho数据库中登记的是时间戳Unix timestamp，形如1408456593（对应标准北京时间是 2014/8/19 21:56:33 ）。</p>
-<p>于是，我在typecho中用<code>date('Y-m-d H:i', $older_date)</code>函数把从数据库读取出来的Unix timestamp格式的<code>$older_date</code>转换成形如 2014-08-19 21:05 的北京时间后，发现比当前的北京时间少了8个小时。GG一番，原来是时区导致的：格林威治时间与中国东八区本地时间相差8个时差。解决方法如下：</p>
-
-	<p class="more"><a href="https://typecodes.com/web/phpunixtimeconvert.html" title="PHP中将Unix timestamp时间戳转换成北京时间">- 阅读剩余部分 -</a></p>
-			</article>
-			<article class="post">
-<h2 class="post-title"><a href="https://typecodes.com/web/mysqlimportmessy.html">完美解决Mysql导入数据库中文乱码的问题</a></h2>
-<ul class="post-meta">
-	<li>作者：vfhky | 时间：2014-08-18 22:24 | 分类：<a href="https://typecodes.com/web/index.html">web</a></li>
-</ul>
-<div class="post-content fmt">
-	<h5>1 问题由来：博客从 WordPress 转向 Typecho</h5>
-<p>在由 <a href="https://typecodes.com/mix/eventualwptotypecho.html" title="《终于从WordPress转向Typecho了》">WordPress 转向 Typecho</a> 的过程中，主要难点是将 WordPress 中的文章和评论数据用 <a href="http://plugins.typecho.me/plugins/wordpress-to-typecho.html" title="插件wordpress to typecho">wordpress to typecho</a> 插件剥离出来。经整理后再重新将文章转换为 markdown 格式发布到由ty搭建的本博客上，最后把评论导入到对应的文章下面，并对评论id重新排序。</p>
-<h5>2 本地编辑剥离出的文章和评论的.sql备份文件</h5>
-<p>通过插件把wordpress中文章和评论的数据转换成 typecho 形式的文章和评论数据，并导出为.sql备份文件。由于评论数据有1521条，对其id重新排序比较困难，所以博主将它们分拆为两个 .sql 文件（其中一个是utf-8格式的resultsql1.sql，另一个是gbk格式的resultsql2.sql）。</p>
-
-	<p class="more"><a href="https://typecodes.com/web/mysqlimportmessy.html" title="完美解决Mysql导入数据库中文乱码的问题">- 阅读剩余部分 -</a></p>
-			</article>
 		  	<!--page navigation-->
 <ol class="page-navigator">
 <li class="prev"><a href="https://typecodes.com/index7.html">&laquo; 前一页</a></li><li><a href="https://typecodes.com/index.html">1</a>
@@ -167,7 +178,7 @@
 		<h3 class="widget-title">Categories</h3>
 		<ul class="widget-list">
 		      <li class="current">
-		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (26)
+		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (28)
 		      </li>
 		      <li class="current">
 		        <a href="https://typecodes.com/csharp/index.html">Csharp</a> (6)
@@ -179,7 +190,7 @@
 		        <a href="https://typecodes.com/java/index.html">Java</a> (1)
 		      </li>
 		      <li class="current">
-		        <a href="https://typecodes.com/linux/index.html">Linux</a> (16)
+		        <a href="https://typecodes.com/linux/index.html">Linux</a> (18)
 		      </li>
 		      <li class="current">
 		        <a href="https://typecodes.com/mix/index.html">Mix</a> (53)
@@ -193,6 +204,18 @@
 		<h3 class="widget-title">Recent Posts</h3>
 		<ul class="widget-list">
 			<li class="post">
+				<a href="https://typecodes.com/linux/syngithubmarkdownpelican.html">同步GitHub Markdown文章到Linux服务器后更新Pelican博客的脚本</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/linuxgccgconnectmysql.html">Linux c语言连接MySQL数据库实例</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/gccgensharedlib.html">Linux gcc编译生成静态库及使用方法</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/applogsbackup.html">Linux下Nginx、MySQL和PHP等应用的日志切割脚本</a>
+			</li>
+			<li class="post">
 				<a href="https://typecodes.com/mix/sucesstypechotopelican.html">成功将博客从Typecho迁移到Pelican</a>
 			</li>
 			<li class="post">
@@ -200,18 +223,6 @@
 			</li>
 			<li class="post">
 				<a href="https://typecodes.com/linux/tcpconnectiontimedout.html">Linux TCP连接Connection Refused和Connection timed out的问题</a>
-			</li>
-			<li class="post">
-				<a href="https://typecodes.com/linux/mysqlerrornospace.html">博客MySQL服务惊魂记：Linux磁盘空间不足(Core Dump文件引爆)</a>
-			</li>
-			<li class="post">
-				<a href="https://typecodes.com/mix/synweibophpmarkdownimgurl.html">升级博客文章同步微博的插件：PHP正则提取Markdown的图片地址</a>
-			</li>
-			<li class="post">
-				<a href="https://typecodes.com/cseries/cppgeneralmakefile.html">Linux C/C++工程中可生成ELF、动/静态库文件的通用Makefile</a>
-			</li>
-			<li class="post">
-				<a href="https://typecodes.com/cseries/libraryundefinedref.html">解决make编译链接动态库错误：libxx.so: undefined reference to xx</a>
 			</li>
 		</ul>
 	</section>
@@ -227,7 +238,7 @@
 	<div class="row" role="contentinfo">
 		<section class="col-md-2 col-md-offset-1">
 			<h3>Links</h3>
-			<ul><li><a href="http://diaosbook.com/" title="">diaosbook</a></li></ul>
+			<ul><li><a href="http://diaosbook.com/" title="" target="_blank">diaosbook</a></li></ul>
 		</section>
 		<section class="col-md-2">
 			<h3>&nbsp;</h3>
@@ -255,7 +266,7 @@
 		<div class="col-md-12 copyright">
 			<a href="#top"><i class="i-logo-s">TOP</i></a>
 			<p>
-				&copy; 2012-<script language="JavaScript">var date = new Date(); document.write(date.getFullYear());</script>							<a href="https://typecodes.com">TypeCodes</a>. All Rights Reserved<br>Powered by <a href="http://getpelican.com" rel="external" target="_blank">Pelican</a>. <a href="http://www.miitbeian.gov.cn/" rel="external nofollow" target="_blank">粤ICP备14050695号</a>
+				&copy;  2012-2016 							<a href="https://typecodes.com">TypeCodes</a>. All Rights Reserved<br>Powered by <a href="http://getpelican.com" rel="external" target="_blank">Pelican</a>. <a href="http://www.miitbeian.gov.cn/" rel="external nofollow" target="_blank">粤ICP备14050695号</a>
 			</p>
 		</div>
 	</div>

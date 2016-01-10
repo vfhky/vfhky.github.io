@@ -3,13 +3,8 @@
 	<head>
 		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
 		<title>TypeCodes</title>
-		<meta name="author" content="vfhky">
   		<link href="https://typecodes.com/atom.xml" type="application/atom+xml" rel="alternate" title="TypeCodes Atom Feed" />
 	  	<link href="https://typecodes.com/feed.xml" type="application/rss+xml" rel="alternate" title="TypeCodes RSS Feed" />
-		<meta name="HandheldFriendly" content="True">
-		<meta name="MobileOptimized" content="320">
-		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<meta name="renderer" content="webkit">
 		<link rel="stylesheet" href="https://dn-vfhky.qbox.me/libs/css/pelican-vfhky.css">
 		<script>
 			var _hmt = _hmt || [];
@@ -21,7 +16,7 @@
 			})();
 		</script>
 	</head>
-	<body style>
+	<body>
 		<!--1. header navigation begin-->
 		<header role="banner" id="te-site-header">
 			<div class="container">
@@ -40,6 +35,55 @@
 		<!--2. left sider begin-->
 		<div class="col-md-9" id="blog-main" role="main">
 		  	<!--article recycle-->
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/cseries/studymfchexstrxortool2.html">图文实例说MFC制作工具的心得（二）</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2014-11-14 23:58 | 分类：<a href="https://typecodes.com/cseries/index.html">cseries</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>继前文<a href="https://typecodes.com/cseries/studymfchexstrxortool1.html" title="点击查看">《图文实例说MFC制作工具的心得（一）》</a>，这篇文章继续写几点心得。</p>
+<h5>1 如何将CString转换成char *指针</h5>
+<p>由于异或的时候可以直接调用<a href="https://typecodes.com/cseries/hexstrxor.html" title="《十六进制字符串异或》">《十六进制字符串异或》</a>一文中的十六进制字符串异或方法<code>void hexstrxor(char * HexStr1, char * HexStr2, char * HexStr)</code>。</p>
+<p>但是<code>Edit Control</code>控件添加变量<code>HexStr1</code>、<code>HexStr2</code>都是CString类型，所以需要转换。由于项目的字符集是<code>使用多字节字符集</code>，所以可以通过<code>(LPSTR)(LPCTSTR)CString</code>方法强制将CString数据转换成char *指针类型，这样就可以直接调用了<code>hexstrxor((LPSTR)(LPCTSTR)HexStr1, (LPSTR)(LPCTSTR)HexStr2, HexStrXorResult);</code>。</p>
+
+	<p class="more"><a href="https://typecodes.com/cseries/studymfchexstrxortool2.html" title="图文实例说MFC制作工具的心得（二）">- 阅读剩余部分 -</a></p>
+			</article>
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/cseries/studymfchexstrxortool1.html">图文实例说MFC制作工具的心得（一）</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2014-11-13 22:06 | 分类：<a href="https://typecodes.com/cseries/index.html">cseries</a></li>
+</ul>
+<div class="post-content fmt">
+	<p><a href="https://typecodes.com/cseries/mfchexstrxortool.html" title="《MFC写了一个十六进制异或的工具》">上篇文章</a>说了用MFC制作一个十六进制字符串异或的工具，这篇文章就以这个工具为演示总结一下自己的学习心得。</p>
+<p><img alt="MFC十六进制异或工具" src="https://dn-vfhky.qbox.me/2014/11/mfchexstrxortool.png" title="MFC十六进制异或工具" /></p>
+
+	<p class="more"><a href="https://typecodes.com/cseries/studymfchexstrxortool1.html" title="图文实例说MFC制作工具的心得（一）">- 阅读剩余部分 -</a></p>
+			</article>
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/cseries/mfchexstrxortool.html">MFC写了一个十六进制字符串异或的工具</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2014-11-12 23:57 | 分类：<a href="https://typecodes.com/cseries/index.html">cseries</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>在写完上一篇文章<a href="https://typecodes.com/cseries/hexstrxor.html" title="查看详情">《十六进制字符串异或》</a>后，网上查了下貌似没有十六进制字符串异或的工具，于是想自己用C++写一个。由于之前没弄过MFC，所以周末花了两天时间边学边做，最后效果如下：</p>
+<p><img alt="MFC十六进制异或的工具初始界面" src="https://dn-vfhky.qbox.me/2014/11/mfchexstrtoolini.png" title="MFC十六进制异或的工具初始界面" /></p>
+
+	<p class="more"><a href="https://typecodes.com/cseries/mfchexstrxortool.html" title="MFC写了一个十六进制字符串异或的工具">- 阅读剩余部分 -</a></p>
+			</article>
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/cseries/hexstrxor.html">十六进制字符串异或</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2014-11-10 22:20 | 分类：<a href="https://typecodes.com/cseries/index.html">cseries</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>十六进制字符串异或是C/C++工作中经常遇到的情况，因此自己写了一个异或方法。程序中关键的三点：</p>
+<h5>1 关键点一</h5>
+<p>弄清十六进制字符串异或的思路：一个十六进制字符其实表示的是一个字节的低4位，但是在ASCII码表中，它是作为一个字符，即占用了1个字节。所以需要先把这个字符转换成对应的十进制数（范围是0~15），这个就是<code>int char2int( char input )</code>函数所做的工作；同理在异或完后，需要根据ASCII码表将范围是0~15的<code>字符</code>转换成对应的占用1字节的字符串中的字符，这个就是<code>int int2char( char input )</code>函数所做的工作。</p>
+<p>PS：这其实就是前面这两篇文章的提炼——
+<a href="https://typecodes.com/cseries/clangintegerstrtointeger.html" title="《C语言将十进制字符串转成十进制整数》">《C语言将十进制字符串转成十进制整数》</a>、<a href="https://typecodes.com/cseries/clanghexstrtointeger.html" title="《C语言将十六进制字符串转成十进制整数》">《C语言将十六进制字符串转成十进制整数》</a>。</p>
+
+	<p class="more"><a href="https://typecodes.com/cseries/hexstrxor.html" title="十六进制字符串异或">- 阅读剩余部分 -</a></p>
+			</article>
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/cseries/studentssoundoffgame.html">由学生按某规则依次报数的游戏引发的问题</a></h2>
 <ul class="post-meta">
@@ -132,68 +176,6 @@ Buzz
 
 	<p class="more"><a href="https://typecodes.com/cseries/clangintegerstrtointeger.html" title="C语言将十进制字符串转成十进制整数">- 阅读剩余部分 -</a></p>
 			</article>
-			<article class="post">
-<h2 class="post-title"><a href="https://typecodes.com/cseries/clanghexstrtointeger.html">C语言将十六进制字符串转成十进制整数</a></h2>
-<ul class="post-meta">
-	<li>作者：vfhky | 时间：2014-11-04 22:22 | 分类：<a href="https://typecodes.com/cseries/index.html">cseries</a></li>
-</ul>
-<div class="post-content fmt">
-	<p>C/C++处理十六进制文件中的报文内容时，经常会遇到先读取报文头中的长度（例如"E2"、"1F"、"-eE2"等等），再读取报文体中的内容的情况。那么就需要把报文头中表示长度的十六进制字符串转换成十进制的整形数据。</p>
-<p>转换方法有两种，一种是正向从字符串低位到高位依次转换，另一种是逆向从字符串高位到低位依次转换。原理都是利用指针变量依次指向十六进制字符串中的单个字符，然后通过ASCII码表转换成对应的整数。考虑到十进制的字符串中可能会出现正负号，即转换后可能出现负整数，所以增加了对这种情况的处理。下面是两种方法的具体代码：</p>
-
-	<p class="more"><a href="https://typecodes.com/cseries/clanghexstrtointeger.html" title="C语言将十六进制字符串转成十进制整数">- 阅读剩余部分 -</a></p>
-			</article>
-			<article class="post">
-<h2 class="post-title"><a href="https://typecodes.com/web/shutdownblogssl.html">决定关闭博客使用SSL证书访问</a></h2>
-<ul class="post-meta">
-	<li>作者：vfhky | 时间：2014-10-17 23:37 | 分类：<a href="https://typecodes.com/web/index.html">web</a></li>
-</ul>
-<div class="post-content fmt">
-	<p>前几天博客使用了NameCheap的证书，将原来的http访问改成了https访问（详戳<a href="https://typecodes.com/web/lnmppositivessl.html" title="阿里云CentOS 6.5系统LNMP环境安装SSL证书">这里</a>）。由于下面的原因，现决定不再使用SSL证书，恢复http访问。</p>
-<p><img alt="使用SSL证书访问博客" src="https://dn-vfhky.qbox.me/2014/10/blogbeginusessl.png" title="使用SSL证书访问博客" /></p>
-<h5>1 无法通过https加载站外静态资源文件</h5>
-<p>主要是因为目前博客所有的静态资源文件，如css样式文件、js脚本文件、图片文件等，都使用了新浪SCS云存储。最初，博客程序中还存在类似于<code>https://dn-vfhky.qbox.me/libs/img/typecodes.png</code>这种http请求，所以浏览器地址栏会出现黄色警告图标。后来将所有的http请求全部改成https，结果浏览器地址栏图标变成正常的绿色图标了。</p>
-
-	<p class="more"><a href="https://typecodes.com/web/shutdownblogssl.html" title="决定关闭博客使用SSL证书访问">- 阅读剩余部分 -</a></p>
-			</article>
-			<article class="post">
-<h2 class="post-title"><a href="https://typecodes.com/web/lnmppositivessl.html">阿里云CentOS 6.5系统LNMP环境安装SSL证书</a></h2>
-<ul class="post-meta">
-	<li>作者：vfhky | 时间：2014-10-15 00:02 | 分类：<a href="https://typecodes.com/web/index.html">web</a></li>
-</ul>
-<div class="post-content fmt">
-	<p>近期参加了github的一项<a href="https://education.github.com/pack" title="GitHub Education Student pack">优惠活动</a>，获得了一年免费的SSL证书。下面是具体的安装过程，当然SSL证书的安装跟博客程序（不管是wordpress或者typecho等等）无关，只是跟服务器的类型（比如Nginx、Apache或者IIS等）有关。</p>
-<div class="highlight"><pre>----------操作说明----------               
-系统：            阿里云CentOS 6.5
-环境：            LNMP（只需配置Nginx服务器就行）
-操作工具：        SecureCRT 7.0
-博客程序：        Typecho 14.10
-SSL证书提供商：    PositiveSSL from Namecheap
-</pre></div>
-
-
-
-	<p class="more"><a href="https://typecodes.com/web/lnmppositivessl.html" title="阿里云CentOS 6.5系统LNMP环境安装SSL证书">- 阅读剩余部分 -</a></p>
-			</article>
-			<article class="post">
-<h2 class="post-title"><a href="https://typecodes.com/web/scsfortypechov111.html">更新新浪云存储(SCS) for Typecho 插件版本V1.1.0</a></h2>
-<ul class="post-meta">
-	<li>作者：vfhky | 时间：2014-09-20 11:34 | 分类：<a href="https://typecodes.com/web/index.html">web</a></li>
-</ul>
-<div class="post-content fmt">
-	<h5>1 更新说明</h5>
-<p>感谢 @奇趣铺 的使用反馈，插件版本更新至最新的V1.1.1。更新内容如下：</p>
-<div class="highlight"><pre>1、更新官方SDK文件；
-2、增加SCS存储路径参数配置，用户能更自由定义SCS存储路径；
-3、取消SCS附件前缀用Unix time stamp格式命名，保持原附件名称不变。
-</pre></div>
-
-
-<h5>2 版本升级方法</h5>
-<p>下面对于 Linux主机 和 Windows主机 的升级方法同样适用于之前没有安装该插件的童鞋，步骤完全一样。</p>
-
-	<p class="more"><a href="https://typecodes.com/web/scsfortypechov111.html" title="更新新浪云存储(SCS) for Typecho 插件版本V1.1.0">- 阅读剩余部分 -</a></p>
-			</article>
 		  	<!--page navigation-->
 <ol class="page-navigator">
 <li class="prev"><a href="https://typecodes.com/index6.html">&laquo; 前一页</a></li><li><a href="https://typecodes.com/index.html">1</a>
@@ -220,7 +202,7 @@ SSL证书提供商：    PositiveSSL from Namecheap
 		<h3 class="widget-title">Categories</h3>
 		<ul class="widget-list">
 		      <li class="current">
-		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (26)
+		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (28)
 		      </li>
 		      <li class="current">
 		        <a href="https://typecodes.com/csharp/index.html">Csharp</a> (6)
@@ -232,7 +214,7 @@ SSL证书提供商：    PositiveSSL from Namecheap
 		        <a href="https://typecodes.com/java/index.html">Java</a> (1)
 		      </li>
 		      <li class="current">
-		        <a href="https://typecodes.com/linux/index.html">Linux</a> (16)
+		        <a href="https://typecodes.com/linux/index.html">Linux</a> (18)
 		      </li>
 		      <li class="current">
 		        <a href="https://typecodes.com/mix/index.html">Mix</a> (53)
@@ -246,6 +228,18 @@ SSL证书提供商：    PositiveSSL from Namecheap
 		<h3 class="widget-title">Recent Posts</h3>
 		<ul class="widget-list">
 			<li class="post">
+				<a href="https://typecodes.com/linux/syngithubmarkdownpelican.html">同步GitHub Markdown文章到Linux服务器后更新Pelican博客的脚本</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/linuxgccgconnectmysql.html">Linux c语言连接MySQL数据库实例</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/gccgensharedlib.html">Linux gcc编译生成静态库及使用方法</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/applogsbackup.html">Linux下Nginx、MySQL和PHP等应用的日志切割脚本</a>
+			</li>
+			<li class="post">
 				<a href="https://typecodes.com/mix/sucesstypechotopelican.html">成功将博客从Typecho迁移到Pelican</a>
 			</li>
 			<li class="post">
@@ -253,18 +247,6 @@ SSL证书提供商：    PositiveSSL from Namecheap
 			</li>
 			<li class="post">
 				<a href="https://typecodes.com/linux/tcpconnectiontimedout.html">Linux TCP连接Connection Refused和Connection timed out的问题</a>
-			</li>
-			<li class="post">
-				<a href="https://typecodes.com/linux/mysqlerrornospace.html">博客MySQL服务惊魂记：Linux磁盘空间不足(Core Dump文件引爆)</a>
-			</li>
-			<li class="post">
-				<a href="https://typecodes.com/mix/synweibophpmarkdownimgurl.html">升级博客文章同步微博的插件：PHP正则提取Markdown的图片地址</a>
-			</li>
-			<li class="post">
-				<a href="https://typecodes.com/cseries/cppgeneralmakefile.html">Linux C/C++工程中可生成ELF、动/静态库文件的通用Makefile</a>
-			</li>
-			<li class="post">
-				<a href="https://typecodes.com/cseries/libraryundefinedref.html">解决make编译链接动态库错误：libxx.so: undefined reference to xx</a>
 			</li>
 		</ul>
 	</section>
@@ -280,7 +262,7 @@ SSL证书提供商：    PositiveSSL from Namecheap
 	<div class="row" role="contentinfo">
 		<section class="col-md-2 col-md-offset-1">
 			<h3>Links</h3>
-			<ul><li><a href="http://diaosbook.com/" title="">diaosbook</a></li></ul>
+			<ul><li><a href="http://diaosbook.com/" title="" target="_blank">diaosbook</a></li></ul>
 		</section>
 		<section class="col-md-2">
 			<h3>&nbsp;</h3>
@@ -308,7 +290,7 @@ SSL证书提供商：    PositiveSSL from Namecheap
 		<div class="col-md-12 copyright">
 			<a href="#top"><i class="i-logo-s">TOP</i></a>
 			<p>
-				&copy; 2012-<script language="JavaScript">var date = new Date(); document.write(date.getFullYear());</script>							<a href="https://typecodes.com">TypeCodes</a>. All Rights Reserved<br>Powered by <a href="http://getpelican.com" rel="external" target="_blank">Pelican</a>. <a href="http://www.miitbeian.gov.cn/" rel="external nofollow" target="_blank">粤ICP备14050695号</a>
+				&copy;  2012-2016 							<a href="https://typecodes.com">TypeCodes</a>. All Rights Reserved<br>Powered by <a href="http://getpelican.com" rel="external" target="_blank">Pelican</a>. <a href="http://www.miitbeian.gov.cn/" rel="external nofollow" target="_blank">粤ICP备14050695号</a>
 			</p>
 		</div>
 	</div>

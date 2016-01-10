@@ -3,13 +3,8 @@
 	<head>
 		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
 		<title>TypeCodes</title>
-		<meta name="author" content="vfhky">
   		<link href="https://typecodes.com/atom.xml" type="application/atom+xml" rel="alternate" title="TypeCodes Atom Feed" />
 	  	<link href="https://typecodes.com/feed.xml" type="application/rss+xml" rel="alternate" title="TypeCodes RSS Feed" />
-		<meta name="HandheldFriendly" content="True">
-		<meta name="MobileOptimized" content="320">
-		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<meta name="renderer" content="webkit">
 		<link rel="stylesheet" href="https://dn-vfhky.qbox.me/libs/css/pelican-vfhky.css">
 		<script>
 			var _hmt = _hmt || [];
@@ -21,7 +16,7 @@
 			})();
 		</script>
 	</head>
-	<body style>
+	<body>
 		<!--1. header navigation begin-->
 		<header role="banner" id="te-site-header">
 			<div class="container">
@@ -40,6 +35,79 @@
 		<!--2. left sider begin-->
 		<div class="col-md-9" id="blog-main" role="main">
 		  	<!--article recycle-->
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/web/aliyuncentoslnmpwebsafeconf.html">阿里云CentOS主机 LNMP 环境之web安全篇</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2014-08-15 21:25 | 分类：<a href="https://typecodes.com/web/index.html">web</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>前面几篇文章介绍了阿里云的CentOS 6.5系统中如何搭建和配置 LNMP 环境，这篇文章主要说说 web 站点的安全配置。</p>
+<h5>1 修改 CentOS 系统的主机名(关系不大, 看个人喜好)</h5>
+<p>默认同开通的阿里云 Linux 主机都是以 AY+随机数 命名的，修改方法如下：</p>
+<div class="highlight"><pre>[root@typecodes ~]# vi /etc/sysconfig/network
+###### 修改主机名HOSTNAME, 例如 HOSTNAME=typecodes , 然后:wq保存退出
+HOSTNAME=typecodes
+###### 接着执行 hostname 命令
+[root@typecodes ~]# hostname typecodes
+###### 退出ssh, 然后重新登录即可
+</pre></div>
+
+
+
+	<p class="more"><a href="https://typecodes.com/web/aliyuncentoslnmpwebsafeconf.html" title="阿里云CentOS主机 LNMP 环境之web安全篇">- 阅读剩余部分 -</a></p>
+			</article>
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/web/aliyuncentoslnmpxcacheconf.html">阿里云CentOS主机 LNMP 环境配置之Php篇——安装XCache加速器</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2014-08-14 23:06 | 分类：<a href="https://typecodes.com/web/index.html">web</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>在完成了上面两篇关于阿里云CentOS 6.5主机中 Nginx 和 Mysql 的配置的经验分享后，这篇文章说说如何安装 php 的“加速器”——<a href="http://xcache.lighttpd.net/wiki/ReleaseArchive" title="XCache稳定版官方介绍">XCache</a>。相信大家听说过 php 的几款缓存加速器：APC、xcache、eaccelerator等（对于小站咱就不要使用 Memcached 了）。</p>
+<h5>1 官网下载 XCache 3.1.0 源码(支持php5.1 ~ 5.4)</h5>
+<div class="highlight"><pre>###### 下载XCache 3.1.0稳定版
+[root@typecodes ~]# wget http://xcache.lighttpd.net/pub/Releases/3.1.0/xcache-3.1.0.tar.gz
+###### 解压到当前目录
+[root@typecodes ~]# tar -zxvf xcache-3.1.0.tar.gz
+[root@typecodes ~]# cd xcache-3.1.0
+
+###### phpize是用来扩展php模块的，建立外挂模块
+[root@typecodes xcache-3.1.0]# phpize
+Configuring for:
+PHP Api Version:        20090626
+Zend Module Api No:     20090626
+Zend Extension Api No:  20090626
+
+###### 如果出现 -bash: phpize: command not found，是因为没安装 php-devel 导致的
+[root@typecodes ~]# yum install php-devel
+</pre></div>
+
+
+
+	<p class="more"><a href="https://typecodes.com/web/aliyuncentoslnmpxcacheconf.html" title="阿里云CentOS主机 LNMP 环境配置之Php篇——安装XCache加速器">- 阅读剩余部分 -</a></p>
+			</article>
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/web/aliyuncentoslnmpnginxconf.html">阿里云CentOS主机 LNMP 环境配置之Nginx篇</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2014-08-13 23:22 | 分类：<a href="https://typecodes.com/web/index.html">web</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>上一篇文章主要分享了<a href="https://typecodes.com/web/aliyuncentoslnmpmysqlconf.html" title="阿里云CentOS主机 LNMP 环境配置之Mysql篇">LNMP 环境如何简单配置 Mysql</a>。这篇文章简要说说如何配置 Nginx 。是其默认配置文件是<code>nginx.conf</code>和<code>default.conf</code>。</p>
+<h5>1 nginx.conf配置文件</h5>
+<p>在 nginx.conf 文件中，会看到 nginx 默认的错误日志保存文件：error.log。它记录了服务器端由nginx处理的错误信息，例如永久跳转301、页面不存在404错误、服务器错误500错误等等。</p>
+
+	<p class="more"><a href="https://typecodes.com/web/aliyuncentoslnmpnginxconf.html" title="阿里云CentOS主机 LNMP 环境配置之Nginx篇">- 阅读剩余部分 -</a></p>
+			</article>
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/web/aliyuncentoslnmpmysqlconf.html">阿里云CentOS主机 LNMP 环境配置之Mysql篇</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2014-08-12 22:41 | 分类：<a href="https://typecodes.com/web/index.html">web</a></li>
+</ul>
+<div class="post-content fmt">
+	<p><a href="https://typecodes.com/web/aliyuncentos6creatlnmp.html" title="阿里云CentOS 6.5搭建LNMP环境（非一键脚本）">上文中</a>分享了在aliyun主机 CentOS 6.5 系统上搭建了 LNMP 环境，其实就是很简单的一行 yum install 命令搞定了。这篇文章简要说说 LNMP 环境下 Mysql 数据库的一些配置和使用，当然以后我们还得主动去学习数据库安全、优化等知识。</p>
+<h5>1 掌握 Linux(包括CentOS) 系统下基本的mysql操作命令</h5>
+
+	<p class="more"><a href="https://typecodes.com/web/aliyuncentoslnmpmysqlconf.html" title="阿里云CentOS主机 LNMP 环境配置之Mysql篇">- 阅读剩余部分 -</a></p>
+			</article>
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/web/aliyuncentos6creatlnmp.html">阿里云CentOS 6.5搭建LNMP环境（非一键脚本）</a></h2>
 <ul class="post-meta">
@@ -153,70 +221,6 @@
 
 	<p class="more"><a href="https://typecodes.com/cseries/vsbugonvariable.html" title="小心visual studio的“BUG”：变量的声明和使用">- 阅读剩余部分 -</a></p>
 			</article>
-			<article class="post">
-<h2 class="post-title"><a href="https://typecodes.com/mix/postwvfhkygithub.html">GitHub个人仓库更新：wordpress主题[W_vfhky]</a></h2>
-<ul class="post-meta">
-	<li>作者：vfhky | 时间：2014-03-18 18:42 | 分类：<a href="https://typecodes.com/mix/index.html">mix</a></li>
-</ul>
-<div class="post-content fmt">
-	<p>今天往自己的github仓库中扔进另一份博客wordpress主题[W_vfhky]。这份主题是从12年6月12建立至2013年7月，博主一直在用的。原型是威少的主题<a href="http://www.weisay.com/">weisaysimple</a>，简洁明了，很适合IT类的博客。精炼的页面设计，让博客的内容主次分明，详略得当，真的是让人爱不释手。</p>
-<p>当然，我也对weisaysimple修改了N多次，做了很多代码优化和个性化需求的定制和改进。例如，博客右上角的综合谷歌自定义搜索和百度搜索为一体的博客站内搜索，博客右侧栏的Jquery滚动公告，右侧栏的Jquery滚动最新评论和样式设计，评论列表纯真IP库的使用，邮件通知的改进，博客整站的avatar个性头像缓存等等。</p>
-
-	<p class="more"><a href="https://typecodes.com/mix/postwvfhkygithub.html" title="GitHub个人仓库更新：wordpress主题[W_vfhky]">- 阅读剩余部分 -</a></p>
-			</article>
-			<article class="post">
-<h2 class="post-title"><a href="https://typecodes.com/mix/updatewpthemevfhky1.html">版本更新：wordpress主题【vfhky 1.1】发布</a></h2>
-<ul class="post-meta">
-	<li>作者：vfhky | 时间：2014-03-16 14:32 | 分类：<a href="https://typecodes.com/mix/index.html">mix</a></li>
-</ul>
-<div class="post-content fmt">
-	<h5>1 主题【vfhky】版本1.1的更新说明</h5>
-<p>主题vfhky在2月15号发布了<a href="https://typecodes.com/mix/postwpthemevfhky1.html" title="《整装待发：wordpress主题【vfhky 1.0】强势发布》">1.0版本</a>，经调整和优化，现发布1.1版本。目前该版本已经更新到了github上了，大家可以<a href="https://github.com/vfhky/vfhky">点击此处</a>查看并下载。此次更新的主要内容如下：</p>
-<div class="highlight"><pre><span class="nx">优化站内搜索程序</span><span class="err">：</span><span class="nx">谷歌自定义搜索</span><span class="o">+</span><span class="nx">百度搜索</span><span class="err">；</span>
-<span class="nx">PHP</span><span class="o">+</span><span class="nx">js模块处理</span><span class="err">，</span><span class="nx">优化广告加载速度</span><span class="err">；</span>
-<span class="nx">优化</span><span class="err">“</span><span class="nx">网站安全认证</span><span class="err">”</span><span class="nx">以及全站链接跳转结果的查询模式</span><span class="err">；</span>
-
-<span class="nx">主题自动检测版本更新</span><span class="err">；</span>
-<span class="nx">去插件自带google代码高亮</span><span class="err">，</span><span class="nx">支持文章和评论中代码高亮</span><span class="err">；</span>
-<span class="nx">三种不同风格的音乐播放器</span><span class="err">，</span><span class="nx">可任意加载至文章中</span><span class="err">；</span>
-
-<span class="nx">拓展左侧文章页面宽度</span><span class="err">，</span><span class="nx">体验从页宽628px到728px的</span><span class="err">“</span><span class="nx">大屏幕</span><span class="err">”，</span><span class="nx">看代码再也累了</span><span class="err">；</span>
-<span class="nx">首页5张幻灯片</span><span class="o">+</span><span class="mi">3</span><span class="nx">篇置顶文章无重复显示</span><span class="err">；</span>
-<span class="nx">优化functions</span><span class="p">.</span><span class="nx">php代码中的邮件通知以及评论楼层的代码</span><span class="err">；</span>
-
-<span class="nx">js调整优化淘宝IP库的API接口的加载速度</span><span class="err">；</span>
-<span class="nx">修复go</span><span class="p">.</span><span class="nx">php中的bug</span><span class="err">，</span><span class="nx">解决网址大写的优质网址认证失败的问题</span><span class="err">；</span>
-<span class="nx">优化functions</span><span class="p">.</span><span class="nx">php中检查评论者是否有gravatar头像的代码</span><span class="err">；</span>
-<span class="nx">代码精简</span><span class="err">，</span><span class="nx">目前整个主题文件的安装包体积为1</span><span class="p">.</span><span class="mi">4</span><span class="nx">M</span><span class="err">。</span>
-</pre></div>
-
-
-
-	<p class="more"><a href="https://typecodes.com/mix/updatewpthemevfhky1.html" title="版本更新：wordpress主题【vfhky 1.1】发布">- 阅读剩余部分 -</a></p>
-			</article>
-			<article class="post">
-<h2 class="post-title"><a href="https://typecodes.com/web/againwplimitnogravatar.html">再议wordpress中限制没有Gravatar头像的访客提交评论</a></h2>
-<ul class="post-meta">
-	<li>作者：vfhky | 时间：2014-03-15 22:59 | 分类：<a href="https://typecodes.com/web/index.html">web</a></li>
-</ul>
-<div class="post-content fmt">
-	<p>今天博客收到<a href="https://typecodes.com/web/wplimitnogravatar.html" title="查看评论详情">@羽中</a>童鞋关于文章<a href="https://typecodes.com/web/wplimitnogravatar.html" title="《wordpress中限制没有Gravatar头像的访客提交评论》">《wordpress中限制没有Gravatar头像的访客提交评论》</a>的评论，对代码中使用 get_headers 函数的效率提出质疑。于是写这篇文章来讨论一下。</p>
-<p><img alt="wordpress中限制没有Gravatar头像的访客提交评论" src="https://dn-vfhky.qbox.me/2013/09/wordpress_no_gravatar.png" title="wordpress中限制没有Gravatar头像的访客提交评论" /></p>
-
-	<p class="more"><a href="https://typecodes.com/web/againwplimitnogravatar.html" title="再议wordpress中限制没有Gravatar头像的访客提交评论">- 阅读剩余部分 -</a></p>
-			</article>
-			<article class="post">
-<h2 class="post-title"><a href="https://typecodes.com/mix/chromephpsimulatelogwptwo.html">PHP模拟登录WordPress后台二：使用curl函数</a></h2>
-<ul class="post-meta">
-	<li>作者：vfhky | 时间：2014-03-15 13:21 | 分类：<a href="https://typecodes.com/mix/index.html">mix</a></li>
-</ul>
-<div class="post-content fmt">
-	<p>在<a href="https://typecodes.com/web/chromephpsimulatelogwpone.html" title="《PHP模拟登录WordPress后台一：使用Chrome浏览器网络抓包》">上一篇文章</a>中讲述了如何使用chrome浏览器进行网络抓包，那么这篇文章就说说结合chrome抓包工具，使用PHP的curl函数模拟登录wordpress后台。</p>
-<h5>1 根据chrome网络抓包的数据组PHP发送包</h5>
-<p>根据上一篇文章chrome抓包的情况（主要是见节点6），通过curl函数组发送包。组包信息包括CURLOPT_HTTPHEADER等curl_setopt函数中的所有字段。</p>
-
-	<p class="more"><a href="https://typecodes.com/mix/chromephpsimulatelogwptwo.html" title="PHP模拟登录WordPress后台二：使用curl函数">- 阅读剩余部分 -</a></p>
-			</article>
 		  	<!--page navigation-->
 <ol class="page-navigator">
 <li class="prev"><a href="https://typecodes.com/index9.html">&laquo; 前一页</a></li><li><a href="https://typecodes.com/index.html">1</a>
@@ -243,7 +247,7 @@
 		<h3 class="widget-title">Categories</h3>
 		<ul class="widget-list">
 		      <li class="current">
-		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (26)
+		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (28)
 		      </li>
 		      <li class="current">
 		        <a href="https://typecodes.com/csharp/index.html">Csharp</a> (6)
@@ -255,7 +259,7 @@
 		        <a href="https://typecodes.com/java/index.html">Java</a> (1)
 		      </li>
 		      <li class="current">
-		        <a href="https://typecodes.com/linux/index.html">Linux</a> (16)
+		        <a href="https://typecodes.com/linux/index.html">Linux</a> (18)
 		      </li>
 		      <li class="current">
 		        <a href="https://typecodes.com/mix/index.html">Mix</a> (53)
@@ -269,6 +273,18 @@
 		<h3 class="widget-title">Recent Posts</h3>
 		<ul class="widget-list">
 			<li class="post">
+				<a href="https://typecodes.com/linux/syngithubmarkdownpelican.html">同步GitHub Markdown文章到Linux服务器后更新Pelican博客的脚本</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/linuxgccgconnectmysql.html">Linux c语言连接MySQL数据库实例</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/gccgensharedlib.html">Linux gcc编译生成静态库及使用方法</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/applogsbackup.html">Linux下Nginx、MySQL和PHP等应用的日志切割脚本</a>
+			</li>
+			<li class="post">
 				<a href="https://typecodes.com/mix/sucesstypechotopelican.html">成功将博客从Typecho迁移到Pelican</a>
 			</li>
 			<li class="post">
@@ -276,18 +292,6 @@
 			</li>
 			<li class="post">
 				<a href="https://typecodes.com/linux/tcpconnectiontimedout.html">Linux TCP连接Connection Refused和Connection timed out的问题</a>
-			</li>
-			<li class="post">
-				<a href="https://typecodes.com/linux/mysqlerrornospace.html">博客MySQL服务惊魂记：Linux磁盘空间不足(Core Dump文件引爆)</a>
-			</li>
-			<li class="post">
-				<a href="https://typecodes.com/mix/synweibophpmarkdownimgurl.html">升级博客文章同步微博的插件：PHP正则提取Markdown的图片地址</a>
-			</li>
-			<li class="post">
-				<a href="https://typecodes.com/cseries/cppgeneralmakefile.html">Linux C/C++工程中可生成ELF、动/静态库文件的通用Makefile</a>
-			</li>
-			<li class="post">
-				<a href="https://typecodes.com/cseries/libraryundefinedref.html">解决make编译链接动态库错误：libxx.so: undefined reference to xx</a>
 			</li>
 		</ul>
 	</section>
@@ -303,7 +307,7 @@
 	<div class="row" role="contentinfo">
 		<section class="col-md-2 col-md-offset-1">
 			<h3>Links</h3>
-			<ul><li><a href="http://diaosbook.com/" title="">diaosbook</a></li></ul>
+			<ul><li><a href="http://diaosbook.com/" title="" target="_blank">diaosbook</a></li></ul>
 		</section>
 		<section class="col-md-2">
 			<h3>&nbsp;</h3>
@@ -331,7 +335,7 @@
 		<div class="col-md-12 copyright">
 			<a href="#top"><i class="i-logo-s">TOP</i></a>
 			<p>
-				&copy; 2012-<script language="JavaScript">var date = new Date(); document.write(date.getFullYear());</script>							<a href="https://typecodes.com">TypeCodes</a>. All Rights Reserved<br>Powered by <a href="http://getpelican.com" rel="external" target="_blank">Pelican</a>. <a href="http://www.miitbeian.gov.cn/" rel="external nofollow" target="_blank">粤ICP备14050695号</a>
+				&copy;  2012-2016 							<a href="https://typecodes.com">TypeCodes</a>. All Rights Reserved<br>Powered by <a href="http://getpelican.com" rel="external" target="_blank">Pelican</a>. <a href="http://www.miitbeian.gov.cn/" rel="external nofollow" target="_blank">粤ICP备14050695号</a>
 			</p>
 		</div>
 	</div>

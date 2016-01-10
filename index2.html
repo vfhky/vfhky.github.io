@@ -3,13 +3,8 @@
 	<head>
 		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
 		<title>TypeCodes</title>
-		<meta name="author" content="vfhky">
   		<link href="https://typecodes.com/atom.xml" type="application/atom+xml" rel="alternate" title="TypeCodes Atom Feed" />
 	  	<link href="https://typecodes.com/feed.xml" type="application/rss+xml" rel="alternate" title="TypeCodes RSS Feed" />
-		<meta name="HandheldFriendly" content="True">
-		<meta name="MobileOptimized" content="320">
-		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<meta name="renderer" content="webkit">
 		<link rel="stylesheet" href="https://dn-vfhky.qbox.me/libs/css/pelican-vfhky.css">
 		<script>
 			var _hmt = _hmt || [];
@@ -21,7 +16,7 @@
 			})();
 		</script>
 	</head>
-	<body style>
+	<body>
 		<!--1. header navigation begin-->
 		<header role="banner" id="te-site-header">
 			<div class="container">
@@ -40,6 +35,56 @@
 		<!--2. left sider begin-->
 		<div class="col-md-9" id="blog-main" role="main">
 		  	<!--article recycle-->
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/mix/synweibophpmarkdownimgurl.html">升级博客文章同步微博的插件：PHP正则提取Markdown的图片地址</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2015-08-16 22:31 | 分类：<a href="https://typecodes.com/mix/index.html">mix</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>作为一个微博控，为了把博客的文章同步到新浪微博上，BZ在<a href="http://open.weibo.com" title="点击查看">新浪微博开放平台</a>申请了一个应用。然后在自己的CentOS服务器上，利用<a href="http://open.weibo.com/wiki/SDK#PHP_SDK" title="点击查看">官方PHP SDK</a>搭了个服务端应用。这样通过博客插件作为请求客户端，调用相关API接口把文章同步到微博上。微博发布后，会显示来源，也即应用名称（如下图BZ的是<code>TypeCodes</code>）。</p>
+<p><img alt="博客文章同步到新浪微博的效果" src="https://dn-vfhky.qbox.me/2015/08/blog_synchronize_weibo.png" title="博客文章同步到新浪微博的效果" /></p>
+
+	<p class="more"><a href="https://typecodes.com/mix/synweibophpmarkdownimgurl.html" title="升级博客文章同步微博的插件：PHP正则提取Markdown的图片地址">- 阅读剩余部分 -</a></p>
+			</article>
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/cseries/cppgeneralmakefile.html">Linux C/C++工程中可生成ELF、动/静态库文件的通用Makefile</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2015-08-14 20:27 | 分类：<a href="https://typecodes.com/cseries/index.html">cseries</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>最近写了一个*nix环境下的Makefile文件，支持编译C/C++，同时能够通过参数配置生成ELF目标文件、动态链接库(.so)和静态链接库(.a)文件。</p>
+<p><img alt="Linux C/C++工程中可生成ELF、动/静态库文件的通用Makefile" src="https://dn-vfhky.qbox.me/2015/08/linux_general_makefile.png" title="Linux C/C++工程中可生成ELF、动/静态库文件的通用Makefile" /></p>
+
+	<p class="more"><a href="https://typecodes.com/cseries/cppgeneralmakefile.html" title="Linux C/C++工程中可生成ELF、动/静态库文件的通用Makefile">- 阅读剩余部分 -</a></p>
+			</article>
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/cseries/libraryundefinedref.html">解决make编译链接动态库错误：libxx.so: undefined reference to xx</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2015-08-13 21:05 | 分类：<a href="https://typecodes.com/cseries/index.html">cseries</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>最近在写一个Makefile，调试时遇到了<code>libsrcpbl.so: undefined reference to gcProgramName</code>的问题。在这个Makefile脚本里面，终极目标是通过链接一个自定义的动态库<code>libsrcpbl.so</code>生成一个ELF目标文件。</p>
+<p>由于链接生成libsrcpbl.so动态库的.o文件比较多，无法定位具体的错误程序文件和位置，所以折腾了较长时间。</p>
+
+	<p class="more"><a href="https://typecodes.com/cseries/libraryundefinedref.html" title="解决make编译链接动态库错误：libxx.so: undefined reference to xx">- 阅读剩余部分 -</a></p>
+			</article>
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/cseries/nmobjectfilesymbol.html">Unix系统中nm命令展示目标文件符号的方法</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2015-08-12 00:07 | 分类：<a href="https://typecodes.com/cseries/index.html">cseries</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>在*nix系统中，通过gnu开源gcc或者g++工具生成的目标文件（object file），可以用<code>nm</code>、<code>objdump</code>和<code>readelf</code>这三个命令来查看。</p>
+<div class="highlight"><pre>nm：显示目标文件中的符号；
+objdump：打印目标文件中的详细信息；
+readelf：显示关于 ELF 目标文件的信息。
+</pre></div>
+
+
+<p>之前在调试makefile文件的时候，链接动态库出错：<code>libsrcpbl.so: undefined reference to 'gcProgramName'</code>。也就是变量gcProgramName没定义，后来通过<code>nm -u libsrcpbl.so</code>命令辅助排查解决了。</p>
+
+	<p class="more"><a href="https://typecodes.com/cseries/nmobjectfilesymbol.html" title="Unix系统中nm命令展示目标文件符号的方法">- 阅读剩余部分 -</a></p>
+			</article>
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/mix/vpsshadowsockswitchyomegaspeeder.html">搭了个Shadowsocks+Proxy SwitchyOmega+net-speeder梯子</a></h2>
 <ul class="post-meta">
@@ -96,51 +141,6 @@ SIGUSR2：同SIGUSR1，保留给用户使用的信号。
 
 	<p class="more"><a href="https://typecodes.com/linux/gitsynbackupshell.html" title="CentOS中将备份文件同步到BitBucket、GitHub和Coding的shell脚本">- 阅读剩余部分 -</a></p>
 			</article>
-			<article class="post">
-<h2 class="post-title"><a href="https://typecodes.com/linux/gitaccountconfig.html">CentOS系统BitBucket、GitHub和Coding等多git账户的配置</a></h2>
-<ul class="post-meta">
-	<li>作者：vfhky | 时间：2015-07-05 22:22 | 分类：<a href="https://typecodes.com/linux/index.html">linux</a></li>
-</ul>
-<div class="post-content fmt">
-	<p>目前自己主要在BitBucket、GitHub和Coding这三个Git平台创建了一些项目，所以这篇文章以自己的CentOS7.1服务器作为示例，说说如何在Linux系统中配置不同平台的Git仓库，也即多git账户的配置。</p>
-<p>类似于Windows机器上的git配置方法，在CentOS上也是一样的。通过设置Git全部变量的配置文件<code>~/.ssh/config</code>和当前工作仓库的配置文件<code>your_git_project_root/.git/config</code>即可。</p>
-<p><img alt="当前git工作仓库的.git目录" src="https://dn-vfhky.qbox.me/2015/07/project_git_config_dir.png" title="当前git工作仓库的.git目录" /></p>
-
-	<p class="more"><a href="https://typecodes.com/linux/gitaccountconfig.html" title="CentOS系统BitBucket、GitHub和Coding等多git账户的配置">- 阅读剩余部分 -</a></p>
-			</article>
-			<article class="post">
-<h2 class="post-title"><a href="https://typecodes.com/linux/centos7blogregularbackup.html">2015博客升级记(八)：CentOS7定时备份博客程序的shell脚本</a></h2>
-<ul class="post-meta">
-	<li>作者：vfhky | 时间：2015-06-30 22:24 | 分类：<a href="https://typecodes.com/linux/index.html">linux</a></li>
-</ul>
-<div class="post-content fmt">
-	<p>这是<a href="https://typecodes.com/mix/2015updateblog.html" title="查看原文">《2015年博客升级记》</a>系列文章的第八篇，同时也是这一系列文章的最后一篇，内容主要记录在Linux系统中如何使用shell脚本备份服务器上的博客程序（当然也可以是主机上的任何目录或者文件）。</p>
-<p><img alt="CentOS7定时备份博客程序的shell脚本" src="https://dn-vfhky.qbox.me/2015/06/centos_files_backup_shell.png" title="CentOS7定时备份博客程序的shell脚本" /></p>
-
-	<p class="more"><a href="https://typecodes.com/linux/centos7blogregularbackup.html" title="2015博客升级记(八)：CentOS7定时备份博客程序的shell脚本">- 阅读剩余部分 -</a></p>
-			</article>
-			<article class="post">
-<h2 class="post-title"><a href="https://typecodes.com/linux/centos7mysqlregularbackup.html">2015博客升级记(七)：CentOS7定时备份MySql的shell脚本</a></h2>
-<ul class="post-meta">
-	<li>作者：vfhky | 时间：2015-06-29 22:41 | 分类：<a href="https://typecodes.com/linux/index.html">linux</a></li>
-</ul>
-<div class="post-content fmt">
-	<p>这是<a href="https://typecodes.com/mix/2015updateblog.html" title="查看原文">《2015年博客升级记》</a>系列文章的第七篇，主要记录在Linux系统中如何使用shell脚本备份服务器上的mysql数据库。</p>
-<p><img alt="CentOS7定时备份MySql的shell脚本" src="https://dn-vfhky.qbox.me/2015/06/centos_mysql_backup.png" title="CentOS7定时备份MySql的shell脚本" /></p>
-
-	<p class="more"><a href="https://typecodes.com/linux/centos7mysqlregularbackup.html" title="2015博客升级记(七)：CentOS7定时备份MySql的shell脚本">- 阅读剩余部分 -</a></p>
-			</article>
-			<article class="post">
-<h2 class="post-title"><a href="https://typecodes.com/mix/codinggitsshbug.html">Coding.net上git仓库ssh地址的"bug"</a></h2>
-<ul class="post-meta">
-	<li>作者：vfhky | 时间：2015-06-28 19:34 | 分类：<a href="https://typecodes.com/mix/index.html">mix</a></li>
-</ul>
-<div class="post-content fmt">
-	<p>前段时间在用Coding.net同步git仓库时，能正常使用非https的ssh协议，但是这两天在自己的Windows机器上push内容时，报如下图中的错误<code>Permission denied (publickey).</code>：</p>
-<p><img alt="Coding.net报错Permission denied (publickey)" src="https://dn-vfhky.qbox.me/2015/06/git_push_error.png" title="Coding.net报错Permission denied (publickey)" /></p>
-
-	<p class="more"><a href="https://typecodes.com/mix/codinggitsshbug.html" title="Coding.net上git仓库ssh地址的"bug"">- 阅读剩余部分 -</a></p>
-			</article>
 		  	<!--page navigation-->
 <ol class="page-navigator">
 <li class="prev"><a href="https://typecodes.com/index.html">&laquo; 前一页</a></li><li><a href="https://typecodes.com/index.html">1</a>
@@ -168,7 +168,7 @@ SIGUSR2：同SIGUSR1，保留给用户使用的信号。
 		<h3 class="widget-title">Categories</h3>
 		<ul class="widget-list">
 		      <li class="current">
-		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (26)
+		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (28)
 		      </li>
 		      <li class="current">
 		        <a href="https://typecodes.com/csharp/index.html">Csharp</a> (6)
@@ -180,7 +180,7 @@ SIGUSR2：同SIGUSR1，保留给用户使用的信号。
 		        <a href="https://typecodes.com/java/index.html">Java</a> (1)
 		      </li>
 		      <li class="current">
-		        <a href="https://typecodes.com/linux/index.html">Linux</a> (16)
+		        <a href="https://typecodes.com/linux/index.html">Linux</a> (18)
 		      </li>
 		      <li class="current">
 		        <a href="https://typecodes.com/mix/index.html">Mix</a> (53)
@@ -194,6 +194,18 @@ SIGUSR2：同SIGUSR1，保留给用户使用的信号。
 		<h3 class="widget-title">Recent Posts</h3>
 		<ul class="widget-list">
 			<li class="post">
+				<a href="https://typecodes.com/linux/syngithubmarkdownpelican.html">同步GitHub Markdown文章到Linux服务器后更新Pelican博客的脚本</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/linuxgccgconnectmysql.html">Linux c语言连接MySQL数据库实例</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/gccgensharedlib.html">Linux gcc编译生成静态库及使用方法</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/applogsbackup.html">Linux下Nginx、MySQL和PHP等应用的日志切割脚本</a>
+			</li>
+			<li class="post">
 				<a href="https://typecodes.com/mix/sucesstypechotopelican.html">成功将博客从Typecho迁移到Pelican</a>
 			</li>
 			<li class="post">
@@ -201,18 +213,6 @@ SIGUSR2：同SIGUSR1，保留给用户使用的信号。
 			</li>
 			<li class="post">
 				<a href="https://typecodes.com/linux/tcpconnectiontimedout.html">Linux TCP连接Connection Refused和Connection timed out的问题</a>
-			</li>
-			<li class="post">
-				<a href="https://typecodes.com/linux/mysqlerrornospace.html">博客MySQL服务惊魂记：Linux磁盘空间不足(Core Dump文件引爆)</a>
-			</li>
-			<li class="post">
-				<a href="https://typecodes.com/mix/synweibophpmarkdownimgurl.html">升级博客文章同步微博的插件：PHP正则提取Markdown的图片地址</a>
-			</li>
-			<li class="post">
-				<a href="https://typecodes.com/cseries/cppgeneralmakefile.html">Linux C/C++工程中可生成ELF、动/静态库文件的通用Makefile</a>
-			</li>
-			<li class="post">
-				<a href="https://typecodes.com/cseries/libraryundefinedref.html">解决make编译链接动态库错误：libxx.so: undefined reference to xx</a>
 			</li>
 		</ul>
 	</section>
@@ -228,7 +228,7 @@ SIGUSR2：同SIGUSR1，保留给用户使用的信号。
 	<div class="row" role="contentinfo">
 		<section class="col-md-2 col-md-offset-1">
 			<h3>Links</h3>
-			<ul><li><a href="http://diaosbook.com/" title="">diaosbook</a></li></ul>
+			<ul><li><a href="http://diaosbook.com/" title="" target="_blank">diaosbook</a></li></ul>
 		</section>
 		<section class="col-md-2">
 			<h3>&nbsp;</h3>
@@ -256,7 +256,7 @@ SIGUSR2：同SIGUSR1，保留给用户使用的信号。
 		<div class="col-md-12 copyright">
 			<a href="#top"><i class="i-logo-s">TOP</i></a>
 			<p>
-				&copy; 2012-<script language="JavaScript">var date = new Date(); document.write(date.getFullYear());</script>							<a href="https://typecodes.com">TypeCodes</a>. All Rights Reserved<br>Powered by <a href="http://getpelican.com" rel="external" target="_blank">Pelican</a>. <a href="http://www.miitbeian.gov.cn/" rel="external nofollow" target="_blank">粤ICP备14050695号</a>
+				&copy;  2012-2016 							<a href="https://typecodes.com">TypeCodes</a>. All Rights Reserved<br>Powered by <a href="http://getpelican.com" rel="external" target="_blank">Pelican</a>. <a href="http://www.miitbeian.gov.cn/" rel="external nofollow" target="_blank">粤ICP备14050695号</a>
 			</p>
 		</div>
 	</div>

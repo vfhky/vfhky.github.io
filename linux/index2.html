@@ -3,13 +3,8 @@
 	<head>
 		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
 		<title>分类 linux 下的文章 - TypeCodes</title>
-		<meta name="author" content="vfhky">
   		<link href="https://typecodes.com/atom.xml" type="application/atom+xml" rel="alternate" title="TypeCodes Atom Feed" />
 	  	<link href="https://typecodes.com/feed.xml" type="application/rss+xml" rel="alternate" title="TypeCodes RSS Feed" />
-		<meta name="HandheldFriendly" content="True">
-		<meta name="MobileOptimized" content="320">
-		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<meta name="renderer" content="webkit">
 		<link rel="stylesheet" href="https://dn-vfhky.qbox.me/libs/css/pelican-vfhky.css">
 		<script>
 			var _hmt = _hmt || [];
@@ -21,7 +16,7 @@
 			})();
 		</script>
 	</head>
-	<body style>
+	<body>
 		<!--1. header navigation begin-->
 		<header role="banner" id="te-site-header">
 			<div class="container">
@@ -40,6 +35,34 @@
 		<!--2. left sider begin-->
 		<div class="col-md-9" id="blog-main" role="main">
 		  	<!--article recycle-->
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/linux/centoscoredumpcfgshell.html">CentOS开启coredump转储并生成core文件的配置</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2015-06-11 21:47 | 分类：<a href="https://typecodes.com/linux/index.html">linux</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>在CentOS或者suse等Linux系统中默认是关闭coredump核心转储的，也就不会产生core文件。由于在C/C++开发中会用到gdb调试，所以需要开启coredump功能。下面是具体的配置命令，可以保存为一个简单的shell脚本执行。</p>
+
+	<p class="more"><a href="https://typecodes.com/linux/centoscoredumpcfgshell.html" title="CentOS开启coredump转储并生成core文件的配置">- 阅读剩余部分 -</a></p>
+			</article>
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/linux/centos7fdiskmountswap.html">2015博客升级记(二)：Linux系统磁盘分区挂载和交换空间</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2015-05-27 19:31 | 分类：<a href="https://typecodes.com/linux/index.html">linux</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>这是<a href="https://typecodes.com/mix/2015updateblog.html" title="查看原文">《2015年博客升级记》</a>系列文章的第二篇，主要记录在Linux系统中如何将磁盘进行分区和挂载。</p>
+<div class="highlight"><pre>------------操作说明------------               
+Linux系统：       阿里云CentOS 7.1（20G）
+操作工具：        SecureCRT 7.0
+待挂载的数据盘：   24G
+分区目标：        先分4G作为CentOS7.1系统的交换空间，剩余20G作为普通物理空间
+</pre></div>
+
+
+
+	<p class="more"><a href="https://typecodes.com/linux/centos7fdiskmountswap.html" title="2015博客升级记(二)：Linux系统磁盘分区挂载和交换空间">- 阅读剩余部分 -</a></p>
+			</article>
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/linux/centos7afteroperate.html">2015博客升级记(一)：安装CentOS7后需要的操作</a></h2>
 <ul class="post-meta">
@@ -125,32 +148,13 @@ VMware Network Adapter VMnet8：这是Host用于与NAT虚拟网络进行通信�
 
 	<p class="more"><a href="https://typecodes.com/linux/cmdvsftpdinteraction.html" title="Redhat/CentOS通过yum安装与配置vsFTPd的详细步骤">- 阅读剩余部分 -</a></p>
 			</article>
-			<article class="post">
-<h2 class="post-title"><a href="https://typecodes.com/linux/linuxyuminstallvsftpd.html">Redhat/CentOS通过yum安装与配置vsFTPd的详细步骤</a></h2>
-<ul class="post-meta">
-	<li>作者：vfhky | 时间：2013-03-15 22:54 | 分类：<a href="https://typecodes.com/linux/index.html">linux</a></li>
-</ul>
-<div class="post-content fmt">
-	<p>由于需要在RHEL5.3中安装oracle数据库，所以博主得把window7中的oracle软件上传到wm8中的linux系统中去。众所周知，对于如何实现vm与windows系统的互通，可以使用vmtools实现。</p>
-<p>但是对于一些类似于oracle这种大文件的话，直接从桌面或者其它硬盘拖动到linux中去的话是非常慢的。因此，我们一款轻巧快捷，安全易用的软件把它实现，这就是vsFTPd。下面就介绍下如何在linux系统Redhat/CentOS下简单安装和配置vsFTPd这个服务软件。</p>
-
-	<p class="more"><a href="https://typecodes.com/linux/linuxyuminstallvsftpd.html" title="Redhat/CentOS通过yum安装与配置vsFTPd的详细步骤">- 阅读剩余部分 -</a></p>
-			</article>
-			<article class="post">
-<h2 class="post-title"><a href="https://typecodes.com/linux/linuxnotregisteredrhn.html">解决Redhat Linux5 yum出现This system is not registered with RHN</a></h2>
-<ul class="post-meta">
-	<li>作者：vfhky | 时间：2013-03-08 14:04 | 分类：<a href="https://typecodes.com/linux/index.html">linux</a></li>
-</ul>
-<div class="post-content fmt">
-	<p>最近博主在学习Linux，菜鸟级别的的选手连装个Chrome都觉得难，悲了个催的……百度了很多教程，大多是类似的。博主的配置是在VM8下搭建的RHEL5.3 (Tikanga)版本，不知道什么原因，每次在输入yum install google-chrome-stable之后就会出现“This system is not registered with RHN”的错误提示，蛋疼不已。百度无果后，GG大神帮上忙了（搜索Redhat This system is not registered with RHN，会冒出很多国外大牛的文章）。</p>
-<p>出现这个错误的原因是你的Linux木有花钱在红帽网络上注册^^，所以无法下载谷歌Chrome的软件包，解决方案可以使用从Redhat演化而来的免费Linux版本CentOS，通过CentOS的yum更新源来实现RHEL5的YUM功能。下面博主结合GG到的国外文章谈谈How to Install CentOS YUM on Redhat Linux RHEL5，以此来解决This system is not registered with RHN的问题。</p>
-
-	<p class="more"><a href="https://typecodes.com/linux/linuxnotregisteredrhn.html" title="解决Redhat Linux5 yum出现This system is not registered with RHN">- 阅读剩余部分 -</a></p>
-			</article>
 		  	<!--page navigation-->
 <ol class="page-navigator">
 <li class="prev"><a href="https://typecodes.com/linux/index.html">&laquo; 前一页</a></li><li><a href="https://typecodes.com/linux/index.html">1</a><li class="current"><a href="https://typecodes.com/linux/index2.html">2</a>
-       		</li></ol>		</div>
+       		</li><li><a href="https://typecodes.com/linux/index3.html">3</a>
+       		</li><li class="next">
+       		<a href="https://typecodes.com/linux/index3.html">后一页 &raquo;</a>
+       </li></ol>		</div>
 		<!--3. right sider begin-->
 <div class="col-md-3" id="blog-secondary" role="complementary">
 	<section class="widget">
@@ -164,7 +168,7 @@ VMware Network Adapter VMnet8：这是Host用于与NAT虚拟网络进行通信�
 		<h3 class="widget-title">Categories</h3>
 		<ul class="widget-list">
 		      <li class="current">
-		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (26)
+		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (28)
 		      </li>
 		      <li class="current">
 		        <a href="https://typecodes.com/csharp/index.html">Csharp</a> (6)
@@ -176,7 +180,7 @@ VMware Network Adapter VMnet8：这是Host用于与NAT虚拟网络进行通信�
 		        <a href="https://typecodes.com/java/index.html">Java</a> (1)
 		      </li>
 		      <li class="current">
-		        <a href="https://typecodes.com/linux/index.html">Linux</a> (16)
+		        <a href="https://typecodes.com/linux/index.html">Linux</a> (18)
 		      </li>
 		      <li class="current">
 		        <a href="https://typecodes.com/mix/index.html">Mix</a> (53)
@@ -189,6 +193,12 @@ VMware Network Adapter VMnet8：这是Host用于与NAT虚拟网络进行通信�
 	<section class="widget">
 		<h3 class="widget-title">Recent Posts</h3>
 		<ul class="widget-list">
+			<li class="post">
+				<a href="https://typecodes.com/linux/syngithubmarkdownpelican.html">同步GitHub Markdown文章到Linux服务器后更新Pelican博客的脚本</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/applogsbackup.html">Linux下Nginx、MySQL和PHP等应用的日志切割脚本</a>
+			</li>
 			<li class="post">
 				<a href="https://typecodes.com/linux/tcpconnectiontimedout.html">Linux TCP连接Connection Refused和Connection timed out的问题</a>
 			</li>
@@ -204,12 +214,6 @@ VMware Network Adapter VMnet8：这是Host用于与NAT虚拟网络进行通信�
 			<li class="post">
 				<a href="https://typecodes.com/linux/centos7blogregularbackup.html">2015博客升级记(八)：CentOS7定时备份博客程序的shell脚本</a>
 			</li>
-			<li class="post">
-				<a href="https://typecodes.com/linux/centos7mysqlregularbackup.html">2015博客升级记(七)：CentOS7定时备份MySql的shell脚本</a>
-			</li>
-			<li class="post">
-				<a href="https://typecodes.com/linux/centoscoredumpcfgshell.html">CentOS开启coredump转储并生成core文件的配置</a>
-			</li>
 		</ul>
 	</section>
 	<section class="widget widget-feed">
@@ -224,7 +228,7 @@ VMware Network Adapter VMnet8：这是Host用于与NAT虚拟网络进行通信�
 	<div class="row" role="contentinfo">
 		<section class="col-md-2 col-md-offset-1">
 			<h3>Links</h3>
-			<ul><li><a href="http://diaosbook.com/" title="">diaosbook</a></li></ul>
+			<ul><li><a href="http://diaosbook.com/" title="" target="_blank">diaosbook</a></li></ul>
 		</section>
 		<section class="col-md-2">
 			<h3>&nbsp;</h3>
@@ -252,7 +256,7 @@ VMware Network Adapter VMnet8：这是Host用于与NAT虚拟网络进行通信�
 		<div class="col-md-12 copyright">
 			<a href="#top"><i class="i-logo-s">TOP</i></a>
 			<p>
-				&copy; 2012-<script language="JavaScript">var date = new Date(); document.write(date.getFullYear());</script>							<a href="https://typecodes.com">TypeCodes</a>. All Rights Reserved<br>Powered by <a href="http://getpelican.com" rel="external" target="_blank">Pelican</a>. <a href="http://www.miitbeian.gov.cn/" rel="external nofollow" target="_blank">粤ICP备14050695号</a>
+				&copy;  2013-2016 							<a href="https://typecodes.com">TypeCodes</a>. All Rights Reserved<br>Powered by <a href="http://getpelican.com" rel="external" target="_blank">Pelican</a>. <a href="http://www.miitbeian.gov.cn/" rel="external nofollow" target="_blank">粤ICP备14050695号</a>
 			</p>
 		</div>
 	</div>

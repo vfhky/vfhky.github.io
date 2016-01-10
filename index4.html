@@ -3,13 +3,8 @@
 	<head>
 		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
 		<title>TypeCodes</title>
-		<meta name="author" content="vfhky">
   		<link href="https://typecodes.com/atom.xml" type="application/atom+xml" rel="alternate" title="TypeCodes Atom Feed" />
 	  	<link href="https://typecodes.com/feed.xml" type="application/rss+xml" rel="alternate" title="TypeCodes RSS Feed" />
-		<meta name="HandheldFriendly" content="True">
-		<meta name="MobileOptimized" content="320">
-		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<meta name="renderer" content="webkit">
 		<link rel="stylesheet" href="https://dn-vfhky.qbox.me/libs/css/pelican-vfhky.css">
 		<script>
 			var _hmt = _hmt || [];
@@ -21,7 +16,7 @@
 			})();
 		</script>
 	</head>
-	<body style>
+	<body>
 		<!--1. header navigation begin-->
 		<header role="banner" id="te-site-header">
 			<div class="container">
@@ -40,6 +35,51 @@
 		<!--2. left sider begin-->
 		<div class="col-md-9" id="blog-main" role="main">
 		  	<!--article recycle-->
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/web/solvemysqlcompileerror.html">MySQL编译安装时常见错误分析</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2015-06-23 19:20 | 分类：<a href="https://typecodes.com/web/index.html">web</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>这篇文章主要是关于MySQL在编译安装时，可能出现的错误的解决方法。MySQL正确的编译安装操作见前文<a href="https://typecodes.com/web/centos7compilemysql.html" title="查看原文">《2015博客升级记(四)：CentOS 7.1编译安装MySQL5.7.7rc》</a>。</p>
+
+	<p class="more"><a href="https://typecodes.com/web/solvemysqlcompileerror.html" title="MySQL编译安装时常见错误分析">- 阅读剩余部分 -</a></p>
+			</article>
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/web/centosmysqlconfig.html">CentOS系统MySQL的配置文件my.cnf</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2015-06-23 19:11 | 分类：<a href="https://typecodes.com/web/index.html">web</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>这篇文章主要内容是前文<a href="https://typecodes.com/web/centos7compilemysql.html" title="查看原文">《2015博客升级记(四)：CentOS 7.1编译安装MySQL5.7.7rc》</a>提到的MySQL的配置文件my.cnf。</p>
+<p>需要注意的是my.cnf中的一些配置需要和MySQL5.7.7rc编译安装时的一些配置保持一致。例如，MySQL的socket文件<code>/var/run/mysql/mysql.sock</code>路径在MySQL5.7.7rc编译安装时，需要创建<code>/var/run/mysql/</code>文件路径。也就是my.cnf的配置是由编译MySQL时配置的内容决定的。</p>
+<p>由于MySQL的配置明细不多，所以这里就直接将my.cnf的全部内容贴出来了。</p>
+
+	<p class="more"><a href="https://typecodes.com/web/centosmysqlconfig.html" title="CentOS系统MySQL的配置文件my.cnf">- 阅读剩余部分 -</a></p>
+			</article>
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/web/solvenginxcompileerror.html">Nginx编译安装时常见错误分析</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2015-06-22 17:02 | 分类：<a href="https://typecodes.com/web/index.html">web</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>这篇文章主要是关于Nginx在编译安装时，可能出现的错误的解决方法。Nginx正确的编译安装操作见前文<a href="https://typecodes.com/web/centos7compilenginx.html" title="查看原文">《2015博客升级记(三)：CentOS 7.1编译安装Nginx1.9.0》</a>。</p>
+<h5>1 Nginx启动脚本错误：env: /etc/init.d/nginx: No such file or directory</h5>
+<p>明明上传了Nginx服务控制脚本<code>nginx</code>，但是在执行<code>service nginx start</code>命令时，却会报上面的错误。</p>
+<p>解决方法：启动脚本的格式有问题，例如该脚本是dos格式，在Linux系统是中无法识别的。可以通过vim打开该文件，如果可以看到出现<code>^M</code>的字符，就可以确定是DOS格式的了。那么可以在vim中执行命令<code>:%s/\r\+$//e</code>，将其转换成Unix格式即可。</p>
+
+	<p class="more"><a href="https://typecodes.com/web/solvenginxcompileerror.html" title="Nginx编译安装时常见错误分析">- 阅读剩余部分 -</a></p>
+			</article>
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/web/centos7nginxhttpsspdy.html">2015博客升级记(六)：Nginx配置HTTPS和SPDY实战</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2015-06-21 22:39 | 分类：<a href="https://typecodes.com/web/index.html">web</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>这是<a href="https://typecodes.com/mix/2015updateblog.html" title="查看原文">《2015年博客升级记》</a>系列文章的第六篇，主要记录如何在CentOS 7.1中Nginx如何配置HTTPS和SPDY。关于具体如何编译安装Nginx，可以查看文章<a href="https://typecodes.com/web/centos7compilenginx.html" title="查看原文">《2015博客升级记(三)：CentOS 7.1编译安装Nginx1.9.0》</a>。</p>
+
+	<p class="more"><a href="https://typecodes.com/web/centos7nginxhttpsspdy.html" title="2015博客升级记(六)：Nginx配置HTTPS和SPDY实战">- 阅读剩余部分 -</a></p>
+			</article>
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/web/centos7compilemysql.html">2015博客升级记(四)：CentOS 7.1编译安装MySQL5.7.7rc</a></h2>
 <ul class="post-meta">
@@ -101,56 +141,6 @@
 
 	<p class="more"><a href="https://typecodes.com/web/nginxserviceoptshell.html" title="Nginx服务启动、停止和重启等操作的SHELL脚本">- 阅读剩余部分 -</a></p>
 			</article>
-			<article class="post">
-<h2 class="post-title"><a href="https://typecodes.com/web/centos7compilenginx.html">2015博客升级记(三)：CentOS 7.1编译安装Nginx1.9.0</a></h2>
-<ul class="post-meta">
-	<li>作者：vfhky | 时间：2015-06-03 16:06 | 分类：<a href="https://typecodes.com/web/index.html">web</a></li>
-</ul>
-<div class="post-content fmt">
-	<p>这是<a href="https://typecodes.com/mix/2015updateblog.html" title="查看原文">《2015年博客升级记》</a>系列文章的第三篇，主要记录如何在CentOS 7.1中编译安装Nginx官方最新的1.9.0版本。由于像Nginx、Mysql和PHP7的的源码都是用C/C++写的，所以自己的CentOS 7.1服务器上必须要安装gcc和g++软件（CentOS 7系列会自带这两个编译软件）。</p>
-<p><img alt="CentOS 7.1编译安装Nginx1.9.0" src="https://dn-vfhky.qbox.me/2015/05/nginxlogo.png" title="CentOS 7.1编译安装Nginx1.9.0" /></p>
-
-	<p class="more"><a href="https://typecodes.com/web/centos7compilenginx.html" title="2015博客升级记(三)：CentOS 7.1编译安装Nginx1.9.0">- 阅读剩余部分 -</a></p>
-			</article>
-			<article class="post">
-<h2 class="post-title"><a href="https://typecodes.com/mix/typechocommentmarkdown.html">Typecho评论中开启和使用Markdown的方法</a></h2>
-<ul class="post-meta">
-	<li>作者：vfhky | 时间：2015-05-31 18:20 | 分类：<a href="https://typecodes.com/mix/index.html">mix</a></li>
-</ul>
-<div class="post-content fmt">
-	<p>轻量级的博客程序Typecho，还有一个很舒适的体验，那就是支持Markdown语法，不论是在文章或是评论中。这篇文章主要是说明如何在博客中使用Markdown写作以及如何在评论中使用Markdown语法。</p>
-<p><img alt="Typecho评论中开启和使用Markdown的方法" src="https://dn-vfhky.qbox.me/2015/05/typechomarkdown.png" title="Typecho评论中开启和使用Markdown的方法" /></p>
-
-	<p class="more"><a href="https://typecodes.com/mix/typechocommentmarkdown.html" title="Typecho评论中开启和使用Markdown的方法">- 阅读剩余部分 -</a></p>
-			</article>
-			<article class="post">
-<h2 class="post-title"><a href="https://typecodes.com/cseries/simplifychexstrtoint.html">视角：C语言将十六进制字符串转成十进制整数</a></h2>
-<ul class="post-meta">
-	<li>作者：vfhky | 时间：2015-05-30 07:58 | 分类：<a href="https://typecodes.com/cseries/index.html">cseries</a></li>
-</ul>
-<div class="post-content fmt">
-	<p>在前文<a href="https://typecodes.com/cseries/againchexstrtointeger.html/comment-page-1#comment-1665" title="查看原文评论">《再议C语言将十六进制字符串转成十进制整数》</a>中 <a href="http://pewae.com/">@大致</a> 童鞋帮忙提了一个思路：直接将指针<code>p</code>读取的十六进制字符串中的单个字符转换后的结果保存在<code>iResult</code>中，而不是保存在指针p指向的内存中。这样思路更为简洁，下面是具体的两个实现程序。</p>
-
-	<p class="more"><a href="https://typecodes.com/cseries/simplifychexstrtoint.html" title="视角：C语言将十六进制字符串转成十进制整数">- 阅读剩余部分 -</a></p>
-			</article>
-			<article class="post">
-<h2 class="post-title"><a href="https://typecodes.com/linux/centos7fdiskmountswap.html">2015博客升级记(二)：Linux系统磁盘分区挂载和交换空间</a></h2>
-<ul class="post-meta">
-	<li>作者：vfhky | 时间：2015-05-27 19:31 | 分类：<a href="https://typecodes.com/linux/index.html">linux</a></li>
-</ul>
-<div class="post-content fmt">
-	<p>这是<a href="https://typecodes.com/mix/2015updateblog.html" title="查看原文">《2015年博客升级记》</a>系列文章的第二篇，主要记录在Linux系统中如何将磁盘进行分区和挂载。</p>
-<div class="highlight"><pre>------------操作说明------------               
-Linux系统：       阿里云CentOS 7.1（20G）
-操作工具：        SecureCRT 7.0
-待挂载的数据盘：   24G
-分区目标：        先分4G作为CentOS7.1系统的交换空间，剩余20G作为普通物理空间
-</pre></div>
-
-
-
-	<p class="more"><a href="https://typecodes.com/linux/centos7fdiskmountswap.html" title="2015博客升级记(二)：Linux系统磁盘分区挂载和交换空间">- 阅读剩余部分 -</a></p>
-			</article>
 		  	<!--page navigation-->
 <ol class="page-navigator">
 <li class="prev"><a href="https://typecodes.com/index3.html">&laquo; 前一页</a></li><li><a href="https://typecodes.com/index.html">1</a>
@@ -178,7 +168,7 @@ Linux系统：       阿里云CentOS 7.1（20G）
 		<h3 class="widget-title">Categories</h3>
 		<ul class="widget-list">
 		      <li class="current">
-		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (26)
+		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (28)
 		      </li>
 		      <li class="current">
 		        <a href="https://typecodes.com/csharp/index.html">Csharp</a> (6)
@@ -190,7 +180,7 @@ Linux系统：       阿里云CentOS 7.1（20G）
 		        <a href="https://typecodes.com/java/index.html">Java</a> (1)
 		      </li>
 		      <li class="current">
-		        <a href="https://typecodes.com/linux/index.html">Linux</a> (16)
+		        <a href="https://typecodes.com/linux/index.html">Linux</a> (18)
 		      </li>
 		      <li class="current">
 		        <a href="https://typecodes.com/mix/index.html">Mix</a> (53)
@@ -204,6 +194,18 @@ Linux系统：       阿里云CentOS 7.1（20G）
 		<h3 class="widget-title">Recent Posts</h3>
 		<ul class="widget-list">
 			<li class="post">
+				<a href="https://typecodes.com/linux/syngithubmarkdownpelican.html">同步GitHub Markdown文章到Linux服务器后更新Pelican博客的脚本</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/linuxgccgconnectmysql.html">Linux c语言连接MySQL数据库实例</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/gccgensharedlib.html">Linux gcc编译生成静态库及使用方法</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/applogsbackup.html">Linux下Nginx、MySQL和PHP等应用的日志切割脚本</a>
+			</li>
+			<li class="post">
 				<a href="https://typecodes.com/mix/sucesstypechotopelican.html">成功将博客从Typecho迁移到Pelican</a>
 			</li>
 			<li class="post">
@@ -211,18 +213,6 @@ Linux系统：       阿里云CentOS 7.1（20G）
 			</li>
 			<li class="post">
 				<a href="https://typecodes.com/linux/tcpconnectiontimedout.html">Linux TCP连接Connection Refused和Connection timed out的问题</a>
-			</li>
-			<li class="post">
-				<a href="https://typecodes.com/linux/mysqlerrornospace.html">博客MySQL服务惊魂记：Linux磁盘空间不足(Core Dump文件引爆)</a>
-			</li>
-			<li class="post">
-				<a href="https://typecodes.com/mix/synweibophpmarkdownimgurl.html">升级博客文章同步微博的插件：PHP正则提取Markdown的图片地址</a>
-			</li>
-			<li class="post">
-				<a href="https://typecodes.com/cseries/cppgeneralmakefile.html">Linux C/C++工程中可生成ELF、动/静态库文件的通用Makefile</a>
-			</li>
-			<li class="post">
-				<a href="https://typecodes.com/cseries/libraryundefinedref.html">解决make编译链接动态库错误：libxx.so: undefined reference to xx</a>
 			</li>
 		</ul>
 	</section>
@@ -238,7 +228,7 @@ Linux系统：       阿里云CentOS 7.1（20G）
 	<div class="row" role="contentinfo">
 		<section class="col-md-2 col-md-offset-1">
 			<h3>Links</h3>
-			<ul><li><a href="http://diaosbook.com/" title="">diaosbook</a></li></ul>
+			<ul><li><a href="http://diaosbook.com/" title="" target="_blank">diaosbook</a></li></ul>
 		</section>
 		<section class="col-md-2">
 			<h3>&nbsp;</h3>
@@ -266,7 +256,7 @@ Linux系统：       阿里云CentOS 7.1（20G）
 		<div class="col-md-12 copyright">
 			<a href="#top"><i class="i-logo-s">TOP</i></a>
 			<p>
-				&copy; 2012-<script language="JavaScript">var date = new Date(); document.write(date.getFullYear());</script>							<a href="https://typecodes.com">TypeCodes</a>. All Rights Reserved<br>Powered by <a href="http://getpelican.com" rel="external" target="_blank">Pelican</a>. <a href="http://www.miitbeian.gov.cn/" rel="external nofollow" target="_blank">粤ICP备14050695号</a>
+				&copy;  2012-2016 							<a href="https://typecodes.com">TypeCodes</a>. All Rights Reserved<br>Powered by <a href="http://getpelican.com" rel="external" target="_blank">Pelican</a>. <a href="http://www.miitbeian.gov.cn/" rel="external nofollow" target="_blank">粤ICP备14050695号</a>
 			</p>
 		</div>
 	</div>

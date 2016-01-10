@@ -1,5 +1,1017 @@
 <?xml version="1.0" encoding="utf-8"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>TypeCodes</title><link>https://typecodes.com/</link><description>Beauty of programming</description><atom:link href="https://typecodes.com/feed.xml" rel="self"></atom:link><lastBuildDate>Thu, 10 Dec 2015 22:06:00 +0800</lastBuildDate><item><title>成功将博客从Typecho迁移到Pelican</title><link>https://typecodes.com/mix/sucesstypechotopelican.html</link><description>&lt;p&gt;根据&lt;a href="https://typecodes.com/mix/begintypechotopelican.html" title="《准备将博客从Typecho迁移到Pelican》"&gt;前文&lt;/a&gt;的上线步骤，目前已经成功的将博客从Typecho迁移到了Pelican。中间上线发布的时候，遇到了好几个问题，不过由于上线步骤中有失败的处理方案（保留Typecho程序），所以在Typecho到Pelican之间来来回回切换了好几次。&lt;/p&gt;
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>TypeCodes</title><link>https://typecodes.com/</link><description>Beauty of programming</description><atom:link href="https://typecodes.com/feed.xml" rel="self"></atom:link><lastBuildDate>Sun, 10 Jan 2016 22:22:00 +0800</lastBuildDate><item><title>同步GitHub Markdown文章到Linux服务器后更新Pelican博客的脚本</title><link>https://typecodes.com/linux/syngithubmarkdownpelican.html</link><description>&lt;p&gt;使用了Pelican后，最多的操作就是编译Markdown文章生成HTML文件，然后发布到Nginx的博客目录下。&lt;/p&gt;
+&lt;p&gt;&lt;img alt="我的Pelican博客管理和发布流程" src="https://dn-vfhky.qbox.me/2016/01/github_pelican_nginx.png" title="我的Pelican博客管理和发布流程" /&gt;&lt;/p&gt;
+
+
+&lt;p&gt;如上面的流程图所示，目前自己在CentOS7.1服务器上通过Pelican生成和发布博客的做法如下：&lt;/p&gt;
+&lt;table class="highlighttable"&gt;&lt;tr&gt;&lt;td class="linenos"&gt;&lt;div class="linenodiv"&gt;&lt;pre&gt;1
+2
+3
+4
+5
+6&lt;/pre&gt;&lt;/div&gt;&lt;/td&gt;&lt;td class="code"&gt;&lt;div class="highlight"&gt;&lt;pre&gt;在Windows中写好Markdown文章，然后git push到GitHub中的私人仓库中；
+在CentOS7.1服务器中git pull到本地仓库；
+把Markdown文件复制到Pelican的文章目录(content)生成HTML文件；
+用tar命令打包Pelcian在OUTPUT目录中生成的所有HTML文件到一个博客版本备份目录形成一个博客版本；
+将这个版本复制到Nginx的博客目录下解压，这样就更新了博客；
+同时，也可以发布到GitHub个人主页上。
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+
+&lt;h4&gt;1 考虑点&lt;/h4&gt;
+&lt;p&gt;如果每次手动执行上面的操作步骤实在是太麻烦了，所以决定使用shell脚本来自动完成。当然除了实现上面的基本功能点之外，脚本还需具备如下4个特点：&lt;/p&gt;
+&lt;table class="highlighttable"&gt;&lt;tr&gt;&lt;td class="linenos"&gt;&lt;div class="linenodiv"&gt;&lt;pre&gt;1
+2
+3
+4&lt;/pre&gt;&lt;/div&gt;&lt;/td&gt;&lt;td class="code"&gt;&lt;div class="highlight"&gt;&lt;pre&gt;脚本执行过程打印到日志文件中，方便查看；
+脚本中每条重要语句的执行时间都有记录在日志中；
+如果没有从GitHub个人仓库中检测到更新的文章，那么直接结束；
+能自动判断是否同步发布到GitHub的个人主页中（博主的是vfhky.github.io）。
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+
+&lt;h4&gt;2 具体代码&lt;/h4&gt;
+&lt;p&gt;代码比较简单，需要注明的是，如果个人没有Github主页的话，可以直接执行命令&lt;code&gt;./github_pelican_nginx.sh&lt;/code&gt;即可，这样就不会执行脚本中的第7个步骤。否则，需要执行命令&lt;code&gt;./github_pelican_nginx.sh 关于本次更新的说明内容&lt;/code&gt;。&lt;/p&gt;
+&lt;table class="highlighttable"&gt;&lt;tr&gt;&lt;td class="linenos"&gt;&lt;div class="linenodiv"&gt;&lt;pre&gt;  1
+  2
+  3
+  4
+  5
+  6
+  7
+  8
+  9
+ 10
+ 11
+ 12
+ 13
+ 14
+ 15
+ 16
+ 17
+ 18
+ 19
+ 20
+ 21
+ 22
+ 23
+ 24
+ 25
+ 26
+ 27
+ 28
+ 29
+ 30
+ 31
+ 32
+ 33
+ 34
+ 35
+ 36
+ 37
+ 38
+ 39
+ 40
+ 41
+ 42
+ 43
+ 44
+ 45
+ 46
+ 47
+ 48
+ 49
+ 50
+ 51
+ 52
+ 53
+ 54
+ 55
+ 56
+ 57
+ 58
+ 59
+ 60
+ 61
+ 62
+ 63
+ 64
+ 65
+ 66
+ 67
+ 68
+ 69
+ 70
+ 71
+ 72
+ 73
+ 74
+ 75
+ 76
+ 77
+ 78
+ 79
+ 80
+ 81
+ 82
+ 83
+ 84
+ 85
+ 86
+ 87
+ 88
+ 89
+ 90
+ 91
+ 92
+ 93
+ 94
+ 95
+ 96
+ 97
+ 98
+ 99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150
+151
+152
+153
+154
+155
+156
+157
+158
+159
+160
+161
+162
+163
+164
+165
+166
+167
+168
+169
+170
+171
+172
+173
+174
+175
+176
+177
+178
+179
+180
+181
+182&lt;/pre&gt;&lt;/div&gt;&lt;/td&gt;&lt;td class="code"&gt;&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="c"&gt;#!/bin/bash&lt;/span&gt;
+&lt;span class="c"&gt;# FileName:      github_pelican_nginx.sh&lt;/span&gt;
+&lt;span class="c"&gt;# Description:   Synchronize markdown articles with github, convert to html files using Pelican, deliver it to nginx environment.&lt;/span&gt;
+&lt;span class="c"&gt;# Simple Usage:  ./github_pelican_nginx.sh commit_comments&lt;/span&gt;
+&lt;span class="c"&gt;# Crontab Usage: 00 01 * * * /mydata/backups/bak_list/github_pelican_nginx.sh &amp;gt;/dev/null 2&amp;gt;&amp;amp;1&lt;/span&gt;
+&lt;span class="c"&gt;# (c) 2016 vfhky https://typecodes.com/linux/githubpelicanpublishshell.html&lt;/span&gt;
+&lt;span class="c"&gt;# https://github.com/vfhky/shell-tools/blob/master/synchronize/github_pelican_nginx.sh&lt;/span&gt;
+
+
+&lt;span class="c"&gt;# Basic command.&lt;/span&gt;
+&lt;span class="nv"&gt;FINDCMD&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;find&amp;quot;&lt;/span&gt;
+&lt;span class="nv"&gt;MVCMD&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;\mv -f&amp;quot;&lt;/span&gt;
+&lt;span class="nv"&gt;CPCMD&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;\cp -rf&amp;quot;&lt;/span&gt;
+&lt;span class="nv"&gt;RMCMD&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;\rm -rf&amp;quot;&lt;/span&gt;
+&lt;span class="nv"&gt;TARXCMD&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;tar -zxf&amp;quot;&lt;/span&gt;
+&lt;span class="nv"&gt;TARZIPCMD&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;tar --warning=no-file-changed -zcf&amp;quot;&lt;/span&gt;
+
+&lt;span class="c"&gt;# Pelican compile markdown files to html.&lt;/span&gt;
+&lt;span class="nv"&gt;PELICAN_COMPILE_DIR&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;/mydata/GitBang/pelican
+&lt;span class="c"&gt;# Private bang in github for store your markdown files.&lt;/span&gt;
+&lt;span class="nv"&gt;GITHUB_PELICAN_DIR&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;/mydata/GitBang/GitHub/BlogBak
+&lt;span class="c"&gt;# Backup dir for your website&amp;#39;s version management.&lt;/span&gt;
+&lt;span class="nv"&gt;PELICAN_TAR_DIR&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;/usr/share/nginx/html/pelican_content_bak
+&lt;span class="c"&gt;# Dir of your website in nginx server.&lt;/span&gt;
+&lt;span class="nv"&gt;PELICAN_BLOG_DIR&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;/usr/share/nginx/html/pelican
+&lt;span class="c"&gt;# Dir for this shell script to generate logs automatically.&lt;/span&gt;
+&lt;span class="nv"&gt;BLOG_PUBLISH_LOG_DIR&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;/mydata/backups/logs/blogpublish
+&lt;span class="c"&gt;# Your personal homepage in github.&lt;/span&gt;
+&lt;span class="nv"&gt;GITHUB_PERSONAL_PAGE&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;/mydata/GitBang/GitHub/vfhky.github.io
+&lt;span class="c"&gt;# Articles in 15 minutes are legal.&lt;/span&gt;
+&lt;span class="nv"&gt;TIME_GAP&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;15
+
+&lt;span class="c"&gt;# Get the newest file name.&lt;/span&gt;
+&lt;span class="c"&gt;#Newest_File=&amp;quot;ls -lrt| tail -n 1 | awk &amp;#39;{print $9}&amp;#39;&amp;quot;&lt;/span&gt;
+
+&lt;span class="c"&gt;# Name of this shell script.&lt;/span&gt;
+&lt;span class="nv"&gt;PRGNAME&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;github_pelican_nginx&amp;quot;&lt;/span&gt;
+
+&lt;span class="c"&gt;# Current date format: e.g 20150505_2015.&lt;/span&gt;
+&lt;span class="nv"&gt;Current_Date&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="k"&gt;$(&lt;/span&gt;date +%Y%m%d_%H%M&lt;span class="k"&gt;)&lt;/span&gt;
+
+&lt;span class="c"&gt;# Check if current user is root.&lt;/span&gt;
+&lt;span class="o"&gt;[&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;&lt;span class="k"&gt;$(&lt;/span&gt;id -u&lt;span class="k"&gt;)&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt; !&lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;0&amp;quot;&lt;/span&gt; &lt;span class="o"&gt;]&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;Error: You must be root to run this script.&amp;quot;&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class="nb"&gt;exit &lt;/span&gt;1
+
+&lt;span class="c"&gt;# Check parameter.&lt;/span&gt;
+&lt;span class="c"&gt;# if [ $# -ne 0 -a $# -ne 1 ]; then&lt;/span&gt;
+&lt;span class="c"&gt;#   echo &amp;quot;Usage:    ./github_pelican_nginx.sh commit_comments&amp;quot; &amp;amp;&amp;amp; exit 1&lt;/span&gt;
+
+
+&lt;span class="c"&gt;# Run command functions.&lt;/span&gt;
+&lt;span class="k"&gt;function&lt;/span&gt; ERROR&lt;span class="o"&gt;()&lt;/span&gt; &lt;span class="o"&gt;{&lt;/span&gt;
+    &lt;span class="nb"&gt;echo&lt;/span&gt; &amp;gt;/dev/null &lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;[&lt;/span&gt;&lt;span class="k"&gt;$(&lt;/span&gt;date +%Y%m%d_%H%M&lt;span class="k"&gt;)&lt;/span&gt;&lt;span class="s2"&gt;][error] &lt;/span&gt;&lt;span class="nv"&gt;$*&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt; &amp;gt;&amp;gt; &lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;BLOG_PUBLISH_LOG_DIR&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;/&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;Current_Date&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;.log
+    &lt;span class="nb"&gt;exit &lt;/span&gt;1
+&lt;span class="o"&gt;}&lt;/span&gt;
+
+&lt;span class="k"&gt;function&lt;/span&gt; NOTICE&lt;span class="o"&gt;()&lt;/span&gt; &lt;span class="o"&gt;{&lt;/span&gt;
+    &lt;span class="nb"&gt;echo&lt;/span&gt; &amp;gt;/dev/null &lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;[&lt;/span&gt;&lt;span class="k"&gt;$(&lt;/span&gt;date +%Y%m%d_%H%M&lt;span class="k"&gt;)&lt;/span&gt;&lt;span class="s2"&gt;][notice] &lt;/span&gt;&lt;span class="nv"&gt;$*&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt; &amp;gt;&amp;gt; &lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;BLOG_PUBLISH_LOG_DIR&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;/&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;Current_Date&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;.log
+&lt;span class="o"&gt;}&lt;/span&gt;
+
+&lt;span class="k"&gt;function&lt;/span&gt; RUNCMD&lt;span class="o"&gt;()&lt;/span&gt; &lt;span class="o"&gt;{&lt;/span&gt;
+    &lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;[&lt;/span&gt;&lt;span class="k"&gt;$(&lt;/span&gt;date +%Y%m%d_%H%M&lt;span class="k"&gt;)&lt;/span&gt;&lt;span class="s2"&gt;][notice] &lt;/span&gt;&lt;span class="nv"&gt;$*&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt; &amp;gt;&amp;gt; &lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;BLOG_PUBLISH_LOG_DIR&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;/&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;Current_Date&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;.log
+    &lt;span class="nb"&gt;eval&lt;/span&gt; &lt;span class="nv"&gt;$@&lt;/span&gt;
+&lt;span class="o"&gt;}&lt;/span&gt;
+
+&lt;span class="c"&gt;# Git pull command function.&lt;/span&gt;
+&lt;span class="k"&gt;function&lt;/span&gt; Git_Pull&lt;span class="o"&gt;(){&lt;/span&gt;
+    RUNCMD &lt;span class="s2"&gt;&amp;quot;git pull origin master &amp;gt;/dev/null&amp;quot;&lt;/span&gt;
+&lt;span class="o"&gt;}&lt;/span&gt;
+
+&lt;span class="c"&gt;# Git commit command function.&lt;/span&gt;
+&lt;span class="k"&gt;function&lt;/span&gt; Git_Commit&lt;span class="o"&gt;(){&lt;/span&gt;
+  &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="o"&gt;[&lt;/span&gt; &lt;span class="nv"&gt;$# &lt;/span&gt;-ne &lt;span class="m"&gt;1&lt;/span&gt; &lt;span class="o"&gt;]&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="k"&gt;then&lt;/span&gt;
+    ERROR &lt;span class="s2"&gt;&amp;quot;Usage: Git_Commit commit_comments!&amp;quot;&lt;/span&gt;
+    &lt;span class="nb"&gt;exit &lt;/span&gt;1&lt;span class="p"&gt;;&lt;/span&gt;
+  &lt;span class="k"&gt;else&lt;/span&gt;
+    RUNCMD git pull &lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt; git add --all &lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt; git commit -m &lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;&lt;span class="nv"&gt;$1&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt; git push origin master
+  &lt;span class="k"&gt;fi&lt;/span&gt;
+&lt;span class="o"&gt;}&lt;/span&gt;
+
+&lt;span class="c"&gt;# Get the path of markdown articles in TIME_GAP minutes.&lt;/span&gt;
+&lt;span class="k"&gt;function&lt;/span&gt; Get_Files_Path&lt;span class="o"&gt;(){&lt;/span&gt;
+    RUNCMD &lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;FINDCMD&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt; . -mmin -&lt;/span&gt;&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;TIME_GAP&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt; -type f -name \&amp;quot;*.md\&amp;quot; -print0&amp;quot;&lt;/span&gt;
+&lt;span class="o"&gt;}&lt;/span&gt;
+
+&lt;span class="c"&gt;# Lock down permissions.You should be careful when it comes to your website for the permission of files, but it&amp;#39;s safe using 022.&lt;/span&gt;
+&lt;span class="c"&gt;# umask 022&lt;/span&gt;
+
+&lt;span class="c"&gt;# Create the log dir.&lt;/span&gt;
+&lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="o"&gt;[&lt;/span&gt; ! -d &lt;span class="nv"&gt;$BLOG_PUBLISH_LOG_DIR&lt;/span&gt; &lt;span class="o"&gt;]&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="k"&gt;then&lt;/span&gt;
+    mkdir -p &lt;span class="nv"&gt;$BLOG_PUBLISH_LOG_DIR&lt;/span&gt;
+&lt;span class="k"&gt;fi&lt;/span&gt;
+
+
+&lt;span class="c"&gt;# Main process begin.&lt;/span&gt;
+NOTICE &lt;span class="s2"&gt;&amp;quot;[1]Start pull from GitHub.&amp;quot;&lt;/span&gt;
+&lt;span class="nv"&gt;RC&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;0
+RUNCMD &lt;span class="s2"&gt;&amp;quot;cd &lt;/span&gt;&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;GITHUB_PELICAN_DIR&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt;/md_article &amp;amp;&amp;amp; Git_Pull&amp;quot;&lt;/span&gt;
+
+&lt;span class="nv"&gt;RC&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="nv"&gt;$?&lt;/span&gt;
+&lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="o"&gt;[&lt;/span&gt; &lt;span class="nv"&gt;$RC&lt;/span&gt; -gt &lt;span class="m"&gt;0&lt;/span&gt; &lt;span class="o"&gt;]&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="k"&gt;then&lt;/span&gt;
+    ERROR &lt;span class="s2"&gt;&amp;quot;Git pull failed!&amp;quot;&lt;/span&gt;
+&lt;span class="k"&gt;fi&lt;/span&gt;
+
+
+NOTICE &lt;span class="s2"&gt;&amp;quot;[2]Start copy the pulled articles to the compile dir of PELICAN.&amp;quot;&lt;/span&gt;
+&lt;span class="nv"&gt;New_Article_Files&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="k"&gt;$(&lt;/span&gt;Get_Files_Path &lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;GITHUB_PELICAN_DIR&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;/md_article&lt;span class="k"&gt;)&lt;/span&gt;
+&lt;span class="c"&gt;# You should not delete the double quotation marks in case of existing a blank in the file path.&lt;/span&gt;
+&lt;span class="k"&gt;for&lt;/span&gt; New_Article_File in &lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;New_Article_Files&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;
+&lt;span class="k"&gt;do&lt;/span&gt;
+    &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="o"&gt;[&lt;/span&gt; -z &lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;New_Article_File&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt; &lt;span class="o"&gt;]&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="k"&gt;then&lt;/span&gt;
+        &lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;No articles, nothing to do.&amp;quot;&lt;/span&gt;
+        ERROR &lt;span class="s2"&gt;&amp;quot;No articles, nothing to do.&amp;quot;&lt;/span&gt;
+    &lt;span class="k"&gt;fi&lt;/span&gt;
+    &lt;span class="nv"&gt;FILE_PATH&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="k"&gt;$(&lt;/span&gt;dirname &lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;PELICAN_COMPILE_DIR&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;/content/articles/&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;New_Article_Files&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="nv"&gt;2&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;&lt;span class="k"&gt;)&lt;/span&gt;
+    RUNCMD &lt;span class="s2"&gt;&amp;quot;mkdir -p &lt;/span&gt;&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;FILE_PATH&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt; &amp;amp;&amp;amp; &lt;/span&gt;&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;CPCMD&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt; \&amp;quot;&lt;/span&gt;&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;New_Article_File&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt;\&amp;quot; &lt;/span&gt;&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;FILE_PATH&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;
+&lt;span class="k"&gt;done&lt;/span&gt;
+
+&lt;span class="nv"&gt;RC&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="nv"&gt;$?&lt;/span&gt;
+&lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="o"&gt;[&lt;/span&gt; &lt;span class="nv"&gt;$RC&lt;/span&gt; -gt &lt;span class="m"&gt;0&lt;/span&gt; &lt;span class="o"&gt;]&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="k"&gt;then&lt;/span&gt;
+    ERROR &lt;span class="s2"&gt;&amp;quot;Copy the pulled articles failed!&amp;quot;&lt;/span&gt;
+&lt;span class="k"&gt;fi&lt;/span&gt;
+
+
+NOTICE &lt;span class="s2"&gt;&amp;quot;[3]Start compile in pelican.&amp;quot;&lt;/span&gt;
+RUNCMD &lt;span class="s2"&gt;&amp;quot;cd &lt;/span&gt;&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;PELICAN_COMPILE_DIR&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt; &amp;amp;&amp;amp; make publish &amp;gt; /dev/null&amp;quot;&lt;/span&gt;
+
+&lt;span class="nv"&gt;RC&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="nv"&gt;$?&lt;/span&gt;
+&lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="o"&gt;[&lt;/span&gt; &lt;span class="nv"&gt;$RC&lt;/span&gt; -gt &lt;span class="m"&gt;0&lt;/span&gt; &lt;span class="o"&gt;]&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="k"&gt;then&lt;/span&gt;
+    ERROR &lt;span class="s2"&gt;&amp;quot;Compile in pelican failed!&amp;quot;&lt;/span&gt;
+&lt;span class="k"&gt;fi&lt;/span&gt;
+
+
+NOTICE &lt;span class="s2"&gt;&amp;quot;[4]Start generate a tar packgage and move it to the backup dir.&amp;quot;&lt;/span&gt;
+&lt;span class="c"&gt;# The command of tar cause the problem that file changed as we read with the value 1, so we should ignore it using OR logic.&lt;/span&gt;
+RUNCMD &lt;span class="s2"&gt;&amp;quot;cd &lt;/span&gt;&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;PELICAN_COMPILE_DIR&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt;/output &amp;amp;&amp;amp; &lt;/span&gt;&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;TARZIPCMD&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt; &lt;/span&gt;&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;Current_Date&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt;.tar.gz . || &lt;/span&gt;&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;MVCMD&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt; &lt;/span&gt;&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;Current_Date&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt;.tar.gz &lt;/span&gt;&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;PELICAN_TAR_DIR&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;
+
+&lt;span class="nv"&gt;RC&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="nv"&gt;$?&lt;/span&gt;
+&lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="o"&gt;[&lt;/span&gt; &lt;span class="nv"&gt;$RC&lt;/span&gt; -gt &lt;span class="m"&gt;0&lt;/span&gt; &lt;span class="o"&gt;]&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="k"&gt;then&lt;/span&gt;
+    ERROR &lt;span class="s2"&gt;&amp;quot;Generate a tar packgage failed!&amp;quot;&lt;/span&gt;
+&lt;span class="k"&gt;fi&lt;/span&gt;
+
+
+NOTICE &lt;span class="s2"&gt;&amp;quot;[5]Start unpack the target files.&amp;quot;&lt;/span&gt;
+RUNCMD &lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;CPCMD&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt; &lt;/span&gt;&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;PELICAN_TAR_DIR&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt;/&lt;/span&gt;&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;Current_Date&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt;.tar.gz &lt;/span&gt;&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;PELICAN_BLOG_DIR&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt; &amp;amp;&amp;amp; cd &lt;/span&gt;&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;PELICAN_BLOG_DIR&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt; &amp;amp;&amp;amp; &lt;/span&gt;&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;TARXCMD&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt; &lt;/span&gt;&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;Current_Date&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt;.tar.gz &amp;amp;&amp;amp; &lt;/span&gt;&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;RMCMD&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt; &lt;/span&gt;&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;Current_Date&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt;.tar.gz&amp;quot;&lt;/span&gt;
+
+&lt;span class="nv"&gt;RC&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="nv"&gt;$?&lt;/span&gt;
+&lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="o"&gt;[&lt;/span&gt; &lt;span class="nv"&gt;$RC&lt;/span&gt; -gt &lt;span class="m"&gt;0&lt;/span&gt; &lt;span class="o"&gt;]&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="k"&gt;then&lt;/span&gt;
+    ERROR &lt;span class="s2"&gt;&amp;quot;Unpack the target files failed!&amp;quot;&lt;/span&gt;
+&lt;span class="k"&gt;fi&lt;/span&gt;
+
+
+&lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="o"&gt;[&lt;/span&gt; -n &lt;span class="nv"&gt;$1&lt;/span&gt; &lt;span class="o"&gt;]&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="k"&gt;then&lt;/span&gt;
+    &lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;You&amp;#39;re going to synchronize your weibsite to the homepage on github.com.&amp;quot;&lt;/span&gt;
+    NOTICE &lt;span class="s2"&gt;&amp;quot;[6]Start copy the packgage to the local homepage bang cloned from remote in GitHub.&amp;quot;&lt;/span&gt;
+    RUNCMD &lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;CPCMD&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt; &lt;/span&gt;&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;PELICAN_TAR_DIR&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt;/&lt;/span&gt;&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;Current_Date&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt;.tar.gz &lt;/span&gt;&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;GITHUB_PERSONAL_PAGE&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt; &amp;amp;&amp;amp; cd &lt;/span&gt;&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;GITHUB_PERSONAL_PAGE&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt; &amp;amp;&amp;amp; &lt;/span&gt;&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;TARXCMD&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt; &lt;/span&gt;&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;Current_Date&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt;.tar.gz &amp;amp;&amp;amp; &lt;/span&gt;&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;RMCMD&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt; &lt;/span&gt;&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;Current_Date&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt;.tar.gz&amp;quot;&lt;/span&gt;
+
+    &lt;span class="nv"&gt;RC&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="nv"&gt;$?&lt;/span&gt;
+    &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="o"&gt;[&lt;/span&gt; &lt;span class="nv"&gt;$RC&lt;/span&gt; -gt &lt;span class="m"&gt;0&lt;/span&gt; &lt;span class="o"&gt;]&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="k"&gt;then&lt;/span&gt;
+        ERROR &lt;span class="s2"&gt;&amp;quot;Copy the packgage to the local homepage bang failed!&amp;quot;&lt;/span&gt;
+    &lt;span class="k"&gt;fi&lt;/span&gt;
+
+    NOTICE &lt;span class="s2"&gt;&amp;quot;[7]Start synchronize website to my homepage on GitHub.&amp;quot;&lt;/span&gt;
+    &lt;span class="c"&gt;# read -p &amp;quot;Please input your comments on this commitment: &amp;quot; COMMIT_COMMENTS&lt;/span&gt;
+    &lt;span class="c"&gt;# while [[ -z &amp;quot;${COMMIT_COMMENTS}&amp;quot; ]]&lt;/span&gt;
+    &lt;span class="c"&gt;# do&lt;/span&gt;
+    &lt;span class="c"&gt;#   read -p &amp;quot;Comments can not be empty.Please input again: &amp;quot; COMMIT_COMMENTS&lt;/span&gt;
+    &lt;span class="c"&gt;# done&lt;/span&gt;
+    &lt;span class="c"&gt;# RUNCMD &amp;quot;Git_Commit ${COMMIT_COMMENTS}&amp;quot;&lt;/span&gt;
+    RUNCMD &lt;span class="s2"&gt;&amp;quot;Git_Commit &lt;/span&gt;&lt;span class="nv"&gt;$1&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;
+
+    &lt;span class="nv"&gt;RC&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="nv"&gt;$?&lt;/span&gt;
+    &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="o"&gt;[&lt;/span&gt; &lt;span class="nv"&gt;$RC&lt;/span&gt; -gt &lt;span class="m"&gt;0&lt;/span&gt; &lt;span class="o"&gt;]&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="k"&gt;then&lt;/span&gt;
+        ERROR &lt;span class="s2"&gt;&amp;quot;Synchronize website to GitHub failed!&amp;quot;&lt;/span&gt;
+    &lt;span class="k"&gt;fi&lt;/span&gt;
+&lt;span class="k"&gt;else&lt;/span&gt;
+    &lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;Not synchronize your weibsite to the homepage on github.com.&amp;quot;&lt;/span&gt;
+    NOTICE &lt;span class="s2"&gt;&amp;quot;[6]Not synchronize your weibsite to the homepage on github.com.&amp;quot;&lt;/span&gt;
+&lt;span class="k"&gt;fi&lt;/span&gt;
+
+
+NOTICE &lt;span class="s2"&gt;&amp;quot;------END------&amp;quot;&lt;/span&gt;
+&lt;span class="nb"&gt;exit &lt;/span&gt;0
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+
+&lt;h4&gt;3 脚本管理&lt;/h4&gt;
+&lt;p&gt;目前已经把这个脚本放在Github了，地址是&lt;a href="https://github.com/vfhky/shell-tools" title="点击查看"&gt;https://github.com/vfhky/shell-tools&lt;/a&gt;，以后脚本的更新或者更多好用的脚本也都会加入到这个工程中。&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">vfhky</dc:creator><pubDate>Sun, 10 Jan 2016 22:22:00 +0800</pubDate><guid>tag:typecodes.com,2016-01-10:linux/syngithubmarkdownpelican.html</guid><category>pelican</category><category>github</category><category>markdown</category></item><item><title>Linux c语言连接MySQL数据库实例</title><link>https://typecodes.com/cseries/linuxgccgconnectmysql.html</link><description>&lt;p&gt;工作上自己在Linux C/C++开发时，用的都是Oracle数据库，毕竟企业级应用追求稳定性好、安全可靠。业余时间做了一些WEB开发，接触到MySQL数据库比较多，也比较喜欢开源的MySQL。之前都是用PHP连接MySQL数据库，这里自己用C语言连接MySQL，执行一些简单的连接、查询操作、异常处理等操作。&lt;/p&gt;
+
+
+&lt;h4&gt;1 测试程序&lt;/h4&gt;
+&lt;p&gt;代码比较简单，先把MySQL数据库安装后得到的头文件&lt;code&gt;mysql.h&lt;/code&gt;包含进来，然后编译时需要用到MySQL对外提供的API接口。查阅了下&lt;a href="http://dev.mysql.com/doc/refman/5.6/en/c-api.html"&gt;MySQL官方文档&lt;/a&gt;，MySQL对C语言提供了一个静态库libmysqlclient.a和一个动态库libmysqlclient.so接口文件，本文选择使用动态库libmysqlclient.so。&lt;/p&gt;
+&lt;table class="highlighttable"&gt;&lt;tr&gt;&lt;td class="linenos"&gt;&lt;div class="linenodiv"&gt;&lt;pre&gt;  1
+  2
+  3
+  4
+  5
+  6
+  7
+  8
+  9
+ 10
+ 11
+ 12
+ 13
+ 14
+ 15
+ 16
+ 17
+ 18
+ 19
+ 20
+ 21
+ 22
+ 23
+ 24
+ 25
+ 26
+ 27
+ 28
+ 29
+ 30
+ 31
+ 32
+ 33
+ 34
+ 35
+ 36
+ 37
+ 38
+ 39
+ 40
+ 41
+ 42
+ 43
+ 44
+ 45
+ 46
+ 47
+ 48
+ 49
+ 50
+ 51
+ 52
+ 53
+ 54
+ 55
+ 56
+ 57
+ 58
+ 59
+ 60
+ 61
+ 62
+ 63
+ 64
+ 65
+ 66
+ 67
+ 68
+ 69
+ 70
+ 71
+ 72
+ 73
+ 74
+ 75
+ 76
+ 77
+ 78
+ 79
+ 80
+ 81
+ 82
+ 83
+ 84
+ 85
+ 86
+ 87
+ 88
+ 89
+ 90
+ 91
+ 92
+ 93
+ 94
+ 95
+ 96
+ 97
+ 98
+ 99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111&lt;/pre&gt;&lt;/div&gt;&lt;/td&gt;&lt;td class="code"&gt;&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="cm"&gt;/** &lt;/span&gt;
+&lt;span class="cm"&gt; * @FileName    linux_c_mysql.c&lt;/span&gt;
+&lt;span class="cm"&gt; * @Describe    A simple example for operating mysql using c programming in linux system.&lt;/span&gt;
+&lt;span class="cm"&gt; * @Author      vfhky 2015.12.29 15:40 https://typecodes.com/cseries/linuxconnectmysql.html&lt;/span&gt;
+&lt;span class="cm"&gt; * @Compile     gcc -I/usr/local/mysql/include  -L/usr/local/mysql/lib -lmysqlclient  linux_c_mysql.c -o linux_c_mysql&lt;/span&gt;
+&lt;span class="cm"&gt; * @Reference   http://dev.mysql.com/doc/refman/5.7/en/c-api-function-overview.html&lt;/span&gt;
+&lt;span class="cm"&gt; */&lt;/span&gt;
+&lt;span class="cp"&gt;#include &amp;lt;stdio.h&amp;gt;&lt;/span&gt;
+&lt;span class="cp"&gt;#include &amp;lt;stdlib.h&amp;gt;&lt;/span&gt;
+&lt;span class="cp"&gt;#include &amp;lt;string.h&amp;gt;&lt;/span&gt;
+&lt;span class="cp"&gt;#include &amp;lt;mysql.h&amp;gt;&lt;/span&gt;
+
+
+&lt;span class="c1"&gt;//MySQL connection.&lt;/span&gt;
+&lt;span class="n"&gt;MYSQL&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;pMysqlConn&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="c1"&gt;//result set.&lt;/span&gt;
+&lt;span class="n"&gt;MYSQL_RES&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;pMysqlRes&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="c1"&gt;//an instance of a row from the result.&lt;/span&gt;
+&lt;span class="n"&gt;MYSQL_ROW&lt;/span&gt; &lt;span class="n"&gt;MysqlRow&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+
+&lt;span class="cp"&gt;#define MAX_BUF_SIZE 1024&lt;/span&gt;
+
+&lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="kt"&gt;char&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;pHostName&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;localhost&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;    &lt;span class="c1"&gt;//or set the remote ip address.&lt;/span&gt;
+&lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="kt"&gt;char&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;pUserName&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;root&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="kt"&gt;char&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;pPassword&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;password&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="kt"&gt;char&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;pDbName&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;typecodes&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;      &lt;span class="c1"&gt;//database name of my typecho blog.&lt;/span&gt;
+&lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="kt"&gt;unsigned&lt;/span&gt; &lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;iDbPort&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;3306&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+
+&lt;span class="cm"&gt;/* print the last error message. */&lt;/span&gt;
+&lt;span class="kt"&gt;void&lt;/span&gt; &lt;span class="nf"&gt;finish_with_error&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="kt"&gt;char&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;msg&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="k"&gt;if&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt; &lt;span class="n"&gt;msg&lt;/span&gt; &lt;span class="p"&gt;)&lt;/span&gt;
+        &lt;span class="n"&gt;printf&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;Error message[%s]: [%s].&lt;/span&gt;&lt;span class="se"&gt;\n&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;msg&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;mysql_error&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;pMysqlConn&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;);&lt;/span&gt;
+    &lt;span class="k"&gt;else&lt;/span&gt;
+        &lt;span class="n"&gt;printf&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;Error message[%s].&lt;/span&gt;&lt;span class="se"&gt;\n&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;mysql_error&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;pMysqlConn&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;);&lt;/span&gt;
+    &lt;span class="n"&gt;mysql_close&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;pMysqlConn&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+    &lt;span class="cm"&gt;/**&lt;/span&gt;
+&lt;span class="cm"&gt;     * When errors such as MySQL server has gone away hapended, the program should be end immeidately.&lt;/span&gt;
+&lt;span class="cm"&gt;     * Otherwise, we should encounter the error below.&lt;/span&gt;
+&lt;span class="cm"&gt;     * *** Error in `./linux_c_mysql&amp;#39;: double free or corruption (!prev): 0x0000000001223560 ***&lt;/span&gt;
+&lt;span class="cm"&gt;     */&lt;/span&gt;
+    &lt;span class="n"&gt;exit&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+
+&lt;span class="cm"&gt;/**&lt;/span&gt;
+&lt;span class="cm"&gt; * mysql_query() cannot be used for statements that contain binary data; you must use mysql_real_query() instead. &lt;/span&gt;
+&lt;span class="cm"&gt; * Binary data may contain the “\0” character, which mysql_query() interprets as the end of the statement string.&lt;/span&gt;
+&lt;span class="cm"&gt; * In addition, mysql_real_query() is faster than mysql_query() because it does not call strlen() on the statement string. &lt;/span&gt;
+&lt;span class="cm"&gt; */&lt;/span&gt;
+&lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="nf"&gt;executesql&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt; &lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="kt"&gt;char&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="n"&gt;sql&lt;/span&gt; &lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="k"&gt;if&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt; &lt;span class="n"&gt;mysql_real_query&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt; &lt;span class="n"&gt;pMysqlConn&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;sql&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;strlen&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;sql&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;)&lt;/span&gt;
+        &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+
+&lt;span class="cm"&gt;/* init the mysql connection. */&lt;/span&gt;
+&lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="nf"&gt;init_mysql&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="n"&gt;pMysqlConn&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;mysql_init&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;NULL&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+    &lt;span class="k"&gt;if&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt; &lt;span class="n"&gt;pMysqlConn&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="nb"&gt;NULL&lt;/span&gt; &lt;span class="p"&gt;)&lt;/span&gt; 
+        &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="k"&gt;if&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt; &lt;span class="o"&gt;!&lt;/span&gt;&lt;span class="n"&gt;mysql_real_connect&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt; &lt;span class="n"&gt;pMysqlConn&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;pHostName&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;pUserName&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;pPassword&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;pDbName&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;iDbPort&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nb"&gt;NULL&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt; &lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;)&lt;/span&gt;
+        &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="c1"&gt;//set the language for the results excuted.&lt;/span&gt;
+    &lt;span class="k"&gt;if&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt; &lt;span class="n"&gt;executesql&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;set names utf8&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;)&lt;/span&gt;
+        &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+
+
+&lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="nf"&gt;main&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt; &lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;argc&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="kt"&gt;char&lt;/span&gt; &lt;span class="o"&gt;**&lt;/span&gt; &lt;span class="n"&gt;argv&lt;/span&gt; &lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;i&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="n"&gt;printf&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;A example for connecting mysql using c program in linux.&lt;/span&gt;&lt;span class="se"&gt;\n&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;&lt;/span&gt; &lt;span class="p"&gt;);&lt;/span&gt;
+    &lt;span class="k"&gt;if&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt; &lt;span class="n"&gt;init_mysql&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="p"&gt;)&lt;/span&gt;
+        &lt;span class="n"&gt;finish_with_error&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;NULL&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+
+    &lt;span class="kt"&gt;char&lt;/span&gt; &lt;span class="n"&gt;cSqlData&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;MAX_BUF_SIZE&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="mh"&gt;0x00&lt;/span&gt;&lt;span class="p"&gt;};&lt;/span&gt;
+
+    &lt;span class="n"&gt;memcpy&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt; &lt;span class="n"&gt;cSqlData&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;SELECT * FROM typecodes_users&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;strlen&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;SELECT * FROM vfhkytpvfhky_users&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;);&lt;/span&gt;
+    &lt;span class="k"&gt;if&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt; &lt;span class="n"&gt;executesql&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt; &lt;span class="n"&gt;cSqlData&lt;/span&gt; &lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;)&lt;/span&gt;
+        &lt;span class="n"&gt;finish_with_error&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;NULL&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+
+    &lt;span class="c1"&gt;//pMysqlRes = mysql_use_result(pMysqlConn);&lt;/span&gt;
+    &lt;span class="n"&gt;pMysqlRes&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;mysql_store_result&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;pMysqlConn&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+
+    &lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;iNum_rows&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;mysql_num_rows&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;pMysqlRes&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+    &lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;iNum_fields&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;mysql_num_fields&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;pMysqlRes&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+
+    &lt;span class="n"&gt;printf&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;Table have [%d] records containing [%d] fields in each one.&lt;/span&gt;&lt;span class="se"&gt;\n&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;iNum_rows&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;iNum_fields&lt;/span&gt; &lt;span class="p"&gt;);&lt;/span&gt;
+    &lt;span class="n"&gt;printf&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;+------------------------------------------------+&lt;/span&gt;&lt;span class="se"&gt;\n&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;&lt;/span&gt; &lt;span class="p"&gt;);&lt;/span&gt;
+
+    &lt;span class="k"&gt;while&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt; &lt;span class="n"&gt;MysqlRow&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;mysql_fetch_row&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;pMysqlRes&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="p"&gt;{&lt;/span&gt;
+        &lt;span class="n"&gt;i&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+        &lt;span class="k"&gt;while&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt; &lt;span class="n"&gt;i&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt; &lt;span class="n"&gt;iNum_fields&lt;/span&gt; &lt;span class="p"&gt;)&lt;/span&gt;
+        &lt;span class="p"&gt;{&lt;/span&gt;
+            &lt;span class="n"&gt;printf&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;| %s&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;MysqlRow&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;i&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;&lt;span class="o"&gt;?&lt;/span&gt;&lt;span class="n"&gt;MysqlRow&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;i&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;NULL&amp;quot;&lt;/span&gt; &lt;span class="p"&gt;);&lt;/span&gt;
+            &lt;span class="n"&gt;x&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;strlen&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;MysqlRow&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;i&lt;/span&gt;&lt;span class="o"&gt;++&lt;/span&gt;&lt;span class="p"&gt;]);&lt;/span&gt;
+            &lt;span class="k"&gt;for&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt; &lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="n"&gt;x&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt; &lt;span class="mi"&gt;21&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="o"&gt;++&lt;/span&gt; &lt;span class="p"&gt;)&lt;/span&gt;
+                &lt;span class="n"&gt;printf&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot; &amp;quot;&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+        &lt;span class="p"&gt;}&lt;/span&gt;
+        &lt;span class="n"&gt;printf&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;|&lt;/span&gt;&lt;span class="se"&gt;\n&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+    &lt;span class="p"&gt;}&lt;/span&gt;
+
+    &lt;span class="n"&gt;printf&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;+------------------------------------------------+&lt;/span&gt;&lt;span class="se"&gt;\n&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;&lt;/span&gt; &lt;span class="p"&gt;);&lt;/span&gt;
+    &lt;span class="n"&gt;mysql_free_result&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;pMysqlRes&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+    &lt;span class="n"&gt;mysql_close&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;pMysqlConn&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+    &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+
+&lt;h4&gt;2 gcc编译方法&lt;/h4&gt;
+&lt;p&gt;由于之前在&lt;a href="https://typecodes.com/web/centos7compilemysql.html" title="《2015博客升级记(四)：CentOS 7.1编译安装MySQL5.7.7rc》"&gt;搭建MySQL服务&lt;/a&gt;的时候，已经把MySQL的动态库路径通过ldconfig命令添加到了Linux系统动态库搜索路径当中了，所以这里直接生成可执行文件就行了。当然，还可以像&lt;a href="https://typecodes.com/cseries/gccgensharedlib.html" title="《Linux gcc编译生成静态库及使用方法》"&gt;上一篇文章&lt;/a&gt;中的其它3种操作方法，把MySQL动态库mysqlclient.so链接进来最终生成可执行文件。&lt;/p&gt;
+&lt;p&gt;用下面这条命令编译即可，其中-I参数表示MySQL数据库头文件路径，-L参数表示MySQL数据库的动态库路径。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;[root@typecodes ~]# gcc -I/usr/local/mysql/include  -L/usr/local/mysql/lib -lmysqlclient  linux_c_mysql.c -o linux_c_mysql
+[root@typecodes ~]# ldd linux_c_mysql
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;&lt;img alt="ldd命令查看可执行文件所依赖的动态库" src="https://dn-vfhky.qbox.me/2016/01/gcc_compile_conncet_mysql.png" title="ldd命令查看可执行文件所依赖的动态库" /&gt;&lt;/p&gt;
+&lt;h4&gt;3 执行结果&lt;/h4&gt;
+&lt;p&gt;下图是程序执行获取的之前Typecho博客数据库typecodes中的用户表typecodes_users中的数据：&lt;/p&gt;
+&lt;p&gt;&lt;img alt="ldd命令查看可执行文件所依赖的动态库" src="https://dn-vfhky.qbox.me/2016/01/excute_connect_mysql.png" title="ldd命令查看可执行文件所依赖的动态库" /&gt;&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">vfhky</dc:creator><pubDate>Thu, 07 Jan 2016 14:42:00 +0800</pubDate><guid>tag:typecodes.com,2016-01-07:cseries/linuxgccgconnectmysql.html</guid><category>gcc</category><category>mysql</category></item><item><title>Linux gcc编译生成静态库及使用方法</title><link>https://typecodes.com/cseries/gccgensharedlib.html</link><description>&lt;p&gt;这篇文章主要通过实例演示在Linux下如何使用gcc编译生成动态库文件以及其它程序如何使用该动态库。&lt;/p&gt;
+
+
+&lt;h4&gt;1 要用到的3个测试程序&lt;/h4&gt;
+&lt;p&gt;1、头文件hello.h：&lt;/p&gt;
+&lt;table class="highlighttable"&gt;&lt;tr&gt;&lt;td class="linenos"&gt;&lt;div class="linenodiv"&gt;&lt;pre&gt;1
+2
+3
+4&lt;/pre&gt;&lt;/div&gt;&lt;/td&gt;&lt;td class="code"&gt;&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="cp"&gt;#ifndef HELLO_H&lt;/span&gt;
+&lt;span class="cp"&gt;#define HELLO_H&lt;/span&gt;
+  &lt;span class="kt"&gt;void&lt;/span&gt; &lt;span class="nf"&gt;hello&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="kt"&gt;char&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;name&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+&lt;span class="cp"&gt;#endif&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+
+&lt;p&gt;2、hello.c程序：&lt;/p&gt;
+&lt;table class="highlighttable"&gt;&lt;tr&gt;&lt;td class="linenos"&gt;&lt;div class="linenodiv"&gt;&lt;pre&gt;1
+2
+3
+4
+5
+6
+7
+8&lt;/pre&gt;&lt;/div&gt;&lt;/td&gt;&lt;td class="code"&gt;&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="cp"&gt;#include &amp;lt;stdio.h&amp;gt;&lt;/span&gt;
+&lt;span class="kt"&gt;void&lt;/span&gt; &lt;span class="nf"&gt;hello&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="kt"&gt;char&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;name&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="n"&gt;printf&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;Welcome to %s.&lt;/span&gt;&lt;span class="se"&gt;\n&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;name&lt;/span&gt; &lt;span class="p"&gt;);&lt;/span&gt;
+    &lt;span class="n"&gt;printf&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;libmyhello.so.1.0.1&lt;/span&gt;&lt;span class="se"&gt;\n&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;&lt;/span&gt; &lt;span class="p"&gt;);&lt;/span&gt;
+    &lt;span class="c1"&gt;//printf( &amp;quot;libmyhello.so.1.0.2\n&amp;quot; );&lt;/span&gt;
+    &lt;span class="c1"&gt;//printf( &amp;quot;libmyhello.so.1.0.3\n&amp;quot; );&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+
+&lt;p&gt;3、主程序main.c：&lt;/p&gt;
+&lt;table class="highlighttable"&gt;&lt;tr&gt;&lt;td class="linenos"&gt;&lt;div class="linenodiv"&gt;&lt;pre&gt;1
+2
+3
+4
+5
+6&lt;/pre&gt;&lt;/div&gt;&lt;/td&gt;&lt;td class="code"&gt;&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="cp"&gt;#include &amp;quot;hello.h&amp;quot;&lt;/span&gt;
+&lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="nf"&gt;main&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt; &lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;argc&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="kt"&gt;char&lt;/span&gt; &lt;span class="o"&gt;**&lt;/span&gt;&lt;span class="n"&gt;argv&lt;/span&gt; &lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="n"&gt;hello&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;typecodes.com&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+    &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+
+&lt;h4&gt;2 生成动态库&lt;/h4&gt;
+&lt;p&gt;可以如下面2.1小节所示通过gcc直接生成动态库文件，也可以像2.2小节中那样依次生成realname、soname、linkname库文件。不经常更新动态库版本的话，一般会采用2.1小节中的做法；版本更新较频繁的动态库，诸如MySQL的一些动态库就是采用的2.2小节中的做法。&lt;/p&gt;
+&lt;h5&gt;2.1 直接编译生成symbolic link动态库文件&lt;/h5&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;##### 生成hello.o目标文件
+[root@typecodes ~]# gcc -c -fPIC hello.c
+##### 生成动态库文件libmyhello.so
+[root@typecodes ~]# gcc -shared -fPIC -o libmyhello.so hello.o
+##### main.c调用动态库文件并生成可执行文件hello
+[root@typecodes ~]# gcc -o hello main.c -L. -lmyhello
+##### 如果直接执行程序则会报错
+[root@typecodes ~]# ./hello 
+./hello: error while loading shared libraries: libmyhello.so: cannot open shared object file: No such file or directory
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;如图所示，可执行文件hello找不到链接的动态库libmyhello.so而报错：&lt;/p&gt;
+&lt;p&gt;&lt;img alt="error while loading shared libraries" src="https://dn-vfhky.qbox.me/2016/01/errorloadingsharedlib.png" title="error while loading shared libraries" /&gt;&lt;/p&gt;
+&lt;p&gt;原因分析：使用&lt;code&gt;ldd hello&lt;/code&gt;命令查看可执行文件hello依赖的动态库libmyhello.so，结果是not found。&lt;/p&gt;
+&lt;p&gt;&lt;img alt="ldd命令查看可执行文件所依赖的动态库" src="https://dn-vfhky.qbox.me/2016/01/lddlibnotfound.png" title="ldd命令查看可执行文件所依赖的动态库" /&gt;&lt;/p&gt;
+&lt;p&gt;解决方法一：使用&lt;code&gt;root&lt;/code&gt;用户把自己生成的动态共享库路径添加系统动态库中即可。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;##### ldconfig更新配置文件目录下的所有动态链接库为Linux系统所共享
+[root@typecodes ~]# echo &amp;quot;/root/&amp;quot;&amp;gt;/etc/ld.so.conf.d/test.conf
+[root@typecodes ~]# ldconfig
+##### 运行可执行文件
+[root@typecodes ~]# ./hello
+Welcome to typecodes.com.
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;使用&lt;code&gt;ldconfig -v&lt;/code&gt;命令查看系统动态库的搜索路径，可以看到libmyhello.so.1动态库所在的路径为绝对路径&lt;code&gt;/root/&lt;/code&gt;：&lt;/p&gt;
+&lt;p&gt;&lt;img alt="ldconfig命令查看系统动态库路径" src="https://dn-vfhky.qbox.me/2016/01/ldconfigviewlibrary.png" title="ldconfig命令查看系统动态库路径" /&gt;&lt;/p&gt;
+&lt;h5&gt;2.2 先生成real name动态库文件，然后创建soname软连接，最后创建link name软链接&lt;/h5&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;##### 生成hello.o目标文件
+[root@typecodes ~]# gcc -c -fPIC hello.c
+##### 生成共享库：对应real name是libmyhello.so.1.0.1, 对应soname是libmyhello.so.1
+[root@typecodes ~]# gcc -g -shared -Wl,-soname,libmyhello.so.1 -o libmyhello.so.1.0.1 hello.o
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;&lt;img alt="gcc通过-Wl,-soname参数生成动态库" src="https://dn-vfhky.qbox.me/2016/01/gccsharedWlsoname.png" title="gcc通过-Wl,-soname参数生成动态库" /&gt;&lt;/p&gt;
+&lt;p&gt;如下图所示，使用&lt;code&gt;readelf -d libmyhello.so.1.0.1&lt;/code&gt;命令查看动态库libmyhello.so.1.0.1的信息，可以看到对应的soname为libmyhello.so.1：&lt;/p&gt;
+&lt;p&gt;&lt;img alt="readelf查看动态库信息" src="https://dn-vfhky.qbox.me/2016/01/readelfdynamiclib.png" title="readelf查看动态库信息" /&gt;&lt;/p&gt;
+&lt;p&gt;如下图所示，使用&lt;code&gt;ldconfig -vn .&lt;/code&gt;命令在当前目录自动生成一个软链接：将soname（libmyhello.so.1）链接到real name（libmyhello.so.1.0.1）。&lt;/p&gt;
+&lt;p&gt;&lt;img alt="ldconfig命令生成soname文件软链接" src="https://dn-vfhky.qbox.me/2016/01/ldconfigvngensoftlink.png" title="ldconfig命令生成soname文件软链接" /&gt;&lt;/p&gt;
+&lt;p&gt;如下图所示，使用&lt;code&gt;ln -sf libmyhello.so.1 libmyhello.so&lt;/code&gt;命令创建链接到soname的共享库文件名(Link Name)：libmyhello.so。&lt;/p&gt;
+&lt;p&gt;&lt;img alt="创建链接到real name的Link Name库文件" src="https://dn-vfhky.qbox.me/2016/01/lnsfgensoftliblink.png" title="创建链接到real name的Link Name库文件" /&gt;&lt;/p&gt;
+&lt;p&gt;这里如果和前面一样，直接链接创建的动态库文件libmyhello.so生成可执行文件hello，然后直至执行hello，那么也会提示找不到链接的动态库libmyhello.so：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;[root@typecodes ~]# gcc -o hello main.c -L. -lmyhello
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;原因也是一样的，可执行文件hello找不到链接库：&lt;/p&gt;
+&lt;table class="highlighttable"&gt;&lt;tr&gt;&lt;td class="linenos"&gt;&lt;div class="linenodiv"&gt;&lt;pre&gt;1
+2
+3
+4
+5&lt;/pre&gt;&lt;/div&gt;&lt;/td&gt;&lt;td class="code"&gt;&lt;div class="highlight"&gt;&lt;pre&gt;[root@typecodes ~]# ldd hello
+        linux-vdso.so.1 =&amp;gt;  (0x00007ffd7e7f7000)
+        libmyhello.so.1 =&amp;gt; not found
+        libc.so.6 =&amp;gt; /lib64/libc.so.6 (0x00007f641cb7d000)
+        /lib64/ld-linux-x86-64.so.2 (0x00007f641cf53000)
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+
+&lt;p&gt;前面方法一需要root用户权限，对于非root用户还可以有解决方法二：正如前文&lt;a href="https://typecodes.com/cseries/gcclderrlibrarypath.html" title="查看原文"&gt;《Linux gcc链接动态库出错：LIBRARY_PATH和LD_LIBRARY_PATH的区别》&lt;/a&gt;所述，只要在当前Linux系统中配置&lt;code&gt;LD_LIBRARY_PATH&lt;/code&gt;变量，就可以搜索到依赖的动态库libmyhello.so。&lt;/p&gt;
+&lt;table class="highlighttable"&gt;&lt;tr&gt;&lt;td class="linenos"&gt;&lt;div class="linenodiv"&gt;&lt;pre&gt; 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16&lt;/pre&gt;&lt;/div&gt;&lt;/td&gt;&lt;td class="code"&gt;&lt;div class="highlight"&gt;&lt;pre&gt;[root@typecodes ~]# gcc -o hello main.c -L. -lmyhello
+##### 把当前动态库路径添加到Linux环境变量LD_LIBRARY_PATH中
+[root@typecodes ~]# export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:/root
+[root@typecodes ~]# echo $LD_LIBRARY_PATH
+/root
+##### 执行程序
+[root@typecodes ~]# ./hello
+Welcome to typecodes.com.
+libmyhello.so.1.0
+##### ldd查看可执行文件依赖的动态库
+[root@typecodes ~]# ldd hello
+        linux-vdso.so.1 =&amp;gt;  (0x00007fffccf0d000)
+        libmyhello.so =&amp;gt; /root/libmyhello.so (0x00007f6b58770000)
+        libc.so.6 =&amp;gt; /lib64/libc.so.6 (0x00007f6b5839b000)
+        /lib64/ld-linux-x86-64.so.2 (0x00007f6b58973000)
+[root@typecodes ~]#
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+
+&lt;p&gt;&lt;img alt="设置LD_LIBRARY_PATH变量后，使用readelf查看动态库信息" src="https://dn-vfhky.qbox.me/2016/01/export_ld_library_path.png" title="设置LD_LIBRARY_PATH变量后，使用readelf查看动态库信息" /&gt;&lt;/p&gt;
+&lt;p&gt;方法三：gcc链接动态库生成可执行文件时，加入rpath参数。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;[root@typecodes ~]# gcc -o hello main.c -Wl,-rpath=./ -L. -lmyhello
+[root@typecodes ~]# ./hello
+Welcome to typecodes.com.
+libmyhello.so.1.0.1
+[root@typecodes ~]#
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;&lt;img alt="gcc链接动态库生成可执行文件时，加入rpath参数" src="https://dn-vfhky.qbox.me/2016/01/gccwlrpath.png" title="gcc链接动态库生成可执行文件时，加入rpath参数" /&gt;&lt;/p&gt;
+&lt;p&gt;方法四：最简单的操作就是直接将生成的动态库文件拷贝到Linux系统动态库搜索目录下。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;/lib、/lib64：                        系统必备共享库
+/usr/lib、/usr/lib64：                标准共享库和静态库
+/usr/local/lib：                      本地/第三方函数库
+&lt;/pre&gt;&lt;/div&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">vfhky</dc:creator><pubDate>Tue, 05 Jan 2016 22:48:00 +0800</pubDate><guid>tag:typecodes.com,2016-01-05:cseries/gccgensharedlib.html</guid><category>gcc</category><category>静态库</category><category>soname</category><category>real name</category><category>link name</category><category>rpath</category><category>ldconfig</category></item><item><title>Linux下Nginx、MySQL和PHP等应用的日志切割脚本</title><link>https://typecodes.com/linux/applogsbackup.html</link><description>&lt;p&gt;在Linux中如果应用程序会产生日志，那么就需要考虑日志切割，例如按照固定的大小切割、按照日期进行切割等等。同样，在编译&lt;a href="https://typecodes.com/web/centos7compilenginx.html" title="《2015博客升级记(三)：CentOS 7.1编译安装Nginx1.9.0》"&gt;Nginx1.9.0&lt;/a&gt;、&lt;a href="https://typecodes.com/web/centos7compilemysql.html" title="《2015博客升级记(四)：CentOS 7.1编译安装MySQL5.7.7rc》"&gt;MySQL5.7.7rc&lt;/a&gt;和&lt;a href="https://typecodes.com/web/centos7compilephp7.html" title="《2015博客升级记(五)：CentOS 7.1编译安装PHP7》"&gt;PHP7&lt;/a&gt;后，这三个应用服务都会产生日志，尤其是Nginx进程根据配置文件ngnix.conf记录每条访问记录到access.log中。如果所有的日志都打印到同一个文件中的话，那么时间长了的话就会影响效率。&lt;/p&gt;
+&lt;p&gt;&lt;img alt="Nginx日志切割实例" src="https://dn-vfhky.qbox.me/2015/12/nginx_logs_backup.png" title="Nginx日志切割实例" /&gt;&lt;/p&gt;
+
+
+&lt;p&gt;这篇文章就是针对Linux下应用使用shell脚本进行分割的描述，该脚本特点是：按天切割、自定义切割出来的日志保留的天数以及记录脚本执行过程和耗时。在使用时需要配置好对应应用的日志目录（&lt;code&gt;Source_Log_Dir&lt;/code&gt;变量）、日志备份目录（&lt;code&gt;Backup_Dirs&lt;/code&gt;变量），然后使用Crontab定时任务执行该脚本即可。&lt;/p&gt;
+&lt;p&gt;&lt;img alt="Nginx日志切割时shell脚本执行过程" src="https://dn-vfhky.qbox.me/2015/12/nginx_logs_backup_process.png" title="Nginx日志切割时shell脚本执行过程" /&gt;&lt;/p&gt;
+&lt;p&gt;下面是脚本nginx_log_backup.sh的具体内容，这里备份的是Nginx日志，其它诸如MySQL、php等Linux应用只要修改脚本对应的日志路径即可。目前该脚本已经同步到博客在GitHub上创建的关于LNMP配置的工程上了，地址是：&lt;a href="https://github.com/vfhky/mylnmp" title="点击查看"&gt;https://github.com/vfhky/mylnmp&lt;/a&gt;。&lt;/p&gt;
+&lt;table class="highlighttable"&gt;&lt;tr&gt;&lt;td class="linenos"&gt;&lt;div class="linenodiv"&gt;&lt;pre&gt;  1
+  2
+  3
+  4
+  5
+  6
+  7
+  8
+  9
+ 10
+ 11
+ 12
+ 13
+ 14
+ 15
+ 16
+ 17
+ 18
+ 19
+ 20
+ 21
+ 22
+ 23
+ 24
+ 25
+ 26
+ 27
+ 28
+ 29
+ 30
+ 31
+ 32
+ 33
+ 34
+ 35
+ 36
+ 37
+ 38
+ 39
+ 40
+ 41
+ 42
+ 43
+ 44
+ 45
+ 46
+ 47
+ 48
+ 49
+ 50
+ 51
+ 52
+ 53
+ 54
+ 55
+ 56
+ 57
+ 58
+ 59
+ 60
+ 61
+ 62
+ 63
+ 64
+ 65
+ 66
+ 67
+ 68
+ 69
+ 70
+ 71
+ 72
+ 73
+ 74
+ 75
+ 76
+ 77
+ 78
+ 79
+ 80
+ 81
+ 82
+ 83
+ 84
+ 85
+ 86
+ 87
+ 88
+ 89
+ 90
+ 91
+ 92
+ 93
+ 94
+ 95
+ 96
+ 97
+ 98
+ 99
+100
+101&lt;/pre&gt;&lt;/div&gt;&lt;/td&gt;&lt;td class="code"&gt;&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="c"&gt;#!/bin/bash&lt;/span&gt;
+&lt;span class="c"&gt;# Backup Log Files for linux applications such as nginx, php, mysql and so on.&lt;/span&gt;
+&lt;span class="c"&gt;# Crontab Usage: 00 01 * * * /mydata/backups/bak_list/nginx_log_backup.sh &amp;gt;/dev/null 2&amp;gt;&amp;amp;1&lt;/span&gt;
+&lt;span class="c"&gt;# (c) 2015 vfhky https://typecodes.com/linux/applogsbackup.html&lt;/span&gt;
+&lt;span class="c"&gt;# https://github.com/vfhky/mylnmp/blob/master/nginx_log_backup.sh&lt;/span&gt;
+
+&lt;span class="c"&gt;# Basic command.&lt;/span&gt;
+&lt;span class="nv"&gt;TARCMD&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;tar -zcf&amp;quot;&lt;/span&gt;
+&lt;span class="nv"&gt;MVCMD&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;\mv -f&amp;quot;&lt;/span&gt;
+&lt;span class="nv"&gt;FINDCMD&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;find&amp;quot;&lt;/span&gt;
+
+&lt;span class="c"&gt;# Number of days to keep.&lt;/span&gt;
+&lt;span class="nv"&gt;NUMDAYS&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;40
+
+&lt;span class="c"&gt;# Path of the logs you want backup.You can set it as the nginx log path or the mysql log path and so on.&lt;/span&gt;
+&lt;span class="nv"&gt;Source_Log_Dir&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;/var/log/nginx
+&lt;span class="c"&gt;# Set the file types you want backup accoding to the suffix of log files.&lt;/span&gt;
+&lt;span class="nv"&gt;Source_Log_Files&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="sb"&gt;`&lt;/span&gt;ls &lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;Source_Log_Dir&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;/*.log&lt;span class="sb"&gt;`&lt;/span&gt;
+&lt;span class="c"&gt;# Set the backup path.&lt;/span&gt;
+&lt;span class="nv"&gt;Backup_Dirs&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;Source_Log_Dir&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;
+&lt;span class="c"&gt;# Previous date format: e.g 20150505&lt;/span&gt;
+&lt;span class="nv"&gt;Previous_Date&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="sb"&gt;`&lt;/span&gt;date -d &lt;span class="s2"&gt;&amp;quot;-1 days&amp;quot;&lt;/span&gt; +%Y%m%d&lt;span class="sb"&gt;`&lt;/span&gt;
+&lt;span class="c"&gt;# The target backup dir.&lt;/span&gt;
+&lt;span class="nv"&gt;Backup_Dir&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;Backup_Dirs&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;/&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;Previous_Date&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;
+&lt;span class="c"&gt;# Path of the log generated by this shell script automatically.&lt;/span&gt;
+&lt;span class="nv"&gt;Shell_Log&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;Backup_Dir&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;/process.log
+
+
+&lt;span class="c"&gt;# Run command functions.&lt;/span&gt;
+&lt;span class="k"&gt;function&lt;/span&gt; ERROR&lt;span class="o"&gt;()&lt;/span&gt; &lt;span class="o"&gt;{&lt;/span&gt;
+  &lt;span class="nb"&gt;echo&lt;/span&gt; &amp;gt;/dev/null &lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;[`date +%H:%M:%S:%N`][error] &lt;/span&gt;&lt;span class="nv"&gt;$@&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt; &amp;gt;&amp;gt; &lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;Shell_Log&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;
+  &lt;span class="nb"&gt;exit &lt;/span&gt;1
+&lt;span class="o"&gt;}&lt;/span&gt;
+
+&lt;span class="k"&gt;function&lt;/span&gt; NOTICE&lt;span class="o"&gt;()&lt;/span&gt; &lt;span class="o"&gt;{&lt;/span&gt;
+  &lt;span class="nb"&gt;echo&lt;/span&gt; &amp;gt;/dev/null &lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;[`date +%H:%M:%S:%N`][notice] &lt;/span&gt;&lt;span class="nv"&gt;$@&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt; &amp;gt;&amp;gt; &lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;Shell_Log&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;
+&lt;span class="o"&gt;}&lt;/span&gt;
+
+&lt;span class="k"&gt;function&lt;/span&gt; RUNCMD&lt;span class="o"&gt;()&lt;/span&gt; &lt;span class="o"&gt;{&lt;/span&gt;
+  &lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="nv"&gt;$@&lt;/span&gt; &amp;gt;&amp;gt; &lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;Shell_Log&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;
+  &lt;span class="nb"&gt;eval&lt;/span&gt; &lt;span class="nv"&gt;$@&lt;/span&gt;
+&lt;span class="o"&gt;}&lt;/span&gt;
+
+
+&lt;span class="c"&gt;# Check the days user input.You can delete the codes below generally.&lt;/span&gt;
+&lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="o"&gt;[[&lt;/span&gt; ! &lt;span class="nv"&gt;$NUMDAYS&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt;~ ^&lt;span class="o"&gt;[&lt;/span&gt;0-9&lt;span class="o"&gt;]&lt;/span&gt;+&lt;span class="nv"&gt;$ &lt;/span&gt;&lt;span class="o"&gt;]]&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="k"&gt;then&lt;/span&gt;
+  ERROR &lt;span class="s2"&gt;&amp;quot;Invalid number of days[&lt;/span&gt;&lt;span class="nv"&gt;$NUMDAYS&lt;/span&gt;&lt;span class="s2"&gt;]!&amp;quot;&lt;/span&gt;
+&lt;span class="k"&gt;elif&lt;/span&gt; &lt;span class="o"&gt;[&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;&lt;span class="nv"&gt;$NUMDAYS&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt; -eq &lt;span class="s2"&gt;&amp;quot;0&amp;quot;&lt;/span&gt; &lt;span class="o"&gt;]&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="k"&gt;then&lt;/span&gt;
+  ERROR &lt;span class="s2"&gt;&amp;quot;Number of days must be greater than zero!&amp;quot;&lt;/span&gt;
+&lt;span class="k"&gt;fi&lt;/span&gt;
+
+
+&lt;span class="c"&gt;# Lock down permissions.&lt;/span&gt;
+&lt;span class="nb"&gt;umask &lt;/span&gt;077
+
+&lt;span class="c"&gt;# Create the backup log dir and a shell log.&lt;/span&gt;
+mkdir -p &lt;span class="nv"&gt;$Backup_Dir&lt;/span&gt;
+touch &lt;span class="nv"&gt;$Shell_Log&lt;/span&gt;
+
+
+NOTICE &lt;span class="s2"&gt;&amp;quot;[1]Start backup.&amp;quot;&lt;/span&gt;
+
+
+NOTICE &lt;span class="s2"&gt;&amp;quot;[2]Start compress the log files using the tar command.&amp;quot;&lt;/span&gt;
+RUNCMD &lt;span class="s2"&gt;&amp;quot;cd &lt;/span&gt;&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;Source_Log_Dir&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt; &amp;amp;&amp;amp; &lt;/span&gt;&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;TARCMD&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt; &lt;/span&gt;&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;Previous_Date&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt;.tar.gz *.log&amp;quot;&lt;/span&gt;
+
+&lt;span class="nv"&gt;RC&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="nv"&gt;$?&lt;/span&gt;
+&lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="o"&gt;[&lt;/span&gt; &lt;span class="nv"&gt;$RC&lt;/span&gt; -gt &lt;span class="m"&gt;0&lt;/span&gt; &lt;span class="o"&gt;]&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="k"&gt;then&lt;/span&gt;
+  ERROR &lt;span class="s2"&gt;&amp;quot;Creat the backup package failed!&amp;quot;&lt;/span&gt;
+&lt;span class="k"&gt;fi&lt;/span&gt;
+
+
+NOTICE &lt;span class="s2"&gt;&amp;quot;[3]Start move the compress file to backup dir.&amp;quot;&lt;/span&gt;
+RUNCMD &lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;MVCMD&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt; &lt;/span&gt;&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;Previous_Date&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt;.tar.gz &lt;/span&gt;&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;Backup_Dir&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt;/&amp;quot;&lt;/span&gt;
+
+&lt;span class="nv"&gt;RC&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="nv"&gt;$?&lt;/span&gt;
+&lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="o"&gt;[&lt;/span&gt; &lt;span class="nv"&gt;$RC&lt;/span&gt; -gt &lt;span class="m"&gt;0&lt;/span&gt; &lt;span class="o"&gt;]&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="k"&gt;then&lt;/span&gt;
+  ERROR &lt;span class="s2"&gt;&amp;quot;Move the compress file failed!&amp;quot;&lt;/span&gt;
+&lt;span class="k"&gt;fi&lt;/span&gt;
+
+
+NOTICE &lt;span class="s2"&gt;&amp;quot;[4]Start empty every log file.&amp;quot;&lt;/span&gt;
+
+&lt;span class="k"&gt;for&lt;/span&gt; file in &lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;Source_Log_Files&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;
+&lt;span class="k"&gt;do&lt;/span&gt;
+    RUNCMD &lt;span class="s2"&gt;&amp;quot;&amp;gt;&lt;/span&gt;&lt;span class="nv"&gt;$file&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;
+    &lt;span class="nv"&gt;RC&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="nv"&gt;$?&lt;/span&gt;
+    &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="o"&gt;[&lt;/span&gt; &lt;span class="nv"&gt;$RC&lt;/span&gt; -gt &lt;span class="m"&gt;0&lt;/span&gt; &lt;span class="o"&gt;]&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="k"&gt;then&lt;/span&gt;
+      ERROR &lt;span class="s2"&gt;&amp;quot;Empty every log file failed!&amp;quot;&lt;/span&gt;
+    &lt;span class="k"&gt;fi&lt;/span&gt;
+&lt;span class="k"&gt;done&lt;/span&gt;
+
+
+NOTICE &lt;span class="s2"&gt;&amp;quot;[5]Removing older folders than &lt;/span&gt;&lt;span class="nv"&gt;$NUMDAYS&lt;/span&gt;&lt;span class="s2"&gt; days.&amp;quot;&lt;/span&gt;
+&lt;span class="c"&gt;# ls ${Source_Log_Dir} | grep &amp;#39;^[0-9]\{8\}$&amp;#39; | xargs rm -rf&lt;/span&gt;
+RUNCMD &lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;&lt;span class="nv"&gt;$FINDCMD&lt;/span&gt;&lt;span class="s2"&gt; &lt;/span&gt;&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;Source_Log_Dir&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt; -type d -name [0-9]*\[0-9] -mtime +&lt;/span&gt;&lt;span class="nv"&gt;$NUMDAYS&lt;/span&gt;&lt;span class="s2"&gt; | xargs rm -rf&amp;quot;&lt;/span&gt;
+
+
+NOTICE &lt;span class="s2"&gt;&amp;quot;[6]End backup.&amp;quot;&lt;/span&gt;
+
+&lt;span class="nb"&gt;exit &lt;/span&gt;0
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">vfhky</dc:creator><pubDate>Fri, 18 Dec 2015 21:01:00 +0800</pubDate><guid>tag:typecodes.com,2015-12-18:linux/applogsbackup.html</guid><category>博客成长录</category><category>shell</category><category>nginx</category><category>mysql</category><category>php</category></item><item><title>成功将博客从Typecho迁移到Pelican</title><link>https://typecodes.com/mix/sucesstypechotopelican.html</link><description>&lt;p&gt;根据&lt;a href="https://typecodes.com/mix/begintypechotopelican.html" title="《准备将博客从Typecho迁移到Pelican》"&gt;前文&lt;/a&gt;的上线步骤，目前已经成功的将博客从Typecho迁移到了Pelican。中间上线发布的时候，遇到了好几个问题，不过由于上线步骤中有失败的处理方案（保留Typecho程序），所以在Typecho到Pelican之间来来回回切换了好几次。&lt;/p&gt;
 
 
 &lt;h5&gt;1 遇到的问题&lt;/h5&gt;
@@ -3725,7 +4737,7 @@ CMake suite maintained and supported by Kitware (kitware.com/cmake).
 &lt;p&gt;执行上面的配置命令的结果如下图所示：&lt;/p&gt;
 &lt;p&gt;&lt;img alt="MySQL5.7.7rc编译前的配置" src="https://dn-vfhky.qbox.me/2015/06/mysql_cmake.png" title="MySQL5.7.7rc编译前的配置" /&gt;&lt;/p&gt;
 &lt;h5&gt;4 开始编译和安装MySQL5.7.7rc&lt;/h5&gt;
-&lt;p&gt;使用make命令编译时，会比较吃CUP。博主当时购买的阿里主机是单核1G内存，编译到55%左右时直接卡住，同时无法新建一个终端连接，内存或者CPU已经严重耗尽。在重新购买了一个物理数据盘并划分出一个swap交换空间后，最终还是编译成功了，耗时约4个小时。所以，如果主机内存在1G一下并且没有设置Linux交换空间的，&lt;code&gt;不建议&lt;/code&gt;直接编译MySQL5.7.7rc！&lt;/p&gt;
+&lt;p&gt;使用make命令编译时，会比较吃CPU。博主当时购买的阿里主机是单核1G内存，编译到55%左右时直接卡住，同时无法新建一个终端连接，内存或者CPU已经严重耗尽。在重新购买了一个物理数据盘并划分出一个swap交换空间后，最终还是编译成功了，耗时约4个小时。所以，如果主机内存在1G一下并且没有设置Linux交换空间的，&lt;code&gt;不建议&lt;/code&gt;直接编译MySQL5.7.7rc！&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;[root@typecodes mysql-5.7.7-rc]# make &amp;amp;&amp;amp; make install
 &lt;/pre&gt;&lt;/div&gt;
 
@@ -3778,7 +4790,7 @@ CMake suite maintained and supported by Kitware (kitware.com/cmake).
 ######配置开机自启动
 [root@typecodes mysql]# cp /usr/local/mysql/support-files/mysql.server  /etc/init.d/mysqld
 [root@typecodes mysql]# chmod +x /etc/init.d/mysqld     #增加可执行权限
-[root@typecodes mysql]# chkconfig --add mysql       #添加到sysV服务
+[root@typecodes mysql]# chkconfig --add mysqld      #添加到sysV服务
 [root@typecodes mysql]# chkconfig mysqld on
 &lt;/pre&gt;&lt;/div&gt;
 

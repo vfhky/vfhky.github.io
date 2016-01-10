@@ -3,13 +3,8 @@
 	<head>
 		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
 		<title>TypeCodes</title>
-		<meta name="author" content="vfhky">
   		<link href="https://typecodes.com/atom.xml" type="application/atom+xml" rel="alternate" title="TypeCodes Atom Feed" />
 	  	<link href="https://typecodes.com/feed.xml" type="application/rss+xml" rel="alternate" title="TypeCodes RSS Feed" />
-		<meta name="HandheldFriendly" content="True">
-		<meta name="MobileOptimized" content="320">
-		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<meta name="renderer" content="webkit">
 		<link rel="stylesheet" href="https://dn-vfhky.qbox.me/libs/css/pelican-vfhky.css">
 		<script>
 			var _hmt = _hmt || [];
@@ -21,7 +16,7 @@
 			})();
 		</script>
 	</head>
-	<body style>
+	<body>
 		<!--1. header navigation begin-->
 		<header role="banner" id="te-site-header">
 			<div class="container">
@@ -40,6 +35,52 @@
 		<!--2. left sider begin-->
 		<div class="col-md-9" id="blog-main" role="main">
 		  	<!--article recycle-->
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/web/phpcurlrequestsample.html">PHP中的cURL请求及示例</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2013-09-01 18:34 | 分类：<a href="https://typecodes.com/web/index.html">web</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>最近在学习腾讯开放平台API接口的过程中，看到了一个很强大的PHP库——cURL。它是利用URL语法在命令行方式下工作的文件传输工具。这篇文章是博主直接从国外一个博客翻译过来的，原文地址是：<a href="http://codular.com/curl-with-php" title="点击查看原文">http://codular.com/curl-with-php</a>。这篇文章讲的很基础，但条理很清晰，知识比较系统和全面，所以转过来收藏了！（下面的有些标题是博主画蛇添足的，大家近乎可以忽略。）</p>
+<h5>1 定义：什么是cURL</h5>
+<p>cURL允许数据传输跨广泛的协议,是一个非常强大的系统。它广泛用于跨网站发送数据，包括诸如API交互和oAuth。cURL是在它的应用范围内几乎是无所不能的，从基本的HTTP请求，到更为复杂的FTP上传或封闭式HTTPS网站的交互验证。让我们一起来看看发送一个GET和POST请求和处理返回的响应的简单区别，以及一些重要的参数说明。</p>
+
+	<p class="more"><a href="https://typecodes.com/web/phpcurlrequestsample.html" title="PHP中的cURL请求及示例">- 阅读剩余部分 -</a></p>
+			</article>
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/web/wptaoiplibapithree.html">WordPress使用淘宝IP地址库的API显示评论者的位置信息（三）</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2013-09-01 15:49 | 分类：<a href="https://typecodes.com/web/index.html">web</a></li>
+</ul>
+<div class="post-content fmt">
+	<h5>1 PHP版本的淘宝IP地址库接口说明</h5>
+<p>在上一篇文章<a href="https://typecodes.com/web/wptaoiplibapitwo.html" title="《WordPress使用淘宝IP地址库的API显示评论者的位置信息（二）》">《WordPress使用淘宝IP地址库的API显示评论者的位置信息（二）》</a>中，vfhky使用了jQuery来获取淘宝的API接口返回的数据。那么这篇文章就接着写如何直接使用PHP实现WordPress调用淘宝IP地址库的API显示评论者的位置信息。相比上一个jQuery的版本，这个PHP版本的代码就简单得多了用。只需两步就可以实现。</p>
+
+	<p class="more"><a href="https://typecodes.com/web/wptaoiplibapithree.html" title="WordPress使用淘宝IP地址库的API显示评论者的位置信息（三）">- 阅读剩余部分 -</a></p>
+			</article>
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/web/wptaoiplibapitwo.html">WordPress使用淘宝IP地址库的API显示评论者的位置信息（二）</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2013-09-01 15:03 | 分类：<a href="https://typecodes.com/web/index.html">web</a></li>
+</ul>
+<div class="post-content fmt">
+	<h5>1 淘宝IP地址库的接口说明</h5>
+<p>在上一篇文章<a href="https://typecodes.com/web/wptaoiplibapione.html" title="查看详情">《WordPress使用淘宝IP地址库的API显示评论者的位置信息（一）》</a>中，vfhky使用了新浪工具提供的这个IP接口显示博客评论者的位置信息。那么这篇文章就接着写在WordPress中使用淘宝IP地址库的API显示评论者的位置信息。这个功能的实现需要储备一些jQuery、json等基础知识，所以如果说上一篇是jQuery版本的新浪IP地址库的API应用，那么这篇文章就是jQuery版本的淘宝IP地址库的API应用。淘宝IP地址库的接口说明文档地址是：<a href="http://ip.taobao.com/instructions.php" title="淘宝IP地址库的接口说明文档地址">http://ip.taobao.com/instructions.php</a>，大家可以去参考下。下面是在WP博客中如何利用淘宝IP地址库实现评论者位置详情的显示。</p>
+
+	<p class="more"><a href="https://typecodes.com/web/wptaoiplibapitwo.html" title="WordPress使用淘宝IP地址库的API显示评论者的位置信息（二）">- 阅读剩余部分 -</a></p>
+			</article>
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/web/testapiedgetoolreturnmessage.html">调试API接口的利器——获取返回数据中的信息提示字段</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2013-08-29 21:03 | 分类：<a href="https://typecodes.com/web/index.html">web</a></li>
+</ul>
+<div class="post-content fmt">
+	<h5>1 调试腾讯开放平台QQ登录API</h5>
+<p>最近博主在测试腾讯开放平台的QQ登录API时，遇到了一个棘手问题。根据腾讯官方API文档，vfhky写了一个调用 <a href="http://wiki.connect.qq.com/get_info" title="查看腾讯官方关于get_info的API文档">get_info</a> 接口的程序。该接口能够获取QQ登录用户的微博信息，例如用户的出身日期、教育信息、FANS数目、微博内容等。具体大家也可以看看官方给出的API接口信息，地址是 http://wiki.connect.qq.com/get_info。</p>
+<p><img alt="腾讯后台API管理" src="https://dn-vfhky.qbox.me/2013/08/QQAPI_Oauth.png" title="腾讯后台API管理" /></p>
+
+	<p class="more"><a href="https://typecodes.com/web/testapiedgetoolreturnmessage.html" title="调试API接口的利器——获取返回数据中的信息提示字段">- 阅读剩余部分 -</a></p>
+			</article>
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/web/wptaoiplibapione.html">Wordpress使用淘宝IP地址库的API显示评论者的位置信息（一）</a></h2>
 <ul class="post-meta">
@@ -85,72 +126,6 @@
 
 	<p class="more"><a href="https://typecodes.com/mix/360baiduyunpanwar.html" title="3百大战又将开启？看360和百度的云盘纷争">- 阅读剩余部分 -</a></p>
 			</article>
-			<article class="post">
-<h2 class="post-title"><a href="https://typecodes.com/linux/linuxalarmknockfunc.html">Linux进程之alarm()信号传送闹钟函数</a></h2>
-<ul class="post-meta">
-	<li>作者：vfhky | 时间：2013-08-14 22:09 | 分类：<a href="https://typecodes.com/linux/index.html">linux</a></li>
-</ul>
-<div class="post-content fmt">
-	<p>最近在学习Linux系统编程遇到了一个很有意思的函数：alarm()，它是一个用来设置信号传送的闹钟函数。网上找了一些资料，结合自己的学习体会，现在Mark一下。</p>
-<h5>1 alarm()函数说明</h5>
-<div class="highlight"><pre>[1] 引用头文件：#include &lt;unistd.h&gt;;
-
-[2] 函数标准式：unsigned int alarm(unsigned int seconds);
-
-[3] 功能与作用：alarm()函数的主要功能是设置信号传送闹钟，即用来设置信号SIGALRM在经过参数seconds秒数后发送给目前的进程。如果未设置信号SIGALARM的处理函数，那么alarm()默认处理终止进程。
-
-[4] 函数返回值：如果在seconds秒内再次调用了alarm函数设置了新的闹钟，则后面定时器的设置将覆盖前面的设置，即之前设置的秒数被新的闹钟时间取代；当参数seconds为0时，之前设置的定时器闹钟将被取消，并将剩下的时间返回。
-</pre></div>
-
-
-
-	<p class="more"><a href="https://typecodes.com/linux/linuxalarmknockfunc.html" title="Linux进程之alarm()信号传送闹钟函数">- 阅读剩余部分 -</a></p>
-			</article>
-			<article class="post">
-<h2 class="post-title"><a href="https://typecodes.com/mix/blogdatabackup.html">博客必须养成的良好习惯：数据库备份</a></h2>
-<ul class="post-meta">
-	<li>作者：vfhky | 时间：2013-08-12 20:32 | 分类：<a href="https://typecodes.com/mix/index.html">mix</a></li>
-</ul>
-<div class="post-content fmt">
-	<p>常说“有备无患”，指的是在生活中要提前做好准备，那么就能在未知的境遇面前不至于慌了手脚。昨天vfhky就小小的感受了一把，发觉这句话还真神：确实能做到让博客起死回生的作用！</p>
-<p>WP3.6应该是在前一周就发布出来了，由于工作的原因，vfhky没及时更新。因为每次升级WP程序之前，我都会把整个主题程序、数据库以及其它几个重要文件备份一遍，这些都需要时间。所以只好等到周末才升级，顺便惯例性的写两篇文章。于是，昨天中午把主题、数据库等都备份好后，博主就迫不及待的把WP3.5升级到了最新的3.6版本。升级完后，发现themes文件夹下多了一个thirteen的主题文件夹。尼玛，不带这样的吧？升个级还要装个主题……记得以前wordpress升级不会安装官方自带的主题的吧，果断删之！</p>
-
-	<p class="more"><a href="https://typecodes.com/mix/blogdatabackup.html" title="博客必须养成的良好习惯：数据库备份">- 阅读剩余部分 -</a></p>
-			</article>
-			<article class="post">
-<h2 class="post-title"><a href="https://typecodes.com/linux/linuxbridgepingnot.html">Linux问题两连击：桥接模式无法上网、ping域名失败</a></h2>
-<ul class="post-meta">
-	<li>作者：vfhky | 时间：2013-08-04 01:14 | 分类：<a href="https://typecodes.com/linux/index.html">linux</a></li>
-</ul>
-<div class="post-content fmt">
-	<p>问题一：Linux能ping通ip但不能ping通域名；</p>
-<p>问题二：Linux桥接模式能与宿主机Windows通信互访但无法访问互联网。</p>
-<p>上面两个问题都是由Linux中的DNS配置不正确导致的，因为DNS的作用就是将某个域名解析到相对应的IP上。当DNS无法正常把IP和域名相对应起来的时候就出现了上面两种常见的情况。所以，当虚拟机中的Linux系统能够正常和宿主通信，且能ping通外部IP地址，却无法ping通域名。</p>
-
-	<p class="more"><a href="https://typecodes.com/linux/linuxbridgepingnot.html" title="Linux问题两连击：桥接模式无法上网、ping域名失败">- 阅读剩余部分 -</a></p>
-			</article>
-			<article class="post">
-<h2 class="post-title"><a href="https://typecodes.com/database/oraclesqlerror.html">Oracle数据库SQL操作语句报错的解决</a></h2>
-<ul class="post-meta">
-	<li>作者：vfhky | 时间：2013-08-04 00:04 | 分类：<a href="https://typecodes.com/database/index.html">database</a></li>
-</ul>
-<div class="post-content fmt">
-	<p>最近在小红帽里面用GCCC编译含Oracle数据库SQL操作语句的C程序时候遇到了下面的7个报错信息，现整理出来Mark一下。</p>
-<h5>1 错误信息</h5>
-<div class="highlight"><pre><span class="k">[-1400][ORA-01400: cannot insert NULL into (&quot;CARDMAIN&quot;.&quot;CLR_SFTC000BLOCK0&quot;.&quot;SE]</span>
-<span class="err">&lt;!--</span>
-<span class="err">描述：CARDMAIN数据库用户，CLR_SFTC000BLOCK0数据表，SE表字段</span>
-
-<span class="err">原因：Oracle数据库对于特定类型的非空字段无法区分空值和空字符串</span>
-
-<span class="err">解决：明确数据源中的空值类型，并且在INSERT和UPDATE中必须插入一个值，不能将某个值修改为NULL。</span>
-<span class="err">--&gt;</span>
-</pre></div>
-
-
-
-	<p class="more"><a href="https://typecodes.com/database/oraclesqlerror.html" title="Oracle数据库SQL操作语句报错的解决">- 阅读剩余部分 -</a></p>
-			</article>
 		  	<!--page navigation-->
 <ol class="page-navigator">
 <li class="prev"><a href="https://typecodes.com/index14.html">&laquo; 前一页</a></li><li><a href="https://typecodes.com/index.html">1</a>
@@ -177,7 +152,7 @@
 		<h3 class="widget-title">Categories</h3>
 		<ul class="widget-list">
 		      <li class="current">
-		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (26)
+		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (28)
 		      </li>
 		      <li class="current">
 		        <a href="https://typecodes.com/csharp/index.html">Csharp</a> (6)
@@ -189,7 +164,7 @@
 		        <a href="https://typecodes.com/java/index.html">Java</a> (1)
 		      </li>
 		      <li class="current">
-		        <a href="https://typecodes.com/linux/index.html">Linux</a> (16)
+		        <a href="https://typecodes.com/linux/index.html">Linux</a> (18)
 		      </li>
 		      <li class="current">
 		        <a href="https://typecodes.com/mix/index.html">Mix</a> (53)
@@ -203,6 +178,18 @@
 		<h3 class="widget-title">Recent Posts</h3>
 		<ul class="widget-list">
 			<li class="post">
+				<a href="https://typecodes.com/linux/syngithubmarkdownpelican.html">同步GitHub Markdown文章到Linux服务器后更新Pelican博客的脚本</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/linuxgccgconnectmysql.html">Linux c语言连接MySQL数据库实例</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/gccgensharedlib.html">Linux gcc编译生成静态库及使用方法</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/applogsbackup.html">Linux下Nginx、MySQL和PHP等应用的日志切割脚本</a>
+			</li>
+			<li class="post">
 				<a href="https://typecodes.com/mix/sucesstypechotopelican.html">成功将博客从Typecho迁移到Pelican</a>
 			</li>
 			<li class="post">
@@ -210,18 +197,6 @@
 			</li>
 			<li class="post">
 				<a href="https://typecodes.com/linux/tcpconnectiontimedout.html">Linux TCP连接Connection Refused和Connection timed out的问题</a>
-			</li>
-			<li class="post">
-				<a href="https://typecodes.com/linux/mysqlerrornospace.html">博客MySQL服务惊魂记：Linux磁盘空间不足(Core Dump文件引爆)</a>
-			</li>
-			<li class="post">
-				<a href="https://typecodes.com/mix/synweibophpmarkdownimgurl.html">升级博客文章同步微博的插件：PHP正则提取Markdown的图片地址</a>
-			</li>
-			<li class="post">
-				<a href="https://typecodes.com/cseries/cppgeneralmakefile.html">Linux C/C++工程中可生成ELF、动/静态库文件的通用Makefile</a>
-			</li>
-			<li class="post">
-				<a href="https://typecodes.com/cseries/libraryundefinedref.html">解决make编译链接动态库错误：libxx.so: undefined reference to xx</a>
 			</li>
 		</ul>
 	</section>
@@ -237,7 +212,7 @@
 	<div class="row" role="contentinfo">
 		<section class="col-md-2 col-md-offset-1">
 			<h3>Links</h3>
-			<ul><li><a href="http://diaosbook.com/" title="">diaosbook</a></li></ul>
+			<ul><li><a href="http://diaosbook.com/" title="" target="_blank">diaosbook</a></li></ul>
 		</section>
 		<section class="col-md-2">
 			<h3>&nbsp;</h3>
@@ -265,7 +240,7 @@
 		<div class="col-md-12 copyright">
 			<a href="#top"><i class="i-logo-s">TOP</i></a>
 			<p>
-				&copy; 2012-<script language="JavaScript">var date = new Date(); document.write(date.getFullYear());</script>							<a href="https://typecodes.com">TypeCodes</a>. All Rights Reserved<br>Powered by <a href="http://getpelican.com" rel="external" target="_blank">Pelican</a>. <a href="http://www.miitbeian.gov.cn/" rel="external nofollow" target="_blank">粤ICP备14050695号</a>
+				&copy;  2012-2016 							<a href="https://typecodes.com">TypeCodes</a>. All Rights Reserved<br>Powered by <a href="http://getpelican.com" rel="external" target="_blank">Pelican</a>. <a href="http://www.miitbeian.gov.cn/" rel="external nofollow" target="_blank">粤ICP备14050695号</a>
 			</p>
 		</div>
 	</div>

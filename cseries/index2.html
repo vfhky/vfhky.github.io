@@ -3,13 +3,8 @@
 	<head>
 		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
 		<title>分类 cseries 下的文章 - TypeCodes</title>
-		<meta name="author" content="vfhky">
   		<link href="https://typecodes.com/atom.xml" type="application/atom+xml" rel="alternate" title="TypeCodes Atom Feed" />
 	  	<link href="https://typecodes.com/feed.xml" type="application/rss+xml" rel="alternate" title="TypeCodes RSS Feed" />
-		<meta name="HandheldFriendly" content="True">
-		<meta name="MobileOptimized" content="320">
-		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<meta name="renderer" content="webkit">
 		<link rel="stylesheet" href="https://dn-vfhky.qbox.me/libs/css/pelican-vfhky.css">
 		<script>
 			var _hmt = _hmt || [];
@@ -21,7 +16,7 @@
 			})();
 		</script>
 	</head>
-	<body style>
+	<body>
 		<!--1. header navigation begin-->
 		<header role="banner" id="te-site-header">
 			<div class="container">
@@ -40,6 +35,28 @@
 		<!--2. left sider begin-->
 		<div class="col-md-9" id="blog-main" role="main">
 		  	<!--article recycle-->
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/cseries/againchexstrtointeger.html">再议C语言将十六进制字符串转成十进制整数</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2015-05-14 19:55 | 分类：<a href="https://typecodes.com/cseries/index.html">cseries</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>前文<a href="https://typecodes.com/cseries/clanghexstrtointeger.html" title="查看原文">《C语言将十六进制字符串转成十进制整数》</a>讲述了将十六进制字符串中单个字符分别从高位到低位正序和从低位到高位逆序转换成对应的十进制数，今天在看原文的程序发现一个不好的地方：由于使用了<code>char * p = HexStr;</code>，也就是直接使用指针p将这个十六进制字符串进行了读取和<code>改写</code>。这样会造成在调用了<code>HexStr2Integer</code>转换函数后，就不能再次使用这个十六进制字符串了。</p>
+<p>因此，在转换过程中，可以考虑将原来的这个十六进制字符串在内存中复制一份，然后再对这个复制的<code>副本</code>进行读写，这样就产生副作用了。下面是根据原来的两个程序改进的的代码，主要通过<code>malloc</code>函数开辟一个内存空间，然后复制十六进制字符串中的数据到这个内存空间中，最后对它进行“读写”。</p>
+<p>在下面这两个改进的代码中，还考虑到了这个十六进制字符串以<code>0x</code>开头的形式出现，所以增加了这种情况的处理。</p>
+
+	<p class="more"><a href="https://typecodes.com/cseries/againchexstrtointeger.html" title="再议C语言将十六进制字符串转成十进制整数">- 阅读剩余部分 -</a></p>
+			</article>
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/cseries/doubledimensionalarray.html">指针数组和指针的指针（间级指针）实例分析</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2014-11-17 22:09 | 分类：<a href="https://typecodes.com/cseries/index.html">cseries</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>网上看到一个关于指向指针的指针变量（间级指针）和指针数组的分析题，感觉比较有代表性，所以摘录了下来自己分析了一番。</p>
+
+	<p class="more"><a href="https://typecodes.com/cseries/doubledimensionalarray.html" title="指针数组和指针的指针（间级指针）实例分析">- 阅读剩余部分 -</a></p>
+			</article>
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/cseries/calculateaveragescore.html">去掉最高分和最低分求平均分数的问题</a></h2>
 <ul class="post-meta">
@@ -113,69 +130,6 @@
 
 	<p class="more"><a href="https://typecodes.com/cseries/hexstrxor.html" title="十六进制字符串异或">- 阅读剩余部分 -</a></p>
 			</article>
-			<article class="post">
-<h2 class="post-title"><a href="https://typecodes.com/cseries/studentssoundoffgame.html">由学生按某规则依次报数的游戏引发的问题</a></h2>
-<ul class="post-meta">
-	<li>作者：vfhky | 时间：2014-11-08 19:02 | 分类：<a href="https://typecodes.com/cseries/index.html">cseries</a></li>
-</ul>
-<div class="post-content fmt">
-	<p>前段时间Q群里有提问如下，编写程序解决一个学生按规则依次报数的体育游戏问题。编程语言不限，Java, C#, Ruby, C++, Js, Python, Scala, objective-C统统可以，小语种也没问题。</p>
-<p><img alt="学生按某规则依次报数的游戏" src="https://dn-vfhky.qbox.me/2014/11/sportsgamepushpop.png" title="学生按某规则依次报数的游戏" /></p>
-<h5>1 问题描述：</h5>
-<div class="highlight"><pre>你是一名体育老师，在某次课距离下课还有五分钟时，你决定搞一个游戏。此时有100名学生在上课。游戏的规则是：
-1. 你首先说出三个不同的特殊数，要求必须是个位数，比如3、5、7。
-2. 让所有学生拍成一队，然后按顺序报数。
-3. 学生报数时，如果所报数字是第一个特殊数（3）的倍数，那么不能说该数字，而要说Fizz；如果所报数字是第二个特殊数（5）的倍数，那么要说Buzz；如果所报数字是第三个特殊数（7）的倍数，那么要说Whizz。
-4. 学生报数时，如果所报数字同时是两个特殊数的倍数情况下，也要特殊处理，比如第一个特殊数和第二个特殊数的倍数，那么不能说该数字，而是要说FizzBuzz, 以此类推。如果同时是三个特殊数的倍数，那么要说FizzBuzzWhizz。
-5. 学生报数时，如果所报数字包含了第一个特殊数，那么也不能说该数字，而是要说相应的单词，比如本例中第一个特殊数是3，那么要报13的同学应该说Fizz。如果数字中包含了第一个特殊数，那么忽略规则3和规则4，比如要报35的同学只报Fizz，不报BuzzWhizz。
-
-现在，我们需要你完成一个程序来模拟这个游戏，它首先接受3个特殊数，然后输出100名学生应该报数的数或单词。比如，
-
-输入
-3,5,7
-输出（片段）
-
-1
-2
-Fizz
-4
-Buzz
-Fizz
-Whizz
-8
-Fizz
-Buzz
-11
-Fizz
-Fizz
-Whizz
-FizzBuzz
-16
-17
-Fizz
-19
-Buzz
-…
-一直到100
-</pre></div>
-
-
-
-	<p class="more"><a href="https://typecodes.com/cseries/studentssoundoffgame.html" title="由学生按某规则依次报数的游戏引发的问题">- 阅读剩余部分 -</a></p>
-			</article>
-			<article class="post">
-<h2 class="post-title"><a href="https://typecodes.com/cseries/signedunsignedcharconvint.html">理解有符号和无符号的字符数和整数的转换</a></h2>
-<ul class="post-meta">
-	<li>作者：vfhky | 时间：2014-11-07 21:52 | 分类：<a href="https://typecodes.com/cseries/index.html">cseries</a></li>
-</ul>
-<div class="post-content fmt">
-	<p>网上关于有符号、无符号字符转换成有符号、无符号整形数据的问题，自己写了一个测试程序，分析了下，挺有意思的。</p>
-<h5>1 测试说明</h5>
-<p>用的是自己的win7 64位系统，处理器当然是Intel的，因此是前文提到的<code>小端模式</code>。默认按32位（总线）处理，即一个整型4个字节，长度共 2^32 = 4294967296 字节；有符号字符char类型数据的范围是 -128~127 （对应二进制 11111111~01111111），无符号字符 unsinged char 类型数据范围是 0~255（对应二进制 00000000~11111111）。</p>
-<p><img alt="C语言有符号和无符号数" src="https://dn-vfhky.qbox.me/2014/11/clangsignedandunsigned.png" title="C语言有符号和无符号数" /></p>
-
-	<p class="more"><a href="https://typecodes.com/cseries/signedunsignedcharconvint.html" title="理解有符号和无符号的字符数和整数的转换">- 阅读剩余部分 -</a></p>
-			</article>
 		  	<!--page navigation-->
 <ol class="page-navigator">
 <li class="prev"><a href="https://typecodes.com/cseries/index.html">&laquo; 前一页</a></li><li><a href="https://typecodes.com/cseries/index.html">1</a><li class="current"><a href="https://typecodes.com/cseries/index2.html">2</a>
@@ -197,7 +151,7 @@ Buzz
 		<h3 class="widget-title">Categories</h3>
 		<ul class="widget-list">
 		      <li class="current">
-		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (26)
+		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (28)
 		      </li>
 		      <li class="current">
 		        <a href="https://typecodes.com/csharp/index.html">Csharp</a> (6)
@@ -209,7 +163,7 @@ Buzz
 		        <a href="https://typecodes.com/java/index.html">Java</a> (1)
 		      </li>
 		      <li class="current">
-		        <a href="https://typecodes.com/linux/index.html">Linux</a> (16)
+		        <a href="https://typecodes.com/linux/index.html">Linux</a> (18)
 		      </li>
 		      <li class="current">
 		        <a href="https://typecodes.com/mix/index.html">Mix</a> (53)
@@ -222,6 +176,12 @@ Buzz
 	<section class="widget">
 		<h3 class="widget-title">Recent Posts</h3>
 		<ul class="widget-list">
+			<li class="post">
+				<a href="https://typecodes.com/cseries/linuxgccgconnectmysql.html">Linux c语言连接MySQL数据库实例</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/gccgensharedlib.html">Linux gcc编译生成静态库及使用方法</a>
+			</li>
 			<li class="post">
 				<a href="https://typecodes.com/cseries/cppgeneralmakefile.html">Linux C/C++工程中可生成ELF、动/静态库文件的通用Makefile</a>
 			</li>
@@ -237,12 +197,6 @@ Buzz
 			<li class="post">
 				<a href="https://typecodes.com/cseries/unixsigtermkill.html">Unix系统进程对SIGTERM、SIGUSR1和SIGUSR2信号处理</a>
 			</li>
-			<li class="post">
-				<a href="https://typecodes.com/cseries/simplifychexstrtoint.html">视角：C语言将十六进制字符串转成十进制整数</a>
-			</li>
-			<li class="post">
-				<a href="https://typecodes.com/cseries/againchexstrtointeger.html">再议C语言将十六进制字符串转成十进制整数</a>
-			</li>
 		</ul>
 	</section>
 	<section class="widget widget-feed">
@@ -257,7 +211,7 @@ Buzz
 	<div class="row" role="contentinfo">
 		<section class="col-md-2 col-md-offset-1">
 			<h3>Links</h3>
-			<ul><li><a href="http://diaosbook.com/" title="">diaosbook</a></li></ul>
+			<ul><li><a href="http://diaosbook.com/" title="" target="_blank">diaosbook</a></li></ul>
 		</section>
 		<section class="col-md-2">
 			<h3>&nbsp;</h3>
@@ -285,7 +239,7 @@ Buzz
 		<div class="col-md-12 copyright">
 			<a href="#top"><i class="i-logo-s">TOP</i></a>
 			<p>
-				&copy; 2012-<script language="JavaScript">var date = new Date(); document.write(date.getFullYear());</script>							<a href="https://typecodes.com">TypeCodes</a>. All Rights Reserved<br>Powered by <a href="http://getpelican.com" rel="external" target="_blank">Pelican</a>. <a href="http://www.miitbeian.gov.cn/" rel="external nofollow" target="_blank">粤ICP备14050695号</a>
+				&copy;  2012-2016 							<a href="https://typecodes.com">TypeCodes</a>. All Rights Reserved<br>Powered by <a href="http://getpelican.com" rel="external" target="_blank">Pelican</a>. <a href="http://www.miitbeian.gov.cn/" rel="external nofollow" target="_blank">粤ICP备14050695号</a>
 			</p>
 		</div>
 	</div>

@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="zh-CN" class="no-js">
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<title>同步GitHub Markdown文章到Linux服务器后更新Pelican博客的脚本 &mdash; TypeCodes</title>
+  		<link href="https://typecodes.com/atom.xml" type="application/atom+xml" rel="alternate" title="TypeCodes Atom Feed" />
+	  	<link href="https://typecodes.com/feed.xml" type="application/rss+xml" rel="alternate" title="TypeCodes RSS Feed" />
+		<link rel="stylesheet" href="https://dn-vfhky.qbox.me/libs/css/pelican-vfhky.css">
+		<script>
+			var _hmt = _hmt || [];
+			(function() {
+			  var hm = document.createElement("script");
+			  hm.src = "//hm.baidu.com/hm.js?c15c4ab8e91ba9ac3d5a12293cc93359";
+			  var s = document.getElementsByTagName("script")[0]; 
+			  s.parentNode.insertBefore(hm, s);
+			})();
+		</script>
+	</head>
+	<body>
+		<!--1. header navigation begin-->
+		<header role="banner" id="te-site-header">
+			<div class="container">
+				<a href="https://typecodes.com" class="te-site-logo" role="logo" target="_self"> TypeCodes</a>
+				<ul class="nav nav-pills" id="te-site-nav" role="navigation">
+					<li><a href="https://typecodes.com">Home</a></li><li><a href="https://typecodes.com/archives.html" title="Archives">Archives</a></li><li><a href="https://typecodes.com/about.html" title="About">About</a></li></ul>
+			</div>
+		</header>
+		<div class="te-headline">
+			<div class="container">
+				<h2 class="te-headline-title"> <a href="https://typecodes.com">TypeCodes</a></h2>
+			</div>
+		</div>
+		<div class="container">
+			<div class="row">
+		<!--2. left sider begin-->
+		<div class="col-md-9" id="blog-main" role="main">
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/linux/syngithubmarkdownpelican.html">同步GitHub Markdown文章到Linux服务器后更新Pelican博客的脚本</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2016-01-10 22:22 | 分类：<a href="https://typecodes.com/linux/index.html">linux</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>使用了Pelican后，最多的操作就是编译Markdown文章生成HTML文件，然后发布到Nginx的博客目录下。</p>
+<p><img alt="我的Pelican博客管理和发布流程" src="https://dn-vfhky.qbox.me/2016/01/github_pelican_nginx.png" title="我的Pelican博客管理和发布流程" /></p>
+
+
+<p>如上面的流程图所示，目前自己在CentOS7.1服务器上通过Pelican生成和发布博客的做法如下：</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6</pre></div></td><td class="code"><div class="highlight"><pre>在Windows中写好Markdown文章，然后git push到GitHub中的私人仓库中；
+在CentOS7.1服务器中git pull到本地仓库；
+把Markdown文件复制到Pelican的文章目录(content)生成HTML文件；
+用tar命令打包Pelcian在OUTPUT目录中生成的所有HTML文件到一个博客版本备份目录形成一个博客版本；
+将这个版本复制到Nginx的博客目录下解压，这样就更新了博客；
+同时，也可以发布到GitHub个人主页上。
+</pre></div>
+</td></tr></table>
+
+<h4>1 考虑点</h4>
+<p>如果每次手动执行上面的操作步骤实在是太麻烦了，所以决定使用shell脚本来自动完成。当然除了实现上面的基本功能点之外，脚本还需具备如下4个特点：</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4</pre></div></td><td class="code"><div class="highlight"><pre>脚本执行过程打印到日志文件中，方便查看；
+脚本中每条重要语句的执行时间都有记录在日志中；
+如果没有从GitHub个人仓库中检测到更新的文章，那么直接结束；
+能自动判断是否同步发布到GitHub的个人主页中（博主的是vfhky.github.io）。
+</pre></div>
+</td></tr></table>
+
+<h4>2 具体代码</h4>
+<p>代码比较简单，需要注明的是，如果个人没有Github主页的话，可以直接执行命令<code>./github_pelican_nginx.sh</code>即可，这样就不会执行脚本中的第7个步骤。否则，需要执行命令<code>./github_pelican_nginx.sh 关于本次更新的说明内容</code>。</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>  1
+  2
+  3
+  4
+  5
+  6
+  7
+  8
+  9
+ 10
+ 11
+ 12
+ 13
+ 14
+ 15
+ 16
+ 17
+ 18
+ 19
+ 20
+ 21
+ 22
+ 23
+ 24
+ 25
+ 26
+ 27
+ 28
+ 29
+ 30
+ 31
+ 32
+ 33
+ 34
+ 35
+ 36
+ 37
+ 38
+ 39
+ 40
+ 41
+ 42
+ 43
+ 44
+ 45
+ 46
+ 47
+ 48
+ 49
+ 50
+ 51
+ 52
+ 53
+ 54
+ 55
+ 56
+ 57
+ 58
+ 59
+ 60
+ 61
+ 62
+ 63
+ 64
+ 65
+ 66
+ 67
+ 68
+ 69
+ 70
+ 71
+ 72
+ 73
+ 74
+ 75
+ 76
+ 77
+ 78
+ 79
+ 80
+ 81
+ 82
+ 83
+ 84
+ 85
+ 86
+ 87
+ 88
+ 89
+ 90
+ 91
+ 92
+ 93
+ 94
+ 95
+ 96
+ 97
+ 98
+ 99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150
+151
+152
+153
+154
+155
+156
+157
+158
+159
+160
+161
+162
+163
+164
+165
+166
+167
+168
+169
+170
+171
+172
+173
+174
+175
+176
+177
+178
+179
+180
+181
+182</pre></div></td><td class="code"><div class="highlight"><pre><span class="c">#!/bin/bash</span>
+<span class="c"># FileName:      github_pelican_nginx.sh</span>
+<span class="c"># Description:   Synchronize markdown articles with github, convert to html files using Pelican, deliver it to nginx environment.</span>
+<span class="c"># Simple Usage:  ./github_pelican_nginx.sh commit_comments</span>
+<span class="c"># Crontab Usage: 00 01 * * * /mydata/backups/bak_list/github_pelican_nginx.sh &gt;/dev/null 2&gt;&amp;1</span>
+<span class="c"># (c) 2016 vfhky https://typecodes.com/linux/githubpelicanpublishshell.html</span>
+<span class="c"># https://github.com/vfhky/shell-tools/blob/master/synchronize/github_pelican_nginx.sh</span>
+
+
+<span class="c"># Basic command.</span>
+<span class="nv">FINDCMD</span><span class="o">=</span><span class="s2">&quot;find&quot;</span>
+<span class="nv">MVCMD</span><span class="o">=</span><span class="s2">&quot;\mv -f&quot;</span>
+<span class="nv">CPCMD</span><span class="o">=</span><span class="s2">&quot;\cp -rf&quot;</span>
+<span class="nv">RMCMD</span><span class="o">=</span><span class="s2">&quot;\rm -rf&quot;</span>
+<span class="nv">TARXCMD</span><span class="o">=</span><span class="s2">&quot;tar -zxf&quot;</span>
+<span class="nv">TARZIPCMD</span><span class="o">=</span><span class="s2">&quot;tar --warning=no-file-changed -zcf&quot;</span>
+
+<span class="c"># Pelican compile markdown files to html.</span>
+<span class="nv">PELICAN_COMPILE_DIR</span><span class="o">=</span>/mydata/GitBang/pelican
+<span class="c"># Private bang in github for store your markdown files.</span>
+<span class="nv">GITHUB_PELICAN_DIR</span><span class="o">=</span>/mydata/GitBang/GitHub/BlogBak
+<span class="c"># Backup dir for your website&#39;s version management.</span>
+<span class="nv">PELICAN_TAR_DIR</span><span class="o">=</span>/usr/share/nginx/html/pelican_content_bak
+<span class="c"># Dir of your website in nginx server.</span>
+<span class="nv">PELICAN_BLOG_DIR</span><span class="o">=</span>/usr/share/nginx/html/pelican
+<span class="c"># Dir for this shell script to generate logs automatically.</span>
+<span class="nv">BLOG_PUBLISH_LOG_DIR</span><span class="o">=</span>/mydata/backups/logs/blogpublish
+<span class="c"># Your personal homepage in github.</span>
+<span class="nv">GITHUB_PERSONAL_PAGE</span><span class="o">=</span>/mydata/GitBang/GitHub/vfhky.github.io
+<span class="c"># Articles in 15 minutes are legal.</span>
+<span class="nv">TIME_GAP</span><span class="o">=</span>15
+
+<span class="c"># Get the newest file name.</span>
+<span class="c">#Newest_File=&quot;ls -lrt| tail -n 1 | awk &#39;{print $9}&#39;&quot;</span>
+
+<span class="c"># Name of this shell script.</span>
+<span class="nv">PRGNAME</span><span class="o">=</span><span class="s2">&quot;github_pelican_nginx&quot;</span>
+
+<span class="c"># Current date format: e.g 20150505_2015.</span>
+<span class="nv">Current_Date</span><span class="o">=</span><span class="k">$(</span>date +%Y%m%d_%H%M<span class="k">)</span>
+
+<span class="c"># Check if current user is root.</span>
+<span class="o">[</span> <span class="s2">&quot;</span><span class="k">$(</span>id -u<span class="k">)</span><span class="s2">&quot;</span> !<span class="o">=</span> <span class="s2">&quot;0&quot;</span> <span class="o">]</span> <span class="o">&amp;&amp;</span> <span class="nb">echo</span> <span class="s2">&quot;Error: You must be root to run this script.&quot;</span> <span class="o">&amp;&amp;</span> <span class="nb">exit </span>1
+
+<span class="c"># Check parameter.</span>
+<span class="c"># if [ $# -ne 0 -a $# -ne 1 ]; then</span>
+<span class="c">#   echo &quot;Usage:    ./github_pelican_nginx.sh commit_comments&quot; &amp;&amp; exit 1</span>
+
+
+<span class="c"># Run command functions.</span>
+<span class="k">function</span> ERROR<span class="o">()</span> <span class="o">{</span>
+    <span class="nb">echo</span> &gt;/dev/null <span class="o">&amp;&amp;</span> <span class="nb">echo</span> <span class="s2">&quot;[</span><span class="k">$(</span>date +%Y%m%d_%H%M<span class="k">)</span><span class="s2">][error] </span><span class="nv">$*</span><span class="s2">&quot;</span> &gt;&gt; <span class="si">${</span><span class="nv">BLOG_PUBLISH_LOG_DIR</span><span class="si">}</span>/<span class="si">${</span><span class="nv">Current_Date</span><span class="si">}</span>.log
+    <span class="nb">exit </span>1
+<span class="o">}</span>
+
+<span class="k">function</span> NOTICE<span class="o">()</span> <span class="o">{</span>
+    <span class="nb">echo</span> &gt;/dev/null <span class="o">&amp;&amp;</span> <span class="nb">echo</span> <span class="s2">&quot;[</span><span class="k">$(</span>date +%Y%m%d_%H%M<span class="k">)</span><span class="s2">][notice] </span><span class="nv">$*</span><span class="s2">&quot;</span> &gt;&gt; <span class="si">${</span><span class="nv">BLOG_PUBLISH_LOG_DIR</span><span class="si">}</span>/<span class="si">${</span><span class="nv">Current_Date</span><span class="si">}</span>.log
+<span class="o">}</span>
+
+<span class="k">function</span> RUNCMD<span class="o">()</span> <span class="o">{</span>
+    <span class="nb">echo</span> <span class="s2">&quot;[</span><span class="k">$(</span>date +%Y%m%d_%H%M<span class="k">)</span><span class="s2">][notice] </span><span class="nv">$*</span><span class="s2">&quot;</span> &gt;&gt; <span class="si">${</span><span class="nv">BLOG_PUBLISH_LOG_DIR</span><span class="si">}</span>/<span class="si">${</span><span class="nv">Current_Date</span><span class="si">}</span>.log
+    <span class="nb">eval</span> <span class="nv">$@</span>
+<span class="o">}</span>
+
+<span class="c"># Git pull command function.</span>
+<span class="k">function</span> Git_Pull<span class="o">(){</span>
+    RUNCMD <span class="s2">&quot;git pull origin master &gt;/dev/null&quot;</span>
+<span class="o">}</span>
+
+<span class="c"># Git commit command function.</span>
+<span class="k">function</span> Git_Commit<span class="o">(){</span>
+  <span class="k">if</span> <span class="o">[</span> <span class="nv">$# </span>-ne <span class="m">1</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+    ERROR <span class="s2">&quot;Usage: Git_Commit commit_comments!&quot;</span>
+    <span class="nb">exit </span>1<span class="p">;</span>
+  <span class="k">else</span>
+    RUNCMD git pull <span class="o">&amp;&amp;</span> git add --all <span class="o">&amp;&amp;</span> git commit -m <span class="s2">&quot;</span><span class="nv">$1</span><span class="s2">&quot;</span> <span class="o">&amp;&amp;</span> git push origin master
+  <span class="k">fi</span>
+<span class="o">}</span>
+
+<span class="c"># Get the path of markdown articles in TIME_GAP minutes.</span>
+<span class="k">function</span> Get_Files_Path<span class="o">(){</span>
+    RUNCMD <span class="s2">&quot;</span><span class="si">${</span><span class="nv">FINDCMD</span><span class="si">}</span><span class="s2"> . -mmin -</span><span class="si">${</span><span class="nv">TIME_GAP</span><span class="si">}</span><span class="s2"> -type f -name \&quot;*.md\&quot; -print0&quot;</span>
+<span class="o">}</span>
+
+<span class="c"># Lock down permissions.You should be careful when it comes to your website for the permission of files, but it&#39;s safe using 022.</span>
+<span class="c"># umask 022</span>
+
+<span class="c"># Create the log dir.</span>
+<span class="k">if</span> <span class="o">[</span> ! -d <span class="nv">$BLOG_PUBLISH_LOG_DIR</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+    mkdir -p <span class="nv">$BLOG_PUBLISH_LOG_DIR</span>
+<span class="k">fi</span>
+
+
+<span class="c"># Main process begin.</span>
+NOTICE <span class="s2">&quot;[1]Start pull from GitHub.&quot;</span>
+<span class="nv">RC</span><span class="o">=</span>0
+RUNCMD <span class="s2">&quot;cd </span><span class="si">${</span><span class="nv">GITHUB_PELICAN_DIR</span><span class="si">}</span><span class="s2">/md_article &amp;&amp; Git_Pull&quot;</span>
+
+<span class="nv">RC</span><span class="o">=</span><span class="nv">$?</span>
+<span class="k">if</span> <span class="o">[</span> <span class="nv">$RC</span> -gt <span class="m">0</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+    ERROR <span class="s2">&quot;Git pull failed!&quot;</span>
+<span class="k">fi</span>
+
+
+NOTICE <span class="s2">&quot;[2]Start copy the pulled articles to the compile dir of PELICAN.&quot;</span>
+<span class="nv">New_Article_Files</span><span class="o">=</span><span class="k">$(</span>Get_Files_Path <span class="si">${</span><span class="nv">GITHUB_PELICAN_DIR</span><span class="si">}</span>/md_article<span class="k">)</span>
+<span class="c"># You should not delete the double quotation marks in case of existing a blank in the file path.</span>
+<span class="k">for</span> New_Article_File in <span class="s2">&quot;</span><span class="si">${</span><span class="nv">New_Article_Files</span><span class="si">}</span><span class="s2">&quot;</span>
+<span class="k">do</span>
+    <span class="k">if</span> <span class="o">[</span> -z <span class="s2">&quot;</span><span class="si">${</span><span class="nv">New_Article_File</span><span class="si">}</span><span class="s2">&quot;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+        <span class="nb">echo</span> <span class="s2">&quot;No articles, nothing to do.&quot;</span>
+        ERROR <span class="s2">&quot;No articles, nothing to do.&quot;</span>
+    <span class="k">fi</span>
+    <span class="nv">FILE_PATH</span><span class="o">=</span><span class="k">$(</span>dirname <span class="si">${</span><span class="nv">PELICAN_COMPILE_DIR</span><span class="si">}</span>/content/articles/<span class="s2">&quot;</span><span class="si">${</span><span class="nv">New_Article_Files</span><span class="p">:</span><span class="nv">2</span><span class="si">}</span><span class="s2">&quot;</span><span class="k">)</span>
+    RUNCMD <span class="s2">&quot;mkdir -p </span><span class="si">${</span><span class="nv">FILE_PATH</span><span class="si">}</span><span class="s2"> &amp;&amp; </span><span class="si">${</span><span class="nv">CPCMD</span><span class="si">}</span><span class="s2"> \&quot;</span><span class="si">${</span><span class="nv">New_Article_File</span><span class="si">}</span><span class="s2">\&quot; </span><span class="si">${</span><span class="nv">FILE_PATH</span><span class="si">}</span><span class="s2">&quot;</span>
+<span class="k">done</span>
+
+<span class="nv">RC</span><span class="o">=</span><span class="nv">$?</span>
+<span class="k">if</span> <span class="o">[</span> <span class="nv">$RC</span> -gt <span class="m">0</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+    ERROR <span class="s2">&quot;Copy the pulled articles failed!&quot;</span>
+<span class="k">fi</span>
+
+
+NOTICE <span class="s2">&quot;[3]Start compile in pelican.&quot;</span>
+RUNCMD <span class="s2">&quot;cd </span><span class="si">${</span><span class="nv">PELICAN_COMPILE_DIR</span><span class="si">}</span><span class="s2"> &amp;&amp; make publish &gt; /dev/null&quot;</span>
+
+<span class="nv">RC</span><span class="o">=</span><span class="nv">$?</span>
+<span class="k">if</span> <span class="o">[</span> <span class="nv">$RC</span> -gt <span class="m">0</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+    ERROR <span class="s2">&quot;Compile in pelican failed!&quot;</span>
+<span class="k">fi</span>
+
+
+NOTICE <span class="s2">&quot;[4]Start generate a tar packgage and move it to the backup dir.&quot;</span>
+<span class="c"># The command of tar cause the problem that file changed as we read with the value 1, so we should ignore it using OR logic.</span>
+RUNCMD <span class="s2">&quot;cd </span><span class="si">${</span><span class="nv">PELICAN_COMPILE_DIR</span><span class="si">}</span><span class="s2">/output &amp;&amp; </span><span class="si">${</span><span class="nv">TARZIPCMD</span><span class="si">}</span><span class="s2"> </span><span class="si">${</span><span class="nv">Current_Date</span><span class="si">}</span><span class="s2">.tar.gz . || </span><span class="si">${</span><span class="nv">MVCMD</span><span class="si">}</span><span class="s2"> </span><span class="si">${</span><span class="nv">Current_Date</span><span class="si">}</span><span class="s2">.tar.gz </span><span class="si">${</span><span class="nv">PELICAN_TAR_DIR</span><span class="si">}</span><span class="s2">&quot;</span>
+
+<span class="nv">RC</span><span class="o">=</span><span class="nv">$?</span>
+<span class="k">if</span> <span class="o">[</span> <span class="nv">$RC</span> -gt <span class="m">0</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+    ERROR <span class="s2">&quot;Generate a tar packgage failed!&quot;</span>
+<span class="k">fi</span>
+
+
+NOTICE <span class="s2">&quot;[5]Start unpack the target files.&quot;</span>
+RUNCMD <span class="s2">&quot;</span><span class="si">${</span><span class="nv">CPCMD</span><span class="si">}</span><span class="s2"> </span><span class="si">${</span><span class="nv">PELICAN_TAR_DIR</span><span class="si">}</span><span class="s2">/</span><span class="si">${</span><span class="nv">Current_Date</span><span class="si">}</span><span class="s2">.tar.gz </span><span class="si">${</span><span class="nv">PELICAN_BLOG_DIR</span><span class="si">}</span><span class="s2"> &amp;&amp; cd </span><span class="si">${</span><span class="nv">PELICAN_BLOG_DIR</span><span class="si">}</span><span class="s2"> &amp;&amp; </span><span class="si">${</span><span class="nv">TARXCMD</span><span class="si">}</span><span class="s2"> </span><span class="si">${</span><span class="nv">Current_Date</span><span class="si">}</span><span class="s2">.tar.gz &amp;&amp; </span><span class="si">${</span><span class="nv">RMCMD</span><span class="si">}</span><span class="s2"> </span><span class="si">${</span><span class="nv">Current_Date</span><span class="si">}</span><span class="s2">.tar.gz&quot;</span>
+
+<span class="nv">RC</span><span class="o">=</span><span class="nv">$?</span>
+<span class="k">if</span> <span class="o">[</span> <span class="nv">$RC</span> -gt <span class="m">0</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+    ERROR <span class="s2">&quot;Unpack the target files failed!&quot;</span>
+<span class="k">fi</span>
+
+
+<span class="k">if</span> <span class="o">[</span> -n <span class="nv">$1</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+    <span class="nb">echo</span> <span class="s2">&quot;You&#39;re going to synchronize your weibsite to the homepage on github.com.&quot;</span>
+    NOTICE <span class="s2">&quot;[6]Start copy the packgage to the local homepage bang cloned from remote in GitHub.&quot;</span>
+    RUNCMD <span class="s2">&quot;</span><span class="si">${</span><span class="nv">CPCMD</span><span class="si">}</span><span class="s2"> </span><span class="si">${</span><span class="nv">PELICAN_TAR_DIR</span><span class="si">}</span><span class="s2">/</span><span class="si">${</span><span class="nv">Current_Date</span><span class="si">}</span><span class="s2">.tar.gz </span><span class="si">${</span><span class="nv">GITHUB_PERSONAL_PAGE</span><span class="si">}</span><span class="s2"> &amp;&amp; cd </span><span class="si">${</span><span class="nv">GITHUB_PERSONAL_PAGE</span><span class="si">}</span><span class="s2"> &amp;&amp; </span><span class="si">${</span><span class="nv">TARXCMD</span><span class="si">}</span><span class="s2"> </span><span class="si">${</span><span class="nv">Current_Date</span><span class="si">}</span><span class="s2">.tar.gz &amp;&amp; </span><span class="si">${</span><span class="nv">RMCMD</span><span class="si">}</span><span class="s2"> </span><span class="si">${</span><span class="nv">Current_Date</span><span class="si">}</span><span class="s2">.tar.gz&quot;</span>
+
+    <span class="nv">RC</span><span class="o">=</span><span class="nv">$?</span>
+    <span class="k">if</span> <span class="o">[</span> <span class="nv">$RC</span> -gt <span class="m">0</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+        ERROR <span class="s2">&quot;Copy the packgage to the local homepage bang failed!&quot;</span>
+    <span class="k">fi</span>
+
+    NOTICE <span class="s2">&quot;[7]Start synchronize website to my homepage on GitHub.&quot;</span>
+    <span class="c"># read -p &quot;Please input your comments on this commitment: &quot; COMMIT_COMMENTS</span>
+    <span class="c"># while [[ -z &quot;${COMMIT_COMMENTS}&quot; ]]</span>
+    <span class="c"># do</span>
+    <span class="c">#   read -p &quot;Comments can not be empty.Please input again: &quot; COMMIT_COMMENTS</span>
+    <span class="c"># done</span>
+    <span class="c"># RUNCMD &quot;Git_Commit ${COMMIT_COMMENTS}&quot;</span>
+    RUNCMD <span class="s2">&quot;Git_Commit </span><span class="nv">$1</span><span class="s2">&quot;</span>
+
+    <span class="nv">RC</span><span class="o">=</span><span class="nv">$?</span>
+    <span class="k">if</span> <span class="o">[</span> <span class="nv">$RC</span> -gt <span class="m">0</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+        ERROR <span class="s2">&quot;Synchronize website to GitHub failed!&quot;</span>
+    <span class="k">fi</span>
+<span class="k">else</span>
+    <span class="nb">echo</span> <span class="s2">&quot;Not synchronize your weibsite to the homepage on github.com.&quot;</span>
+    NOTICE <span class="s2">&quot;[6]Not synchronize your weibsite to the homepage on github.com.&quot;</span>
+<span class="k">fi</span>
+
+
+NOTICE <span class="s2">&quot;------END------&quot;</span>
+<span class="nb">exit </span>0
+</pre></div>
+</td></tr></table>
+
+<h4>3 脚本管理</h4>
+<p>目前已经把这个脚本放在Github了，地址是<a href="https://github.com/vfhky/shell-tools" title="点击查看">https://github.com/vfhky/shell-tools</a>，以后脚本的更新或者更多好用的脚本也都会加入到这个工程中。</p>
+		    	<p class="tags">
+					<div class="post-share">
+						<ul class="post-shareul clearfix">
+							<li class="post-shareli">
+								<a href="http://note.youdao.com/memory/?url=https://typecodes.com/linux/syngithubmarkdownpelican.html&title=同步GitHub Markdown文章到Linux服务器后更新Pelican博客的脚本" class="post-sharea ydshare" target="_blank" rel="nofollow">有道云笔记</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://v.t.sina.com.cn/share/share.php?url=https://typecodes.com/linux/syngithubmarkdownpelican.html&title=同步GitHub Markdown文章到Linux服务器后更新Pelican博客的脚本&source=https://typecodes.com" class="post-sharea wbshare" target="_blank" rel="nofollow">新浪微博</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://v.t.qq.com/share/share.php?title=同步GitHub Markdown文章到Linux服务器后更新Pelican博客的脚本&url=https://typecodes.com/linux/syngithubmarkdownpelican.html&site=https://typecodes.com" class="post-sharea twbshare" target="_blank" rel="nofollow">腾讯微博</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=https://typecodes.com/linux/syngithubmarkdownpelican.html&title=同步GitHub Markdown文章到Linux服务器后更新Pelican博客的脚本&content='utf-8'" class="post-sharea qzoneshare" target="_blank" rel="nofollow">QZone</a>
+							</li>
+						</ul>
+					</div>
+					<div>
+						Tags: <a href="https://typecodes.com/tag/pelican.html">pelican</a>,<a href="https://typecodes.com/tag/github.html">github</a>,<a href="https://typecodes.com/tag/markdown.html">markdown</a>					</div>
+				</p>
+			</article>
+			
+			<div id="comments">
+				<h4 class="num">Comments &raquo;</h4>
+		    	<div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript></div>
+		    </div>
+		</div>
+		<!--3. right sider begin-->
+<div class="col-md-3" id="blog-secondary" role="complementary">
+	<section class="widget">
+		<ul class="widget-list">
+			<form id="search" method="get" action="https://typecodes.com/search.html">
+				<input type="text" name="q" id="s" size="20" x-webkit-speech="" x-webkit-grammar="builtin:search" onwebkitspeechchange="this.value = this.value.replace(this.defaultValue, '')" value="Google...." onfocus="this.value = (this.value == this.defaultValue) ? '' : this.value" onblur="this.value = (this.value == '') ? this.defaultValue : this.value">
+			</form>
+		</ul>
+	</section>
+	<section class="widget">
+		<h3 class="widget-title">Categories</h3>
+		<ul class="widget-list">
+		      <li class="current">
+		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (28)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/csharp/index.html">Csharp</a> (6)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/database/index.html">Database</a> (11)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/java/index.html">Java</a> (1)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/linux/index.html">Linux</a> (18)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/mix/index.html">Mix</a> (53)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/web/index.html">Web</a> (88)
+		      </li>
+		</ul>
+	</section>
+	<section class="widget">
+		<h3 class="widget-title">Recent Posts</h3>
+		<ul class="widget-list">
+			<li class="post">
+				<a href="https://typecodes.com/linux/syngithubmarkdownpelican.html">同步GitHub Markdown文章到Linux服务器后更新Pelican博客的脚本</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/linuxgccgconnectmysql.html">Linux c语言连接MySQL数据库实例</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/gccgensharedlib.html">Linux gcc编译生成静态库及使用方法</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/applogsbackup.html">Linux下Nginx、MySQL和PHP等应用的日志切割脚本</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/mix/sucesstypechotopelican.html">成功将博客从Typecho迁移到Pelican</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/mix/begintypechotopelican.html">准备将博客从Typecho迁移到Pelican</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/tcpconnectiontimedout.html">Linux TCP连接Connection Refused和Connection timed out的问题</a>
+			</li>
+		</ul>
+	</section>
+	<section class="widget widget-feed">
+		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
+	</section>
+</div>
+				</div>
+			</div>
+		</div>
+		<!--4. bottom begin-->
+		<footer id="te-site-footer"><div class="container">
+	<div class="row" role="contentinfo">
+		<section class="col-md-2 col-md-offset-1">
+			<h3>Links</h3>
+			<ul><li><a href="http://diaosbook.com/" title="" target="_blank">diaosbook</a></li></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul>
+				<li><a href="https://typecodes.com/links.html">More..</a></li>
+			</ul>
+		</section>
+		<section class="col-md-2">
+			<h3>Following</h3>
+			<ul>
+				<li><a href="https://github.com/vfhky" class="following github" target="_blank" rel="external nofollow">GitHub</a></li>
+				<li><a href="http://weibo.com/typecodes" class="following weibo" target="_blank" rel="external nofollow">Weibo</a></li>
+				<li><a href="http://vfhky.sinaapp.com/" class="following sae" target="_blank" rel="external nofollow">SAE</a></li>
+				<li><a href="http://www.dwz.cn/mYiwa" class="following qqgroup" target="_blank" rel="external nofollow">Group</a></li>
+			</ul>
+		</section>
+		<div class="col-md-12 copyright">
+			<a href="#top"><i class="i-logo-s">TOP</i></a>
+			<p>
+				&copy;  2012-2016 							<a href="https://typecodes.com">TypeCodes</a>. All Rights Reserved<br>Powered by <a href="http://getpelican.com" rel="external" target="_blank">Pelican</a>. <a href="http://www.miitbeian.gov.cn/" rel="external nofollow" target="_blank">粤ICP备14050695号</a>
+			</p>
+		</div>
+	</div>
+</div>
+</footer>
+<script type="text/javascript">
+	var disqus_shortname = 'typecodes';
+	var disqus_identifier = '/linux/syngithubmarkdownpelican.html';
+	var disqus_url = 'https://typecodes.com/linux/syngithubmarkdownpelican.html';
+	var disqus_title = '同步GitHub Markdown文章到Linux服务器后更新Pelican博客的脚本';
+	(function() {
+		var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+		dsq.src = "//" + disqus_shortname + '.disqus.com/embed.js';
+		(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	 })();
+</script>
+	</body>
+</html>

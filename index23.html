@@ -3,13 +3,8 @@
 	<head>
 		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
 		<title>TypeCodes</title>
-		<meta name="author" content="vfhky">
   		<link href="https://typecodes.com/atom.xml" type="application/atom+xml" rel="alternate" title="TypeCodes Atom Feed" />
 	  	<link href="https://typecodes.com/feed.xml" type="application/rss+xml" rel="alternate" title="TypeCodes RSS Feed" />
-		<meta name="HandheldFriendly" content="True">
-		<meta name="MobileOptimized" content="320">
-		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<meta name="renderer" content="webkit">
 		<link rel="stylesheet" href="https://dn-vfhky.qbox.me/libs/css/pelican-vfhky.css">
 		<script>
 			var _hmt = _hmt || [];
@@ -21,7 +16,7 @@
 			})();
 		</script>
 	</head>
-	<body style>
+	<body>
 		<!--1. header navigation begin-->
 		<header role="banner" id="te-site-header">
 			<div class="container">
@@ -40,6 +35,57 @@
 		<!--2. left sider begin-->
 		<div class="col-md-9" id="blog-main" role="main">
 		  	<!--article recycle-->
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/web/sfaddpagenavtag.html">动易SiteFactory系列教程四:如何添加一个分页标签</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2012-08-22 01:10 | 分类：<a href="https://typecodes.com/web/index.html">web</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>通过这篇文章，我们继续学习动易SiteFactory的标签制作。相信大家在文章列表模板页面或者是下载列表页面又或者是在图片列表页面都会涉及到分页的情况。那么动易SiteFactory又是如何通过标签进行分页的呢？下面我就为大家介绍一下分页标签的具体实现过程以及调用方法。</p>
+
+	<p class="more"><a href="https://typecodes.com/web/sfaddpagenavtag.html" title="动易SiteFactory系列教程四:如何添加一个分页标签">- 阅读剩余部分 -</a></p>
+			</article>
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/web/sfnewstag.html">动易SiteFactory系列教程三:最新头条新闻标签制作</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2012-08-21 23:48 | 分类：<a href="https://typecodes.com/web/index.html">web</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>在上一篇最新头条新闻带图片标签制作的教程中，我们熟悉了动易标签制作的大体流程。那么，这篇通过文章，我们继续学习动易SiteFactory的标签制作。本篇教程的主题是以大家访问一些网站的时候经常见到的头条新闻列表来演示动易SiteFactory如何制作出这种风格的标签。</p>
+
+	<p class="more"><a href="https://typecodes.com/web/sfnewstag.html" title="动易SiteFactory系列教程三:最新头条新闻标签制作">- 阅读剩余部分 -</a></p>
+			</article>
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/web/sfcommontag.html">动易SiteFactory系列教程二:动易常用的标签</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2012-08-21 23:27 | 分类：<a href="https://typecodes.com/web/index.html">web</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>1.显示某个栏目的标题及链接：</p>
+<div class="highlight"><pre><span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&#39;{PE.Label id=&quot;取得节点链接路径&quot; nodeid=&quot;1&quot;/}&#39;</span> <span class="nt">&gt;</span>{PE.Label id=&quot;取得节点名称&quot; nodeid=&quot;1&quot;/}<span class="nt">&lt;/a&gt;</span>
+显示“文章中心”及链接。也可以用nodes=&quot;@RequestInt_Id&quot;自动取值。
+</pre></div>
+
+
+<p>2.显示图片带标题（左边图片，右边文章标题）：</p>
+<div class="highlight"><pre>{PE.Label id=&quot;通用带图片的信息列表&quot; outputQty=&quot;1&quot; titleLength=&quot;30&quot; contentLength=&quot;80&quot; models=&quot;1&quot; titleClass=&quot;tv_u_thumb_title&quot; imageClass=&quot;tv_u_thumb&quot; imageWidth=&quot;160&quot; imageHeight=&quot;120&quot; picExist=&quot;true&quot;/}
+</pre></div>
+
+
+
+	<p class="more"><a href="https://typecodes.com/web/sfcommontag.html" title="动易SiteFactory系列教程二:动易常用的标签">- 阅读剩余部分 -</a></p>
+			</article>
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/web/sfnewscontenttag.html">动易SiteFactory系列教程一:最新头条新闻带内容标签的制作</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2012-08-21 22:51 | 分类：<a href="https://typecodes.com/web/index.html">web</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>如何运用cms建立一个网站？我认为，可以分为3个步骤：第一个步骤是设计好整个网站的模板页面，这个主要有前台开发人员设计；第二个是熟悉后台的各种栏目（或者频道或者节点）的设置。不能小看这个步骤，很多标签都跟栏目使用的模板有关，不能通用；第三个步骤是后台开发人员根据相应的前台设计以及相应的要求添加相应的标签，调用出数据库内容（或者一些已经设计好的静态内容）。那么，这一系列的动易CMS教程主要讲解动易Sitefactory的标签。我将通过几个制作实例来讲解相关操作.</p>
+<p><img alt="最新头条新闻带图片标签制作" src="https://dn-vfhky.qbox.me/2012/08/13.png" title="最新头条新闻带图片标签制作" /></p>
+
+	<p class="more"><a href="https://typecodes.com/web/sfnewscontenttag.html" title="动易SiteFactory系列教程一:最新头条新闻带内容标签的制作">- 阅读剩余部分 -</a></p>
+			</article>
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/database/convertmssql2008to2005.html">如何将SQL2008的数据库转换成SQL2005</a></h2>
 <ul class="post-meta">
@@ -87,49 +133,6 @@
 
 	<p class="more"><a href="https://typecodes.com/web/aboutsitefactorycms.html" title="对动易CMS和织梦CMS的一些认识——动易CMS篇">- 阅读剩余部分 -</a></p>
 			</article>
-			<article class="post">
-<h2 class="post-title"><a href="https://typecodes.com/csharp/win7configiis7.html">Win7安装及配置IIS7教程（ASP+ASP.NET,包括动易SF的IIS配置）</a></h2>
-<ul class="post-meta">
-	<li>作者：vfhky | 时间：2012-08-17 17:08 | 分类：<a href="https://typecodes.com/csharp/index.html">csharp</a></li>
-</ul>
-<div class="post-content fmt">
-	<h5>1 安装IIS7</h5>
-<p>依次点击“开始 --&gt; 控制面板 --&gt; 程序 --&gt; 打开或关闭 Windows 功能”，然后按下图操作：（注意：图中红色部分都要选中）</p>
-<p><img alt="安装IIS7" src="https://dn-vfhky.qbox.me/2012/08/1.jpeg" title="安装IIS7" /></p>
-
-	<p class="more"><a href="https://typecodes.com/csharp/win7configiis7.html" title="Win7安装及配置IIS7教程（ASP+ASP.NET,包括动易SF的IIS配置）">- 阅读剩余部分 -</a></p>
-			</article>
-			<article class="post">
-<h2 class="post-title"><a href="https://typecodes.com/database/mssqlcannotrestore.html">MSSQL还原数据库时出现错误:sql Sys</a></h2>
-<ul class="post-meta">
-	<li>作者：vfhky | 时间：2012-08-15 12:25 | 分类：<a href="https://typecodes.com/database/index.html">database</a></li>
-</ul>
-<div class="post-content fmt">
-	<p>先前博主在本地备份了一个数据库文件dy11.bk，然后在MSSQL2008上新建了一个名为first的数据库，打算把dy11.bk还原到这个first数据库上。结果，MSSQL还原时出现错误:sql System.Data.SqlClient.SqlError: 无法覆盖文件'C:\Program Files\Microsoft SQL Server\MSSQL\data\dy11.mdf'。数据库'dy11'正在使用该文件。</p>
-<p><img alt="MSSQL还原数据库时出现错误-1" src="https://dn-vfhky.qbox.me/2012/08/1.png" title="MSSQL还原数据库时出现错误-1" /></p>
-
-	<p class="more"><a href="https://typecodes.com/database/mssqlcannotrestore.html" title="MSSQL还原数据库时出现错误:sql Sys">- 阅读剩余部分 -</a></p>
-			</article>
-			<article class="post">
-<h2 class="post-title"><a href="https://typecodes.com/web/phpsolvewparticleid.html">PHP程序解决WordPress重新排列不连续的文章ID</a></h2>
-<ul class="post-meta">
-	<li>作者：vfhky | 时间：2012-07-28 01:08 | 分类：<a href="https://typecodes.com/web/index.html">web</a></li>
-</ul>
-<div class="post-content fmt">
-	<p>wordpress有个缺点，那就是在后天发表文章的时候，系统会自动等时间地帮你备份。虽然出发点是好的，但是却导致了发表的文章的ID不连续。比如，前一篇文章的网站是27.html，很可能在你发表下一篇文章的时候网站会变成45.html。至此为止，博客中总共18篇文章，在我没进行重新排序之前，文章的ID已经达到了300多了。所以趁文章还不多的，赶紧采取一些措施解决下。废话少说，贴出代码（代码中已注释）。其中数据库表的前缀默认为wp_，应该根据自己的表进行修改。(温馨提示：在任何数据库的操作前，最好先备份数据库！！！）</p>
-
-	<p class="more"><a href="https://typecodes.com/web/phpsolvewparticleid.html" title="PHP程序解决WordPress重新排列不连续的文章ID">- 阅读剩余部分 -</a></p>
-			</article>
-			<article class="post">
-<h2 class="post-title"><a href="https://typecodes.com/mix/thinkaboutlife.html">Some Thing about Life</a></h2>
-<ul class="post-meta">
-	<li>作者：vfhky | 时间：2012-07-26 00:00 | 分类：<a href="https://typecodes.com/mix/index.html">mix</a></li>
-</ul>
-<div class="post-content fmt">
-	<p>生活，真的很难用一个词语来描述它。因为每个阶段，你对它会有不同的认识。而且，即使当你处在某一阶段的时候也会有不同的感悟。</p>
-
-	<p class="more"><a href="https://typecodes.com/mix/thinkaboutlife.html" title="Some Thing about Life">- 阅读剩余部分 -</a></p>
-			</article>
 		  	<!--page navigation-->
 <ol class="page-navigator">
 <li class="prev"><a href="https://typecodes.com/index22.html">&laquo; 前一页</a></li><li><a href="https://typecodes.com/index.html">1</a>
@@ -157,7 +160,7 @@
 		<h3 class="widget-title">Categories</h3>
 		<ul class="widget-list">
 		      <li class="current">
-		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (26)
+		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (28)
 		      </li>
 		      <li class="current">
 		        <a href="https://typecodes.com/csharp/index.html">Csharp</a> (6)
@@ -169,7 +172,7 @@
 		        <a href="https://typecodes.com/java/index.html">Java</a> (1)
 		      </li>
 		      <li class="current">
-		        <a href="https://typecodes.com/linux/index.html">Linux</a> (16)
+		        <a href="https://typecodes.com/linux/index.html">Linux</a> (18)
 		      </li>
 		      <li class="current">
 		        <a href="https://typecodes.com/mix/index.html">Mix</a> (53)
@@ -183,6 +186,18 @@
 		<h3 class="widget-title">Recent Posts</h3>
 		<ul class="widget-list">
 			<li class="post">
+				<a href="https://typecodes.com/linux/syngithubmarkdownpelican.html">同步GitHub Markdown文章到Linux服务器后更新Pelican博客的脚本</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/linuxgccgconnectmysql.html">Linux c语言连接MySQL数据库实例</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/gccgensharedlib.html">Linux gcc编译生成静态库及使用方法</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/applogsbackup.html">Linux下Nginx、MySQL和PHP等应用的日志切割脚本</a>
+			</li>
+			<li class="post">
 				<a href="https://typecodes.com/mix/sucesstypechotopelican.html">成功将博客从Typecho迁移到Pelican</a>
 			</li>
 			<li class="post">
@@ -190,18 +205,6 @@
 			</li>
 			<li class="post">
 				<a href="https://typecodes.com/linux/tcpconnectiontimedout.html">Linux TCP连接Connection Refused和Connection timed out的问题</a>
-			</li>
-			<li class="post">
-				<a href="https://typecodes.com/linux/mysqlerrornospace.html">博客MySQL服务惊魂记：Linux磁盘空间不足(Core Dump文件引爆)</a>
-			</li>
-			<li class="post">
-				<a href="https://typecodes.com/mix/synweibophpmarkdownimgurl.html">升级博客文章同步微博的插件：PHP正则提取Markdown的图片地址</a>
-			</li>
-			<li class="post">
-				<a href="https://typecodes.com/cseries/cppgeneralmakefile.html">Linux C/C++工程中可生成ELF、动/静态库文件的通用Makefile</a>
-			</li>
-			<li class="post">
-				<a href="https://typecodes.com/cseries/libraryundefinedref.html">解决make编译链接动态库错误：libxx.so: undefined reference to xx</a>
 			</li>
 		</ul>
 	</section>
@@ -217,7 +220,7 @@
 	<div class="row" role="contentinfo">
 		<section class="col-md-2 col-md-offset-1">
 			<h3>Links</h3>
-			<ul><li><a href="http://diaosbook.com/" title="">diaosbook</a></li></ul>
+			<ul><li><a href="http://diaosbook.com/" title="" target="_blank">diaosbook</a></li></ul>
 		</section>
 		<section class="col-md-2">
 			<h3>&nbsp;</h3>
@@ -245,7 +248,7 @@
 		<div class="col-md-12 copyright">
 			<a href="#top"><i class="i-logo-s">TOP</i></a>
 			<p>
-				&copy; 2012-<script language="JavaScript">var date = new Date(); document.write(date.getFullYear());</script>							<a href="https://typecodes.com">TypeCodes</a>. All Rights Reserved<br>Powered by <a href="http://getpelican.com" rel="external" target="_blank">Pelican</a>. <a href="http://www.miitbeian.gov.cn/" rel="external nofollow" target="_blank">粤ICP备14050695号</a>
+				&copy;  2012-2016 							<a href="https://typecodes.com">TypeCodes</a>. All Rights Reserved<br>Powered by <a href="http://getpelican.com" rel="external" target="_blank">Pelican</a>. <a href="http://www.miitbeian.gov.cn/" rel="external nofollow" target="_blank">粤ICP备14050695号</a>
 			</p>
 		</div>
 	</div>

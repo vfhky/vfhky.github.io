@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="zh-CN" class="no-js">
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<title>Linux下Nginx、MySQL和PHP等应用的日志切割脚本 &mdash; TypeCodes</title>
+  		<link href="https://typecodes.com/atom.xml" type="application/atom+xml" rel="alternate" title="TypeCodes Atom Feed" />
+	  	<link href="https://typecodes.com/feed.xml" type="application/rss+xml" rel="alternate" title="TypeCodes RSS Feed" />
+		<link rel="stylesheet" href="https://dn-vfhky.qbox.me/libs/css/pelican-vfhky.css">
+		<script>
+			var _hmt = _hmt || [];
+			(function() {
+			  var hm = document.createElement("script");
+			  hm.src = "//hm.baidu.com/hm.js?c15c4ab8e91ba9ac3d5a12293cc93359";
+			  var s = document.getElementsByTagName("script")[0]; 
+			  s.parentNode.insertBefore(hm, s);
+			})();
+		</script>
+	</head>
+	<body>
+		<!--1. header navigation begin-->
+		<header role="banner" id="te-site-header">
+			<div class="container">
+				<a href="https://typecodes.com" class="te-site-logo" role="logo" target="_self"> TypeCodes</a>
+				<ul class="nav nav-pills" id="te-site-nav" role="navigation">
+					<li><a href="https://typecodes.com">Home</a></li><li><a href="https://typecodes.com/archives.html" title="Archives">Archives</a></li><li><a href="https://typecodes.com/about.html" title="About">About</a></li></ul>
+			</div>
+		</header>
+		<div class="te-headline">
+			<div class="container">
+				<h2 class="te-headline-title"> <a href="https://typecodes.com">TypeCodes</a></h2>
+			</div>
+		</div>
+		<div class="container">
+			<div class="row">
+		<!--2. left sider begin-->
+		<div class="col-md-9" id="blog-main" role="main">
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/linux/applogsbackup.html">Linux下Nginx、MySQL和PHP等应用的日志切割脚本</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2015-12-18 21:01 | 分类：<a href="https://typecodes.com/linux/index.html">linux</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>在Linux中如果应用程序会产生日志，那么就需要考虑日志切割，例如按照固定的大小切割、按照日期进行切割等等。同样，在编译<a href="https://typecodes.com/web/centos7compilenginx.html" title="《2015博客升级记(三)：CentOS 7.1编译安装Nginx1.9.0》">Nginx1.9.0</a>、<a href="https://typecodes.com/web/centos7compilemysql.html" title="《2015博客升级记(四)：CentOS 7.1编译安装MySQL5.7.7rc》">MySQL5.7.7rc</a>和<a href="https://typecodes.com/web/centos7compilephp7.html" title="《2015博客升级记(五)：CentOS 7.1编译安装PHP7》">PHP7</a>后，这三个应用服务都会产生日志，尤其是Nginx进程根据配置文件ngnix.conf记录每条访问记录到access.log中。如果所有的日志都打印到同一个文件中的话，那么时间长了的话就会影响效率。</p>
+<p><img alt="Nginx日志切割实例" src="https://dn-vfhky.qbox.me/2015/12/nginx_logs_backup.png" title="Nginx日志切割实例" /></p>
+
+
+<p>这篇文章就是针对Linux下应用使用shell脚本进行分割的描述，该脚本特点是：按天切割、自定义切割出来的日志保留的天数以及记录脚本执行过程和耗时。在使用时需要配置好对应应用的日志目录（<code>Source_Log_Dir</code>变量）、日志备份目录（<code>Backup_Dirs</code>变量），然后使用Crontab定时任务执行该脚本即可。</p>
+<p><img alt="Nginx日志切割时shell脚本执行过程" src="https://dn-vfhky.qbox.me/2015/12/nginx_logs_backup_process.png" title="Nginx日志切割时shell脚本执行过程" /></p>
+<p>下面是脚本nginx_log_backup.sh的具体内容，这里备份的是Nginx日志，其它诸如MySQL、php等Linux应用只要修改脚本对应的日志路径即可。目前该脚本已经同步到博客在GitHub上创建的关于LNMP配置的工程上了，地址是：<a href="https://github.com/vfhky/mylnmp" title="点击查看">https://github.com/vfhky/mylnmp</a>。</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>  1
+  2
+  3
+  4
+  5
+  6
+  7
+  8
+  9
+ 10
+ 11
+ 12
+ 13
+ 14
+ 15
+ 16
+ 17
+ 18
+ 19
+ 20
+ 21
+ 22
+ 23
+ 24
+ 25
+ 26
+ 27
+ 28
+ 29
+ 30
+ 31
+ 32
+ 33
+ 34
+ 35
+ 36
+ 37
+ 38
+ 39
+ 40
+ 41
+ 42
+ 43
+ 44
+ 45
+ 46
+ 47
+ 48
+ 49
+ 50
+ 51
+ 52
+ 53
+ 54
+ 55
+ 56
+ 57
+ 58
+ 59
+ 60
+ 61
+ 62
+ 63
+ 64
+ 65
+ 66
+ 67
+ 68
+ 69
+ 70
+ 71
+ 72
+ 73
+ 74
+ 75
+ 76
+ 77
+ 78
+ 79
+ 80
+ 81
+ 82
+ 83
+ 84
+ 85
+ 86
+ 87
+ 88
+ 89
+ 90
+ 91
+ 92
+ 93
+ 94
+ 95
+ 96
+ 97
+ 98
+ 99
+100
+101</pre></div></td><td class="code"><div class="highlight"><pre><span class="c">#!/bin/bash</span>
+<span class="c"># Backup Log Files for linux applications such as nginx, php, mysql and so on.</span>
+<span class="c"># Crontab Usage: 00 01 * * * /mydata/backups/bak_list/nginx_log_backup.sh &gt;/dev/null 2&gt;&amp;1</span>
+<span class="c"># (c) 2015 vfhky https://typecodes.com/linux/applogsbackup.html</span>
+<span class="c"># https://github.com/vfhky/mylnmp/blob/master/nginx_log_backup.sh</span>
+
+<span class="c"># Basic command.</span>
+<span class="nv">TARCMD</span><span class="o">=</span><span class="s2">&quot;tar -zcf&quot;</span>
+<span class="nv">MVCMD</span><span class="o">=</span><span class="s2">&quot;\mv -f&quot;</span>
+<span class="nv">FINDCMD</span><span class="o">=</span><span class="s2">&quot;find&quot;</span>
+
+<span class="c"># Number of days to keep.</span>
+<span class="nv">NUMDAYS</span><span class="o">=</span>40
+
+<span class="c"># Path of the logs you want backup.You can set it as the nginx log path or the mysql log path and so on.</span>
+<span class="nv">Source_Log_Dir</span><span class="o">=</span>/var/log/nginx
+<span class="c"># Set the file types you want backup accoding to the suffix of log files.</span>
+<span class="nv">Source_Log_Files</span><span class="o">=</span><span class="sb">`</span>ls <span class="si">${</span><span class="nv">Source_Log_Dir</span><span class="si">}</span>/*.log<span class="sb">`</span>
+<span class="c"># Set the backup path.</span>
+<span class="nv">Backup_Dirs</span><span class="o">=</span><span class="si">${</span><span class="nv">Source_Log_Dir</span><span class="si">}</span>
+<span class="c"># Previous date format: e.g 20150505</span>
+<span class="nv">Previous_Date</span><span class="o">=</span><span class="sb">`</span>date -d <span class="s2">&quot;-1 days&quot;</span> +%Y%m%d<span class="sb">`</span>
+<span class="c"># The target backup dir.</span>
+<span class="nv">Backup_Dir</span><span class="o">=</span><span class="si">${</span><span class="nv">Backup_Dirs</span><span class="si">}</span>/<span class="si">${</span><span class="nv">Previous_Date</span><span class="si">}</span>
+<span class="c"># Path of the log generated by this shell script automatically.</span>
+<span class="nv">Shell_Log</span><span class="o">=</span><span class="si">${</span><span class="nv">Backup_Dir</span><span class="si">}</span>/process.log
+
+
+<span class="c"># Run command functions.</span>
+<span class="k">function</span> ERROR<span class="o">()</span> <span class="o">{</span>
+  <span class="nb">echo</span> &gt;/dev/null <span class="o">&amp;&amp;</span> <span class="nb">echo</span> <span class="s2">&quot;[`date +%H:%M:%S:%N`][error] </span><span class="nv">$@</span><span class="s2">&quot;</span> &gt;&gt; <span class="si">${</span><span class="nv">Shell_Log</span><span class="si">}</span>
+  <span class="nb">exit </span>1
+<span class="o">}</span>
+
+<span class="k">function</span> NOTICE<span class="o">()</span> <span class="o">{</span>
+  <span class="nb">echo</span> &gt;/dev/null <span class="o">&amp;&amp;</span> <span class="nb">echo</span> <span class="s2">&quot;[`date +%H:%M:%S:%N`][notice] </span><span class="nv">$@</span><span class="s2">&quot;</span> &gt;&gt; <span class="si">${</span><span class="nv">Shell_Log</span><span class="si">}</span>
+<span class="o">}</span>
+
+<span class="k">function</span> RUNCMD<span class="o">()</span> <span class="o">{</span>
+  <span class="nb">echo</span> <span class="nv">$@</span> &gt;&gt; <span class="si">${</span><span class="nv">Shell_Log</span><span class="si">}</span>
+  <span class="nb">eval</span> <span class="nv">$@</span>
+<span class="o">}</span>
+
+
+<span class="c"># Check the days user input.You can delete the codes below generally.</span>
+<span class="k">if</span> <span class="o">[[</span> ! <span class="nv">$NUMDAYS</span> <span class="o">=</span>~ ^<span class="o">[</span>0-9<span class="o">]</span>+<span class="nv">$ </span><span class="o">]]</span><span class="p">;</span> <span class="k">then</span>
+  ERROR <span class="s2">&quot;Invalid number of days[</span><span class="nv">$NUMDAYS</span><span class="s2">]!&quot;</span>
+<span class="k">elif</span> <span class="o">[</span> <span class="s2">&quot;</span><span class="nv">$NUMDAYS</span><span class="s2">&quot;</span> -eq <span class="s2">&quot;0&quot;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+  ERROR <span class="s2">&quot;Number of days must be greater than zero!&quot;</span>
+<span class="k">fi</span>
+
+
+<span class="c"># Lock down permissions.</span>
+<span class="nb">umask </span>077
+
+<span class="c"># Create the backup log dir and a shell log.</span>
+mkdir -p <span class="nv">$Backup_Dir</span>
+touch <span class="nv">$Shell_Log</span>
+
+
+NOTICE <span class="s2">&quot;[1]Start backup.&quot;</span>
+
+
+NOTICE <span class="s2">&quot;[2]Start compress the log files using the tar command.&quot;</span>
+RUNCMD <span class="s2">&quot;cd </span><span class="si">${</span><span class="nv">Source_Log_Dir</span><span class="si">}</span><span class="s2"> &amp;&amp; </span><span class="si">${</span><span class="nv">TARCMD</span><span class="si">}</span><span class="s2"> </span><span class="si">${</span><span class="nv">Previous_Date</span><span class="si">}</span><span class="s2">.tar.gz *.log&quot;</span>
+
+<span class="nv">RC</span><span class="o">=</span><span class="nv">$?</span>
+<span class="k">if</span> <span class="o">[</span> <span class="nv">$RC</span> -gt <span class="m">0</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+  ERROR <span class="s2">&quot;Creat the backup package failed!&quot;</span>
+<span class="k">fi</span>
+
+
+NOTICE <span class="s2">&quot;[3]Start move the compress file to backup dir.&quot;</span>
+RUNCMD <span class="s2">&quot;</span><span class="si">${</span><span class="nv">MVCMD</span><span class="si">}</span><span class="s2"> </span><span class="si">${</span><span class="nv">Previous_Date</span><span class="si">}</span><span class="s2">.tar.gz </span><span class="si">${</span><span class="nv">Backup_Dir</span><span class="si">}</span><span class="s2">/&quot;</span>
+
+<span class="nv">RC</span><span class="o">=</span><span class="nv">$?</span>
+<span class="k">if</span> <span class="o">[</span> <span class="nv">$RC</span> -gt <span class="m">0</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+  ERROR <span class="s2">&quot;Move the compress file failed!&quot;</span>
+<span class="k">fi</span>
+
+
+NOTICE <span class="s2">&quot;[4]Start empty every log file.&quot;</span>
+
+<span class="k">for</span> file in <span class="si">${</span><span class="nv">Source_Log_Files</span><span class="si">}</span>
+<span class="k">do</span>
+    RUNCMD <span class="s2">&quot;&gt;</span><span class="nv">$file</span><span class="s2">&quot;</span>
+    <span class="nv">RC</span><span class="o">=</span><span class="nv">$?</span>
+    <span class="k">if</span> <span class="o">[</span> <span class="nv">$RC</span> -gt <span class="m">0</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+      ERROR <span class="s2">&quot;Empty every log file failed!&quot;</span>
+    <span class="k">fi</span>
+<span class="k">done</span>
+
+
+NOTICE <span class="s2">&quot;[5]Removing older folders than </span><span class="nv">$NUMDAYS</span><span class="s2"> days.&quot;</span>
+<span class="c"># ls ${Source_Log_Dir} | grep &#39;^[0-9]\{8\}$&#39; | xargs rm -rf</span>
+RUNCMD <span class="s2">&quot;</span><span class="nv">$FINDCMD</span><span class="s2"> </span><span class="si">${</span><span class="nv">Source_Log_Dir</span><span class="si">}</span><span class="s2"> -type d -name [0-9]*\[0-9] -mtime +</span><span class="nv">$NUMDAYS</span><span class="s2"> | xargs rm -rf&quot;</span>
+
+
+NOTICE <span class="s2">&quot;[6]End backup.&quot;</span>
+
+<span class="nb">exit </span>0
+</pre></div>
+</td></tr></table>
+		    	<p class="tags">
+					<div class="post-share">
+						<ul class="post-shareul clearfix">
+							<li class="post-shareli">
+								<a href="http://note.youdao.com/memory/?url=https://typecodes.com/linux/applogsbackup.html&title=Linux下Nginx、MySQL和PHP等应用的日志切割脚本" class="post-sharea ydshare" target="_blank" rel="nofollow">有道云笔记</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://v.t.sina.com.cn/share/share.php?url=https://typecodes.com/linux/applogsbackup.html&title=Linux下Nginx、MySQL和PHP等应用的日志切割脚本&source=https://typecodes.com" class="post-sharea wbshare" target="_blank" rel="nofollow">新浪微博</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://v.t.qq.com/share/share.php?title=Linux下Nginx、MySQL和PHP等应用的日志切割脚本&url=https://typecodes.com/linux/applogsbackup.html&site=https://typecodes.com" class="post-sharea twbshare" target="_blank" rel="nofollow">腾讯微博</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=https://typecodes.com/linux/applogsbackup.html&title=Linux下Nginx、MySQL和PHP等应用的日志切割脚本&content='utf-8'" class="post-sharea qzoneshare" target="_blank" rel="nofollow">QZone</a>
+							</li>
+						</ul>
+					</div>
+					<div>
+						Tags: <a href="https://typecodes.com/tag/bo-ke-cheng-chang-lu.html">博客成长录</a>,<a href="https://typecodes.com/tag/shell.html">shell</a>,<a href="https://typecodes.com/tag/nginx.html">nginx</a>,<a href="https://typecodes.com/tag/mysql.html">mysql</a>,<a href="https://typecodes.com/tag/php.html">php</a>					</div>
+				</p>
+			</article>
+			
+			<div id="comments">
+				<h4 class="num">Comments &raquo;</h4>
+		    	<div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript></div>
+		    </div>
+		</div>
+		<!--3. right sider begin-->
+<div class="col-md-3" id="blog-secondary" role="complementary">
+	<section class="widget">
+		<ul class="widget-list">
+			<form id="search" method="get" action="https://typecodes.com/search.html">
+				<input type="text" name="q" id="s" size="20" x-webkit-speech="" x-webkit-grammar="builtin:search" onwebkitspeechchange="this.value = this.value.replace(this.defaultValue, '')" value="Google...." onfocus="this.value = (this.value == this.defaultValue) ? '' : this.value" onblur="this.value = (this.value == '') ? this.defaultValue : this.value">
+			</form>
+		</ul>
+	</section>
+	<section class="widget">
+		<h3 class="widget-title">Categories</h3>
+		<ul class="widget-list">
+		      <li class="current">
+		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (28)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/csharp/index.html">Csharp</a> (6)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/database/index.html">Database</a> (11)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/java/index.html">Java</a> (1)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/linux/index.html">Linux</a> (18)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/mix/index.html">Mix</a> (53)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/web/index.html">Web</a> (88)
+		      </li>
+		</ul>
+	</section>
+	<section class="widget">
+		<h3 class="widget-title">Recent Posts</h3>
+		<ul class="widget-list">
+			<li class="post">
+				<a href="https://typecodes.com/linux/syngithubmarkdownpelican.html">同步GitHub Markdown文章到Linux服务器后更新Pelican博客的脚本</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/linuxgccgconnectmysql.html">Linux c语言连接MySQL数据库实例</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/gccgensharedlib.html">Linux gcc编译生成静态库及使用方法</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/applogsbackup.html">Linux下Nginx、MySQL和PHP等应用的日志切割脚本</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/mix/sucesstypechotopelican.html">成功将博客从Typecho迁移到Pelican</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/mix/begintypechotopelican.html">准备将博客从Typecho迁移到Pelican</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/tcpconnectiontimedout.html">Linux TCP连接Connection Refused和Connection timed out的问题</a>
+			</li>
+		</ul>
+	</section>
+	<section class="widget widget-feed">
+		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
+	</section>
+</div>
+				</div>
+			</div>
+		</div>
+		<!--4. bottom begin-->
+		<footer id="te-site-footer"><div class="container">
+	<div class="row" role="contentinfo">
+		<section class="col-md-2 col-md-offset-1">
+			<h3>Links</h3>
+			<ul><li><a href="http://diaosbook.com/" title="" target="_blank">diaosbook</a></li></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul>
+				<li><a href="https://typecodes.com/links.html">More..</a></li>
+			</ul>
+		</section>
+		<section class="col-md-2">
+			<h3>Following</h3>
+			<ul>
+				<li><a href="https://github.com/vfhky" class="following github" target="_blank" rel="external nofollow">GitHub</a></li>
+				<li><a href="http://weibo.com/typecodes" class="following weibo" target="_blank" rel="external nofollow">Weibo</a></li>
+				<li><a href="http://vfhky.sinaapp.com/" class="following sae" target="_blank" rel="external nofollow">SAE</a></li>
+				<li><a href="http://www.dwz.cn/mYiwa" class="following qqgroup" target="_blank" rel="external nofollow">Group</a></li>
+			</ul>
+		</section>
+		<div class="col-md-12 copyright">
+			<a href="#top"><i class="i-logo-s">TOP</i></a>
+			<p>
+				&copy;  2012-2016 							<a href="https://typecodes.com">TypeCodes</a>. All Rights Reserved<br>Powered by <a href="http://getpelican.com" rel="external" target="_blank">Pelican</a>. <a href="http://www.miitbeian.gov.cn/" rel="external nofollow" target="_blank">粤ICP备14050695号</a>
+			</p>
+		</div>
+	</div>
+</div>
+</footer>
+<script type="text/javascript">
+	var disqus_shortname = 'typecodes';
+	var disqus_identifier = '/linux/applogsbackup.html';
+	var disqus_url = 'https://typecodes.com/linux/applogsbackup.html';
+	var disqus_title = 'Linux下Nginx、MySQL和PHP等应用的日志切割脚本';
+	(function() {
+		var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+		dsq.src = "//" + disqus_shortname + '.disqus.com/embed.js';
+		(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	 })();
+</script>
+	</body>
+</html>
