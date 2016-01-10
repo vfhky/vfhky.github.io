@@ -398,7 +398,9 @@ NOTICE &lt;span class="s2"&gt;&amp;quot;------END------&amp;quot;&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 &lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 
-&lt;h4&gt;3 脚本管理&lt;/h4&gt;
+&lt;h4&gt;3 脚本执行结果&lt;/h4&gt;
+&lt;p&gt;&lt;img alt="github_pelican_nginx脚本执行结果" src="https://dn-vfhky.qbox.me/2016/01/pelican_shell_excute_result.png" title="github_pelican_nginx脚本执行结果" /&gt;&lt;/p&gt;
+&lt;h4&gt;4 脚本管理&lt;/h4&gt;
 &lt;p&gt;目前已经把这个脚本放在Github了，地址是&lt;a href="https://github.com/vfhky/shell-tools" title="点击查看"&gt;https://github.com/vfhky/shell-tools&lt;/a&gt;，以后脚本的更新或者更多好用的脚本也都会加入到这个工程中。&lt;/p&gt;</summary><category term="pelican"></category><category term="github"></category><category term="markdown"></category></entry><entry><title>Linux c语言连接MySQL数据库实例</title><link href="https://typecodes.com/cseries/linuxgccgconnectmysql.html" rel="alternate"></link><updated>2016-01-07T14:42:00+08:00</updated><author><name>vfhky</name></author><id>tag:typecodes.com,2016-01-07:cseries/linuxgccgconnectmysql.html</id><summary type="html">&lt;p&gt;工作上自己在Linux C/C++开发时，用的都是Oracle数据库，毕竟企业级应用追求稳定性好、安全可靠。业余时间做了一些WEB开发，接触到MySQL数据库比较多，也比较喜欢开源的MySQL。之前都是用PHP连接MySQL数据库，这里自己用C语言连接MySQL，执行一些简单的连接、查询操作、异常处理等操作。&lt;/p&gt;
 
 
