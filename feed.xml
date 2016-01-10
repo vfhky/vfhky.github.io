@@ -31,7 +31,7 @@
 &lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 
 &lt;h4&gt;2 具体代码&lt;/h4&gt;
-&lt;p&gt;代码比较简单，需要注明的是，如果个人没有Github主页的话，可以直接执行命令&lt;code&gt;./github_pelican_nginx.sh&lt;/code&gt;即可，这样就不会执行脚本中的第7个步骤。否则，需要执行命令&lt;code&gt;./github_pelican_nginx.sh 关于本次更新的说明内容&lt;/code&gt;。&lt;/p&gt;
+&lt;p&gt;代码比较简单，需要注明的是，如果个人没有Github主页的话，可以直接执行命令&lt;code&gt;./github_pelican_nginx.sh&lt;/code&gt;即可，这样就不会执行脚本中的第7个步骤。否则，需要执行命令&lt;code&gt;./github_pelican_nginx.sh "关于本次更新的说明内容"&lt;/code&gt;。&lt;/p&gt;
 &lt;table class="highlighttable"&gt;&lt;tr&gt;&lt;td class="linenos"&gt;&lt;div class="linenodiv"&gt;&lt;pre&gt;  1
   2
   3
@@ -216,7 +216,7 @@
 182&lt;/pre&gt;&lt;/div&gt;&lt;/td&gt;&lt;td class="code"&gt;&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="c"&gt;#!/bin/bash&lt;/span&gt;
 &lt;span class="c"&gt;# FileName:      github_pelican_nginx.sh&lt;/span&gt;
 &lt;span class="c"&gt;# Description:   Synchronize markdown articles with github, convert to html files using Pelican, deliver it to nginx environment.&lt;/span&gt;
-&lt;span class="c"&gt;# Simple Usage:  ./github_pelican_nginx.sh commit_comments&lt;/span&gt;
+&lt;span class="c"&gt;# Simple Usage:  ./github_pelican_nginx.sh &amp;quot;commit_comments&amp;quot;&lt;/span&gt;
 &lt;span class="c"&gt;# Crontab Usage: 00 01 * * * /mydata/backups/bak_list/github_pelican_nginx.sh &amp;gt;/dev/null 2&amp;gt;&amp;amp;1&lt;/span&gt;
 &lt;span class="c"&gt;# (c) 2016 vfhky https://typecodes.com/linux/githubpelicanpublishshell.html&lt;/span&gt;
 &lt;span class="c"&gt;# https://github.com/vfhky/shell-tools/blob/master/synchronize/github_pelican_nginx.sh&lt;/span&gt;
@@ -258,9 +258,9 @@
 &lt;span class="o"&gt;[&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;&lt;span class="k"&gt;$(&lt;/span&gt;id -u&lt;span class="k"&gt;)&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt; !&lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;0&amp;quot;&lt;/span&gt; &lt;span class="o"&gt;]&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;Error: You must be root to run this script.&amp;quot;&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class="nb"&gt;exit &lt;/span&gt;1
 
 &lt;span class="c"&gt;# Check parameter.&lt;/span&gt;
-&lt;span class="c"&gt;# if [ $# -ne 0 -a $# -ne 1 ]; then&lt;/span&gt;
-&lt;span class="c"&gt;#   echo &amp;quot;Usage:    ./github_pelican_nginx.sh commit_comments&amp;quot; &amp;amp;&amp;amp; exit 1&lt;/span&gt;
-
+&lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="o"&gt;[&lt;/span&gt; &lt;span class="nv"&gt;$# &lt;/span&gt;-gt &lt;span class="m"&gt;1&lt;/span&gt; &lt;span class="o"&gt;]&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="k"&gt;then&lt;/span&gt;
+    &lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;Usage:    ./github_pelican_nginx.sh \&amp;quot;commit_comments\&amp;quot;&amp;quot;&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class="nb"&gt;exit &lt;/span&gt;1
+&lt;span class="k"&gt;fi&lt;/span&gt;
 
 &lt;span class="c"&gt;# Run command functions.&lt;/span&gt;
 &lt;span class="k"&gt;function&lt;/span&gt; ERROR&lt;span class="o"&gt;()&lt;/span&gt; &lt;span class="o"&gt;{&lt;/span&gt;
@@ -363,8 +363,8 @@ RUNCMD &lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;&lt;span class="si"&gt;${&l
     ERROR &lt;span class="s2"&gt;&amp;quot;Unpack the target files failed!&amp;quot;&lt;/span&gt;
 &lt;span class="k"&gt;fi&lt;/span&gt;
 
-
-&lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="o"&gt;[&lt;/span&gt; -n &lt;span class="nv"&gt;$1&lt;/span&gt; &lt;span class="o"&gt;]&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="k"&gt;then&lt;/span&gt;
+&lt;span class="c"&gt;# if [ $# -eq 1 ]; then&lt;/span&gt;
+&lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="o"&gt;[&lt;/span&gt; -n &lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;&lt;span class="nv"&gt;$1&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt; &lt;span class="o"&gt;]&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="k"&gt;then&lt;/span&gt;
     &lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;You&amp;#39;re going to synchronize your weibsite to the homepage on github.com.&amp;quot;&lt;/span&gt;
     NOTICE &lt;span class="s2"&gt;&amp;quot;[6]Start copy the packgage to the local homepage bang cloned from remote in GitHub.&amp;quot;&lt;/span&gt;
     RUNCMD &lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;CPCMD&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt; &lt;/span&gt;&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;PELICAN_TAR_DIR&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt;/&lt;/span&gt;&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;Current_Date&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt;.tar.gz &lt;/span&gt;&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;GITHUB_PERSONAL_PAGE&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt; &amp;amp;&amp;amp; cd &lt;/span&gt;&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;GITHUB_PERSONAL_PAGE&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt; &amp;amp;&amp;amp; &lt;/span&gt;&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;TARXCMD&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt; &lt;/span&gt;&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;Current_Date&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt;.tar.gz &amp;amp;&amp;amp; &lt;/span&gt;&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;RMCMD&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt; &lt;/span&gt;&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;Current_Date&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt;.tar.gz&amp;quot;&lt;/span&gt;
@@ -380,8 +380,8 @@ RUNCMD &lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;&lt;span class="si"&gt;${&l
     &lt;span class="c"&gt;# do&lt;/span&gt;
     &lt;span class="c"&gt;#   read -p &amp;quot;Comments can not be empty.Please input again: &amp;quot; COMMIT_COMMENTS&lt;/span&gt;
     &lt;span class="c"&gt;# done&lt;/span&gt;
-    &lt;span class="c"&gt;# RUNCMD &amp;quot;Git_Commit ${COMMIT_COMMENTS}&amp;quot;&lt;/span&gt;
-    RUNCMD &lt;span class="s2"&gt;&amp;quot;Git_Commit &lt;/span&gt;&lt;span class="nv"&gt;$1&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;
+    &lt;span class="c"&gt;# RUNCMD &amp;quot;Git_Commit \&amp;quot;${COMMIT_COMMENTS}\&amp;quot;&amp;quot;&lt;/span&gt;
+    RUNCMD &lt;span class="s2"&gt;&amp;quot;Git_Commit \&amp;quot;&lt;/span&gt;&lt;span class="nv"&gt;$1&lt;/span&gt;&lt;span class="s2"&gt;\&amp;quot;&amp;quot;&lt;/span&gt;
 
     &lt;span class="nv"&gt;RC&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="nv"&gt;$?&lt;/span&gt;
     &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="o"&gt;[&lt;/span&gt; &lt;span class="nv"&gt;$RC&lt;/span&gt; -gt &lt;span class="m"&gt;0&lt;/span&gt; &lt;span class="o"&gt;]&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="k"&gt;then&lt;/span&gt;
