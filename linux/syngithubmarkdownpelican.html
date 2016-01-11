@@ -305,16 +305,16 @@
 
 <span class="c"># Run command functions.</span>
 <span class="k">function</span> ERROR<span class="o">()</span> <span class="o">{</span>
-    <span class="nb">echo</span> &gt;/dev/null <span class="o">&amp;&amp;</span> <span class="nb">echo</span> <span class="s2">&quot;[</span><span class="k">$(</span>date +%Y%m%d_%H%M<span class="k">)</span><span class="s2">][error] </span><span class="nv">$*</span><span class="s2">&quot;</span> &gt;&gt; <span class="si">${</span><span class="nv">BLOG_PUBLISH_LOG_DIR</span><span class="si">}</span>/<span class="si">${</span><span class="nv">Current_Date</span><span class="si">}</span>.log
+    <span class="nb">echo</span> &gt;/dev/null <span class="o">&amp;&amp;</span> <span class="nb">echo</span> <span class="s2">&quot;[</span><span class="k">$(</span>date +%H:%M:%S:%N<span class="k">)</span><span class="s2">][error] </span><span class="nv">$*</span><span class="s2">&quot;</span> &gt;&gt; <span class="si">${</span><span class="nv">BLOG_PUBLISH_LOG_DIR</span><span class="si">}</span>/<span class="si">${</span><span class="nv">Current_Date</span><span class="si">}</span>.log
     <span class="nb">exit </span>1
 <span class="o">}</span>
 
 <span class="k">function</span> NOTICE<span class="o">()</span> <span class="o">{</span>
-    <span class="nb">echo</span> &gt;/dev/null <span class="o">&amp;&amp;</span> <span class="nb">echo</span> <span class="s2">&quot;[</span><span class="k">$(</span>date +%Y%m%d_%H%M<span class="k">)</span><span class="s2">][notice] </span><span class="nv">$*</span><span class="s2">&quot;</span> &gt;&gt; <span class="si">${</span><span class="nv">BLOG_PUBLISH_LOG_DIR</span><span class="si">}</span>/<span class="si">${</span><span class="nv">Current_Date</span><span class="si">}</span>.log
+    <span class="nb">echo</span> &gt;/dev/null <span class="o">&amp;&amp;</span> <span class="nb">echo</span> <span class="s2">&quot;[</span><span class="k">$(</span>date +%H:%M:%S:%N<span class="k">)</span><span class="s2">][notice] </span><span class="nv">$*</span><span class="s2">&quot;</span> &gt;&gt; <span class="si">${</span><span class="nv">BLOG_PUBLISH_LOG_DIR</span><span class="si">}</span>/<span class="si">${</span><span class="nv">Current_Date</span><span class="si">}</span>.log
 <span class="o">}</span>
 
 <span class="k">function</span> RUNCMD<span class="o">()</span> <span class="o">{</span>
-    <span class="nb">echo</span> <span class="s2">&quot;[</span><span class="k">$(</span>date +%Y%m%d_%H%M<span class="k">)</span><span class="s2">][notice] </span><span class="nv">$*</span><span class="s2">&quot;</span> &gt;&gt; <span class="si">${</span><span class="nv">BLOG_PUBLISH_LOG_DIR</span><span class="si">}</span>/<span class="si">${</span><span class="nv">Current_Date</span><span class="si">}</span>.log
+    <span class="nb">echo</span> <span class="s2">&quot;[</span><span class="k">$(</span>date +%H:%M:%S:%N<span class="k">)</span><span class="s2">][notice] </span><span class="nv">$*</span><span class="s2">&quot;</span> &gt;&gt; <span class="si">${</span><span class="nv">BLOG_PUBLISH_LOG_DIR</span><span class="si">}</span>/<span class="si">${</span><span class="nv">Current_Date</span><span class="si">}</span>.log
     <span class="nb">eval</span> <span class="nv">$@</span>
 <span class="o">}</span>
 
@@ -325,12 +325,12 @@
 
 <span class="c"># Git commit command function.</span>
 <span class="k">function</span> Git_Commit<span class="o">(){</span>
-  <span class="k">if</span> <span class="o">[</span> <span class="nv">$# </span>-ne <span class="m">1</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
-    ERROR <span class="s2">&quot;Usage: Git_Commit commit_comments!&quot;</span>
-    <span class="nb">exit </span>1<span class="p">;</span>
-  <span class="k">else</span>
-    RUNCMD git pull <span class="o">&amp;&amp;</span> git add --all <span class="o">&amp;&amp;</span> git commit -m <span class="s2">&quot;</span><span class="nv">$1</span><span class="s2">&quot;</span> <span class="o">&amp;&amp;</span> git push origin master
-  <span class="k">fi</span>
+    <span class="k">if</span> <span class="o">[</span> <span class="nv">$# </span>-ne <span class="m">1</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+        ERROR <span class="s2">&quot;Usage: Git_Commit commit_comments!&quot;</span>
+        <span class="nb">exit </span>1<span class="p">;</span>
+    <span class="k">else</span>
+        RUNCMD <span class="s2">&quot;git pull &amp;&amp; git add --all &amp;&amp; git commit -m \&quot;</span><span class="nv">$1</span><span class="s2">\&quot; &amp;&amp; git push origin master&quot;</span>
+    <span class="k">fi</span>
 <span class="o">}</span>
 
 <span class="c"># Get the path of markdown articles in TIME_GAP minutes.</span>

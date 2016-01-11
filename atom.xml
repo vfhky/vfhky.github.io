@@ -264,16 +264,16 @@
 
 &lt;span class="c"&gt;# Run command functions.&lt;/span&gt;
 &lt;span class="k"&gt;function&lt;/span&gt; ERROR&lt;span class="o"&gt;()&lt;/span&gt; &lt;span class="o"&gt;{&lt;/span&gt;
-    &lt;span class="nb"&gt;echo&lt;/span&gt; &amp;gt;/dev/null &lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;[&lt;/span&gt;&lt;span class="k"&gt;$(&lt;/span&gt;date +%Y%m%d_%H%M&lt;span class="k"&gt;)&lt;/span&gt;&lt;span class="s2"&gt;][error] &lt;/span&gt;&lt;span class="nv"&gt;$*&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt; &amp;gt;&amp;gt; &lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;BLOG_PUBLISH_LOG_DIR&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;/&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;Current_Date&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;.log
+    &lt;span class="nb"&gt;echo&lt;/span&gt; &amp;gt;/dev/null &lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;[&lt;/span&gt;&lt;span class="k"&gt;$(&lt;/span&gt;date +%H:%M:%S:%N&lt;span class="k"&gt;)&lt;/span&gt;&lt;span class="s2"&gt;][error] &lt;/span&gt;&lt;span class="nv"&gt;$*&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt; &amp;gt;&amp;gt; &lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;BLOG_PUBLISH_LOG_DIR&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;/&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;Current_Date&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;.log
     &lt;span class="nb"&gt;exit &lt;/span&gt;1
 &lt;span class="o"&gt;}&lt;/span&gt;
 
 &lt;span class="k"&gt;function&lt;/span&gt; NOTICE&lt;span class="o"&gt;()&lt;/span&gt; &lt;span class="o"&gt;{&lt;/span&gt;
-    &lt;span class="nb"&gt;echo&lt;/span&gt; &amp;gt;/dev/null &lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;[&lt;/span&gt;&lt;span class="k"&gt;$(&lt;/span&gt;date +%Y%m%d_%H%M&lt;span class="k"&gt;)&lt;/span&gt;&lt;span class="s2"&gt;][notice] &lt;/span&gt;&lt;span class="nv"&gt;$*&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt; &amp;gt;&amp;gt; &lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;BLOG_PUBLISH_LOG_DIR&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;/&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;Current_Date&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;.log
+    &lt;span class="nb"&gt;echo&lt;/span&gt; &amp;gt;/dev/null &lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;[&lt;/span&gt;&lt;span class="k"&gt;$(&lt;/span&gt;date +%H:%M:%S:%N&lt;span class="k"&gt;)&lt;/span&gt;&lt;span class="s2"&gt;][notice] &lt;/span&gt;&lt;span class="nv"&gt;$*&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt; &amp;gt;&amp;gt; &lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;BLOG_PUBLISH_LOG_DIR&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;/&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;Current_Date&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;.log
 &lt;span class="o"&gt;}&lt;/span&gt;
 
 &lt;span class="k"&gt;function&lt;/span&gt; RUNCMD&lt;span class="o"&gt;()&lt;/span&gt; &lt;span class="o"&gt;{&lt;/span&gt;
-    &lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;[&lt;/span&gt;&lt;span class="k"&gt;$(&lt;/span&gt;date +%Y%m%d_%H%M&lt;span class="k"&gt;)&lt;/span&gt;&lt;span class="s2"&gt;][notice] &lt;/span&gt;&lt;span class="nv"&gt;$*&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt; &amp;gt;&amp;gt; &lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;BLOG_PUBLISH_LOG_DIR&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;/&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;Current_Date&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;.log
+    &lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;[&lt;/span&gt;&lt;span class="k"&gt;$(&lt;/span&gt;date +%H:%M:%S:%N&lt;span class="k"&gt;)&lt;/span&gt;&lt;span class="s2"&gt;][notice] &lt;/span&gt;&lt;span class="nv"&gt;$*&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt; &amp;gt;&amp;gt; &lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;BLOG_PUBLISH_LOG_DIR&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;/&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;Current_Date&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;.log
     &lt;span class="nb"&gt;eval&lt;/span&gt; &lt;span class="nv"&gt;$@&lt;/span&gt;
 &lt;span class="o"&gt;}&lt;/span&gt;
 
@@ -284,12 +284,12 @@
 
 &lt;span class="c"&gt;# Git commit command function.&lt;/span&gt;
 &lt;span class="k"&gt;function&lt;/span&gt; Git_Commit&lt;span class="o"&gt;(){&lt;/span&gt;
-  &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="o"&gt;[&lt;/span&gt; &lt;span class="nv"&gt;$# &lt;/span&gt;-ne &lt;span class="m"&gt;1&lt;/span&gt; &lt;span class="o"&gt;]&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="k"&gt;then&lt;/span&gt;
-    ERROR &lt;span class="s2"&gt;&amp;quot;Usage: Git_Commit commit_comments!&amp;quot;&lt;/span&gt;
-    &lt;span class="nb"&gt;exit &lt;/span&gt;1&lt;span class="p"&gt;;&lt;/span&gt;
-  &lt;span class="k"&gt;else&lt;/span&gt;
-    RUNCMD git pull &lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt; git add --all &lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt; git commit -m &lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;&lt;span class="nv"&gt;$1&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt; git push origin master
-  &lt;span class="k"&gt;fi&lt;/span&gt;
+    &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="o"&gt;[&lt;/span&gt; &lt;span class="nv"&gt;$# &lt;/span&gt;-ne &lt;span class="m"&gt;1&lt;/span&gt; &lt;span class="o"&gt;]&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="k"&gt;then&lt;/span&gt;
+        ERROR &lt;span class="s2"&gt;&amp;quot;Usage: Git_Commit commit_comments!&amp;quot;&lt;/span&gt;
+        &lt;span class="nb"&gt;exit &lt;/span&gt;1&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="k"&gt;else&lt;/span&gt;
+        RUNCMD &lt;span class="s2"&gt;&amp;quot;git pull &amp;amp;&amp;amp; git add --all &amp;amp;&amp;amp; git commit -m \&amp;quot;&lt;/span&gt;&lt;span class="nv"&gt;$1&lt;/span&gt;&lt;span class="s2"&gt;\&amp;quot; &amp;amp;&amp;amp; git push origin master&amp;quot;&lt;/span&gt;
+    &lt;span class="k"&gt;fi&lt;/span&gt;
 &lt;span class="o"&gt;}&lt;/span&gt;
 
 &lt;span class="c"&gt;# Get the path of markdown articles in TIME_GAP minutes.&lt;/span&gt;
