@@ -2,7 +2,9 @@
 <html dir="ltr" lang="zh-CN" class="no-js">
 	<head>
 		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+  		<meta name="renderer" content="webkit">
 		<title>TypeCodes</title>
+  		<meta name="viewport" content="width=device-width, initial-scale=1">
   		<link href="https://typecodes.com/atom.xml" type="application/atom+xml" rel="alternate" title="TypeCodes Atom Feed" />
 	  	<link href="https://typecodes.com/feed.xml" type="application/rss+xml" rel="alternate" title="TypeCodes RSS Feed" />
 		<link rel="stylesheet" href="https://dn-vfhky.qbox.me/libs/css/pelican-vfhky.css">
@@ -35,6 +37,17 @@
 		<!--2. left sider begin-->
 		<div class="col-md-9" id="blog-main" role="main">
 		  	<!--article recycle-->
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/web/nginxserviceoptshell.html">Nginx服务启动、停止和重启等操作的SHELL脚本</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2015-06-06 13:42 | 分类：<a href="https://typecodes.com/web/index.html">web</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>由于使用源码编译安装Nginx，不会像yum install那样自动生成Nginx服务控制脚本，所以需要自己添加一个操作脚本。谷歌上搜了一下，shell脚本的代码基本类似，因此自己稍微整理改动了下。</p>
+<p>下面的shell脚本内容，需要根据Nginx实际编译安装的配置，修改<code>NGINX_CONF_FILE="/etc/nginx/nginx.conf"</code>和<code>lockfile=/var/lock/nginx.lock</code>这两个参数（即前文<a href="https://typecodes.com/web/centos7compilenginx.html" title="查看原文">《2015博客升级记(三)：CentOS 7.1编译安装Nginx1.9.0》</a>中的configure配置）。</p>
+
+	<p class="more"><a href="https://typecodes.com/web/nginxserviceoptshell.html" title="Nginx服务启动、停止和重启等操作的SHELL脚本">- 阅读剩余部分 -</a></p>
+			</article>
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/web/centos7compilenginx.html">2015博客升级记(三)：CentOS 7.1编译安装Nginx1.9.0</a></h2>
 <ul class="post-meta">
@@ -119,17 +132,6 @@ Linux系统：       阿里云CentOS 7.1（20G）
 
 	<p class="more"><a href="https://typecodes.com/cseries/againchexstrtointeger.html" title="再议C语言将十六进制字符串转成十进制整数">- 阅读剩余部分 -</a></p>
 			</article>
-			<article class="post">
-<h2 class="post-title"><a href="https://typecodes.com/linux/centos7chghostname.html">CentOS7系统如何修改主机名</a></h2>
-<ul class="post-meta">
-	<li>作者：vfhky | 时间：2015-04-20 23:00 | 分类：<a href="https://typecodes.com/linux/index.html">linux</a></li>
-</ul>
-<div class="post-content fmt">
-	<p>前段时间博客一直处于关闭状态，主要是做了一些升级。之前博主用的是CentOS6.5系统，然后升级到了如今的CentOS7版本。另外Nginx、Mysql和PHP都做了相应的版本升级，后续文章会给大家分享下。这篇文章主要讲讲CentOS7系统如何修改主机名。</p>
-<p><img alt="CentOS7系统如何修改主机名" src="https://dn-vfhky.qbox.me/2015/04/centos7chghostname.png" title="CentOS7系统如何修改主机名" /></p>
-
-	<p class="more"><a href="https://typecodes.com/linux/centos7chghostname.html" title="CentOS7系统如何修改主机名">- 阅读剩余部分 -</a></p>
-			</article>
 		  	<!--page navigation-->
 <ol class="page-navigator">
 <li class="prev"><a href="https://typecodes.com/index4.html">&laquo; 前一页</a></li><li><a href="https://typecodes.com/index.html">1</a>
@@ -157,7 +159,7 @@ Linux系统：       阿里云CentOS 7.1（20G）
 		<h3 class="widget-title">Categories</h3>
 		<ul class="widget-list">
 		      <li class="current">
-		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (28)
+		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (29)
 		      </li>
 		      <li class="current">
 		        <a href="https://typecodes.com/csharp/index.html">Csharp</a> (6)
@@ -183,6 +185,9 @@ Linux系统：       阿里云CentOS 7.1（20G）
 		<h3 class="widget-title">Recent Posts</h3>
 		<ul class="widget-list">
 			<li class="post">
+				<a href="https://typecodes.com/cseries/multilprocessthreadgdb.html">Linux多进程和多线程的一次gdb调试实例</a>
+			</li>
+			<li class="post">
 				<a href="https://typecodes.com/linux/syngithubmarkdownpelican.html">同步GitHub Markdown文章到Linux服务器后更新Pelican博客的脚本</a>
 			</li>
 			<li class="post">
@@ -199,9 +204,6 @@ Linux系统：       阿里云CentOS 7.1（20G）
 			</li>
 			<li class="post">
 				<a href="https://typecodes.com/mix/begintypechotopelican.html">准备将博客从Typecho迁移到Pelican</a>
-			</li>
-			<li class="post">
-				<a href="https://typecodes.com/linux/tcpconnectiontimedout.html">Linux TCP连接Connection Refused和Connection timed out的问题</a>
 			</li>
 		</ul>
 	</section>

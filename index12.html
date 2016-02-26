@@ -2,7 +2,9 @@
 <html dir="ltr" lang="zh-CN" class="no-js">
 	<head>
 		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+  		<meta name="renderer" content="webkit">
 		<title>TypeCodes</title>
+  		<meta name="viewport" content="width=device-width, initial-scale=1">
   		<link href="https://typecodes.com/atom.xml" type="application/atom+xml" rel="alternate" title="TypeCodes Atom Feed" />
 	  	<link href="https://typecodes.com/feed.xml" type="application/rss+xml" rel="alternate" title="TypeCodes RSS Feed" />
 		<link rel="stylesheet" href="https://dn-vfhky.qbox.me/libs/css/pelican-vfhky.css">
@@ -35,6 +37,22 @@
 		<!--2. left sider begin-->
 		<div class="col-md-9" id="blog-main" role="main">
 		  	<!--article recycle-->
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/web/phgoogleshorturlapi.html">PHP实现谷歌短网址服务的API接口调用</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2014-03-12 22:20 | 分类：<a href="https://typecodes.com/web/index.html">web</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>前面整理了一篇文章<a href="https://typecodes.com/web/phpbd163sinashorturlapi.html" title="点击查看">《PHP实现百度、网易、新浪短网址服务的API接口调用》</a>，这篇文章就来说说如何用PHP实现谷歌短网址API接口的调用。谷歌短网址的API接口功能比较丰富，还能analytics某个短网址，例如点击量创建时间等等。</p>
+<h5>1 谷歌短网址API接口介绍</h5>
+<p>谷歌短网址（Google url shortener）页面是http://goo.gl/，官方API文档说明是：<a href="https://developers.google.com/url-shortener/v1/getting_started" title="点击查看">点击进入</a>。同新浪短网址的API一样，谷歌短网址的API调用可以通过两种授权方式（Authentication）实现。正如文档中所提到的：</p>
+<div class="highlight"><pre>Every request your application sends to the Google URL Shortener API needs to identify your application to Google. There are two ways to identify your application: using an OAuth 2.0 token (which also authorizes the request) and/or using the application&#39;s API key.（你的应用向谷歌短网址API服务器所发送的每一个请求，都需要向Google提供合法证明。有如下两种渠道来识别你的应用：使用一个OAuth 2.0 token，或者使用应用的API KEY）。由于OAuth 2.0的认证过程相对麻烦，而且谷歌官方文档也说了“An API key is highly recommended”，所以这里就使用第二种API KEY来实现。
+</pre></div>
+
+
+
+	<p class="more"><a href="https://typecodes.com/web/phgoogleshorturlapi.html" title="PHP实现谷歌短网址服务的API接口调用">- 阅读剩余部分 -</a></p>
+			</article>
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/mix/vfhkystickarticleflash.html">教程：主题【vfhky】如何添加文章到首页幻灯片以及置顶文章</a></h2>
 <ul class="post-meta">
@@ -125,20 +143,6 @@
 
 	<p class="more"><a href="https://typecodes.com/mix/vfhkyinsertmusicplayer.html" title="教程：主题【vfhky】如何在文章中插入音乐播放器">- 阅读剩余部分 -</a></p>
 			</article>
-			<article class="post">
-<h2 class="post-title"><a href="https://typecodes.com/mix/githubcollaborationtvfhky.html">如何在github上参与主题【vfhky】的代码开发：开源项目协作开发实战</a></h2>
-<ul class="post-meta">
-	<li>作者：vfhky | 时间：2014-02-15 22:22 | 分类：<a href="https://typecodes.com/mix/index.html">mix</a></li>
-</ul>
-<div class="post-content fmt">
-	<p>为了使更多的童鞋能通过github加入到主题【vfhky】的开发上来，博主把整个流程简要介绍下。其实，这也是一篇如何在github上参与一个开源项目的简单教程。</p>
-<h5>1 下载github（window客户端）</h5>
-<p>在github上用邮注册帐号后，下载github的window客户端，地址是<a href="https://help.github.com/articles/set-up-git">https://help.github.com/articles/set-up-git</a>。</p>
-<h5>2 登录github客户端</h5>
-<p>为了简单起见，这里就不使用生成ssh key的方法了，直接打开那个蓝色的GitHub图标，这个是图形界面。然后输入帐号密码，它会自动生成一个ssh key并同步到github远端上。</p>
-
-	<p class="more"><a href="https://typecodes.com/mix/githubcollaborationtvfhky.html" title="如何在github上参与主题【vfhky】的代码开发：开源项目协作开发实战">- 阅读剩余部分 -</a></p>
-			</article>
 		  	<!--page navigation-->
 <ol class="page-navigator">
 <li class="prev"><a href="https://typecodes.com/index11.html">&laquo; 前一页</a></li><li><a href="https://typecodes.com/index.html">1</a>
@@ -165,7 +169,7 @@
 		<h3 class="widget-title">Categories</h3>
 		<ul class="widget-list">
 		      <li class="current">
-		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (28)
+		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (29)
 		      </li>
 		      <li class="current">
 		        <a href="https://typecodes.com/csharp/index.html">Csharp</a> (6)
@@ -191,6 +195,9 @@
 		<h3 class="widget-title">Recent Posts</h3>
 		<ul class="widget-list">
 			<li class="post">
+				<a href="https://typecodes.com/cseries/multilprocessthreadgdb.html">Linux多进程和多线程的一次gdb调试实例</a>
+			</li>
+			<li class="post">
 				<a href="https://typecodes.com/linux/syngithubmarkdownpelican.html">同步GitHub Markdown文章到Linux服务器后更新Pelican博客的脚本</a>
 			</li>
 			<li class="post">
@@ -207,9 +214,6 @@
 			</li>
 			<li class="post">
 				<a href="https://typecodes.com/mix/begintypechotopelican.html">准备将博客从Typecho迁移到Pelican</a>
-			</li>
-			<li class="post">
-				<a href="https://typecodes.com/linux/tcpconnectiontimedout.html">Linux TCP连接Connection Refused和Connection timed out的问题</a>
 			</li>
 		</ul>
 	</section>

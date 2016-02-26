@@ -2,7 +2,9 @@
 <html dir="ltr" lang="zh-CN" class="no-js">
 	<head>
 		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+  		<meta name="renderer" content="webkit">
 		<title>TypeCodes</title>
+  		<meta name="viewport" content="width=device-width, initial-scale=1">
   		<link href="https://typecodes.com/atom.xml" type="application/atom+xml" rel="alternate" title="TypeCodes Atom Feed" />
 	  	<link href="https://typecodes.com/feed.xml" type="application/rss+xml" rel="alternate" title="TypeCodes RSS Feed" />
 		<link rel="stylesheet" href="https://dn-vfhky.qbox.me/libs/css/pelican-vfhky.css">
@@ -35,6 +37,17 @@
 		<!--2. left sider begin-->
 		<div class="col-md-9" id="blog-main" role="main">
 		  	<!--article recycle-->
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/web/wpquotecomments.html">如何给wordpress的回复添加引用功能</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2012-09-24 17:10 | 分类：<a href="https://typecodes.com/web/index.html">web</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>在上一篇文章已经写了<a href="https://typecodes.com/web/wpatcommentauthor.html" title="wordpress回复内容前面添加@作者样式">关于评论/回复添加@的方法</a>，今天继续用jQuery添加一个在评论/回复添加引用的功能。其实，只要博客有了评论/回复的@功能，基本上用不着使用引用功能了。</p>
+<p>从那篇关于@功能的文章就知道，只要我们点击那个@某某的链接，我们就可以找到原来的评论。而引用要起的作用也差不多，类似于@，只不过相对于@有更为直观。要使用引用功能，所用原理也是类似@的（温馨提示：大家还是看一下，不然这篇文章可能有些云里雾里了^^）。即要用到jQuery，并且涉及到自己主题评论页面的web结构。不罗嗦了，最终效果如下：</p>
+
+	<p class="more"><a href="https://typecodes.com/web/wpquotecomments.html" title="如何给wordpress的回复添加引用功能">- 阅读剩余部分 -</a></p>
+			</article>
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/web/wpantisimulateblogger.html">wordpress如何防止访客冒充博主发表评论</a></h2>
 <ul class="post-meta">
@@ -116,17 +129,6 @@ d88a7d68-78d7-468f-8d66-7e108c0b7f86
 
 	<p class="more"><a href="https://typecodes.com/mix/sfinvitationcode.html" title="动易官方论坛的邀请码">- 阅读剩余部分 -</a></p>
 			</article>
-			<article class="post">
-<h2 class="post-title"><a href="https://typecodes.com/web/amendwordpressloginpage.html">如何修改WordPress的后台登录界面</a></h2>
-<ul class="post-meta">
-	<li>作者：vfhky | 时间：2012-09-07 20:31 | 分类：<a href="https://typecodes.com/web/index.html">web</a></li>
-</ul>
-<div class="post-content fmt">
-	<p>和很多CMS一样，网站一经升级就会把你先前修改的一些图片或者样式什么的都替换为CMS自己的内容。Wordpress也一样，每次官方发布新版本升级后的后台管理都会被恢复为官方内容。所以很是麻烦，我们要做的就是想办法“一劳永逸”地解决这个问题。要修改的内容包括：替换登录Logo图片、替换Logo上的链接和提示文字。最终的效果如下图所示，</p>
-<p><img alt="修改wordpress后台登陆界面" src="https://dn-vfhky.qbox.me/2012/09/1.png" title="修改wordpress后台登陆界面" /></p>
-
-	<p class="more"><a href="https://typecodes.com/web/amendwordpressloginpage.html" title="如何修改WordPress的后台登录界面">- 阅读剩余部分 -</a></p>
-			</article>
 		  	<!--page navigation-->
 <ol class="page-navigator">
 <li class="prev"><a href="https://typecodes.com/index20.html">&laquo; 前一页</a></li><li><a href="https://typecodes.com/index.html">1</a>
@@ -153,7 +155,7 @@ d88a7d68-78d7-468f-8d66-7e108c0b7f86
 		<h3 class="widget-title">Categories</h3>
 		<ul class="widget-list">
 		      <li class="current">
-		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (28)
+		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (29)
 		      </li>
 		      <li class="current">
 		        <a href="https://typecodes.com/csharp/index.html">Csharp</a> (6)
@@ -179,6 +181,9 @@ d88a7d68-78d7-468f-8d66-7e108c0b7f86
 		<h3 class="widget-title">Recent Posts</h3>
 		<ul class="widget-list">
 			<li class="post">
+				<a href="https://typecodes.com/cseries/multilprocessthreadgdb.html">Linux多进程和多线程的一次gdb调试实例</a>
+			</li>
+			<li class="post">
 				<a href="https://typecodes.com/linux/syngithubmarkdownpelican.html">同步GitHub Markdown文章到Linux服务器后更新Pelican博客的脚本</a>
 			</li>
 			<li class="post">
@@ -195,9 +200,6 @@ d88a7d68-78d7-468f-8d66-7e108c0b7f86
 			</li>
 			<li class="post">
 				<a href="https://typecodes.com/mix/begintypechotopelican.html">准备将博客从Typecho迁移到Pelican</a>
-			</li>
-			<li class="post">
-				<a href="https://typecodes.com/linux/tcpconnectiontimedout.html">Linux TCP连接Connection Refused和Connection timed out的问题</a>
 			</li>
 		</ul>
 	</section>

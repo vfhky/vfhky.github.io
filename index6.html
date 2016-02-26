@@ -2,7 +2,9 @@
 <html dir="ltr" lang="zh-CN" class="no-js">
 	<head>
 		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+  		<meta name="renderer" content="webkit">
 		<title>TypeCodes</title>
+  		<meta name="viewport" content="width=device-width, initial-scale=1">
   		<link href="https://typecodes.com/atom.xml" type="application/atom+xml" rel="alternate" title="TypeCodes Atom Feed" />
 	  	<link href="https://typecodes.com/feed.xml" type="application/rss+xml" rel="alternate" title="TypeCodes RSS Feed" />
 		<link rel="stylesheet" href="https://dn-vfhky.qbox.me/libs/css/pelican-vfhky.css">
@@ -35,6 +37,17 @@
 		<!--2. left sider begin-->
 		<div class="col-md-9" id="blog-main" role="main">
 		  	<!--article recycle-->
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/linux/centos7chghostname.html">CentOS7系统如何修改主机名</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2015-04-20 23:00 | 分类：<a href="https://typecodes.com/linux/index.html">linux</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>前段时间博客一直处于关闭状态，主要是做了一些升级。之前博主用的是CentOS6.5系统，然后升级到了如今的CentOS7版本。另外Nginx、Mysql和PHP都做了相应的版本升级，后续文章会给大家分享下。这篇文章主要讲讲CentOS7系统如何修改主机名。</p>
+<p><img alt="CentOS7系统如何修改主机名" src="https://dn-vfhky.qbox.me/2015/04/centos7chghostname.png" title="CentOS7系统如何修改主机名" /></p>
+
+	<p class="more"><a href="https://typecodes.com/linux/centos7chghostname.html" title="CentOS7系统如何修改主机名">- 阅读剩余部分 -</a></p>
+			</article>
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/mix/uestudioidecompiler.html">在UEStudio/UltraEdit中打造C/C#/JAVA等语言的编译器</a></h2>
 <ul class="post-meta">
@@ -112,20 +125,6 @@
 
 	<p class="more"><a href="https://typecodes.com/cseries/calculateaveragescore.html" title="去掉最高分和最低分求平均分数的问题">- 阅读剩余部分 -</a></p>
 			</article>
-			<article class="post">
-<h2 class="post-title"><a href="https://typecodes.com/cseries/mfcreturnkeyshutdialog.html">MFC回车键不关闭对话框以及变成TAB键效果</a></h2>
-<ul class="post-meta">
-	<li>作者：vfhky | 时间：2014-11-16 00:05 | 分类：<a href="https://typecodes.com/cseries/index.html">cseries</a></li>
-</ul>
-<div class="post-content fmt">
-	<p>之前在弄完这个十六进制字符串异或的工具后，发现直接按回车键就直接关闭了工具。网上搜了下解决方案，然后自己的总结如下4种方法：</p>
-<h5>1 设置一个默认按钮（不推荐）</h5>
-<p>如<a href="https://typecodes.com/cseries/studymfchexstrxortool1.html" title="《图文实例说MFC制作工具的心得（一）》">前文</a>小节5中所述，只要将“进行异或”这个按钮属性中的Default Button设置为"TRUE"就行了。但是这样就直接触发这个按钮对应的事件OnBnClickedButton1，而不是对输入的数据进行合法性检查。</p>
-<h5>2 比较推荐的是重载OnOK()函数或者PreTranslateMessage()函数</h5>
-<p>首先我们需要找到这两个函数的位置，方法有两种，效果都是殊途同归：</p>
-
-	<p class="more"><a href="https://typecodes.com/cseries/mfcreturnkeyshutdialog.html" title="MFC回车键不关闭对话框以及变成TAB键效果">- 阅读剩余部分 -</a></p>
-			</article>
 		  	<!--page navigation-->
 <ol class="page-navigator">
 <li class="prev"><a href="https://typecodes.com/index5.html">&laquo; 前一页</a></li><li><a href="https://typecodes.com/index.html">1</a>
@@ -152,7 +151,7 @@
 		<h3 class="widget-title">Categories</h3>
 		<ul class="widget-list">
 		      <li class="current">
-		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (28)
+		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (29)
 		      </li>
 		      <li class="current">
 		        <a href="https://typecodes.com/csharp/index.html">Csharp</a> (6)
@@ -178,6 +177,9 @@
 		<h3 class="widget-title">Recent Posts</h3>
 		<ul class="widget-list">
 			<li class="post">
+				<a href="https://typecodes.com/cseries/multilprocessthreadgdb.html">Linux多进程和多线程的一次gdb调试实例</a>
+			</li>
+			<li class="post">
 				<a href="https://typecodes.com/linux/syngithubmarkdownpelican.html">同步GitHub Markdown文章到Linux服务器后更新Pelican博客的脚本</a>
 			</li>
 			<li class="post">
@@ -194,9 +196,6 @@
 			</li>
 			<li class="post">
 				<a href="https://typecodes.com/mix/begintypechotopelican.html">准备将博客从Typecho迁移到Pelican</a>
-			</li>
-			<li class="post">
-				<a href="https://typecodes.com/linux/tcpconnectiontimedout.html">Linux TCP连接Connection Refused和Connection timed out的问题</a>
 			</li>
 		</ul>
 	</section>

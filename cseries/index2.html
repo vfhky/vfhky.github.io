@@ -2,7 +2,9 @@
 <html dir="ltr" lang="zh-CN" class="no-js">
 	<head>
 		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+  		<meta name="renderer" content="webkit">
 		<title>分类 cseries 下的文章 - TypeCodes</title>
+  		<meta name="viewport" content="width=device-width, initial-scale=1">
   		<link href="https://typecodes.com/atom.xml" type="application/atom+xml" rel="alternate" title="TypeCodes Atom Feed" />
 	  	<link href="https://typecodes.com/feed.xml" type="application/rss+xml" rel="alternate" title="TypeCodes RSS Feed" />
 		<link rel="stylesheet" href="https://dn-vfhky.qbox.me/libs/css/pelican-vfhky.css">
@@ -35,6 +37,16 @@
 		<!--2. left sider begin-->
 		<div class="col-md-9" id="blog-main" role="main">
 		  	<!--article recycle-->
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/cseries/simplifychexstrtoint.html">视角：C语言将十六进制字符串转成十进制整数</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2015-05-30 07:58 | 分类：<a href="https://typecodes.com/cseries/index.html">cseries</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>在前文<a href="https://typecodes.com/cseries/againchexstrtointeger.html/comment-page-1#comment-1665" title="查看原文评论">《再议C语言将十六进制字符串转成十进制整数》</a>中 <a href="http://pewae.com/">@大致</a> 童鞋帮忙提了一个思路：直接将指针<code>p</code>读取的十六进制字符串中的单个字符转换后的结果保存在<code>iResult</code>中，而不是保存在指针p指向的内存中。这样思路更为简洁，下面是具体的两个实现程序。</p>
+
+	<p class="more"><a href="https://typecodes.com/cseries/simplifychexstrtoint.html" title="视角：C语言将十六进制字符串转成十进制整数">- 阅读剩余部分 -</a></p>
+			</article>
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/cseries/againchexstrtointeger.html">再议C语言将十六进制字符串转成十进制整数</a></h2>
 <ul class="post-meta">
@@ -116,20 +128,6 @@
 
 	<p class="more"><a href="https://typecodes.com/cseries/mfchexstrxortool.html" title="MFC写了一个十六进制字符串异或的工具">- 阅读剩余部分 -</a></p>
 			</article>
-			<article class="post">
-<h2 class="post-title"><a href="https://typecodes.com/cseries/hexstrxor.html">十六进制字符串异或</a></h2>
-<ul class="post-meta">
-	<li>作者：vfhky | 时间：2014-11-10 22:20 | 分类：<a href="https://typecodes.com/cseries/index.html">cseries</a></li>
-</ul>
-<div class="post-content fmt">
-	<p>十六进制字符串异或是C/C++工作中经常遇到的情况，因此自己写了一个异或方法。程序中关键的三点：</p>
-<h5>1 关键点一</h5>
-<p>弄清十六进制字符串异或的思路：一个十六进制字符其实表示的是一个字节的低4位，但是在ASCII码表中，它是作为一个字符，即占用了1个字节。所以需要先把这个字符转换成对应的十进制数（范围是0~15），这个就是<code>int char2int( char input )</code>函数所做的工作；同理在异或完后，需要根据ASCII码表将范围是0~15的<code>字符</code>转换成对应的占用1字节的字符串中的字符，这个就是<code>int int2char( char input )</code>函数所做的工作。</p>
-<p>PS：这其实就是前面这两篇文章的提炼——
-<a href="https://typecodes.com/cseries/clangintegerstrtointeger.html" title="《C语言将十进制字符串转成十进制整数》">《C语言将十进制字符串转成十进制整数》</a>、<a href="https://typecodes.com/cseries/clanghexstrtointeger.html" title="《C语言将十六进制字符串转成十进制整数》">《C语言将十六进制字符串转成十进制整数》</a>。</p>
-
-	<p class="more"><a href="https://typecodes.com/cseries/hexstrxor.html" title="十六进制字符串异或">- 阅读剩余部分 -</a></p>
-			</article>
 		  	<!--page navigation-->
 <ol class="page-navigator">
 <li class="prev"><a href="https://typecodes.com/cseries/index.html">&laquo; 前一页</a></li><li><a href="https://typecodes.com/cseries/index.html">1</a><li class="current"><a href="https://typecodes.com/cseries/index2.html">2</a>
@@ -151,7 +149,7 @@
 		<h3 class="widget-title">Categories</h3>
 		<ul class="widget-list">
 		      <li class="current">
-		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (28)
+		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (29)
 		      </li>
 		      <li class="current">
 		        <a href="https://typecodes.com/csharp/index.html">Csharp</a> (6)
@@ -177,6 +175,9 @@
 		<h3 class="widget-title">Recent Posts</h3>
 		<ul class="widget-list">
 			<li class="post">
+				<a href="https://typecodes.com/cseries/multilprocessthreadgdb.html">Linux多进程和多线程的一次gdb调试实例</a>
+			</li>
+			<li class="post">
 				<a href="https://typecodes.com/cseries/linuxgccgconnectmysql.html">Linux c语言连接MySQL数据库实例</a>
 			</li>
 			<li class="post">
@@ -193,9 +194,6 @@
 			</li>
 			<li class="post">
 				<a href="https://typecodes.com/cseries/gcclderrlibrarypath.html">Linux gcc链接动态库出错：LIBRARY_PATH和LD_LIBRARY_PATH的区别</a>
-			</li>
-			<li class="post">
-				<a href="https://typecodes.com/cseries/unixsigtermkill.html">Unix系统进程对SIGTERM、SIGUSR1和SIGUSR2信号处理</a>
 			</li>
 		</ul>
 	</section>

@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="zh-CN" class="no-js">
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+  		<meta name="renderer" content="webkit">
+		<title>Linux多进程和多线程的一次gdb调试实例 &mdash; TypeCodes</title>
+  		<meta name="viewport" content="width=device-width, initial-scale=1">
+  		<link href="https://typecodes.com/atom.xml" type="application/atom+xml" rel="alternate" title="TypeCodes Atom Feed" />
+	  	<link href="https://typecodes.com/feed.xml" type="application/rss+xml" rel="alternate" title="TypeCodes RSS Feed" />
+		<link rel="stylesheet" href="https://dn-vfhky.qbox.me/libs/css/pelican-vfhky.css">
+		<script>
+			var _hmt = _hmt || [];
+			(function() {
+			  var hm = document.createElement("script");
+			  hm.src = "//hm.baidu.com/hm.js?c15c4ab8e91ba9ac3d5a12293cc93359";
+			  var s = document.getElementsByTagName("script")[0]; 
+			  s.parentNode.insertBefore(hm, s);
+			})();
+		</script>
+	</head>
+	<body>
+		<!--1. header navigation begin-->
+		<header role="banner" id="te-site-header">
+			<div class="container">
+				<a href="https://typecodes.com" class="te-site-logo" role="logo" target="_self"> TypeCodes</a>
+				<ul class="nav nav-pills" id="te-site-nav" role="navigation">
+					<li><a href="https://typecodes.com">Home</a></li><li><a href="https://typecodes.com/archives.html" title="Archives">Archives</a></li><li><a href="https://typecodes.com/about.html" title="About">About</a></li></ul>
+			</div>
+		</header>
+		<div class="te-headline">
+			<div class="container">
+				<h2 class="te-headline-title"> <a href="https://typecodes.com">TypeCodes</a></h2>
+			</div>
+		</div>
+		<div class="container">
+			<div class="row">
+		<!--2. left sider begin-->
+		<div class="col-md-9" id="blog-main" role="main">
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/cseries/multilprocessthreadgdb.html">Linux多进程和多线程的一次gdb调试实例</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2016-02-25 23:18 | 分类：<a href="https://typecodes.com/cseries/index.html">cseries</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>Linux C/C++开发中gdb进行多进程和多线程的调试一直比较麻烦，在CSDN上看到高科的一篇文章<a href="http://blog.csdn.net/pbymw8iwm/article/details/7876797" title="查看原文">《gdb调试多进程和多线程命令》</a>比较有启发，这里就自己重新整理并做了一个GDB多进程/线程的调试实践。</p>
+
+
+<h4>1 原文整理</h4>
+<p>默认设置下，在调试多进程程序时gdb只会调试主进程。gdb7以上的版本(gdb --version)支持多进程调试，只需要设置好<code>follow-fork-mode</code>（fork追踪模式）以及<code>detach-on-fork</code>（指示GDB在fork之后是否断开某个进程的调试）即可。</p>
+<p>这两个参数的设置命令分别是：set follow-fork-mode [parent|child]，set detach-on-fork [on|off]。两者结合起来构成了GDB的调试模式：</p>
+<div class="highlight"><pre>follow-fork-mode  detach-on-fork    说明
+    parent              on          GDB默认的调试模式：只调试主进程
+    child               on          只调试子进程
+    parent              off         同时调试两个进程，gdb跟主进程，子进程block在fork位置
+    child               off         同时调试两个进程，gdb跟子进程，主进程block在fork位置
+</pre></div>
+
+
+<p>查看gdb默认的参数设置：</p>
+<div class="highlight"><pre>(gdb) show follow-fork-mode
+Debugger response to a program call of fork or vfork is &quot;parent&quot;.
+(gdb) show detach-on-fork
+Whether gdb will detach the child of a fork is on.
+(gdb)
+</pre></div>
+
+
+<h4>2 演示代码</h4>
+<p>下面这段代码的主要流程就是在main函数中fork创建一个子进程，然后在父进程中又创建一个线程，接着就使用gdb进行调试（block子进程）。注意，在调试设置断点的时候，由于之前调试的时候代码最前面没有加上这7行说明文字，所以设置断点的行号要加上7。</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69</pre></div></td><td class="code"><div class="highlight"><pre><span class="cm">/** </span>
+<span class="cm"> * @FileName    gdb_pthread.c</span>
+<span class="cm"> * @Describe    A simple example for the debug of multiprocess and multithreading using gdb in linux system.</span>
+<span class="cm"> * @Author      vfhky 2016-02-25 22:48 https://typecodes.com/cseries/multilprocessthreadgdb.html</span>
+<span class="cm"> * @Compile     gcc gdb_pthread.c -g -o gdb_pthread</span>
+<span class="cm"> * @Reference   http://blog.csdn.net/pbymw8iwm/article/details/7876797</span>
+<span class="cm"> */</span>
+<span class="cp">#include &lt;stdio.h&gt;</span>
+<span class="cp">#include &lt;pthread.h&gt;</span>
+<span class="cp">#include &lt;sys/types.h&gt;</span>
+<span class="cp">#include &lt;unistd.h&gt;</span>
+
+
+<span class="c1">//Parent process handle.</span>
+<span class="kt">void</span> <span class="nf">Parent</span><span class="p">();</span>
+<span class="c1">//Child process handle.</span>
+<span class="kt">void</span> <span class="nf">Child</span><span class="p">();</span>
+<span class="c1">//Parent process handle after generate a thread.</span>
+<span class="kt">void</span> <span class="o">*</span> <span class="nf">ParentDo</span><span class="p">(</span> <span class="kt">char</span> <span class="o">*</span><span class="n">argv</span> <span class="p">);</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span> <span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span> <span class="o">**</span><span class="n">argv</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="kt">int</span> <span class="n">pid</span><span class="p">;</span>
+    <span class="n">pid</span> <span class="o">=</span> <span class="n">fork</span><span class="p">();</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">pid</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span>        <span class="c1">//add the first breakpoint.</span>
+        <span class="n">Parent</span><span class="p">();</span>
+    <span class="k">else</span>
+        <span class="n">Child</span><span class="p">();</span>
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="c1">//Parent process handle.</span>
+<span class="kt">void</span> <span class="nf">Parent</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="kt">pid_t</span> <span class="n">pid</span> <span class="o">=</span> <span class="n">getpid</span><span class="p">();</span>
+    <span class="kt">char</span> <span class="n">cParent</span><span class="p">[]</span> <span class="o">=</span> <span class="s">&quot;Parent&quot;</span><span class="p">;</span>
+    <span class="kt">char</span> <span class="n">cThread</span><span class="p">[]</span> <span class="o">=</span> <span class="s">&quot;Thread&quot;</span><span class="p">;</span>
+    <span class="kt">pthread_t</span> <span class="n">pt</span><span class="p">;</span>
+
+    <span class="n">printf</span><span class="p">(</span> <span class="s">&quot;[%s]: [%d] [%s]</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">cParent</span><span class="p">,</span> <span class="n">pid</span><span class="p">,</span> <span class="s">&quot;step1&quot;</span> <span class="p">);</span>
+
+    <span class="k">if</span><span class="p">(</span> <span class="n">pthread_create</span><span class="p">(</span> <span class="o">&amp;</span><span class="n">pt</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="p">(</span><span class="kt">void</span> <span class="o">*</span><span class="p">)</span><span class="o">*</span><span class="n">ParentDo</span><span class="p">,</span> <span class="n">cThread</span> <span class="p">)</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">printf</span><span class="p">(</span> <span class="s">&quot;[%s]: Can not create a thread.</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">cParent</span> <span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="n">ParentDo</span><span class="p">(</span> <span class="n">cParent</span> <span class="p">);</span>
+    <span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="o">*</span> <span class="nf">ParentDo</span><span class="p">(</span> <span class="kt">char</span> <span class="o">*</span><span class="n">argv</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="kt">pid_t</span> <span class="n">pid</span> <span class="o">=</span> <span class="n">getpid</span><span class="p">();</span>
+    <span class="kt">pthread_t</span> <span class="n">tid</span> <span class="o">=</span> <span class="n">pthread_self</span><span class="p">();</span>     <span class="c1">//Get the thread-id selfly.</span>
+    <span class="kt">char</span> <span class="n">tprefix</span><span class="p">[]</span> <span class="o">=</span> <span class="s">&quot;thread&quot;</span><span class="p">;</span>
+
+    <span class="n">printf</span><span class="p">(</span> <span class="s">&quot;[%s]: [%d] [%s] [%lu] [%s]</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">argv</span><span class="p">,</span> <span class="n">pid</span><span class="p">,</span> <span class="n">tprefix</span><span class="p">,</span> <span class="n">tid</span><span class="p">,</span> <span class="s">&quot;step2&quot;</span> <span class="p">);</span>         <span class="c1">//add the second breakpoint.</span>
+    <span class="n">printf</span><span class="p">(</span> <span class="s">&quot;[%s]: [%d] [%s] [%lu] [%s]</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">argv</span><span class="p">,</span> <span class="n">pid</span><span class="p">,</span> <span class="n">tprefix</span><span class="p">,</span> <span class="n">tid</span><span class="p">,</span> <span class="s">&quot;step3&quot;</span> <span class="p">);</span>
+
+    <span class="k">return</span> <span class="nb">NULL</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="nf">Child</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="kt">pid_t</span> <span class="n">pid</span> <span class="o">=</span> <span class="n">getpid</span><span class="p">();</span>
+    <span class="kt">char</span> <span class="n">prefix</span><span class="p">[]</span> <span class="o">=</span> <span class="s">&quot;Child&quot;</span><span class="p">;</span>
+    <span class="n">printf</span><span class="p">(</span> <span class="s">&quot;[%s]: [%d] [%s]</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">prefix</span><span class="p">,</span> <span class="n">pid</span><span class="p">,</span> <span class="s">&quot;step1&quot;</span> <span class="p">);</span>
+    <span class="k">return</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</td></tr></table>
+
+<p>已知如果直接运行程序，那么输出的内容如下：</p>
+<div class="highlight"><pre>[vfhky@typecodes pthread_key]$ gdb_pthread
+[Parent]: [22648] [step1]
+[Parent]: [22648] [thread] [139722467432256] [step2]
+[Parent]: [22648] [thread] [139722467432256] [step3]
+[Thread]: [22648] [thread] [139722450630400] [step2]
+[Thread]: [22648] [thread] [139722450630400] [step3]
+[Child]: [22649] [step1]
+[vfhky@typecodes pthread_key]$
+</pre></div>
+
+
+<h4>3 gdb调试</h4>
+<h5>3.1 设置调试模式和Catchpoint</h5>
+<p>设置调试父子进程，gdb跟主进程，子进程block在fork位置。</p>
+<div class="highlight"><pre>[vfhky@typecodes pthread_key]$ gdb gdb_pthread
+GNU gdb (GDB) Red Hat Enterprise Linux 7.6.1-80.el7
+Copyright (C) 2013 Free Software Foundation, Inc.
+License GPLv3+: GNU GPL version 3 or later &lt;http://gnu.org/licenses/gpl.html&gt;
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.  Type &quot;show copying&quot;
+and &quot;show warranty&quot; for details.
+This GDB was configured as &quot;x86_64-redhat-linux-gnu&quot;.
+For bug reporting instructions, please see:
+&lt;http://www.gnu.org/software/gdb/bugs/&gt;...
+Reading symbols from /home/vfhky/bin/gdb_pthread...done.
+(gdb) set detach-on-fork off
+#####catch让程序在发生某种事件（fork、异常throw、异常catch、动态库加载等）的时候停止运行
+(gdb) catch fork 
+Catchpoint 1 (fork)
+(gdb) info b
+Num     Type           Disp Enb Address            What
+1       catchpoint     keep y                      fork
+(gdb)
+</pre></div>
+
+
+<p>如下图所示：</p>
+<p><img alt="开启gdb调试" src="https://dn-vfhky.qbox.me/2016/02/start_gdb_debug.png" title="开启gdb调试" /></p>
+<h5>3.2 开始gdb调试</h5>
+<div class="highlight"><pre>(gdb) r                         ####运行到断点/捕捉点（第17行处的fork函数，23873是子进程PID）
+Starting program: /home/vfhky/bin/gdb_pthread 
+[Thread debugging using libthread_db enabled]
+Using host libthread_db library &quot;/lib64/libthread_db.so.1&quot;.
+
+Catchpoint 1 (forked process 23873), 0x00007ffff709b50c in __libc_fork () at ../nptl/sysdeps/unix/sysv/linux/fork.c:130
+130       pid = ARCH_FORK ();
+(gdb) bt                        #####查看堆栈情况
+#0  0x00007ffff709b50c in __libc_fork () at ../nptl/sysdeps/unix/sysv/linux/fork.c:130
+#1  0x00000000004007b4 in main (argc=1, argv=0x7fffffffe4c8) at gdb_pthread.c:17
+(gdb) info threads              #######显示运行的线程信息(23869是父进程的PID)
+  Id   Target Id         Frame 
+* 1    Thread 0x7ffff7fe1740 (LWP 23869) &quot;gdb_pthread&quot; 0x00007ffff709b50c in __libc_fork () at ../nptl/sysdeps/unix/sysv/linux/fork.c:130
+(gdb) info inferiors            ######显示正在调试的进程：1前面的星号表示当前调试的进程（PID 23869）。  
+  Num  Description       Executable        
+* 1    process 23869     /home/vfhky/bin/gdb_pthread 
+(gdb) info b                    ######列出所有断点和捕捉点，此时已经hit 1 time，即捕捉到了一次fork事件
+Num     Type           Disp Enb Address            What
+1       catchpoint     keep y                      fork, process 23873                   #####子进程23873
+        catchpoint already hit 1 time
+(gdb)
+</pre></div>
+
+
+<p>这时使用如下命令查看当前CentOS系统所有进程的状态：发现父进程PID为23869，通过fork产生的子进程为23873：</p>
+<div class="highlight"><pre>[vfhky@typecodes ~]$ pstree -pul
+</pre></div>
+
+
+<p><img alt="pstree -pul查看CentOS系统所有进程信息" src="https://dn-vfhky.qbox.me/2016/02/pstree_pul_process.png" title="pstree -pul查看CentOS系统所有进程信息" /></p>
+<p>同时，使用命令<code>cat /proc/23869/status</code>查看当前进程的详细信息：进程PID为23869，它的父进程（即GDB进程）为23859，同时这也是追踪进程ID，线程数Threads为1（共享使用该信号描述符的线程数，在POSIX多线程序应用程序中，线程组中的所有线程使用同一个信号描述符）。</p>
+<p><img alt="proc查看进程的状态信息" src="https://dn-vfhky.qbox.me/2016/02/proc_23869_1.png" title="proc查看进程的状态信息" /></p>
+<h5>3.3 设置第一个断点</h5>
+<p>在程序的第18行设置断点：</p>
+<div class="highlight"><pre>(gdb) b gdb_pthread.c:18
+Breakpoint 2 at 0x4007b7: file gdb_pthread.c, line 18.
+(gdb) info b                        ######列出所有断点和捕捉点
+Num     Type           Disp Enb Address            What
+1       catchpoint     keep y                      fork, process 23873                 ########子进程23873
+        catchpoint already hit 1 time
+2       breakpoint     keep y   0x00000000004007b7 in main at gdb_pthread.c:18
+(gdb)
+</pre></div>
+
+
+<h5>3.4 执行到第一个断点</h5>
+<div class="highlight"><pre>(gdb) c                #####执行到第18行处的断点
+Continuing.
+[New process 23873]                     #####父进程23869执行完第1个捕捉点的程序，产生子进程23873
+[Thread debugging using libthread_db enabled]
+Using host libthread_db library &quot;/lib64/libthread_db.so.1&quot;.
+
+Breakpoint 2, main (argc=1, argv=0x7fffffffe4c8) at gdb_pthread.c:18            ##########父进程执行到第18行处的断点
+18              if(pid != 0)
+(gdb) info threads                      ####查看所有运行的线程，有父进程23869和子进程23873
+  Id   Target Id         Frame 
+  2    Thread 0x7ffff7fe1740 (LWP 23873) &quot;gdb_pthread&quot; 0x00007ffff709b50c in __libc_fork () at ../nptl/sysdeps/unix/sysv/linux/fork.c:130
+* 1    Thread 0x7ffff7fe1740 (LWP 23869) &quot;gdb_pthread&quot; main (argc=1, argv=0x7fffffffe4c8) at gdb_pthread.c:18
+(gdb) info inferiors                    #####显示正在调试的进程
+  Num  Description       Executable        
+  2    process 23873     /home/vfhky/bin/gdb_pthread                ########子进程
+* 1    process 23869     /home/vfhky/bin/gdb_pthread                ########父进程
+(gdb) info b                    #######查看当前所有的断点
+Num     Type           Disp Enb Address            What
+1       catchpoint     keep y                      fork, process 23873 
+        catchpoint already hit 1 time
+2       breakpoint     keep y   &lt;MULTIPLE&gt;         
+        breakpoint already hit 1 time
+2.1                         y     0x00000000004007b7 in main at gdb_pthread.c:18 inf 2
+2.2                         y     0x00000000004007b7 in main at gdb_pthread.c:18 inf 1
+(gdb)
+</pre></div>
+
+
+<p>截图如下：</p>
+<p><img alt="执行到第1个断点处查看线程和进程状况" src="https://dn-vfhky.qbox.me/2016/02/break_1_info.png" title="执行到第1个断点处查看线程和进程状况" /></p>
+<p>这时使用命令查看当前系统进程的状态：发现此时仍然只有父进程23869和子进程23873。</p>
+<div class="highlight"><pre>[vfhky@typecodes ~]$ pstree -pul
+</pre></div>
+
+
+<p><img alt="pstree -pul查看CentOS系统所有进程信息" src="https://dn-vfhky.qbox.me/2016/02/pstree_pul_process.png" title="pstree -pul查看CentOS系统所有进程信息" /></p>
+<h5>3.5 执行到第一个断点此时如果切换到子进程23873</h5>
+<div class="highlight"><pre>(gdb) inferior 2
+[Switching to inferior 2 [process 23873] (/home/vfhky/bin/gdb_pthread)]
+[Switching to thread 2 (Thread 0x7ffff7fe1740 (LWP 23873))] 
+#0  0x00007ffff709b50c in __libc_fork () at ../nptl/sysdeps/unix/sysv/linux/fork.c:130
+130       pid = ARCH_FORK ();
+(gdb) info inferiors                 #####显示正在调试的进程 
+  Num  Description       Executable        
+* 2    process 23873     /home/vfhky/bin/gdb_pthread                #####子进程
+  1    process 23869     /home/vfhky/bin/gdb_pthread                #####父进程
+(gdb)
+</pre></div>
+
+
+<h5>3.6 重新切换到父进程23869</h5>
+<div class="highlight"><pre>(gdb) inferior 1
+[Switching to inferior 1 [process 23869] (/home/vfhky/bin/gdb_pthread)]
+[Switching to thread 1 (Thread 0x7ffff7fe1740 (LWP 23869))] 
+#0  main (argc=1, argv=0x7fffffffe4c8) at gdb_pthread.c:18
+18              if(pid != 0)
+(gdb) info inferiors                 #####显示正在调试的进程
+  Num  Description       Executable        
+  2    process 23873     /home/vfhky/bin/gdb_pthread 
+* 1    process 23869     /home/vfhky/bin/gdb_pthread 
+(gdb)
+</pre></div>
+
+
+<h5>3.7 设置第二个断点并调试</h5>
+<p>在第50行设置断点继续调试主进程（使父进程产生线程），其中父进程和线程到底是谁先执行是由内核调度控制的。</p>
+<div class="highlight"><pre>(gdb) b gdb_pthread.c:50
+Breakpoint 3 at 0x4008a7: gdb_pthread.c:50. (2 locations)
+(gdb) c                    ######继续执行代码到第50行处的断点
+Continuing.
+[Parent]: [23869] [step1]                              ######第33行父进程打印Parent()函数中的数据
+[New Thread 0x7ffff6fdd700 (LWP 24024)]                ######第35行父进程创建了一个线程24024（LWP表示轻量级进程）
+[Switching to Thread 0x7ffff6fdd700 (LWP 24024)]            #####已经自动切换到线程24024（LWP表示轻量。进程），也就是GDB继续调试线程而不是父进程了。
+
+Breakpoint 3, ParentDo (argv=0x7fffffffe390 &quot;Thread&quot;) at gdb_pthread.c:50            ######线程24024阻塞在程序的第50行
+50              printf( &quot;[%s]: [%d] [%s] [%lu] [%s]\n&quot;, argv, pid, tprefix, tid, &quot;step2&quot; );
+(gdb)
+</pre></div>
+
+
+<p>这时使用命令查看当前系统进程的状态：存在父进程23869和子进程23873以及父进程创建的一个线程24024（线程用大括号{}表示）。</p>
+<div class="highlight"><pre>[vfhky@typecodes ~]$ pstree -pul
+</pre></div>
+
+
+<p><img alt="pstree -pul查看CentOS系统所有进程信息" src="https://dn-vfhky.qbox.me/2016/02/pstree_pul_process_2.png" title="pstree -pul查看CentOS系统所有进程信息" /> </p>
+<p>同时，使用命令<code>cat /proc/23869/status</code>查看当前进程的详细信息：进程PID为23869，它的父进程（即GDB进程）为23859，同时这也是追踪进程ID，线程数Threads为2（当前父进程23869+线程24024）。</p>
+<p><img alt="proc查看进程的状态信息" src="https://dn-vfhky.qbox.me/2016/02/proc_23869_2.png" title="proc查看进程的状态信息" /></p>
+<h5>3.8 查看第二个断点处的调试信息</h5>
+<div class="highlight"><pre>(gdb) info inferiors                 #####显示正在调试的进程 
+  Num  Description       Executable        
+  2    process 23873     /home/vfhky/bin/gdb_pthread                     ###子进程
+* 1    process 23869     /home/vfhky/bin/gdb_pthread                     ###父进程 
+(gdb) info threads         ####查看所有运行的线程，父进程23869、子进程23873、线程24024，由星号可以发现目前调试已经切换到了线程24024了。 
+  Id   Target Id         Frame 
+* 3    Thread 0x7ffff6fdd700 (LWP 24024) &quot;gdb_pthread&quot; ParentDo (argv=0x7fffffffe390 &quot;Thread&quot;) at gdb_pthread.c:50
+  2    Thread 0x7ffff7fe1740 (LWP 23873) &quot;gdb_pthread&quot; 0x00007ffff709b50c in __libc_fork () at ../nptl/sysdeps/unix/sysv/linux/fork.c:130
+  1    Thread 0x7ffff7fe1740 (LWP 23869) &quot;gdb_pthread&quot; ParentDo (argv=0x7fffffffe3a0 &quot;Parent&quot;) at gdb_pthread.c:50
+(gdb) info b                #####查看设置的所有的断点breakpoint和捕捉点catchpoint（共3个）：
+Num     Type           Disp Enb Address            What
+1       catchpoint     keep y                      fork, process 23873 
+        catchpoint already hit 1 time
+2       breakpoint     keep y   &lt;MULTIPLE&gt;         
+        breakpoint already hit 1 time
+2.1                         y     0x00000000004007b7 in main at gdb_pthread.c:18 inf 2
+2.2                         y     0x00000000004007b7 in main at gdb_pthread.c:18 inf 1
+3       breakpoint     keep y   &lt;MULTIPLE&gt;         
+        breakpoint already hit 1 time
+3.1                         y     0x00000000004008a7 in ParentDo at gdb_pthread.c:50 inf 2
+3.2                         y     0x00000000004008a7 in ParentDo at gdb_pthread.c:50 inf 1
+(gdb)
+</pre></div>
+
+
+<h5>3.9 如果手动切换到线程24024</h5>
+<div class="highlight"><pre>(gdb) thread 3
+[Switching to thread 3 (Thread 0x7ffff6fdd700 (LWP 24024))]
+#0  ParentDo (argv=0x7fffffffe390 &quot;Thread&quot;) at gdb_pthread.c:50
+50              printf( &quot;[%s]: [%d] [%s] [%lu] [%s]\n&quot;, argv, pid, tprefix, tid, &quot;step2&quot; );
+(gdb) info threads                   #####查看所有运行的线程
+  Id   Target Id         Frame 
+* 3    Thread 0x7ffff6fdd700 (LWP 24024) &quot;gdb_pthread&quot; ParentDo (argv=0x7fffffffe390 &quot;Thread&quot;) at gdb_pthread.c:50
+  2    Thread 0x7ffff7fe1740 (LWP 23873) &quot;gdb_pthread&quot; 0x00007ffff709b50c in __libc_fork () at ../nptl/sysdeps/unix/sysv/linux/fork.c:130
+  1    Thread 0x7ffff7fe1740 (LWP 23869) &quot;gdb_pthread&quot; ParentDo (argv=0x7fffffffe3a0 &quot;Parent&quot;) at gdb_pthread.c:50
+(gdb) info inferiors                 #####显示正在调试的进程  
+  Num  Description       Executable        
+  2    process 23873     /home/vfhky/bin/gdb_pthread 
+* 1    process 23869     /home/vfhky/bin/gdb_pthread 
+(gdb)
+</pre></div>
+
+
+<h5>3.10 开始执行第二个断点处的代码</h5>
+<div class="highlight"><pre>(gdb) c
+Continuing.
+[Thread]: [23869] [thread] [140737337218816] [step2]            #####线程24024执行第50行处，打印数据
+[Thread]: [23869] [thread] [140737337218816] [step3]            #####线程24024执行第51行处，打印数据
+[Thread 0x7ffff6fdd700 (LWP 24024) exited]                      #####线程24024退出
+[Switching to Thread 0x7ffff7fe1740 (LWP 23869)]                #####切换到父进程中去
+
+Breakpoint 3, ParentDo (argv=0x7fffffffe3a0 &quot;Parent&quot;) at gdb_pthread.c:50                #####父进程继续停在第50行处的断点
+50              printf( &quot;[%s]: [%d] [%s] [%lu] [%s]\n&quot;, argv, pid, tprefix, tid, &quot;step2&quot; );
+(gdb) info inferiors                    ######列出正在调试进程（父进程23869和子进程23873），1前面的星号表示当前调试的进程（父进程23869）。 
+  Num  Description       Executable        
+  2    process 23873     /home/vfhky/bin/gdb_pthread 
+* 1    process 23869     /home/vfhky/bin/gdb_pthread 
+(gdb) info threads                     ######查看所有运行的线程
+  Id   Target Id         Frame 
+  2    Thread 0x7ffff7fe1740 (LWP 23873) &quot;gdb_pthread&quot; 0x00007ffff709b50c in __libc_fork () at ../nptl/sysdeps/unix/sysv/linux/fork.c:130            #####子进程23873
+* 1    Thread 0x7ffff7fe1740 (LWP 23869) &quot;gdb_pthread&quot; ParentDo (argv=0x7fffffffe3a0 &quot;Parent&quot;) at gdb_pthread.c:50          #####父进程23869
+(gdb)
+</pre></div>
+
+
+<p>这时使用命令查看当前系统进程的状态：存在父进程23869和子进程23873，其中线程24024已经结束了。</p>
+<div class="highlight"><pre>[vfhky@typecodes ~]$ pstree -pul
+</pre></div>
+
+
+<p><img alt="pstree -pul查看CentOS系统所有进程信息" src="https://dn-vfhky.qbox.me/2016/02/pstree_pul_process.png" title="pstree -pul查看CentOS系统所有进程信息" />   </p>
+<h5>3.11 继续调试父进程</h5>
+<p>此时，由于线程的退出，父进程作为自动选择的要调试的线程。</p>
+<div class="highlight"><pre>(gdb) c
+Continuing.
+[Parent]: [23869] [thread] [140737354012480] [step2]        #####父进程23869执行第50行
+[Parent]: [23869] [thread] [140737354012480] [step3]        #####父进程23869执行第51行
+[Inferior 1 (process 23869) exited normally]                #####正在调试的父进程23869退出
+(gdb) info inferiors             ######显示正在调试的进程
+  Num  Description       Executable        
+  2    process 23873     /home/vfhky/bin/gdb_pthread        #####fork创建的子进程23873
+* 1    &lt;null&gt;            /home/vfhky/bin/gdb_pthread        #####fork创建的父进程23869已经退出 
+(gdb) info threads              ####显示正在运行的线程：只存在子进程23873，父进程23869已经退出 
+  Id   Target Id         Frame 
+  2    Thread 0x7ffff7fe1740 (LWP 23873) &quot;gdb_pthread&quot; 0x00007ffff709b50c in __libc_fork () at ../nptl/sysdeps/unix/sysv/linux/fork.c:130
+
+No selected thread.  See `help thread&#39;.         #####提示没有被选中的要调试的线程
+(gdb) info b                                    #####查看所有的断点
+Num     Type           Disp Enb Address            What
+1       catchpoint     keep y                      fork, process 23873 
+        catchpoint already hit 1 time
+2       breakpoint     keep y   &lt;MULTIPLE&gt;         
+        breakpoint already hit 1 time
+2.1                         y     0x00000000004007b7 in main at gdb_pthread.c:18 inf 2
+2.2                         y     0x00000000004007b7 in main at gdb_pthread.c:18 inf 1
+3       breakpoint     keep y   &lt;MULTIPLE&gt;         
+        breakpoint already hit 2 times
+3.1                         y     0x00000000004008a7 in ParentDo at gdb_pthread.c:50 inf 2      #####子进程23873
+3.2                         y     0x00000000004008a7 in ParentDo at gdb_pthread.c:50 inf 1      #####父进程23869
+(gdb)
+</pre></div>
+
+
+<p>这时使用命令查看当前系统进程的状态：只有子进程23873（由内核init进程接管这个孤儿进程），父进程23869也已经结束了。</p>
+<div class="highlight"><pre>[vfhky@typecodes ~]$ pstree -pul
+</pre></div>
+
+
+<p><img alt="pstree -pul查看CentOS系统所有进程信息" src="https://dn-vfhky.qbox.me/2016/02/pstree_pul_process_3.png" title="pstree -pul查看CentOS系统所有进程信息" /> </p>
+<p>再用<code>ps ux</code>命令查看子进程23873：</p>
+<p><img alt="ps ux命令查看子进程信息" src="https://dn-vfhky.qbox.me/2016/02/ps_ux_child_process.png" title="ps ux命令查看子进程信息" />    </p>
+<h4>4 附录</h4>
+<p>在gdb中，经常用到的恢复程序运行和单步调试的命令有：</p>
+<div class="highlight"><pre>continue        继续运行程序直到下一个断点（类似于VS里的F5）
+next            逐过程步进，不会进入子函数（类似VS里的F10）
+setp            逐语句步进，会进入子函数（类似VS里的F11）
+until           运行至当前语句块结束
+finish          运行至函数结束并跳出，并打印函数的返回值（类似VS的Shift+F11）
+</pre></div>
+		    	<p class="tags">
+					<div class="post-share">
+						<ul class="post-shareul clearfix">
+							<li class="post-shareli">
+								<a href="http://note.youdao.com/memory/?url=https://typecodes.com/cseries/multilprocessthreadgdb.html&title=Linux多进程和多线程的一次gdb调试实例" class="post-sharea ydshare" target="_blank" rel="nofollow">有道云笔记</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://v.t.sina.com.cn/share/share.php?url=https://typecodes.com/cseries/multilprocessthreadgdb.html&title=Linux多进程和多线程的一次gdb调试实例&source=https://typecodes.com" class="post-sharea wbshare" target="_blank" rel="nofollow">新浪微博</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://v.t.qq.com/share/share.php?title=Linux多进程和多线程的一次gdb调试实例&url=https://typecodes.com/cseries/multilprocessthreadgdb.html&site=https://typecodes.com" class="post-sharea twbshare" target="_blank" rel="nofollow">腾讯微博</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=https://typecodes.com/cseries/multilprocessthreadgdb.html&title=Linux多进程和多线程的一次gdb调试实例&content='utf-8'" class="post-sharea qzoneshare" target="_blank" rel="nofollow">QZone</a>
+							</li>
+						</ul>
+					</div>
+					<div>
+						Tags: <a href="https://typecodes.com/tag/gdb.html">gdb</a>,<a href="https://typecodes.com/tag/fork.html">fork</a>,<a href="https://typecodes.com/tag/jin-cheng.html">进程</a>,<a href="https://typecodes.com/tag/xian-cheng.html">线程</a>					</div>
+				</p>
+			</article>
+			
+			<div id="comments">
+				<h4 class="num">Comments &raquo;</h4>
+		    	<div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript></div>
+		    </div>
+		</div>
+		<!--3. right sider begin-->
+<div class="col-md-3" id="blog-secondary" role="complementary">
+	<section class="widget">
+		<ul class="widget-list">
+			<form id="search" method="get" action="https://typecodes.com/search.html">
+				<input type="text" name="q" id="s" size="20" x-webkit-speech="" x-webkit-grammar="builtin:search" onwebkitspeechchange="this.value = this.value.replace(this.defaultValue, '')" value="Google...." onfocus="this.value = (this.value == this.defaultValue) ? '' : this.value" onblur="this.value = (this.value == '') ? this.defaultValue : this.value">
+			</form>
+		</ul>
+	</section>
+	<section class="widget">
+		<h3 class="widget-title">Categories</h3>
+		<ul class="widget-list">
+		      <li class="current">
+		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (29)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/csharp/index.html">Csharp</a> (6)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/database/index.html">Database</a> (11)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/java/index.html">Java</a> (1)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/linux/index.html">Linux</a> (18)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/mix/index.html">Mix</a> (53)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/web/index.html">Web</a> (88)
+		      </li>
+		</ul>
+	</section>
+	<section class="widget">
+		<h3 class="widget-title">Recent Posts</h3>
+		<ul class="widget-list">
+			<li class="post">
+				<a href="https://typecodes.com/cseries/multilprocessthreadgdb.html">Linux多进程和多线程的一次gdb调试实例</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/syngithubmarkdownpelican.html">同步GitHub Markdown文章到Linux服务器后更新Pelican博客的脚本</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/linuxgccgconnectmysql.html">Linux c语言连接MySQL数据库实例</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/gccgensharedlib.html">Linux gcc编译生成静态库及使用方法</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/applogsbackup.html">Linux下Nginx、MySQL和PHP等应用的日志切割脚本</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/mix/sucesstypechotopelican.html">成功将博客从Typecho迁移到Pelican</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/mix/begintypechotopelican.html">准备将博客从Typecho迁移到Pelican</a>
+			</li>
+		</ul>
+	</section>
+	<section class="widget widget-feed">
+		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
+	</section>
+</div>
+				</div>
+			</div>
+		</div>
+		<!--4. bottom begin-->
+		<footer id="te-site-footer"><div class="container">
+	<div class="row" role="contentinfo">
+		<section class="col-md-2 col-md-offset-1">
+			<h3>Links</h3>
+			<ul><li><a href="http://diaosbook.com/" title="" target="_blank">diaosbook</a></li></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul>
+				<li><a href="https://typecodes.com/links.html">More..</a></li>
+			</ul>
+		</section>
+		<section class="col-md-2">
+			<h3>Following</h3>
+			<ul>
+				<li><a href="https://github.com/vfhky" class="following github" target="_blank" rel="external nofollow">GitHub</a></li>
+				<li><a href="http://weibo.com/typecodes" class="following weibo" target="_blank" rel="external nofollow">Weibo</a></li>
+				<li><a href="http://vfhky.sinaapp.com/" class="following sae" target="_blank" rel="external nofollow">SAE</a></li>
+				<li><a href="http://www.dwz.cn/mYiwa" class="following qqgroup" target="_blank" rel="external nofollow">Group</a></li>
+			</ul>
+		</section>
+		<div class="col-md-12 copyright">
+			<a href="#top"><i class="i-logo-s">TOP</i></a>
+			<p>
+				&copy;  2012-2016 							<a href="https://typecodes.com">TypeCodes</a>. All Rights Reserved<br>Powered by <a href="http://getpelican.com" rel="external" target="_blank">Pelican</a>. <a href="http://www.miitbeian.gov.cn/" rel="external nofollow" target="_blank">粤ICP备14050695号</a>
+			</p>
+		</div>
+	</div>
+</div>
+</footer>
+<script type="text/javascript">
+	var disqus_shortname = 'typecodes';
+	var disqus_identifier = '/cseries/multilprocessthreadgdb.html';
+	var disqus_url = 'https://typecodes.com/cseries/multilprocessthreadgdb.html';
+	var disqus_title = 'Linux多进程和多线程的一次gdb调试实例';
+	(function() {
+		var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+		dsq.src = "//" + disqus_shortname + '.disqus.com/embed.js';
+		(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	 })();
+</script>
+	</body>
+</html>

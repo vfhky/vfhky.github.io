@@ -2,7 +2,9 @@
 <html dir="ltr" lang="zh-CN" class="no-js">
 	<head>
 		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+  		<meta name="renderer" content="webkit">
 		<title>2015博客升级记(四)：CentOS 7.1编译安装MySQL5.7.7rc &mdash; TypeCodes</title>
+  		<meta name="viewport" content="width=device-width, initial-scale=1">
   		<link href="https://typecodes.com/atom.xml" type="application/atom+xml" rel="alternate" title="TypeCodes Atom Feed" />
 	  	<link href="https://typecodes.com/feed.xml" type="application/rss+xml" rel="alternate" title="TypeCodes RSS Feed" />
 		<link rel="stylesheet" href="https://dn-vfhky.qbox.me/libs/css/pelican-vfhky.css">
@@ -74,6 +76,8 @@ cmake version 3.2.1
 
 CMake suite maintained and supported by Kitware (kitware.com/cmake).
 [root@typecodes cmake-3.2.1]# cd ~ &amp;&amp; rm -rf cmake-3.2.1*
+######也可以直接yum安装CMake2.8.11版本
+[root@typecodes ~]# yum -y install cmake
 
 #######Ncurses：提供功能键定义(快捷键),屏幕绘制以及基于文本终端的图形互动功能的动态库。
 [root@typecodes ~]# yum -y install ncurses-devel
@@ -291,7 +295,7 @@ mysql&gt; exit;            [创建完毕，root用户退出]
 		<h3 class="widget-title">Categories</h3>
 		<ul class="widget-list">
 		      <li class="current">
-		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (28)
+		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (29)
 		      </li>
 		      <li class="current">
 		        <a href="https://typecodes.com/csharp/index.html">Csharp</a> (6)
@@ -317,6 +321,9 @@ mysql&gt; exit;            [创建完毕，root用户退出]
 		<h3 class="widget-title">Recent Posts</h3>
 		<ul class="widget-list">
 			<li class="post">
+				<a href="https://typecodes.com/cseries/multilprocessthreadgdb.html">Linux多进程和多线程的一次gdb调试实例</a>
+			</li>
+			<li class="post">
 				<a href="https://typecodes.com/linux/syngithubmarkdownpelican.html">同步GitHub Markdown文章到Linux服务器后更新Pelican博客的脚本</a>
 			</li>
 			<li class="post">
@@ -333,9 +340,6 @@ mysql&gt; exit;            [创建完毕，root用户退出]
 			</li>
 			<li class="post">
 				<a href="https://typecodes.com/mix/begintypechotopelican.html">准备将博客从Typecho迁移到Pelican</a>
-			</li>
-			<li class="post">
-				<a href="https://typecodes.com/linux/tcpconnectiontimedout.html">Linux TCP连接Connection Refused和Connection timed out的问题</a>
 			</li>
 		</ul>
 	</section>

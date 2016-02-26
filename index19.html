@@ -2,7 +2,9 @@
 <html dir="ltr" lang="zh-CN" class="no-js">
 	<head>
 		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+  		<meta name="renderer" content="webkit">
 		<title>TypeCodes</title>
+  		<meta name="viewport" content="width=device-width, initial-scale=1">
   		<link href="https://typecodes.com/atom.xml" type="application/atom+xml" rel="alternate" title="TypeCodes Atom Feed" />
 	  	<link href="https://typecodes.com/feed.xml" type="application/rss+xml" rel="alternate" title="TypeCodes RSS Feed" />
 		<link rel="stylesheet" href="https://dn-vfhky.qbox.me/libs/css/pelican-vfhky.css">
@@ -35,6 +37,17 @@
 		<!--2. left sider begin-->
 		<div class="col-md-9" id="blog-main" role="main">
 		  	<!--article recycle-->
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/web/xamppmysqlrootloginerr.html">解决XAMPP的phpmyadmin平台修改mysql的root密码无法登陆的问题</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2013-01-13 12:03 | 分类：<a href="https://typecodes.com/web/index.html">web</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>由于在Netbeans中用到了php开发，所以接触到了XAMPP。但是，它和phpnow是有比较大的区别的。php是cmd命令安装，在安装过程就会提示用户设置root的密码，而非安装版的xampp是手动启动的，默认的localhost主机的用户root的密码为空。所以，一旦在xampp的phpmyadmin平台修改mysql数据库用户的密码，就会造成与原来phpmyadmin配置文件xampp/phpMyAdmin/config.inc.php设置的密码（为空）冲突，从而使得用户无法登陆（在电脑为重新启动前能登录phpmyadmin，但是一旦机器重启后就无法登录了）。</p>
+<p><img alt="phpmyadmin无法登录" src="https://dn-vfhky.qbox.me/2013/01/error2.png" title="phpmyadmin无法登录" /></p>
+
+	<p class="more"><a href="https://typecodes.com/web/xamppmysqlrootloginerr.html" title="解决XAMPP的phpmyadmin平台修改mysql的root密码无法登陆的问题">- 阅读剩余部分 -</a></p>
+			</article>
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/web/netbeansphpdevenv.html">XAMPP+XDebug完美配置NetBeans IDE中的PHP开发环境</a></h2>
 <ul class="post-meta">
@@ -78,7 +91,7 @@
 	<p class="more"><a href="https://typecodes.com/cseries/netbeanscdevenv.html" title="完美配置NetBeans IDE中的C/C++开发环境">- 阅读剩余部分 -</a></p>
 			</article>
 			<article class="post">
-<h2 class="post-title"><a href="https://typecodes.com/web/wpcleanheaderfile.html">配置IIS出现错误的解决方法</a></h2>
+<h2 class="post-title"><a href="https://typecodes.com/web/wpcleanheaderfile.html">博客优化第二波(四)：wordpress头部文件的清理</a></h2>
 <ul class="post-meta">
 	<li>作者：vfhky | 时间：2012-12-13 00:58 | 分类：<a href="https://typecodes.com/web/index.html">web</a></li>
 </ul>
@@ -86,7 +99,7 @@
 	<p>前几天跟sparrowwei聊天，讨论博客空间访问速度的问题。一经比较，发觉自己的博客一些程序文件存在很多冗余信息，这些影响了博客的加载速度。遂下决心，彻底整理下博客，提高访问速度，于是开启了博客优化第二波进程。现将整个清理过程记录如下（主要还是头部文件的清理，产生这些冗余信息的是wp_head()函数）：</p>
 <h5>（一）选择sinaapp的jQuery库，合并JS文件</h5>
 
-	<p class="more"><a href="https://typecodes.com/web/wpcleanheaderfile.html" title="配置IIS出现错误的解决方法">- 阅读剩余部分 -</a></p>
+	<p class="more"><a href="https://typecodes.com/web/wpcleanheaderfile.html" title="博客优化第二波(四)：wordpress头部文件的清理">- 阅读剩余部分 -</a></p>
 			</article>
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/web/wpmathverifycode.html">博客优化第二波(三)：wordpress评论添加算术验证码</a></h2>
@@ -108,16 +121,6 @@
 <h5>（一）获取smiley.php文件</h5>
 
 	<p class="more"><a href="https://typecodes.com/web/wpcommentfacepicpath.html" title="博客优化第二波(二)：wordpress评论表情图片路径修改的两种方法">- 阅读剩余部分 -</a></p>
-			</article>
-			<article class="post">
-<h2 class="post-title"><a href="https://typecodes.com/web/googlecustbaidusearch.html">博客优化第二波(一)：同时使用谷歌自定义搜索和百度站内搜索</a></h2>
-<ul class="post-meta">
-	<li>作者：vfhky | 时间：2012-12-11 23:33 | 分类：<a href="https://typecodes.com/web/index.html">web</a></li>
-</ul>
-<div class="post-content fmt">
-	<p>之前我写过一篇关于谷歌自定义搜索的文章：<a href="https://typecodes.com/web/googlecustomsearch.html" title="查看原文">《如何把自己的站内搜索改用强大的谷歌搜索》</a>。使用自定义的谷歌搜索引擎，完全满足任何一个站点的搜索，更何况是区区一个wordpress程序。某大会召开之前，谷歌.HK还是可以用的，而且借助谷歌goagent和Proxy SwitchySharp插件，博客的站内搜索体验效果还不错。之后，.HK果断给Qiang了……</p>
-
-	<p class="more"><a href="https://typecodes.com/web/googlecustbaidusearch.html" title="博客优化第二波(一)：同时使用谷歌自定义搜索和百度站内搜索">- 阅读剩余部分 -</a></p>
 			</article>
 		  	<!--page navigation-->
 <ol class="page-navigator">
@@ -145,7 +148,7 @@
 		<h3 class="widget-title">Categories</h3>
 		<ul class="widget-list">
 		      <li class="current">
-		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (28)
+		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (29)
 		      </li>
 		      <li class="current">
 		        <a href="https://typecodes.com/csharp/index.html">Csharp</a> (6)
@@ -171,6 +174,9 @@
 		<h3 class="widget-title">Recent Posts</h3>
 		<ul class="widget-list">
 			<li class="post">
+				<a href="https://typecodes.com/cseries/multilprocessthreadgdb.html">Linux多进程和多线程的一次gdb调试实例</a>
+			</li>
+			<li class="post">
 				<a href="https://typecodes.com/linux/syngithubmarkdownpelican.html">同步GitHub Markdown文章到Linux服务器后更新Pelican博客的脚本</a>
 			</li>
 			<li class="post">
@@ -187,9 +193,6 @@
 			</li>
 			<li class="post">
 				<a href="https://typecodes.com/mix/begintypechotopelican.html">准备将博客从Typecho迁移到Pelican</a>
-			</li>
-			<li class="post">
-				<a href="https://typecodes.com/linux/tcpconnectiontimedout.html">Linux TCP连接Connection Refused和Connection timed out的问题</a>
 			</li>
 		</ul>
 	</section>

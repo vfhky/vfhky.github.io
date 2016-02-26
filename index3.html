@@ -2,7 +2,9 @@
 <html dir="ltr" lang="zh-CN" class="no-js">
 	<head>
 		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+  		<meta name="renderer" content="webkit">
 		<title>TypeCodes</title>
+  		<meta name="viewport" content="width=device-width, initial-scale=1">
   		<link href="https://typecodes.com/atom.xml" type="application/atom+xml" rel="alternate" title="TypeCodes Atom Feed" />
 	  	<link href="https://typecodes.com/feed.xml" type="application/rss+xml" rel="alternate" title="TypeCodes RSS Feed" />
 		<link rel="stylesheet" href="https://dn-vfhky.qbox.me/libs/css/pelican-vfhky.css">
@@ -35,6 +37,17 @@
 		<!--2. left sider begin-->
 		<div class="col-md-9" id="blog-main" role="main">
 		  	<!--article recycle-->
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/linux/gitsynbackupshell.html">CentOS中将备份文件同步到BitBucket、GitHub和Coding的shell脚本</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2015-07-07 00:30 | 分类：<a href="https://typecodes.com/linux/index.html">linux</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>在<a href="https://typecodes.com/linux/gitaccountconfig.html" title="《CentOS系统BitBucket、GitHub和Coding等多git账户的配置》">上一篇文章</a>讲述了如何在Linux系统中配置BitBucket、GitHub和Coding这三个平台的git账户，这篇文章就分享如何通过shell脚本定时获取自己的CentOS7.1服务器上的备份文件，然后使用git命令同步到这三个平台仓库上。</p>
+<p><img alt="CentOS中git同步的shell脚本" src="https://dn-vfhky.qbox.me/2015/07/linux_git.png" title="CentOS中git同步的shell脚本" /></p>
+
+	<p class="more"><a href="https://typecodes.com/linux/gitsynbackupshell.html" title="CentOS中将备份文件同步到BitBucket、GitHub和Coding的shell脚本">- 阅读剩余部分 -</a></p>
+			</article>
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/linux/gitaccountconfig.html">CentOS系统BitBucket、GitHub和Coding等多git账户的配置</a></h2>
 <ul class="post-meta">
@@ -124,17 +137,6 @@
 
 	<p class="more"><a href="https://typecodes.com/web/centos7yuminstallmysql5.html" title="阿里云CentOS 7.1使用yum安装MySql5.6.24">- 阅读剩余部分 -</a></p>
 			</article>
-			<article class="post">
-<h2 class="post-title"><a href="https://typecodes.com/web/centos7compilemysql5.html">阿里云CentOS 7.1编译安装MySql5.6.24</a></h2>
-<ul class="post-meta">
-	<li>作者：vfhky | 时间：2015-06-25 09:42 | 分类：<a href="https://typecodes.com/web/index.html">web</a></li>
-</ul>
-<div class="post-content fmt">
-	<p>继<a href="https://typecodes.com/web/centos7compilemysql.html" title="《2015博客升级记(四)：CentOS 7.1编译安装MySQL5.7.7rc》">前文</a>记述了如何在Linux系统中，通过源码编译安装MySQL5.7.7 Release Candidate版本的过程，这篇文章主要是记录源码编译安装MySql5.6.24的过程。</p>
-<p>鉴于官方MySql5.6.24相对是一个比较稳定的版本，所以博主之前也在自己的另一台CentOS7.1主机上安装了一遍。不过最后还是图新鲜，选择了MySQL5.7.7rc版本。下面是具体的安装过程，由于和MySQL5.7.7rc的编译安装过程很类似，所以这里尽可能精简文字：</p>
-
-	<p class="more"><a href="https://typecodes.com/web/centos7compilemysql5.html" title="阿里云CentOS 7.1编译安装MySql5.6.24">- 阅读剩余部分 -</a></p>
-			</article>
 		  	<!--page navigation-->
 <ol class="page-navigator">
 <li class="prev"><a href="https://typecodes.com/index2.html">&laquo; 前一页</a></li><li><a href="https://typecodes.com/index.html">1</a>
@@ -162,7 +164,7 @@
 		<h3 class="widget-title">Categories</h3>
 		<ul class="widget-list">
 		      <li class="current">
-		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (28)
+		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (29)
 		      </li>
 		      <li class="current">
 		        <a href="https://typecodes.com/csharp/index.html">Csharp</a> (6)
@@ -188,6 +190,9 @@
 		<h3 class="widget-title">Recent Posts</h3>
 		<ul class="widget-list">
 			<li class="post">
+				<a href="https://typecodes.com/cseries/multilprocessthreadgdb.html">Linux多进程和多线程的一次gdb调试实例</a>
+			</li>
+			<li class="post">
 				<a href="https://typecodes.com/linux/syngithubmarkdownpelican.html">同步GitHub Markdown文章到Linux服务器后更新Pelican博客的脚本</a>
 			</li>
 			<li class="post">
@@ -204,9 +209,6 @@
 			</li>
 			<li class="post">
 				<a href="https://typecodes.com/mix/begintypechotopelican.html">准备将博客从Typecho迁移到Pelican</a>
-			</li>
-			<li class="post">
-				<a href="https://typecodes.com/linux/tcpconnectiontimedout.html">Linux TCP连接Connection Refused和Connection timed out的问题</a>
 			</li>
 		</ul>
 	</section>

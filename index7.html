@@ -2,7 +2,9 @@
 <html dir="ltr" lang="zh-CN" class="no-js">
 	<head>
 		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+  		<meta name="renderer" content="webkit">
 		<title>TypeCodes</title>
+  		<meta name="viewport" content="width=device-width, initial-scale=1">
   		<link href="https://typecodes.com/atom.xml" type="application/atom+xml" rel="alternate" title="TypeCodes Atom Feed" />
 	  	<link href="https://typecodes.com/feed.xml" type="application/rss+xml" rel="alternate" title="TypeCodes RSS Feed" />
 		<link rel="stylesheet" href="https://dn-vfhky.qbox.me/libs/css/pelican-vfhky.css">
@@ -35,6 +37,20 @@
 		<!--2. left sider begin-->
 		<div class="col-md-9" id="blog-main" role="main">
 		  	<!--article recycle-->
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/cseries/mfcreturnkeyshutdialog.html">MFC回车键不关闭对话框以及变成TAB键效果</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2014-11-16 00:05 | 分类：<a href="https://typecodes.com/cseries/index.html">cseries</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>之前在弄完这个十六进制字符串异或的工具后，发现直接按回车键就直接关闭了工具。网上搜了下解决方案，然后自己的总结如下4种方法：</p>
+<h5>1 设置一个默认按钮（不推荐）</h5>
+<p>如<a href="https://typecodes.com/cseries/studymfchexstrxortool1.html" title="《图文实例说MFC制作工具的心得（一）》">前文</a>小节5中所述，只要将“进行异或”这个按钮属性中的Default Button设置为"TRUE"就行了。但是这样就直接触发这个按钮对应的事件OnBnClickedButton1，而不是对输入的数据进行合法性检查。</p>
+<h5>2 比较推荐的是重载OnOK()函数或者PreTranslateMessage()函数</h5>
+<p>首先我们需要找到这两个函数的位置，方法有两种，效果都是殊途同归：</p>
+
+	<p class="more"><a href="https://typecodes.com/cseries/mfcreturnkeyshutdialog.html" title="MFC回车键不关闭对话框以及变成TAB键效果">- 阅读剩余部分 -</a></p>
+			</article>
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/cseries/studymfchexstrxortool2.html">图文实例说MFC制作工具的心得（二）</a></h2>
 <ul class="post-meta">
@@ -166,16 +182,6 @@ Buzz
 
 	<p class="more"><a href="https://typecodes.com/cseries/sizeofbyteorder.html" title="C语言字节序的大小端模式">- 阅读剩余部分 -</a></p>
 			</article>
-			<article class="post">
-<h2 class="post-title"><a href="https://typecodes.com/cseries/clangintegerstrtointeger.html">C语言将十进制字符串转成十进制整数</a></h2>
-<ul class="post-meta">
-	<li>作者：vfhky | 时间：2014-11-05 22:05 | 分类：<a href="https://typecodes.com/cseries/index.html">cseries</a></li>
-</ul>
-<div class="post-content fmt">
-	<p>通过<a href="https://typecodes.com/cseries/clanghexstrtointeger.html" title="《C语言将十六进制字符串转成十进制整数》">上一篇文章</a>完成了十六进制字符串转成十进制整数，同理也很容易写出十进制字符串转成十进制整数的函数。考虑到十进制的字符串中可能会出现正负号，即转换后可能出现负整数，同样也增加了对这种情况的处理。例如将十进制的字符串"0621"、"+621"、"6210"、"-1234"转换十进制的整数，即621、621、6210、-1234。下面同样是正向和逆向两种方法的具体代码：</p>
-
-	<p class="more"><a href="https://typecodes.com/cseries/clangintegerstrtointeger.html" title="C语言将十进制字符串转成十进制整数">- 阅读剩余部分 -</a></p>
-			</article>
 		  	<!--page navigation-->
 <ol class="page-navigator">
 <li class="prev"><a href="https://typecodes.com/index6.html">&laquo; 前一页</a></li><li><a href="https://typecodes.com/index.html">1</a>
@@ -202,7 +208,7 @@ Buzz
 		<h3 class="widget-title">Categories</h3>
 		<ul class="widget-list">
 		      <li class="current">
-		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (28)
+		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (29)
 		      </li>
 		      <li class="current">
 		        <a href="https://typecodes.com/csharp/index.html">Csharp</a> (6)
@@ -228,6 +234,9 @@ Buzz
 		<h3 class="widget-title">Recent Posts</h3>
 		<ul class="widget-list">
 			<li class="post">
+				<a href="https://typecodes.com/cseries/multilprocessthreadgdb.html">Linux多进程和多线程的一次gdb调试实例</a>
+			</li>
+			<li class="post">
 				<a href="https://typecodes.com/linux/syngithubmarkdownpelican.html">同步GitHub Markdown文章到Linux服务器后更新Pelican博客的脚本</a>
 			</li>
 			<li class="post">
@@ -244,9 +253,6 @@ Buzz
 			</li>
 			<li class="post">
 				<a href="https://typecodes.com/mix/begintypechotopelican.html">准备将博客从Typecho迁移到Pelican</a>
-			</li>
-			<li class="post">
-				<a href="https://typecodes.com/linux/tcpconnectiontimedout.html">Linux TCP连接Connection Refused和Connection timed out的问题</a>
 			</li>
 		</ul>
 	</section>

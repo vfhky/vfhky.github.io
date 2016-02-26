@@ -2,7 +2,9 @@
 <html dir="ltr" lang="zh-CN" class="no-js">
 	<head>
 		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+  		<meta name="renderer" content="webkit">
 		<title>Linux gcc编译生成静态库及使用方法 &mdash; TypeCodes</title>
+  		<meta name="viewport" content="width=device-width, initial-scale=1">
   		<link href="https://typecodes.com/atom.xml" type="application/atom+xml" rel="alternate" title="TypeCodes Atom Feed" />
 	  	<link href="https://typecodes.com/feed.xml" type="application/rss+xml" rel="alternate" title="TypeCodes RSS Feed" />
 		<link rel="stylesheet" href="https://dn-vfhky.qbox.me/libs/css/pelican-vfhky.css">
@@ -89,9 +91,90 @@
 </pre></div>
 </td></tr></table>
 
-<h4>2 生成动态库</h4>
-<p>可以如下面2.1小节所示通过gcc直接生成动态库文件，也可以像2.2小节中那样依次生成realname、soname、linkname库文件。不经常更新动态库版本的话，一般会采用2.1小节中的做法；版本更新较频繁的动态库，诸如MySQL的一些动态库就是采用的2.2小节中的做法。</p>
-<h5>2.1 直接编译生成symbolic link动态库文件</h5>
+<h4>2 生成静态库文件</h4>
+<p>使用如下两个命令即可把.o目标文件聚合成.a静态库文件：</p>
+<div class="highlight"><pre>[root@typecodes howto_gen_static_lib]# ls
+hello.c  hello.h  main.c
+
+####生成目标文件 hello.o
+[root@typecodes howto_gen_static_lib]# gcc -c hello.c
+[root@typecodes howto_gen_static_lib]# ls
+hello.c  hello.h  hello.o  main.c
+
+#####生成静态库文件 libmyhello.a
+[root@typecodes howto_gen_static_lib]# ar rcs libmyhello.a hello.o
+[root@typecodes howto_gen_static_lib]# ls
+hello.c  hello.h  hello.o  libmyhello.a  main.c
+</pre></div>
+
+
+<p>那么如何使用生成的静态库文件呢？这里以main.c中调用静态库文件并生成最终的可执行文件hello为例：</p>
+<div class="highlight"><pre>[root@typecodes howto_gen_static_lib]# gcc -o hello main.c libmyhello.a
+####或者类似于动态共享库
+[root@typecodes howto_gen_static_lib]# gcc -o hello main.c -L . -lmyhello
+[root@typecodes howto_gen_static_lib]# gcc -o hello main.c -static -L. -lmyhello
+</pre></div>
+
+
+<p>注意：如果出现下面这个错误，那么是由于程序链接需要静态库，系统没有安装静态库导致报错：</p>
+<div class="highlight"><pre>[root@typecodes howto_gen_static_lib]# gcc -o hello main.c -static -L. -lmyhello
+/usr/bin/ld: cannot find -lc
+collect2: error: ld returned 1 exit status
+[root@typecodes ~]# yum info glibc-static
+Loaded plugins: axelget, fastestmirror, langpacks
+No metadata available for base
+No metadata available for epel
+No metadata available for extras
+No metadata available for updates
+Loading mirror speeds from cached hostfile
+ * base: mirrors.aliyun.com
+ * epel: mirrors.yun-idc.com
+ * extras: mirrors.aliyun.com
+ * updates: mirrors.aliyun.com
+Available Packages
+Name        : glibc-static
+Arch        : i686
+Version     : 2.17
+Release     : 106.el7_2.1
+Size        : 1.2 M
+Repo        : updates/7/x86_64
+Summary     : C library static libraries for -static linking.
+URL         : http://www.gnu.org/software/glibc/
+License     : LGPLv2+ and LGPLv2+ with exceptions and GPLv2+
+Description : The glibc-static package contains the C library static libraries
+            : for -static linking.  You don&#39;t need these, unless you link statically,
+            : which is highly discouraged.
+
+Name        : glibc-static
+Arch        : x86_64
+Version     : 2.17
+Release     : 106.el7_2.1
+Size        : 1.5 M
+Repo        : updates/7/x86_64
+Summary     : C library static libraries for -static linking.
+URL         : http://www.gnu.org/software/glibc/
+License     : LGPLv2+ and LGPLv2+ with exceptions and GPLv2+
+Description : The glibc-static package contains the C library static libraries
+            : for -static linking.  You don&#39;t need these, unless you link statically,
+            : which is highly discouraged.
+</pre></div>
+
+
+<p>解决方法：使用如下命令，安装glibc-static程序即可。</p>
+<div class="highlight"><pre>[root@typecodes howto_gen_static_lib]# yum -y install glibc-static
+[root@typecodes howto_gen_static_lib]# ls
+hello  hello.c  hello.h  hello.o  libmyhello.a  main.c
+
+#####运行可执行文件即可
+[root@typecodes howto_gen_static_lib]# ./hello 
+Hello everyone!
+[root@typecodes howto_gen_static_lib]#
+</pre></div>
+
+
+<h4>3 生成动态库</h4>
+<p>可以如下面3.1小节所示通过gcc直接生成动态库文件，也可以像3.2小节中那样依次生成realname、soname、linkname库文件。不经常更新动态库版本的话，一般会采用3.1小节中的做法；版本更新较频繁的动态库，诸如MySQL的一些动态库就是采用的2.2小节中的做法。</p>
+<h5>3.1 直接编译生成symbolic link动态库文件</h5>
 <div class="highlight"><pre>##### 生成hello.o目标文件
 [root@typecodes ~]# gcc -c -fPIC hello.c
 ##### 生成动态库文件libmyhello.so
@@ -104,11 +187,11 @@
 </pre></div>
 
 
-<p>如图所示，可执行文件hello找不到链接的动态库libmyhello.so而报错：</p>
+<p>如下图所示，可执行文件hello找不到链接的动态库libmyhello.so而报错：</p>
 <p><img alt="error while loading shared libraries" src="https://dn-vfhky.qbox.me/2016/01/errorloadingsharedlib.png" title="error while loading shared libraries" /></p>
 <p>原因分析：使用<code>ldd hello</code>命令查看可执行文件hello依赖的动态库libmyhello.so，结果是not found。</p>
 <p><img alt="ldd命令查看可执行文件所依赖的动态库" src="https://dn-vfhky.qbox.me/2016/01/lddlibnotfound.png" title="ldd命令查看可执行文件所依赖的动态库" /></p>
-<p>解决方法一：使用<code>root</code>用户把自己生成的动态共享库路径添加系统动态库中即可。</p>
+<p>解决方法：使用<code>root</code>用户把自己生成的动态共享库路径添加系统动态库中即可。</p>
 <div class="highlight"><pre>##### ldconfig更新配置文件目录下的所有动态链接库为Linux系统所共享
 [root@typecodes ~]# echo &quot;/root/&quot;&gt;/etc/ld.so.conf.d/test.conf
 [root@typecodes ~]# ldconfig
@@ -118,9 +201,9 @@ Welcome to typecodes.com.
 </pre></div>
 
 
-<p>使用<code>ldconfig -v</code>命令查看系统动态库的搜索路径，可以看到libmyhello.so.1动态库所在的路径为绝对路径<code>/root/</code>：</p>
+<p>这时使用<code>ldconfig -v</code>命令查看系统动态库的搜索路径，可以看到libmyhello.so.1动态库所在的路径为绝对路径<code>/root/</code>：</p>
 <p><img alt="ldconfig命令查看系统动态库路径" src="https://dn-vfhky.qbox.me/2016/01/ldconfigviewlibrary.png" title="ldconfig命令查看系统动态库路径" /></p>
-<h5>2.2 先生成real name动态库文件，然后创建soname软连接，最后创建link name软链接</h5>
+<h5>3.2 先生成real name动态库文件，然后创建soname软连接，最后创建link name软链接</h5>
 <div class="highlight"><pre>##### 生成hello.o目标文件
 [root@typecodes ~]# gcc -c -fPIC hello.c
 ##### 生成共享库：对应real name是libmyhello.so.1.0.1, 对应soname是libmyhello.so.1
@@ -153,7 +236,7 @@ Welcome to typecodes.com.
 </pre></div>
 </td></tr></table>
 
-<p>前面方法一需要root用户权限，对于非root用户还可以有解决方法二：正如前文<a href="https://typecodes.com/cseries/gcclderrlibrarypath.html" title="查看原文">《Linux gcc链接动态库出错：LIBRARY_PATH和LD_LIBRARY_PATH的区别》</a>所述，只要在当前Linux系统中配置<code>LD_LIBRARY_PATH</code>变量，就可以搜索到依赖的动态库libmyhello.so。</p>
+<p>3.1小节中的方法需要root用户权限，对于非root用户还可以有另一种等效方法：如前文<a href="https://typecodes.com/cseries/gcclderrlibrarypath.html" title="查看原文">《Linux gcc链接动态库出错：LIBRARY_PATH和LD_LIBRARY_PATH的区别》</a>所述，只要在当前Linux系统中配置<code>LD_LIBRARY_PATH</code>变量，就可以搜索到依赖的动态库libmyhello.so。</p>
 <table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
  2
  3
@@ -189,7 +272,7 @@ libmyhello.so.1.0
 </td></tr></table>
 
 <p><img alt="设置LD_LIBRARY_PATH变量后，使用readelf查看动态库信息" src="https://dn-vfhky.qbox.me/2016/01/export_ld_library_path.png" title="设置LD_LIBRARY_PATH变量后，使用readelf查看动态库信息" /></p>
-<p>方法三：gcc链接动态库生成可执行文件时，加入rpath参数。</p>
+<p>当然还有方法三：gcc链接动态库生成可执行文件时，加入rpath参数。</p>
 <div class="highlight"><pre>[root@typecodes ~]# gcc -o hello main.c -Wl,-rpath=./ -L. -lmyhello
 [root@typecodes ~]# ./hello
 Welcome to typecodes.com.
@@ -202,7 +285,7 @@ libmyhello.so.1.0.1
 <p>方法四：最简单的操作就是直接将生成的动态库文件拷贝到Linux系统动态库搜索目录下。</p>
 <div class="highlight"><pre>/lib、/lib64：                        系统必备共享库
 /usr/lib、/usr/lib64：                标准共享库和静态库
-/usr/local/lib：                      本地/第三方函数库
+/usr/local/lib：                 本地/第三方函数库
 </pre></div>
 		    	<p class="tags">
 					<div class="post-share">
@@ -244,7 +327,7 @@ libmyhello.so.1.0.1
 		<h3 class="widget-title">Categories</h3>
 		<ul class="widget-list">
 		      <li class="current">
-		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (28)
+		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (29)
 		      </li>
 		      <li class="current">
 		        <a href="https://typecodes.com/csharp/index.html">Csharp</a> (6)
@@ -270,6 +353,9 @@ libmyhello.so.1.0.1
 		<h3 class="widget-title">Recent Posts</h3>
 		<ul class="widget-list">
 			<li class="post">
+				<a href="https://typecodes.com/cseries/multilprocessthreadgdb.html">Linux多进程和多线程的一次gdb调试实例</a>
+			</li>
+			<li class="post">
 				<a href="https://typecodes.com/linux/syngithubmarkdownpelican.html">同步GitHub Markdown文章到Linux服务器后更新Pelican博客的脚本</a>
 			</li>
 			<li class="post">
@@ -286,9 +372,6 @@ libmyhello.so.1.0.1
 			</li>
 			<li class="post">
 				<a href="https://typecodes.com/mix/begintypechotopelican.html">准备将博客从Typecho迁移到Pelican</a>
-			</li>
-			<li class="post">
-				<a href="https://typecodes.com/linux/tcpconnectiontimedout.html">Linux TCP连接Connection Refused和Connection timed out的问题</a>
 			</li>
 		</ul>
 	</section>
