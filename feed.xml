@@ -1,5 +1,201 @@
 <?xml version="1.0" encoding="utf-8"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>TypeCodes</title><link>https://typecodes.com/</link><description>Beauty of programming</description><atom:link href="https://typecodes.com/feed.xml" rel="self"></atom:link><lastBuildDate>Fri, 26 Feb 2016 15:51:00 +0800</lastBuildDate><item><title>Linux中使用TCPDUMP进行简单的TCP抓包</title><link>https://typecodes.com/linux/simpletcpdumpapply.html</link><description>&lt;p&gt;在Linux TCP通信的调试中，tcpdump应该算是很好的一个工具。这篇文章主要使用Windows作为客户端，向作为服务端的Linux中的一个socket监听端口发送报文信息，然后在Linux中用TCPDUMP工具进行抓包。通过这个实例，可以较为完整的了解TCP通信中的“三次握手”等过程。&lt;/p&gt;
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>TypeCodes</title><link>https://typecodes.com/</link><description>Beauty of programming</description><atom:link href="https://typecodes.com/feed.xml" rel="self"></atom:link><lastBuildDate>Fri, 26 Feb 2016 18:41:00 +0800</lastBuildDate><item><title>使用TCPDUMP和Wireshark排查服务端CLOSE_WAIT（一）</title><link>https://typecodes.com/cseries/tcpdumpwiresharkclosewait1.html</link><description>&lt;p&gt;在Linux后端服务网络通信开发中，可能会遇到CLOSE_WAIT的状况。引起TCP CLOSE_WAIT状态的情况很多，归根结底还是由于被动关闭的一方没有关闭socket链路导致的。这篇文章主要是通过用一个简单的例子通过TCPDUMP和Wireshark这两个工具来模拟产生CLOSE_WAIT的情况，&lt;a href="https://typecodes.com/cseries/tcpdumpwiresharkclosewait2.html" title="《使用TCPDUMP和Wireshark排查服务端CLOSE_WAIT（二）》"&gt;下一篇&lt;/a&gt;主要是对这个问题的原理解释。&lt;/p&gt;
+&lt;p&gt;&lt;img alt="CentOS服务端建立监听端口" src="https://dn-vfhky.qbox.me/2016/02/server_socket_8000.png" title="CentOS服务端建立监听端口" /&gt;&lt;/p&gt;
+
+
+&lt;h4&gt;1 CentOS服务端建立监听端口&lt;/h4&gt;
+&lt;p&gt;如上图所示，在虚拟机CentOS7服务器（192.168.1.178）中打开一个终端界面，然后使用下面这个简单的服务端程序，建立8000端口的监听服务（PID:5325）。&lt;/p&gt;
+&lt;table class="highlighttable"&gt;&lt;tr&gt;&lt;td class="linenos"&gt;&lt;div class="linenodiv"&gt;&lt;pre&gt; 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72&lt;/pre&gt;&lt;/div&gt;&lt;/td&gt;&lt;td class="code"&gt;&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="cm"&gt;/** &lt;/span&gt;
+&lt;span class="cm"&gt; * @FileName    server_socket.c&lt;/span&gt;
+&lt;span class="cm"&gt; * @Describe    A simple example for creating a listen as a server in linux system.&lt;/span&gt;
+&lt;span class="cm"&gt; * @Author      vfhky 2016-02-26 18:45 https://typecodes.com/cseries/tcpdumpwiresharkclosewait1.html&lt;/span&gt;
+&lt;span class="cm"&gt; * @Compile     gcc server_socket.c -o server_socket&lt;/span&gt;
+&lt;span class="cm"&gt; */&lt;/span&gt;
+&lt;span class="cp"&gt;#include &amp;lt;stdio.h&amp;gt;&lt;/span&gt;
+&lt;span class="cp"&gt;#include &amp;lt;string.h&amp;gt;&lt;/span&gt;
+&lt;span class="cp"&gt;#include &amp;lt;sys/types.h&amp;gt;&lt;/span&gt;
+&lt;span class="cp"&gt;#include &amp;lt;sys/socket.h&amp;gt;&lt;/span&gt;
+&lt;span class="cp"&gt;#include &amp;lt;netinet/in.h&amp;gt;&lt;/span&gt;
+&lt;span class="cp"&gt;#include &amp;lt;arpa/inet.h&amp;gt;&lt;/span&gt;
+&lt;span class="cp"&gt;#include &amp;lt;errno.h&amp;gt;&lt;/span&gt;
+
+&lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="nf"&gt;main&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt; &lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;argc&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="kt"&gt;char&lt;/span&gt; &lt;span class="o"&gt;**&lt;/span&gt;&lt;span class="n"&gt;argv&lt;/span&gt; &lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;server_sockfd&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;client_sockfd&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;len&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;llOpt&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="k"&gt;struct&lt;/span&gt; &lt;span class="n"&gt;sockaddr_in&lt;/span&gt; &lt;span class="n"&gt;my_addr&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="k"&gt;struct&lt;/span&gt; &lt;span class="n"&gt;sockaddr_in&lt;/span&gt; &lt;span class="n"&gt;remote_addr&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;sin_size&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="kt"&gt;char&lt;/span&gt; &lt;span class="n"&gt;buf&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;BUFSIZ&lt;/span&gt;&lt;span class="p"&gt;];&lt;/span&gt;
+    &lt;span class="n"&gt;memset&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="n"&gt;my_addr&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="k"&gt;sizeof&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;my_addr&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;);&lt;/span&gt;
+    &lt;span class="n"&gt;my_addr&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;sin_family&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;AF_INET&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="n"&gt;my_addr&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;sin_addr&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;s_addr&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;INADDR_ANY&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="n"&gt;my_addr&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;sin_port&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;htons&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;8000&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+
+    &lt;span class="k"&gt;if&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt; &lt;span class="n"&gt;server_sockfd&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;socket&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt; &lt;span class="n"&gt;AF_INET&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;SOCK_STREAM&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt; &lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt; &lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="p"&gt;{&lt;/span&gt;  
+        &lt;span class="n"&gt;perror&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;socket&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+        &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="p"&gt;}&lt;/span&gt;
+
+    &lt;span class="k"&gt;if&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt; &lt;span class="n"&gt;setsockopt&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt; &lt;span class="n"&gt;server_sockfd&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;SOL_SOCKET&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;SO_REUSEADDR&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="n"&gt;llOpt&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="k"&gt;sizeof&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;llOpt&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+        &lt;span class="n"&gt;close&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;server_sockfd&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+        &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;errno&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="p"&gt;}&lt;/span&gt;
+
+    &lt;span class="k"&gt;if&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt; &lt;span class="n"&gt;bind&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt; &lt;span class="n"&gt;server_sockfd&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;struct&lt;/span&gt; &lt;span class="n"&gt;sockaddr&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="n"&gt;my_addr&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="k"&gt;sizeof&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;struct&lt;/span&gt; &lt;span class="n"&gt;sockaddr&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt; &lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="p"&gt;{&lt;/span&gt;
+        &lt;span class="n"&gt;perror&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;bind&amp;quot;&lt;/span&gt; &lt;span class="p"&gt;);&lt;/span&gt;
+        &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="p"&gt;}&lt;/span&gt;
+
+    &lt;span class="n"&gt;listen&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt; &lt;span class="n"&gt;server_sockfd&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;5&lt;/span&gt; &lt;span class="p"&gt;);&lt;/span&gt;
+
+    &lt;span class="n"&gt;sin_size&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="k"&gt;sizeof&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt; &lt;span class="k"&gt;struct&lt;/span&gt; &lt;span class="n"&gt;sockaddr_in&lt;/span&gt; &lt;span class="p"&gt;);&lt;/span&gt;
+
+    &lt;span class="n"&gt;printf&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;Socket server begin to recieve connectiong from client.&lt;/span&gt;&lt;span class="se"&gt;\n&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;&lt;/span&gt; &lt;span class="p"&gt;);&lt;/span&gt;
+
+    &lt;span class="k"&gt;while&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="p"&gt;{&lt;/span&gt;
+        &lt;span class="k"&gt;if&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt; &lt;span class="n"&gt;client_sockfd&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;accept&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt; &lt;span class="n"&gt;server_sockfd&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;struct&lt;/span&gt; &lt;span class="n"&gt;sockaddr&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="n"&gt;remote_addr&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="n"&gt;sin_size&lt;/span&gt; &lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt; &lt;span class="p"&gt;)&lt;/span&gt;
+        &lt;span class="p"&gt;{&lt;/span&gt;
+            &lt;span class="n"&gt;perror&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;accept&amp;quot;&lt;/span&gt; &lt;span class="p"&gt;);&lt;/span&gt;
+            &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+        &lt;span class="p"&gt;}&lt;/span&gt;
+        &lt;span class="n"&gt;printf&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;Accept client[%s].&lt;/span&gt;&lt;span class="se"&gt;\n&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;inet_ntoa&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;remote_addr&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;sin_addr&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;);&lt;/span&gt;
+
+        &lt;span class="n"&gt;memset&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt; &lt;span class="n"&gt;buf&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mh"&gt;0x00&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;BUFSIZ&lt;/span&gt; &lt;span class="p"&gt;);&lt;/span&gt;
+        &lt;span class="k"&gt;while&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt; &lt;span class="n"&gt;len&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;recv&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt; &lt;span class="n"&gt;client_sockfd&lt;/span&gt; &lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="n"&gt;buf&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;BUFSIZ&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt; &lt;span class="p"&gt;)&lt;/span&gt;
+        &lt;span class="p"&gt;{&lt;/span&gt;
+            &lt;span class="n"&gt;buf&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;len&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="sc"&gt;&amp;#39;\0&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+            &lt;span class="n"&gt;printf&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;Message from client=[%s]&lt;/span&gt;&lt;span class="se"&gt;\n&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;buf&lt;/span&gt; &lt;span class="p"&gt;);&lt;/span&gt;
+        &lt;span class="p"&gt;}&lt;/span&gt;
+        &lt;span class="n"&gt;close&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt; &lt;span class="n"&gt;client_sockfd&lt;/span&gt; &lt;span class="p"&gt;);&lt;/span&gt;
+    &lt;span class="p"&gt;}&lt;/span&gt;
+    &lt;span class="n"&gt;close&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt; &lt;span class="n"&gt;server_sockfd&lt;/span&gt; &lt;span class="p"&gt;);&lt;/span&gt;
+    &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+
+&lt;h4&gt;2 在Linux中使用netstat命令查看TCP服务状态&lt;/h4&gt;
+&lt;p&gt;新建一个shell脚本netstat.sh，里面只包含一条有效命令&lt;code&gt;netstat -nap|head -n 2;netstat -nap|grep 8000&lt;/code&gt;。执行该脚本可以看到服务端的监听效果：&lt;/p&gt;
+&lt;p&gt;&lt;img alt="Linux中利用netstat命令查看TCP服务状态" src="https://dn-vfhky.qbox.me/2016/02/netstat_8000_1.png" title="Linux中利用netstat命令查看TCP服务状态" /&gt;&lt;/p&gt;
+&lt;h4&gt;3 在Linux中利用telnet命令创建一个客户端&lt;/h4&gt;
+&lt;p&gt;再打开一个Linux终端界面，然后输入命令&lt;code&gt;telnet 192.168.1.177 8000&lt;/code&gt;作为客户端建立与服务端的TCP连接。这时执行脚本&lt;code&gt;./netstat.sh&lt;/code&gt;可以看到Linux客户端（PID:5331）和服务端（PID:5325）的TCP通信已经变成&lt;code&gt;ESTABLISHED&lt;/code&gt;状态，效果如下图所示：&lt;/p&gt;
+&lt;p&gt;&lt;img alt="Linux中利用netstat命令查看TCP服务状态" src="https://dn-vfhky.qbox.me/2016/02/netstat_8000_2.png" title="Linux中利用netstat命令查看TCP服务状态" /&gt;&lt;/p&gt;
+&lt;h4&gt;4 在Windows中利用telnet命令创建一个客户端&lt;/h4&gt;
+&lt;p&gt;在Windows中打开一个PowerShell终端界面，然后输入命令&lt;code&gt;telnet 192.168.1.177 8000&lt;/code&gt;作为客户端建立与Linux服务端的TCP连接。&lt;/p&gt;
+&lt;p&gt;这时执行脚本&lt;code&gt;./netstat.sh&lt;/code&gt;可以看到Windows客户端（端口:52552）和服务端（PID:5325）的TCP通信已经变成&lt;code&gt;ESTABLISHED&lt;/code&gt;状态，效果如下图所示：&lt;/p&gt;
+&lt;p&gt;&lt;img alt="Linux中利用netstat命令查看TCP服务状态" src="https://dn-vfhky.qbox.me/2016/02/netstat_8000_3.png" title="Linux中利用netstat命令查看TCP服务状态" /&gt;&lt;/p&gt;
+&lt;h4&gt;5 在Linux中使用tcpdump工具抓包&lt;/h4&gt;
+&lt;p&gt;再打开一个Linux终端界面，然后输入命令&lt;code&gt;tcpdump -n port 8000&lt;/code&gt;进行抓包（目的是获取Windows客户端telnet建立的tcp连接的数据包）。当前面第4小节中Windows客户端发起“三次握手”时以及后面手工把该客户端界面关闭后，最终会得到如下数据：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;[root@typecodes ~]# tcpdump -n port 8000
+tcpdump: verbose output suppressed, use -v or -vv for full protocol decode
+listening on eth0, link-type EN10MB (Ethernet), capture size 65535 bytes
+
+######Windows中的telnet命令作为客户端向Linux服务器发起第一次握手，请求建立连接(SYN)
+17:10:43.150463 IP 192.168.1.110.52552 &amp;gt; 192.168.1.177.irdmi: Flags [S], seq 4020000773, win 8192, options [mss 1460,nop,wscale 8,nop,nop,sackOK], length 0
+######Linux服务端向Windows客户端发送握手确认包(SYN+ACK)
+17:10:43.150518 IP 192.168.1.177.irdmi &amp;gt; 192.168.1.110.52552: Flags [S.], seq 2818288395, ack 4020000774, win 29200, options [mss 1460,nop,nop,sackOK,nop,wscale 7], length 0
+######Windows客户端向Linux服务端发送确认包(ACK)，三次握手完毕
+17:10:43.150652 IP 192.168.1.110.52552 &amp;gt; 192.168.1.177.irdmi: Flags [.], ack 1, win 256, length 0
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;效果如下图所示：&lt;/p&gt;
+&lt;p&gt;&lt;img alt="使用tcpdump工具抓包：三次握手" src="https://dn-vfhky.qbox.me/2016/02/tcpdump8000_1.png" title="使用tcpdump工具抓包：三次握手" /&gt;&lt;/p&gt;
+&lt;h4&gt;6 在Windows中使用Wireshark抓包&lt;/h4&gt;
+&lt;p&gt;在Windows中使用&lt;code&gt;telnet 192.168.1.177 8000&lt;/code&gt;命令建立与Linux服务端的TCP链路后（即前面小节4的操作），通过Windows客户端的TCP端口号52552开始准备使用Wireshark进行抓包。&lt;/p&gt;
+&lt;p&gt;手动直接关闭小节4中创建的Windows telnet终端界面，然后Wireshark抓包情况如下图所示：&lt;/p&gt;
+&lt;p&gt;&lt;img alt="在Windows中使用Wireshark抓包" src="https://dn-vfhky.qbox.me/2016/02/wireshark_8000.png" title="在Windows中使用Wireshark抓包" /&gt;&lt;/p&gt;
+&lt;p&gt;同时，通过Linux中的netstat.sh脚本发现刚才建立的TCP通信出现了&lt;code&gt;CLOSE_WAIT&lt;/code&gt;的状态。&lt;/p&gt;
+&lt;p&gt;&lt;img alt="Linux中利用netstat命令查看TCP服务状态" src="https://dn-vfhky.qbox.me/2016/02/netstat_8000_4.png" title="Linux中利用netstat命令查看TCP服务状态" /&gt;&lt;/p&gt;
+&lt;p&gt;同样，使用第4小节中的tcpdump抓包情况如下：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;######Windows客户端被“意外”关闭，向Linux服务端发送FIN+ACK报文
+17:11:35.668512 IP 192.168.1.110.52552 &amp;gt; 192.168.1.177.irdmi: Flags [F.], seq 1, ack 1, win 256, length 0
+######Linux服务端向Windows客户端发送ACK确认报文
+17:11:35.668851 IP 192.168.1.177.irdmi &amp;gt; 192.168.1.110.52552: Flags [.], ack 2, win 229, length 0
+######2分钟后，Windows系统自动向Linux服务端发送一个RST+ACK报文，告知对方自己已关闭之前的TCP连接，同时要求对方也关闭链路
+17:13:35.670464 IP 192.168.1.110.52552 &amp;gt; 192.168.1.177.irdmi: Flags [R.], seq 2, ack 1, win 0, length 0
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;效果如下图所示：&lt;/p&gt;
+&lt;p&gt;&lt;img alt="在Linux中使用tcpdump抓包" src="https://dn-vfhky.qbox.me/2016/02/tcpdump8000_2.png" title="在Linux中使用tcpdump抓包" /&gt;&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">vfhky</dc:creator><pubDate>Fri, 26 Feb 2016 18:41:00 +0800</pubDate><guid>tag:typecodes.com,2016-02-26:cseries/tcpdumpwiresharkclosewait1.html</guid><category>tcpdump</category><category>wireshark</category><category>tcp</category><category>close_wait</category></item><item><title>Linux中使用TCPDUMP进行简单的TCP抓包</title><link>https://typecodes.com/linux/simpletcpdumpapply.html</link><description>&lt;p&gt;在Linux TCP通信的调试中，tcpdump应该算是很好的一个工具。这篇文章主要使用Windows作为客户端，向作为服务端的Linux中的一个socket监听端口发送报文信息，然后在Linux中用TCPDUMP工具进行抓包。通过这个实例，可以较为完整的了解TCP通信中的“三次握手”等过程。&lt;/p&gt;
 &lt;p&gt;&lt;img alt="Linux中使用TCPDUMP进行简单的TCP抓包" src="https://dn-vfhky.qbox.me/2016/02/linuxtcpdump.png" title="Linux中使用TCPDUMP进行简单的TCP抓包" /&gt;&lt;/p&gt;
 
 
@@ -191,7 +387,7 @@
 &lt;span class="c1"&gt;//客户端关闭后向服务端发送标识为(R+.ACK), RST(Reset)为1时, 表示tcp连接马上会被结束，而无需等待终止确认手续. 也就是说, 这是个强制结束的连线, 且发送端已经断开.&lt;/span&gt;
 &lt;span class="c1"&gt;//这里即使服务端没有调用close(accept_sockfd)来向客户端发送FIN报文，两者之间建立的tcp链路都会被关闭！！！&lt;/span&gt;
 &lt;span class="mi"&gt;11&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="mi"&gt;50&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="mf"&gt;55.047977&lt;/span&gt; &lt;span class="nx"&gt;IP&lt;/span&gt; &lt;span class="mf"&gt;192.168&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="mf"&gt;1.109&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="mi"&gt;8886&lt;/span&gt; &lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="mf"&gt;192.168&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="mf"&gt;1.178&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;irdmi&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="nx"&gt;Flags&lt;/span&gt; &lt;span class="cp"&gt;[&lt;/span&gt;&lt;span class="nx"&gt;R.&lt;/span&gt;&lt;span class="cp"&gt;]&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;seq&lt;/span&gt; &lt;span class="mi"&gt;12&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;ack&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;win&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;length&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">vfhky</dc:creator><pubDate>Fri, 26 Feb 2016 15:51:00 +0800</pubDate><guid>tag:typecodes.com,2016-02-26:linux/simpletcpdumpapply.html</guid><category>tcpdump</category><category>tcp/ip</category></item><item><title>CentOS 7.2使用yum安装MYSQL 5.7.10</title><link>https://typecodes.com/linux/yuminstallmysql5710.html</link><description>&lt;p&gt;前面两篇文章&lt;a href="https://typecodes.com/web/centos7compilemysql.html" title="查看原文"&gt;《2015博客升级记(四)：CentOS 7.1编译安装MySQL5.7.7rc》&lt;/a&gt;、&lt;a href="https://typecodes.com/web/centos7yuminstallmysql5.html" title="查看原文"&gt;《阿里云CentOS 7.1使用yum安装MySql5.6.24》&lt;/a&gt;分别使用源码编译和YUM方法安装MySQL数据库，这篇文章同样是使用YUM方法在CentOS7.2(64bits)的机器上安装最新的MySQL5.7.10数据库。&lt;/p&gt;
+&lt;/pre&gt;&lt;/div&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">vfhky</dc:creator><pubDate>Fri, 26 Feb 2016 15:51:00 +0800</pubDate><guid>tag:typecodes.com,2016-02-26:linux/simpletcpdumpapply.html</guid><category>tcpdump</category><category>tcp</category></item><item><title>CentOS 7.2使用yum安装MYSQL 5.7.10</title><link>https://typecodes.com/linux/yuminstallmysql5710.html</link><description>&lt;p&gt;前面两篇文章&lt;a href="https://typecodes.com/web/centos7compilemysql.html" title="查看原文"&gt;《2015博客升级记(四)：CentOS 7.1编译安装MySQL5.7.7rc》&lt;/a&gt;、&lt;a href="https://typecodes.com/web/centos7yuminstallmysql5.html" title="查看原文"&gt;《阿里云CentOS 7.1使用yum安装MySql5.6.24》&lt;/a&gt;分别使用源码编译和YUM方法安装MySQL数据库，这篇文章同样是使用YUM方法在CentOS7.2(64bits)的机器上安装最新的MySQL5.7.10数据库。&lt;/p&gt;
 &lt;h4&gt;1 查看Linux发行版本&lt;/h4&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;[root@typecodes ~]# cat /etc/redhat-release
 CentOS Linux release 7.2.1511 (Core)

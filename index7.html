@@ -38,6 +38,17 @@
 		<div class="col-md-9" id="blog-main" role="main">
 		  	<!--article recycle-->
 			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/csharp/hexstringxor1.html">C#实现十六进制字符串异或（一）</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2014-12-29 21:52 | 分类：<a href="https://typecodes.com/csharp/index.html">csharp</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>前面用C/C++实现了两个十六进制的字符串进行异或（<a href="https://typecodes.com/cseries/hexstrxor.html" title="《C语言实现十六进制字符串异或》">查看该文</a>），这篇文章利用C#来实现这个功能。由于C#命名空间里已经封装好了很多类和方法，不用像之前用C实现十六进制字符串异或那样，需要自己写相关的函数，所以能够利用C#很快完成这个字符串异或功能。</p>
+<p>用C#实现两个十六进制的字符串进行异或和用C/C++实现两个十六进制的字符串进行异或的思路是一样的，对比着之前用C实现的那篇文章，可以很好理解。</p>
+
+	<p class="more"><a href="https://typecodes.com/csharp/hexstringxor1.html" title="C#实现十六进制字符串异或（一）">- 阅读剩余部分 -</a></p>
+			</article>
+			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/cseries/doubledimensionalarray.html">指针数组和指针的指针（间级指针）实例分析</a></h2>
 <ul class="post-meta">
 	<li>作者：vfhky | 时间：2014-11-17 22:09 | 分类：<a href="https://typecodes.com/cseries/index.html">cseries</a></li>
@@ -120,56 +131,6 @@
 
 	<p class="more"><a href="https://typecodes.com/cseries/hexstrxor.html" title="十六进制字符串异或">- 阅读剩余部分 -</a></p>
 			</article>
-			<article class="post">
-<h2 class="post-title"><a href="https://typecodes.com/cseries/studentssoundoffgame.html">由学生按某规则依次报数的游戏引发的问题</a></h2>
-<ul class="post-meta">
-	<li>作者：vfhky | 时间：2014-11-08 19:02 | 分类：<a href="https://typecodes.com/cseries/index.html">cseries</a></li>
-</ul>
-<div class="post-content fmt">
-	<p>前段时间Q群里有提问如下，编写程序解决一个学生按规则依次报数的体育游戏问题。编程语言不限，Java, C#, Ruby, C++, Js, Python, Scala, objective-C统统可以，小语种也没问题。</p>
-<p><img alt="学生按某规则依次报数的游戏" src="https://dn-vfhky.qbox.me/2014/11/sportsgamepushpop.png" title="学生按某规则依次报数的游戏" /></p>
-<h5>1 问题描述：</h5>
-<div class="highlight"><pre>你是一名体育老师，在某次课距离下课还有五分钟时，你决定搞一个游戏。此时有100名学生在上课。游戏的规则是：
-1. 你首先说出三个不同的特殊数，要求必须是个位数，比如3、5、7。
-2. 让所有学生拍成一队，然后按顺序报数。
-3. 学生报数时，如果所报数字是第一个特殊数（3）的倍数，那么不能说该数字，而要说Fizz；如果所报数字是第二个特殊数（5）的倍数，那么要说Buzz；如果所报数字是第三个特殊数（7）的倍数，那么要说Whizz。
-4. 学生报数时，如果所报数字同时是两个特殊数的倍数情况下，也要特殊处理，比如第一个特殊数和第二个特殊数的倍数，那么不能说该数字，而是要说FizzBuzz, 以此类推。如果同时是三个特殊数的倍数，那么要说FizzBuzzWhizz。
-5. 学生报数时，如果所报数字包含了第一个特殊数，那么也不能说该数字，而是要说相应的单词，比如本例中第一个特殊数是3，那么要报13的同学应该说Fizz。如果数字中包含了第一个特殊数，那么忽略规则3和规则4，比如要报35的同学只报Fizz，不报BuzzWhizz。
-
-现在，我们需要你完成一个程序来模拟这个游戏，它首先接受3个特殊数，然后输出100名学生应该报数的数或单词。比如，
-
-输入
-3,5,7
-输出（片段）
-
-1
-2
-Fizz
-4
-Buzz
-Fizz
-Whizz
-8
-Fizz
-Buzz
-11
-Fizz
-Fizz
-Whizz
-FizzBuzz
-16
-17
-Fizz
-19
-Buzz
-…
-一直到100
-</pre></div>
-
-
-
-	<p class="more"><a href="https://typecodes.com/cseries/studentssoundoffgame.html" title="由学生按某规则依次报数的游戏引发的问题">- 阅读剩余部分 -</a></p>
-			</article>
 		  	<!--page navigation-->
 <ol class="page-navigator">
 <li class="prev"><a href="https://typecodes.com/index6.html">&laquo; 前一页</a></li><li><a href="https://typecodes.com/index.html">1</a>
@@ -178,8 +139,8 @@ Buzz
        		</li><li><a href="https://typecodes.com/index6.html">6</a>
        		</li><li class="current"><a href="https://typecodes.com/index7.html">7</a>
        		</li><li><a href="https://typecodes.com/index8.html">8</a>
-       		</li><li><span>...</span></li><li><a href="https://typecodes.com/index25.html">25</a>
-       		</li><li><a href="https://typecodes.com/index26.html">26</a>
+       		</li><li><span>...</span></li><li><a href="https://typecodes.com/index26.html">26</a>
+       		</li><li><a href="https://typecodes.com/index27.html">27</a>
        		</li><li class="next">
        		<a href="https://typecodes.com/index8.html">后一页 &raquo;</a>
        </li></ol>		</div>
@@ -196,7 +157,7 @@ Buzz
 		<h3 class="widget-title">Categories</h3>
 		<ul class="widget-list">
 		      <li class="current">
-		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (29)
+		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (30)
 		      </li>
 		      <li class="current">
 		        <a href="https://typecodes.com/csharp/index.html">Csharp</a> (6)
@@ -222,6 +183,9 @@ Buzz
 		<h3 class="widget-title">Recent Posts</h3>
 		<ul class="widget-list">
 			<li class="post">
+				<a href="https://typecodes.com/cseries/tcpdumpwiresharkclosewait1.html">使用TCPDUMP和Wireshark排查服务端CLOSE_WAIT（一）</a>
+			</li>
+			<li class="post">
 				<a href="https://typecodes.com/linux/simpletcpdumpapply.html">Linux中使用TCPDUMP进行简单的TCP抓包</a>
 			</li>
 			<li class="post">
@@ -238,9 +202,6 @@ Buzz
 			</li>
 			<li class="post">
 				<a href="https://typecodes.com/cseries/gccgensharedlib.html">Linux gcc编译生成静态库及使用方法</a>
-			</li>
-			<li class="post">
-				<a href="https://typecodes.com/linux/applogsbackup.html">Linux下Nginx、MySQL和PHP等应用的日志切割脚本</a>
 			</li>
 		</ul>
 	</section>

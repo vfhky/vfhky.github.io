@@ -38,6 +38,24 @@
 		<div class="col-md-9" id="blog-main" role="main">
 		  	<!--article recycle-->
 			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/cseries/unixsigtermkill.html">Unix系统进程对SIGTERM、SIGUSR1和SIGUSR2信号处理</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2015-08-05 17:41 | 分类：<a href="https://typecodes.com/cseries/index.html">cseries</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>好久没更新博客了，写篇文章除除草。这篇文章主要通过简单的例子说明一下Unix/Linux进程中如果捕捉和处理<code>SIGTERM</code>、<code>SIGUSR1</code>和<code>SIGUSR2</code>信号。</p>
+<p>先说明一下这三个信号：</p>
+<div class="highlight"><pre>信号(signal)是*nix系统中进程之间通信(IPC)的一种常见方式。
+SIGTERM：进程终止信号，效果等同于*nix shell中不带-9的kill命令；
+SIGUSR1：保留给用户使用的信号；
+SIGUSR2：同SIGUSR1，保留给用户使用的信号。
+</pre></div>
+
+
+
+	<p class="more"><a href="https://typecodes.com/cseries/unixsigtermkill.html" title="Unix系统进程对SIGTERM、SIGUSR1和SIGUSR2信号处理">- 阅读剩余部分 -</a></p>
+			</article>
+			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/cseries/simplifychexstrtoint.html">视角：C语言将十六进制字符串转成十进制整数</a></h2>
 <ul class="post-meta">
 	<li>作者：vfhky | 时间：2015-05-30 07:58 | 分类：<a href="https://typecodes.com/cseries/index.html">cseries</a></li>
@@ -117,17 +135,6 @@
 
 	<p class="more"><a href="https://typecodes.com/cseries/studymfchexstrxortool1.html" title="图文实例说MFC制作工具的心得（一）">- 阅读剩余部分 -</a></p>
 			</article>
-			<article class="post">
-<h2 class="post-title"><a href="https://typecodes.com/cseries/mfchexstrxortool.html">MFC写了一个十六进制字符串异或的工具</a></h2>
-<ul class="post-meta">
-	<li>作者：vfhky | 时间：2014-11-12 23:57 | 分类：<a href="https://typecodes.com/cseries/index.html">cseries</a></li>
-</ul>
-<div class="post-content fmt">
-	<p>在写完上一篇文章<a href="https://typecodes.com/cseries/hexstrxor.html" title="查看详情">《十六进制字符串异或》</a>后，网上查了下貌似没有十六进制字符串异或的工具，于是想自己用C++写一个。由于之前没弄过MFC，所以周末花了两天时间边学边做，最后效果如下：</p>
-<p><img alt="MFC十六进制异或的工具初始界面" src="https://dn-vfhky.qbox.me/2014/11/mfchexstrtoolini.png" title="MFC十六进制异或的工具初始界面" /></p>
-
-	<p class="more"><a href="https://typecodes.com/cseries/mfchexstrxortool.html" title="MFC写了一个十六进制字符串异或的工具">- 阅读剩余部分 -</a></p>
-			</article>
 		  	<!--page navigation-->
 <ol class="page-navigator">
 <li class="prev"><a href="https://typecodes.com/cseries/index.html">&laquo; 前一页</a></li><li><a href="https://typecodes.com/cseries/index.html">1</a><li class="current"><a href="https://typecodes.com/cseries/index2.html">2</a>
@@ -149,7 +156,7 @@
 		<h3 class="widget-title">Categories</h3>
 		<ul class="widget-list">
 		      <li class="current">
-		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (29)
+		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (30)
 		      </li>
 		      <li class="current">
 		        <a href="https://typecodes.com/csharp/index.html">Csharp</a> (6)
@@ -175,6 +182,9 @@
 		<h3 class="widget-title">Recent Posts</h3>
 		<ul class="widget-list">
 			<li class="post">
+				<a href="https://typecodes.com/cseries/tcpdumpwiresharkclosewait1.html">使用TCPDUMP和Wireshark排查服务端CLOSE_WAIT（一）</a>
+			</li>
+			<li class="post">
 				<a href="https://typecodes.com/cseries/multilprocessthreadgdb.html">Linux多进程和多线程的一次gdb调试实例</a>
 			</li>
 			<li class="post">
@@ -191,9 +201,6 @@
 			</li>
 			<li class="post">
 				<a href="https://typecodes.com/cseries/nmobjectfilesymbol.html">Unix系统中nm命令展示目标文件符号的方法</a>
-			</li>
-			<li class="post">
-				<a href="https://typecodes.com/cseries/gcclderrlibrarypath.html">Linux gcc链接动态库出错：LIBRARY_PATH和LD_LIBRARY_PATH的区别</a>
 			</li>
 		</ul>
 	</section>

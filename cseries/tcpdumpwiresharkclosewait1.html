@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="zh-CN" class="no-js">
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+  		<meta name="renderer" content="webkit">
+		<title>使用TCPDUMP和Wireshark排查服务端CLOSE_WAIT（一） &mdash; TypeCodes</title>
+  		<meta name="viewport" content="width=device-width, initial-scale=1">
+  		<link href="https://typecodes.com/atom.xml" type="application/atom+xml" rel="alternate" title="TypeCodes Atom Feed" />
+	  	<link href="https://typecodes.com/feed.xml" type="application/rss+xml" rel="alternate" title="TypeCodes RSS Feed" />
+		<link rel="stylesheet" href="https://dn-vfhky.qbox.me/libs/css/pelican-vfhky.css">
+		<script>
+			var _hmt = _hmt || [];
+			(function() {
+			  var hm = document.createElement("script");
+			  hm.src = "//hm.baidu.com/hm.js?c15c4ab8e91ba9ac3d5a12293cc93359";
+			  var s = document.getElementsByTagName("script")[0]; 
+			  s.parentNode.insertBefore(hm, s);
+			})();
+		</script>
+	</head>
+	<body>
+		<!--1. header navigation begin-->
+		<header role="banner" id="te-site-header">
+			<div class="container">
+				<a href="https://typecodes.com" class="te-site-logo" role="logo" target="_self"> TypeCodes</a>
+				<ul class="nav nav-pills" id="te-site-nav" role="navigation">
+					<li><a href="https://typecodes.com">Home</a></li><li><a href="https://typecodes.com/archives.html" title="Archives">Archives</a></li><li><a href="https://typecodes.com/about.html" title="About">About</a></li></ul>
+			</div>
+		</header>
+		<div class="te-headline">
+			<div class="container">
+				<h2 class="te-headline-title"> <a href="https://typecodes.com">TypeCodes</a></h2>
+			</div>
+		</div>
+		<div class="container">
+			<div class="row">
+		<!--2. left sider begin-->
+		<div class="col-md-9" id="blog-main" role="main">
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/cseries/tcpdumpwiresharkclosewait1.html">使用TCPDUMP和Wireshark排查服务端CLOSE_WAIT（一）</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2016-02-26 18:41 | 分类：<a href="https://typecodes.com/cseries/index.html">cseries</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>在Linux后端服务网络通信开发中，可能会遇到CLOSE_WAIT的状况。引起TCP CLOSE_WAIT状态的情况很多，归根结底还是由于被动关闭的一方没有关闭socket链路导致的。这篇文章主要是通过用一个简单的例子通过TCPDUMP和Wireshark这两个工具来模拟产生CLOSE_WAIT的情况，<a href="https://typecodes.com/cseries/tcpdumpwiresharkclosewait2.html" title="《使用TCPDUMP和Wireshark排查服务端CLOSE_WAIT（二）》">下一篇</a>主要是对这个问题的原理解释。</p>
+<p><img alt="CentOS服务端建立监听端口" src="https://dn-vfhky.qbox.me/2016/02/server_socket_8000.png" title="CentOS服务端建立监听端口" /></p>
+
+
+<h4>1 CentOS服务端建立监听端口</h4>
+<p>如上图所示，在虚拟机CentOS7服务器（192.168.1.178）中打开一个终端界面，然后使用下面这个简单的服务端程序，建立8000端口的监听服务（PID:5325）。</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72</pre></div></td><td class="code"><div class="highlight"><pre><span class="cm">/** </span>
+<span class="cm"> * @FileName    server_socket.c</span>
+<span class="cm"> * @Describe    A simple example for creating a listen as a server in linux system.</span>
+<span class="cm"> * @Author      vfhky 2016-02-26 18:45 https://typecodes.com/cseries/tcpdumpwiresharkclosewait1.html</span>
+<span class="cm"> * @Compile     gcc server_socket.c -o server_socket</span>
+<span class="cm"> */</span>
+<span class="cp">#include &lt;stdio.h&gt;</span>
+<span class="cp">#include &lt;string.h&gt;</span>
+<span class="cp">#include &lt;sys/types.h&gt;</span>
+<span class="cp">#include &lt;sys/socket.h&gt;</span>
+<span class="cp">#include &lt;netinet/in.h&gt;</span>
+<span class="cp">#include &lt;arpa/inet.h&gt;</span>
+<span class="cp">#include &lt;errno.h&gt;</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span> <span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">**</span><span class="n">argv</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="kt">int</span> <span class="n">server_sockfd</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">client_sockfd</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">len</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">llOpt</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+    <span class="k">struct</span> <span class="n">sockaddr_in</span> <span class="n">my_addr</span><span class="p">;</span>
+    <span class="k">struct</span> <span class="n">sockaddr_in</span> <span class="n">remote_addr</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">sin_size</span><span class="p">;</span>
+    <span class="kt">char</span> <span class="n">buf</span><span class="p">[</span><span class="n">BUFSIZ</span><span class="p">];</span>
+    <span class="n">memset</span><span class="p">(</span> <span class="o">&amp;</span><span class="n">my_addr</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">my_addr</span><span class="p">)</span> <span class="p">);</span>
+    <span class="n">my_addr</span><span class="p">.</span><span class="n">sin_family</span> <span class="o">=</span> <span class="n">AF_INET</span><span class="p">;</span>
+    <span class="n">my_addr</span><span class="p">.</span><span class="n">sin_addr</span><span class="p">.</span><span class="n">s_addr</span> <span class="o">=</span> <span class="n">INADDR_ANY</span><span class="p">;</span>
+    <span class="n">my_addr</span><span class="p">.</span><span class="n">sin_port</span> <span class="o">=</span> <span class="n">htons</span><span class="p">(</span><span class="mi">8000</span><span class="p">);</span>
+
+    <span class="k">if</span><span class="p">(</span> <span class="p">(</span> <span class="n">server_sockfd</span> <span class="o">=</span> <span class="n">socket</span><span class="p">(</span> <span class="n">AF_INET</span><span class="p">,</span> <span class="n">SOCK_STREAM</span><span class="p">,</span> <span class="mi">0</span> <span class="p">)</span> <span class="p">)</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="p">)</span>
+    <span class="p">{</span>  
+        <span class="n">perror</span><span class="p">(</span><span class="s">&quot;socket&quot;</span><span class="p">);</span>
+        <span class="k">return</span> <span class="mi">1</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">if</span><span class="p">(</span> <span class="n">setsockopt</span><span class="p">(</span> <span class="n">server_sockfd</span><span class="p">,</span> <span class="n">SOL_SOCKET</span><span class="p">,</span> <span class="n">SO_REUSEADDR</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">llOpt</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">llOpt</span><span class="p">)</span> <span class="p">)</span> <span class="p">)</span> <span class="p">{</span>
+        <span class="n">close</span><span class="p">(</span><span class="n">server_sockfd</span><span class="p">);</span>
+        <span class="k">return</span> <span class="n">errno</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">if</span><span class="p">(</span> <span class="n">bind</span><span class="p">(</span> <span class="n">server_sockfd</span><span class="p">,</span> <span class="p">(</span><span class="k">struct</span> <span class="n">sockaddr</span> <span class="o">*</span><span class="p">)</span><span class="o">&amp;</span><span class="n">my_addr</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="k">struct</span> <span class="n">sockaddr</span><span class="p">)</span> <span class="p">)</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">perror</span><span class="p">(</span> <span class="s">&quot;bind&quot;</span> <span class="p">);</span>
+        <span class="k">return</span> <span class="mi">1</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="n">listen</span><span class="p">(</span> <span class="n">server_sockfd</span><span class="p">,</span> <span class="mi">5</span> <span class="p">);</span>
+
+    <span class="n">sin_size</span> <span class="o">=</span> <span class="k">sizeof</span><span class="p">(</span> <span class="k">struct</span> <span class="n">sockaddr_in</span> <span class="p">);</span>
+
+    <span class="n">printf</span><span class="p">(</span> <span class="s">&quot;Socket server begin to recieve connectiong from client.</span><span class="se">\n</span><span class="s">&quot;</span> <span class="p">);</span>
+
+    <span class="k">while</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span><span class="p">(</span> <span class="p">(</span> <span class="n">client_sockfd</span> <span class="o">=</span> <span class="n">accept</span><span class="p">(</span> <span class="n">server_sockfd</span><span class="p">,</span> <span class="p">(</span><span class="k">struct</span> <span class="n">sockaddr</span> <span class="o">*</span><span class="p">)</span><span class="o">&amp;</span><span class="n">remote_addr</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">sin_size</span> <span class="p">)</span> <span class="p">)</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">perror</span><span class="p">(</span> <span class="s">&quot;accept&quot;</span> <span class="p">);</span>
+            <span class="k">return</span> <span class="mi">1</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="n">printf</span><span class="p">(</span> <span class="s">&quot;Accept client[%s].</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">inet_ntoa</span><span class="p">(</span><span class="n">remote_addr</span><span class="p">.</span><span class="n">sin_addr</span><span class="p">)</span> <span class="p">);</span>
+
+        <span class="n">memset</span><span class="p">(</span> <span class="n">buf</span><span class="p">,</span> <span class="mh">0x00</span><span class="p">,</span> <span class="n">BUFSIZ</span> <span class="p">);</span>
+        <span class="k">while</span><span class="p">(</span> <span class="p">(</span> <span class="n">len</span> <span class="o">=</span> <span class="n">recv</span><span class="p">(</span> <span class="n">client_sockfd</span> <span class="p">,</span><span class="n">buf</span><span class="p">,</span> <span class="n">BUFSIZ</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">buf</span><span class="p">[</span><span class="n">len</span><span class="p">]</span><span class="o">=</span><span class="sc">&#39;\0&#39;</span><span class="p">;</span>
+            <span class="n">printf</span><span class="p">(</span> <span class="s">&quot;Message from client=[%s]</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">buf</span> <span class="p">);</span>
+        <span class="p">}</span>
+        <span class="n">close</span><span class="p">(</span> <span class="n">client_sockfd</span> <span class="p">);</span>
+    <span class="p">}</span>
+    <span class="n">close</span><span class="p">(</span> <span class="n">server_sockfd</span> <span class="p">);</span>
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</td></tr></table>
+
+<h4>2 在Linux中使用netstat命令查看TCP服务状态</h4>
+<p>新建一个shell脚本netstat.sh，里面只包含一条有效命令<code>netstat -nap|head -n 2;netstat -nap|grep 8000</code>。执行该脚本可以看到服务端的监听效果：</p>
+<p><img alt="Linux中利用netstat命令查看TCP服务状态" src="https://dn-vfhky.qbox.me/2016/02/netstat_8000_1.png" title="Linux中利用netstat命令查看TCP服务状态" /></p>
+<h4>3 在Linux中利用telnet命令创建一个客户端</h4>
+<p>再打开一个Linux终端界面，然后输入命令<code>telnet 192.168.1.177 8000</code>作为客户端建立与服务端的TCP连接。这时执行脚本<code>./netstat.sh</code>可以看到Linux客户端（PID:5331）和服务端（PID:5325）的TCP通信已经变成<code>ESTABLISHED</code>状态，效果如下图所示：</p>
+<p><img alt="Linux中利用netstat命令查看TCP服务状态" src="https://dn-vfhky.qbox.me/2016/02/netstat_8000_2.png" title="Linux中利用netstat命令查看TCP服务状态" /></p>
+<h4>4 在Windows中利用telnet命令创建一个客户端</h4>
+<p>在Windows中打开一个PowerShell终端界面，然后输入命令<code>telnet 192.168.1.177 8000</code>作为客户端建立与Linux服务端的TCP连接。</p>
+<p>这时执行脚本<code>./netstat.sh</code>可以看到Windows客户端（端口:52552）和服务端（PID:5325）的TCP通信已经变成<code>ESTABLISHED</code>状态，效果如下图所示：</p>
+<p><img alt="Linux中利用netstat命令查看TCP服务状态" src="https://dn-vfhky.qbox.me/2016/02/netstat_8000_3.png" title="Linux中利用netstat命令查看TCP服务状态" /></p>
+<h4>5 在Linux中使用tcpdump工具抓包</h4>
+<p>再打开一个Linux终端界面，然后输入命令<code>tcpdump -n port 8000</code>进行抓包（目的是获取Windows客户端telnet建立的tcp连接的数据包）。当前面第4小节中Windows客户端发起“三次握手”时以及后面手工把该客户端界面关闭后，最终会得到如下数据：</p>
+<div class="highlight"><pre>[root@typecodes ~]# tcpdump -n port 8000
+tcpdump: verbose output suppressed, use -v or -vv for full protocol decode
+listening on eth0, link-type EN10MB (Ethernet), capture size 65535 bytes
+
+######Windows中的telnet命令作为客户端向Linux服务器发起第一次握手，请求建立连接(SYN)
+17:10:43.150463 IP 192.168.1.110.52552 &gt; 192.168.1.177.irdmi: Flags [S], seq 4020000773, win 8192, options [mss 1460,nop,wscale 8,nop,nop,sackOK], length 0
+######Linux服务端向Windows客户端发送握手确认包(SYN+ACK)
+17:10:43.150518 IP 192.168.1.177.irdmi &gt; 192.168.1.110.52552: Flags [S.], seq 2818288395, ack 4020000774, win 29200, options [mss 1460,nop,nop,sackOK,nop,wscale 7], length 0
+######Windows客户端向Linux服务端发送确认包(ACK)，三次握手完毕
+17:10:43.150652 IP 192.168.1.110.52552 &gt; 192.168.1.177.irdmi: Flags [.], ack 1, win 256, length 0
+</pre></div>
+
+
+<p>效果如下图所示：</p>
+<p><img alt="使用tcpdump工具抓包：三次握手" src="https://dn-vfhky.qbox.me/2016/02/tcpdump8000_1.png" title="使用tcpdump工具抓包：三次握手" /></p>
+<h4>6 在Windows中使用Wireshark抓包</h4>
+<p>在Windows中使用<code>telnet 192.168.1.177 8000</code>命令建立与Linux服务端的TCP链路后（即前面小节4的操作），通过Windows客户端的TCP端口号52552开始准备使用Wireshark进行抓包。</p>
+<p>手动直接关闭小节4中创建的Windows telnet终端界面，然后Wireshark抓包情况如下图所示：</p>
+<p><img alt="在Windows中使用Wireshark抓包" src="https://dn-vfhky.qbox.me/2016/02/wireshark_8000.png" title="在Windows中使用Wireshark抓包" /></p>
+<p>同时，通过Linux中的netstat.sh脚本发现刚才建立的TCP通信出现了<code>CLOSE_WAIT</code>的状态。</p>
+<p><img alt="Linux中利用netstat命令查看TCP服务状态" src="https://dn-vfhky.qbox.me/2016/02/netstat_8000_4.png" title="Linux中利用netstat命令查看TCP服务状态" /></p>
+<p>同样，使用第4小节中的tcpdump抓包情况如下：</p>
+<div class="highlight"><pre>######Windows客户端被“意外”关闭，向Linux服务端发送FIN+ACK报文
+17:11:35.668512 IP 192.168.1.110.52552 &gt; 192.168.1.177.irdmi: Flags [F.], seq 1, ack 1, win 256, length 0
+######Linux服务端向Windows客户端发送ACK确认报文
+17:11:35.668851 IP 192.168.1.177.irdmi &gt; 192.168.1.110.52552: Flags [.], ack 2, win 229, length 0
+######2分钟后，Windows系统自动向Linux服务端发送一个RST+ACK报文，告知对方自己已关闭之前的TCP连接，同时要求对方也关闭链路
+17:13:35.670464 IP 192.168.1.110.52552 &gt; 192.168.1.177.irdmi: Flags [R.], seq 2, ack 1, win 0, length 0
+</pre></div>
+
+
+<p>效果如下图所示：</p>
+<p><img alt="在Linux中使用tcpdump抓包" src="https://dn-vfhky.qbox.me/2016/02/tcpdump8000_2.png" title="在Linux中使用tcpdump抓包" /></p>
+		    	<p class="tags">
+					<div class="post-share">
+						<ul class="post-shareul clearfix">
+							<li class="post-shareli">
+								<a href="http://note.youdao.com/memory/?url=https://typecodes.com/cseries/tcpdumpwiresharkclosewait1.html&title=使用TCPDUMP和Wireshark排查服务端CLOSE_WAIT（一）" class="post-sharea ydshare" target="_blank" rel="nofollow">有道云笔记</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://v.t.sina.com.cn/share/share.php?url=https://typecodes.com/cseries/tcpdumpwiresharkclosewait1.html&title=使用TCPDUMP和Wireshark排查服务端CLOSE_WAIT（一）&source=https://typecodes.com" class="post-sharea wbshare" target="_blank" rel="nofollow">新浪微博</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://v.t.qq.com/share/share.php?title=使用TCPDUMP和Wireshark排查服务端CLOSE_WAIT（一）&url=https://typecodes.com/cseries/tcpdumpwiresharkclosewait1.html&site=https://typecodes.com" class="post-sharea twbshare" target="_blank" rel="nofollow">腾讯微博</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=https://typecodes.com/cseries/tcpdumpwiresharkclosewait1.html&title=使用TCPDUMP和Wireshark排查服务端CLOSE_WAIT（一）&content='utf-8'" class="post-sharea qzoneshare" target="_blank" rel="nofollow">QZone</a>
+							</li>
+						</ul>
+					</div>
+					<div>
+						Tags: <a href="https://typecodes.com/tag/tcpdump.html">tcpdump</a>,<a href="https://typecodes.com/tag/wireshark.html">wireshark</a>,<a href="https://typecodes.com/tag/tcp.html">tcp</a>,<a href="https://typecodes.com/tag/close_wait.html">close_wait</a>					</div>
+				</p>
+			</article>
+			
+			<div id="comments">
+				<h4 class="num">Comments &raquo;</h4>
+		    	<div id="disqus_thread" aria-live="polite"></div>
+		    	<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+		    </div>
+		</div>
+		<!--3. right sider begin-->
+<div class="col-md-3" id="blog-secondary" role="complementary">
+	<section class="widget">
+		<ul class="widget-list">
+			<form id="search" method="get" action="https://typecodes.com/search.html">
+				<input type="text" name="q" id="s" size="20" x-webkit-speech="" x-webkit-grammar="builtin:search" onwebkitspeechchange="this.value = this.value.replace(this.defaultValue, '')" value="Google...." onfocus="this.value = (this.value == this.defaultValue) ? '' : this.value" onblur="this.value = (this.value == '') ? this.defaultValue : this.value">
+			</form>
+		</ul>
+	</section>
+	<section class="widget">
+		<h3 class="widget-title">Categories</h3>
+		<ul class="widget-list">
+		      <li class="current">
+		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (30)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/csharp/index.html">Csharp</a> (6)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/database/index.html">Database</a> (11)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/java/index.html">Java</a> (1)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/linux/index.html">Linux</a> (20)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/mix/index.html">Mix</a> (53)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/web/index.html">Web</a> (88)
+		      </li>
+		</ul>
+	</section>
+	<section class="widget">
+		<h3 class="widget-title">Recent Posts</h3>
+		<ul class="widget-list">
+			<li class="post">
+				<a href="https://typecodes.com/cseries/tcpdumpwiresharkclosewait1.html">使用TCPDUMP和Wireshark排查服务端CLOSE_WAIT（一）</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/simpletcpdumpapply.html">Linux中使用TCPDUMP进行简单的TCP抓包</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/yuminstallmysql5710.html">CentOS 7.2使用yum安装MYSQL 5.7.10</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/multilprocessthreadgdb.html">Linux多进程和多线程的一次gdb调试实例</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/syngithubmarkdownpelican.html">同步GitHub Markdown文章到Linux服务器后更新Pelican博客的脚本</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/linuxgccgconnectmysql.html">Linux c语言连接MySQL数据库实例</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/gccgensharedlib.html">Linux gcc编译生成静态库及使用方法</a>
+			</li>
+		</ul>
+	</section>
+	<section class="widget widget-feed">
+		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
+	</section>
+</div>
+				</div>
+			</div>
+		</div>
+		<!--4. bottom begin-->
+		<footer id="te-site-footer"><div class="container">
+	<div class="row" role="contentinfo">
+		<section class="col-md-2 col-md-offset-1">
+			<h3>Links</h3>
+			<ul><li><a href="http://diaosbook.com/" title="" target="_blank">diaosbook</a></li></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul>
+				<li><a href="https://typecodes.com/links.html">More..</a></li>
+			</ul>
+		</section>
+		<section class="col-md-2">
+			<h3>Following</h3>
+			<ul>
+				<li><a href="https://github.com/vfhky" class="following github" target="_blank" rel="external nofollow">GitHub</a></li>
+				<li><a href="http://weibo.com/typecodes" class="following weibo" target="_blank" rel="external nofollow">Weibo</a></li>
+				<li><a href="http://vfhky.sinaapp.com/" class="following sae" target="_blank" rel="external nofollow">SAE</a></li>
+				<li><a href="http://www.dwz.cn/mYiwa" class="following qqgroup" target="_blank" rel="external nofollow">Group</a></li>
+			</ul>
+		</section>
+		<div class="col-md-12 copyright">
+			<a href="#top"><i class="i-logo-s">TOP</i></a>
+			<p>
+				&copy;  2012-2016 							<a href="https://typecodes.com">TypeCodes</a>. All Rights Reserved<br>Powered by <a href="http://getpelican.com" rel="external" target="_blank">Pelican</a>. <a href="http://www.miitbeian.gov.cn/" rel="external nofollow" target="_blank">粤ICP备14050695号</a>
+			</p>
+		</div>
+	</div>
+</div>
+</footer>
+<script type="text/javascript">
+	var disqus_shortname = 'typecodes';
+	var disqus_identifier = '/cseries/tcpdumpwiresharkclosewait1.html';
+	var disqus_url = 'https://typecodes.com/cseries/tcpdumpwiresharkclosewait1.html';
+	var disqus_title = '使用TCPDUMP和Wireshark排查服务端CLOSE_WAIT（一）';
+	(function() {
+		var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+		dsq.src = "//" + disqus_shortname + '.disqus.com/embed.js';
+		(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	 })();
+</script>
+	</body>
+</html>

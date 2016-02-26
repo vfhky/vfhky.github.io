@@ -38,6 +38,17 @@
 		<div class="col-md-9" id="blog-main" role="main">
 		  	<!--article recycle-->
 			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/database/plsqlconnvmwareoracleslow.html">解决Windows中PLSQL连接虚拟机中Oracle缓慢的问题</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2013-04-21 00:00 | 分类：<a href="https://typecodes.com/database/index.html">database</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>博主上周末在自己的Windows宿主机中，用PL/SQL连接虚拟机中的oracle数据库时，出现了大概需要等待10多秒的时间才能登录成功的问题。很奇怪的现象，因为我在Windows中ping虚拟机中的oracle服务器IP地址，响应时间都在1ms内。在网上GG了下，没找到答案。后经我搭档指点，原来是Linux系统中的DNS解析在寻址的时候出现“错误”。这个跟我在用桥接模式连接网络的时候，错误配置了“Network Configuration”中的DNS有关（在用Bridged模式联网时，可以不用配置DNS）。</p>
+<p><img alt="桥接模式错误配置DNS" src="https://dn-vfhky.qbox.me/2013/04/error-dns.png" title="桥接模式错误配置DNS" /></p>
+
+	<p class="more"><a href="https://typecodes.com/database/plsqlconnvmwareoracleslow.html" title="解决Windows中PLSQL连接虚拟机中Oracle缓慢的问题">- 阅读剩余部分 -</a></p>
+			</article>
+			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/web/cancelwpautosave.html">取消WordPress的日志自动保存、修订版本、历史版本和文章不连续</a></h2>
 <ul class="post-meta">
 	<li>作者：vfhky | 时间：2013-04-20 23:53 | 分类：<a href="https://typecodes.com/web/index.html">web</a></li>
@@ -121,17 +132,6 @@ VMware Network Adapter VMnet8：这是Host用于与NAT虚拟网络进行通信�
 
 	<p class="more"><a href="https://typecodes.com/mix/personalblogseoexp.html" title="新手如何做好个人独立博客——SEO经验谈">- 阅读剩余部分 -</a></p>
 			</article>
-			<article class="post">
-<h2 class="post-title"><a href="https://typecodes.com/linux/cmdvsftpdinteraction.html">Redhat/CentOS通过yum安装与配置vsFTPd的详细步骤</a></h2>
-<ul class="post-meta">
-	<li>作者：vfhky | 时间：2013-03-17 17:19 | 分类：<a href="https://typecodes.com/linux/index.html">linux</a></li>
-</ul>
-<div class="post-content fmt">
-	<p>上一篇文章<a href="https://typecodes.com/linux/linuxyuminstallvsftpd.html" title="Redhat/CentOS通过yum安装与配置vsFTPd的详细步骤">《Redhat/CentOS通过yum安装与配置vsFTPd的详细步骤》</a>介绍了如何在vmware8中的redhat5.3中安装vsftpd软件，那么这篇文章就继续说说如何在windows系统中，通过vsftpd服务实现虚拟机vmware中的文件上传和下载等简单功能。</p>
-<p>测试环境是在windows中用cmd连接虚拟机中的linux主机服务器，当然更简单的方式是直接在windows中用常见的ftp客户端软件进行文件的上传与下载。只是BZ觉得既然学习了linux，就要把shell命令学好，所以总结了下面这篇教程。</p>
-
-	<p class="more"><a href="https://typecodes.com/linux/cmdvsftpdinteraction.html" title="Redhat/CentOS通过yum安装与配置vsFTPd的详细步骤">- 阅读剩余部分 -</a></p>
-			</article>
 		  	<!--page navigation-->
 <ol class="page-navigator">
 <li class="prev"><a href="https://typecodes.com/index17.html">&laquo; 前一页</a></li><li><a href="https://typecodes.com/index.html">1</a>
@@ -140,8 +140,8 @@ VMware Network Adapter VMnet8：这是Host用于与NAT虚拟网络进行通信�
        		</li><li><a href="https://typecodes.com/index17.html">17</a>
        		</li><li class="current"><a href="https://typecodes.com/index18.html">18</a>
        		</li><li><a href="https://typecodes.com/index19.html">19</a>
-       		</li><li><span>...</span></li><li><a href="https://typecodes.com/index25.html">25</a>
-       		</li><li><a href="https://typecodes.com/index26.html">26</a>
+       		</li><li><span>...</span></li><li><a href="https://typecodes.com/index26.html">26</a>
+       		</li><li><a href="https://typecodes.com/index27.html">27</a>
        		</li><li class="next">
        		<a href="https://typecodes.com/index19.html">后一页 &raquo;</a>
        </li></ol>		</div>
@@ -158,7 +158,7 @@ VMware Network Adapter VMnet8：这是Host用于与NAT虚拟网络进行通信�
 		<h3 class="widget-title">Categories</h3>
 		<ul class="widget-list">
 		      <li class="current">
-		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (29)
+		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (30)
 		      </li>
 		      <li class="current">
 		        <a href="https://typecodes.com/csharp/index.html">Csharp</a> (6)
@@ -184,6 +184,9 @@ VMware Network Adapter VMnet8：这是Host用于与NAT虚拟网络进行通信�
 		<h3 class="widget-title">Recent Posts</h3>
 		<ul class="widget-list">
 			<li class="post">
+				<a href="https://typecodes.com/cseries/tcpdumpwiresharkclosewait1.html">使用TCPDUMP和Wireshark排查服务端CLOSE_WAIT（一）</a>
+			</li>
+			<li class="post">
 				<a href="https://typecodes.com/linux/simpletcpdumpapply.html">Linux中使用TCPDUMP进行简单的TCP抓包</a>
 			</li>
 			<li class="post">
@@ -200,9 +203,6 @@ VMware Network Adapter VMnet8：这是Host用于与NAT虚拟网络进行通信�
 			</li>
 			<li class="post">
 				<a href="https://typecodes.com/cseries/gccgensharedlib.html">Linux gcc编译生成静态库及使用方法</a>
-			</li>
-			<li class="post">
-				<a href="https://typecodes.com/linux/applogsbackup.html">Linux下Nginx、MySQL和PHP等应用的日志切割脚本</a>
 			</li>
 		</ul>
 	</section>

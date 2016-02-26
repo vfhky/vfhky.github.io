@@ -38,6 +38,35 @@
 		<div class="col-md-9" id="blog-main" role="main">
 		  	<!--article recycle-->
 			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/web/centos7compilemysql.html">2015博客升级记(四)：CentOS 7.1编译安装MySQL5.7.7rc</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2015-06-21 00:53 | 分类：<a href="https://typecodes.com/web/index.html">web</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>这是<a href="https://typecodes.com/mix/2015updateblog.html" title="查看原文">《2015年博客升级记》</a>系列文章的第四篇，主要记录在Linux系统中如何编译安装MySql数据库。</p>
+<h5>1 创建mysql用户和用户组，并下载MySQL5.7.7 Release Candidate版本</h5>
+<p>首先创建一个名为mysql且<code>没有登录权限</code>的用户和一个名为mysql的用户组，然后去mysql官网下载MySQL5.7.7rc版本。</p>
+<div class="highlight"><pre>#######新建mysql用户和mysql组
+[root@typecodes ~]# groupadd -r mysql &amp;&amp; useradd -r -g mysql -s /bin/false -M mysql
+
+######从官网或者博客备份地址下载MySQL5.7.7 Release Candidate版本
+[root@typecodes ~]# wget -c http://cdn.mysql.com/Downloads/MySQL-5.7/mysql-5.7.7-rc.tar.gz
+[root@typecodes ~]# wget -c http://git.typecodes.com/libs/mysql/mysql-5.7.7-rc.tar.gz
+[root@typecodes ~]# md5sum mysql-5.7.7-rc.tar.gz        [MD5校验]
+36a96021a93ca236e76f5c90ae19cd44  mysql-5.7.7-rc.tar.gz
+######开始解压MySQL5.7.7
+[root@typecodes ~]# tar -zxf mysql-5.7.7-rc.tar.gz &amp;&amp; cd mysql-5.7.7-rc
+######下载gmock：google的c++mock框架，从mysql 5.6开始支持
+[root@typecodes mysql-5.7.7-rc]# wget -c http://git.typecodes.com/libs/ccpp/gmock-1.6.0.zip
+######将其解压到MySQL5.7.7的source_downloads目录下
+[root@typecodes mysql-5.7.7-rc]# unzip gmock-1.6.0.zip -d source_downloads
+</pre></div>
+
+
+
+	<p class="more"><a href="https://typecodes.com/web/centos7compilemysql.html" title="2015博客升级记(四)：CentOS 7.1编译安装MySQL5.7.7rc">- 阅读剩余部分 -</a></p>
+			</article>
+			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/linux/centoscoredumpcfgshell.html">CentOS开启coredump转储并生成core文件的配置</a></h2>
 <ul class="post-meta">
 	<li>作者：vfhky | 时间：2015-06-11 21:47 | 分类：<a href="https://typecodes.com/linux/index.html">linux</a></li>
@@ -119,17 +148,6 @@ Linux系统：       阿里云CentOS 7.1（20G）
 
 	<p class="more"><a href="https://typecodes.com/linux/centos7fdiskmountswap.html" title="2015博客升级记(二)：Linux系统磁盘分区挂载和交换空间">- 阅读剩余部分 -</a></p>
 			</article>
-			<article class="post">
-<h2 class="post-title"><a href="https://typecodes.com/linux/centos7afteroperate.html">2015博客升级记(一)：安装CentOS7后需要的操作</a></h2>
-<ul class="post-meta">
-	<li>作者：vfhky | 时间：2015-05-25 16:27 | 分类：<a href="https://typecodes.com/linux/index.html">linux</a></li>
-</ul>
-<div class="post-content fmt">
-	<p>这是<a href="https://typecodes.com/mix/2015updateblog.html" title="查看原文">《2015年博客升级记》</a>系列文章的第一篇，主要记录安装完CentOS7后的一些优化操作，包括更换yum源并升级系统到CentOS7.1、使用sshd登录、修改机器名、vi映射为vim、vimrc的配置。</p>
-<p><img alt="安装CentOS7后需要的操作" src="https://dn-vfhky.qbox.me/2015/05/centos7update.png" title="安装CentOS7后需要的操作" /></p>
-
-	<p class="more"><a href="https://typecodes.com/linux/centos7afteroperate.html" title="2015博客升级记(一)：安装CentOS7后需要的操作">- 阅读剩余部分 -</a></p>
-			</article>
 		  	<!--page navigation-->
 <ol class="page-navigator">
 <li class="prev"><a href="https://typecodes.com/index4.html">&laquo; 前一页</a></li><li><a href="https://typecodes.com/index.html">1</a>
@@ -139,8 +157,8 @@ Linux系统：       阿里云CentOS 7.1（20G）
        		</li><li class="current"><a href="https://typecodes.com/index5.html">5</a>
        		</li><li><a href="https://typecodes.com/index6.html">6</a>
        		</li><li><a href="https://typecodes.com/index7.html">7</a>
-       		</li><li><span>...</span></li><li><a href="https://typecodes.com/index25.html">25</a>
-       		</li><li><a href="https://typecodes.com/index26.html">26</a>
+       		</li><li><span>...</span></li><li><a href="https://typecodes.com/index26.html">26</a>
+       		</li><li><a href="https://typecodes.com/index27.html">27</a>
        		</li><li class="next">
        		<a href="https://typecodes.com/index6.html">后一页 &raquo;</a>
        </li></ol>		</div>
@@ -157,7 +175,7 @@ Linux系统：       阿里云CentOS 7.1（20G）
 		<h3 class="widget-title">Categories</h3>
 		<ul class="widget-list">
 		      <li class="current">
-		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (29)
+		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (30)
 		      </li>
 		      <li class="current">
 		        <a href="https://typecodes.com/csharp/index.html">Csharp</a> (6)
@@ -183,6 +201,9 @@ Linux系统：       阿里云CentOS 7.1（20G）
 		<h3 class="widget-title">Recent Posts</h3>
 		<ul class="widget-list">
 			<li class="post">
+				<a href="https://typecodes.com/cseries/tcpdumpwiresharkclosewait1.html">使用TCPDUMP和Wireshark排查服务端CLOSE_WAIT（一）</a>
+			</li>
+			<li class="post">
 				<a href="https://typecodes.com/linux/simpletcpdumpapply.html">Linux中使用TCPDUMP进行简单的TCP抓包</a>
 			</li>
 			<li class="post">
@@ -199,9 +220,6 @@ Linux系统：       阿里云CentOS 7.1（20G）
 			</li>
 			<li class="post">
 				<a href="https://typecodes.com/cseries/gccgensharedlib.html">Linux gcc编译生成静态库及使用方法</a>
-			</li>
-			<li class="post">
-				<a href="https://typecodes.com/linux/applogsbackup.html">Linux下Nginx、MySQL和PHP等应用的日志切割脚本</a>
 			</li>
 		</ul>
 	</section>
