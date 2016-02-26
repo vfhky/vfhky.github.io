@@ -38,6 +38,17 @@
 		<div class="col-md-9" id="blog-main" role="main">
 		  	<!--article recycle-->
 			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/web/wpjquerycommentbug.html">jQuery引起Wordpress评论快捷提交时的一个BUG</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2013-08-25 00:40 | 分类：<a href="https://typecodes.com/web/index.html">web</a></li>
+</ul>
+<div class="post-content fmt">
+	<h5>1 缘由：</h5>
+<p>上周六博主一直在纠结是否设置没有Gravatar头像的用户不能在博客发表评论，权衡利弊后，最终还是决定实施这个想法。主要考虑两个因素：最大可能避免那些发广告的人、提升博客评论的整体质量。因为一般的广告Spamer都不会有Gravatar头像，所以禁止掉这个用户群体后能尽量避免博客的垃圾评论；其次，博客之前会为无头像用户默认随机生成一张NBA球队的图片作为头像（方法见<a href="https://typecodes.com/web/againwpgravatarcache.html" title="再议Gravatar头像缓存至本地服务器">《再议Gravatar头像缓存至本地服务器》</a>），但这类用户的评论大多“含金量”不高。综上两方面，博主毅然选择了禁止。虽然这样可能会损失部分用户，例如纵多无觅的使用者等。</p>
+
+	<p class="more"><a href="https://typecodes.com/web/wpjquerycommentbug.html" title="jQuery引起Wordpress评论快捷提交时的一个BUG">- 阅读剩余部分 -</a></p>
+			</article>
+			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/mix/360baiduyunpanwar.html">3百大战又将开启？看360和百度的云盘纷争</a></h2>
 <ul class="post-meta">
 	<li>作者：vfhky | 时间：2013-08-22 19:35 | 分类：<a href="https://typecodes.com/mix/index.html">mix</a></li>
@@ -138,17 +149,6 @@
 
 	<p class="more"><a href="https://typecodes.com/web/phpwpmusicplayer.html" title="PHP版网页随机音乐自动播放器（Wordpress通用）">- 阅读剩余部分 -</a></p>
 			</article>
-			<article class="post">
-<h2 class="post-title"><a href="https://typecodes.com/mix/blogsufferattack.html">近期博客遭受后台攻击</a></h2>
-<ul class="post-meta">
-	<li>作者：vfhky | 时间：2013-07-27 01:13 | 分类：<a href="https://typecodes.com/mix/index.html">mix</a></li>
-</ul>
-<div class="post-content fmt">
-	<p>和很多wordpress博主一样，vfhky也遭遇了博客后台的攻击。先不多说了，直接上图：</p>
-<p><img alt="不止160多次的轰炸" src="https://dn-vfhky.qbox.me/2013/07/1.jpg" /></p>
-
-	<p class="more"><a href="https://typecodes.com/mix/blogsufferattack.html" title="近期博客遭受后台攻击">- 阅读剩余部分 -</a></p>
-			</article>
 		  	<!--page navigation-->
 <ol class="page-navigator">
 <li class="prev"><a href="https://typecodes.com/index15.html">&laquo; 前一页</a></li><li><a href="https://typecodes.com/index.html">1</a>
@@ -187,7 +187,7 @@
 		        <a href="https://typecodes.com/java/index.html">Java</a> (1)
 		      </li>
 		      <li class="current">
-		        <a href="https://typecodes.com/linux/index.html">Linux</a> (18)
+		        <a href="https://typecodes.com/linux/index.html">Linux</a> (19)
 		      </li>
 		      <li class="current">
 		        <a href="https://typecodes.com/mix/index.html">Mix</a> (53)
@@ -200,6 +200,9 @@
 	<section class="widget">
 		<h3 class="widget-title">Recent Posts</h3>
 		<ul class="widget-list">
+			<li class="post">
+				<a href="https://typecodes.com/linux/yuminstallmysql5710.html">CentOS 7.2使用yum安装MYSQL 5.7.10</a>
+			</li>
 			<li class="post">
 				<a href="https://typecodes.com/cseries/multilprocessthreadgdb.html">Linux多进程和多线程的一次gdb调试实例</a>
 			</li>
@@ -217,9 +220,6 @@
 			</li>
 			<li class="post">
 				<a href="https://typecodes.com/mix/sucesstypechotopelican.html">成功将博客从Typecho迁移到Pelican</a>
-			</li>
-			<li class="post">
-				<a href="https://typecodes.com/mix/begintypechotopelican.html">准备将博客从Typecho迁移到Pelican</a>
 			</li>
 		</ul>
 	</section>
@@ -269,13 +269,5 @@
 	</div>
 </div>
 </footer>
-<script type="text/javascript">
-	var disqus_shortname = 'typecodes';
-	(function() {
-		var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-		dsq.src = "//" + disqus_shortname + '.disqus.com/embed.js';
-		(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-	 })();
-</script>
 	</body>
 </html>

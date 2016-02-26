@@ -38,6 +38,17 @@
 		<div class="col-md-9" id="blog-main" role="main">
 		  	<!--article recycle-->
 			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/mix/typechoexmailconfig.html">Typecho评论邮件通知插件中使用腾讯企业邮箱SSL功能</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2015-06-06 19:45 | 分类：<a href="https://typecodes.com/mix/index.html">mix</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>前段时间，在查看博客绑定的腾讯企业邮箱时，发现POP3/SMTP协议支持SSL。由于正好使用了Typecho版的CommentToMail评论邮件通知插件，就顺便也升级成SSL协议。</p>
+<p><img alt="腾讯企业邮箱SSL配置" src="https://dn-vfhky.qbox.me/2015/06/exmailsslconfig.png" title="腾讯企业邮箱SSL配置" /></p>
+
+	<p class="more"><a href="https://typecodes.com/mix/typechoexmailconfig.html" title="Typecho评论邮件通知插件中使用腾讯企业邮箱SSL功能">- 阅读剩余部分 -</a></p>
+			</article>
+			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/web/nginxserviceoptshell.html">Nginx服务启动、停止和重启等操作的SHELL脚本</a></h2>
 <ul class="post-meta">
 	<li>作者：vfhky | 时间：2015-06-06 13:42 | 分类：<a href="https://typecodes.com/web/index.html">web</a></li>
@@ -120,18 +131,6 @@ Linux系统：       阿里云CentOS 7.1（20G）
 
 	<p class="more"><a href="https://typecodes.com/mix/2015updateblog.html" title="2015年博客升级记">- 阅读剩余部分 -</a></p>
 			</article>
-			<article class="post">
-<h2 class="post-title"><a href="https://typecodes.com/cseries/againchexstrtointeger.html">再议C语言将十六进制字符串转成十进制整数</a></h2>
-<ul class="post-meta">
-	<li>作者：vfhky | 时间：2015-05-14 19:55 | 分类：<a href="https://typecodes.com/cseries/index.html">cseries</a></li>
-</ul>
-<div class="post-content fmt">
-	<p>前文<a href="https://typecodes.com/cseries/clanghexstrtointeger.html" title="查看原文">《C语言将十六进制字符串转成十进制整数》</a>讲述了将十六进制字符串中单个字符分别从高位到低位正序和从低位到高位逆序转换成对应的十进制数，今天在看原文的程序发现一个不好的地方：由于使用了<code>char * p = HexStr;</code>，也就是直接使用指针p将这个十六进制字符串进行了读取和<code>改写</code>。这样会造成在调用了<code>HexStr2Integer</code>转换函数后，就不能再次使用这个十六进制字符串了。</p>
-<p>因此，在转换过程中，可以考虑将原来的这个十六进制字符串在内存中复制一份，然后再对这个复制的<code>副本</code>进行读写，这样就产生副作用了。下面是根据原来的两个程序改进的的代码，主要通过<code>malloc</code>函数开辟一个内存空间，然后复制十六进制字符串中的数据到这个内存空间中，最后对它进行“读写”。</p>
-<p>在下面这两个改进的代码中，还考虑到了这个十六进制字符串以<code>0x</code>开头的形式出现，所以增加了这种情况的处理。</p>
-
-	<p class="more"><a href="https://typecodes.com/cseries/againchexstrtointeger.html" title="再议C语言将十六进制字符串转成十进制整数">- 阅读剩余部分 -</a></p>
-			</article>
 		  	<!--page navigation-->
 <ol class="page-navigator">
 <li class="prev"><a href="https://typecodes.com/index4.html">&laquo; 前一页</a></li><li><a href="https://typecodes.com/index.html">1</a>
@@ -171,7 +170,7 @@ Linux系统：       阿里云CentOS 7.1（20G）
 		        <a href="https://typecodes.com/java/index.html">Java</a> (1)
 		      </li>
 		      <li class="current">
-		        <a href="https://typecodes.com/linux/index.html">Linux</a> (18)
+		        <a href="https://typecodes.com/linux/index.html">Linux</a> (19)
 		      </li>
 		      <li class="current">
 		        <a href="https://typecodes.com/mix/index.html">Mix</a> (53)
@@ -184,6 +183,9 @@ Linux系统：       阿里云CentOS 7.1（20G）
 	<section class="widget">
 		<h3 class="widget-title">Recent Posts</h3>
 		<ul class="widget-list">
+			<li class="post">
+				<a href="https://typecodes.com/linux/yuminstallmysql5710.html">CentOS 7.2使用yum安装MYSQL 5.7.10</a>
+			</li>
 			<li class="post">
 				<a href="https://typecodes.com/cseries/multilprocessthreadgdb.html">Linux多进程和多线程的一次gdb调试实例</a>
 			</li>
@@ -201,9 +203,6 @@ Linux系统：       阿里云CentOS 7.1（20G）
 			</li>
 			<li class="post">
 				<a href="https://typecodes.com/mix/sucesstypechotopelican.html">成功将博客从Typecho迁移到Pelican</a>
-			</li>
-			<li class="post">
-				<a href="https://typecodes.com/mix/begintypechotopelican.html">准备将博客从Typecho迁移到Pelican</a>
 			</li>
 		</ul>
 	</section>
@@ -253,13 +252,5 @@ Linux系统：       阿里云CentOS 7.1（20G）
 	</div>
 </div>
 </footer>
-<script type="text/javascript">
-	var disqus_shortname = 'typecodes';
-	(function() {
-		var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-		dsq.src = "//" + disqus_shortname + '.disqus.com/embed.js';
-		(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-	 })();
-</script>
 	</body>
 </html>

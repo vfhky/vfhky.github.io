@@ -1,5 +1,275 @@
 <?xml version="1.0" encoding="utf-8"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>TypeCodes</title><link>https://typecodes.com/</link><description>Beauty of programming</description><atom:link href="https://typecodes.com/feed.xml" rel="self"></atom:link><lastBuildDate>Thu, 25 Feb 2016 23:18:00 +0800</lastBuildDate><item><title>Linux多进程和多线程的一次gdb调试实例</title><link>https://typecodes.com/cseries/multilprocessthreadgdb.html</link><description>&lt;p&gt;Linux C/C++开发中gdb进行多进程和多线程的调试一直比较麻烦，在CSDN上看到高科的一篇文章&lt;a href="http://blog.csdn.net/pbymw8iwm/article/details/7876797" title="查看原文"&gt;《gdb调试多进程和多线程命令》&lt;/a&gt;比较有启发，这里就自己重新整理并做了一个GDB多进程/线程的调试实践。&lt;/p&gt;
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>TypeCodes</title><link>https://typecodes.com/</link><description>Beauty of programming</description><atom:link href="https://typecodes.com/feed.xml" rel="self"></atom:link><lastBuildDate>Fri, 26 Feb 2016 14:55:00 +0800</lastBuildDate><item><title>CentOS 7.2使用yum安装MYSQL 5.7.10</title><link>https://typecodes.com/linux/yuminstallmysql5710.html</link><description>&lt;p&gt;前面两篇文章&lt;a href="https://typecodes.com/web/centos7compilemysql.html" title="查看原文"&gt;《2015博客升级记(四)：CentOS 7.1编译安装MySQL5.7.7rc》&lt;/a&gt;、&lt;a href="https://typecodes.com/web/centos7yuminstallmysql5.html" title="查看原文"&gt;《阿里云CentOS 7.1使用yum安装MySql5.6.24》&lt;/a&gt;分别使用源码编译和YUM方法安装MySQL数据库，这篇文章同样是使用YUM方法在CentOS7.2(64bits)的机器上安装最新的MySQL5.7.10数据库。&lt;/p&gt;
+&lt;h4&gt;1 查看Linux发行版本&lt;/h4&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;[root@typecodes ~]# cat /etc/redhat-release
+CentOS Linux release 7.2.1511 (Core)
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h4&gt;2 下载MySQL官方的Yum Repository&lt;/h4&gt;
+&lt;p&gt;根据Linux发行版本（CentOS、Fedora都属于红帽系），从mysql官方（http://dev.mysql.com/downloads/repo/yum/）获取Yum Repository。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;[root@typecodes ~]#  wget -i http://dev.mysql.com/get/mysql57-community-release-el7-7.noarch.rpm
+--2016-02-03 18:36:02--  http://dev.mysql.com/get/mysql57-community-release-el7-7.noarch.rpm
+Resolving dev.mysql.com (dev.mysql.com)... 137.254.60.11
+Connecting to dev.mysql.com (dev.mysql.com)|137.254.60.11|:80... connected.
+HTTP request sent, awaiting response... 302 Found
+Location: http://repo.mysql.com//mysql57-community-release-el7-7.noarch.rpm [following]
+--2016-02-03 18:36:04--  http://repo.mysql.com//mysql57-community-release-el7-7.noarch.rpm
+Resolving repo.mysql.com (repo.mysql.com)... 104.102.164.25
+Connecting to repo.mysql.com (repo.mysql.com)|104.102.164.25|:80... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 8984 (8.8K) [application/x-redhat-package-manager]
+Saving to: ‘mysql57-community-release-el7-7.noarch.rpm’
+
+100%[=============================================================================================================================&amp;gt;] 8,984       --.-K/s   in 0s
+
+2016-02-03 18:36:07 (68.4 MB/s) - ‘mysql57-community-release-el7-7.noarch.rpm’ saved [8984/8984]
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h4&gt;3 安装MySQL的Yum Repository&lt;/h4&gt;
+&lt;p&gt;安装完MySQL的Yum Repository，每次执行yum update都会检查MySQL是否更新。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;[root@typecodes ~]# yum -y linstall mysql57-community-release-el7-7.noarch.rpm
+Loaded plugins: axelget, fastestmirror, langpacks
+Examining mysql57-community-release-el7-7.noarch.rpm: mysql57-community-release-el7-7.noarch
+Marking mysql57-community-release-el7-7.noarch.rpm to be installed
+Resolving Dependencies
+--&amp;gt; Running transaction check
+---&amp;gt; Package mysql57-community-release.noarch 0:el7-7 will be installed
+--&amp;gt; Finished Dependency Resolution
+
+Dependencies Resolved
+
+=======================================================================================================================================================================
+ Package                                       Arch                       Version                    Repository                                                   Size
+=======================================================================================================================================================================
+Installing:
+ mysql57-community-release                     noarch                     el7-7                      /mysql57-community-release-el7-7.noarch                     7.8 k
+
+Transaction Summary
+=======================================================================================================================================================================
+Install  1 Package
+
+Total size: 7.8 k
+Installed size: 7.8 k
+Downloading packages:
+Running transaction check
+Running transaction test
+Transaction test succeeded
+Running transaction
+  Installing : mysql57-community-release-el7-7.noarch                                                                                                              1/1 
+  Verifying  : mysql57-community-release-el7-7.noarch                                                                                                              1/1
+
+Installed:
+  mysql57-community-release.noarch 0:el7-7
+
+Complete!
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h4&gt;3 安装MySQL数据库的服务器版本&lt;/h4&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;[root@typecodes ~]# yum -y install mysql-community-server
+Loaded plugins: axelget, fastestmirror, langpacks
+No metadata available for base
+No metadata available for epel
+No metadata available for extras
+repomd.xml                                                                                                                                      | 2.5 kB  00:00:00     
+update mysql-connectors-community metadata successfully
+repomd.xml                                                                                                                                      | 2.5 kB  00:00:00     
+update mysql-tools-community metadata successfully
+repomd.xml                                                                                                                                      | 2.5 kB  00:00:00     
+update mysql57-community metadata successfully
+No metadata available for updates
+mysql-connectors-community                                                                                                                      | 2.5 kB  00:00:00     
+mysql-tools-community                                                                                                                           | 2.5 kB  00:00:00     
+mysql57-community                                                                                                                               | 2.5 kB  00:00:00     
+(1/3): mysql-tools-community/x86_64/primary_db                                                                                                  |  24 kB  00:00:01     
+(2/3): mysql57-community/x86_64/primary_db                                                                                                      |  28 kB  00:00:01     
+(3/3): mysql-connectors-community/x86_64/primary_db                                                                                             | 8.6 kB  00:00:02     
+Loading mirror speeds from cached hostfile
+ * base: mirrors.aliyun.com
+ * epel: mirrors.neusoft.edu.cn
+ * extras: mirrors.163.com
+ * updates: mirrors.163.com
+Resolving Dependencies
+--&amp;gt; Running transaction check
+---&amp;gt; Package mysql-community-server.x86_64 0:5.7.10-1.el7 will be installed
+--&amp;gt; Processing Dependency: mysql-community-common(x86-64) = 5.7.10-1.el7 for package: mysql-community-server-5.7.10-1.el7.x86_64
+--&amp;gt; Processing Dependency: mysql-community-client(x86-64) = 5.7.10-1.el7 for package: mysql-community-server-5.7.10-1.el7.x86_64
+--&amp;gt; Running transaction check
+---&amp;gt; Package mysql-community-client.x86_64 0:5.7.10-1.el7 will be installed
+--&amp;gt; Processing Dependency: mysql-community-libs(x86-64) = 5.7.10-1.el7 for package: mysql-community-client-5.7.10-1.el7.x86_64
+---&amp;gt; Package mysql-community-common.x86_64 0:5.7.10-1.el7 will be installed
+--&amp;gt; Running transaction check
+---&amp;gt; Package mariadb-libs.x86_64 1:5.5.44-2.el7.centos will be obsoleted
+--&amp;gt; Processing Dependency: libmysqlclient.so.18()(64bit) for package: 2:postfix-2.10.1-6.el7.x86_64
+--&amp;gt; Processing Dependency: libmysqlclient.so.18(libmysqlclient_18)(64bit) for package: 2:postfix-2.10.1-6.el7.x86_64
+---&amp;gt; Package mysql-community-libs.x86_64 0:5.7.10-1.el7 will be obsoleting
+--&amp;gt; Running transaction check
+---&amp;gt; Package mysql-community-libs-compat.x86_64 0:5.7.10-1.el7 will be obsoleting
+--&amp;gt; Finished Dependency Resolution
+
+Dependencies Resolved
+
+=======================================================================================================================================================================
+ Package                                            Arch                          Version                               Repository                                Size
+=======================================================================================================================================================================
+Installing:
+ mysql-community-libs                               x86_64                        5.7.10-1.el7                          mysql57-community                        2.2 M
+     replacing  mariadb-libs.x86_64 1:5.5.44-2.el7.centos
+ mysql-community-libs-compat                        x86_64                        5.7.10-1.el7                          mysql57-community                        2.0 M
+     replacing  mariadb-libs.x86_64 1:5.5.44-2.el7.centos
+ mysql-community-server                             x86_64                        5.7.10-1.el7                          mysql57-community                        142 M
+Installing for dependencies:
+ mysql-community-client                             x86_64                        5.7.10-1.el7                          mysql57-community                         24 M
+ mysql-community-common                             x86_64                        5.7.10-1.el7                          mysql57-community                        269 k
+
+Transaction Summary
+=======================================================================================================================================================================
+Install  3 Packages (+2 Dependent packages)
+
+Total download size: 171 M
+Downloading packages:
+mysql-community-server-5.7.10-1.el7.x86_64.rpm                                                                                                  | 142 MB  00:03:42     
+mysql-community-libs-compat-5.7.10-1.el7.x86_64.rpm                                                                                             | 2.0 MB  00:00:03     
+mysql-community-libs-5.7.10-1.el7.x86_64.rpm                                                                                                    | 2.2 MB  00:00:05     
+mysql-community-client-5.7.10-1.el7.x86_64.rpm                                                                                                  |  24 MB  00:00:41     
+warning: /var/cache/yum/x86_64/7/mysql57-community/packages/mysql-community-common-5.7.10-1.el7.x86_64.rpm: Header V3 DSA/SHA1 Signature, key ID 5072e1f5: NOKEY00 ETA 
+Public key for mysql-community-common-5.7.10-1.el7.x86_64.rpm is not installed
+mysql-community-common-5.7.10-1.el7.x86_64.rpm                                                                                                  | 269 kB  00:00:01     
+Retrieving key from file:///etc/pki/rpm-gpg/RPM-GPG-KEY-mysql
+Importing GPG key 0x5072E1F5:
+ Userid     : &amp;quot;MySQL Release Engineering &amp;lt;mysql-build@oss.oracle.com&amp;gt;&amp;quot;
+ Fingerprint: a4a9 4068 76fc bd3c 4567 70c8 8c71 8d3b 5072 e1f5
+ Package    : mysql57-community-release-el7-7.noarch (@/mysql57-community-release-el7-7.noarch)
+ From       : /etc/pki/rpm-gpg/RPM-GPG-KEY-mysql
+Running transaction check
+Running transaction test
+Transaction test succeeded
+Running transaction
+  Installing : mysql-community-common-5.7.10-1.el7.x86_64                                                                                                          1/6 
+  Installing : mysql-community-libs-5.7.10-1.el7.x86_64                                                                                                            2/6 
+  Installing : mysql-community-client-5.7.10-1.el7.x86_64                                                                                                          3/6 
+  Installing : mysql-community-server-5.7.10-1.el7.x86_64                                                                                                          4/6 
+  Installing : mysql-community-libs-compat-5.7.10-1.el7.x86_64                                                                                                     5/6 
+  Erasing    : 1:mariadb-libs-5.5.44-2.el7.centos.x86_64                                                                                                           6/6 
+  Verifying  : mysql-community-server-5.7.10-1.el7.x86_64                                                                                                          1/6 
+  Verifying  : mysql-community-libs-compat-5.7.10-1.el7.x86_64                                                                                                     2/6 
+  Verifying  : mysql-community-common-5.7.10-1.el7.x86_64                                                                                                          3/6 
+  Verifying  : mysql-community-libs-5.7.10-1.el7.x86_64                                                                                                            4/6 
+  Verifying  : mysql-community-client-5.7.10-1.el7.x86_64                                                                                                          5/6 
+  Verifying  : 1:mariadb-libs-5.5.44-2.el7.centos.x86_64                                                                                                           6/6
+
+Installed:
+  mysql-community-libs.x86_64 0:5.7.10-1.el7          mysql-community-libs-compat.x86_64 0:5.7.10-1.el7          mysql-community-server.x86_64 0:5.7.10-1.el7
+
+Dependency Installed:
+  mysql-community-client.x86_64 0:5.7.10-1.el7                                       mysql-community-common.x86_64 0:5.7.10-1.el7
+
+Replaced:
+  mariadb-libs.x86_64 1:5.5.44-2.el7.centos
+
+Complete!
+[root@typecodes ~]# clear
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;最后的截图：&lt;/p&gt;
+&lt;p&gt;&lt;img alt="yum安装mysql5.7.10" src="https://dn-vfhky.qbox.me/2016/02/yum_install_mysql5.7.10.png" title="yum安装mysql5.7.10" /&gt;&lt;/p&gt;
+&lt;h4&gt;4 启动数据库：&lt;/h4&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;[root@typecodes ~]# systemctl start  mysqld.service
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;然后使用命令&lt;code&gt;systemctl status mysql.service&lt;/code&gt;查看MySQL数据库启动后的服务状态：&lt;/p&gt;
+&lt;p&gt;&lt;img alt="systemctl命令查看MySQL服务状态" src="https://dn-vfhky.qbox.me/2016/02/mysql_process_status.png" title="systemctl命令查看MySQL服务状态" /&gt;&lt;/p&gt;
+&lt;h4&gt;5 获取初始密码&lt;/h4&gt;
+&lt;p&gt;使用YUM安装并启动MySQL服务后，MySQL进程会自动在进程日志中打印root用户的初始密码：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;#######从mysql进程日志中获取root用户的初始密码：ra%yk7urCBIh
+[root@typecodes ~]# grep &amp;quot;password&amp;quot; /var/log/mysqld.log
+2016-02-03T10:42:17.272166Z 1 [Note] A temporary password is generated for root@localhost: ra%yk7urCBIh
+2016-02-03T10:42:36.776875Z 2 [Note] Access denied for user &amp;#39;root&amp;#39;@&amp;#39;localhost&amp;#39; (using password: NO)
+2016-02-03T10:42:52.063138Z 3 [Note] Access denied for user &amp;#39;root&amp;#39;@&amp;#39;localhost&amp;#39; (using password: NO)
+2016-02-03T10:42:57.564373Z 4 [Note] Access denied for user &amp;#39;root&amp;#39;@&amp;#39;localhost&amp;#39; (using password: NO)
+2016-02-03T10:43:01.477007Z 5 [Note] Access denied for user &amp;#39;root&amp;#39;@&amp;#39;localhost&amp;#39; (using password: NO)
+2016-02-03T10:46:03.642008Z 6 [Note] Access denied for user &amp;#39;root&amp;#39;@&amp;#39;localhost&amp;#39; (using password: NO)
+2016-02-03T10:46:11.217889Z 7 [Note] Access denied for user &amp;#39;root&amp;#39;@&amp;#39;localhost&amp;#39; (using password: NO)
+2016-02-03T10:47:44.755199Z 0 [Note] Shutting down plugin &amp;#39;validate_password&amp;#39;
+2016-02-03T10:47:46.505844Z 0 [Note] Shutting down plugin &amp;#39;sha256_password&amp;#39;
+2016-02-03T10:47:46.505851Z 0 [Note] Shutting down plugin &amp;#39;mysql_native_password&amp;#39;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h4&gt;6 修改root用户密码&lt;/h4&gt;
+&lt;p&gt;使用小节5中获取的root用户的初始密码，然后进行修改：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;[root@typecodes ~]# mysql -uroot -p
+Enter password: 
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 2
+Server version: 5.7.10
+
+Copyright (c) 2000, 2015, Oracle and/or its affiliates. All rights reserved.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type &amp;#39;help;&amp;#39; or &amp;#39;\h&amp;#39; for help. Type &amp;#39;\c&amp;#39; to clear the current input statement.
+
+mysql&amp;gt; ALTER USER &amp;#39;root&amp;#39;@&amp;#39;localhost&amp;#39; IDENTIFIED BY &amp;#39;MYSQLroota7612198981@&amp;#39;;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql&amp;gt; exit
+Bye
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h4&gt;7 安装完毕&lt;/h4&gt;
+&lt;p&gt;至此，使用在CentOS7中使用YUM方法安装MySQL5.7.10数据库完毕。如下所示，可以使用新的root密码登陆MySQL了。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;[root@typecodes ~]# mysql -uroot -pMYSQLroota7612198981@
+mysql: [Warning] Using a password on the command line interface can be insecure.
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 3
+Server version: 5.7.10 MySQL Community Server (GPL)
+
+Copyright (c) 2000, 2015, Oracle and/or its affiliates. All rights reserved.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type &amp;#39;help;&amp;#39; or &amp;#39;\h&amp;#39; for help. Type &amp;#39;\c&amp;#39; to clear the current input statement.
+
+mysql&amp;gt; use mysql;
+Reading table information for completion of table and column names
+You can turn off this feature to get a quicker startup with -A
+
+Database changed
+mysql&amp;gt; show databases;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| mysql              |
+| performance_schema |
+| sys                |
++--------------------+
+4 rows in set (0.00 sec)
+
+mysql&amp;gt; clear
+mysql&amp;gt; exit
+Bye
+[root@typecodes ~]# clear
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h4&gt;附录1：查看MySQL数据库的配置信息&lt;/h4&gt;
+&lt;p&gt;MySQL的配置文件依然是&lt;code&gt;/etc/my.cnf&lt;/code&gt;，其它安装信息可以通过&lt;code&gt;mysql_config&lt;/code&gt;命令查看。其中，动态库文件存放在&lt;code&gt;/usr/lib64/mysql&lt;/code&gt;目录下。&lt;/p&gt;
+&lt;p&gt;&lt;img alt="mysql_config命令查看mysql数据库的安装信息" src="https://dn-vfhky.qbox.me/2016/02/mysql_config.png" title="mysql_config命令查看mysql数据库的安装信息" /&gt;&lt;/p&gt;
+&lt;h4&gt;附录2：安装MySQL数据库的开发者版本&lt;/h4&gt;
+&lt;p&gt;对于纯粹的只需要一个MySQL数据库的应用来说，上面的步骤已经满足需求。如果对于MySQL其它应用程序开发，例如需要MySQL相关头文件等，那么就需要安装MySQL数据库的开发版本。安装方法也很简单，只需要执行下面这个命令即可：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;[root@typecodes ~]# yum -y install mysql-community-devel
+&lt;/pre&gt;&lt;/div&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">vfhky</dc:creator><pubDate>Fri, 26 Feb 2016 14:55:00 +0800</pubDate><guid>tag:typecodes.com,2016-02-26:linux/yuminstallmysql5710.html</guid><category>mysql</category></item><item><title>Linux多进程和多线程的一次gdb调试实例</title><link>https://typecodes.com/cseries/multilprocessthreadgdb.html</link><description>&lt;p&gt;Linux C/C++开发中gdb进行多进程和多线程的调试一直比较麻烦，在CSDN上看到高科的一篇文章&lt;a href="http://blog.csdn.net/pbymw8iwm/article/details/7876797" title="查看原文"&gt;《gdb调试多进程和多线程命令》&lt;/a&gt;比较有启发，这里就自己重新整理并做了一个GDB多进程/线程的调试实践。&lt;/p&gt;
 
 
 &lt;h4&gt;1 原文整理&lt;/h4&gt;
