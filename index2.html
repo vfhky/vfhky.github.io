@@ -38,6 +38,19 @@
 		<div class="col-md-9" id="blog-main" role="main">
 		  	<!--article recycle-->
 			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/mix/begintypechotopelican.html">准备将博客从Typecho迁移到Pelican</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2015-12-10 16:20 | 分类：<a href="https://typecodes.com/mix/index.html">mix</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>8月份的时候，终于从庞大的WordPress转到了轻量级的<a href="https://typecodes.com/mix/eventualwptotypecho.html" title="《终于从WordPress转向Typecho了》">博客程序Typecho</a>。简洁的设计和比较出色的Markdown支持，整个Typecho体验还是挺不错的。到10月份的时候，自己了解了一些静态博客程序，包括nodejs的Ghost、Hexo等，ruby写的jekyll以及Python写的<a href="http://docs.getpelican.com/en/3.6.3/" title="Pelican最新3.6.3官方文档">Pelican</a>等。</p>
+<p>由于当时正好接触到了大蟒蛇，而且对js不熟（ruby都没用过），所以就在本地尝试了一下Pelican。之间折腾了一个从Octopress移植过来的主题Pelican-Octopress未果，后面忙着就没怎么弄了。</p>
+<p>前段时间辞职后，闲着就打算把博客“简洁到底”：抛弃MySQL数据库和PHP执行解释，完全采用Python生成静态HTML文件。这样以后就只需要在本地通过Markdown写好文章，然后通过pelican生成html文件即可。</p>
+<p><img alt="准备将博客从Typecho迁移到Pelican" src="https://dn-vfhky.qbox.me/2015/12/10/begintypechotopelican.png" title="准备将博客从Typecho迁移到Pelican" /></p>
+
+	<p class="more"><a href="https://typecodes.com/mix/begintypechotopelican.html" title="准备将博客从Typecho迁移到Pelican">- 阅读剩余部分 -</a></p>
+			</article>
+			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/linux/tcpconnectiontimedout.html">Linux TCP连接Connection Refused和Connection timed out的问题</a></h2>
 <ul class="post-meta">
 	<li>作者：vfhky | 时间：2015-09-12 22:39 | 分类：<a href="https://typecodes.com/linux/index.html">linux</a></li>
@@ -120,23 +133,6 @@ readelf：显示关于 ELF 目标文件的信息。
 
 	<p class="more"><a href="https://typecodes.com/mix/vpsshadowsockswitchyomegaspeeder.html" title="搭了个Shadowsocks+Proxy SwitchyOmega+net-speeder梯子">- 阅读剩余部分 -</a></p>
 			</article>
-			<article class="post">
-<h2 class="post-title"><a href="https://typecodes.com/cseries/gcclderrlibrarypath.html">Linux gcc链接动态库出错：LIBRARY_PATH和LD_LIBRARY_PATH的区别</a></h2>
-<ul class="post-meta">
-	<li>作者：vfhky | 时间：2015-08-08 22:51 | 分类：<a href="https://typecodes.com/cseries/index.html">cseries</a></li>
-</ul>
-<div class="post-content fmt">
-	<p>昨天在自己的CentOs7.1上写makefile的时候，发现在一个C程序在编译并链接一个已生成好的lib动态库的时候出错。链接命令大概是这样的：</p>
-<div class="highlight"><pre>[root@typecodes tcpmsg]# gcc -o hello main.c -lmyhello
-/usr/bin/ld: cannot find -lmyhello
-collect2: error: ld returned 1 exit status
-</pre></div>
-
-
-<p><img alt="Linux gcc链接动态库出错" src="https://dn-vfhky.qbox.me/2015/08/gcc_linux.png" title="Linux gcc链接动态库出错" /></p>
-
-	<p class="more"><a href="https://typecodes.com/cseries/gcclderrlibrarypath.html" title="Linux gcc链接动态库出错：LIBRARY_PATH和LD_LIBRARY_PATH的区别">- 阅读剩余部分 -</a></p>
-			</article>
 		  	<!--page navigation-->
 <ol class="page-navigator">
 <li class="prev"><a href="https://typecodes.com/index.html">&laquo; 前一页</a></li><li><a href="https://typecodes.com/index.html">1</a>
@@ -176,7 +172,7 @@ collect2: error: ld returned 1 exit status
 		        <a href="https://typecodes.com/java/index.html">Java</a> (1)
 		      </li>
 		      <li class="current">
-		        <a href="https://typecodes.com/linux/index.html">Linux</a> (19)
+		        <a href="https://typecodes.com/linux/index.html">Linux</a> (20)
 		      </li>
 		      <li class="current">
 		        <a href="https://typecodes.com/mix/index.html">Mix</a> (53)
@@ -189,6 +185,9 @@ collect2: error: ld returned 1 exit status
 	<section class="widget">
 		<h3 class="widget-title">Recent Posts</h3>
 		<ul class="widget-list">
+			<li class="post">
+				<a href="https://typecodes.com/linux/simpletcpdumpapply.html">Linux中使用TCPDUMP进行简单的TCP抓包</a>
+			</li>
 			<li class="post">
 				<a href="https://typecodes.com/linux/yuminstallmysql5710.html">CentOS 7.2使用yum安装MYSQL 5.7.10</a>
 			</li>
@@ -206,9 +205,6 @@ collect2: error: ld returned 1 exit status
 			</li>
 			<li class="post">
 				<a href="https://typecodes.com/linux/applogsbackup.html">Linux下Nginx、MySQL和PHP等应用的日志切割脚本</a>
-			</li>
-			<li class="post">
-				<a href="https://typecodes.com/mix/sucesstypechotopelican.html">成功将博客从Typecho迁移到Pelican</a>
 			</li>
 		</ul>
 	</section>

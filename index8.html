@@ -38,6 +38,19 @@
 		<div class="col-md-9" id="blog-main" role="main">
 		  	<!--article recycle-->
 			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/cseries/signedunsignedcharconvint.html">理解有符号和无符号的字符数和整数的转换</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2014-11-07 21:52 | 分类：<a href="https://typecodes.com/cseries/index.html">cseries</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>网上关于有符号、无符号字符转换成有符号、无符号整形数据的问题，自己写了一个测试程序，分析了下，挺有意思的。</p>
+<h5>1 测试说明</h5>
+<p>用的是自己的win7 64位系统，处理器当然是Intel的，因此是前文提到的<code>小端模式</code>。默认按32位（总线）处理，即一个整型4个字节，长度共 2^32 = 4294967296 字节；有符号字符char类型数据的范围是 -128~127 （对应二进制 11111111~01111111），无符号字符 unsinged char 类型数据范围是 0~255（对应二进制 00000000~11111111）。</p>
+<p><img alt="C语言有符号和无符号数" src="https://dn-vfhky.qbox.me/2014/11/clangsignedandunsigned.png" title="C语言有符号和无符号数" /></p>
+
+	<p class="more"><a href="https://typecodes.com/cseries/signedunsignedcharconvint.html" title="理解有符号和无符号的字符数和整数的转换">- 阅读剩余部分 -</a></p>
+			</article>
+			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/cseries/sizeofbyteorder.html">C语言字节序的大小端模式</a></h2>
 <ul class="post-meta">
 	<li>作者：vfhky | 时间：2014-11-05 23:33 | 分类：<a href="https://typecodes.com/cseries/index.html">cseries</a></li>
@@ -147,18 +160,6 @@ SSL证书提供商：    PositiveSSL from Namecheap
 
 	<p class="more"><a href="https://typecodes.com/web/scsfortypechov110.html" title="更新新浪云存储(SCS) for Typecho 插件版本V1.1.0">- 阅读剩余部分 -</a></p>
 			</article>
-			<article class="post">
-<h2 class="post-title"><a href="https://typecodes.com/web/scsfortypecho.html">新浪云存储(SCS) for Typecho 插件</a></h2>
-<ul class="post-meta">
-	<li>作者：vfhky | 时间：2014-09-08 12:39 | 分类：<a href="https://typecodes.com/web/index.html">web</a></li>
-</ul>
-<div class="post-content fmt">
-	<h5>1 SCS插件说明</h5>
-<p>由于博主平常喜欢刷微博，所以关注了不少活动。最近在微博上看到 <a href="http://weibo.com/cloudtrans" title="新浪云储存SCS官方微博">新浪云储存SCS</a> 正在公测云储存服务（类似于七牛、百度BCS），于是私信获得了邀请码。测试发现其功能和性价比都不错，所以决定把博客所有的图片、下载文件等附件放到SCS上来。</p>
-<p>因此，写了一个Typecho博客的插件——SCS，它能自动将文章上传的附件转存至新浪云储存SCS中。</p>
-
-	<p class="more"><a href="https://typecodes.com/web/scsfortypecho.html" title="新浪云存储(SCS) for Typecho 插件">- 阅读剩余部分 -</a></p>
-			</article>
 		  	<!--page navigation-->
 <ol class="page-navigator">
 <li class="prev"><a href="https://typecodes.com/index7.html">&laquo; 前一页</a></li><li><a href="https://typecodes.com/index.html">1</a>
@@ -197,7 +198,7 @@ SSL证书提供商：    PositiveSSL from Namecheap
 		        <a href="https://typecodes.com/java/index.html">Java</a> (1)
 		      </li>
 		      <li class="current">
-		        <a href="https://typecodes.com/linux/index.html">Linux</a> (19)
+		        <a href="https://typecodes.com/linux/index.html">Linux</a> (20)
 		      </li>
 		      <li class="current">
 		        <a href="https://typecodes.com/mix/index.html">Mix</a> (53)
@@ -210,6 +211,9 @@ SSL证书提供商：    PositiveSSL from Namecheap
 	<section class="widget">
 		<h3 class="widget-title">Recent Posts</h3>
 		<ul class="widget-list">
+			<li class="post">
+				<a href="https://typecodes.com/linux/simpletcpdumpapply.html">Linux中使用TCPDUMP进行简单的TCP抓包</a>
+			</li>
 			<li class="post">
 				<a href="https://typecodes.com/linux/yuminstallmysql5710.html">CentOS 7.2使用yum安装MYSQL 5.7.10</a>
 			</li>
@@ -227,9 +231,6 @@ SSL证书提供商：    PositiveSSL from Namecheap
 			</li>
 			<li class="post">
 				<a href="https://typecodes.com/linux/applogsbackup.html">Linux下Nginx、MySQL和PHP等应用的日志切割脚本</a>
-			</li>
-			<li class="post">
-				<a href="https://typecodes.com/mix/sucesstypechotopelican.html">成功将博客从Typecho迁移到Pelican</a>
 			</li>
 		</ul>
 	</section>

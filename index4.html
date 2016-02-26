@@ -38,6 +38,29 @@
 		<div class="col-md-9" id="blog-main" role="main">
 		  	<!--article recycle-->
 			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/web/centos7compilephp7.html">2015博客升级记(五)：CentOS 7.1编译安装PHP7</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2015-06-26 19:16 | 分类：<a href="https://typecodes.com/web/index.html">web</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>这是<a href="https://typecodes.com/mix/2015updateblog.html" title="查看原文">《2015年博客升级记》</a>系列文章的第五篇，主要记录在Linux系统中如何编译安装PHP7。</p>
+<h5>1 创建php用户和用户组，并在github下载php7源码</h5>
+<p>首先创建一个名为php且<code>没有登录权限</code>的用户和一个名为php的用户组，然后去GitHub下载php7源码包。</p>
+<div class="highlight"><pre>#######新建php用户和php组
+[root@typecodes ~]# groupadd -r php &amp;&amp; useradd -r -g php -s /bin/false -d /usr/local/php7 -M php
+######从GitHub下载php7安装包
+[root@typecodes ~]# wget -c --no-check-certificate -O php7-src-master.zip https://github.com/php/php-src/archive/master.zip
+######开始解压php7包
+[root@typecodes ~]# unzip -q php7-src-master.zip &amp;&amp; cd php-src-master
+#####安装编译php7时需要的依赖包
+[root@typecodes php-src-master]# yum -y install libxml2 libxml2-devel openssl openssl-devel curl-devel libjpeg-devel libpng-devel freetype-devel libmcrypt-devel
+</pre></div>
+
+
+
+	<p class="more"><a href="https://typecodes.com/web/centos7compilephp7.html" title="2015博客升级记(五)：CentOS 7.1编译安装PHP7">- 阅读剩余部分 -</a></p>
+			</article>
+			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/web/centos7yuminstallmysql5.html">阿里云CentOS 7.1使用yum安装MySql5.6.24</a></h2>
 <ul class="post-meta">
 	<li>作者：vfhky | 时间：2015-06-25 09:43 | 分类：<a href="https://typecodes.com/web/index.html">web</a></li>
@@ -132,16 +155,6 @@
 
 	<p class="more"><a href="https://typecodes.com/web/centos7compilemysql.html" title="2015博客升级记(四)：CentOS 7.1编译安装MySQL5.7.7rc">- 阅读剩余部分 -</a></p>
 			</article>
-			<article class="post">
-<h2 class="post-title"><a href="https://typecodes.com/linux/centoscoredumpcfgshell.html">CentOS开启coredump转储并生成core文件的配置</a></h2>
-<ul class="post-meta">
-	<li>作者：vfhky | 时间：2015-06-11 21:47 | 分类：<a href="https://typecodes.com/linux/index.html">linux</a></li>
-</ul>
-<div class="post-content fmt">
-	<p>在CentOS或者suse等Linux系统中默认是关闭coredump核心转储的，也就不会产生core文件。由于在C/C++开发中会用到gdb调试，所以需要开启coredump功能。下面是具体的配置命令，可以保存为一个简单的shell脚本执行。</p>
-
-	<p class="more"><a href="https://typecodes.com/linux/centoscoredumpcfgshell.html" title="CentOS开启coredump转储并生成core文件的配置">- 阅读剩余部分 -</a></p>
-			</article>
 		  	<!--page navigation-->
 <ol class="page-navigator">
 <li class="prev"><a href="https://typecodes.com/index3.html">&laquo; 前一页</a></li><li><a href="https://typecodes.com/index.html">1</a>
@@ -181,7 +194,7 @@
 		        <a href="https://typecodes.com/java/index.html">Java</a> (1)
 		      </li>
 		      <li class="current">
-		        <a href="https://typecodes.com/linux/index.html">Linux</a> (19)
+		        <a href="https://typecodes.com/linux/index.html">Linux</a> (20)
 		      </li>
 		      <li class="current">
 		        <a href="https://typecodes.com/mix/index.html">Mix</a> (53)
@@ -194,6 +207,9 @@
 	<section class="widget">
 		<h3 class="widget-title">Recent Posts</h3>
 		<ul class="widget-list">
+			<li class="post">
+				<a href="https://typecodes.com/linux/simpletcpdumpapply.html">Linux中使用TCPDUMP进行简单的TCP抓包</a>
+			</li>
 			<li class="post">
 				<a href="https://typecodes.com/linux/yuminstallmysql5710.html">CentOS 7.2使用yum安装MYSQL 5.7.10</a>
 			</li>
@@ -211,9 +227,6 @@
 			</li>
 			<li class="post">
 				<a href="https://typecodes.com/linux/applogsbackup.html">Linux下Nginx、MySQL和PHP等应用的日志切割脚本</a>
-			</li>
-			<li class="post">
-				<a href="https://typecodes.com/mix/sucesstypechotopelican.html">成功将博客从Typecho迁移到Pelican</a>
 			</li>
 		</ul>
 	</section>

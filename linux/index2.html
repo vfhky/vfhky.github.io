@@ -38,6 +38,17 @@
 		<div class="col-md-9" id="blog-main" role="main">
 		  	<!--article recycle-->
 			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/linux/centos7blogregularbackup.html">2015博客升级记(八)：CentOS7定时备份博客程序的shell脚本</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2015-06-30 22:24 | 分类：<a href="https://typecodes.com/linux/index.html">linux</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>这是<a href="https://typecodes.com/mix/2015updateblog.html" title="查看原文">《2015年博客升级记》</a>系列文章的第八篇，同时也是这一系列文章的最后一篇，内容主要记录在Linux系统中如何使用shell脚本备份服务器上的博客程序（当然也可以是主机上的任何目录或者文件）。</p>
+<p><img alt="CentOS7定时备份博客程序的shell脚本" src="https://dn-vfhky.qbox.me/2015/06/centos_files_backup_shell.png" title="CentOS7定时备份博客程序的shell脚本" /></p>
+
+	<p class="more"><a href="https://typecodes.com/linux/centos7blogregularbackup.html" title="2015博客升级记(八)：CentOS7定时备份博客程序的shell脚本">- 阅读剩余部分 -</a></p>
+			</article>
+			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/linux/centos7mysqlregularbackup.html">2015博客升级记(七)：CentOS7定时备份MySql的shell脚本</a></h2>
 <ul class="post-meta">
 	<li>作者：vfhky | 时间：2015-06-29 22:41 | 分类：<a href="https://typecodes.com/linux/index.html">linux</a></li>
@@ -131,25 +142,6 @@ Linux系统：       阿里云CentOS 7.1（20G）
 
 	<p class="more"><a href="https://typecodes.com/linux/linuxbridgepingnot.html" title="Linux问题两连击：桥接模式无法上网、ping域名失败">- 阅读剩余部分 -</a></p>
 			</article>
-			<article class="post">
-<h2 class="post-title"><a href="https://typecodes.com/linux/vmwarelinuxbrigedmode.html">虚拟机VMWare中Linux用桥接方式连接实例</a></h2>
-<ul class="post-meta">
-	<li>作者：vfhky | 时间：2013-04-20 14:58 | 分类：<a href="https://typecodes.com/linux/index.html">linux</a></li>
-</ul>
-<div class="post-content fmt">
-	<h5>1 虚拟机网络模式介绍与说明</h5>
-<p>我们在安装完虚拟机VMWare后，会发现在我们的宿主机Windows系统中多出了两个虚拟网卡：VMware Network Adapter VMnet1 和 VMware Network Adapter VMnet8 。因此，我们在使用虚拟机VMWare时，会利用这两个网卡中的一个来进行网络通信服务。具体可以分为如下三种网络工作模式： bridged(桥接模式)、NAT(网络地址转换模式 )和host-only(主机模式)。在VMware的网络模型中，VMware有如下几个虚拟设备：</p>
-<div class="highlight"><pre>VMnet0：这是VMware用于虚拟桥接网络下的虚拟交换机；
-VMnet1：这是VMware用于虚拟Host-Only网络下的虚拟交换机；
-VMnet8：这是VMware用于虚拟NAT网络下的虚拟交换机；
-VMware Network Adapter VMnet1：这是Host用于与Host-Only虚拟网络进行通信的虚拟网卡；
-VMware Network Adapter VMnet8：这是Host用于与NAT虚拟网络进行通信的虚拟网卡；
-</pre></div>
-
-
-
-	<p class="more"><a href="https://typecodes.com/linux/vmwarelinuxbrigedmode.html" title="虚拟机VMWare中Linux用桥接方式连接实例">- 阅读剩余部分 -</a></p>
-			</article>
 		  	<!--page navigation-->
 <ol class="page-navigator">
 <li class="prev"><a href="https://typecodes.com/linux/index.html">&laquo; 前一页</a></li><li><a href="https://typecodes.com/linux/index.html">1</a><li class="current"><a href="https://typecodes.com/linux/index2.html">2</a>
@@ -182,7 +174,7 @@ VMware Network Adapter VMnet8：这是Host用于与NAT虚拟网络进行通信�
 		        <a href="https://typecodes.com/java/index.html">Java</a> (1)
 		      </li>
 		      <li class="current">
-		        <a href="https://typecodes.com/linux/index.html">Linux</a> (19)
+		        <a href="https://typecodes.com/linux/index.html">Linux</a> (20)
 		      </li>
 		      <li class="current">
 		        <a href="https://typecodes.com/mix/index.html">Mix</a> (53)
@@ -195,6 +187,9 @@ VMware Network Adapter VMnet8：这是Host用于与NAT虚拟网络进行通信�
 	<section class="widget">
 		<h3 class="widget-title">Recent Posts</h3>
 		<ul class="widget-list">
+			<li class="post">
+				<a href="https://typecodes.com/linux/simpletcpdumpapply.html">Linux中使用TCPDUMP进行简单的TCP抓包</a>
+			</li>
 			<li class="post">
 				<a href="https://typecodes.com/linux/yuminstallmysql5710.html">CentOS 7.2使用yum安装MYSQL 5.7.10</a>
 			</li>
@@ -212,9 +207,6 @@ VMware Network Adapter VMnet8：这是Host用于与NAT虚拟网络进行通信�
 			</li>
 			<li class="post">
 				<a href="https://typecodes.com/linux/gitsynbackupshell.html">CentOS中将备份文件同步到BitBucket、GitHub和Coding的shell脚本</a>
-			</li>
-			<li class="post">
-				<a href="https://typecodes.com/linux/gitaccountconfig.html">CentOS系统BitBucket、GitHub和Coding等多git账户的配置</a>
 			</li>
 		</ul>
 	</section>
