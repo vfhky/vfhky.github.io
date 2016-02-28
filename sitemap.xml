@@ -5,23 +5,30 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>https://typecodes.com/</loc>
-<lastmod>2016-02-26T18:57:26-00:00</lastmod>
+<lastmod>2016-02-28T21:25:16-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://typecodes.com/archives.html</loc>
-<lastmod>2016-02-26T18:57:26-00:00</lastmod>
+<lastmod>2016-02-28T21:25:16-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://typecodes.com/categories.html</loc>
-<lastmod>2016-02-26T18:57:26-00:00</lastmod>
+<lastmod>2016-02-28T21:25:16-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
+</url>
+
+<url>
+<loc>https://typecodes.com/cseries/tcpdumpwiresharkclosewait2.html</loc>
+<lastmod>2016-02-28T18:11:00+08:00</lastmod>
+<changefreq>monthly</changefreq>
+<priority>0.7</priority>
 </url>
 
 <url>
@@ -1489,7 +1496,7 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>https://typecodes.com/cseries/index.html</loc>
-<lastmod>2016-02-26T18:41:00+08:06</lastmod>
+<lastmod>2016-02-28T18:11:00+08:06</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
@@ -1587,7 +1594,7 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>https://typecodes.com/tag/tcp.html</loc>
-<lastmod>2016-02-26T18:41:00+08:06</lastmod>
+<lastmod>2016-02-28T18:11:00+08:06</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
@@ -2126,7 +2133,7 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>https://typecodes.com/tag/wireshark.html</loc>
-<lastmod>2016-02-26T18:41:00+08:06</lastmod>
+<lastmod>2016-02-28T18:11:00+08:06</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
@@ -2469,7 +2476,7 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>https://typecodes.com/tag/tcpdump.html</loc>
-<lastmod>2016-02-26T18:41:00+08:06</lastmod>
+<lastmod>2016-02-28T18:11:00+08:06</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
@@ -2483,7 +2490,7 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>https://typecodes.com/tag/close_wait.html</loc>
-<lastmod>2016-02-26T18:41:00+08:06</lastmod>
+<lastmod>2016-02-28T18:11:00+08:06</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>

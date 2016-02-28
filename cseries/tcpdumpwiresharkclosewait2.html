@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="zh-CN" class="no-js">
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+  		<meta name="renderer" content="webkit">
+		<title>使用TCPDUMP和Wireshark排查服务端CLOSE_WAIT（二） &mdash; TypeCodes</title>
+  		<meta name="viewport" content="width=device-width, initial-scale=1">
+  		<link href="https://typecodes.com/atom.xml" type="application/atom+xml" rel="alternate" title="TypeCodes Atom Feed" />
+	  	<link href="https://typecodes.com/feed.xml" type="application/rss+xml" rel="alternate" title="TypeCodes RSS Feed" />
+		<link rel="stylesheet" href="https://dn-vfhky.qbox.me/libs/css/pelican-vfhky.css">
+		<script>
+			var _hmt = _hmt || [];
+			(function() {
+			  var hm = document.createElement("script");
+			  hm.src = "//hm.baidu.com/hm.js?c15c4ab8e91ba9ac3d5a12293cc93359";
+			  var s = document.getElementsByTagName("script")[0]; 
+			  s.parentNode.insertBefore(hm, s);
+			})();
+		</script>
+	</head>
+	<body>
+		<!--1. header navigation begin-->
+		<header role="banner" id="te-site-header">
+			<div class="container">
+				<a href="https://typecodes.com" class="te-site-logo" role="logo" target="_self"> TypeCodes</a>
+				<ul class="nav nav-pills" id="te-site-nav" role="navigation">
+					<li><a href="https://typecodes.com">Home</a></li><li><a href="https://typecodes.com/archives.html" title="Archives">Archives</a></li><li><a href="https://typecodes.com/about.html" title="About">About</a></li></ul>
+			</div>
+		</header>
+		<div class="te-headline">
+			<div class="container">
+				<h2 class="te-headline-title"> <a href="https://typecodes.com">TypeCodes</a></h2>
+			</div>
+		</div>
+		<div class="container">
+			<div class="row">
+		<!--2. left sider begin-->
+		<div class="col-md-9" id="blog-main" role="main">
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/cseries/tcpdumpwiresharkclosewait2.html">使用TCPDUMP和Wireshark排查服务端CLOSE_WAIT（二）</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2016-02-28 18:11 | 分类：<a href="https://typecodes.com/cseries/index.html">cseries</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>前文<a href="https://typecodes.com/cseries/tcpdumpwiresharkclosewait1.html" title="查看原文">《使用TCPDUMP和Wireshark排查服务端CLOSE_WAIT（一）》</a>通过TCPDUMP和Wireshark在利用CentOS7作为服务端、Windows10作为客户端，模拟演示了一个TCP通信的CLOSE_WAIT状态，这篇文章主要利用前文的数据尝试解释Linux服务端产生CLOSE_WAIT状态的原因。</p>
+<p><img alt="客户端和服务端的TCP通信流程" src="https://dn-vfhky.qbox.me/2016/02/socket_tcpflow.png" title="客户端和服务端的TCP通信流程" /></p>
+
+
+<h4>1 原因分析：从客户端和服务端TCP通信的流程出发</h4>
+<p>从前文中的tcpdump和Wireshark抓包都可看到当Windows客户端关闭后，会主动发送带有<code>FIN+ACK</code>标志的报文给Linux服务端。那么从上图TCP客户端和服务端的通信流程图开始分析：客户端先进入<code>FIN_WAIT_1</code>状态，在收到服务端应答的<code>ACK</code>标志的报文后进入<code>FIN_WAIT_2</code>状态（在Windows中重新打开一个PowerShell窗口，然后输入命令<code>netstat -na|findstr 8000</code>查看）。</p>
+<p><img alt="Windows客户端出现FIN_WAIT_2状态" src="https://dn-vfhky.qbox.me/2016/02/windows_telnet_fin_wait_2.png" title="Windows客户端出现FIN_WAIT_2状态" /></p>
+<p>同时，服务端的TCP状态也就变成了<code>CLOSE_WAIT</code>。但是后面由于Linux服务端没有调用<code>close()</code>函数关闭socket链路，也即没有发送<code>FIN</code>标志的报文给主动关闭TCP链路的客户端，所以造成这个问题。</p>
+<h4>2 原因分析：从服务端程序出发</h4>
+<p>在服务端程序的第69行可以看到：一旦客户端关闭socket后，服务端也会调用<code>close( client_sockfd );</code>来关闭链路。那为什么还是会出现<code>CLOSE_WAIT</code>现象呢？答案是因为服务端在与客户端<code>三次握手</code>完后，只有一个进程（PID:5325）在处理客户端的TCP数据交互，而这个进程正在处理在Linux中使用telnet命令建立起来的这个客户端（PID:5331）的请求。</p>
+<p>因此，在Windows中使用telnet命令作为客户端与Linux服务端完成<code>三次握手</code>后，没有相关进程来处理。这点也可以通过<a href="https://typecodes.com/cseries/tcpdumpwiresharkclosewait1.html" title="《使用TCPDUMP和Wireshark排查服务端CLOSE_WAIT（一）》">前文</a>小节4中的截图看出，虽然TCP状态为<code>ESTABLISHED</code>，但是对应的进程<code>PID/Program name</code>为空，这点也可以通过<code>lsof -i:8000</code>命令验证（没有因为Windows客户端的连接出现进程打开的文件）。</p>
+<p><img alt="Linux中利用netstat命令查看TCP服务状态" src="https://dn-vfhky.qbox.me/2016/02/netstat_8000_3.png" title="Linux中利用netstat命令查看TCP服务状态" /></p>
+<p>当Windows客户端关闭telnet界面后，Linux服务端虽然收到了客户端的<code>FIN+ACK</code>标志的报文，但是没有相关进程调用<code>close()</code>函数通知内核发送<code>FIN</code>报文给客户端。这样就造成了Linux服务端的TCP状态出现了<code>CLOSE_WAIT</code>，同时Windows客户端的TCP状态变成了对应的<code>FIN_WAIT_2</code>。</p>
+<h4>3 问题延伸：从服务端程序出发</h4>
+<p>这里可能会存在疑问了，明明Windows客户端与Linux服务端建立了<code>ESTABLISHED</code>状态，也就是<code>server_socket</code>进程对它进行了处理，这不是与小节2中的原因分析相矛盾了吗？其实，这是由于对服务端的一些认识有偏差造成的，BZ之前也错误地认为以下命题是成立的：</p>
+<div class="highlight"><pre>listen()函数会使进程阻塞等待客户端的连接，也就是等待与客户端完成三次握手；
+accept()函数就是服务端进程在完成三次握手后，接收客户端发送报文数据的请求，然后调用recv()函数来接收；
+close()函数就是服务端进程直接向客户端发送FIN报文给客户端。
+</pre></div>
+
+
+<p>其实不然，在查阅了相关资料后，个人觉得正确的理解如下：</p>
+<div class="highlight"><pre>listen()函数不会使进程阻塞，UNP第3版84页有一句话：listen函数把一个未连接的套接字转换成一个被动套接字，指示内核应接受指向该该套接字的连接请求。
+内核为任何一个给定的监听套接字维护两个队列：未完成连接队列和已完成连接队列。
+因此，三次握手是由内核自动完成的，无需服务器进程插手。
+
+accept()函数功能是从由内核维护的处于established状态的已完成连接队列列头部取出下一个已经完成的连接。
+如果这个队列为空，accept()函数就会阻塞让进程进入睡眠状态。
+
+close()函数是把一个TCP套接字标记成已关闭，然后立即返回调用进程。
+TCP尝试发送已排队等待发送到对端的任何数据，发送完毕后发生的是正常的TCP连接终止序列，于是有了著名的四次握手。
+</pre></div>
+
+
+<p>到这里问题其实已经很简单明了了，Linux内核完成“三次握手”跟服务端进程无关，当然这点也可以由程序没有打印第51、60行的数据证实。</p>
+<h4>4 总结</h4>
+<p>socket被动关闭的服务端产生CLOSE_WAIT的根本原因是没有调用<code>close()</code>函数关闭socket链路，也即没有发送<code>FIN</code>标志的报文给主动关闭TCP链路的客户端。</p>
+		    	<p class="tags">
+					<div class="post-share">
+						<ul class="post-shareul clearfix">
+							<li class="post-shareli">
+								<a href="http://note.youdao.com/memory/?url=https://typecodes.com/cseries/tcpdumpwiresharkclosewait2.html&title=使用TCPDUMP和Wireshark排查服务端CLOSE_WAIT（二）" class="post-sharea ydshare" target="_blank" rel="nofollow">有道云笔记</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://v.t.sina.com.cn/share/share.php?url=https://typecodes.com/cseries/tcpdumpwiresharkclosewait2.html&title=使用TCPDUMP和Wireshark排查服务端CLOSE_WAIT（二）&source=https://typecodes.com" class="post-sharea wbshare" target="_blank" rel="nofollow">新浪微博</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://v.t.qq.com/share/share.php?title=使用TCPDUMP和Wireshark排查服务端CLOSE_WAIT（二）&url=https://typecodes.com/cseries/tcpdumpwiresharkclosewait2.html&site=https://typecodes.com" class="post-sharea twbshare" target="_blank" rel="nofollow">腾讯微博</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=https://typecodes.com/cseries/tcpdumpwiresharkclosewait2.html&title=使用TCPDUMP和Wireshark排查服务端CLOSE_WAIT（二）&content='utf-8'" class="post-sharea qzoneshare" target="_blank" rel="nofollow">QZone</a>
+							</li>
+						</ul>
+					</div>
+					<div>
+						Tags: <a href="https://typecodes.com/tag/tcpdump.html">tcpdump</a>,<a href="https://typecodes.com/tag/wireshark.html">wireshark</a>,<a href="https://typecodes.com/tag/tcp.html">tcp</a>,<a href="https://typecodes.com/tag/close_wait.html">close_wait</a>					</div>
+				</p>
+			</article>
+			
+			<div id="comments">
+				<h4 class="num">Comments &raquo;</h4>
+		    	<div id="disqus_thread" aria-live="polite"></div>
+		    	<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+		    </div>
+		</div>
+		<!--3. right sider begin-->
+<div class="col-md-3" id="blog-secondary" role="complementary">
+	<section class="widget">
+		<ul class="widget-list">
+			<form id="search" method="get" action="https://typecodes.com/search.html">
+				<input type="text" name="q" id="s" size="20" x-webkit-speech="" x-webkit-grammar="builtin:search" onwebkitspeechchange="this.value = this.value.replace(this.defaultValue, '')" value="Google...." onfocus="this.value = (this.value == this.defaultValue) ? '' : this.value" onblur="this.value = (this.value == '') ? this.defaultValue : this.value">
+			</form>
+		</ul>
+	</section>
+	<section class="widget">
+		<h3 class="widget-title">Categories</h3>
+		<ul class="widget-list">
+		      <li class="current">
+		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (31)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/csharp/index.html">Csharp</a> (6)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/database/index.html">Database</a> (11)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/java/index.html">Java</a> (1)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/linux/index.html">Linux</a> (20)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/mix/index.html">Mix</a> (53)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/web/index.html">Web</a> (88)
+		      </li>
+		</ul>
+	</section>
+	<section class="widget">
+		<h3 class="widget-title">Recent Posts</h3>
+		<ul class="widget-list">
+			<li class="post">
+				<a href="https://typecodes.com/cseries/tcpdumpwiresharkclosewait2.html">使用TCPDUMP和Wireshark排查服务端CLOSE_WAIT（二）</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/tcpdumpwiresharkclosewait1.html">使用TCPDUMP和Wireshark排查服务端CLOSE_WAIT（一）</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/simpletcpdumpapply.html">Linux中使用TCPDUMP进行简单的TCP抓包</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/yuminstallmysql5710.html">CentOS 7.2使用yum安装MYSQL 5.7.10</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/multilprocessthreadgdb.html">Linux多进程和多线程的一次gdb调试实例</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/syngithubmarkdownpelican.html">同步GitHub Markdown文章到Linux服务器后更新Pelican博客的脚本</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/linuxgccgconnectmysql.html">Linux c语言连接MySQL数据库实例</a>
+			</li>
+		</ul>
+	</section>
+	<section class="widget widget-feed">
+		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
+	</section>
+</div>
+				</div>
+			</div>
+		</div>
+		<!--4. bottom begin-->
+		<footer id="te-site-footer"><div class="container">
+	<div class="row" role="contentinfo">
+		<section class="col-md-2 col-md-offset-1">
+			<h3>Links</h3>
+			<ul><li><a href="http://diaosbook.com/" title="" target="_blank">diaosbook</a></li></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul>
+				<li><a href="https://typecodes.com/links.html">More..</a></li>
+			</ul>
+		</section>
+		<section class="col-md-2">
+			<h3>Following</h3>
+			<ul>
+				<li><a href="https://github.com/vfhky" class="following github" target="_blank" rel="external nofollow">GitHub</a></li>
+				<li><a href="http://weibo.com/typecodes" class="following weibo" target="_blank" rel="external nofollow">Weibo</a></li>
+				<li><a href="http://vfhky.sinaapp.com" class="following sae" target="_blank" rel="external nofollow">SAE</a></li>
+				<li><a href="http://www.dwz.cn/mYiwa" class="following qqgroup" target="_blank" rel="external nofollow">Group</a></li>
+			</ul>
+		</section>
+		<div class="col-md-12 copyright">
+			<a href="#top"><i class="i-logo-s">TOP</i></a>
+			<p>
+				&copy;  2012-2016 							<a href="https://typecodes.com">TypeCodes</a>. All Rights Reserved<br>Powered by <a href="http://getpelican.com" rel="external" target="_blank">Pelican</a>. <a href="http://www.miitbeian.gov.cn" rel="external nofollow" target="_blank">粤ICP备14050695号</a>
+			</p>
+		</div>
+	</div>
+</div>
+</footer>
+<script type="text/javascript">
+	var disqus_shortname = 'typecodes';
+	var disqus_identifier = '/cseries/tcpdumpwiresharkclosewait2.html';
+	var disqus_url = 'https://typecodes.com/cseries/tcpdumpwiresharkclosewait2.html';
+	var disqus_title = '使用TCPDUMP和Wireshark排查服务端CLOSE_WAIT（二）';
+	(function() {
+		var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+		dsq.src = "//" + disqus_shortname + '.disqus.com/embed.js';
+		(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	 })();
+</script>
+	</body>
+</html>

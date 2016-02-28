@@ -38,6 +38,17 @@
 		<div class="col-md-9" id="blog-main" role="main">
 		  	<!--article recycle-->
 			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/cseries/tcpdumpwiresharkclosewait2.html">使用TCPDUMP和Wireshark排查服务端CLOSE_WAIT（二）</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2016-02-28 18:11 | 分类：<a href="https://typecodes.com/cseries/index.html">cseries</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>前文<a href="https://typecodes.com/cseries/tcpdumpwiresharkclosewait1.html" title="查看原文">《使用TCPDUMP和Wireshark排查服务端CLOSE_WAIT（一）》</a>通过TCPDUMP和Wireshark在利用CentOS7作为服务端、Windows10作为客户端，模拟演示了一个TCP通信的CLOSE_WAIT状态，这篇文章主要利用前文的数据尝试解释Linux服务端产生CLOSE_WAIT状态的原因。</p>
+<p><img alt="客户端和服务端的TCP通信流程" src="https://dn-vfhky.qbox.me/2016/02/socket_tcpflow.png" title="客户端和服务端的TCP通信流程" /></p>
+
+	<p class="more"><a href="https://typecodes.com/cseries/tcpdumpwiresharkclosewait2.html" title="使用TCPDUMP和Wireshark排查服务端CLOSE_WAIT（二）">- 阅读剩余部分 -</a></p>
+			</article>
+			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/cseries/tcpdumpwiresharkclosewait1.html">使用TCPDUMP和Wireshark排查服务端CLOSE_WAIT（一）</a></h2>
 <ul class="post-meta">
 	<li>作者：vfhky | 时间：2016-02-26 18:41 | 分类：<a href="https://typecodes.com/cseries/index.html">cseries</a></li>
@@ -109,17 +120,6 @@
 
 	<p class="more"><a href="https://typecodes.com/cseries/gccgensharedlib.html" title="Linux gcc编译生成静态库及使用方法">- 阅读剩余部分 -</a></p>
 			</article>
-			<article class="post">
-<h2 class="post-title"><a href="https://typecodes.com/linux/applogsbackup.html">Linux下Nginx、MySQL和PHP等应用的日志切割脚本</a></h2>
-<ul class="post-meta">
-	<li>作者：vfhky | 时间：2015-12-18 21:01 | 分类：<a href="https://typecodes.com/linux/index.html">linux</a></li>
-</ul>
-<div class="post-content fmt">
-	<p>在Linux中如果应用程序会产生日志，那么就需要考虑日志切割，例如按照固定的大小切割、按照日期进行切割等等。同样，在编译<a href="https://typecodes.com/web/centos7compilenginx.html" title="《2015博客升级记(三)：CentOS 7.1编译安装Nginx1.9.0》">Nginx1.9.0</a>、<a href="https://typecodes.com/web/centos7compilemysql.html" title="《2015博客升级记(四)：CentOS 7.1编译安装MySQL5.7.7rc》">MySQL5.7.7rc</a>和<a href="https://typecodes.com/web/centos7compilephp7.html" title="《2015博客升级记(五)：CentOS 7.1编译安装PHP7》">PHP7</a>后，这三个应用服务都会产生日志，尤其是Nginx进程根据配置文件ngnix.conf记录每条访问记录到access.log中。如果所有的日志都打印到同一个文件中的话，那么时间长了的话就会影响效率。</p>
-<p><img alt="Nginx日志切割实例" src="https://dn-vfhky.qbox.me/2015/12/nginx_logs_backup.png" title="Nginx日志切割实例" /></p>
-
-	<p class="more"><a href="https://typecodes.com/linux/applogsbackup.html" title="Linux下Nginx、MySQL和PHP等应用的日志切割脚本">- 阅读剩余部分 -</a></p>
-			</article>
 		  	<!--page navigation-->
 <ol class="page-navigator">
 <li class="current"><a href="https://typecodes.com/index.html">1</a>
@@ -147,7 +147,7 @@
 		<h3 class="widget-title">Categories</h3>
 		<ul class="widget-list">
 		      <li class="current">
-		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (30)
+		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (31)
 		      </li>
 		      <li class="current">
 		        <a href="https://typecodes.com/csharp/index.html">Csharp</a> (6)
@@ -173,6 +173,9 @@
 		<h3 class="widget-title">Recent Posts</h3>
 		<ul class="widget-list">
 			<li class="post">
+				<a href="https://typecodes.com/cseries/tcpdumpwiresharkclosewait2.html">使用TCPDUMP和Wireshark排查服务端CLOSE_WAIT（二）</a>
+			</li>
+			<li class="post">
 				<a href="https://typecodes.com/cseries/tcpdumpwiresharkclosewait1.html">使用TCPDUMP和Wireshark排查服务端CLOSE_WAIT（一）</a>
 			</li>
 			<li class="post">
@@ -189,9 +192,6 @@
 			</li>
 			<li class="post">
 				<a href="https://typecodes.com/cseries/linuxgccgconnectmysql.html">Linux c语言连接MySQL数据库实例</a>
-			</li>
-			<li class="post">
-				<a href="https://typecodes.com/cseries/gccgensharedlib.html">Linux gcc编译生成静态库及使用方法</a>
 			</li>
 		</ul>
 	</section>
@@ -228,14 +228,14 @@
 			<ul>
 				<li><a href="https://github.com/vfhky" class="following github" target="_blank" rel="external nofollow">GitHub</a></li>
 				<li><a href="http://weibo.com/typecodes" class="following weibo" target="_blank" rel="external nofollow">Weibo</a></li>
-				<li><a href="http://vfhky.sinaapp.com/" class="following sae" target="_blank" rel="external nofollow">SAE</a></li>
+				<li><a href="http://vfhky.sinaapp.com" class="following sae" target="_blank" rel="external nofollow">SAE</a></li>
 				<li><a href="http://www.dwz.cn/mYiwa" class="following qqgroup" target="_blank" rel="external nofollow">Group</a></li>
 			</ul>
 		</section>
 		<div class="col-md-12 copyright">
 			<a href="#top"><i class="i-logo-s">TOP</i></a>
 			<p>
-				&copy;  2012-2016 							<a href="https://typecodes.com">TypeCodes</a>. All Rights Reserved<br>Powered by <a href="http://getpelican.com" rel="external" target="_blank">Pelican</a>. <a href="http://www.miitbeian.gov.cn/" rel="external nofollow" target="_blank">粤ICP备14050695号</a>
+				&copy;  2012-2016 							<a href="https://typecodes.com">TypeCodes</a>. All Rights Reserved<br>Powered by <a href="http://getpelican.com" rel="external" target="_blank">Pelican</a>. <a href="http://www.miitbeian.gov.cn" rel="external nofollow" target="_blank">粤ICP备14050695号</a>
 			</p>
 		</div>
 	</div>

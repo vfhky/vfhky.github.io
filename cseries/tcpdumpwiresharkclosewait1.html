@@ -119,7 +119,9 @@
 69
 70
 71
-72</pre></div></td><td class="code"><div class="highlight"><pre><span class="cm">/** </span>
+72
+73
+74</pre></div></td><td class="code"><div class="highlight"><pre><span class="cm">/** </span>
 <span class="cm"> * @FileName    server_socket.c</span>
 <span class="cm"> * @Describe    A simple example for creating a listen as a server in linux system.</span>
 <span class="cm"> * @Author      vfhky 2016-02-26 18:45 https://typecodes.com/cseries/tcpdumpwiresharkclosewait1.html</span>
@@ -154,7 +156,8 @@
         <span class="k">return</span> <span class="mi">1</span><span class="p">;</span>
     <span class="p">}</span>
 
-    <span class="k">if</span><span class="p">(</span> <span class="n">setsockopt</span><span class="p">(</span> <span class="n">server_sockfd</span><span class="p">,</span> <span class="n">SOL_SOCKET</span><span class="p">,</span> <span class="n">SO_REUSEADDR</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">llOpt</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">llOpt</span><span class="p">)</span> <span class="p">)</span> <span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span><span class="p">(</span> <span class="n">setsockopt</span><span class="p">(</span> <span class="n">server_sockfd</span><span class="p">,</span> <span class="n">SOL_SOCKET</span><span class="p">,</span> <span class="n">SO_REUSEADDR</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">llOpt</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">llOpt</span><span class="p">)</span> <span class="p">)</span> <span class="p">)</span>
+    <span class="p">{</span>
         <span class="n">close</span><span class="p">(</span><span class="n">server_sockfd</span><span class="p">);</span>
         <span class="k">return</span> <span class="n">errno</span><span class="p">;</span>
     <span class="p">}</span>
@@ -178,7 +181,8 @@
             <span class="n">perror</span><span class="p">(</span> <span class="s">&quot;accept&quot;</span> <span class="p">);</span>
             <span class="k">return</span> <span class="mi">1</span><span class="p">;</span>
         <span class="p">}</span>
-        <span class="n">printf</span><span class="p">(</span> <span class="s">&quot;Accept client[%s].</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">inet_ntoa</span><span class="p">(</span><span class="n">remote_addr</span><span class="p">.</span><span class="n">sin_addr</span><span class="p">)</span> <span class="p">);</span>
+        <span class="c1">//Print the ip address and port of client.</span>
+        <span class="n">printf</span><span class="p">(</span> <span class="s">&quot;Accept client[%s:%u].</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">inet_ntoa</span><span class="p">(</span><span class="n">remote_addr</span><span class="p">.</span><span class="n">sin_addr</span><span class="p">),</span> <span class="n">ntohs</span><span class="p">(</span><span class="n">remote_addr</span><span class="p">.</span><span class="n">sin_port</span><span class="p">)</span> <span class="p">);</span>
 
         <span class="n">memset</span><span class="p">(</span> <span class="n">buf</span><span class="p">,</span> <span class="mh">0x00</span><span class="p">,</span> <span class="n">BUFSIZ</span> <span class="p">);</span>
         <span class="k">while</span><span class="p">(</span> <span class="p">(</span> <span class="n">len</span> <span class="o">=</span> <span class="n">recv</span><span class="p">(</span> <span class="n">client_sockfd</span> <span class="p">,</span><span class="n">buf</span><span class="p">,</span> <span class="n">BUFSIZ</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="p">)</span>
@@ -205,7 +209,7 @@
 <p>这时执行脚本<code>./netstat.sh</code>可以看到Windows客户端（端口:52552）和服务端（PID:5325）的TCP通信已经变成<code>ESTABLISHED</code>状态，效果如下图所示：</p>
 <p><img alt="Linux中利用netstat命令查看TCP服务状态" src="https://dn-vfhky.qbox.me/2016/02/netstat_8000_3.png" title="Linux中利用netstat命令查看TCP服务状态" /></p>
 <h4>5 在Linux中使用tcpdump工具抓包</h4>
-<p>再打开一个Linux终端界面，然后输入命令<code>tcpdump -n port 8000</code>进行抓包（目的是获取Windows客户端telnet建立的tcp连接的数据包）。当前面第4小节中Windows客户端发起“三次握手”时以及后面手工把该客户端界面关闭后，最终会得到如下数据：</p>
+<p>再打开一个Linux终端界面，然后输入命令<code>tcpdump -n port 8000</code>进行抓包（目的是获取Windows客户端telnet建立的tcp连接的数据包）。当前面第4小节中Windows客户端发起“三次握手”时得到如下数据：</p>
 <div class="highlight"><pre>[root@typecodes ~]# tcpdump -n port 8000
 tcpdump: verbose output suppressed, use -v or -vv for full protocol decode
 listening on eth0, link-type EN10MB (Ethernet), capture size 65535 bytes
@@ -280,7 +284,7 @@ listening on eth0, link-type EN10MB (Ethernet), capture size 65535 bytes
 		<h3 class="widget-title">Categories</h3>
 		<ul class="widget-list">
 		      <li class="current">
-		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (30)
+		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (31)
 		      </li>
 		      <li class="current">
 		        <a href="https://typecodes.com/csharp/index.html">Csharp</a> (6)
@@ -306,6 +310,9 @@ listening on eth0, link-type EN10MB (Ethernet), capture size 65535 bytes
 		<h3 class="widget-title">Recent Posts</h3>
 		<ul class="widget-list">
 			<li class="post">
+				<a href="https://typecodes.com/cseries/tcpdumpwiresharkclosewait2.html">使用TCPDUMP和Wireshark排查服务端CLOSE_WAIT（二）</a>
+			</li>
+			<li class="post">
 				<a href="https://typecodes.com/cseries/tcpdumpwiresharkclosewait1.html">使用TCPDUMP和Wireshark排查服务端CLOSE_WAIT（一）</a>
 			</li>
 			<li class="post">
@@ -322,9 +329,6 @@ listening on eth0, link-type EN10MB (Ethernet), capture size 65535 bytes
 			</li>
 			<li class="post">
 				<a href="https://typecodes.com/cseries/linuxgccgconnectmysql.html">Linux c语言连接MySQL数据库实例</a>
-			</li>
-			<li class="post">
-				<a href="https://typecodes.com/cseries/gccgensharedlib.html">Linux gcc编译生成静态库及使用方法</a>
 			</li>
 		</ul>
 	</section>
@@ -361,14 +365,14 @@ listening on eth0, link-type EN10MB (Ethernet), capture size 65535 bytes
 			<ul>
 				<li><a href="https://github.com/vfhky" class="following github" target="_blank" rel="external nofollow">GitHub</a></li>
 				<li><a href="http://weibo.com/typecodes" class="following weibo" target="_blank" rel="external nofollow">Weibo</a></li>
-				<li><a href="http://vfhky.sinaapp.com/" class="following sae" target="_blank" rel="external nofollow">SAE</a></li>
+				<li><a href="http://vfhky.sinaapp.com" class="following sae" target="_blank" rel="external nofollow">SAE</a></li>
 				<li><a href="http://www.dwz.cn/mYiwa" class="following qqgroup" target="_blank" rel="external nofollow">Group</a></li>
 			</ul>
 		</section>
 		<div class="col-md-12 copyright">
 			<a href="#top"><i class="i-logo-s">TOP</i></a>
 			<p>
-				&copy;  2012-2016 							<a href="https://typecodes.com">TypeCodes</a>. All Rights Reserved<br>Powered by <a href="http://getpelican.com" rel="external" target="_blank">Pelican</a>. <a href="http://www.miitbeian.gov.cn/" rel="external nofollow" target="_blank">粤ICP备14050695号</a>
+				&copy;  2012-2016 							<a href="https://typecodes.com">TypeCodes</a>. All Rights Reserved<br>Powered by <a href="http://getpelican.com" rel="external" target="_blank">Pelican</a>. <a href="http://www.miitbeian.gov.cn" rel="external nofollow" target="_blank">粤ICP备14050695号</a>
 			</p>
 		</div>
 	</div>
