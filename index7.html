@@ -38,6 +38,17 @@
 		<div class="col-md-9" id="blog-main" role="main">
 		  	<!--article recycle-->
 			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/database/initoraclebatandshell.html">初始化Oracle数据库的bat批处理脚本和shell脚本</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2015-01-10 14:44 | 分类：<a href="https://typecodes.com/database/index.html">database</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>在使用Oracle数据库的时候，经常会用到表结构、存储过程、视图以及表数据等等元素的导入和导出。如果在Windows的cmd窗口中使用sqlplus的命令登录Oracle后，直接使用<code>@ sql导入文件路径</code>或者<code>start sql导入文件路径</code>，就有一个缺陷：不会产生跟踪日志文件，这样就没法了解哪些sql语句执行成功了，哪些sql语句执行失败从而导致整个数据库初始化失败了等情况。另外，无论是在Windows系统还是Linux系统，手输命令很麻烦也很容易出错，所以自己整理了一份适用于Windows的bat批处理脚本和一份适用于Linux系统的shell脚本。</p>
+<p>这两份脚本代码比较简单，主要是利用了sqlplus命令将包含多条sql语句用于初始化Oracle数据库的sql文件执行。其中，<code>suntsm/suntsm@127.0.0.1/orcl</code>是<code>数据库用户名/用户密码@数据库IP：1521/实例名</code>的组合，当然Oracle默认的端口<code>1521</code>可以省略。另外，<code>tsmstuct.sql</code>和<code>tsmdata.sql</code>文件分别用于初始化表结构等数据和表数据。大家可以根据实际情况修改。</p>
+
+	<p class="more"><a href="https://typecodes.com/database/initoraclebatandshell.html" title="初始化Oracle数据库的bat批处理脚本和shell脚本">- 阅读剩余部分 -</a></p>
+			</article>
+			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/database/plsqldebugpackagefunction.html">图解如何在PLSQL中调试PACKAGE包中的FUNCTION函数</a></h2>
 <ul class="post-meta">
 	<li>作者：vfhky | 时间：2014-12-31 21:00 | 分类：<a href="https://typecodes.com/database/index.html">database</a></li>
@@ -119,17 +130,6 @@
 
 	<p class="more"><a href="https://typecodes.com/cseries/studymfchexstrxortool2.html" title="图文实例说MFC制作工具的心得（二）">- 阅读剩余部分 -</a></p>
 			</article>
-			<article class="post">
-<h2 class="post-title"><a href="https://typecodes.com/cseries/studymfchexstrxortool1.html">图文实例说MFC制作工具的心得（一）</a></h2>
-<ul class="post-meta">
-	<li>作者：vfhky | 时间：2014-11-13 22:06 | 分类：<a href="https://typecodes.com/cseries/index.html">cseries</a></li>
-</ul>
-<div class="post-content fmt">
-	<p><a href="https://typecodes.com/cseries/mfchexstrxortool.html" title="《MFC写了一个十六进制异或的工具》">上篇文章</a>说了用MFC制作一个十六进制字符串异或的工具，这篇文章就以这个工具为演示总结一下自己的学习心得。</p>
-<p><img alt="MFC十六进制异或工具" src="https://dn-vfhky.qbox.me/2014/11/mfchexstrxortool.png" title="MFC十六进制异或工具" /></p>
-
-	<p class="more"><a href="https://typecodes.com/cseries/studymfchexstrxortool1.html" title="图文实例说MFC制作工具的心得（一）">- 阅读剩余部分 -</a></p>
-			</article>
 		  	<!--page navigation-->
 <ol class="page-navigator">
 <li class="prev"><a href="https://typecodes.com/index6.html">&laquo; 前一页</a></li><li><a href="https://typecodes.com/index.html">1</a>
@@ -156,7 +156,7 @@
 		<h3 class="widget-title">Categories</h3>
 		<ul class="widget-list">
 		      <li class="current">
-		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (32)
+		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (33)
 		      </li>
 		      <li class="current">
 		        <a href="https://typecodes.com/csharp/index.html">Csharp</a> (6)
@@ -182,6 +182,9 @@
 		<h3 class="widget-title">Recent Posts</h3>
 		<ul class="widget-list">
 			<li class="post">
+				<a href="https://typecodes.com/cseries/sigprocmasksigsuspendapp.html">一个sigprocmask和sigsuspend函数的综合应用</a>
+			</li>
+			<li class="post">
 				<a href="https://typecodes.com/cseries/tcpclosewaitsigpipe.html">Linux TCP通信出现CLOSE_WAIT后导致服务端进程挂掉</a>
 			</li>
 			<li class="post">
@@ -198,9 +201,6 @@
 			</li>
 			<li class="post">
 				<a href="https://typecodes.com/cseries/multilprocessthreadgdb.html">Linux多进程和多线程的一次gdb调试实例</a>
-			</li>
-			<li class="post">
-				<a href="https://typecodes.com/linux/syngithubmarkdownpelican.html">同步GitHub Markdown文章到Linux服务器后更新Pelican博客的脚本</a>
 			</li>
 		</ul>
 	</section>

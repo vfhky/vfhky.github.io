@@ -1,5 +1,186 @@
 <?xml version="1.0" encoding="utf-8"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>TypeCodes</title><link>https://typecodes.com/</link><description>Beauty of programming</description><atom:link href="https://typecodes.com/feed.xml" rel="self"></atom:link><lastBuildDate>Mon, 29 Feb 2016 08:39:00 +0800</lastBuildDate><item><title>Linux TCP通信出现CLOSE_WAIT后导致服务端进程挂掉</title><link>https://typecodes.com/cseries/tcpclosewaitsigpipe.html</link><description>&lt;p&gt;在&lt;a href="https://typecodes.com/cseries/tcpdumpwiresharkclosewait2.html" title="《使用TCPDUMP和Wireshark排查服务端CLOSE_WAIT（二）》"&gt;前文&lt;/a&gt;中讲述了Linux服务端TCP通信出现&lt;code&gt;CLOSE_WAIT&lt;/code&gt;状态的原因，这篇文章主要通过一个实例演示它个一个“恶劣”影响：直接使服务端进程Down掉。&lt;/p&gt;
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>TypeCodes</title><link>https://typecodes.com/</link><description>Beauty of programming</description><atom:link href="https://typecodes.com/feed.xml" rel="self"></atom:link><lastBuildDate>Mon, 29 Feb 2016 11:39:00 +0800</lastBuildDate><item><title>一个sigprocmask和sigsuspend函数的综合应用</title><link>https://typecodes.com/cseries/sigprocmasksigsuspendapp.html</link><description>&lt;p&gt;在Linux服务端后台开发中，经常会用到信号处理函数：&lt;code&gt;sigprocmask&lt;/code&gt;和&lt;code&gt;sigsuspend&lt;/code&gt;。这篇文章主要通过一个综合实例演示如何使用sigprocmask函数屏蔽目标信号（信号掩码）以及sigsuspend函数挂起进程。&lt;/p&gt;
+&lt;p&gt;&lt;img alt="Linux中编译执行sigprocmask_sigsuspend程序" src="https://dn-vfhky.qbox.me/2016/02/sigprocmask_sigsuspend_init.png" title="Linux中编译执行sigprocmask_sigsuspend程序" /&gt;&lt;/p&gt;
+
+
+&lt;h4&gt;1 sigprocmask和sigsuspend函数的说明&lt;/h4&gt;
+&lt;p&gt;关于&lt;code&gt;sigprocmask&lt;/code&gt;函数的说明：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;头文件：    #include &amp;lt;signal.h&amp;gt;
+函数：     int sigprocmask(int how, const sigset_t *set, sigset_t *oldset);
+功能：     用于获取或者改变当前进程的信号掩码（当前进程屏蔽的信号集）。
+返回值：    0成功，-1失败（具体原因由errno值表示）。
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;关于&lt;code&gt;sigsuspend&lt;/code&gt;函数的说明：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;头文件：    #include &amp;lt;signal.h&amp;gt;
+函数：     int sigsuspend(const sigset_t *mask);
+功能：     阻塞当前进程（TASK_INTERRUPTIBLE可中断状态），等待mask信号集（信号掩码）之外的任何信号的到来。
+            在收到pendmask之外）信号后，先调用该信号的处理函数，然后把信号集mask还原为原来的信号集，接着从sigsuspend调用处返回（进程恢复执行）。
+返回值：    该系统调用始终返回-1，并将errno设置为EINTR。
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h4&gt;2 完整的程序实例&lt;/h4&gt;
+&lt;p&gt;在CentOS服务器中使用编译并执行下面这段程序，效果如上图所示。&lt;/p&gt;
+&lt;table class="highlighttable"&gt;&lt;tr&gt;&lt;td class="linenos"&gt;&lt;div class="linenodiv"&gt;&lt;pre&gt; 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68&lt;/pre&gt;&lt;/div&gt;&lt;/td&gt;&lt;td class="code"&gt;&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="cm"&gt;/**&lt;/span&gt;
+&lt;span class="cm"&gt; * @FileName    sigprocmask_sigsuspend.c&lt;/span&gt;
+&lt;span class="cm"&gt; * @Describe    A simple example for using sigprocmask and sigsuspend functions in linux.&lt;/span&gt;
+&lt;span class="cm"&gt; * @Author      vfhky 2016-02-29 11:21 https://typecodes.com/cseries/sigprocmasksigsuspendapp.html&lt;/span&gt;
+&lt;span class="cm"&gt; * @Compile     gcc sigprocmask_sigsuspend.c -o sigprocmask_sigsuspend&lt;/span&gt;
+&lt;span class="cm"&gt; */&lt;/span&gt;
+&lt;span class="cp"&gt;#include &amp;lt;stdio.h&amp;gt;&lt;/span&gt;
+&lt;span class="cp"&gt;#include &amp;lt;stdlib.h&amp;gt;&lt;/span&gt;
+&lt;span class="cp"&gt;#include &amp;lt;sys/types.h&amp;gt;&lt;/span&gt;
+&lt;span class="cp"&gt;#include &amp;lt;unistd.h&amp;gt;&lt;/span&gt;
+&lt;span class="cp"&gt;#include &amp;lt;signal.h&amp;gt;&lt;/span&gt;
+&lt;span class="cp"&gt;#include &amp;lt;errno.h&amp;gt;&lt;/span&gt;
+
+&lt;span class="c1"&gt;//Signal handle function.&lt;/span&gt;
+&lt;span class="kt"&gt;void&lt;/span&gt; &lt;span class="nf"&gt;sig_handler&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt; &lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;signal&lt;/span&gt; &lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="n"&gt;printf&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;Receive signal=[%d].&lt;/span&gt;&lt;span class="se"&gt;\n&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;signal&lt;/span&gt; &lt;span class="p"&gt;);&lt;/span&gt;
+    &lt;span class="k"&gt;return&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+
+&lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="nf"&gt;main&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt; &lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;argc&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="kt"&gt;char&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;argv&lt;/span&gt;&lt;span class="p"&gt;[]&lt;/span&gt; &lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="n"&gt;printf&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;getpid=[%d].&lt;/span&gt;&lt;span class="se"&gt;\n&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;getpid&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="p"&gt;);&lt;/span&gt;
+    &lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;i&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+
+    &lt;span class="c1"&gt;//Register a signal.&lt;/span&gt;
+    &lt;span class="k"&gt;struct&lt;/span&gt; &lt;span class="n"&gt;sigaction&lt;/span&gt; &lt;span class="n"&gt;new_act&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="n"&gt;sigemptyset&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="n"&gt;new_act&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;sa_mask&lt;/span&gt; &lt;span class="p"&gt;);&lt;/span&gt;
+    &lt;span class="n"&gt;new_act&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;sa_handler&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;sig_handler&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="n"&gt;new_act&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;sa_flags&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="n"&gt;sigaction&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt; &lt;span class="n"&gt;SIGUSR1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="n"&gt;new_act&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt; &lt;span class="p"&gt;);&lt;/span&gt;
+    &lt;span class="n"&gt;sigaction&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt; &lt;span class="n"&gt;SIGUSR2&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="n"&gt;new_act&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt; &lt;span class="p"&gt;);&lt;/span&gt;
+    &lt;span class="n"&gt;sigaction&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt; &lt;span class="n"&gt;SIGINT&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="n"&gt;new_act&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt; &lt;span class="p"&gt;);&lt;/span&gt;
+
+    &lt;span class="c1"&gt;//Add SIGINT, SIGUSR1/SIGUSR2 signals to the signal-set of new_set.&lt;/span&gt;
+    &lt;span class="kt"&gt;sigset_t&lt;/span&gt; &lt;span class="n"&gt;new_set&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;old_set&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="n"&gt;sigemptyset&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="n"&gt;new_set&lt;/span&gt; &lt;span class="p"&gt;);&lt;/span&gt;
+    &lt;span class="n"&gt;sigaddset&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="n"&gt;new_set&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;SIGINT&lt;/span&gt; &lt;span class="p"&gt;);&lt;/span&gt;              &lt;span class="c1"&gt;//2&lt;/span&gt;
+    &lt;span class="n"&gt;sigaddset&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="n"&gt;new_set&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;SIGUSR1&lt;/span&gt; &lt;span class="p"&gt;);&lt;/span&gt;             &lt;span class="c1"&gt;//10&lt;/span&gt;
+    &lt;span class="c1"&gt;//sigaddset( &amp;amp;new_set, SIGUSR2 );           //12&lt;/span&gt;
+
+    &lt;span class="cm"&gt;/**&lt;/span&gt;
+&lt;span class="cm"&gt;     * Repalce the old mask set with the new mask set.Thus the process will block the signal of SIGINT and SIGUSR1, &lt;/span&gt;
+&lt;span class="cm"&gt;     * but it will excute the function of sig_handler when the signal such as SIGUSR2 other than SIGINT, SIGUSR1 arrives.&lt;/span&gt;
+&lt;span class="cm"&gt;     */&lt;/span&gt;
+    &lt;span class="n"&gt;sigprocmask&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt; &lt;span class="n"&gt;SIG_SETMASK&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="n"&gt;new_set&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="n"&gt;old_set&lt;/span&gt; &lt;span class="p"&gt;);&lt;/span&gt;
+
+    &lt;span class="c1"&gt;//Add SIGUSR1 and SIGUSR2 signals to the signal-set of pendmask.&lt;/span&gt;
+    &lt;span class="kt"&gt;sigset_t&lt;/span&gt; &lt;span class="n"&gt;pendmask&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="n"&gt;sigemptyset&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="n"&gt;pendmask&lt;/span&gt; &lt;span class="p"&gt;);&lt;/span&gt;
+    &lt;span class="n"&gt;sigaddset&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="n"&gt;pendmask&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;SIGUSR1&lt;/span&gt; &lt;span class="p"&gt;);&lt;/span&gt;            &lt;span class="c1"&gt;//10&lt;/span&gt;
+    &lt;span class="n"&gt;sigaddset&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="n"&gt;pendmask&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;SIGUSR2&lt;/span&gt; &lt;span class="p"&gt;);&lt;/span&gt;            &lt;span class="c1"&gt;//12&lt;/span&gt;
+
+    &lt;span class="c1"&gt;//Replaces the signal mask of the process with pendmask temporarily and suspends the process until delivery of a signal whose action is to invoke a signal handler or to terminate a process.&lt;/span&gt;
+    &lt;span class="n"&gt;i&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;sigsuspend&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="n"&gt;pendmask&lt;/span&gt; &lt;span class="p"&gt;);&lt;/span&gt;
+    &lt;span class="n"&gt;printf&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;Sigsuspend returned with value[%d].&lt;/span&gt;&lt;span class="se"&gt;\n&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;i&lt;/span&gt; &lt;span class="p"&gt;);&lt;/span&gt;
+    &lt;span class="k"&gt;if&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt; &lt;span class="n"&gt;errno&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="n"&gt;EINTR&lt;/span&gt; &lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="p"&gt;{&lt;/span&gt;
+        &lt;span class="n"&gt;printf&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;[%d]Interrupted by a signal.&lt;/span&gt;&lt;span class="se"&gt;\n&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;errno&lt;/span&gt; &lt;span class="p"&gt;);&lt;/span&gt;
+    &lt;span class="p"&gt;}&lt;/span&gt;
+
+    &lt;span class="k"&gt;while&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="p"&gt;{&lt;/span&gt;
+        &lt;span class="n"&gt;printf&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;--while.&lt;/span&gt;&lt;span class="se"&gt;\n&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;&lt;/span&gt; &lt;span class="p"&gt;);&lt;/span&gt;
+        &lt;span class="n"&gt;sleep&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+    &lt;span class="p"&gt;}&lt;/span&gt;
+    &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+
+&lt;h4&gt;3 发送SIGUSR1和SIGUSR2信号&lt;/h4&gt;
+&lt;p&gt;如下图所示，使用&lt;code&gt;kill&lt;/code&gt;命令向进程（PID:7154）发送&lt;code&gt;SIGUSR1&lt;/code&gt;和&lt;code&gt;SIGUSR2&lt;/code&gt;信号。&lt;/p&gt;
+&lt;p&gt;&lt;img alt="发送SIGUSR1和SIGUSR2信号" src="https://dn-vfhky.qbox.me/2016/02/kill_sigusr1_sigusr2.png" title="发送SIGUSR1和SIGUSR2信号" /&gt;&lt;/p&gt;
+&lt;p&gt;由于&lt;code&gt;sigsuspend&lt;/code&gt;函数把信号&lt;code&gt;SIGUSR1&lt;/code&gt;和&lt;code&gt;SIGUSR2&lt;/code&gt;加入到信号掩码&lt;code&gt;pendmask&lt;/code&gt;中，所以这两个信号的到来对当前进程没有任何影响。&lt;/p&gt;
+&lt;h4&gt;4 发送SIGINT信号&lt;/h4&gt;
+&lt;p&gt;使用命令&lt;code&gt;kill -SIGINT 7154&lt;/code&gt;向当前进程（PID:7154）发送&lt;code&gt;SIGINT&lt;/code&gt;信号。由于该信号不在信号掩码&lt;code&gt;pendmask&lt;/code&gt;中，所以先调用&lt;code&gt;SIGINT&lt;/code&gt;信号的处理函数sig_handler，然后把现在的信号集&lt;code&gt;pendmask&lt;/code&gt;还原为原来的&lt;code&gt;new_set&lt;/code&gt;信号集。&lt;/p&gt;
+&lt;p&gt;这时，由于之前由于信号掩码&lt;code&gt;pendmask&lt;/code&gt;被屏蔽的未决信号信号&lt;code&gt;SIGUSR1&lt;/code&gt;和&lt;code&gt;SIGUSR2&lt;/code&gt;由内核重新传递，所以进程会执行&lt;code&gt;SIGUSR2&lt;/code&gt;信号的处理函数（SIGUSR1信号被信号集new_set所屏蔽，因此不会执行）。接着进程从sigsuspend调用处返回，恢复执行（进入while循环）。&lt;/p&gt;
+&lt;p&gt;&lt;img alt="执行SIGINT和SIGUSR2信号处理函数" src="https://dn-vfhky.qbox.me/2016/02/sigint_while.png" title="执行SIGINT和SIGUSR2信号处理函数" /&gt;&lt;/p&gt;
+&lt;p&gt;如果继续发送&lt;code&gt;SIGINT&lt;/code&gt;信号，因为被加入到了当前信号掩码&lt;code&gt;new_set&lt;/code&gt;中，所以也会被屏蔽（对进程无影响）。最后可以通过命令&lt;code&gt;kill -SIGKILL 7154&lt;/code&gt;将整个进程关闭。&lt;/p&gt;
+&lt;p&gt;&lt;img alt="继续发送SIGINT和SIGKILL信号" src="https://dn-vfhky.qbox.me/2016/02/sigint_sigkill.png" title="继续发送SIGINT和SIGKILL信号" /&gt;&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;    /* 
+     * 进程执行到sigsuspend时，sigsuspend并不会立刻返回，进程处于TASK_INTERRUPTIBLE(可中断)状态并立刻放弃CPU，等待UNBLOCK（pendmask之外的）信号的唤醒。
+     * 进程在接收到UNBLOCK（pendmask之外）信号后，先调用该信号的处理函数，然后把现在的信号集pendmask还原为原来的new_set，接着从sigsuspend调用出返回，进程恢复执行。
+     * 该系统调用始终返回-1，并将errno设置为EINTR.
+    */
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;i = sigsuspend( &amp;amp;pendmask );    //以阻塞方式等待除了 pendmask 集合之外的任意信号到来&lt;/p&gt;
+&lt;p&gt;&lt;img alt="服务端进程正常执行监听" src="https://dn-vfhky.qbox.me/2016/02/tcp_socket_server3.png" title="服务端进程正常执行监听" /&gt;&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">vfhky</dc:creator><pubDate>Mon, 29 Feb 2016 11:39:00 +0800</pubDate><guid>tag:typecodes.com,2016-02-29:cseries/sigprocmasksigsuspendapp.html</guid><category>sigprocmask</category><category>sigsuspend</category><category>信号</category></item><item><title>Linux TCP通信出现CLOSE_WAIT后导致服务端进程挂掉</title><link>https://typecodes.com/cseries/tcpclosewaitsigpipe.html</link><description>&lt;p&gt;在&lt;a href="https://typecodes.com/cseries/tcpdumpwiresharkclosewait2.html" title="《使用TCPDUMP和Wireshark排查服务端CLOSE_WAIT（二）》"&gt;前文&lt;/a&gt;中讲述了Linux服务端TCP通信出现&lt;code&gt;CLOSE_WAIT&lt;/code&gt;状态的原因，这篇文章主要通过一个实例演示它个一个“恶劣”影响：直接使服务端进程Down掉。&lt;/p&gt;
 &lt;p&gt;&lt;img alt="CentOS服务端建立监听端口" src="https://dn-vfhky.qbox.me/2016/02/tcp_socket_server1.png" title="CentOS服务端建立监听端口" /&gt;&lt;/p&gt;
 
 

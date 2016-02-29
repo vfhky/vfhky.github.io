@@ -38,6 +38,35 @@
 		<div class="col-md-9" id="blog-main" role="main">
 		  	<!--article recycle-->
 			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/web/aliyuncentoslnmpxcacheconf.html">阿里云CentOS主机 LNMP 环境配置之Php篇——安装XCache加速器</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2014-08-14 23:06 | 分类：<a href="https://typecodes.com/web/index.html">web</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>在完成了上面两篇关于阿里云CentOS 6.5主机中 Nginx 和 Mysql 的配置的经验分享后，这篇文章说说如何安装 php 的“加速器”——<a href="http://xcache.lighttpd.net/wiki/ReleaseArchive" title="XCache稳定版官方介绍">XCache</a>。相信大家听说过 php 的几款缓存加速器：APC、xcache、eaccelerator等（对于小站咱就不要使用 Memcached 了）。</p>
+<h5>1 官网下载 XCache 3.1.0 源码(支持php5.1 ~ 5.4)</h5>
+<div class="highlight"><pre>###### 下载XCache 3.1.0稳定版
+[root@typecodes ~]# wget http://xcache.lighttpd.net/pub/Releases/3.1.0/xcache-3.1.0.tar.gz
+###### 解压到当前目录
+[root@typecodes ~]# tar -zxvf xcache-3.1.0.tar.gz
+[root@typecodes ~]# cd xcache-3.1.0
+
+###### phpize是用来扩展php模块的，建立外挂模块
+[root@typecodes xcache-3.1.0]# phpize
+Configuring for:
+PHP Api Version:        20090626
+Zend Module Api No:     20090626
+Zend Extension Api No:  20090626
+
+###### 如果出现 -bash: phpize: command not found，是因为没安装 php-devel 导致的
+[root@typecodes ~]# yum install php-devel
+</pre></div>
+
+
+
+	<p class="more"><a href="https://typecodes.com/web/aliyuncentoslnmpxcacheconf.html" title="阿里云CentOS主机 LNMP 环境配置之Php篇——安装XCache加速器">- 阅读剩余部分 -</a></p>
+			</article>
+			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/web/aliyuncentoslnmpnginxconf.html">阿里云CentOS主机 LNMP 环境配置之Nginx篇</a></h2>
 <ul class="post-meta">
 	<li>作者：vfhky | 时间：2014-08-13 23:22 | 分类：<a href="https://typecodes.com/web/index.html">web</a></li>
@@ -184,36 +213,6 @@
 
 	<p class="more"><a href="https://typecodes.com/mix/postwvfhkygithub.html" title="GitHub个人仓库更新：wordpress主题[W_vfhky]">- 阅读剩余部分 -</a></p>
 			</article>
-			<article class="post">
-<h2 class="post-title"><a href="https://typecodes.com/mix/updatewpthemevfhky1.html">版本更新：wordpress主题【vfhky 1.1】发布</a></h2>
-<ul class="post-meta">
-	<li>作者：vfhky | 时间：2014-03-16 14:32 | 分类：<a href="https://typecodes.com/mix/index.html">mix</a></li>
-</ul>
-<div class="post-content fmt">
-	<h5>1 主题【vfhky】版本1.1的更新说明</h5>
-<p>主题vfhky在2月15号发布了<a href="https://typecodes.com/mix/postwpthemevfhky1.html" title="《整装待发：wordpress主题【vfhky 1.0】强势发布》">1.0版本</a>，经调整和优化，现发布1.1版本。目前该版本已经更新到了github上了，大家可以<a href="https://github.com/vfhky/vfhky">点击此处</a>查看并下载。此次更新的主要内容如下：</p>
-<div class="highlight"><pre><span class="nx">优化站内搜索程序</span><span class="err">：</span><span class="nx">谷歌自定义搜索</span><span class="o">+</span><span class="nx">百度搜索</span><span class="err">；</span>
-<span class="nx">PHP</span><span class="o">+</span><span class="nx">js模块处理</span><span class="err">，</span><span class="nx">优化广告加载速度</span><span class="err">；</span>
-<span class="nx">优化</span><span class="err">“</span><span class="nx">网站安全认证</span><span class="err">”</span><span class="nx">以及全站链接跳转结果的查询模式</span><span class="err">；</span>
-
-<span class="nx">主题自动检测版本更新</span><span class="err">；</span>
-<span class="nx">去插件自带google代码高亮</span><span class="err">，</span><span class="nx">支持文章和评论中代码高亮</span><span class="err">；</span>
-<span class="nx">三种不同风格的音乐播放器</span><span class="err">，</span><span class="nx">可任意加载至文章中</span><span class="err">；</span>
-
-<span class="nx">拓展左侧文章页面宽度</span><span class="err">，</span><span class="nx">体验从页宽628px到728px的</span><span class="err">“</span><span class="nx">大屏幕</span><span class="err">”，</span><span class="nx">看代码再也累了</span><span class="err">；</span>
-<span class="nx">首页5张幻灯片</span><span class="o">+</span><span class="mi">3</span><span class="nx">篇置顶文章无重复显示</span><span class="err">；</span>
-<span class="nx">优化functions</span><span class="p">.</span><span class="nx">php代码中的邮件通知以及评论楼层的代码</span><span class="err">；</span>
-
-<span class="nx">js调整优化淘宝IP库的API接口的加载速度</span><span class="err">；</span>
-<span class="nx">修复go</span><span class="p">.</span><span class="nx">php中的bug</span><span class="err">，</span><span class="nx">解决网址大写的优质网址认证失败的问题</span><span class="err">；</span>
-<span class="nx">优化functions</span><span class="p">.</span><span class="nx">php中检查评论者是否有gravatar头像的代码</span><span class="err">；</span>
-<span class="nx">代码精简</span><span class="err">，</span><span class="nx">目前整个主题文件的安装包体积为1</span><span class="p">.</span><span class="mi">4</span><span class="nx">M</span><span class="err">。</span>
-</pre></div>
-
-
-
-	<p class="more"><a href="https://typecodes.com/mix/updatewpthemevfhky1.html" title="版本更新：wordpress主题【vfhky 1.1】发布">- 阅读剩余部分 -</a></p>
-			</article>
 		  	<!--page navigation-->
 <ol class="page-navigator">
 <li class="prev"><a href="https://typecodes.com/index10.html">&laquo; 前一页</a></li><li><a href="https://typecodes.com/index.html">1</a>
@@ -240,7 +239,7 @@
 		<h3 class="widget-title">Categories</h3>
 		<ul class="widget-list">
 		      <li class="current">
-		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (32)
+		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (33)
 		      </li>
 		      <li class="current">
 		        <a href="https://typecodes.com/csharp/index.html">Csharp</a> (6)
@@ -266,6 +265,9 @@
 		<h3 class="widget-title">Recent Posts</h3>
 		<ul class="widget-list">
 			<li class="post">
+				<a href="https://typecodes.com/cseries/sigprocmasksigsuspendapp.html">一个sigprocmask和sigsuspend函数的综合应用</a>
+			</li>
+			<li class="post">
 				<a href="https://typecodes.com/cseries/tcpclosewaitsigpipe.html">Linux TCP通信出现CLOSE_WAIT后导致服务端进程挂掉</a>
 			</li>
 			<li class="post">
@@ -282,9 +284,6 @@
 			</li>
 			<li class="post">
 				<a href="https://typecodes.com/cseries/multilprocessthreadgdb.html">Linux多进程和多线程的一次gdb调试实例</a>
-			</li>
-			<li class="post">
-				<a href="https://typecodes.com/linux/syngithubmarkdownpelican.html">同步GitHub Markdown文章到Linux服务器后更新Pelican博客的脚本</a>
 			</li>
 		</ul>
 	</section>
