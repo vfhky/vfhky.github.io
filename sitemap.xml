@@ -5,23 +5,30 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>https://typecodes.com/</loc>
-<lastmod>2016-02-28T21:25:16-00:00</lastmod>
+<lastmod>2016-02-29T09:29:25-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://typecodes.com/archives.html</loc>
-<lastmod>2016-02-28T21:25:16-00:00</lastmod>
+<lastmod>2016-02-29T09:29:25-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://typecodes.com/categories.html</loc>
-<lastmod>2016-02-28T21:25:16-00:00</lastmod>
+<lastmod>2016-02-29T09:29:25-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
+</url>
+
+<url>
+<loc>https://typecodes.com/cseries/tcpclosewaitsigpipe.html</loc>
+<lastmod>2016-02-29T08:39:00+08:00</lastmod>
+<changefreq>monthly</changefreq>
+<priority>0.7</priority>
 </url>
 
 <url>
@@ -1496,7 +1503,7 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>https://typecodes.com/cseries/index.html</loc>
-<lastmod>2016-02-28T18:11:00+08:06</lastmod>
+<lastmod>2016-02-29T08:39:00+08:06</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
@@ -1594,7 +1601,7 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>https://typecodes.com/tag/tcp.html</loc>
-<lastmod>2016-02-28T18:11:00+08:06</lastmod>
+<lastmod>2016-02-29T08:39:00+08:06</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
@@ -1887,8 +1894,8 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 </url>
 
 <url>
-<loc>https://typecodes.com/tag/gravatar.html</loc>
-<lastmod>2012-06-17T13:44:00+08:06</lastmod>
+<loc>https://typecodes.com/tag/sigpipe.html</loc>
+<lastmod>2016-02-29T08:39:00+08:06</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
@@ -2125,6 +2132,13 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 </url>
 
 <url>
+<loc>https://typecodes.com/tag/gravatar.html</loc>
+<lastmod>2012-06-17T13:44:00+08:06</lastmod>
+<changefreq>daily</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
 <loc>https://typecodes.com/tag/typecho-markdown.html</loc>
 <lastmod>2015-05-31T18:20:00+08:06</lastmod>
 <changefreq>daily</changefreq>
@@ -2133,7 +2147,7 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>https://typecodes.com/tag/wireshark.html</loc>
-<lastmod>2016-02-28T18:11:00+08:06</lastmod>
+<lastmod>2016-02-29T08:39:00+08:06</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
@@ -2476,7 +2490,7 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>https://typecodes.com/tag/tcpdump.html</loc>
-<lastmod>2016-02-28T18:11:00+08:06</lastmod>
+<lastmod>2016-02-29T08:39:00+08:06</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
@@ -2490,7 +2504,7 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>https://typecodes.com/tag/close_wait.html</loc>
-<lastmod>2016-02-28T18:11:00+08:06</lastmod>
+<lastmod>2016-02-29T08:39:00+08:06</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>

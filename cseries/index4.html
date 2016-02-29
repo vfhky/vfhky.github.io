@@ -38,6 +38,17 @@
 		<div class="col-md-9" id="blog-main" role="main">
 		  	<!--article recycle-->
 			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/cseries/clanghexstrtointeger.html">C语言将十六进制字符串转成十进制整数</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2014-11-04 22:22 | 分类：<a href="https://typecodes.com/cseries/index.html">cseries</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>C/C++处理十六进制文件中的报文内容时，经常会遇到先读取报文头中的长度（例如"E2"、"1F"、"-eE2"等等），再读取报文体中的内容的情况。那么就需要把报文头中表示长度的十六进制字符串转换成十进制的整形数据。</p>
+<p>转换方法有两种，一种是正向从字符串低位到高位依次转换，另一种是逆向从字符串高位到低位依次转换。原理都是利用指针变量依次指向十六进制字符串中的单个字符，然后通过ASCII码表转换成对应的整数。考虑到十进制的字符串中可能会出现正负号，即转换后可能出现负整数，所以增加了对这种情况的处理。下面是两种方法的具体代码：</p>
+
+	<p class="more"><a href="https://typecodes.com/cseries/clanghexstrtointeger.html" title="C语言将十六进制字符串转成十进制整数">- 阅读剩余部分 -</a></p>
+			</article>
+			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/cseries/pointermemaccess0xC0000005.html">再谈“0xC0000005读取写入位置冲突”——正确使用指针访问内存</a></h2>
 <ul class="post-meta">
 	<li>作者：vfhky | 时间：2014-09-03 22:26 | 分类：<a href="https://typecodes.com/cseries/index.html">cseries</a></li>
@@ -197,7 +208,7 @@
 		<h3 class="widget-title">Categories</h3>
 		<ul class="widget-list">
 		      <li class="current">
-		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (31)
+		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (32)
 		      </li>
 		      <li class="current">
 		        <a href="https://typecodes.com/csharp/index.html">Csharp</a> (6)
@@ -223,6 +234,9 @@
 		<h3 class="widget-title">Recent Posts</h3>
 		<ul class="widget-list">
 			<li class="post">
+				<a href="https://typecodes.com/cseries/tcpclosewaitsigpipe.html">Linux TCP通信出现CLOSE_WAIT后导致服务端进程挂掉</a>
+			</li>
+			<li class="post">
 				<a href="https://typecodes.com/cseries/tcpdumpwiresharkclosewait2.html">使用TCPDUMP和Wireshark排查服务端CLOSE_WAIT（二）</a>
 			</li>
 			<li class="post">
@@ -239,9 +253,6 @@
 			</li>
 			<li class="post">
 				<a href="https://typecodes.com/cseries/cppgeneralmakefile.html">Linux C/C++工程中可生成ELF、动/静态库文件的通用Makefile</a>
-			</li>
-			<li class="post">
-				<a href="https://typecodes.com/cseries/libraryundefinedref.html">解决make编译链接动态库错误：libxx.so: undefined reference to xx</a>
 			</li>
 		</ul>
 	</section>

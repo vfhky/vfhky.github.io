@@ -38,6 +38,18 @@
 		<div class="col-md-9" id="blog-main" role="main">
 		  	<!--article recycle-->
 			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/web/configiiserr.html">配置IIS出现错误的解决方法</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2012-07-03 22:40 | 分类：<a href="https://typecodes.com/web/index.html">web</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>在给ASP或者ASP.NET等需要配置IIS服务器的过程中，很可能会遇到以下两种错误。尤其是用Win7系统的，配置IIS7.0版本比用XP系统配置IIS5.1版本而言要复杂复杂一些。当同时需要配置ASP和ASP.NET共存的IIS服务器环境时会更有挑战性。下面是我的两个总结:</p>
+<h5>1 错误提示：ADODB.Connection 错误 '800a0e7a'，未找到提供程序。</h5>
+<p>解决：原来的网站是在32位的windows环境中生成的导致在win764位中出现错误（IIS7应用程序池默认没有启用32位程序，也就是说如果使用的是64位操作系统，而没有64位的Jet 4.0驱动程序，那么就要在IIS7中启用32位程序）。此时点击IIS管理器左边的“应用程序池”在“启用32位应用程序”选择“True”。</p>
+
+	<p class="more"><a href="https://typecodes.com/web/configiiserr.html" title="配置IIS出现错误的解决方法">- 阅读剩余部分 -</a></p>
+			</article>
+			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/database/phpaspconndb.html">PHP和ASP的数据库连接代码</a></h2>
 <ul class="post-meta">
 	<li>作者：vfhky | 时间：2012-07-01 13:27 | 分类：<a href="https://typecodes.com/database/index.html">database</a></li>
@@ -153,18 +165,6 @@
 
 	<p class="more"><a href="https://typecodes.com/mix/win7wifi.html" title="如何用笔记本Win7系统建立Wifi">- 阅读剩余部分 -</a></p>
 			</article>
-			<article class="post">
-<h2 class="post-title"><a href="https://typecodes.com/mix/iedownsource.html">妙用IE浏览器下载各种难以下载的资源</a></h2>
-<ul class="post-meta">
-	<li>作者：vfhky | 时间：2012-06-26 07:05 | 分类：<a href="https://typecodes.com/mix/index.html">mix</a></li>
-</ul>
-<div class="post-content fmt">
-	<p>可能很多人会认为微软的IE浏览器是一个很鸡肋的东西，要界面没界面，要速度没速度，而且很呆板。要不是靠着自己的系统捆绑，估计没几个人会用。人家谷歌有速度，而且有很多时尚超前的App Store；火狐向来是网页标准化的先驱者，另外它也是一个开放的王国。但也只有IE死守在自己几十年前的标准，和各大浏览器厂商都争着。但随着市场的占有率逐年的下降，谁也不敢肯定这个名噪一时的浏览器会不会濒临灭亡。但我今天想说的是IE的好处，那就是用它来下载一些迅雷或者谷歌不能下载的资源。比如说腾讯的视频，很多是不能下载的，那么怎么才能download呢？IE就能派上用场了！当你用谷歌或者360极速看腾讯视频的时候，想要下载它的内容是不可能的，那么通过IE可以实现边看边下载的功能。具体操作如下：</p>
-<p>1.进入IE浏览器，在右上角找到“Internet选项”，然后在“浏览历史记录”中单击“删除”，这一步骤是为了接下来方便的找到自己要下载的视频文件。</p>
-<p>2.这时打开你想要下载的腾讯视频的地址，然后把视频完全浏览一遍，这中间最好不要快进！</p>
-
-	<p class="more"><a href="https://typecodes.com/mix/iedownsource.html" title="妙用IE浏览器下载各种难以下载的资源">- 阅读剩余部分 -</a></p>
-			</article>
 		  	<!--page navigation-->
 <ol class="page-navigator">
 <li class="prev"><a href="https://typecodes.com/index25.html">&laquo; 前一页</a></li><li><a href="https://typecodes.com/index.html">1</a>
@@ -192,7 +192,7 @@
 		<h3 class="widget-title">Categories</h3>
 		<ul class="widget-list">
 		      <li class="current">
-		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (31)
+		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (32)
 		      </li>
 		      <li class="current">
 		        <a href="https://typecodes.com/csharp/index.html">Csharp</a> (6)
@@ -218,6 +218,9 @@
 		<h3 class="widget-title">Recent Posts</h3>
 		<ul class="widget-list">
 			<li class="post">
+				<a href="https://typecodes.com/cseries/tcpclosewaitsigpipe.html">Linux TCP通信出现CLOSE_WAIT后导致服务端进程挂掉</a>
+			</li>
+			<li class="post">
 				<a href="https://typecodes.com/cseries/tcpdumpwiresharkclosewait2.html">使用TCPDUMP和Wireshark排查服务端CLOSE_WAIT（二）</a>
 			</li>
 			<li class="post">
@@ -234,9 +237,6 @@
 			</li>
 			<li class="post">
 				<a href="https://typecodes.com/linux/syngithubmarkdownpelican.html">同步GitHub Markdown文章到Linux服务器后更新Pelican博客的脚本</a>
-			</li>
-			<li class="post">
-				<a href="https://typecodes.com/cseries/linuxgccgconnectmysql.html">Linux c语言连接MySQL数据库实例</a>
 			</li>
 		</ul>
 	</section>

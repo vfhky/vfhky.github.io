@@ -38,6 +38,23 @@
 		<div class="col-md-9" id="blog-main" role="main">
 		  	<!--article recycle-->
 			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/cseries/nmobjectfilesymbol.html">Unix系统中nm命令展示目标文件符号的方法</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2015-08-12 00:07 | 分类：<a href="https://typecodes.com/cseries/index.html">cseries</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>在*nix系统中，通过gnu开源gcc或者g++工具生成的目标文件（object file），可以用<code>nm</code>、<code>objdump</code>和<code>readelf</code>这三个命令来查看。</p>
+<div class="highlight"><pre>nm：显示目标文件中的符号；
+objdump：打印目标文件中的详细信息；
+readelf：显示关于 ELF 目标文件的信息。
+</pre></div>
+
+
+<p>之前在调试makefile文件的时候，链接动态库出错：<code>libsrcpbl.so: undefined reference to 'gcProgramName'</code>。也就是变量gcProgramName没定义，后来通过<code>nm -u libsrcpbl.so</code>命令辅助排查解决了。</p>
+
+	<p class="more"><a href="https://typecodes.com/cseries/nmobjectfilesymbol.html" title="Unix系统中nm命令展示目标文件符号的方法">- 阅读剩余部分 -</a></p>
+			</article>
+			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/cseries/gcclderrlibrarypath.html">Linux gcc链接动态库出错：LIBRARY_PATH和LD_LIBRARY_PATH的区别</a></h2>
 <ul class="post-meta">
 	<li>作者：vfhky | 时间：2015-08-08 22:51 | 分类：<a href="https://typecodes.com/cseries/index.html">cseries</a></li>
@@ -128,19 +145,6 @@ SIGUSR2：同SIGUSR1，保留给用户使用的信号。
 
 	<p class="more"><a href="https://typecodes.com/cseries/mfcreturnkeyshutdialog.html" title="MFC回车键不关闭对话框以及变成TAB键效果">- 阅读剩余部分 -</a></p>
 			</article>
-			<article class="post">
-<h2 class="post-title"><a href="https://typecodes.com/cseries/studymfchexstrxortool2.html">图文实例说MFC制作工具的心得（二）</a></h2>
-<ul class="post-meta">
-	<li>作者：vfhky | 时间：2014-11-14 23:58 | 分类：<a href="https://typecodes.com/cseries/index.html">cseries</a></li>
-</ul>
-<div class="post-content fmt">
-	<p>继前文<a href="https://typecodes.com/cseries/studymfchexstrxortool1.html" title="点击查看">《图文实例说MFC制作工具的心得（一）》</a>，这篇文章继续写几点心得。</p>
-<h5>1 如何将CString转换成char *指针</h5>
-<p>由于异或的时候可以直接调用<a href="https://typecodes.com/cseries/hexstrxor.html" title="《十六进制字符串异或》">《十六进制字符串异或》</a>一文中的十六进制字符串异或方法<code>void hexstrxor(char * HexStr1, char * HexStr2, char * HexStr)</code>。</p>
-<p>但是<code>Edit Control</code>控件添加变量<code>HexStr1</code>、<code>HexStr2</code>都是CString类型，所以需要转换。由于项目的字符集是<code>使用多字节字符集</code>，所以可以通过<code>(LPSTR)(LPCTSTR)CString</code>方法强制将CString数据转换成char *指针类型，这样就可以直接调用了<code>hexstrxor((LPSTR)(LPCTSTR)HexStr1, (LPSTR)(LPCTSTR)HexStr2, HexStrXorResult);</code>。</p>
-
-	<p class="more"><a href="https://typecodes.com/cseries/studymfchexstrxortool2.html" title="图文实例说MFC制作工具的心得（二）">- 阅读剩余部分 -</a></p>
-			</article>
 		  	<!--page navigation-->
 <ol class="page-navigator">
 <li class="prev"><a href="https://typecodes.com/cseries/index.html">&laquo; 前一页</a></li><li><a href="https://typecodes.com/cseries/index.html">1</a><li class="current"><a href="https://typecodes.com/cseries/index2.html">2</a>
@@ -162,7 +166,7 @@ SIGUSR2：同SIGUSR1，保留给用户使用的信号。
 		<h3 class="widget-title">Categories</h3>
 		<ul class="widget-list">
 		      <li class="current">
-		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (31)
+		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (32)
 		      </li>
 		      <li class="current">
 		        <a href="https://typecodes.com/csharp/index.html">Csharp</a> (6)
@@ -188,6 +192,9 @@ SIGUSR2：同SIGUSR1，保留给用户使用的信号。
 		<h3 class="widget-title">Recent Posts</h3>
 		<ul class="widget-list">
 			<li class="post">
+				<a href="https://typecodes.com/cseries/tcpclosewaitsigpipe.html">Linux TCP通信出现CLOSE_WAIT后导致服务端进程挂掉</a>
+			</li>
+			<li class="post">
 				<a href="https://typecodes.com/cseries/tcpdumpwiresharkclosewait2.html">使用TCPDUMP和Wireshark排查服务端CLOSE_WAIT（二）</a>
 			</li>
 			<li class="post">
@@ -204,9 +211,6 @@ SIGUSR2：同SIGUSR1，保留给用户使用的信号。
 			</li>
 			<li class="post">
 				<a href="https://typecodes.com/cseries/cppgeneralmakefile.html">Linux C/C++工程中可生成ELF、动/静态库文件的通用Makefile</a>
-			</li>
-			<li class="post">
-				<a href="https://typecodes.com/cseries/libraryundefinedref.html">解决make编译链接动态库错误：libxx.so: undefined reference to xx</a>
 			</li>
 		</ul>
 	</section>

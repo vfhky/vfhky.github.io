@@ -72,7 +72,7 @@ accept()函数功能是从由内核维护的处于established状态的已完成�
 如果这个队列为空，accept()函数就会阻塞让进程进入睡眠状态。
 
 close()函数是把一个TCP套接字标记成已关闭，然后立即返回调用进程。
-TCP尝试发送已排队等待发送到对端的任何数据，发送完毕后发生的是正常的TCP连接终止序列，于是有了著名的四次握手。
+TCP尝试发送已排队等待发送到对端的任何数据，发送完毕后发生的是正常的TCP连接终止序列，于是有了著名的四次挥手。
 </pre></div>
 
 
@@ -120,7 +120,7 @@ TCP尝试发送已排队等待发送到对端的任何数据，发送完毕后�
 		<h3 class="widget-title">Categories</h3>
 		<ul class="widget-list">
 		      <li class="current">
-		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (31)
+		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (32)
 		      </li>
 		      <li class="current">
 		        <a href="https://typecodes.com/csharp/index.html">Csharp</a> (6)
@@ -146,6 +146,9 @@ TCP尝试发送已排队等待发送到对端的任何数据，发送完毕后�
 		<h3 class="widget-title">Recent Posts</h3>
 		<ul class="widget-list">
 			<li class="post">
+				<a href="https://typecodes.com/cseries/tcpclosewaitsigpipe.html">Linux TCP通信出现CLOSE_WAIT后导致服务端进程挂掉</a>
+			</li>
+			<li class="post">
 				<a href="https://typecodes.com/cseries/tcpdumpwiresharkclosewait2.html">使用TCPDUMP和Wireshark排查服务端CLOSE_WAIT（二）</a>
 			</li>
 			<li class="post">
@@ -162,9 +165,6 @@ TCP尝试发送已排队等待发送到对端的任何数据，发送完毕后�
 			</li>
 			<li class="post">
 				<a href="https://typecodes.com/linux/syngithubmarkdownpelican.html">同步GitHub Markdown文章到Linux服务器后更新Pelican博客的脚本</a>
-			</li>
-			<li class="post">
-				<a href="https://typecodes.com/cseries/linuxgccgconnectmysql.html">Linux c语言连接MySQL数据库实例</a>
 			</li>
 		</ul>
 	</section>

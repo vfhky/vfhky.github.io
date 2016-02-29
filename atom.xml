@@ -1,5 +1,237 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>TypeCodes</title><link href="https://typecodes.com/" rel="alternate"></link><link href="https://typecodes.com/atom.xml" rel="self"></link><id>https://typecodes.com/</id><updated>2016-02-28T18:11:00+08:00</updated><entry><title>使用TCPDUMP和Wireshark排查服务端CLOSE_WAIT（二）</title><link href="https://typecodes.com/cseries/tcpdumpwiresharkclosewait2.html" rel="alternate"></link><updated>2016-02-28T18:11:00+08:00</updated><author><name>vfhky</name></author><id>tag:typecodes.com,2016-02-28:cseries/tcpdumpwiresharkclosewait2.html</id><summary type="html">&lt;p&gt;前文&lt;a href="https://typecodes.com/cseries/tcpdumpwiresharkclosewait1.html" title="查看原文"&gt;《使用TCPDUMP和Wireshark排查服务端CLOSE_WAIT（一）》&lt;/a&gt;通过TCPDUMP和Wireshark在利用CentOS7作为服务端、Windows10作为客户端，模拟演示了一个TCP通信的CLOSE_WAIT状态，这篇文章主要利用前文的数据尝试解释Linux服务端产生CLOSE_WAIT状态的原因。&lt;/p&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>TypeCodes</title><link href="https://typecodes.com/" rel="alternate"></link><link href="https://typecodes.com/atom.xml" rel="self"></link><id>https://typecodes.com/</id><updated>2016-02-29T08:39:00+08:00</updated><entry><title>Linux TCP通信出现CLOSE_WAIT后导致服务端进程挂掉</title><link href="https://typecodes.com/cseries/tcpclosewaitsigpipe.html" rel="alternate"></link><updated>2016-02-29T08:39:00+08:00</updated><author><name>vfhky</name></author><id>tag:typecodes.com,2016-02-29:cseries/tcpclosewaitsigpipe.html</id><summary type="html">&lt;p&gt;在&lt;a href="https://typecodes.com/cseries/tcpdumpwiresharkclosewait2.html" title="《使用TCPDUMP和Wireshark排查服务端CLOSE_WAIT（二）》"&gt;前文&lt;/a&gt;中讲述了Linux服务端TCP通信出现&lt;code&gt;CLOSE_WAIT&lt;/code&gt;状态的原因，这篇文章主要通过一个实例演示它个一个“恶劣”影响：直接使服务端进程Down掉。&lt;/p&gt;
+&lt;p&gt;&lt;img alt="CentOS服务端建立监听端口" src="https://dn-vfhky.qbox.me/2016/02/tcp_socket_server1.png" title="CentOS服务端建立监听端口" /&gt;&lt;/p&gt;
+
+
+&lt;h4&gt;1 CentOS服务端建立监听端口&lt;/h4&gt;
+&lt;p&gt;如上图所示，在虚拟机CentOS7服务器（192.168.1.178）中打开一个终端界面，建立8000端口的监听服务（PID:13035）。所用代码如下，和&lt;a href="https://typecodes.com/cseries/tcpdumpwiresharkclosewait1.html" title="《使用TCPDUMP和Wireshark排查服务端CLOSE_WAIT（一）》"&gt;上一篇文章&lt;/a&gt;中的程序大体一样，只是多了一个SIGPIPE信号处理以及自动回复(Auto response from server.)部分。&lt;/p&gt;
+&lt;table class="highlighttable"&gt;&lt;tr&gt;&lt;td class="linenos"&gt;&lt;div class="linenodiv"&gt;&lt;pre&gt; 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94&lt;/pre&gt;&lt;/div&gt;&lt;/td&gt;&lt;td class="code"&gt;&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="cm"&gt;/** &lt;/span&gt;
+&lt;span class="cm"&gt; * @FileName    server_socket.c&lt;/span&gt;
+&lt;span class="cm"&gt; * @Describe    A simple example for creating a listen as a server and simulate generate a sigpipe signal in linux.&lt;/span&gt;
+&lt;span class="cm"&gt; * @Author      vfhky 2016-02-29 08:01 https://typecodes.com/cseries/tcpclosewaitsigpipe.html&lt;/span&gt;
+&lt;span class="cm"&gt; * @Compile     gcc server_socket.c -o server_socket&lt;/span&gt;
+&lt;span class="cm"&gt; */&lt;/span&gt;
+&lt;span class="cp"&gt;#include &amp;lt;stdio.h&amp;gt;&lt;/span&gt;
+&lt;span class="cp"&gt;#include &amp;lt;string.h&amp;gt;&lt;/span&gt;
+&lt;span class="cp"&gt;#include &amp;lt;sys/types.h&amp;gt;&lt;/span&gt;
+&lt;span class="cp"&gt;#include &amp;lt;sys/socket.h&amp;gt;&lt;/span&gt;
+&lt;span class="cp"&gt;#include &amp;lt;netinet/in.h&amp;gt;&lt;/span&gt;
+&lt;span class="cp"&gt;#include &amp;lt;arpa/inet.h&amp;gt;&lt;/span&gt;
+&lt;span class="cp"&gt;#include &amp;lt;errno.h&amp;gt;&lt;/span&gt;
+&lt;span class="cp"&gt;#include &amp;lt;signal.h&amp;gt;&lt;/span&gt;
+
+&lt;span class="c1"&gt;//Whether add a signal handle.&lt;/span&gt;
+&lt;span class="cp"&gt;#define SIGNAL_HANDLE 0&lt;/span&gt;
+
+&lt;span class="kt"&gt;void&lt;/span&gt; &lt;span class="nf"&gt;sig_handle&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt; &lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;signal&lt;/span&gt; &lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="n"&gt;printf&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;Receive a signal=[%d].&lt;/span&gt;&lt;span class="se"&gt;\n&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;signal&lt;/span&gt; &lt;span class="p"&gt;);&lt;/span&gt;
+    &lt;span class="k"&gt;return&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+
+&lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="nf"&gt;main&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt; &lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;argc&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="kt"&gt;char&lt;/span&gt; &lt;span class="o"&gt;**&lt;/span&gt;&lt;span class="n"&gt;argv&lt;/span&gt; &lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;server_sockfd&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;client_sockfd&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;len&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;llOpt&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="k"&gt;struct&lt;/span&gt; &lt;span class="n"&gt;sockaddr_in&lt;/span&gt; &lt;span class="n"&gt;my_addr&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="k"&gt;struct&lt;/span&gt; &lt;span class="n"&gt;sockaddr_in&lt;/span&gt; &lt;span class="n"&gt;remote_addr&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;sin_size&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="kt"&gt;char&lt;/span&gt; &lt;span class="n"&gt;buf&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;BUFSIZ&lt;/span&gt;&lt;span class="p"&gt;];&lt;/span&gt;
+    &lt;span class="n"&gt;memset&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="n"&gt;my_addr&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="k"&gt;sizeof&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;my_addr&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;);&lt;/span&gt;
+    &lt;span class="n"&gt;my_addr&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;sin_family&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;AF_INET&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="n"&gt;my_addr&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;sin_addr&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;s_addr&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;INADDR_ANY&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="n"&gt;my_addr&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;sin_port&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;htons&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;8000&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+
+    &lt;span class="cp"&gt;#if SIGNAL_HANDLE&lt;/span&gt;
+    &lt;span class="k"&gt;struct&lt;/span&gt; &lt;span class="n"&gt;sigaction&lt;/span&gt; &lt;span class="n"&gt;new_act&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;old_act&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="n"&gt;new_act&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;sa_handler&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;sig_handle&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="n"&gt;new_act&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;sa_flags&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="n"&gt;sigemptyset&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="n"&gt;new_act&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;sa_mask&lt;/span&gt; &lt;span class="p"&gt;);&lt;/span&gt;
+    &lt;span class="n"&gt;sigaction&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt; &lt;span class="n"&gt;SIGPIPE&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="n"&gt;new_act&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="n"&gt;old_act&lt;/span&gt; &lt;span class="p"&gt;);&lt;/span&gt;
+    &lt;span class="n"&gt;sigaction&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt; &lt;span class="n"&gt;SIGINT&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="n"&gt;new_act&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="n"&gt;old_act&lt;/span&gt; &lt;span class="p"&gt;);&lt;/span&gt;    
+    &lt;span class="err"&gt;#&lt;/span&gt;&lt;span class="n"&gt;endif&lt;/span&gt;
+
+    &lt;span class="k"&gt;if&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt; &lt;span class="n"&gt;server_sockfd&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;socket&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt; &lt;span class="n"&gt;AF_INET&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;SOCK_STREAM&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt; &lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt; &lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="p"&gt;{&lt;/span&gt;  
+        &lt;span class="n"&gt;perror&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;socket&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+        &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="p"&gt;}&lt;/span&gt;
+
+    &lt;span class="k"&gt;if&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt; &lt;span class="n"&gt;setsockopt&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt; &lt;span class="n"&gt;server_sockfd&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;SOL_SOCKET&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;SO_REUSEADDR&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="n"&gt;llOpt&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="k"&gt;sizeof&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;llOpt&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+        &lt;span class="n"&gt;close&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;server_sockfd&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+        &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;errno&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="p"&gt;}&lt;/span&gt;
+
+    &lt;span class="k"&gt;if&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt; &lt;span class="n"&gt;bind&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt; &lt;span class="n"&gt;server_sockfd&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;struct&lt;/span&gt; &lt;span class="n"&gt;sockaddr&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="n"&gt;my_addr&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="k"&gt;sizeof&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;struct&lt;/span&gt; &lt;span class="n"&gt;sockaddr&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt; &lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="p"&gt;{&lt;/span&gt;
+        &lt;span class="n"&gt;perror&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;bind&amp;quot;&lt;/span&gt; &lt;span class="p"&gt;);&lt;/span&gt;
+        &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="p"&gt;}&lt;/span&gt;
+
+    &lt;span class="n"&gt;listen&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt; &lt;span class="n"&gt;server_sockfd&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;5&lt;/span&gt; &lt;span class="p"&gt;);&lt;/span&gt;
+
+    &lt;span class="n"&gt;sin_size&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="k"&gt;sizeof&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt; &lt;span class="k"&gt;struct&lt;/span&gt; &lt;span class="n"&gt;sockaddr_in&lt;/span&gt; &lt;span class="p"&gt;);&lt;/span&gt;
+
+    &lt;span class="n"&gt;printf&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;Server is listening with pid=[%d].&lt;/span&gt;&lt;span class="se"&gt;\n&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;getpid&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="p"&gt;);&lt;/span&gt;
+
+    &lt;span class="k"&gt;while&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="p"&gt;{&lt;/span&gt;
+        &lt;span class="k"&gt;if&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt; &lt;span class="n"&gt;client_sockfd&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;accept&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt; &lt;span class="n"&gt;server_sockfd&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;struct&lt;/span&gt; &lt;span class="n"&gt;sockaddr&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="n"&gt;remote_addr&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="n"&gt;sin_size&lt;/span&gt; &lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt; &lt;span class="p"&gt;)&lt;/span&gt;
+        &lt;span class="p"&gt;{&lt;/span&gt;
+            &lt;span class="n"&gt;perror&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;accept&amp;quot;&lt;/span&gt; &lt;span class="p"&gt;);&lt;/span&gt;
+            &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+        &lt;span class="p"&gt;}&lt;/span&gt;
+        &lt;span class="c1"&gt;//Print the ip address and port of client.&lt;/span&gt;
+        &lt;span class="n"&gt;printf&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;Accept client[%s:%u].&lt;/span&gt;&lt;span class="se"&gt;\n&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;inet_ntoa&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;remote_addr&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;sin_addr&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt; &lt;span class="n"&gt;ntohs&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;remote_addr&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;sin_port&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;);&lt;/span&gt;
+
+        &lt;span class="n"&gt;send&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt; &lt;span class="n"&gt;client_sockfd&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;Auto response from server.&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;strlen&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;Auto response from server.&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt; &lt;span class="p"&gt;);&lt;/span&gt;
+
+        &lt;span class="n"&gt;memset&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt; &lt;span class="n"&gt;buf&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mh"&gt;0x00&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;BUFSIZ&lt;/span&gt; &lt;span class="p"&gt;);&lt;/span&gt;
+        &lt;span class="k"&gt;while&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt; &lt;span class="n"&gt;len&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;recv&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt; &lt;span class="n"&gt;client_sockfd&lt;/span&gt; &lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="n"&gt;buf&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;BUFSIZ&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt; &lt;span class="p"&gt;)&lt;/span&gt;
+        &lt;span class="p"&gt;{&lt;/span&gt;
+            &lt;span class="n"&gt;buf&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;len&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="sc"&gt;&amp;#39;\0&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+            &lt;span class="n"&gt;printf&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;Message from client=[%s]&lt;/span&gt;&lt;span class="se"&gt;\n&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;buf&lt;/span&gt; &lt;span class="p"&gt;);&lt;/span&gt;
+        &lt;span class="p"&gt;}&lt;/span&gt;
+        &lt;span class="n"&gt;close&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt; &lt;span class="n"&gt;client_sockfd&lt;/span&gt; &lt;span class="p"&gt;);&lt;/span&gt;
+    &lt;span class="p"&gt;}&lt;/span&gt;
+    &lt;span class="n"&gt;close&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt; &lt;span class="n"&gt;server_sockfd&lt;/span&gt; &lt;span class="p"&gt;);&lt;/span&gt;
+    &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+
+&lt;h4&gt;2 在Linux中利用telnet命令创建一个客户端&lt;/h4&gt;
+&lt;p&gt;新建一个shell脚本netstat_nap.sh，里面只包含一条有效命令&lt;code&gt;netstat -nap|head -n 2;netstat -nap|grep 8000&lt;/code&gt;。&lt;/p&gt;
+&lt;p&gt;再打开一个Linux终端界面，然后输入命令&lt;code&gt;telnet 192.168.1.177 8000&lt;/code&gt;作为客户端建立与服务端的TCP连接。这时执行脚本&lt;code&gt;./netstat_nap.sh&lt;/code&gt;可以看到Linux客户端（PID:13045）和服务端（PID:13035）的TCP通信已经变成&lt;code&gt;ESTABLISHED&lt;/code&gt;状态，效果如下图所示：&lt;/p&gt;
+&lt;p&gt;&lt;img alt="Linux中利用netstat和lsof命令查看TCP服务状态" src="https://dn-vfhky.qbox.me/2016/02/tcp_linux_client_established.png" title="Linux中利用netstat和lsof命令查看TCP服务状态" /&gt;&lt;/p&gt;
+&lt;h4&gt;3 在Windows中利用telnet命令创建一个客户端&lt;/h4&gt;
+&lt;p&gt;在Windows主机（192.168.1.110）中打开一个PowerShell终端界面，然后输入命令&lt;code&gt;telnet 192.168.1.177 8000&lt;/code&gt;作为客户端建立与Linux服务端的TCP连接。&lt;/p&gt;
+&lt;p&gt;这时执行脚本&lt;code&gt;./netstat_nap.sh&lt;/code&gt;，可以看到Windows客户端（端口:64012）和服务端（PID:13035）的TCP通信已经变成&lt;code&gt;ESTABLISHED&lt;/code&gt;状态。同时使用命令&lt;code&gt;lsof -i:8000&lt;/code&gt;，可以看到进程打开的文件。&lt;/p&gt;
+&lt;p&gt;&lt;img alt="Linux中利用netstat和lsof命令查看TCP服务状态" src="https://dn-vfhky.qbox.me/2016/02/win_client_netstat_lsof.png" title="Linux中利用netstat和lsof命令查看TCP服务状态" /&gt;&lt;/p&gt;
+&lt;h4&gt;4 直接关闭Windows telnet客户端界面并使用Wireshark抓包&lt;/h4&gt;
+&lt;p&gt;在直接关闭telnet界面后，继续使用netstat_nap.sh脚本和lsof命令发现刚才建立的TCP通信出现了&lt;code&gt;CLOSE_WAIT&lt;/code&gt;的状态。&lt;/p&gt;
+&lt;p&gt;&lt;img alt="Linux中利用netstat和lsof命令查看TCP服务状态" src="https://dn-vfhky.qbox.me/2016/02/win_client_close_netstat_lsof1.png" title="Linux中利用netstat和lsof命令查看TCP服务状态" /&gt;&lt;/p&gt;
+&lt;p&gt;在等待2分钟后，在Windows中使用Wireshark抓包发现由于客户端发送了&lt;code&gt;RST+ACK&lt;/code&gt;报文给Linux服务端，所以二者的TCP链路已经被复位了：&lt;/p&gt;
+&lt;p&gt;&lt;img alt="在Windows中使用Wireshark抓包" src="https://dn-vfhky.qbox.me/2016/02/win_client_wireshark1.png" title="在Windows中使用Wireshark抓包" /&gt;&lt;/p&gt;
+&lt;p&gt;这时在Linux中再次使用netstat_nap.sh脚本和lsof命令发现&lt;code&gt;CLOSE_WAIT&lt;/code&gt;的状态已经不存在了。&lt;/p&gt;
+&lt;p&gt;&lt;img alt="Linux中利用netstat和lsof命令查看TCP服务状态" src="https://dn-vfhky.qbox.me/2016/02/win_client_close_netstat_lsof2.png" title="Linux中利用netstat和lsof命令查看TCP服务状态" /&gt;&lt;/p&gt;
+&lt;h4&gt;5 关闭Linux telnet客户端&lt;/h4&gt;
+&lt;p&gt;在Windows关闭telnet客户端界面并发送&lt;code&gt;RST+ACK&lt;/code&gt;报文后，关闭小节2中在Linux中打开的telnet客户端。这时Linux服务端进程会执行第90行处的close()函数，也即执行正常&lt;code&gt;四次挥手&lt;/code&gt;关闭TCP连接。&lt;/p&gt;
+&lt;p&gt;接着Linux服务端进程继续从内核中已完成连接队列中取出已完成连接，这样之前小节3中Windows telnet建立的客户端连接被读取。如下图所示，服务端进程打印了第80行出的数据（Accept client[192.168.1.110:64012].），但是服务端进程却挂掉了。&lt;/p&gt;
+&lt;p&gt;&lt;img alt="CentOS服务端建立监听端口" src="https://dn-vfhky.qbox.me/2016/02/tcp_socket_server2.png" title="CentOS服务端建立监听端口" /&gt;&lt;/p&gt;
+&lt;p&gt;这时在Linux中再次使用netstat_nap.sh脚本和lsof命令：&lt;/p&gt;
+&lt;p&gt;&lt;img alt="Linux中利用netstat和lsof命令查看TCP服务状态" src="https://dn-vfhky.qbox.me/2016/02/win_client_close_netstat_lsof3.png" title="Linux中利用netstat和lsof命令查看TCP服务状态" /&gt;   &lt;/p&gt;
+&lt;h4&gt;6 原因分析&lt;/h4&gt;
+&lt;p&gt;由于Windows客户端的TCP链路在小节4中由于&lt;code&gt;RST&lt;/code&gt;的缘故而关闭了，没有读端。那么当Linux服务端执行82行的send()函数时，向之前的socket描述符发送26字节的报文数据时，会收到内核发送过来的&lt;code&gt;SIGPIPE信号&lt;/code&gt;，导致服务端进程默认关闭。&lt;/p&gt;
+&lt;p&gt;因此，如果想捕捉到这个SIGPIPE信号的话，可以将程序17行的SIGNAL_HANDLE宏定义值改成1，那么就会得到如下图所示的情况（进程能正常运行了）。&lt;/p&gt;
+&lt;p&gt;&lt;img alt="Linux TCP通信出现CLOSE_WAIT后导致服务端进程挂掉" src="https://dn-vfhky.qbox.me/2016/02/close_wait_sigepipe.png" title="Linux TCP通信出现CLOSE_WAIT后导致服务端进程挂掉" /&gt;  &lt;/p&gt;
+&lt;h4&gt;7 问题延伸&lt;/h4&gt;
+&lt;p&gt;如果在第4小节中关闭Windows客户端界面后，又直接如第5小节所示关闭Linux telnet客户端界面，那么又会出现什么情况呢？于是又重新做了一遍测试，流程同上，下面是测试结果以及分析。&lt;/p&gt;
+&lt;p&gt;先用netstat和lsof命令查看TCP服务状态，发现监听服务正常：&lt;/p&gt;
+&lt;p&gt;&lt;img alt="Linux中利用netstat和lsof命令查看TCP服务状态" src="https://dn-vfhky.qbox.me/2016/02/extend_netstat_lsof.png" title="Linux中利用netstat和lsof命令查看TCP服务状态" /&gt;&lt;/p&gt;
+&lt;p&gt;然后分别用TCPDUMP和Wireshark抓取TCP通信包，截取如下所示。可以发现在Linux telnet客户端完成&lt;code&gt;四次挥手&lt;/code&gt;后，服务端进程继续向之前Windows telnet客户端建立的socket描述符发送26字节的报文数据。&lt;/p&gt;
+&lt;p&gt;因为Windows客户端此时处于&lt;code&gt;FIN_WAIT2&lt;/code&gt;状态（Linux服务端处于&lt;code&gt;CLOSE_WAIT&lt;/code&gt;状态），所以服务端能继续发其发送数据（即图中的PUSH+ACK报文），接着Windows客户端回应&lt;code&gt;RST+ACK&lt;/code&gt;报文，从而两者的TCP链路复位。&lt;/p&gt;
+&lt;p&gt;&lt;img alt="在Linux中使用TCPDUMP抓包" src="https://dn-vfhky.qbox.me/2016/02/extend_tcpdump.png" title="在Linux中使用TCPDUMP抓包" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img alt="在Windows中使用Wireshark抓包" src="https://dn-vfhky.qbox.me/2016/02/win_client_wireshark2.png" title="在Windows中使用Wireshark抓包" /&gt;&lt;/p&gt;
+&lt;p&gt;这样Linux服务端进程还是能够正常执行监听任务：&lt;/p&gt;
+&lt;p&gt;&lt;img alt="服务端进程正常执行监听" src="https://dn-vfhky.qbox.me/2016/02/tcp_socket_server3.png" title="服务端进程正常执行监听" /&gt;&lt;/p&gt;
+&lt;h4&gt;8 其它&lt;/h4&gt;
+&lt;p&gt;网上有人把这种客户端或者服务端异常关闭的连接叫做TCP半关闭（Half-Close），例如网线拔掉、突然断电等，此时对端连接仍认为双方连接处于打开中。&lt;/p&gt;</summary><category term="tcpdump"></category><category term="wireshark"></category><category term="tcp"></category><category term="close_wait"></category><category term="sigpipe"></category></entry><entry><title>使用TCPDUMP和Wireshark排查服务端CLOSE_WAIT（二）</title><link href="https://typecodes.com/cseries/tcpdumpwiresharkclosewait2.html" rel="alternate"></link><updated>2016-02-28T18:11:00+08:00</updated><author><name>vfhky</name></author><id>tag:typecodes.com,2016-02-28:cseries/tcpdumpwiresharkclosewait2.html</id><summary type="html">&lt;p&gt;前文&lt;a href="https://typecodes.com/cseries/tcpdumpwiresharkclosewait1.html" title="查看原文"&gt;《使用TCPDUMP和Wireshark排查服务端CLOSE_WAIT（一）》&lt;/a&gt;通过TCPDUMP和Wireshark在利用CentOS7作为服务端、Windows10作为客户端，模拟演示了一个TCP通信的CLOSE_WAIT状态，这篇文章主要利用前文的数据尝试解释Linux服务端产生CLOSE_WAIT状态的原因。&lt;/p&gt;
 &lt;p&gt;&lt;img alt="客户端和服务端的TCP通信流程" src="https://dn-vfhky.qbox.me/2016/02/socket_tcpflow.png" title="客户端和服务端的TCP通信流程" /&gt;&lt;/p&gt;
 
 
@@ -29,7 +261,7 @@ accept()函数功能是从由内核维护的处于established状态的已完成�
 如果这个队列为空，accept()函数就会阻塞让进程进入睡眠状态。
 
 close()函数是把一个TCP套接字标记成已关闭，然后立即返回调用进程。
-TCP尝试发送已排队等待发送到对端的任何数据，发送完毕后发生的是正常的TCP连接终止序列，于是有了著名的四次握手。
+TCP尝试发送已排队等待发送到对端的任何数据，发送完毕后发生的是正常的TCP连接终止序列，于是有了著名的四次挥手。
 &lt;/pre&gt;&lt;/div&gt;
 
 

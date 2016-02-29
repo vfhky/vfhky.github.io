@@ -38,6 +38,24 @@
 		<div class="col-md-9" id="blog-main" role="main">
 		  	<!--article recycle-->
 			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/web/webpageautorefresh.html">网页自动刷新技术</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2012-08-26 15:02 | 分类：<a href="https://typecodes.com/web/index.html">web</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>网站的自动刷新技术对一个网站来说还是很有用处的，省去了多余的点击操作步骤，却能到达我们想要到达的页面，这是多么惬意的事情啊。像本站的404页面，当访问者访问了某一无效页面，就会自动转到这个404错误页面。然后通过这个页面的自动刷新技术，在8秒后跳转到博客的首页。所以说，这种设计还是挺人性化的。下面我就列举三种制作自动刷新网页页面的方法：</p>
+<h5>1 PHP中的自动刷新</h5>
+<div class="highlight"><pre><span class="cp">&lt;?php</span> 
+    <span class="k">echo</span> <span class="s2">&quot;</span><span class="si">$name</span><span class="s2">.登录成功！&quot;</span><span class="nx">；</span>
+    <span class="k">echo</span> <span class="s2">&quot;&lt;meta http-equiv=</span><span class="se">\&quot;</span><span class="s2">Refresh</span><span class="se">\&quot;</span><span class="s2"> content=</span><span class="se">\&quot;</span><span class="s2">8;url=index.php </span><span class="se">\&quot;</span><span class="s2">&gt; 8秒后回到 TypeCodes&quot;</span><span class="p">;</span>
+<span class="cp">?&gt;</span>
+</pre></div>
+
+
+
+	<p class="more"><a href="https://typecodes.com/web/webpageautorefresh.html" title="网页自动刷新技术">- 阅读剩余部分 -</a></p>
+			</article>
+			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/web/phpverificationcode.html">PHP中验证码的设计</a></h2>
 <ul class="post-meta">
 	<li>作者：vfhky | 时间：2012-08-26 14:56 | 分类：<a href="https://typecodes.com/web/index.html">web</a></li>
@@ -111,26 +129,6 @@
 
 	<p class="more"><a href="https://typecodes.com/web/sfnewstag.html" title="动易SiteFactory系列教程三:最新头条新闻标签制作">- 阅读剩余部分 -</a></p>
 			</article>
-			<article class="post">
-<h2 class="post-title"><a href="https://typecodes.com/web/sfcommontag.html">动易SiteFactory系列教程二:动易常用的标签</a></h2>
-<ul class="post-meta">
-	<li>作者：vfhky | 时间：2012-08-21 23:27 | 分类：<a href="https://typecodes.com/web/index.html">web</a></li>
-</ul>
-<div class="post-content fmt">
-	<p>1.显示某个栏目的标题及链接：</p>
-<div class="highlight"><pre><span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&#39;{PE.Label id=&quot;取得节点链接路径&quot; nodeid=&quot;1&quot;/}&#39;</span> <span class="nt">&gt;</span>{PE.Label id=&quot;取得节点名称&quot; nodeid=&quot;1&quot;/}<span class="nt">&lt;/a&gt;</span>
-显示“文章中心”及链接。也可以用nodes=&quot;@RequestInt_Id&quot;自动取值。
-</pre></div>
-
-
-<p>2.显示图片带标题（左边图片，右边文章标题）：</p>
-<div class="highlight"><pre>{PE.Label id=&quot;通用带图片的信息列表&quot; outputQty=&quot;1&quot; titleLength=&quot;30&quot; contentLength=&quot;80&quot; models=&quot;1&quot; titleClass=&quot;tv_u_thumb_title&quot; imageClass=&quot;tv_u_thumb&quot; imageWidth=&quot;160&quot; imageHeight=&quot;120&quot; picExist=&quot;true&quot;/}
-</pre></div>
-
-
-
-	<p class="more"><a href="https://typecodes.com/web/sfcommontag.html" title="动易SiteFactory系列教程二:动易常用的标签">- 阅读剩余部分 -</a></p>
-			</article>
 		  	<!--page navigation-->
 <ol class="page-navigator">
 <li class="prev"><a href="https://typecodes.com/index22.html">&laquo; 前一页</a></li><li><a href="https://typecodes.com/index.html">1</a>
@@ -157,7 +155,7 @@
 		<h3 class="widget-title">Categories</h3>
 		<ul class="widget-list">
 		      <li class="current">
-		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (31)
+		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (32)
 		      </li>
 		      <li class="current">
 		        <a href="https://typecodes.com/csharp/index.html">Csharp</a> (6)
@@ -183,6 +181,9 @@
 		<h3 class="widget-title">Recent Posts</h3>
 		<ul class="widget-list">
 			<li class="post">
+				<a href="https://typecodes.com/cseries/tcpclosewaitsigpipe.html">Linux TCP通信出现CLOSE_WAIT后导致服务端进程挂掉</a>
+			</li>
+			<li class="post">
 				<a href="https://typecodes.com/cseries/tcpdumpwiresharkclosewait2.html">使用TCPDUMP和Wireshark排查服务端CLOSE_WAIT（二）</a>
 			</li>
 			<li class="post">
@@ -199,9 +200,6 @@
 			</li>
 			<li class="post">
 				<a href="https://typecodes.com/linux/syngithubmarkdownpelican.html">同步GitHub Markdown文章到Linux服务器后更新Pelican博客的脚本</a>
-			</li>
-			<li class="post">
-				<a href="https://typecodes.com/cseries/linuxgccgconnectmysql.html">Linux c语言连接MySQL数据库实例</a>
 			</li>
 		</ul>
 	</section>
