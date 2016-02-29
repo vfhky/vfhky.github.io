@@ -170,17 +170,7 @@
 &lt;p&gt;这时，由于之前由于信号掩码&lt;code&gt;pendmask&lt;/code&gt;被屏蔽的未决信号信号&lt;code&gt;SIGUSR1&lt;/code&gt;和&lt;code&gt;SIGUSR2&lt;/code&gt;由内核重新传递，所以进程会执行&lt;code&gt;SIGUSR2&lt;/code&gt;信号的处理函数（SIGUSR1信号被信号集new_set所屏蔽，因此不会执行）。接着进程从sigsuspend调用处返回，恢复执行（进入while循环）。&lt;/p&gt;
 &lt;p&gt;&lt;img alt="执行SIGINT和SIGUSR2信号处理函数" src="https://dn-vfhky.qbox.me/2016/02/sigint_while.png" title="执行SIGINT和SIGUSR2信号处理函数" /&gt;&lt;/p&gt;
 &lt;p&gt;如果继续发送&lt;code&gt;SIGINT&lt;/code&gt;信号，因为被加入到了当前信号掩码&lt;code&gt;new_set&lt;/code&gt;中，所以也会被屏蔽（对进程无影响）。最后可以通过命令&lt;code&gt;kill -SIGKILL 7154&lt;/code&gt;将整个进程关闭。&lt;/p&gt;
-&lt;p&gt;&lt;img alt="继续发送SIGINT和SIGKILL信号" src="https://dn-vfhky.qbox.me/2016/02/sigint_sigkill.png" title="继续发送SIGINT和SIGKILL信号" /&gt;&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;    /* 
-     * 进程执行到sigsuspend时，sigsuspend并不会立刻返回，进程处于TASK_INTERRUPTIBLE(可中断)状态并立刻放弃CPU，等待UNBLOCK（pendmask之外的）信号的唤醒。
-     * 进程在接收到UNBLOCK（pendmask之外）信号后，先调用该信号的处理函数，然后把现在的信号集pendmask还原为原来的new_set，接着从sigsuspend调用出返回，进程恢复执行。
-     * 该系统调用始终返回-1，并将errno设置为EINTR.
-    */
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p&gt;i = sigsuspend( &amp;amp;pendmask );    //以阻塞方式等待除了 pendmask 集合之外的任意信号到来&lt;/p&gt;
-&lt;p&gt;&lt;img alt="服务端进程正常执行监听" src="https://dn-vfhky.qbox.me/2016/02/tcp_socket_server3.png" title="服务端进程正常执行监听" /&gt;&lt;/p&gt;</summary><category term="sigprocmask"></category><category term="sigsuspend"></category><category term="信号"></category></entry><entry><title>Linux TCP通信出现CLOSE_WAIT后导致服务端进程挂掉</title><link href="https://typecodes.com/cseries/tcpclosewaitsigpipe.html" rel="alternate"></link><updated>2016-02-29T08:39:00+08:00</updated><author><name>vfhky</name></author><id>tag:typecodes.com,2016-02-29:cseries/tcpclosewaitsigpipe.html</id><summary type="html">&lt;p&gt;在&lt;a href="https://typecodes.com/cseries/tcpdumpwiresharkclosewait2.html" title="《使用TCPDUMP和Wireshark排查服务端CLOSE_WAIT（二）》"&gt;前文&lt;/a&gt;中讲述了Linux服务端TCP通信出现&lt;code&gt;CLOSE_WAIT&lt;/code&gt;状态的原因，这篇文章主要通过一个实例演示它个一个“恶劣”影响：直接使服务端进程Down掉。&lt;/p&gt;
+&lt;p&gt;&lt;img alt="继续发送SIGINT和SIGKILL信号" src="https://dn-vfhky.qbox.me/2016/02/sigint_sigkill.png" title="继续发送SIGINT和SIGKILL信号" /&gt;&lt;/p&gt;</summary><category term="sigprocmask"></category><category term="sigsuspend"></category><category term="信号"></category></entry><entry><title>Linux TCP通信出现CLOSE_WAIT后导致服务端进程挂掉</title><link href="https://typecodes.com/cseries/tcpclosewaitsigpipe.html" rel="alternate"></link><updated>2016-02-29T08:39:00+08:00</updated><author><name>vfhky</name></author><id>tag:typecodes.com,2016-02-29:cseries/tcpclosewaitsigpipe.html</id><summary type="html">&lt;p&gt;在&lt;a href="https://typecodes.com/cseries/tcpdumpwiresharkclosewait2.html" title="《使用TCPDUMP和Wireshark排查服务端CLOSE_WAIT（二）》"&gt;前文&lt;/a&gt;中讲述了Linux服务端TCP通信出现&lt;code&gt;CLOSE_WAIT&lt;/code&gt;状态的原因，这篇文章主要通过一个实例演示它个一个“恶劣”影响：直接使服务端进程Down掉。&lt;/p&gt;
 &lt;p&gt;&lt;img alt="CentOS服务端建立监听端口" src="https://dn-vfhky.qbox.me/2016/02/tcp_socket_server1.png" title="CentOS服务端建立监听端口" /&gt;&lt;/p&gt;
 
 

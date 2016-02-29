@@ -214,16 +214,6 @@
 <p><img alt="执行SIGINT和SIGUSR2信号处理函数" src="https://dn-vfhky.qbox.me/2016/02/sigint_while.png" title="执行SIGINT和SIGUSR2信号处理函数" /></p>
 <p>如果继续发送<code>SIGINT</code>信号，因为被加入到了当前信号掩码<code>new_set</code>中，所以也会被屏蔽（对进程无影响）。最后可以通过命令<code>kill -SIGKILL 7154</code>将整个进程关闭。</p>
 <p><img alt="继续发送SIGINT和SIGKILL信号" src="https://dn-vfhky.qbox.me/2016/02/sigint_sigkill.png" title="继续发送SIGINT和SIGKILL信号" /></p>
-<div class="highlight"><pre>    /* 
-     * 进程执行到sigsuspend时，sigsuspend并不会立刻返回，进程处于TASK_INTERRUPTIBLE(可中断)状态并立刻放弃CPU，等待UNBLOCK（pendmask之外的）信号的唤醒。
-     * 进程在接收到UNBLOCK（pendmask之外）信号后，先调用该信号的处理函数，然后把现在的信号集pendmask还原为原来的new_set，接着从sigsuspend调用出返回，进程恢复执行。
-     * 该系统调用始终返回-1，并将errno设置为EINTR.
-    */
-</pre></div>
-
-
-<p>i = sigsuspend( &amp;pendmask );    //以阻塞方式等待除了 pendmask 集合之外的任意信号到来</p>
-<p><img alt="服务端进程正常执行监听" src="https://dn-vfhky.qbox.me/2016/02/tcp_socket_server3.png" title="服务端进程正常执行监听" /></p>
 		    	<p class="tags">
 					<div class="post-share">
 						<ul class="post-shareul clearfix">
