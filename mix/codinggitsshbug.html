@@ -7,7 +7,7 @@
   		<meta name="viewport" content="width=device-width, initial-scale=1">
   		<link href="https://typecodes.com/atom.xml" type="application/atom+xml" rel="alternate" title="TypeCodes Atom Feed" />
 	  	<link href="https://typecodes.com/feed.xml" type="application/rss+xml" rel="alternate" title="TypeCodes RSS Feed" />
-		<link rel="stylesheet" href="https://dn-vfhky.qbox.me/libs/css/pelican-vfhky.css">
+		<link rel="stylesheet" href="https://o3cex9zsl.qnssl.com/libs/css/pelican-vfhky.css">
 		<script>
 			var _hmt = _hmt || [];
 			(function() {
@@ -43,14 +43,14 @@
 </ul>
 <div class="post-content fmt">
 	<p>前段时间在用Coding.net同步git仓库时，能正常使用非https的ssh协议，但是这两天在自己的Windows机器上push内容时，报如下图中的错误<code>Permission denied (publickey).</code>：</p>
-<p><img alt="Coding.net报错Permission denied (publickey)" src="https://dn-vfhky.qbox.me/2015/06/git_push_error.png" title="Coding.net报错Permission denied (publickey)" /></p>
+<p><img alt="Coding.net报错Permission denied (publickey)" src="https://o3cex9zsl.qnssl.com/2015/06/git_push_error.png" title="Coding.net报错Permission denied (publickey)" /></p>
 
 
 <h5>1 查找原因</h5>
 <p>查了下Coding.net上这个项目的ssh地址如图所示：</p>
-<p><img alt="Coding.net上这个项目的ssh地址" src="https://dn-vfhky.qbox.me/2015/06/coding_net_ssh_bug.png" title="Coding.net上这个项目的ssh地址" /></p>
+<p><img alt="Coding.net上这个项目的ssh地址" src="https://o3cex9zsl.qnssl.com/2015/06/coding_net_ssh_bug.png" title="Coding.net上这个项目的ssh地址" /></p>
 <p>它和我的Windows机器上该项目的<code>G:\php\htdocs\CodingNet\mylnmp\.git\config</code>文件中的配置是一样的（<code>url = git@git.coding.net:vfhky/mylnmp.git</code>），如下图所示：</p>
-<p><img alt="本地git项目的ssh地址" src="https://dn-vfhky.qbox.me/2015/06/git_client_config.png" title="本地git项目的ssh地址" /></p>
+<p><img alt="本地git项目的ssh地址" src="https://o3cex9zsl.qnssl.com/2015/06/git_client_config.png" title="本地git项目的ssh地址" /></p>
 <p>对于<code>Permission denied</code>错误，按理说git项目地址没问题，那只能是ssh公私钥不对了。于是又用Git Bash重新生成了一对SSH公私钥，并把公钥放到Coding.net上。结果执行<code>git push origin master</code>推送命令时，还是报一样的错误。</p>
 <p>在Google上找了好久都没找到原因所在，没办法就只能将仓库切换到https协议。这样每次push或者pull的时候，都需要输入用户名和密码，比较麻烦。</p>
 <h5>2 对比GitHub的ssh地址发现Coding.net的“bug”    【！！！经指正，其实是我自己弄错了！！！】</h5>
@@ -82,7 +82,7 @@ $
 <h5>4 update 2015.07.01 15:12    【正确的解决方法】</h5>
 <p>经过 @yucong sun 的指正，之前是由于本地Win机上的~/.ssh/config文件配置的主机名是<code>Host coding.net</code>而不是<code>Host git.coding.net</code>，所以git项目中配置的<code>url = git@git.coding.net:vfhky/mylnmp.git</code>，无法匹配到这个主机名Host。</p>
 <p>因此，只要把<code>~/.ssh/config</code>的<code>Host coding.net</code>改成<code>Host git.coding.net</code>就行了，如下图所示。这里由于自己的考虑不周，误会“小猴子”了，抱歉抱歉！</p>
-<p><img alt="Win机上的~/.ssh/config文件配置" src="https://dn-vfhky.qbox.me/2015/06/coding_net_git_config.png" title="Win机上的~/.ssh/config文件配置" /></p>
+<p><img alt="Win机上的~/.ssh/config文件配置" src="https://o3cex9zsl.qnssl.com/2015/06/coding_net_git_config.png" title="Win机上的~/.ssh/config文件配置" /></p>
 		    	<p class="tags">
 					<div class="post-share">
 						<ul class="post-shareul clearfix">

@@ -7,7 +7,7 @@
   		<meta name="viewport" content="width=device-width, initial-scale=1">
   		<link href="https://typecodes.com/atom.xml" type="application/atom+xml" rel="alternate" title="TypeCodes Atom Feed" />
 	  	<link href="https://typecodes.com/feed.xml" type="application/rss+xml" rel="alternate" title="TypeCodes RSS Feed" />
-		<link rel="stylesheet" href="https://dn-vfhky.qbox.me/libs/css/pelican-vfhky.css">
+		<link rel="stylesheet" href="https://o3cex9zsl.qnssl.com/libs/css/pelican-vfhky.css">
 		<script>
 			var _hmt = _hmt || [];
 			(function() {
@@ -65,7 +65,7 @@ D:\Sybase\sqladv-12_5\sqladv.exe
 <h5>2.2 提问2：Sybase Central 4.3 and SQL Advantage 12.5</h5>
 <p>提问原地址：<a href="http://nntp-archive.sybase.com/nntp-archive/action/article/%3C4702b054$1@forums-1-dub%3E">点击查看</a>。大致的意思就是：之前安装过版本11.5.1.3和12.5.4的SQL Advantage ，每次“Open SQL Advantage”的时候，都会报错“Internal failure while initializing SQL Advantage. Please check that Open Client is configured correctly.”。其根本因是由于之前11.5.1.3的版本中的一些DLLS文件最终未删除还在%windows%\system32目录下，而这个目录在系统环境变量PATH中处于优先地位，因此在搜索支持sqladv.exe的Open Client的函数库文件DLLS时，会优先搜索11.5.1.3的DLLS而不是12.5.4的DLLS文件。</p>
 <p>根据建议：通过调整在dos窗口中输入set命令查看%SYBASE%和%SYBASE_OCS%的选项是否正确，若否则建立一个batch批处理文件（范例见2.1小节），设置好12.5.4的环境变量%SYBASE%和%SYBASE_OCS%的值。博主后来用set命令查看了自己电脑的系统环境变量和用户环境变量。结果如下图所示。</p>
-<p><img alt="dos窗口中set命令查看环境变量" src="https://dn-vfhky.qbox.me/2013/11/cmd.png" title="dos窗口中set命令查看环境变量" /></p>
+<p><img alt="dos窗口中set命令查看环境变量" src="https://o3cex9zsl.qnssl.com/2013/11/cmd.png" title="dos窗口中set命令查看环境变量" /></p>
 <h5>3 该问题的经验总结</h5>
 <p>关于“Sybase win客户端打开SQL Advantage 12.5.1报错：Internal failure while initializing SQL Advantag”的问题，主要是环境变量的问题引起的。博主的情况是只安装了SQL Advantage12.5.1的版本，而论坛上两位提问者同时安装了11.5和12.5的版本。博主是把系统环境变量PATH中的一个变量写错了（“\”错写成了“/”），而论坛上的是之前11.5版本的SQLAdvantage的环境变量设置优先于版本12.5或者没有正确设置。因此，解决这个问题的关键在于两个地方：</p>
 <div class="highlight"><pre>set命令查看系统中SYBASE的环境变量是否设置正确（若否，使用bat批处理文件或者直接使用set命令设置）；

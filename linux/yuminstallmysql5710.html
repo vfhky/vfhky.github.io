@@ -7,7 +7,7 @@
   		<meta name="viewport" content="width=device-width, initial-scale=1">
   		<link href="https://typecodes.com/atom.xml" type="application/atom+xml" rel="alternate" title="TypeCodes Atom Feed" />
 	  	<link href="https://typecodes.com/feed.xml" type="application/rss+xml" rel="alternate" title="TypeCodes RSS Feed" />
-		<link rel="stylesheet" href="https://dn-vfhky.qbox.me/libs/css/pelican-vfhky.css">
+		<link rel="stylesheet" href="https://o3cex9zsl.qnssl.com/libs/css/pelican-vfhky.css">
 		<script>
 			var _hmt = _hmt || [];
 			(function() {
@@ -218,14 +218,14 @@ Complete!
 
 
 <p>最后的截图：</p>
-<p><img alt="yum安装mysql5.7.10" src="https://dn-vfhky.qbox.me/2016/02/yum_install_mysql5.7.10.png" title="yum安装mysql5.7.10" /></p>
+<p><img alt="yum安装mysql5.7.10" src="https://o3cex9zsl.qnssl.com/2016/02/yum_install_mysql5.7.10.png" title="yum安装mysql5.7.10" /></p>
 <h4>4 启动数据库：</h4>
 <div class="highlight"><pre>[root@typecodes ~]# systemctl start  mysqld.service
 </pre></div>
 
 
 <p>然后使用命令<code>systemctl status mysql.service</code>查看MySQL数据库启动后的服务状态：</p>
-<p><img alt="systemctl命令查看MySQL服务状态" src="https://dn-vfhky.qbox.me/2016/02/mysql_process_status.png" title="systemctl命令查看MySQL服务状态" /></p>
+<p><img alt="systemctl命令查看MySQL服务状态" src="https://o3cex9zsl.qnssl.com/2016/02/mysql_process_status.png" title="systemctl命令查看MySQL服务状态" /></p>
 <h4>5 获取初始密码</h4>
 <p>使用YUM安装并启动MySQL服务后，MySQL进程会自动在进程日志中打印root用户的初始密码：</p>
 <div class="highlight"><pre>#######从mysql进程日志中获取root用户的初始密码：ra%yk7urCBIh
@@ -308,7 +308,7 @@ Bye
 
 <h4>附录1：查看MySQL数据库的配置信息</h4>
 <p>MySQL的配置文件依然是<code>/etc/my.cnf</code>，其它安装信息可以通过<code>mysql_config</code>命令查看。其中，动态库文件存放在<code>/usr/lib64/mysql</code>目录下。</p>
-<p><img alt="mysql_config命令查看mysql数据库的安装信息" src="https://dn-vfhky.qbox.me/2016/02/mysql_config.png" title="mysql_config命令查看mysql数据库的安装信息" /></p>
+<p><img alt="mysql_config命令查看mysql数据库的安装信息" src="https://o3cex9zsl.qnssl.com/2016/02/mysql_config.png" title="mysql_config命令查看mysql数据库的安装信息" /></p>
 <h4>附录2：安装MySQL数据库的开发者版本</h4>
 <p>对于纯粹的只需要一个MySQL数据库的应用来说，上面的步骤已经满足需求。如果对于MySQL其它应用程序开发，例如需要MySQL相关头文件等，那么就需要安装MySQL数据库的开发版本。安装方法也很简单，只需要执行下面这个命令即可：</p>
 <div class="highlight"><pre>[root@typecodes ~]# yum -y install mysql-community-devel

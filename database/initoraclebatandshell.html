@@ -7,7 +7,7 @@
   		<meta name="viewport" content="width=device-width, initial-scale=1">
   		<link href="https://typecodes.com/atom.xml" type="application/atom+xml" rel="alternate" title="TypeCodes Atom Feed" />
 	  	<link href="https://typecodes.com/feed.xml" type="application/rss+xml" rel="alternate" title="TypeCodes RSS Feed" />
-		<link rel="stylesheet" href="https://dn-vfhky.qbox.me/libs/css/pelican-vfhky.css">
+		<link rel="stylesheet" href="https://o3cex9zsl.qnssl.com/libs/css/pelican-vfhky.css">
 		<script>
 			var _hmt = _hmt || [];
 			(function() {
@@ -98,11 +98,11 @@ title Init Oracle database
 
 <h5>1.1 初始化Oracle数据库的bat批处理脚本的执行过程演示</h5>
 <p>1、点击IniOracle.bat文件后，先执行<code>sqlplus suntsm/suntsm@127.0.0.1/orcl @tsmstuct.sql &gt;d:\tsmstuct.log</code>命令，生成的追踪日志文件是D盘下的tsmstuct.log。</p>
-<p><img alt="Windows中开始初始化Oracle表结构等" src="https://dn-vfhky.qbox.me/2015/01/initoraclestructbat.png" title="Windows中开始初始化Oracle表结构等" /></p>
+<p><img alt="Windows中开始初始化Oracle表结构等" src="https://o3cex9zsl.qnssl.com/2015/01/initoraclestructbat.png" title="Windows中开始初始化Oracle表结构等" /></p>
 <p>2、执行成功后继续执行第二条命令：<code>sqlplus suntsm/suntsm@127.0.0.1/orcl @tsmdata.sql &gt;d:\tsmdata.log</code>命令，生成的追踪日志文件是D盘下的tsmdata.log。</p>
-<p><img alt="Windows中开始初始化Oracle表数据" src="https://dn-vfhky.qbox.me/2015/01/initoracledatabat.png" title="Windows中开始初始化Oracle表数据" /></p>
+<p><img alt="Windows中开始初始化Oracle表数据" src="https://o3cex9zsl.qnssl.com/2015/01/initoracledatabat.png" title="Windows中开始初始化Oracle表数据" /></p>
 <p>3、初始化Oracl数据库完成，可以通过tsmstuct.log和tsmdata.log文件查看执行情况。</p>
-<p><img alt="Windows中整个初始化过程完成" src="https://dn-vfhky.qbox.me/2015/01/initoraclebatover.png" title="Windows中整个初始化过程完成" /></p>
+<p><img alt="Windows中整个初始化过程完成" src="https://o3cex9zsl.qnssl.com/2015/01/initoraclebatover.png" title="Windows中整个初始化过程完成" /></p>
 <h5>2 初始化Oracle数据库的Shell批处理脚本</h5>
 <p>和bat批处理脚本一样，这里的shell脚本也是利用了sqlplus命令。唯一不同的是，由于Linux权限的问题，这个IniOracle.sh脚本代码会先判断是否已经存在了<code>tsmstuct.log</code>和<code>tsmdata.log</code>文件，并为它们赋予666可读、写的权限。</p>
 <table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
@@ -207,13 +207,13 @@ sqlplus suntsm/suntsm@orcl @tsmdata.sql &gt;tsmdata.log
 
 <h5>2.1 初始化Oracle数据库的bat批处理脚本的执行过程演示</h5>
 <p>1、用Oracle身份登录Linux，然后通过命令<code>./IniOracle</code>开始执行脚本中的代码。</p>
-<p><img alt="Linux中开始初始化Oracle表结构等" src="https://dn-vfhky.qbox.me/2015/01/initoraclestructshell.png" title="Linux中开始初始化Oracle表结构等" /></p>
+<p><img alt="Linux中开始初始化Oracle表结构等" src="https://o3cex9zsl.qnssl.com/2015/01/initoraclestructshell.png" title="Linux中开始初始化Oracle表结构等" /></p>
 <p>2、执行成功后继续执行第二条命令，生成的追踪日志文件是当前目录下的tsmdata.log。</p>
-<p><img alt="Linux中开始初始化Oracle表数据" src="https://dn-vfhky.qbox.me/2015/01/initoracledatashell.png" title="Linux中开始初始化Oracle表数据" /></p>
+<p><img alt="Linux中开始初始化Oracle表数据" src="https://o3cex9zsl.qnssl.com/2015/01/initoracledatashell.png" title="Linux中开始初始化Oracle表数据" /></p>
 <p>3、初始化Oracl数据库完成，可以通过tsmstuct.log和tsmdata.log文件查看执行情况。</p>
-<p><img alt="Linux中整个初始化过程完成" src="https://dn-vfhky.qbox.me/2015/01/initoracleshellover.png" title="Linux中整个初始化过程完成" /></p>
+<p><img alt="Linux中整个初始化过程完成" src="https://o3cex9zsl.qnssl.com/2015/01/initoracleshellover.png" title="Linux中整个初始化过程完成" /></p>
 <p>4、查看生成的<code>tsmstuct.log</code>和<code>tsmdata.log</code>日志文件。</p>
-<p><img alt="初始化完成后查看生成的log日志" src="https://dn-vfhky.qbox.me/2015/01/initoracleshellresult.png" title="初始化完成后查看生成的log日志" /></p>
+<p><img alt="初始化完成后查看生成的log日志" src="https://o3cex9zsl.qnssl.com/2015/01/initoracleshellresult.png" title="初始化完成后查看生成的log日志" /></p>
 		    	<p class="tags">
 					<div class="post-share">
 						<ul class="post-shareul clearfix">

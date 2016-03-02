@@ -7,7 +7,7 @@
   		<meta name="viewport" content="width=device-width, initial-scale=1">
   		<link href="https://typecodes.com/atom.xml" type="application/atom+xml" rel="alternate" title="TypeCodes Atom Feed" />
 	  	<link href="https://typecodes.com/feed.xml" type="application/rss+xml" rel="alternate" title="TypeCodes RSS Feed" />
-		<link rel="stylesheet" href="https://dn-vfhky.qbox.me/libs/css/pelican-vfhky.css">
+		<link rel="stylesheet" href="https://o3cex9zsl.qnssl.com/libs/css/pelican-vfhky.css">
 		<script>
 			var _hmt = _hmt || [];
 			(function() {
@@ -43,7 +43,7 @@
 </ul>
 <div class="post-content fmt">
 	<p>Oracle中的packages包是一组包含procedures存储过程、functions函数和游标等元素的组合。相比Sybase数据库的SQL Advantage工具，Oracle数据库的管理工具——PLSQL在调试存储过程还是方便。</p>
-<p><img alt="PLSQL Developer调试packages包" src="https://dn-vfhky.qbox.me/2014/12/plsqldeveloper.png" title="PLSQL Developer调试packages包" /></p>
+<p><img alt="PLSQL Developer调试packages包" src="https://o3cex9zsl.qnssl.com/2014/12/plsqldeveloper.png" title="PLSQL Developer调试packages包" /></p>
 
 
 <h5>1 Oracle数据库中的packages包、functions函数和procedures存储过程的关系</h5>
@@ -56,31 +56,31 @@
 <p>下面是自己在PL/SQL Developer Version 8.0中调试一个packages包中functions函数的演示过程：</p>
 <h5>2.1 在PLSQL中找到需要调试的packages包</h5>
 <p>如下图所示，展开PLSQL左侧菜单栏的<code>Packages</code>收缩项，可以看到下面的Packages包名，这里只有一个名为<code>PKG_COMM</code>的包（包括包头和包体Package bodies）。</p>
-<p><img alt="在PLSQL中找到需要调试的packages包" src="https://dn-vfhky.qbox.me/2014/12/getplsqlpackages.png" title="在PLSQL中找到需要调试的packages包" /></p>
+<p><img alt="在PLSQL中找到需要调试的packages包" src="https://o3cex9zsl.qnssl.com/2014/12/getplsqlpackages.png" title="在PLSQL中找到需要调试的packages包" /></p>
 <h5>2.2 切换到“调试”模式</h5>
 <p>在Packages包名上，右键选择<code>添加调试信息</code>，如下图所示：</p>
-<p><img alt="在PLSQL中找到需要调试的packages包" src="https://dn-vfhky.qbox.me/2014/12/adddebuginfo.png" title="在PLSQL中找到需要调试的packages包" /></p>
+<p><img alt="在PLSQL中找到需要调试的packages包" src="https://o3cex9zsl.qnssl.com/2014/12/adddebuginfo.png" title="在PLSQL中找到需要调试的packages包" /></p>
 <h5>2.3 双击需要调试的Packages包</h5>
 <p>查看packages包中具体的内容：鼠标双击PLSQL左侧的packages包名（PKG_COMM），可以看到它包含的Functions函数<code>Get_counter</code>和函数的3个形参变量（Pi_cnttype、Pi_Cntobj和Pi_Nowdate）。</p>
-<p><img alt="双击需要调试的存储过程" src="https://dn-vfhky.qbox.me/2014/12/clickplsqlpackages.png" title="双击需要调试的存储过程" /></p>
+<p><img alt="双击需要调试的存储过程" src="https://o3cex9zsl.qnssl.com/2014/12/clickplsqlpackages.png" title="双击需要调试的存储过程" /></p>
 <h5>2.4 添加测试断点（BreakPoint）</h5>
 <p>鼠标双击这个函数名<code>Get_counter</code>后，会在右侧显示该函数的具体实现代码。接着在需要添加断点的地方，用鼠标点击代码左侧的行号位置就行了。如下图所示，红色的小圆圈就是添加BreakPoint。</p>
-<p><img alt="双击需要调试的存储过程" src="https://dn-vfhky.qbox.me/2014/12/addbreakpoint.png" title="双击需要调试的存储过程" /></p>
+<p><img alt="双击需要调试的存储过程" src="https://o3cex9zsl.qnssl.com/2014/12/addbreakpoint.png" title="双击需要调试的存储过程" /></p>
 <h5>2.5 在functions函数上右键选择测试按钮</h5>
 <p>完成上面的工作后，就可以正式进入Debug模式了。在函数名<code>Get_counter</code>选项上鼠标右键选择<code>测试</code>菜单，进入Package调试模式。</p>
-<p><img alt="在functions函数上右键选择测试按钮" src="https://dn-vfhky.qbox.me/2014/12/clickpackagesfunctions.png" title="在functions函数上右键选择测试按钮" /></p>
+<p><img alt="在functions函数上右键选择测试按钮" src="https://o3cex9zsl.qnssl.com/2014/12/clickpackagesfunctions.png" title="在functions函数上右键选择测试按钮" /></p>
 <h5>2.6 把实参变量的值传给functions函数的形参变量</h5>
 <p>在2.5步骤中，会打开如下图的初始调试界面。这时，我们看到的是包头的实现代码（<code>每个Package包都是从包头声明开始的</code>）。可以先给函数<code>Get_counter</code>的3个形参变量赋值，这点和C/C#/JAVA等高级语言的调试是一样的。</p>
-<p><img alt="把实参变量的值传给functions函数的形参变量" src="https://dn-vfhky.qbox.me/2014/12/passvaluetopara.png" title="把实参变量的值传给functions函数的形参变量" /></p>
+<p><img alt="把实参变量的值传给functions函数的形参变量" src="https://o3cex9zsl.qnssl.com/2014/12/passvaluetopara.png" title="把实参变量的值传给functions函数的形参变量" /></p>
 <h5>2.7 调试工具栏的使用</h5>
 <p>如下图所示，PLSQL的<code>调试工具栏</code>上的按钮依次是：<code>开始调试器(F9)</code>，<code>运行（Ctrl+R）</code>，<code>单步进入（Ctrl+N）</code>，<code>单步跳过（Ctrl+O）</code>，<code>单步退出（Ctrl+T）</code>，<code>运行到下一个异常</code>。它们的功能和visual studio、eclipse等开发语言的IDE工具类似。在点击测试工具栏上的第一个按钮<code>开始调试器(F9)</code>，就开始Debug了。</p>
-<p><img alt="开启Debug调试" src="https://dn-vfhky.qbox.me/2014/12/begindebug.png" title="开启Debug调试" /></p>
+<p><img alt="开启Debug调试" src="https://o3cex9zsl.qnssl.com/2014/12/begindebug.png" title="开启Debug调试" /></p>
 <h5>2.8 添加监控变量</h5>
 <p>在packages包函数的调试过程中，我们可以像visual studio、eclipse等IDE那样，手动添加一些我们需要的监控变量。同时，在调试过程中我们还可以继续用2.4步骤中的方法添加调试断点。</p>
-<p><img alt="添加监控变量" src="https://dn-vfhky.qbox.me/2014/12/addmonitoringvar.png" title="添加监控变量" /></p>
+<p><img alt="添加监控变量" src="https://o3cex9zsl.qnssl.com/2014/12/addmonitoringvar.png" title="添加监控变量" /></p>
 <h5>2.9 调试完毕，得到结果</h5>
 <p>多次点击<code>单步进入（Ctrl+N）</code>，直到该functions函数运行到结束，最后会在界面自动输出该函数的返回值。</p>
-<p><img alt="调试完毕，得到结果" src="https://dn-vfhky.qbox.me/2014/12/debugover.png" title="调试完毕，得到结果" /></p>
+<p><img alt="调试完毕，得到结果" src="https://o3cex9zsl.qnssl.com/2014/12/debugover.png" title="调试完毕，得到结果" /></p>
 		    	<p class="tags">
 					<div class="post-share">
 						<ul class="post-shareul clearfix">

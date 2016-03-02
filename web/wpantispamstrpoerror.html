@@ -7,7 +7,7 @@
   		<meta name="viewport" content="width=device-width, initial-scale=1">
   		<link href="https://typecodes.com/atom.xml" type="application/atom+xml" rel="alternate" title="TypeCodes Atom Feed" />
 	  	<link href="https://typecodes.com/feed.xml" type="application/rss+xml" rel="alternate" title="TypeCodes RSS Feed" />
-		<link rel="stylesheet" href="https://dn-vfhky.qbox.me/libs/css/pelican-vfhky.css">
+		<link rel="stylesheet" href="https://o3cex9zsl.qnssl.com/libs/css/pelican-vfhky.css">
 		<script>
 			var _hmt = _hmt || [];
 			(function() {
@@ -117,7 +117,7 @@
 </td></tr></table>
 
 <p>测试结果如下图所示：</p>
-<p><img alt="再议wordpress反垃圾评论：都是strpos函数惹的祸" src="https://dn-vfhky.qbox.me/2013/09/strpos_test.png" title="再议wordpress反垃圾评论：都是strpos函数惹的祸" /></p>
+<p><img alt="再议wordpress反垃圾评论：都是strpos函数惹的祸" src="https://o3cex9zsl.qnssl.com/2013/09/strpos_test.png" title="再议wordpress反垃圾评论：都是strpos函数惹的祸" /></p>
 <h5>4 strpos函数的测试结果分析</h5>
 <p>上面这段代码中有两个不同的测试变量$test_1和$test_2，并且二者都包含了黑名单中的关键词：购。但是从图中显示的测试结果来看，$test_1变量没有别有效屏蔽，而变量$test_2却被提示包含广告词。奥秘就在于变量$test_1和$test_2中的“购”字出现的位置就！当关键词“购”出现在最前面时($test_1)，<span class="">strpos($test_1,$word[$i],0)</span>函数的执行结果为0，因为“购”字在字符串“购买TT”的最前面。那么for循环中的if语句变成了<span class="">if(0){}</span>，从而不会被视为垃圾评论，这就造成了BUG。下面分别是继续用strpos函数和使用PHP正则表达式，两种方法来实现“wordpress关键词黑名单：反垃圾评论再升级”。</p>
 <h6>5.1 正确使用strpos函数修正BUG</h6>

@@ -7,7 +7,7 @@
   		<meta name="viewport" content="width=device-width, initial-scale=1">
   		<link href="https://typecodes.com/atom.xml" type="application/atom+xml" rel="alternate" title="TypeCodes Atom Feed" />
 	  	<link href="https://typecodes.com/feed.xml" type="application/rss+xml" rel="alternate" title="TypeCodes RSS Feed" />
-		<link rel="stylesheet" href="https://dn-vfhky.qbox.me/libs/css/pelican-vfhky.css">
+		<link rel="stylesheet" href="https://o3cex9zsl.qnssl.com/libs/css/pelican-vfhky.css">
 		<script>
 			var _hmt = _hmt || [];
 			(function() {
@@ -45,12 +45,12 @@
 	<p>在Windows中安装 typecho 比较简单，只要先创建了数据库，然后安装过程和wordpress也类似。但是之前博主在自己的阿里云CentOS 6.5系统中安装 typecho，却出现了问题。</p>
 <h5>1 问题描述</h5>
 <p>先用 mysql 的一个用户创建了一个数据库，然后进入typecho的安装页面，填写好相关信息。typecho 会自动检测输入的数据库信息是否正确。如果正确，那么就会出现下图的页面。因为博客的根目录权限是不可写的，所以typecho程序无法自动生成配置文件 config.inc.php 。于是把里面的代码复制出来，并在根目录下新建文件 config.inc.php ，然后把复制的代码粘贴进去。结果在点击“创建完毕，继续安装”后，安装页面就跳转到空白页面了。</p>
-<p><img alt="点击“创建完毕，继续安装”后，安装页面就跳转到空白页面" src="https://dn-vfhky.qbox.me/2014/08/typechoconfig.png" title="点击“创建完毕，继续安装”后，安装页面就跳转到空白页面" /></p>
+<p><img alt="点击“创建完毕，继续安装”后，安装页面就跳转到空白页面" src="https://o3cex9zsl.qnssl.com/2014/08/typechoconfig.png" title="点击“创建完毕，继续安装”后，安装页面就跳转到空白页面" /></p>
 
 
 <h5>2 问题解决</h5>
 <p>初步看了下typecho的安装代码文件 install.php ，主要是初始化数据库、生成配置文件等，然后看了下 php-fpm 的错误日志 error.log 。结果发现很多 warning 信息，原来和 session 有关：找不到需要的 session 文件(no such file)、无法写入 session 内容。</p>
-<p><img alt="session 警告和错误" src="https://dn-vfhky.qbox.me/2014/08/typechosessionfail.png" title="session 警告和错误" /></p>
+<p><img alt="session 警告和错误" src="https://o3cex9zsl.qnssl.com/2014/08/typechosessionfail.png" title="session 警告和错误" /></p>
 <p>linux 文件的读写问题，肯定跟权限有关。于是查看 php 默认的 session 文件保存路径：在配置文件 /etc/php.ini 的第 1267 行可以看到是 /var/lib/php/session 。</p>
 <div class="highlight"><pre>1264 ; where MODE is the octal representation of the mode. Note that this
 1265 ; does not overwrite the process&#39;s umask.

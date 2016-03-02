@@ -7,7 +7,7 @@
   		<meta name="viewport" content="width=device-width, initial-scale=1">
   		<link href="https://typecodes.com/atom.xml" type="application/atom+xml" rel="alternate" title="TypeCodes Atom Feed" />
 	  	<link href="https://typecodes.com/feed.xml" type="application/rss+xml" rel="alternate" title="TypeCodes RSS Feed" />
-		<link rel="stylesheet" href="https://dn-vfhky.qbox.me/libs/css/pelican-vfhky.css">
+		<link rel="stylesheet" href="https://o3cex9zsl.qnssl.com/libs/css/pelican-vfhky.css">
 		<script>
 			var _hmt = _hmt || [];
 			(function() {
@@ -71,9 +71,9 @@
 </td></tr></table>
 
 <p>咋一看，思路挺对的，遍历字符串后面的所有空格，然后只要将字符串中‘f’后面的一位空格改成字符串结束符即可。遗憾的是出现了<code>Segmentation fault(coredump)</code>，用Vs调试，程序执行到断点 <code>*(p+1) = 0x00;</code> 时，出现未经处理的异常: 0xC0000005 写入冲突。</p>
-<p><img alt="未经处理的异常: 0xC0000005 写入冲突" src="https://dn-vfhky.qbox.me/2014/08/error0xC0000005.png" title="未经处理的异常: 0xC0000005 写入冲突" /></p>
+<p><img alt="未经处理的异常: 0xC0000005 写入冲突" src="https://o3cex9zsl.qnssl.com/2014/08/error0xC0000005.png" title="未经处理的异常: 0xC0000005 写入冲突" /></p>
 <p>调用内存和堆栈可以看到地址 0x001b5764 里面的元素是 0x20，表示空格。</p>
-<p><img alt="vs调用堆栈查看未经处理的异常: 0xC0000005 写入冲突" src="https://dn-vfhky.qbox.me/2014/08/vsdebug0xC0000005.png" title="vs调用堆栈查看未经处理的异常: 0xC0000005 写入冲突" /></p>
+<p><img alt="vs调用堆栈查看未经处理的异常: 0xC0000005 写入冲突" src="https://o3cex9zsl.qnssl.com/2014/08/vsdebug0xC0000005.png" title="vs调用堆栈查看未经处理的异常: 0xC0000005 写入冲突" /></p>
 <p>为什么把字符串结束符号'\0'写入到地址 0x001b5764 中就出错呢？原因是：定义指针pcontent的时候，语句<code>char * pcontent = "  abcdef  "</code>中的字符串是一个常量<code>abcdef</code>。常量在内存中是不可以被改写的，所以执行<code>*(p+1) = 0x00;</code>就会出现<code>未经处理的异常: 0xC0000005: 写入位置冲突</code>。</p>
 <p>另外，对于内存中的 0x00000000 地址，不能执行读取和写入操作。例如前面的<code>char * p = NULL;</code>这种指针初始化（避免成为野指针）操作，在后面不能直接来一个<code>printf("%c", \*p)</code>，否则就会出现错误<code>未经处理的异常:0xC0000005:读取位置0x00000000时发生冲突</code>。</p>
 <p>知道原理后，改成正确的去掉一个字符串前后的所有空格的程序：</p>

@@ -7,7 +7,7 @@
   		<meta name="viewport" content="width=device-width, initial-scale=1">
   		<link href="https://typecodes.com/atom.xml" type="application/atom+xml" rel="alternate" title="TypeCodes Atom Feed" />
 	  	<link href="https://typecodes.com/feed.xml" type="application/rss+xml" rel="alternate" title="TypeCodes RSS Feed" />
-		<link rel="stylesheet" href="https://dn-vfhky.qbox.me/libs/css/pelican-vfhky.css">
+		<link rel="stylesheet" href="https://o3cex9zsl.qnssl.com/libs/css/pelican-vfhky.css">
 		<script>
 			var _hmt = _hmt || [];
 			(function() {
@@ -43,7 +43,7 @@
 </ul>
 <div class="post-content fmt">
 	<p>在Linux服务端后台开发中，经常会用到信号处理函数：<code>sigprocmask</code>和<code>sigsuspend</code>。这篇文章主要通过一个综合实例演示如何使用sigprocmask函数屏蔽目标信号（信号掩码）以及sigsuspend函数挂起进程。</p>
-<p><img alt="Linux中编译执行sigprocmask_sigsuspend程序" src="https://dn-vfhky.qbox.me/2016/02/sigprocmask_sigsuspend_init.png" title="Linux中编译执行sigprocmask_sigsuspend程序" /></p>
+<p><img alt="Linux中编译执行sigprocmask_sigsuspend程序" src="https://o3cex9zsl.qnssl.com/2016/02/sigprocmask_sigsuspend_init.png" title="Linux中编译执行sigprocmask_sigsuspend程序" /></p>
 
 
 <h4>1 sigprocmask和sigsuspend函数的说明</h4>
@@ -206,14 +206,14 @@
 
 <h4>3 发送SIGUSR1和SIGUSR2信号</h4>
 <p>如下图所示，使用<code>kill</code>命令向进程（PID:7154）发送<code>SIGUSR1</code>和<code>SIGUSR2</code>信号。</p>
-<p><img alt="发送SIGUSR1和SIGUSR2信号" src="https://dn-vfhky.qbox.me/2016/02/kill_sigusr1_sigusr2.png" title="发送SIGUSR1和SIGUSR2信号" /></p>
+<p><img alt="发送SIGUSR1和SIGUSR2信号" src="https://o3cex9zsl.qnssl.com/2016/02/kill_sigusr1_sigusr2.png" title="发送SIGUSR1和SIGUSR2信号" /></p>
 <p>由于<code>sigsuspend</code>函数把信号<code>SIGUSR1</code>和<code>SIGUSR2</code>加入到信号掩码<code>pendmask</code>中，所以这两个信号的到来对当前进程没有任何影响。</p>
 <h4>4 发送SIGINT信号</h4>
 <p>使用命令<code>kill -SIGINT 7154</code>向当前进程（PID:7154）发送<code>SIGINT</code>信号。由于该信号不在信号掩码<code>pendmask</code>中，所以先调用<code>SIGINT</code>信号的处理函数sig_handler，然后把现在的信号集<code>pendmask</code>还原为原来的<code>new_set</code>信号集。</p>
 <p>这时，由于之前由于信号掩码<code>pendmask</code>被屏蔽的未决信号信号<code>SIGUSR1</code>和<code>SIGUSR2</code>由内核重新传递，所以进程会执行<code>SIGUSR2</code>信号的处理函数（SIGUSR1信号被信号集new_set所屏蔽，因此不会执行）。接着进程从sigsuspend调用处返回，恢复执行（进入while循环）。</p>
-<p><img alt="执行SIGINT和SIGUSR2信号处理函数" src="https://dn-vfhky.qbox.me/2016/02/sigint_while.png" title="执行SIGINT和SIGUSR2信号处理函数" /></p>
+<p><img alt="执行SIGINT和SIGUSR2信号处理函数" src="https://o3cex9zsl.qnssl.com/2016/02/sigint_while.png" title="执行SIGINT和SIGUSR2信号处理函数" /></p>
 <p>如果继续发送<code>SIGINT</code>信号，因为被加入到了当前信号掩码<code>new_set</code>中，所以也会被屏蔽（对进程无影响）。最后可以通过命令<code>kill -SIGKILL 7154</code>将整个进程关闭。</p>
-<p><img alt="继续发送SIGINT和SIGKILL信号" src="https://dn-vfhky.qbox.me/2016/02/sigint_sigkill.png" title="继续发送SIGINT和SIGKILL信号" /></p>
+<p><img alt="继续发送SIGINT和SIGKILL信号" src="https://o3cex9zsl.qnssl.com/2016/02/sigint_sigkill.png" title="继续发送SIGINT和SIGKILL信号" /></p>
 		    	<p class="tags">
 					<div class="post-share">
 						<ul class="post-shareul clearfix">

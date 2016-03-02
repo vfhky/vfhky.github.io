@@ -7,7 +7,7 @@
   		<meta name="viewport" content="width=device-width, initial-scale=1">
   		<link href="https://typecodes.com/atom.xml" type="application/atom+xml" rel="alternate" title="TypeCodes Atom Feed" />
 	  	<link href="https://typecodes.com/feed.xml" type="application/rss+xml" rel="alternate" title="TypeCodes RSS Feed" />
-		<link rel="stylesheet" href="https://dn-vfhky.qbox.me/libs/css/pelican-vfhky.css">
+		<link rel="stylesheet" href="https://o3cex9zsl.qnssl.com/libs/css/pelican-vfhky.css">
 		<script>
 			var _hmt = _hmt || [];
 			(function() {
@@ -49,19 +49,19 @@
 <p>首先从页面的加载速度着手，蜘蛛的耐心也有限呐。很多时候，我和大多博主一样，会在博客功能上下大功夫，追求花式多样的风格。也许这样看着心里觉得特别舒服，多有内涵呐。不过，渐渐地却发现很多功能都是用户不常用或者根本不用的，这样它们就成了无用的摆设，而且还加重了服务器的负担。于是vfhky决定从简出发，给博客减负！简约实用才是王道，而且不浪费资源！</p>
 <h5>2 优化wordpress评论者信息列表</h5>
 <p>之前博客对评论者实行了“等级”制度——根据评论者在博客留言的总数来显示相应的等级图标。这样就造成了每次加载评论信息时，都要查询数据库。于是把这个功能连同博主身份提示图标一同去掉，只显示通过jQuery调用淘宝IP库接口的评论者地理位置信息。</p>
-<p><img alt="wordpress主题的优化：评论信息列表" src="https://dn-vfhky.qbox.me/2013/09/blog_comment_style.png" title="wordpress主题的优化：评论信息列表" /></p>
+<p><img alt="wordpress主题的优化：评论信息列表" src="https://o3cex9zsl.qnssl.com/2013/09/blog_comment_style.png" title="wordpress主题的优化：评论信息列表" /></p>
 <h5>3 优化wordpress相关文章</h5>
 <p>很多博客的主题都有“相关文章”功能，个人感觉列出的相关文章与原文的“相关程度”不是很高，所以决定一同把这个功能去掉。减少数据库的查询和图片信息的加载。</p>
-<p><img alt="wordpress主题的优化：相关文章" src="https://dn-vfhky.qbox.me/2013/09/blog_related_article.png" title="wordpress主题的优化：相关文章" /></p>
+<p><img alt="wordpress主题的优化：相关文章" src="https://o3cex9zsl.qnssl.com/2013/09/blog_related_article.png" title="wordpress主题的优化：相关文章" /></p>
 <h5>4 优化wordpress评论框</h5>
 <p>主题之前在评论框上玩了一把花哨的功能：用jquery在评论框下加载一个包含“表情”、“颜色”、“代码”、“插图”等功能的工具。不过从前面的评论来看，用户几乎很少用到这些。所以vfhky也决定把它删掉，js文件瞬间减少进0.5k大小。</p>
-<p><img alt="wordpress主题的优化：评论框" src="https://dn-vfhky.qbox.me/2013/09/comment_js_simplefied.png" title="wordpress主题的优化：评论框" /></p>
+<p><img alt="wordpress主题的优化：评论框" src="https://o3cex9zsl.qnssl.com/2013/09/comment_js_simplefied.png" title="wordpress主题的优化：评论框" /></p>
 <h5>5 优化wordpress右侧栏的TAB列表</h5>
 <p>之前博客右侧栏加载了两个TAB列表栏，功能相对丰富，包含了大多的文章归类显示方式。但是这个需要多次查询数据库，而且还需加载jQUery代码使这两个TAB菜单列表自动从左向右滚动。考虑到用户的需求，去掉“热门标签”、“博主推荐”等列表，保留了“本季热文”、“读者热评”、“最新文章”、“博客统计”这四个功能，并把它们整合到一个TAB菜单列表中。</p>
-<p><img alt="wordpress主题的优化：tab列表" src="https://dn-vfhky.qbox.me/2013/09/wordpress_tab.gif" title="wordpress主题的优化：tab列表" /></p>
+<p><img alt="wordpress主题的优化：tab列表" src="https://o3cex9zsl.qnssl.com/2013/09/wordpress_tab.gif" title="wordpress主题的优化：tab列表" /></p>
 <h5>6 优化wordpress的站外Trackback</h5>
 <p>之前在弄主题的时候，就琢磨着这个功能可以方便博客间的交流。不过，现实残忍地标明这个功能已经是wordpress垃圾评论的发源地了。而且站外Trackback也需要服务器去检测你的文章是否被引用了，消耗了资源。因此，通过SQL关闭之前所有文章的Trackback后，再在博客后台设置不启用站外Trackback就解决了这个问题。</p>
-<p><img alt="wordpress主题的优化：pingback" src="https://dn-vfhky.qbox.me/2013/09/blog_pingback.png" title="wordpress主题的优化：pingback" /></p>
+<p><img alt="wordpress主题的优化：pingback" src="https://o3cex9zsl.qnssl.com/2013/09/blog_pingback.png" title="wordpress主题的优化：pingback" /></p>
 <h5>7 压缩js和css文件</h5>
 <p>压缩js和css文件对页面的加载速度还是很有帮助的，这里vfhky总结了4个比较好的javascript和css在线压缩网站，希望对大家有用！</p>
 <div class="highlight"><pre>http://jscompress.com/

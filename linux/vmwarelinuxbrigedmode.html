@@ -7,7 +7,7 @@
   		<meta name="viewport" content="width=device-width, initial-scale=1">
   		<link href="https://typecodes.com/atom.xml" type="application/atom+xml" rel="alternate" title="TypeCodes Atom Feed" />
 	  	<link href="https://typecodes.com/feed.xml" type="application/rss+xml" rel="alternate" title="TypeCodes RSS Feed" />
-		<link rel="stylesheet" href="https://dn-vfhky.qbox.me/libs/css/pelican-vfhky.css">
+		<link rel="stylesheet" href="https://o3cex9zsl.qnssl.com/libs/css/pelican-vfhky.css">
 		<script>
 			var _hmt = _hmt || [];
 			(function() {
@@ -56,16 +56,16 @@ VMware Network Adapter VMnet8：这是Host用于与NAT虚拟网络进行通信�
 
 <p>如果你想利用VMWare在局域网内新建一个虚拟服务器，为局域网用户提供网络服务，就应该选择桥接模式。</p>
 <p>在这种模式下，主要是使用VMnet0虚拟交换机来进行通信。此时， VMWare虚拟出来的操作系统就像是局域网中的一台独立的主机，和宿主机Windows一样，拥有一个独立的IP地址。正如下图所示，A，A1，A2，B是可以互访的。下面就以博主的小红帽RHEL5.3系统为例，演示在虚拟机VMWare中如何用桥接方式连接网络（Use bridged networking）。</p>
-<p><img alt="使用桥接模式Use bridged networking" src="https://dn-vfhky.qbox.me/2013/04/Use-bridged-networking.jpeg" title="使用桥接模式Use bridged networking" /></p>
+<p><img alt="使用桥接模式Use bridged networking" src="https://o3cex9zsl.qnssl.com/2013/04/Use-bridged-networking.jpeg" title="使用桥接模式Use bridged networking" /></p>
 <h5>2 查找宿主机Windows的ip配置信息</h5>
 <p>在宿主Windows中打开CMD命令，输入ipconfig，可以看到我的win7连接的无线网络的IP地址是192.168.1.100，子网掩码（subnetmask）是255.255.255.0，默认网关是192.168.1.1。记下这3个信息，下面会用到。</p>
-<p><img alt="宿主机Windows中的所有IP" src="https://dn-vfhky.qbox.me/2013/04/ipconfig.jpg" title="宿主机Windows中的所有IP" /></p>
+<p><img alt="宿主机Windows中的所有IP" src="https://o3cex9zsl.qnssl.com/2013/04/ipconfig.jpg" title="宿主机Windows中的所有IP" /></p>
 <h5>3 虚拟机中Linux的网络配置</h5>
 <p>打开虚拟机VM，右键Linux，选择“Settings……”，然后选择“Bridged”。</p>
-<p><img alt="Linux网络设置为桥接模式" src="https://dn-vfhky.qbox.me/2013/04/set-network.jpg" title="Linux网络设置为桥接模式" /></p>
+<p><img alt="Linux网络设置为桥接模式" src="https://o3cex9zsl.qnssl.com/2013/04/set-network.jpg" title="Linux网络设置为桥接模式" /></p>
 <h5>4 Linux系统etho设置为Statically set IP addresses，即静态设置的IP地址</h5>
 <p>在linux左上角的导航菜单中，单击“System”，“Administation”，“Network”，“Editor”。然后依次设置Address（只要和windows主机的IP192.168.1.100在同一网段即可），子网掩码Subnet mask和默认网关Default gateway address都设置成windows主机的子网掩码、默认网关。</p>
-<p><img alt="Linux系统eth0设置为Statically set IP addresses" src="https://dn-vfhky.qbox.me/2013/04/set-eth0.jpg" title="Linux系统eth0设置为Statically set IP addresses" /></p>
+<p><img alt="Linux系统eth0设置为Statically set IP addresses" src="https://o3cex9zsl.qnssl.com/2013/04/set-eth0.jpg" title="Linux系统eth0设置为Statically set IP addresses" /></p>
 <p>当然，上面是GUI操作模式。其实，我们也可以用Linux命令行实现，二者是等价的。</p>
 <div class="highlight"><pre><span class="p">[</span><span class="n">root</span><span class="p">@</span><span class="n">localhost</span> <span class="o">~</span><span class="p">]</span><span class="err">#</span> <span class="n">cd</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">sysconfig</span><span class="o">/</span><span class="n">network</span><span class="o">-</span><span class="n">scripts</span><span class="o">/</span>
 <span class="p">[</span><span class="n">root</span><span class="p">@</span><span class="n">localhost</span> <span class="n">network</span><span class="o">-</span><span class="n">scripts</span><span class="p">]</span><span class="err">#</span> <span class="n">vi</span> <span class="n">ifcfg</span><span class="o">-</span><span class="n">eth0</span>

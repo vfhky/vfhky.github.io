@@ -7,7 +7,7 @@
   		<meta name="viewport" content="width=device-width, initial-scale=1">
   		<link href="https://typecodes.com/atom.xml" type="application/atom+xml" rel="alternate" title="TypeCodes Atom Feed" />
 	  	<link href="https://typecodes.com/feed.xml" type="application/rss+xml" rel="alternate" title="TypeCodes RSS Feed" />
-		<link rel="stylesheet" href="https://dn-vfhky.qbox.me/libs/css/pelican-vfhky.css">
+		<link rel="stylesheet" href="https://o3cex9zsl.qnssl.com/libs/css/pelican-vfhky.css">
 		<script>
 			var _hmt = _hmt || [];
 			(function() {
@@ -129,7 +129,7 @@
 
 
 <p>无奈，只能根据上面的错误信息一个一个排查了。但很显然，第23行的int *pt = a;前面不缺分号，另外pt也声明为指针了，所以整个程序应该是没错的。检查了好几遍还是没看出问题，估计是vs编译出错了，于是决定用cygwin编译器重新编译一下。win+r打开cmd命令窗口，输入编译命令<code>gcc G:\VSprj\test\test\1.c -o 1</code>，然后直接执行1.exe。见证奇迹的时刻，竟然输出了数据。</p>
-<p><img alt="cmd命令窗口gcc编译" src="https://dn-vfhky.qbox.me/2014/03/gcc_compile.png" /></p>
+<p><img alt="cmd命令窗口gcc编译" src="https://o3cex9zsl.qnssl.com/2014/03/gcc_compile.png" /></p>
 <p>回头想想，记得以前网上看过一个帖子，说是visual c++和visual studio对变量的声明要求特别严格，局部/全局变量一定要先声明在函数的最前面。于是把main函数中的指针pt声明调整到在fun函数的前面，再编译就没报错了。</p>
 <table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
  2

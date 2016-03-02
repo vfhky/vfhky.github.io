@@ -7,7 +7,7 @@
   		<meta name="viewport" content="width=device-width, initial-scale=1">
   		<link href="https://typecodes.com/atom.xml" type="application/atom+xml" rel="alternate" title="TypeCodes Atom Feed" />
 	  	<link href="https://typecodes.com/feed.xml" type="application/rss+xml" rel="alternate" title="TypeCodes RSS Feed" />
-		<link rel="stylesheet" href="https://dn-vfhky.qbox.me/libs/css/pelican-vfhky.css">
+		<link rel="stylesheet" href="https://o3cex9zsl.qnssl.com/libs/css/pelican-vfhky.css">
 		<script>
 			var _hmt = _hmt || [];
 			(function() {
@@ -104,7 +104,7 @@ See also &quot;/mydata/mysql-5.7.6-m16/CMakeFiles/CMakeError.log&quot;.
 <p>解决方法：直接执行命令<code>yum -y install ncurses-devel</code>安装Ncurses即可。</p>
 <h5>3 安装MySQL完后，无法正常启动服务</h5>
 <p>在安装完MySQL后，执行命令<code>service mysqld start</code>失败，也即无法正常启动MySQL服务。</p>
-<p><img alt="无法正常启动MySQL服务" src="https://dn-vfhky.qbox.me/2015/06/mysql_start_error.png" title="无法正常启动MySQL服务" /></p>
+<p><img alt="无法正常启动MySQL服务" src="https://o3cex9zsl.qnssl.com/2015/06/mysql_start_error.png" title="无法正常启动MySQL服务" /></p>
 <p>解决方法：主要通过命令<code>systemctl status mysqld.service</code>和MySQL的日志来分析。如上图所示，在日志文件<code>/var/log/mysql/error.log</code>中可以看到具体的<code>ERROR</code>信息：Could not create unix socket lock file /var/run/mysql/mysql.sock.lock。这种错误一般都是目录不存在或者权限不足，所以我们直接使用命令<code>mkdir -p /var/log/mysql/</code>创建该目录即可，然后可以设置目录权限<code>chown -R mysql:mysql /var/log/mysql/</code>。</p>
 <h5>4 操作MySQL时，报错You must SET PASSWORD before executing this statement</h5>
 <p>用MySQL的root用户登录数据库后，如果之前没有设置密码，那么执行任何操作命令时，会提示如下错误信息。</p>

@@ -7,7 +7,7 @@
   		<meta name="viewport" content="width=device-width, initial-scale=1">
   		<link href="https://typecodes.com/atom.xml" type="application/atom+xml" rel="alternate" title="TypeCodes Atom Feed" />
 	  	<link href="https://typecodes.com/feed.xml" type="application/rss+xml" rel="alternate" title="TypeCodes RSS Feed" />
-		<link rel="stylesheet" href="https://dn-vfhky.qbox.me/libs/css/pelican-vfhky.css">
+		<link rel="stylesheet" href="https://o3cex9zsl.qnssl.com/libs/css/pelican-vfhky.css">
 		<script>
 			var _hmt = _hmt || [];
 			(function() {
@@ -44,7 +44,7 @@
 <div class="post-content fmt">
 	<p>前段时间和其它系统做联调测试，对方系统采用的是负载均衡模式。调试时采用的是多台手机作为客户端发送到对方负载均衡服务器，然后再把报文转发送到我这边的服务端。在测试的时候，对方测试人员说有的手机客户端会偶尔出现报文发不过来的情况。</p>
 <p>故事有点长，先发一张tcp三次握手的过程图镇楼~</p>
-<p><img alt="Linux tcp三次握手" src="https://dn-vfhky.qbox.me/2015/09/tcp_handshake.png" title="Linux tcp三次握手" /></p>
+<p><img alt="Linux tcp三次握手" src="https://o3cex9zsl.qnssl.com/2015/09/tcp_handshake.png" title="Linux tcp三次握手" /></p>
 
 
 <h5>1 自己服务端的socket监听出现问题</h5>
@@ -77,9 +77,9 @@ tcp        0      1 10.169.218.97:53794     10.10.223.123:9010      SYN_SENT    
 
 
 <p>由下图可知，telnet进程作为客户端发送SYN包后，进入<code>SYN_SENT</code>状态，等待服务端应答。</p>
-<p><img alt="netstat查看tcp连接状态" src="https://dn-vfhky.qbox.me/2015/09/linux_netstat_antp.png" title="netstat查看tcp连接状态" /></p>
+<p><img alt="netstat查看tcp连接状态" src="https://o3cex9zsl.qnssl.com/2015/09/linux_netstat_antp.png" title="netstat查看tcp连接状态" /></p>
 <p>但是由于客户端和目标IP的路由无法建立（也就是BZ遇到的情况），所以在3分钟后该tcp链路显示<code>Connection timed out</code>。</p>
-<p><img alt="Linux telenet connection timed out" src="https://dn-vfhky.qbox.me/2015/09/linux_telnet_timeout.png" title="Linux telenet connection timed out" /></p>
+<p><img alt="Linux telenet connection timed out" src="https://o3cex9zsl.qnssl.com/2015/09/linux_telnet_timeout.png" title="Linux telenet connection timed out" /></p>
 		    	<p class="tags">
 					<div class="post-share">
 						<ul class="post-shareul clearfix">

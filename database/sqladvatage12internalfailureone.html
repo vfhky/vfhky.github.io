@@ -7,7 +7,7 @@
   		<meta name="viewport" content="width=device-width, initial-scale=1">
   		<link href="https://typecodes.com/atom.xml" type="application/atom+xml" rel="alternate" title="TypeCodes Atom Feed" />
 	  	<link href="https://typecodes.com/feed.xml" type="application/rss+xml" rel="alternate" title="TypeCodes RSS Feed" />
-		<link rel="stylesheet" href="https://dn-vfhky.qbox.me/libs/css/pelican-vfhky.css">
+		<link rel="stylesheet" href="https://o3cex9zsl.qnssl.com/libs/css/pelican-vfhky.css">
 		<script>
 			var _hmt = _hmt || [];
 			(function() {
@@ -50,7 +50,7 @@ Please check that Open Client is configured correctly.
 
 
 <p>正如下图所示，奇怪的是如果这时候重启电脑的话，那么打开SQL Advantage就正常。</p>
-<p><img alt="sybase客户端打开SQL Advantage 12.5.1报错" src="https://dn-vfhky.qbox.me/2013/11/sybase.jpg" title="sybase客户端打开SQL Advantage 12.5.1报错" /></p>
+<p><img alt="sybase客户端打开SQL Advantage 12.5.1报错" src="https://o3cex9zsl.qnssl.com/2013/11/sybase.jpg" title="sybase客户端打开SQL Advantage 12.5.1报错" /></p>
 
 
 <h5>2 查看报错信息：sybinit.err文件</h5>
@@ -60,12 +60,12 @@ One or more following problems may caused the failure。按照文件中的提示
 </pre></div>
 
 
-<p><img alt="报错信息sybinit.err文件" src="https://dn-vfhky.qbox.me/2013/11/sybinit.err_.png" title="报错信息sybinit.err文件" /></p>
+<p><img alt="报错信息sybinit.err文件" src="https://o3cex9zsl.qnssl.com/2013/11/sybinit.err_.png" title="报错信息sybinit.err文件" /></p>
 <h5>3 猜想：OC客户端产生系统临时文件</h5>
 <p>在GG和BD无果后，寻思为什么SQL Advantage在电脑重启后又能够正常工作？当时“最可能”的猜想就是：在强制关闭前，OC端会产生一些临时文件，保存一些配置信息，电脑关闭后会自动清除这些文件。于是做了一个测试，在报错之后，立马使用CCleaner清理系统文件。然后再次打开SQL Advantage，结果还是报错。猜想失败！！！</p>
 <h5>4 系统环境变量：windows中“/”和“\”</h5>
 <p>折腾了几次，还是没找到方法。大致看了下GG的搜索结果，提到了PATH环境变量。于是查看了下自己的。结果发现关于SYBASE需要的几个配置全部都有而且也都对。认真比较了几次，还是没发现异常。突然发现在PATH配置内容的末尾竟然出现了不和谐因素：“/”。如图所示，这是之前在安装jdk时，配置的环境变量。平常没注意在windows中设置目录要使用“\”，而不是“/”，不然会导致出现找不到路径的错误。于是把PATH变量中的两个“/”改成“\”，然后打开SQL Advantage，竟然正常了！</p>
-<p><img alt="系统环境变量PATH" src="https://dn-vfhky.qbox.me/2013/11/environment.png" title="系统环境变量PATH" /></p>
+<p><img alt="系统环境变量PATH" src="https://o3cex9zsl.qnssl.com/2013/11/environment.png" title="系统环境变量PATH" /></p>
 <h5>5 延伸：其它不当配置也会报同样的错误</h5>
 <p>在搞定后，特地上GG搜索了下。其中，sybase官方论坛上的两个提问比较有代表性。限于篇幅，大家可以移步到下一篇文章一起探讨一下：<a href="https://typecodes.com/database/sqladvatage12internalfailuretwo.html" title="《Sybase客户端打开SQL Advantage 12.5.1报错：Internal failure while initializing SQL Advantage(二)》">《Sybase客户端打开SQL Advantage 12.5.1报错：Internal failure while initializing SQL Advantage(二)》</a>。</p>
 		    	<p class="tags">

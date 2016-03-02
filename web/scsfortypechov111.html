@@ -7,7 +7,7 @@
   		<meta name="viewport" content="width=device-width, initial-scale=1">
   		<link href="https://typecodes.com/atom.xml" type="application/atom+xml" rel="alternate" title="TypeCodes Atom Feed" />
 	  	<link href="https://typecodes.com/feed.xml" type="application/rss+xml" rel="alternate" title="TypeCodes RSS Feed" />
-		<link rel="stylesheet" href="https://dn-vfhky.qbox.me/libs/css/pelican-vfhky.css">
+		<link rel="stylesheet" href="https://o3cex9zsl.qnssl.com/libs/css/pelican-vfhky.css">
 		<script>
 			var _hmt = _hmt || [];
 			(function() {
@@ -73,7 +73,7 @@
 <h6>3.1 SCS存储路径参数配置</h6>
 <p>之前V1.1.0版本在日期方面是固定的 <code>年份/月份/附件上传的时间戳.后缀</code> 这种样式，根据@奇趣铺的反馈，希望增加 <code>年份/原附件名.后缀</code> 的形式。于是在插件中新增三个配置参数：{year}代表年份、{month}代表月份、{day}代表天数，用户可任意选择使用。因此，对于单纯的 <code>年份</code> 这种形式，只需要在“自定义SCS路径”这项中输入 <code>{year}</code> 就行了。</p>
 <p>同时，和之前的版本一样，如果“自定义SCS路径”这一项不填的话，那么SCS附件的路径依然是默认的 <code>年份/月份</code> 形式。最后，对于混合样式，例如 <code>{year}/a目录/{month}/b目录/{day}</code> 等等，插件也都支持。</p>
-<p><img alt="自定义SCS路径参数配置" src="https://dn-vfhky.qbox.me/2014/09/scs111set.png" title="自定义SCS路径参数配置" /></p>
+<p><img alt="自定义SCS路径参数配置" src="https://o3cex9zsl.qnssl.com/2014/09/scs111set.png" title="自定义SCS路径参数配置" /></p>
 <h6>3.2 取消SCS附件的Unix time stamp命名方式，以原附件名称替代</h6>
 <p>考虑到和typecho上传附件的命名方式一致，之前插件所有版本都将上传至SCS的附件以Unix time stamp的值作为名称保存的，例如上面这张图片的名称就是4218153884.png。为了利于附件的识别，现决定在附件上传时，保持其名称不变，例如将本地一张名为a.png的图片上传至SCS，那么SCS上的文件名也还是a.png，而不会类似于之前的4218153884.png。</p>
 <h5>4 反馈和建议</h5>

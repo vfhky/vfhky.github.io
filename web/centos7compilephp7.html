@@ -7,7 +7,7 @@
   		<meta name="viewport" content="width=device-width, initial-scale=1">
   		<link href="https://typecodes.com/atom.xml" type="application/atom+xml" rel="alternate" title="TypeCodes Atom Feed" />
 	  	<link href="https://typecodes.com/feed.xml" type="application/rss+xml" rel="alternate" title="TypeCodes RSS Feed" />
-		<link rel="stylesheet" href="https://dn-vfhky.qbox.me/libs/css/pelican-vfhky.css">
+		<link rel="stylesheet" href="https://o3cex9zsl.qnssl.com/libs/css/pelican-vfhky.css">
 		<script>
 			var _hmt = _hmt || [];
 			(function() {
@@ -121,7 +121,7 @@ rebuilding main/php_config.h.in
 
 
 <p>执行上面的配置命令的结果如下图所示：</p>
-<p><img alt="PHP7编译参数的配置" src="https://dn-vfhky.qbox.me/2015/06/compile_php7_config.png" title="PHP7编译参数的配置" /></p>
+<p><img alt="PHP7编译参数的配置" src="https://o3cex9zsl.qnssl.com/2015/06/compile_php7_config.png" title="PHP7编译参数的配置" /></p>
 <h5>3 开始编译和安装PHP7</h5>
 <p>相对编译安装MySQL的大量CPU和内存消耗，PHP7的编译安装轻松多了，整个过程大约1个小时左右。</p>
 <div class="highlight"><pre>[root@typecodes php-src-master]# make clean &amp;&amp; make &amp;&amp; make install
@@ -129,17 +129,17 @@ rebuilding main/php_config.h.in
 
 
 <p>看到下图就代表已经编译安装好了PHP7！</p>
-<p><img alt="安装php5.7.7rc的make install命令执行结果" src="https://dn-vfhky.qbox.me/2015/06/compile_php7_sucess.png" title="安装php5.7.7rc的make install命令执行结果" /></p>
+<p><img alt="安装php5.7.7rc的make install命令执行结果" src="https://o3cex9zsl.qnssl.com/2015/06/compile_php7_sucess.png" title="安装php5.7.7rc的make install命令执行结果" /></p>
 <h5>4 选做步骤：执行make test命令进行测试</h5>
 <p>这是一个非必需的操作步骤，执行<code>make test</code>命令。</p>
-<p><img alt="开始执行make test命令进行测试" src="https://dn-vfhky.qbox.me/2015/06/php7_make_test.png" title="开始执行make test命令进行测试" /></p>
+<p><img alt="开始执行make test命令进行测试" src="https://o3cex9zsl.qnssl.com/2015/06/php7_make_test.png" title="开始执行make test命令进行测试" /></p>
 <p>有趣的一件事就是：在test期间，会和一个IP地址72.52.91.14建立tcp连接，它对应着php官网http://www.php.net。</p>
-<p><img alt="和PHP官网交互" src="https://dn-vfhky.qbox.me/2015/06/php7_make_test_tcp.png" title="和PHP官网交互" /></p>
+<p><img alt="和PHP官网交互" src="https://o3cex9zsl.qnssl.com/2015/06/php7_make_test_tcp.png" title="和PHP官网交互" /></p>
 <p>执行完<code>make test</code>命令后，最终的结果如下：</p>
-<p><img alt="make test结果" src="https://dn-vfhky.qbox.me/2015/06/php7_make_test_result.png" title="make test结果" /></p>
+<p><img alt="make test结果" src="https://o3cex9zsl.qnssl.com/2015/06/php7_make_test_result.png" title="make test结果" /></p>
 <h5>5  查看编译成功后的PHP7安装目录</h5>
 <p>由于需要和MySQL进行通信，所以需要特别查看PHP7安装后的lib扩展库目录（/usr/local/php7/lib/php/extensions/no-debug-non-zts-20141001/）。需要确保至少存在<code>mysqli.so</code>、<code>pdo_mysql.so</code>这两个动态库文件，如下图所示。</p>
-<p><img alt="PHP7的lib扩展库" src="https://dn-vfhky.qbox.me/2015/06/php7_mysql_lib.png" title="PHP7的lib扩展库" /></p>
+<p><img alt="PHP7的lib扩展库" src="https://o3cex9zsl.qnssl.com/2015/06/php7_mysql_lib.png" title="PHP7的lib扩展库" /></p>
 <h5>6 开始设置PHP7的配置文件php.ini、php-fpm.conf、www.conf和php-fpm脚本</h5>
 <p>可以用编译后的配置文件复制到PHP7的配置目录（/usr/local/php7/etc/），推荐使用<a href="https://typecodes.com/web/php7configure.html" title="查看原文">《PHP7中php.ini、php-fpm和www.conf的配置》</a>文中整理的3个PHP7配置文件和php-fpm服务控制脚本。</p>
 <div class="highlight"><pre>#######方法一：直接使用编译后未经优化处理的配置
@@ -188,10 +188,10 @@ Starting php-fpm  done
 
 
 <p>然后可以通过命令<code>ps -aux|grep php</code>查看是否成功（图中的php-fpm进程数和进程用户nginx都是由www.conf中pm.start_servers和user的值分别决定的）：</p>
-<p><img alt="查看php服务进程" src="https://dn-vfhky.qbox.me/2015/06/php_process.png" title="查看php服务进程" /></p>
+<p><img alt="查看php服务进程" src="https://o3cex9zsl.qnssl.com/2015/06/php_process.png" title="查看php服务进程" /></p>
 <h5>11 查看PHP7版本信息</h5>
 <p>最后，可以通过命令<code>php -v</code>查看当前PHP版本信息，图中可以看到当前PHP7还使用了Zend OPcache缓存，是因为在php.ini文件中添加了<code>zend_extension=opcache.so</code>配置。</p>
-<p><img alt="查看PHP7版本信息" src="https://dn-vfhky.qbox.me/2015/06/php7_version_info.png" title="查看PHP7版本信息" /></p>
+<p><img alt="查看PHP7版本信息" src="https://o3cex9zsl.qnssl.com/2015/06/php7_version_info.png" title="查看PHP7版本信息" /></p>
 		    	<p class="tags">
 					<div class="post-share">
 						<ul class="post-shareul clearfix">

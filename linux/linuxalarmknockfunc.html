@@ -7,7 +7,7 @@
   		<meta name="viewport" content="width=device-width, initial-scale=1">
   		<link href="https://typecodes.com/atom.xml" type="application/atom+xml" rel="alternate" title="TypeCodes Atom Feed" />
 	  	<link href="https://typecodes.com/feed.xml" type="application/rss+xml" rel="alternate" title="TypeCodes RSS Feed" />
-		<link rel="stylesheet" href="https://dn-vfhky.qbox.me/libs/css/pelican-vfhky.css">
+		<link rel="stylesheet" href="https://o3cex9zsl.qnssl.com/libs/css/pelican-vfhky.css">
 		<script>
 			var _hmt = _hmt || [];
 			(function() {
@@ -95,7 +95,7 @@
 </pre></div>
 </td></tr></table>
 
-<p><img alt="alarm()信号传送闹钟函数测试1" src="https://dn-vfhky.qbox.me/2013/08/alarm_test1.png" title="alarm()信号传送闹钟函数测试1" /></p>
+<p><img alt="alarm()信号传送闹钟函数测试1" src="https://o3cex9zsl.qnssl.com/2013/08/alarm_test1.png" title="alarm()信号传送闹钟函数测试1" /></p>
 <p>程序分析：在文件test1.c中，定义了一个时钟alarm(10)，它的作用是让信号SIGALRM在经过10秒后传送给目前main()所在进程；接着又定义了sleep(15)，它的作用是让执行挂起15秒的时间。所以当main()程序挂起10秒钟时，signal函数调用SIGALRM信号的处理函数sig_alarm，并且sig_alarm执行exit(0)使得程序直接退出。因此，printf("Hello World!\n")语句是没有被执行的。</p>
 <h5>2.2 alarm()测试1.2</h5>
 <table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
@@ -134,7 +134,7 @@
 </pre></div>
 </td></tr></table>
 
-<p><img alt="alarm()信号传送闹钟函数测试2" src="https://dn-vfhky.qbox.me/2013/08/alarm_test2.png" title="alarm()信号传送闹钟函数测试2" /></p>
+<p><img alt="alarm()信号传送闹钟函数测试2" src="https://o3cex9zsl.qnssl.com/2013/08/alarm_test2.png" title="alarm()信号传送闹钟函数测试2" /></p>
 <p>程序分析：与test1.c文件不同的是，在文件test2.c中延时函数为sleep(5)，即执行挂起5秒的时间。所以当main()程序挂起5秒钟时，由于还没到达设置的闹钟10秒，那么main就执行下面的printf("Hello World!\n")语句；紧接着又执行下面的return 0语句，从而直接退出程序。因此，整个test2.c文件输出的内容为：Hello World!。</p>
 <h5>2.3 alarm()测试2</h5>
 <table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
@@ -181,7 +181,7 @@
 </pre></div>
 </td></tr></table>
 
-<p><img alt="alarm()信号传送闹钟函数测试3" src="https://dn-vfhky.qbox.me/2013/08/alarm_test3.png" title="alarm()信号传送闹钟函数测试3" /></p>
+<p><img alt="alarm()信号传送闹钟函数测试3" src="https://o3cex9zsl.qnssl.com/2013/08/alarm_test3.png" title="alarm()信号传送闹钟函数测试3" /></p>
 <p>程序分析：在文件test3.c中，定义时钟alarm(5)，而main()函数中主要是一个for循环输出语句。当main函数执行到i=5时，for循环先执行printf("sleep %d ...\n", 5)语句输出"sleep 5 ..."，然后执行sleep(1)语句。此时已经到达闹钟时间5秒，因此会把信号SIGALRM传送给当前main()函数进程；接着调用SIGALRM信号的处理函数handler，从而输出"hello"，然后又返回到sleep(1)这个点；最后for循环执行i=6，输出"sleep 6"，最终延时1秒后结束整个程序。</p>
 <p>以上三个程序都只包含一个alarm()闹钟函数，下面两个程序包含两个alarm()。并且为了更为真切的观察包含alarm()闹钟函数的程序的执行过程，程序通过调用系统打印输出当前时间，通过时间差来进一步理解。</p>
 <h5>2.4 alarm()测试3.1</h5>
@@ -227,7 +227,7 @@
 </pre></div>
 </td></tr></table>
 
-<p><img alt="alarm()信号传送闹钟函数测试4" src="https://dn-vfhky.qbox.me/2013/08/alarm_test4.png" title="alarm()信号传送闹钟函数测试4" /></p>
+<p><img alt="alarm()信号传送闹钟函数测试4" src="https://o3cex9zsl.qnssl.com/2013/08/alarm_test4.png" title="alarm()信号传送闹钟函数测试4" /></p>
 <p>程序分析：在test4.c的main()函数中，先设置了一个闹钟函数alarm(20)，即在20秒时将SIGALRM信号传送送给当前进程；然后又定义了一个延时函数sleep(5)，接着又定义了一个闹钟函数alarm(15)，它的作用是清除前面设置的闹钟alarm(20)并返回剩余的时间20-5=15秒。所以，程序先执行system("date")语句输出当前时间；然后进程休眠5秒后，程序执行输出语句printf("%d\n",alarm(15))，由于alarm(15)先返回15秒，即打印输出15；接着程序执行pause()函数，使当前进程处于挂起状态，直到捕捉到一个信号；当再过15秒后，SIGALARM信号的处理函数sig_alrm执行system("date")语句输出当前时间；最后pause终止进程。因此，整个程序执行的时间为5+15=20秒。</p>
 <h5>2.5 alarm()测试3.2</h5>
 <table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
@@ -272,7 +272,7 @@
 </pre></div>
 </td></tr></table>
 
-<p><img alt="alarm()信号传送闹钟函数测试5" src="https://dn-vfhky.qbox.me/2013/08/alarm_test5.png" title="alarm()信号传送闹钟函数测试5" /></p>
+<p><img alt="alarm()信号传送闹钟函数测试5" src="https://o3cex9zsl.qnssl.com/2013/08/alarm_test5.png" title="alarm()信号传送闹钟函数测试5" /></p>
 <p>程序分析：与test4.c文件不同的是，在文件test5.c中闹钟函数为alarm(5)。因此，整个程序执行的时间为5+5=10秒。值得注意的是，<code>alarm(0)</code>表示清除之前设置的闹钟信号，并返回0。因为，如果这里把alarm(5)改成alarm(0)，那么整个程序执行的时间为5+0=5秒。</p>
 		    	<p class="tags">
 					<div class="post-share">

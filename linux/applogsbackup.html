@@ -7,7 +7,7 @@
   		<meta name="viewport" content="width=device-width, initial-scale=1">
   		<link href="https://typecodes.com/atom.xml" type="application/atom+xml" rel="alternate" title="TypeCodes Atom Feed" />
 	  	<link href="https://typecodes.com/feed.xml" type="application/rss+xml" rel="alternate" title="TypeCodes RSS Feed" />
-		<link rel="stylesheet" href="https://dn-vfhky.qbox.me/libs/css/pelican-vfhky.css">
+		<link rel="stylesheet" href="https://o3cex9zsl.qnssl.com/libs/css/pelican-vfhky.css">
 		<script>
 			var _hmt = _hmt || [];
 			(function() {
@@ -43,11 +43,11 @@
 </ul>
 <div class="post-content fmt">
 	<p>在Linux中如果应用程序会产生日志，那么就需要考虑日志切割，例如按照固定的大小切割、按照日期进行切割等等。同样，在编译<a href="https://typecodes.com/web/centos7compilenginx.html" title="《2015博客升级记(三)：CentOS 7.1编译安装Nginx1.9.0》">Nginx1.9.0</a>、<a href="https://typecodes.com/web/centos7compilemysql.html" title="《2015博客升级记(四)：CentOS 7.1编译安装MySQL5.7.7rc》">MySQL5.7.7rc</a>和<a href="https://typecodes.com/web/centos7compilephp7.html" title="《2015博客升级记(五)：CentOS 7.1编译安装PHP7》">PHP7</a>后，这三个应用服务都会产生日志，尤其是Nginx进程根据配置文件ngnix.conf记录每条访问记录到access.log中。如果所有的日志都打印到同一个文件中的话，那么时间长了的话就会影响效率。</p>
-<p><img alt="Nginx日志切割实例" src="https://dn-vfhky.qbox.me/2015/12/nginx_logs_backup.png" title="Nginx日志切割实例" /></p>
+<p><img alt="Nginx日志切割实例" src="https://o3cex9zsl.qnssl.com/2015/12/nginx_logs_backup.png" title="Nginx日志切割实例" /></p>
 
 
 <p>这篇文章就是针对Linux下应用使用shell脚本进行分割的描述，该脚本特点是：按天切割、自定义切割出来的日志保留的天数以及记录脚本执行过程和耗时。在使用时需要配置好对应应用的日志目录（<code>Source_Log_Dir</code>变量）、日志备份目录（<code>Backup_Dirs</code>变量），然后使用Crontab定时任务执行该脚本即可。</p>
-<p><img alt="Nginx日志切割时shell脚本执行过程" src="https://dn-vfhky.qbox.me/2015/12/nginx_logs_backup_process.png" title="Nginx日志切割时shell脚本执行过程" /></p>
+<p><img alt="Nginx日志切割时shell脚本执行过程" src="https://o3cex9zsl.qnssl.com/2015/12/nginx_logs_backup_process.png" title="Nginx日志切割时shell脚本执行过程" /></p>
 <p>下面是脚本nginx_log_backup.sh的具体内容，这里备份的是Nginx日志，其它诸如MySQL、php等Linux应用只要修改脚本对应的日志路径即可。目前该脚本已经同步到博客在GitHub上创建的关于LNMP配置的工程上了，地址是：<a href="https://github.com/vfhky/mylnmp" title="点击查看">https://github.com/vfhky/mylnmp</a>。</p>
 <table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>  1
   2

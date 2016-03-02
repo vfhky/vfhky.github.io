@@ -7,7 +7,7 @@
   		<meta name="viewport" content="width=device-width, initial-scale=1">
   		<link href="https://typecodes.com/atom.xml" type="application/atom+xml" rel="alternate" title="TypeCodes Atom Feed" />
 	  	<link href="https://typecodes.com/feed.xml" type="application/rss+xml" rel="alternate" title="TypeCodes RSS Feed" />
-		<link rel="stylesheet" href="https://dn-vfhky.qbox.me/libs/css/pelican-vfhky.css">
+		<link rel="stylesheet" href="https://o3cex9zsl.qnssl.com/libs/css/pelican-vfhky.css">
 		<script>
 			var _hmt = _hmt || [];
 			(function() {
@@ -43,12 +43,12 @@
 </ul>
 <div class="post-content fmt">
 	<p>作为一个微博控，为了把博客的文章同步到新浪微博上，BZ在<a href="http://open.weibo.com" title="点击查看">新浪微博开放平台</a>申请了一个应用。然后在自己的CentOS服务器上，利用<a href="http://open.weibo.com/wiki/SDK#PHP_SDK" title="点击查看">官方PHP SDK</a>搭了个服务端应用。这样通过博客插件作为请求客户端，调用相关API接口把文章同步到微博上。微博发布后，会显示来源，也即应用名称（如下图BZ的是<code>TypeCodes</code>）。</p>
-<p><img alt="博客文章同步到新浪微博的效果" src="https://dn-vfhky.qbox.me/2015/08/blog_synchronize_weibo.png" title="博客文章同步到新浪微博的效果" /></p>
+<p><img alt="博客文章同步到新浪微博的效果" src="https://o3cex9zsl.qnssl.com/2015/08/blog_synchronize_weibo.png" title="博客文章同步到新浪微博的效果" /></p>
 
 
 <h5>1 插件升级：增加微博图片模式</h5>
 <p>之前插件同步文章时，调用的是新浪微博API中的<code>update</code>接口，只能发布一条无图片的微博信息。昨天把插件升级了下，支持选择是否发布带图片的微博。对于发布带图片模式的微博，改用API中的<code>upload</code>接口。</p>
-<p><img alt="插件升级：增加微博图片模式" src="https://dn-vfhky.qbox.me/2015/08/update_weibo_plugin.png" title="插件升级：增加微博图片模式" /></p>
+<p><img alt="插件升级：增加微博图片模式" src="https://o3cex9zsl.qnssl.com/2015/08/update_weibo_plugin.png" title="插件升级：增加微博图片模式" /></p>
 <h5>2 升级原理：利用PHP正则提取Markdown的图片地址</h5>
 <p>下面是处理发布带图片模式的微博的核心代码：</p>
 <table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
@@ -82,7 +82,7 @@
     <span class="c1">//测试数据：文章中带有图片URL地址的Markdown数据</span>
     <span class="nv">$content_substr</span> <span class="o">=</span> <span class="s1">&#39;升级博客文章同步微博的插件：PHP正则提取Markdown的图片地址。</span>
 
-<span class="s1">    ![博客文章同步到新浪微博的效果](https://dn-vfhky.qbox.me/2015/08/blog_synchronize_weibo.png &quot;博客文章同步到新浪微博的效果&quot; )&#39;</span><span class="p">;</span>
+<span class="s1">    ![博客文章同步到新浪微博的效果](https://o3cex9zsl.qnssl.com/2015/08/blog_synchronize_weibo.png &quot;博客文章同步到新浪微博的效果&quot; )&#39;</span><span class="p">;</span>
 
     <span class="c1">//开始利用正则表达式提取Markdown中的图片地址，只要匹配一次就结束</span>
     <span class="k">if</span><span class="p">(</span> <span class="nb">preg_match</span><span class="p">(</span> <span class="s1">&#39;/!\[[^\]]*]\((https):\/\/[^\)]*\.(png|jpg)(.*)\)/i&#39;</span><span class="p">,</span> <span class="nv">$content_substr</span><span class="p">,</span> <span class="nv">$img_match</span> <span class="p">)</span> <span class="p">)</span>
@@ -91,7 +91,7 @@
             <span class="nv">$post_img</span> <span class="o">=</span> <span class="nv">$img_match_retult</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
     <span class="p">}</span>
 
-    <span class="c1">//输出匹配到的图片地址url： https://dn-vfhky.qbox.me/2015/08/blog_synchronize_weibo.png</span>
+    <span class="c1">//输出匹配到的图片地址url： https://o3cex9zsl.qnssl.com/2015/08/blog_synchronize_weibo.png</span>
     <span class="k">echo</span> <span class="nv">$post_img</span><span class="p">;</span>
 <span class="cp">?&gt;</span><span class="x"></span>
 </pre></div>

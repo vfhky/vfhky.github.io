@@ -7,7 +7,7 @@
   		<meta name="viewport" content="width=device-width, initial-scale=1">
   		<link href="https://typecodes.com/atom.xml" type="application/atom+xml" rel="alternate" title="TypeCodes Atom Feed" />
 	  	<link href="https://typecodes.com/feed.xml" type="application/rss+xml" rel="alternate" title="TypeCodes RSS Feed" />
-		<link rel="stylesheet" href="https://dn-vfhky.qbox.me/libs/css/pelican-vfhky.css">
+		<link rel="stylesheet" href="https://o3cex9zsl.qnssl.com/libs/css/pelican-vfhky.css">
 		<script>
 			var _hmt = _hmt || [];
 			(function() {
@@ -43,7 +43,7 @@
 </ul>
 <div class="post-content fmt">
 	<p>在<a href="https://typecodes.com/linux/gitaccountconfig.html" title="《CentOS系统BitBucket、GitHub和Coding等多git账户的配置》">上一篇文章</a>讲述了如何在Linux系统中配置BitBucket、GitHub和Coding这三个平台的git账户，这篇文章就分享如何通过shell脚本定时获取自己的CentOS7.1服务器上的备份文件，然后使用git命令同步到这三个平台仓库上。</p>
-<p><img alt="CentOS中git同步的shell脚本" src="https://dn-vfhky.qbox.me/2015/07/linux_git.png" title="CentOS中git同步的shell脚本" /></p>
+<p><img alt="CentOS中git同步的shell脚本" src="https://o3cex9zsl.qnssl.com/2015/07/linux_git.png" title="CentOS中git同步的shell脚本" /></p>
 
 
 <h5>1 功能需求描述</h5>
@@ -355,9 +355,9 @@ RUNCMD <span class="s2">&quot;cd </span><span class="nv">$GitHub_PRG_Dir</span><
 <h5>4 单独执行该shell脚本</h5>
 <p>可以将这个脚本保存为git.sh，然后使用时通过<code>chmod +x git.sh</code>命令添加执行权限，最后通过<code>./git.sh</code>执行该脚本即可。附图如下：</p>
 <p>同步到BitBucket仓库时的截图：
-<img alt="同步到BitBucket仓库时" src="https://dn-vfhky.qbox.me/2015/07/git_shell_bitbucket_syn.png" title="同步到BitBucket仓库时" /></p>
+<img alt="同步到BitBucket仓库时" src="https://o3cex9zsl.qnssl.com/2015/07/git_shell_bitbucket_syn.png" title="同步到BitBucket仓库时" /></p>
 <p>同步到GitHub仓库时的截图：
-<img alt="同步到GitHub仓库时" src="https://dn-vfhky.qbox.me/2015/07/git_shell_github_syn.png" title="同步到GitHub仓库时" /></p>
+<img alt="同步到GitHub仓库时" src="https://o3cex9zsl.qnssl.com/2015/07/git_shell_github_syn.png" title="同步到GitHub仓库时" /></p>
 <h5>5 定时执行该shell脚本</h5>
 <p>利用Linux系统的crontab定时任务工具执行该脚本，例如下面这个配置就是每天凌晨1点的时候执行该shell脚本。</p>
 <div class="highlight"><pre>[root@typecodes bak_list]# crontab -e
@@ -366,7 +366,7 @@ RUNCMD <span class="s2">&quot;cd </span><span class="nv">$GitHub_PRG_Dir</span><
 
 
 <p>根据脚本中的配置，生成的日志类似于<code>/mydata/backups/logs/git/Git_20150706_0100.log</code>：</p>
-<p><img alt="git同步的shell脚本执行生成的日志" src="https://dn-vfhky.qbox.me/2015/07/git_syn_log.png" title="git同步的shell脚本执行生成的日志" /></p>
+<p><img alt="git同步的shell脚本执行生成的日志" src="https://o3cex9zsl.qnssl.com/2015/07/git_syn_log.png" title="git同步的shell脚本执行生成的日志" /></p>
 		    	<p class="tags">
 					<div class="post-share">
 						<ul class="post-shareul clearfix">

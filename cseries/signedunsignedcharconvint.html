@@ -7,7 +7,7 @@
   		<meta name="viewport" content="width=device-width, initial-scale=1">
   		<link href="https://typecodes.com/atom.xml" type="application/atom+xml" rel="alternate" title="TypeCodes Atom Feed" />
 	  	<link href="https://typecodes.com/feed.xml" type="application/rss+xml" rel="alternate" title="TypeCodes RSS Feed" />
-		<link rel="stylesheet" href="https://dn-vfhky.qbox.me/libs/css/pelican-vfhky.css">
+		<link rel="stylesheet" href="https://o3cex9zsl.qnssl.com/libs/css/pelican-vfhky.css">
 		<script>
 			var _hmt = _hmt || [];
 			(function() {
@@ -45,7 +45,7 @@
 	<p>网上关于有符号、无符号字符转换成有符号、无符号整形数据的问题，自己写了一个测试程序，分析了下，挺有意思的。</p>
 <h5>1 测试说明</h5>
 <p>用的是自己的win7 64位系统，处理器当然是Intel的，因此是前文提到的<code>小端模式</code>。默认按32位（总线）处理，即一个整型4个字节，长度共 2^32 = 4294967296 字节；有符号字符char类型数据的范围是 -128~127 （对应二进制 11111111~01111111），无符号字符 unsinged char 类型数据范围是 0~255（对应二进制 00000000~11111111）。</p>
-<p><img alt="C语言有符号和无符号数" src="https://dn-vfhky.qbox.me/2014/11/clangsignedandunsigned.png" title="C语言有符号和无符号数" /></p>
+<p><img alt="C语言有符号和无符号数" src="https://o3cex9zsl.qnssl.com/2014/11/clangsignedandunsigned.png" title="C语言有符号和无符号数" /></p>
 
 
 <h5>2 测试程序</h5>
@@ -111,7 +111,7 @@
 </pre></div>
 </td></tr></table>
 
-<p><img alt="对有符号signed和无符号unsigned数的测试" src="https://dn-vfhky.qbox.me/2014/11/signedandunsigned.png" title="对有符号signed和无符号unsigned数的测试" /></p>
+<p><img alt="对有符号signed和无符号unsigned数的测试" src="https://o3cex9zsl.qnssl.com/2014/11/signedandunsigned.png" title="对有符号signed和无符号unsigned数的测试" /></p>
 <h5>3 三种情形所得结果的分析</h5>
 <h6>3.1 情形1：b = -2</h6>
 <p>执行<code>b = -2;</code>后，整型变量b的值 -2 在内存单元中的形式是<code>1111 1111 1111 1111 1111 1111 1111 1110</code>（共4字节，十六进制<code>0xfffffffe</code>）。而当执行<code>a = (char *)&amp;b;</code>后，由于CPU是<code>小端模式</code>，所以指针变量a指向b的首地址（低地址/低字节1111 1110所在的地址）。由于有符号字符型数据占一个字节(范围<code>-128~127</code>)，所以刚好是变量b的第一个字节<code>1111 1110（十六进制的fe）</code>。它对应有符号字符型数据<code>-2</code>，即<code>*a</code>的值为<code>-2</code>。然后在打印<code>printf( "*a=[%d]\n", *a );</code>时，也就是将有符号整型-2以有符号整型数据输出，也就是<code>-2</code>。</p>

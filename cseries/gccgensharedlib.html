@@ -7,7 +7,7 @@
   		<meta name="viewport" content="width=device-width, initial-scale=1">
   		<link href="https://typecodes.com/atom.xml" type="application/atom+xml" rel="alternate" title="TypeCodes Atom Feed" />
 	  	<link href="https://typecodes.com/feed.xml" type="application/rss+xml" rel="alternate" title="TypeCodes RSS Feed" />
-		<link rel="stylesheet" href="https://dn-vfhky.qbox.me/libs/css/pelican-vfhky.css">
+		<link rel="stylesheet" href="https://o3cex9zsl.qnssl.com/libs/css/pelican-vfhky.css">
 		<script>
 			var _hmt = _hmt || [];
 			(function() {
@@ -188,9 +188,9 @@ Hello everyone!
 
 
 <p>如下图所示，可执行文件hello找不到链接的动态库libmyhello.so而报错：</p>
-<p><img alt="error while loading shared libraries" src="https://dn-vfhky.qbox.me/2016/01/errorloadingsharedlib.png" title="error while loading shared libraries" /></p>
+<p><img alt="error while loading shared libraries" src="https://o3cex9zsl.qnssl.com/2016/01/errorloadingsharedlib.png" title="error while loading shared libraries" /></p>
 <p>原因分析：使用<code>ldd hello</code>命令查看可执行文件hello依赖的动态库libmyhello.so，结果是not found。</p>
-<p><img alt="ldd命令查看可执行文件所依赖的动态库" src="https://dn-vfhky.qbox.me/2016/01/lddlibnotfound.png" title="ldd命令查看可执行文件所依赖的动态库" /></p>
+<p><img alt="ldd命令查看可执行文件所依赖的动态库" src="https://o3cex9zsl.qnssl.com/2016/01/lddlibnotfound.png" title="ldd命令查看可执行文件所依赖的动态库" /></p>
 <p>解决方法：使用<code>root</code>用户把自己生成的动态共享库路径添加系统动态库中即可。</p>
 <div class="highlight"><pre>##### ldconfig更新配置文件目录下的所有动态链接库为Linux系统所共享
 [root@typecodes ~]# echo &quot;/root/&quot;&gt;/etc/ld.so.conf.d/test.conf
@@ -202,7 +202,7 @@ Welcome to typecodes.com.
 
 
 <p>这时使用<code>ldconfig -v</code>命令查看系统动态库的搜索路径，可以看到libmyhello.so.1动态库所在的路径为绝对路径<code>/root/</code>：</p>
-<p><img alt="ldconfig命令查看系统动态库路径" src="https://dn-vfhky.qbox.me/2016/01/ldconfigviewlibrary.png" title="ldconfig命令查看系统动态库路径" /></p>
+<p><img alt="ldconfig命令查看系统动态库路径" src="https://o3cex9zsl.qnssl.com/2016/01/ldconfigviewlibrary.png" title="ldconfig命令查看系统动态库路径" /></p>
 <h5>3.2 先生成real name动态库文件，然后创建soname软连接，最后创建link name软链接</h5>
 <div class="highlight"><pre>##### 生成hello.o目标文件
 [root@typecodes ~]# gcc -c -fPIC hello.c
@@ -211,13 +211,13 @@ Welcome to typecodes.com.
 </pre></div>
 
 
-<p><img alt="gcc通过-Wl,-soname参数生成动态库" src="https://dn-vfhky.qbox.me/2016/01/gccsharedWlsoname.png" title="gcc通过-Wl,-soname参数生成动态库" /></p>
+<p><img alt="gcc通过-Wl,-soname参数生成动态库" src="https://o3cex9zsl.qnssl.com/2016/01/gccsharedWlsoname.png" title="gcc通过-Wl,-soname参数生成动态库" /></p>
 <p>如下图所示，使用<code>readelf -d libmyhello.so.1.0.1</code>命令查看动态库libmyhello.so.1.0.1的信息，可以看到对应的soname为libmyhello.so.1：</p>
-<p><img alt="readelf查看动态库信息" src="https://dn-vfhky.qbox.me/2016/01/readelfdynamiclib.png" title="readelf查看动态库信息" /></p>
+<p><img alt="readelf查看动态库信息" src="https://o3cex9zsl.qnssl.com/2016/01/readelfdynamiclib.png" title="readelf查看动态库信息" /></p>
 <p>如下图所示，使用<code>ldconfig -vn .</code>命令在当前目录自动生成一个软链接：将soname（libmyhello.so.1）链接到real name（libmyhello.so.1.0.1）。</p>
-<p><img alt="ldconfig命令生成soname文件软链接" src="https://dn-vfhky.qbox.me/2016/01/ldconfigvngensoftlink.png" title="ldconfig命令生成soname文件软链接" /></p>
+<p><img alt="ldconfig命令生成soname文件软链接" src="https://o3cex9zsl.qnssl.com/2016/01/ldconfigvngensoftlink.png" title="ldconfig命令生成soname文件软链接" /></p>
 <p>如下图所示，使用<code>ln -sf libmyhello.so.1 libmyhello.so</code>命令创建链接到soname的共享库文件名(Link Name)：libmyhello.so。</p>
-<p><img alt="创建链接到real name的Link Name库文件" src="https://dn-vfhky.qbox.me/2016/01/lnsfgensoftliblink.png" title="创建链接到real name的Link Name库文件" /></p>
+<p><img alt="创建链接到real name的Link Name库文件" src="https://o3cex9zsl.qnssl.com/2016/01/lnsfgensoftliblink.png" title="创建链接到real name的Link Name库文件" /></p>
 <p>这里如果和前面一样，直接链接创建的动态库文件libmyhello.so生成可执行文件hello，然后直至执行hello，那么也会提示找不到链接的动态库libmyhello.so：</p>
 <div class="highlight"><pre>[root@typecodes ~]# gcc -o hello main.c -L. -lmyhello
 </pre></div>
@@ -271,7 +271,7 @@ libmyhello.so.1.0
 </pre></div>
 </td></tr></table>
 
-<p><img alt="设置LD_LIBRARY_PATH变量后，使用readelf查看动态库信息" src="https://dn-vfhky.qbox.me/2016/01/export_ld_library_path.png" title="设置LD_LIBRARY_PATH变量后，使用readelf查看动态库信息" /></p>
+<p><img alt="设置LD_LIBRARY_PATH变量后，使用readelf查看动态库信息" src="https://o3cex9zsl.qnssl.com/2016/01/export_ld_library_path.png" title="设置LD_LIBRARY_PATH变量后，使用readelf查看动态库信息" /></p>
 <p>当然还有方法三：gcc链接动态库生成可执行文件时，加入rpath参数。</p>
 <div class="highlight"><pre>[root@typecodes ~]# gcc -o hello main.c -Wl,-rpath=./ -L. -lmyhello
 [root@typecodes ~]# ./hello
@@ -281,7 +281,7 @@ libmyhello.so.1.0.1
 </pre></div>
 
 
-<p><img alt="gcc链接动态库生成可执行文件时，加入rpath参数" src="https://dn-vfhky.qbox.me/2016/01/gccwlrpath.png" title="gcc链接动态库生成可执行文件时，加入rpath参数" /></p>
+<p><img alt="gcc链接动态库生成可执行文件时，加入rpath参数" src="https://o3cex9zsl.qnssl.com/2016/01/gccwlrpath.png" title="gcc链接动态库生成可执行文件时，加入rpath参数" /></p>
 <p>方法四：最简单的操作就是直接将生成的动态库文件拷贝到Linux系统动态库搜索目录下。</p>
 <div class="highlight"><pre>/lib、/lib64：                        系统必备共享库
 /usr/lib、/usr/lib64：                标准共享库和静态库

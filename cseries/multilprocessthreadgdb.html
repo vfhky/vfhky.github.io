@@ -7,7 +7,7 @@
   		<meta name="viewport" content="width=device-width, initial-scale=1">
   		<link href="https://typecodes.com/atom.xml" type="application/atom+xml" rel="alternate" title="TypeCodes Atom Feed" />
 	  	<link href="https://typecodes.com/feed.xml" type="application/rss+xml" rel="alternate" title="TypeCodes RSS Feed" />
-		<link rel="stylesheet" href="https://dn-vfhky.qbox.me/libs/css/pelican-vfhky.css">
+		<link rel="stylesheet" href="https://o3cex9zsl.qnssl.com/libs/css/pelican-vfhky.css">
 		<script>
 			var _hmt = _hmt || [];
 			(function() {
@@ -245,7 +245,7 @@ Num     Type           Disp Enb Address            What
 
 
 <p>如下图所示：</p>
-<p><img alt="开启gdb调试" src="https://dn-vfhky.qbox.me/2016/02/start_gdb_debug.png" title="开启gdb调试" /></p>
+<p><img alt="开启gdb调试" src="https://o3cex9zsl.qnssl.com/2016/02/start_gdb_debug.png" title="开启gdb调试" /></p>
 <h5>3.2 开始gdb调试</h5>
 <div class="highlight"><pre>(gdb) r                         ####运行到断点/捕捉点（第17行处的fork函数，23873是子进程PID）
 Starting program: /home/vfhky/bin/gdb_pthread 
@@ -276,9 +276,9 @@ Num     Type           Disp Enb Address            What
 </pre></div>
 
 
-<p><img alt="pstree -pul查看CentOS系统所有进程信息" src="https://dn-vfhky.qbox.me/2016/02/pstree_pul_process.png" title="pstree -pul查看CentOS系统所有进程信息" /></p>
+<p><img alt="pstree -pul查看CentOS系统所有进程信息" src="https://o3cex9zsl.qnssl.com/2016/02/pstree_pul_process.png" title="pstree -pul查看CentOS系统所有进程信息" /></p>
 <p>同时，使用命令<code>cat /proc/23869/status</code>查看当前进程的详细信息：进程PID为23869，它的父进程（即GDB进程）为23859，同时这也是追踪进程ID，线程数Threads为1（共享使用该信号描述符的线程数，在POSIX多线程序应用程序中，线程组中的所有线程使用同一个信号描述符）。</p>
-<p><img alt="proc查看进程的状态信息" src="https://dn-vfhky.qbox.me/2016/02/proc_23869_1.png" title="proc查看进程的状态信息" /></p>
+<p><img alt="proc查看进程的状态信息" src="https://o3cex9zsl.qnssl.com/2016/02/proc_23869_1.png" title="proc查看进程的状态信息" /></p>
 <h5>3.3 设置第一个断点</h5>
 <p>在程序的第18行设置断点：</p>
 <div class="highlight"><pre>(gdb) b gdb_pthread.c:18
@@ -322,13 +322,13 @@ Num     Type           Disp Enb Address            What
 
 
 <p>截图如下：</p>
-<p><img alt="执行到第1个断点处查看线程和进程状况" src="https://dn-vfhky.qbox.me/2016/02/break_1_info.png" title="执行到第1个断点处查看线程和进程状况" /></p>
+<p><img alt="执行到第1个断点处查看线程和进程状况" src="https://o3cex9zsl.qnssl.com/2016/02/break_1_info.png" title="执行到第1个断点处查看线程和进程状况" /></p>
 <p>这时使用命令查看当前系统进程的状态：发现此时仍然只有父进程23869和子进程23873。</p>
 <div class="highlight"><pre>[vfhky@typecodes ~]$ pstree -pul
 </pre></div>
 
 
-<p><img alt="pstree -pul查看CentOS系统所有进程信息" src="https://dn-vfhky.qbox.me/2016/02/pstree_pul_process.png" title="pstree -pul查看CentOS系统所有进程信息" /></p>
+<p><img alt="pstree -pul查看CentOS系统所有进程信息" src="https://o3cex9zsl.qnssl.com/2016/02/pstree_pul_process.png" title="pstree -pul查看CentOS系统所有进程信息" /></p>
 <h5>3.5 执行到第一个断点此时如果切换到子进程23873</h5>
 <div class="highlight"><pre>(gdb) inferior 2
 [Switching to inferior 2 [process 23873] (/home/vfhky/bin/gdb_pthread)]
@@ -378,9 +378,9 @@ Breakpoint 3, ParentDo (argv=0x7fffffffe390 &quot;Thread&quot;) at gdb_pthread.c
 </pre></div>
 
 
-<p><img alt="pstree -pul查看CentOS系统所有进程信息" src="https://dn-vfhky.qbox.me/2016/02/pstree_pul_process_2.png" title="pstree -pul查看CentOS系统所有进程信息" /> </p>
+<p><img alt="pstree -pul查看CentOS系统所有进程信息" src="https://o3cex9zsl.qnssl.com/2016/02/pstree_pul_process_2.png" title="pstree -pul查看CentOS系统所有进程信息" />  </p>
 <p>同时，使用命令<code>cat /proc/23869/status</code>查看当前进程的详细信息：进程PID为23869，它的父进程（即GDB进程）为23859，同时这也是追踪进程ID，线程数Threads为2（当前父进程23869+线程24024）。</p>
-<p><img alt="proc查看进程的状态信息" src="https://dn-vfhky.qbox.me/2016/02/proc_23869_2.png" title="proc查看进程的状态信息" /></p>
+<p><img alt="proc查看进程的状态信息" src="https://o3cex9zsl.qnssl.com/2016/02/proc_23869_2.png" title="proc查看进程的状态信息" /></p>
 <h5>3.8 查看第二个断点处的调试信息</h5>
 <div class="highlight"><pre>(gdb) info inferiors                 #####显示正在调试的进程 
   Num  Description       Executable        
@@ -452,7 +452,7 @@ Breakpoint 3, ParentDo (argv=0x7fffffffe3a0 &quot;Parent&quot;) at gdb_pthread.c
 </pre></div>
 
 
-<p><img alt="pstree -pul查看CentOS系统所有进程信息" src="https://dn-vfhky.qbox.me/2016/02/pstree_pul_process.png" title="pstree -pul查看CentOS系统所有进程信息" />   </p>
+<p><img alt="pstree -pul查看CentOS系统所有进程信息" src="https://o3cex9zsl.qnssl.com/2016/02/pstree_pul_process.png" title="pstree -pul查看CentOS系统所有进程信息" />    </p>
 <h5>3.11 继续调试父进程</h5>
 <p>此时，由于线程的退出，父进程作为自动选择的要调试的线程。</p>
 <div class="highlight"><pre>(gdb) c
@@ -490,9 +490,9 @@ Num     Type           Disp Enb Address            What
 </pre></div>
 
 
-<p><img alt="pstree -pul查看CentOS系统所有进程信息" src="https://dn-vfhky.qbox.me/2016/02/pstree_pul_process_3.png" title="pstree -pul查看CentOS系统所有进程信息" /> </p>
+<p><img alt="pstree -pul查看CentOS系统所有进程信息" src="https://o3cex9zsl.qnssl.com/2016/02/pstree_pul_process_3.png" title="pstree -pul查看CentOS系统所有进程信息" />  </p>
 <p>再用<code>ps ux</code>命令查看子进程23873：</p>
-<p><img alt="ps ux命令查看子进程信息" src="https://dn-vfhky.qbox.me/2016/02/ps_ux_child_process.png" title="ps ux命令查看子进程信息" />    </p>
+<p><img alt="ps ux命令查看子进程信息" src="https://o3cex9zsl.qnssl.com/2016/02/ps_ux_child_process.png" title="ps ux命令查看子进程信息" /> </p>
 <h4>4 附录</h4>
 <p>在gdb中，经常用到的恢复程序运行和单步调试的命令有：</p>
 <div class="highlight"><pre>continue        继续运行程序直到下一个断点（类似于VS里的F5）

@@ -7,7 +7,7 @@
   		<meta name="viewport" content="width=device-width, initial-scale=1">
   		<link href="https://typecodes.com/atom.xml" type="application/atom+xml" rel="alternate" title="TypeCodes Atom Feed" />
 	  	<link href="https://typecodes.com/feed.xml" type="application/rss+xml" rel="alternate" title="TypeCodes RSS Feed" />
-		<link rel="stylesheet" href="https://dn-vfhky.qbox.me/libs/css/pelican-vfhky.css">
+		<link rel="stylesheet" href="https://o3cex9zsl.qnssl.com/libs/css/pelican-vfhky.css">
 		<script>
 			var _hmt = _hmt || [];
 			(function() {
@@ -56,13 +56,13 @@
 <h5>2 wordpress后台页面空白</h5>
 <p>于是，vfhky毫不犹豫地把上面的代码注释掉，然后在本地环境中测试，终于能正常发表评论了。紧接着，博主把修改好的这份文件覆盖掉线上的comment_ajax.php文件。改好后不久，博客就收到了来自 <a href="http://vfhky.sinaapp.com/it/743.html#comment-1390" title="查看 IT三两事 的评论">IT三两事</a> 的评论。</p>
 <p>经博主回复后，进入博客的后台却发现了异常情况：后台评论显示区域是空白的（如下图所示）。但是，博客前台还是能正常发送和接收评论。好吧，一事未完，一事又起，刚才的欢喜立马没了。遂百度了下“wordpress后台空白”，发现都是由于服务器搬家或者使用新主题造成的。和博主的情况完全不一样，在查看了其它PHP文件还是没有头绪。</p>
-<p><img alt="wordpress后台页面空白" src="https://dn-vfhky.qbox.me/2013/09/wordpress_center_error.jpg" title="wordpress后台页面空白" /></p>
+<p><img alt="wordpress后台页面空白" src="https://o3cex9zsl.qnssl.com/2013/09/wordpress_center_error.jpg" title="wordpress后台页面空白" /></p>
 <h5>3 评论者的comment_parent值出错</h5>
 <p>晚上又在琢磨这个问题，后台页面的其它功能都正常，唯独评论无法正常显示。会不是数据库的问题呢？于是把博客的数据库备份到本地，然后对比之前备份的数据库文件。</p>
 <p>在用Beyond compare对比后，发现一个重要问题，那就是“两三事”的评论的comment_parent字段值竟然和博主回复的comment_parent是一样的1390！显然这个是错误的，comment_parent代表的是该条评论的主评论的ID，也就是博主回复的comment_parent值1390是正确的，而两三事的comment_parent应该是0！于是博主立马用phpmyadmin修改了该值。</p>
-<p><img alt="wordpress数据库的comment_parent字段出现BUG" src="https://dn-vfhky.qbox.me/2013/09/wordpress_comment_error.jpg" title="wordpress数据库的comment_parent字段出现BUG" /></p>
+<p><img alt="wordpress数据库的comment_parent字段出现BUG" src="https://o3cex9zsl.qnssl.com/2013/09/wordpress_comment_error.jpg" title="wordpress数据库的comment_parent字段出现BUG" /></p>
 <p>然后进入博客的后台，接下来就是见证奇迹的时刻！</p>
-<p><img alt="wordpress后台恢复正常" src="https://dn-vfhky.qbox.me/2013/09/wordpress_center_default.jpg" title="wordpress后台恢复正常" /></p>
+<p><img alt="wordpress后台恢复正常" src="https://o3cex9zsl.qnssl.com/2013/09/wordpress_center_default.jpg" title="wordpress后台恢复正常" /></p>
 <h5>4 后记</h5>
 <p>由于急着解决Willin Kan评论代码的一个“BUG”，博主没考虑周全就把代码放到了线上，结果出现了博客无法评论的情况。在注释掉这行代码后，博客能正常评论，但是wordpress的后台界面又出现了BUG：竟然变成了“一片空白”。幸亏vfhky备份还比较勤快，在对比数据库后，发现是数据库的wp_comments表中的字段comment_parent值出现了问题。</p>
 		    	<p class="tags">

@@ -7,7 +7,7 @@
   		<meta name="viewport" content="width=device-width, initial-scale=1">
   		<link href="https://typecodes.com/atom.xml" type="application/atom+xml" rel="alternate" title="TypeCodes Atom Feed" />
 	  	<link href="https://typecodes.com/feed.xml" type="application/rss+xml" rel="alternate" title="TypeCodes RSS Feed" />
-		<link rel="stylesheet" href="https://dn-vfhky.qbox.me/libs/css/pelican-vfhky.css">
+		<link rel="stylesheet" href="https://o3cex9zsl.qnssl.com/libs/css/pelican-vfhky.css">
 		<script>
 			var _hmt = _hmt || [];
 			(function() {
@@ -112,7 +112,7 @@ Partition 1 of type Linux and of size 4 GiB is set
 
 
 <p>同样，使用<code>fdisk /dev/xvdb</code>命令划分区域2。需要说明的是，因为需要将剩余的20G空间全部划分到区域2，所以在第5步<code>Last sector, +sectors or +size{K,M,G} (8390656-50331647, default 50331647)</code>一栏中直接回车即可。这里省略具体执行过程，附图如下：</p>
-<p><img alt="开始对磁盘/dev/xvdb进行分区" src="https://dn-vfhky.qbox.me/2015/05/beginfdiskxvdb.png" title="开始对磁盘/dev/xvdb进行分区" /></p>
+<p><img alt="开始对磁盘/dev/xvdb进行分区" src="https://o3cex9zsl.qnssl.com/2015/05/beginfdiskxvdb.png" title="开始对磁盘/dev/xvdb进行分区" /></p>
 <h5>4 开始格式化刚划分的第1和第2分区</h5>
 <p>开始分别将分区<code>/dev/xvdb1</code>和<code>/dev/xvdb2</code>格式化为ext4文件系统：</p>
 <div class="highlight"><pre>[root@typecodes /]# mkfs.ext4 /dev/xvdb1
@@ -140,11 +140,11 @@ Writing superblocks and filesystem accounting information: done
 
 
 <p>同样使用命令<code>mkfs.ext4 /dev/xvdb2</code>格式化分区/dev/xvdb2为ext4文件系统，这里省略具体执行过程，附图如下：</p>
-<p><img alt="格式化分区/dev/xvdb2为ext4文件系统" src="https://dn-vfhky.qbox.me/2015/05/mkfs.ext4xvdb2.png" title="格式化分区/dev/xvdb2为ext4文件系统" /></p>
+<p><img alt="格式化分区/dev/xvdb2为ext4文件系统" src="https://o3cex9zsl.qnssl.com/2015/05/mkfs.ext4xvdb2.png" title="格式化分区/dev/xvdb2为ext4文件系统" /></p>
 <h5>5 指定第1分区类型为linux Swap分区</h5>
 <p>将第1分区<code>/dev/xvdb1</code>指定为当前CentOS7.1系统的交换空间，这对Linux系统来说是很重要的一部分。Linux系统可用的虚拟内存的总量等于物理内存（硬件的内存）和交换空间的总和。设置交换空间Swap的好处在于：当系统的物理内存耗尽时，系统调度将那些长时间没有什么操作的程序所占用的物理内存中的一部分空间释放出来，并临时保存到Swap交换空间中。等到那些程序要运行时，再将保存的数据从Swap中恢复到内存中。</p>
 <p>这里将分区1<code>/dev/xvdb1</code>改成Swap分区类型，最终操作如下图所示，其中<code>82</code>表示Linux系统Swap交换空间的文件类型。</p>
-<p><img alt="将分区/dev/xvdb1改成Swap分区类型" src="https://dn-vfhky.qbox.me/2015/05/linuxswap.png" title="将分区/dev/xvdb1改成Swap分区类型" /></p>
+<p><img alt="将分区/dev/xvdb1改成Swap分区类型" src="https://o3cex9zsl.qnssl.com/2015/05/linuxswap.png" title="将分区/dev/xvdb1改成Swap分区类型" /></p>
 <h5>6 使用mkswap命令设置交换分区</h5>
 <div class="highlight"><pre>[root@typecodes /]# mkswap /dev/xvdb1
 mkswap: /dev/xvdb1: warning: wiping old ext4 signature.
@@ -178,7 +178,7 @@ Filename        Type        Size        Used    Priority
 
 <h5>9 最后查看效果</h5>
 <p>最后，通过命令<code>df -h</code>和<code>fdisk -l</code>查看分区挂载效果如下图所示：</p>
-<p><img alt="开始对磁盘/dev/xvdb进行分区" src="https://dn-vfhky.qbox.me/2015/05/fdiskresult.png" title="开始对磁盘/dev/xvdb进行分区" /></p>
+<p><img alt="开始对磁盘/dev/xvdb进行分区" src="https://o3cex9zsl.qnssl.com/2015/05/fdiskresult.png" title="开始对磁盘/dev/xvdb进行分区" /></p>
 		    	<p class="tags">
 					<div class="post-share">
 						<ul class="post-shareul clearfix">

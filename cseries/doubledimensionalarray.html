@@ -7,7 +7,7 @@
   		<meta name="viewport" content="width=device-width, initial-scale=1">
   		<link href="https://typecodes.com/atom.xml" type="application/atom+xml" rel="alternate" title="TypeCodes Atom Feed" />
 	  	<link href="https://typecodes.com/feed.xml" type="application/rss+xml" rel="alternate" title="TypeCodes RSS Feed" />
-		<link rel="stylesheet" href="https://dn-vfhky.qbox.me/libs/css/pelican-vfhky.css">
+		<link rel="stylesheet" href="https://o3cex9zsl.qnssl.com/libs/css/pelican-vfhky.css">
 		<script>
 			var _hmt = _hmt || [];
 			(function() {
@@ -148,14 +148,14 @@
 </pre></div>
 </td></tr></table>
 
-<p><img alt="指针数组和指针的指针（间级指针）实例分析" src="https://dn-vfhky.qbox.me/2014/11/doubledimensionalarray.png" title="指针数组和指针的指针（间级指针）实例分析" /></p>
+<p><img alt="指针数组和指针的指针（间级指针）实例分析" src="https://o3cex9zsl.qnssl.com/2014/11/doubledimensionalarray.png" title="指针数组和指针的指针（间级指针）实例分析" /></p>
 <h5>2 分析总结</h5>
 <p>由于在上面的程序中，已经对重要内容都做了分析注释，所以这里再做一些其它的分析总结。</p>
 <h6>2.1 指针数组初始化的过程</h6>
 <p>程序通过<code>char *str[] = { "welcome", "to", "fortemedia", "Nanjing" };</code>初始化指针数组str时，实质是初始化了4个字符指针指向一个连续的内存块。而这个连续的内存块中，依次存储的内容是<code>"welcome", "to", "fortemedia", "Nanjing"</code>这4个字符串。</p>
 <p>可以通过CodeBlocks调试，在watch窗口视图和memory窗口视图中查看内存状况。PS：这个连续的内存块（0x405064~0x40507a+8）存放这个4个字符串时，还包括了字符串结束标志符号'\0'，即十六进制的0x00。</p>
-<p><img alt="CodeBlocks调试watch窗口" src="https://dn-vfhky.qbox.me/2014/11/doubledimensionalarraywatchmemory.png" title="CodeBlocks调试watch窗口" /></p>
-<p><img alt="CodeBlocks调试memory窗口" src="https://dn-vfhky.qbox.me/2014/11/doubledimensionalarraymemory.png" title="CodeBlocks调试memory窗口" /></p>
+<p><img alt="CodeBlocks调试watch窗口" src="https://o3cex9zsl.qnssl.com/2014/11/doubledimensionalarraywatchmemory.png" title="CodeBlocks调试watch窗口" /></p>
+<p><img alt="CodeBlocks调试memory窗口" src="https://o3cex9zsl.qnssl.com/2014/11/doubledimensionalarraymemory.png" title="CodeBlocks调试memory窗口" /></p>
 <h6>2.2 sizeof指针数组，查看占用内存大小</h6>
 <p>在程序中的第16行，由于指针数组里面实质存放的是指针，所以<code>sizeof(指针数组)</code>时，跟它的指针个数有关，即一个指针数组占用的内存大小是<code>指针个数*4</code>字节。这点跟二维数组不同，因为<code>sizeof(二维数组)</code>所占内存是<code>元素类型*元素个数</code>字节。</p>
 <p>例如一个字符型二维数组char a[3][4]的大小为：1*12 = 12 字节；而一个整型二维数组int a[3][4]的大小为：4*12=48 字节。</p>

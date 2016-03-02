@@ -7,7 +7,7 @@
   		<meta name="viewport" content="width=device-width, initial-scale=1">
   		<link href="https://typecodes.com/atom.xml" type="application/atom+xml" rel="alternate" title="TypeCodes Atom Feed" />
 	  	<link href="https://typecodes.com/feed.xml" type="application/rss+xml" rel="alternate" title="TypeCodes RSS Feed" />
-		<link rel="stylesheet" href="https://dn-vfhky.qbox.me/libs/css/pelican-vfhky.css">
+		<link rel="stylesheet" href="https://o3cex9zsl.qnssl.com/libs/css/pelican-vfhky.css">
 		<script>
 			var _hmt = _hmt || [];
 			(function() {
@@ -96,7 +96,7 @@
 </td></tr></table>
 
 <p>在Linux终端上执行完上面的脚本后，退出并重新登录即可生效。可以通过<code>[root@typecodes ~]# ulimit -a</code>命令查看效果，如下图所示：</p>
-<p><img alt="CentOS7.1开启coredump核心转储功能" src="https://dn-vfhky.qbox.me/2015/06/ulimit_a.png" title="CentOS7.1开启coredump核心转储功能" /> </p>
+<p><img alt="CentOS7.1开启coredump核心转储功能" src="https://o3cex9zsl.qnssl.com/2015/06/ulimit_a.png" title="CentOS7.1开启coredump核心转储功能" /> </p>
 <p>最后，写了一个简单C程序测试CentOS是否生成了相应的core文件。</p>
 <div class="highlight"><pre><span class="p">[</span><span class="n">root</span><span class="err">@</span><span class="n">typecodes</span> <span class="n">test</span><span class="p">]</span><span class="err">#</span> <span class="n">vim</span> <span class="n">test</span><span class="p">.</span><span class="n">c</span> 
 <span class="cp">#include &lt;stdio.h&gt;</span>
@@ -110,7 +110,7 @@
 
 
 <p>使用命令<code>gcc test.c -o test</code>编译后执行，然后故意输入错误的数据，让进程报错。这时，在<code>/mydata/corefile/</code>目录就生成了相应的core文件<code>core-test-11-0-0-27124-1434029850</code>。</p>
-<p><img alt="core文件生成目录" src="https://dn-vfhky.qbox.me/2015/06/gdb_test_corefile.png" title="core文件生成目录" /> </p>
+<p><img alt="core文件生成目录" src="https://o3cex9zsl.qnssl.com/2015/06/gdb_test_corefile.png" title="core文件生成目录" /> </p>
 		    	<p class="tags">
 					<div class="post-share">
 						<ul class="post-shareul clearfix">

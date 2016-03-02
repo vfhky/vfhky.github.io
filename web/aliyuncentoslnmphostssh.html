@@ -7,7 +7,7 @@
   		<meta name="viewport" content="width=device-width, initial-scale=1">
   		<link href="https://typecodes.com/atom.xml" type="application/atom+xml" rel="alternate" title="TypeCodes Atom Feed" />
 	  	<link href="https://typecodes.com/feed.xml" type="application/rss+xml" rel="alternate" title="TypeCodes RSS Feed" />
-		<link rel="stylesheet" href="https://dn-vfhky.qbox.me/libs/css/pelican-vfhky.css">
+		<link rel="stylesheet" href="https://o3cex9zsl.qnssl.com/libs/css/pelican-vfhky.css">
 		<script>
 			var _hmt = _hmt || [];
 			(function() {
@@ -63,14 +63,14 @@ bin:x:1:1:bin:/bin:/sbin/nologin
 
 <p>下面介绍用 SecureCRT 客户端生成公、私密钥登录 ssh 服务器。</p>
 <p>1、“工具”——“创建公钥”，在“密钥生成向导”会话框中的“密钥类型”选择“RSA”，然后点击“下一步”。</p>
-<p><img alt="“密钥类型”选择“RSA”" src="https://dn-vfhky.qbox.me/2014/08/creatersakey.png" title="“密钥类型”选择“RSA”" /></p>
+<p><img alt="“密钥类型”选择“RSA”" src="https://o3cex9zsl.qnssl.com/2014/08/creatersakey.png" title="“密钥类型”选择“RSA”" /></p>
 <p>2、设置“通行短语”，用于保护本地的密钥（根据个人需要选择）</p>
-<p><img alt="设置“通行短语”" src="https://dn-vfhky.qbox.me/2014/08/setshortwords.png" title="设置“通行短语”" /></p>
+<p><img alt="设置“通行短语”" src="https://o3cex9zsl.qnssl.com/2014/08/setshortwords.png" title="设置“通行短语”" /></p>
 <p>3、设置“密钥位长度(K)”为1024，然后出现“密钥生成向导”进度条。</p>
-<p><img alt="设置“密钥位长度(K)”为1024" src="https://dn-vfhky.qbox.me/2014/08/createkeyproc.png" title="设置“密钥位长度(K)”为1024" /></p>
+<p><img alt="设置“密钥位长度(K)”为1024" src="https://o3cex9zsl.qnssl.com/2014/08/createkeyproc.png" title="设置“密钥位长度(K)”为1024" /></p>
 <p>4、选择“OpenSSH 密钥格式”以及密钥保存位置
 当完成该操作后，会在该文件路径下生成两个文件：公钥文件，例如centos6_Identity.pub；私钥文件，例如centos6_Identity。</p>
-<p><img alt="“OpenSSH 密钥格式”以及密钥保存位置" src="https://dn-vfhky.qbox.me/2014/08/savekeypath.png" title="“OpenSSH 密钥格式”以及密钥保存位置" /></p>
+<p><img alt="“OpenSSH 密钥格式”以及密钥保存位置" src="https://o3cex9zsl.qnssl.com/2014/08/savekeypath.png" title="“OpenSSH 密钥格式”以及密钥保存位置" /></p>
 <p>5、在“是否使用此密钥为全局密钥？”确认框中选择“否”。</p>
 <p>6、用root账户在 home 目录下创建 .ssh 文件夹, 权限600 ：</p>
 <div class="highlight"><pre>[root@typecodes ~]# mkdir .ssh
@@ -106,10 +106,10 @@ AuthorizedKeysFile .ssh/authorized_keys
 
 <p>9、用 SecureCRT 重新登录远程主机：
 “选项”——“会话选项”——“连接”——“SSH2”——“公钥”——“属性”，在“使用身份或证书文件”中选择之前存储的密钥文件 centos6_Identity.pub 。如果在步骤8中修改了 ssh 默认的端口 22 的话，相应把下图 SecureCRT 中的端口改掉。</p>
-<p><img alt="重新配置ssh2的登录方式" src="https://dn-vfhky.qbox.me/2014/08/sshloginset.png" title="重新配置ssh2的登录方式" /></p>
-<p><img alt="选择之前生成的密钥文件" src="https://dn-vfhky.qbox.me/2014/08/choosepubkey.png" title="选择之前生成的密钥文件" /></p>
+<p><img alt="重新配置ssh2的登录方式" src="https://o3cex9zsl.qnssl.com/2014/08/sshloginset.png" title="重新配置ssh2的登录方式" /></p>
+<p><img alt="选择之前生成的密钥文件" src="https://o3cex9zsl.qnssl.com/2014/08/choosepubkey.png" title="选择之前生成的密钥文件" /></p>
 <p>10.输入之前设置的“通行短语”即可成功登录：</p>
-<p><img alt="输入之前设置的“通行短语”" src="https://dn-vfhky.qbox.me/2014/08/inputshortwords.png" title="输入之前设置的“通行短语”" /></p>
+<p><img alt="输入之前设置的“通行短语”" src="https://o3cex9zsl.qnssl.com/2014/08/inputshortwords.png" title="输入之前设置的“通行短语”" /></p>
 		    	<p class="tags">
 					<div class="post-share">
 						<ul class="post-shareul clearfix">

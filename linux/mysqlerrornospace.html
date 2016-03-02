@@ -7,7 +7,7 @@
   		<meta name="viewport" content="width=device-width, initial-scale=1">
   		<link href="https://typecodes.com/atom.xml" type="application/atom+xml" rel="alternate" title="TypeCodes Atom Feed" />
 	  	<link href="https://typecodes.com/feed.xml" type="application/rss+xml" rel="alternate" title="TypeCodes RSS Feed" />
-		<link rel="stylesheet" href="https://dn-vfhky.qbox.me/libs/css/pelican-vfhky.css">
+		<link rel="stylesheet" href="https://o3cex9zsl.qnssl.com/libs/css/pelican-vfhky.css">
 		<script>
 			var _hmt = _hmt || [];
 			(function() {
@@ -43,7 +43,7 @@
 </ul>
 <div class="post-content fmt">
 	<p>昨天在更新完文章<a href="https://typecodes.com/mix/synweibophpmarkdownimgurl.html">《升级博客文章同步微博的插件：PHP正则提取Markdown的图片地址》</a>后，博客突然无法访问了。</p>
-<p><img alt="MySQL的错误日志" src="https://dn-vfhky.qbox.me/2015/08/mysql_space_error.png" title="MySQL的错误日志" /></p>
+<p><img alt="MySQL的错误日志" src="https://o3cex9zsl.qnssl.com/2015/08/mysql_space_error.png" title="MySQL的错误日志" /></p>
 
 
 <h4>1 查看Nginx的错误日志error.log</h4>
@@ -55,7 +55,7 @@
 </pre></div>
 
 
-<p><img alt="Nginx的错误日志" src="https://dn-vfhky.qbox.me/2015/08/php_cannot_mysql.png" title="Nginx的错误日志" /></p>
+<p><img alt="Nginx的错误日志" src="https://o3cex9zsl.qnssl.com/2015/08/php_cannot_mysql.png" title="Nginx的错误日志" /></p>
 <h4>2 查看MySQL的错误日志error.log</h4>
 <p>从上面的Nginx错误日志中可以看出，可能是MySQL的错误。于是查看MySQL的错误日志error.log，但是当时没注意到下面这条重要错误信息提示：<code>No space left on device</code>。</p>
 <div class="highlight"><pre><span class="err">####</span> <span class="nx">查看MySQL的错误日志error</span><span class="p">.</span><span class="nx">log</span>
@@ -116,9 +116,9 @@ s)
 <p>找不到方法，只能先重启一下MySQL服务，结果一直报<code>The server quit without updating PID file</code>的错误。又一次查看日志，最终确认从问题<code>No space left on device</code>入手。</p>
 <h4>3 查看Linux磁盘空间信息</h4>
 <p>根据上面MySQL的<code>No space left on device</code>提示，立马使用<code>df -hl</code>命令查看当前CentOS7.1服务器的磁盘空间信息。结果很明显，挂载在<code>/dev/xvdb2</code>数据盘下面的分区<code>/mydata</code>只剩的<code>12M</code>的空间了！而mysql得数据文件正好存放在mydata分区中，悲剧！</p>
-<p><img alt="CentOS7.1服务器上查看磁盘空间" src="https://dn-vfhky.qbox.me/2015/08/centos_space.png" title="CentOS7.1服务器上查看磁盘空间]" /></p>
+<p><img alt="CentOS7.1服务器上查看磁盘空间" src="https://o3cex9zsl.qnssl.com/2015/08/centos_space.png" title="CentOS7.1服务器上查看磁盘空间]" /></p>
 <p>接着进入到<code>/mydata</code>分区，使用命令<code>du -sh</code>查看当前目录下各个子目录所占用的空间大小。结果太出乎意料了，竟然是存放Core Dump文件的corefile目录占用了16G的空间！</p>
-<p><img alt="Core Dump文件占用空间过大" src="https://dn-vfhky.qbox.me/2015/08/corefile_too_large.png" title="Core Dump文件占用空间过大" /></p>
+<p><img alt="Core Dump文件占用空间过大" src="https://o3cex9zsl.qnssl.com/2015/08/corefile_too_large.png" title="Core Dump文件占用空间过大" /></p>
 <p>这才想起在<a href="https://typecodes.com/linux/centoscoredumpcfgshell.html" title="查看原文">《CentOS开启coredump转储并生成core文件的配置》</a>文中，设置了Core Dump文件大小为<code>unlimited</code>。日积月累，终于把MySQL搞挂掉了！</p>
 <h4>4 解决</h4>
 <p>先删掉corefile目录下面的大部分Core Dump文件，然后使用命令<code>ulimit -c 10240</code>设置coredump file-size为10M。最后，使用命令<code>service mysqld start</code>成功启动MySQL服务！看了下时间，从发现问题到解决用了40多分钟，还好只是个个人博客~</p>

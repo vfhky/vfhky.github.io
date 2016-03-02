@@ -7,7 +7,7 @@
   		<meta name="viewport" content="width=device-width, initial-scale=1">
   		<link href="https://typecodes.com/atom.xml" type="application/atom+xml" rel="alternate" title="TypeCodes Atom Feed" />
 	  	<link href="https://typecodes.com/feed.xml" type="application/rss+xml" rel="alternate" title="TypeCodes RSS Feed" />
-		<link rel="stylesheet" href="https://dn-vfhky.qbox.me/libs/css/pelican-vfhky.css">
+		<link rel="stylesheet" href="https://o3cex9zsl.qnssl.com/libs/css/pelican-vfhky.css">
 		<script>
 			var _hmt = _hmt || [];
 			(function() {
@@ -43,13 +43,13 @@
 </ul>
 <div class="post-content fmt">
 	<p>先前博主在本地备份了一个数据库文件dy11.bk，然后在MSSQL2008上新建了一个名为first的数据库，打算把dy11.bk还原到这个first数据库上。结果，MSSQL还原时出现错误:sql System.Data.SqlClient.SqlError: 无法覆盖文件'C:\Program Files\Microsoft SQL Server\MSSQL\data\dy11.mdf'。数据库'dy11'正在使用该文件。</p>
-<p><img alt="MSSQL还原数据库时出现错误-1" src="https://dn-vfhky.qbox.me/2012/08/1.png" title="MSSQL还原数据库时出现错误-1" /></p>
+<p><img alt="MSSQL还原数据库时出现错误-1" src="https://o3cex9zsl.qnssl.com/2012/08/1.png" title="MSSQL还原数据库时出现错误-1" /></p>
 
 
 <p>原因是：在还原数据库时，在选择“将数据库文件还原为”的mdf（SQL Server数据库文件，光盘镜像文件的一种）和ldf（SQL的日志文件）还原路径时，没有修改成当前数据库的路径（比如：当前first数据库的路径）。而是保持默认的路径（C:\Program Files\Microsoft SQL Server\MSSQL10.MSSQLSERVER\MSSQL\DATA\dy11.mdf）造成的。</p>
 <p>解决方法（按图片提示步骤即可）：</p>
-<p><img alt="MSSQL还原数据库时出现错误-2" src="https://dn-vfhky.qbox.me/2012/08/2.jpg" title="MSSQL还原数据库时出现错误-2" /></p>
-<p><img alt="MSSQL还原数据库时出现错误-3" src="https://dn-vfhky.qbox.me/2012/08/3.png" title="MSSQL还原数据库时出现错误-3" /></p>
+<p><img alt="MSSQL还原数据库时出现错误-2" src="https://o3cex9zsl.qnssl.com/2012/08/2.jpg" title="MSSQL还原数据库时出现错误-2" /></p>
+<p><img alt="MSSQL还原数据库时出现错误-3" src="https://o3cex9zsl.qnssl.com/2012/08/3.png" title="MSSQL还原数据库时出现错误-3" /></p>
 		    	<p class="tags">
 					<div class="post-share">
 						<ul class="post-shareul clearfix">

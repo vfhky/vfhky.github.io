@@ -7,7 +7,7 @@
   		<meta name="viewport" content="width=device-width, initial-scale=1">
   		<link href="https://typecodes.com/atom.xml" type="application/atom+xml" rel="alternate" title="TypeCodes Atom Feed" />
 	  	<link href="https://typecodes.com/feed.xml" type="application/rss+xml" rel="alternate" title="TypeCodes RSS Feed" />
-		<link rel="stylesheet" href="https://dn-vfhky.qbox.me/libs/css/pelican-vfhky.css">
+		<link rel="stylesheet" href="https://o3cex9zsl.qnssl.com/libs/css/pelican-vfhky.css">
 		<script>
 			var _hmt = _hmt || [];
 			(function() {
@@ -44,7 +44,7 @@
 <div class="post-content fmt">
 	<h5>1 调试腾讯开放平台QQ登录API</h5>
 <p>最近博主在测试腾讯开放平台的QQ登录API时，遇到了一个棘手问题。根据腾讯官方API文档，vfhky写了一个调用 <a href="http://wiki.connect.qq.com/get_info" title="查看腾讯官方关于get_info的API文档">get_info</a> 接口的程序。该接口能够获取QQ登录用户的微博信息，例如用户的出身日期、教育信息、FANS数目、微博内容等。具体大家也可以看看官方给出的API接口信息，地址是 http://wiki.connect.qq.com/get_info。</p>
-<p><img alt="腾讯后台API管理" src="https://dn-vfhky.qbox.me/2013/08/QQAPI_Oauth.png" title="腾讯后台API管理" /></p>
+<p><img alt="腾讯后台API管理" src="https://o3cex9zsl.qnssl.com/2013/08/QQAPI_Oauth.png" title="腾讯后台API管理" /></p>
 
 
 <h5>2 调用 get_info 接口的程序</h5>
@@ -139,7 +139,7 @@
 
 
 <h5>4 曙光：获取返回数据中的信息提示字段</h5>
-<p><img alt="前台显示msg返回的信息" src="https://dn-vfhky.qbox.me/2013/08/QQAPI_errormsg.png" title="前台显示msg返回的信息" /></p>
+<p><img alt="前台显示msg返回的信息" src="https://o3cex9zsl.qnssl.com/2013/08/QQAPI_errormsg.png" title="前台显示msg返回的信息" /></p>
 <p>结果终于出来了，如上图所示。提示信息为“this api without user authorization”，意思是“该API接口没有取得用户授权”。估计是由于先前在获取Authorization Code时，没有加入scope授权列表字段造成的。虽然说问题暂时还没解决，但是一个错误提示让博主看到了希望！激动不已，是以速成该文。所以在大家测试API接口的时候，千万不要忘了这把利器——获取返回数据中的信息提示字段！</p>
 		    	<p class="tags">
 					<div class="post-share">

@@ -7,7 +7,7 @@
   		<meta name="viewport" content="width=device-width, initial-scale=1">
   		<link href="https://typecodes.com/atom.xml" type="application/atom+xml" rel="alternate" title="TypeCodes Atom Feed" />
 	  	<link href="https://typecodes.com/feed.xml" type="application/rss+xml" rel="alternate" title="TypeCodes RSS Feed" />
-		<link rel="stylesheet" href="https://dn-vfhky.qbox.me/libs/css/pelican-vfhky.css">
+		<link rel="stylesheet" href="https://o3cex9zsl.qnssl.com/libs/css/pelican-vfhky.css">
 		<script>
 			var _hmt = _hmt || [];
 			(function() {
@@ -205,7 +205,7 @@ SIGUSR2：同SIGUSR1，保留给用户使用的信号。
 
 <h4>3 执行结果</h4>
 <p>使用GCC命令<code>gcc -Wall sigterm.c -o sigterm</code>和<code>gcc -Wall sigkill.c -o sigkill</code>编译生成可执行文件sigterm和sigkill。
-<img alt="使用gcc编译程序" src="https://dn-vfhky.qbox.me/2015/08/nixsigtermkill_compile.png" title="使用gcc编译程序" /></p>
+<img alt="使用gcc编译程序" src="https://o3cex9zsl.qnssl.com/2015/08/nixsigtermkill_compile.png" title="使用gcc编译程序" /></p>
 <p>然后输入./sigterm开启SIGTERM信号处理进程sigterm，界面在显示如下所示的当前进程PID后，由于<code>pause</code>进入hung up状态。</p>
 <div class="highlight"><pre>Main process_pid=[27346] will sleep!
 </pre></div>
@@ -229,7 +229,7 @@ Main process exit!
 
 
 <p>效果如图所示：</p>
-<p><img alt="sigterm进程的对SIGTERM信号的处理过程" src="https://dn-vfhky.qbox.me/2015/08/signalkill_excute.png" title="sigterm进程的对SIGTERM信号的处理过程" /></p>
+<p><img alt="sigterm进程的对SIGTERM信号的处理过程" src="https://o3cex9zsl.qnssl.com/2015/08/signalkill_excute.png" title="sigterm进程的对SIGTERM信号的处理过程" /></p>
 <h4>4 其它说明</h4>
 <p>对于通过执行<code>./sigterm 1</code>使sigterm进程在接收到sigkill进程发送的信号后，这样sigterm进程就不会进入休眠状态而是直接在sTerminate函数中退出了。</p>
 <p>由于进程对<code>SIGUSR1</code>和<code>SIGUSR2</code>等其它信号的处理方法和<code>SIGTERM</code>可以完全一样，这里就不再演示了（只需要把两个程序中的SIGTERM替换即可）。</p>

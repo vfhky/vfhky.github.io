@@ -7,7 +7,7 @@
   		<meta name="viewport" content="width=device-width, initial-scale=1">
   		<link href="https://typecodes.com/atom.xml" type="application/atom+xml" rel="alternate" title="TypeCodes Atom Feed" />
 	  	<link href="https://typecodes.com/feed.xml" type="application/rss+xml" rel="alternate" title="TypeCodes RSS Feed" />
-		<link rel="stylesheet" href="https://dn-vfhky.qbox.me/libs/css/pelican-vfhky.css">
+		<link rel="stylesheet" href="https://o3cex9zsl.qnssl.com/libs/css/pelican-vfhky.css">
 		<script>
 			var _hmt = _hmt || [];
 			(function() {
@@ -48,7 +48,7 @@
 
 <h5>2 选择淘宝IP地址库</h5>
 <p>网上查看了下资料，提供IP查询接口的有这么几个：腾讯、搜狐、淘宝和有道。不过，腾讯已经把接口（http://fw.qq.com/ipaddress）封掉了，只限企鹅自家使用。题外话：对于腾讯的做法咱们习惯就好，早已无力吐槽了。相对于搜狐和有道的IP接口，淘宝肯定具有优势。谁都不能低估淘宝帝国对于掌握用户信息深度的强烈渴望和决心，而IP地址就是用户的足迹线所在。在查看了淘宝IP地址库的API官方资料（地址【<a href="http://ip.taobao.com/accurancy.php">http://ip.taobao.com/accurancy.php</a>】），vfhky毅然决定把新浪的IP查询接口改成淘宝的IP查询接口。</p>
-<p><img alt="淘宝IP地址库的API接口" src="https://dn-vfhky.qbox.me/2013/08/TaobaoIP_API.png" /></p>
+<p><img alt="淘宝IP地址库的API接口" src="https://o3cex9zsl.qnssl.com/2013/08/TaobaoIP_API.png" /></p>
 <h5>3 需要考虑的问题</h5>
 <p>博客主题评论列表的IP信息是通过Jquery加载的，而淘宝提供的API接口返回的数据是Json格式。相对于直接通过PHP获取Json数据而言，这种Ajax交互方式比较难一点。博主就先卖个关子，具体的实现代码将在下一篇文章贴出。这里贴出之前用新浪IP地址查询接口获取IP信息的代码，评论列表的IP信息同样是通过Jquery加载处理后的新浪IP查询接口返回的JS数据。</p>
 <h5>4.1 修改functions.php文件</h5>

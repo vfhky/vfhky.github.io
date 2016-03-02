@@ -7,7 +7,7 @@
   		<meta name="viewport" content="width=device-width, initial-scale=1">
   		<link href="https://typecodes.com/atom.xml" type="application/atom+xml" rel="alternate" title="TypeCodes Atom Feed" />
 	  	<link href="https://typecodes.com/feed.xml" type="application/rss+xml" rel="alternate" title="TypeCodes RSS Feed" />
-		<link rel="stylesheet" href="https://dn-vfhky.qbox.me/libs/css/pelican-vfhky.css">
+		<link rel="stylesheet" href="https://o3cex9zsl.qnssl.com/libs/css/pelican-vfhky.css">
 		<script>
 			var _hmt = _hmt || [];
 			(function() {
@@ -46,7 +46,7 @@
 <p>1.查看自己的笔记本无线网卡驱动是否支持“无线承载网络”，否则不能成功。一般最近买的或者通过“Windows 7徽标认证”的笔记本的网卡都支持“无线承载网络”。你也可以通过CMD命令查看：打开CMD命令，输入“netsh wlan show drivers”（无线网络连接驱动信息显示），如图所示</p>
 
 
-<p><img alt="无线网络连接驱动信息显示" src="https://dn-vfhky.qbox.me/2012/06/12.jpg" title="无线网络连接驱动信息显示" /></p>
+<p><img alt="无线网络连接驱动信息显示" src="https://o3cex9zsl.qnssl.com/2012/06/12.jpg" title="无线网络连接驱动信息显示" /></p>
 <p>从图中亮色部分可以看出我的笔记本无线网卡支持“承载网络”。</p>
 <p>2.新建一个.txt文件，把下面的代码复制进去</p>
 <table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
@@ -60,7 +60,7 @@ pause
 <p>保存之后，把后缀.txt改为.bat批处理文件。（其中可以自定义“wireless Router”表示“指定无线网络的名称（英文）”，“key”表示“指定无线网络的密码。该密码用于对无线网进行安全的WPA2加密（8位），能够很好的防止网络安全。”）</p>
 <p>3.以管理员身份运行即可成功建立一个Wifi热点。</p>
 <p>结果萌神无比高兴地找到这个叫“wireless Router”的Wifi，并输入密码“wireless”，这时他手机显示很强的连接信号。虽然连接成功了而且信号很强，但是就是不能上网。哈哈，谁叫他之前不请客给点动力呢！话虽这么说，但是总归送佛送到西嘛。于是又查了下，找到了答案。首先进入“控制面板”——“网络和网络共享中心”——“更改适配器设置”，右键单击已连接到Internet的网络连接（可以是当前笔记本有线连接的网络，例如“本地连接”），选择“属性”——“共享”，勾选“允许其共享Internet的网络连接此计算机的Internet连接（N）"，然后选择刚才建立的“wireless Router”即“无线网络连接2”，这也就是我们常说的虚拟Wifi网卡。如图所示</p>
-<p><img alt="虚拟Wifi（无线网络连接）" src="https://dn-vfhky.qbox.me/2012/06/2.jpg" title="虚拟Wifi（无线网络连接）" /></p>
+<p><img alt="虚拟Wifi（无线网络连接）" src="https://o3cex9zsl.qnssl.com/2012/06/2.jpg" title="虚拟Wifi（无线网络连接）" /></p>
 <p>这样就解决了他的问题。嘿嘿，结果萌神果断说请哥明天吃中饭，(<em>^__^</em>) </p>
 		    	<p class="tags">
 					<div class="post-share">

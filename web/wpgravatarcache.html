@@ -7,7 +7,7 @@
   		<meta name="viewport" content="width=device-width, initial-scale=1">
   		<link href="https://typecodes.com/atom.xml" type="application/atom+xml" rel="alternate" title="TypeCodes Atom Feed" />
 	  	<link href="https://typecodes.com/feed.xml" type="application/rss+xml" rel="alternate" title="TypeCodes RSS Feed" />
-		<link rel="stylesheet" href="https://dn-vfhky.qbox.me/libs/css/pelican-vfhky.css">
+		<link rel="stylesheet" href="https://o3cex9zsl.qnssl.com/libs/css/pelican-vfhky.css">
 		<script>
 			var _hmt = _hmt || [];
 			(function() {
@@ -47,10 +47,10 @@
 
 <h5>（一）去繁存简，使用便捷</h5>
 <p>1、主要针对右侧栏的界面优化，去掉“同步微博vs公告栏”字样，修改CSS以突出订阅栏目的四个小图标。</p>
-<p><img alt="右侧栏界面优化（对比图）" src="https://dn-vfhky.qbox.me/2012/11/compare1.jpg" title="右侧栏界面优化（对比图）" /></p>
+<p><img alt="右侧栏界面优化（对比图）" src="https://o3cex9zsl.qnssl.com/2012/11/compare1.jpg" title="右侧栏界面优化（对比图）" /></p>
 <p>2、优化一些PHP程序，例如博客主题在判断后台是否开启了头像缓存功能时，使用如下代码 &lt;?php if (get_option('swt_type') == 'Display') ?&gt; 。我直接删除该条语句，并用接下来（二）中的方法开启gravatar头像本地服务器缓存。效果如下图所示，大家可以右键查看图片的路径是否改成了博客服务器的文件路径。</p>
-<p><img alt="右侧栏“最新评论”的头像缓存" src="https://dn-vfhky.qbox.me/2012/11/opt1.png" title="右侧栏“最新评论”的头像缓存" /></p>
-<p><img alt="博客“留言吧”的头像缓存" src="https://dn-vfhky.qbox.me/2012/11/opt2.png" title="博客“留言吧”的头像缓存" /></p>
+<p><img alt="右侧栏“最新评论”的头像缓存" src="https://o3cex9zsl.qnssl.com/2012/11/opt1.png" title="右侧栏“最新评论”的头像缓存" /></p>
+<p><img alt="博客“留言吧”的头像缓存" src="https://o3cex9zsl.qnssl.com/2012/11/opt2.png" title="博客“留言吧”的头像缓存" /></p>
 <h5>（二）老生常谈，WordPress中的Gravatar头像本地服务器缓存，加快响应速度</h5>
 <p>先把下面的代码加入到主题的functions.php中，然后在需要的地方（例如，我的博客右侧栏的“读者粉丝墙”以及留言吧等等）调用这个my_avatar( )函数；然后在博客的主题下面新建一个avatar文件夹（用于保存头像），上传到空间后的权限是755。</p>
 <div class="highlight"><pre><span class="c1">//头像缓存 by vfhky</span>
@@ -97,7 +97,7 @@
 
 
 <h5>（三）结语：更简洁的界面、更快速的响应，更好的用户体验！</h5>
-<p><img alt="更快的响应速度，有木有！" src="https://dn-vfhky.qbox.me/2012/11/result.png" title="更快的响应速度，有木有！" /></p>
+<p><img alt="更快的响应速度，有木有！" src="https://o3cex9zsl.qnssl.com/2012/11/result.png" title="更快的响应速度，有木有！" /></p>
 <p>在把博客的“留言吧”优化后，顺势把右侧栏的“读者粉丝墙”和“最新评论”优化。完后，博客是不是更好看、更想用、更好用了呢O(∩_∩)O哈哈~</p>
 <h5>Update 2012-12-30</h5>
 <p>在（二）中谈到的Gravatar头像本地服务器缓存，上面的代码造成了一个比较严重的问题。具体解决方案见最新关于WordPress中Gravatar头像缓存至本地服务器的文章<a href="https://typecodes.com/web/againwpgravatarcache.html" title="再议Gravatar头像缓存至本地服务器">《再议Gravatar头像缓存至本地服务器》</a>。</p>

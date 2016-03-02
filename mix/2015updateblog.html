@@ -7,7 +7,7 @@
   		<meta name="viewport" content="width=device-width, initial-scale=1">
   		<link href="https://typecodes.com/atom.xml" type="application/atom+xml" rel="alternate" title="TypeCodes Atom Feed" />
 	  	<link href="https://typecodes.com/feed.xml" type="application/rss+xml" rel="alternate" title="TypeCodes RSS Feed" />
-		<link rel="stylesheet" href="https://dn-vfhky.qbox.me/libs/css/pelican-vfhky.css">
+		<link rel="stylesheet" href="https://o3cex9zsl.qnssl.com/libs/css/pelican-vfhky.css">
 		<script>
 			var _hmt = _hmt || [];
 			(function() {
@@ -43,7 +43,7 @@
 </ul>
 <div class="post-content fmt">
 	<p>这段时间对博客进行了一次升级，主要是从博客程序所在的系统服务器（CentOS）和WEB环境（LNMP）入手。目前自己的Linux服务器已经升级到CentOS7.1，同时LNMP环境也升级到了最新的版本。下面是整个升级过程的详细整理，记录一下方便以后查看。</p>
-<p><img alt="2015博客升级记" src="https://dn-vfhky.qbox.me/2015/05/updatemyblog.png" title="2015博客升级记" /></p>
+<p><img alt="2015博客升级记" src="https://o3cex9zsl.qnssl.com/2015/05/updatemyblog.png" title="2015博客升级记" /></p>
 
 
 <h5>1、升级系统服务器（CentOS）</h5>
@@ -58,7 +58,7 @@
 <p>详见文章：<a href="https://typecodes.com/linux/centos7fdiskmountswap.html" title="查看原文">《2015博客升级记(二)：Linux系统磁盘分区挂载和交换空间》</a>。</p>
 <h5>2、升级WEB环境（LNMP）</h5>
 <p>在升级完CentOS7.1系统后，就开始升级LNMP环境了。之前博客采用的是<a href="https://typecodes.com/web/aliyuncentos6creatlnmp.html" title="查看原文">《阿里云CentOS 6.5搭建LNMP环境（非一键脚本）》</a>文中提到的yum方法安装Nginx、Mysql和PHP。鉴于这种方法安装的版本都比较低，不是自己想要的版本，所以这次升级采用了源码编译的方式重新搭建LNMP环境（Nginx1.9.0、MySql5.7.7rc和PHP7）。</p>
-<p><img alt="升级LNMP环境" src="https://dn-vfhky.qbox.me/2015/05/blogupdatelnmp.png" title="升级LNMP环境" /></p>
+<p><img alt="升级LNMP环境" src="https://o3cex9zsl.qnssl.com/2015/05/blogupdatelnmp.png" title="升级LNMP环境" /></p>
 <h6>2.1 将Nginx1.6升级到最新的Nginx1.9.0版本</h6>
 <p>采用Nginx1.9.0版本，开启<code>stream module</code>模块用于TCP代理和负载均衡。</p>
 <p>详见文章：<a href="https://typecodes.com/web/centos7compilenginx.html" title="查看原文">《2015博客升级记(三)：CentOS 7.1编译安装Nginx1.9.0》</a>。</p>
@@ -71,7 +71,7 @@
 <h6>2.4 配置SSL和SPDY，全站使用https协议访问</h6>
 <p>博客之前采用http协议访问，中间一段时间<a href="https://typecodes.com/web/lnmppositivessl.html" title="《阿里云CentOS 6.5系统LNMP环境安装SSL证书》">换成了https</a>，后来由于博客的图片等资源无法使用https访问，所以又<a href="https://typecodes.com/web/shutdownblogssl.html" title="《决定关闭博客使用SSL证书访问》">关闭</a>了。这次升级还是决定将全站采用https协议访问，同时将Nginx和PHP的TCP通信改用Google开发的SPDY技术（虽然Google很可能使用新一代的http2技术取代）。</p>
 <p>详见文章：<a href="https://typecodes.com/web/centos7nginxhttpsspdy.html" title="查看原文">《2015博客升级记(六)：Nginx配置HTTPS和SPDY实战》</a>。</p>
-<p><img alt="配置SSL和SPDY" src="https://dn-vfhky.qbox.me/2015/05/blogupdatehttpscfg.png" title="配置SSL和SPDY" /></p>
+<p><img alt="配置SSL和SPDY" src="https://o3cex9zsl.qnssl.com/2015/05/blogupdatehttpscfg.png" title="配置SSL和SPDY" /></p>
 <h6>2.5 MySql的shell定时备份脚本</h6>
 <p>有了20G的数据盘仓库，就可以将博客的MySql数据库定时备份下来。</p>
 <p>详见文章：<a href="https://typecodes.com/linux/centos7mysqlregularbackup.html" title="查看原文">《2015博客升级记(七)：CentOS7定时备份MySql的shell脚本》</a>。</p>
@@ -80,7 +80,7 @@
 <p>详见文章：<a href="https://typecodes.com/linux/centos7blogregularbackup.html" title="查看原文">《2015博客升级记(八)：CentOS7定时备份博客程序的shell脚本》</a>。</p>
 <h5>3、其它</h5>
 <p>在编译安装MySql5.7.7rc之前，还折腾过MySql其它版本，在这里一并记录分享下。</p>
-<p><img alt="升级MySql5.7" src="https://dn-vfhky.qbox.me/2015/05/blogupdatemysql.png" title="升级MySql5.7" /></p>
+<p><img alt="升级MySql5.7" src="https://o3cex9zsl.qnssl.com/2015/05/blogupdatemysql.png" title="升级MySql5.7" /></p>
 <h6>3.1 CentOS7编译安装MySql5.6.24</h6>
 <p>作为MySql官方Generally Available (GA) Releases版本——MySql5.6.24在tar包源码编译安装后，只要root用户使用命令<code>mysql -uroot -p</code>登陆，就会出现<code>Segmentation fault</code>的BUG。</p>
 <p>具体解决方法，详见文章：<a href="https://typecodes.com/web/centos7compilemysql5.html" title="查看原文">《阿里云CentOS 7.1编译安装MySql5.6.24》</a>。</p>

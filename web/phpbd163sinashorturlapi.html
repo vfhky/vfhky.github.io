@@ -7,7 +7,7 @@
   		<meta name="viewport" content="width=device-width, initial-scale=1">
   		<link href="https://typecodes.com/atom.xml" type="application/atom+xml" rel="alternate" title="TypeCodes Atom Feed" />
 	  	<link href="https://typecodes.com/feed.xml" type="application/rss+xml" rel="alternate" title="TypeCodes RSS Feed" />
-		<link rel="stylesheet" href="https://dn-vfhky.qbox.me/libs/css/pelican-vfhky.css">
+		<link rel="stylesheet" href="https://o3cex9zsl.qnssl.com/libs/css/pelican-vfhky.css">
 		<script>
 			var _hmt = _hmt || [];
 			(function() {
@@ -48,7 +48,7 @@
 
 
 <p>新浪微博的短网址API接口服务也类似于谷歌，第一种只需要取得新浪微博开放平台的APPKEY即可使用，第二种是采用OAuth2.0认证的方式。网易只提供类似于新浪微博提供的第二种API接口调用方式，即需要申请APPKEY，不过申请非常容易通过，这点不同于新浪微博。值得一提的是，经博主测试，网易的短网址API接口貌似有bug。最终三个接口的测试效果如下图所示：</p>
-<p><img alt="百度网易新浪微博短网址API接口" src="https://dn-vfhky.qbox.me/2014/03/shorturlAPI.png" title="百度网易新浪微博短网址API接口" /></p>
+<p><img alt="百度网易新浪微博短网址API接口" src="https://o3cex9zsl.qnssl.com/2014/03/shorturlAPI.png" title="百度网易新浪微博短网址API接口" /></p>
 <h5>2 PHP实现百度短网址API接口调用</h5>
 <p>百度短网址的API接口封装不是很好，需要针对长网址转短网址和短网址转长网址请求不同的页面（create.php和query.php），另外官方的示例程序也有错误。</p>
 <table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
@@ -128,7 +128,7 @@
 </td></tr></table>
 
 <h5>3 PHP实现网易短网址API接口调用</h5>
-<p><img alt="网易短网址API接口" src="https://dn-vfhky.qbox.me/2014/03/neteasy.png" title="网易短网址API接口" /></p>
+<p><img alt="网易短网址API接口" src="https://o3cex9zsl.qnssl.com/2014/03/neteasy.png" title="网易短网址API接口" /></p>
 <p>用户首先需要申请一个appkey，申请地址是http://126.am/，登录进去即可申请，并且很快得到审核。不过，经过测试发现一个bug：用接口生成的短网址无法通过API接口还原为之前的长网址，提示“NOT_MATCH”（对应的官方说明是：Key和短地址不匹配，无法还原）。但是如上图所示，如果在http://126.am/user.action的页面生成的短网址却能够通过API还原为原来的长网址。</p>
 <table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
  2

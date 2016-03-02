@@ -7,7 +7,7 @@
   		<meta name="viewport" content="width=device-width, initial-scale=1">
   		<link href="https://typecodes.com/atom.xml" type="application/atom+xml" rel="alternate" title="TypeCodes Atom Feed" />
 	  	<link href="https://typecodes.com/feed.xml" type="application/rss+xml" rel="alternate" title="TypeCodes RSS Feed" />
-		<link rel="stylesheet" href="https://dn-vfhky.qbox.me/libs/css/pelican-vfhky.css">
+		<link rel="stylesheet" href="https://o3cex9zsl.qnssl.com/libs/css/pelican-vfhky.css">
 		<script>
 			var _hmt = _hmt || [];
 			(function() {
@@ -49,12 +49,12 @@ collect2: error: ld returned 1 exit status
 </pre></div>
 
 
-<p><img alt="Linux gcc链接动态库出错" src="https://dn-vfhky.qbox.me/2015/08/gcc_linux.png" title="Linux gcc链接动态库出错" /></p>
+<p><img alt="Linux gcc链接动态库出错" src="https://o3cex9zsl.qnssl.com/2015/08/gcc_linux.png" title="Linux gcc链接动态库出错" /></p>
 
 
 <h4>1 gcc链接动态库时的搜索路径</h4>
 <p>自以为在当前工程中设置好了环境变量<code>LD_LIBRARY_PATH</code>包含了工程中的lib库路径，并且还在<code>/etc/ld.so.conf/apphome.conf</code>中配置了lib库的路径。那么在调用动态库的时候，gcc就应该能自动去搜索该目录。</p>
-<p><img alt="gcc链接动态库时的搜索路径" src="https://dn-vfhky.qbox.me/2015/08/centos7_gcc_cannot_find_library.png" title="gcc链接动态库时的搜索路径" /></p>
+<p><img alt="gcc链接动态库时的搜索路径" src="https://o3cex9zsl.qnssl.com/2015/08/centos7_gcc_cannot_find_library.png" title="gcc链接动态库时的搜索路径" /></p>
 <p>很遗憾ld链接器报了如上的错误，但是如果在上面的gcc命令中添加上<code>-L /root/gcc_test/tcp_msg/lib/</code>参数，即明确动态库的绝对路径，是能够链接成功的。</p>
 <h4>2 Google上查找 /usr/bin/ld: cannot find -l* 的出错原因</h4>
 <p>gg了很久gcc ld链接动态库出错的原因，结果还是没找到理想的答案。后来猜想是不是在CentOs7中LD_LIBRARY_PATH不起作用的缘故，但是也不应该，因为自己用的GCC（version 4.8.3）跟操作系统没关系。于是重新搜索了gcc LD_LIBRARY_PATH的作用，竟然发现gcc在编译链接时链接的动态库跟<code>LIBRARY_PATH</code>有关而跟<code>LD_LIBRARY_PATH</code>没关系！</p>
@@ -122,7 +122,7 @@ If your library is shared then it needs to be dynamically linked to your program
 </pre></div>
 
 
-<p><img alt="Linux GCC中ld --verbose命令" src="https://dn-vfhky.qbox.me/2015/08/gcc_ld_verbose.png" title="Linux GCC中ld --verbose命令" /></p>
+<p><img alt="Linux GCC中ld --verbose命令" src="https://o3cex9zsl.qnssl.com/2015/08/gcc_ld_verbose.png" title="Linux GCC中ld --verbose命令" /></p>
 		    	<p class="tags">
 					<div class="post-share">
 						<ul class="post-shareul clearfix">

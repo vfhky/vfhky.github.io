@@ -7,7 +7,7 @@
   		<meta name="viewport" content="width=device-width, initial-scale=1">
   		<link href="https://typecodes.com/atom.xml" type="application/atom+xml" rel="alternate" title="TypeCodes Atom Feed" />
 	  	<link href="https://typecodes.com/feed.xml" type="application/rss+xml" rel="alternate" title="TypeCodes RSS Feed" />
-		<link rel="stylesheet" href="https://dn-vfhky.qbox.me/libs/css/pelican-vfhky.css">
+		<link rel="stylesheet" href="https://o3cex9zsl.qnssl.com/libs/css/pelican-vfhky.css">
 		<script>
 			var _hmt = _hmt || [];
 			(function() {
@@ -47,7 +47,7 @@
 <p>HTTP响应拆分是一个新的应用程序的攻击技术，使网页缓存中毒，跨用户涂改，如各种新的攻击，劫持用户的敏感信息和跨站点脚本（XSS）的网页。</p>
 
 
-<p><img alt="小议网站HTTP响应拆分漏洞-1" src="https://dn-vfhky.qbox.me/2012/07/12.png" title="小议网站HTTP响应拆分漏洞-1" /></p>
+<p><img alt="小议网站HTTP响应拆分漏洞-1" src="https://o3cex9zsl.qnssl.com/2012/07/12.png" title="小议网站HTTP响应拆分漏洞-1" /></p>
 <h5>2 解决思路</h5>
 <p>根据常识，这种现象往往表现在带有参数传递的网页，例如 <code>typecodes.com/?page=传递的参数</code> 。于是，我赶紧查看了一下这个插件。在它的一个页面里面我看到了两行代码： $post = $_GET['p'];、$download = $_GET['download']; 。然而，它后面却没有对这两个传递的参数$post和$download 进行处理。这样就很可能造成注入漏洞。例如，在数据库的操作中就很注重一些防注入的处理。在“PHP和ASP的数据库连接代码”这篇文章的conn.asp的代码中就对回车键和换行键进行了处理。所以，对参数$post和$download运用PHP语法中的正则表达式ereg_replace或者字符串处理函数str_replace进行操作。大家只要在参数被写入到数据库之前把它过滤即可。</p>
 <h5>3 解决代码</h5>
@@ -98,7 +98,7 @@
 
 <h6>3.3 问题延伸讨论</h6>
 <p>当然对$download参数的处理也是类似的（即把上述代码中的$post全部改成$download即可），就不贴出代码了。通过这个处理，解决了“HTTP响应拆分漏洞”的问题。</p>
-<p><img alt="小议网站HTTP响应拆分-2" src="https://dn-vfhky.qbox.me/2012/07/22.png" title="小议网站HTTP响应拆分-2" /></p>
+<p><img alt="小议网站HTTP响应拆分-2" src="https://o3cex9zsl.qnssl.com/2012/07/22.png" title="小议网站HTTP响应拆分-2" /></p>
 <h5>4 Update 2012-12-30 18:26</h5>
 <h6>4.1 存在“http响应拆分漏洞”的CMS系统</h6>
 <div class="highlight"><pre>WordPress的wp-codebox插件

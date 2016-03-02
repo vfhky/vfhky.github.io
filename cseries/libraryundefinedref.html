@@ -7,7 +7,7 @@
   		<meta name="viewport" content="width=device-width, initial-scale=1">
   		<link href="https://typecodes.com/atom.xml" type="application/atom+xml" rel="alternate" title="TypeCodes Atom Feed" />
 	  	<link href="https://typecodes.com/feed.xml" type="application/rss+xml" rel="alternate" title="TypeCodes RSS Feed" />
-		<link rel="stylesheet" href="https://dn-vfhky.qbox.me/libs/css/pelican-vfhky.css">
+		<link rel="stylesheet" href="https://o3cex9zsl.qnssl.com/libs/css/pelican-vfhky.css">
 		<script>
 			var _hmt = _hmt || [];
 			(function() {
@@ -86,7 +86,7 @@ make: *** [/root/gcc_test/tcp_msg/bin/test] Error 1
 </pre></div>
 
 
-<p><img alt="ld链接时报错：undefined reference" src="https://dn-vfhky.qbox.me/2015/08/library_undefined_reference.png" title="ld链接时报错：undefined reference" /></p>
+<p><img alt="ld链接时报错：undefined reference" src="https://o3cex9zsl.qnssl.com/2015/08/library_undefined_reference.png" title="ld链接时报错：undefined reference" /></p>
 <h4>2 查找 libsrcpbl.so: undefined reference to gcProgramName 的原因</h4>
 <p>通过make显示的内容，基本判断Makefile文件是正确的。用<code>nm libsrcpbl.so</code>命令查看一下链接的动态库，结果如下：</p>
 <div class="highlight"><pre>##### 使用nm查看动态库
@@ -96,7 +96,7 @@ make: *** [/root/gcc_test/tcp_msg/bin/test] Error 1
 </pre></div>
 
 
-<p><img alt="使用nm查看动态库中的符号" src="https://dn-vfhky.qbox.me/2015/08/nm_library_grep.png" title="使用nm查看动态库中的符号" /></p>
+<p><img alt="使用nm查看动态库中的符号" src="https://o3cex9zsl.qnssl.com/2015/08/nm_library_grep.png" title="使用nm查看动态库中的符号" /></p>
 <p>根据上图中的信息，结合前文<a href="https://typecodes.com/cseries/nmobjectfilesymbol.html" title="查看原文">《Unix系统中nm命令展示目标文件符号的方法》</a>nm命令的man手册关于符号<code>U</code>的说明，推测可能原因：libsrcpbl.so动态库文件中存在gcProgramName符号（即变量），需要从test.o对象文件中链接进来，但是test.c程序中没有定义gcProgramName变量，所以报错了。</p>
 <p>于是查看原工程中的头文件pbl_global.h，果然发现了gcProgramName是一个外部全局变量，其声明如下：</p>
 <div class="highlight"><pre>extern char gcProgramName[20 + 1];
@@ -128,7 +128,7 @@ make: *** [/root/gcc_test/tcp_msg/bin/test] Error 1
 </td></tr></table>
 
 <p>最后重新make一下，链接生成ELF文件成功！</p>
-<p><img alt="使用nm查看动态库中的符号" src="https://dn-vfhky.qbox.me/2015/08/make_link_library_sucess.png" title="使用nm查看动态库中的符号" /></p>
+<p><img alt="使用nm查看动态库中的符号" src="https://o3cex9zsl.qnssl.com/2015/08/make_link_library_sucess.png" title="使用nm查看动态库中的符号" /></p>
 <h5>4 总结</h5>
 <p>在make编译链接某个动态库lxx.so时，如果报<code>libxx.so: undefined reference to xx</code>的话，很可能是由下面两种原因引起的。Unix/Linux系统中使用<code>nm</code>、<code>objdump</code>和<code>readelf</code>命令可以辅助调试目标文件。</p>
 <div class="highlight"><pre>1、链接的动态库中存在只做了声明的自定义的函数/全局变量，但是在其它对象文件中没有实现定义；

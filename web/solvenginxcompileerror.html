@@ -7,7 +7,7 @@
   		<meta name="viewport" content="width=device-width, initial-scale=1">
   		<link href="https://typecodes.com/atom.xml" type="application/atom+xml" rel="alternate" title="TypeCodes Atom Feed" />
 	  	<link href="https://typecodes.com/feed.xml" type="application/rss+xml" rel="alternate" title="TypeCodes RSS Feed" />
-		<link rel="stylesheet" href="https://dn-vfhky.qbox.me/libs/css/pelican-vfhky.css">
+		<link rel="stylesheet" href="https://o3cex9zsl.qnssl.com/libs/css/pelican-vfhky.css">
 		<script>
 			var _hmt = _hmt || [];
 			(function() {
@@ -58,7 +58,7 @@ Job for nginx.service failed. See &#39;systemctl status nginx.service&#39; and &
 
 
 <p>解决方法：主要通过命令<code>systemctl status nginx.service</code>来分析，如下图所示。</p>
-<p><img alt="Nginx编译安装时常见错误分析" src="https://dn-vfhky.qbox.me/2015/06/nginx_start_error.png" title="Nginx编译安装时常见错误分析" /></p>
+<p><img alt="Nginx编译安装时常见错误分析" src="https://o3cex9zsl.qnssl.com/2015/06/nginx_start_error.png" title="Nginx编译安装时常见错误分析" /></p>
 <p>很明显是由于下面这个错误，导致Nginx服务启动失败。</p>
 <div class="highlight"><pre>Apr 11 21:43:07 typecodes nginx[4026]: Starting nginx: nginx: [emerg] mkdir() &quot;/var/tmp/nginx/client/&quot; failed (2: No such file or directory)
 </pre></div>
@@ -100,9 +100,9 @@ root      7981  0.0  0.0 112644   964 pts/0    S+   21:19   0:00 grep --color=au
 <p>还有一种在启动Nginx服务时，终端界面会卡住的情况：那就是Nginx的配置文件<code>/etc/nginx/nginx.conf</code>不正确，但是使用<code>nginx -t</code>命令显示正常。这种情况只能对nginx.conf文件中的每一个配置进行检查了。</p>
 <h5>4 Compilation failed in require或者perl_parse() failed</h5>
 <p>在使用命令<code>service nginx start</code>启动Nginx服务时报错，于是通过<code>systemctl status nginx.service</code>查看具体的错误信息。   </p>
-<p><img alt="查看Nginx1.9.0的详细信息" src="https://dn-vfhky.qbox.me/2015/05/compilationfailedinrequire.png" title="查看Nginx1.9.0的详细信息" /></p>
+<p><img alt="查看Nginx1.9.0的详细信息" src="https://o3cex9zsl.qnssl.com/2015/05/compilationfailedinrequire.png" title="查看Nginx1.9.0的详细信息" /></p>
 <p>然后使用命令<code>nginx -t</code>查看配置是否正常，如下图所示，同样报错。 </p>
-<p><img alt="nginx -t查看错误信息" src="https://dn-vfhky.qbox.me/2015/05/nginx-t-error.png" title="nginx -t查看错误信息" /></p>
+<p><img alt="nginx -t查看错误信息" src="https://o3cex9zsl.qnssl.com/2015/05/nginx-t-error.png" title="nginx -t查看错误信息" /></p>
 <p>解决方法：从图中可以看出由于<code>Can't load '/usr/local/lib64/perl5/auto/nginx/nginx.so' for module nginx: /usr/local/lib64/perl5/au...m line 68.</code>的错误，导致了Nginx在调用函数时失败：<code>perl_parse() failed</code>。也就是证明是之前没有安装perl依赖包，于是通过执行命令<code>yum -y install perl-devel perl-ExtUtils-Embed</code>后，再次编译安装Nginx解决。</p>
 		    	<p class="tags">
 					<div class="post-share">

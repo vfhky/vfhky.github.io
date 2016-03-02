@@ -7,7 +7,7 @@
   		<meta name="viewport" content="width=device-width, initial-scale=1">
   		<link href="https://typecodes.com/atom.xml" type="application/atom+xml" rel="alternate" title="TypeCodes Atom Feed" />
 	  	<link href="https://typecodes.com/feed.xml" type="application/rss+xml" rel="alternate" title="TypeCodes RSS Feed" />
-		<link rel="stylesheet" href="https://dn-vfhky.qbox.me/libs/css/pelican-vfhky.css">
+		<link rel="stylesheet" href="https://o3cex9zsl.qnssl.com/libs/css/pelican-vfhky.css">
 		<script>
 			var _hmt = _hmt || [];
 			(function() {
@@ -44,19 +44,19 @@
 <div class="post-content fmt">
 	<p>如Google Developers所述：Google Developers is now the place to find all Google developer documentation, resources, events, and products，<a href="https://developers.google.com/" title="点击进入">谷歌开发者（Google Developers）</a>是查询所有谷歌开发文档、资源、活动和产品的地方。</p>
 <p>例如，你需要使用Google url shortener、Google Maps Engine的API接口，那么你就可以到这里找官方接口文档说明、代码示例（资源）等等。对开发者来说，Google Developers最主要的内容是Developer Tools，它包括了<a href="https://developers.google.com/apis-explorer/" title="点击进入">API Explorer</a>、开发者控制台<a href="https://console.developers.google.com/" title="点击进入">Developers Console</a>、GAE管理平台<a href="https://appengine.google.com/" title="点击进入">App Engine Console</a>、<a href="https://developers.google.com/oauthplayground" title="点击进入">OAuth 2.0 Playground</a>、谷歌代码中心<a href="https://code.google.com/hosting/" title="点击进入">Project Hosting</a>等。当你在GAE管理平台<a href="https://appengine.google.com/" title="点击进入">App Engine Console</a>创建好了工程项目后，就可以在<a href="https://console.developers.google.com" title="点击进入">开发者控制台（Developers Console）</a>管理你工程里面的应用了。</p>
-<p><img alt="谷歌Developers Console首页" src="https://dn-vfhky.qbox.me/2014/03/Google_developers_product.png" title="谷歌Developers Console首页" /></p>
+<p><img alt="谷歌Developers Console首页" src="https://o3cex9zsl.qnssl.com/2014/03/Google_developers_product.png" title="谷歌Developers Console首页" /></p>
 
 
 <h5>1 谷歌Developers Console简单介绍</h5>
-<p><img alt="谷歌Developers Console中的工程项目" src="https://dn-vfhky.qbox.me/2014/03/Google_developers_Console.png" title="谷歌Developers Console中的工程项目" /></p>
+<p><img alt="谷歌Developers Console中的工程项目" src="https://o3cex9zsl.qnssl.com/2014/03/Google_developers_Console.png" title="谷歌Developers Console中的工程项目" /></p>
 <p>如上图所示，博主创建了一个名为1-vfhky的工程（当初是<a href="https://typecodes.com/mix/chromegoagent.html" title="《翻越那道墙，用谷歌Goagent打造自己的chrome利器》">用来翻墙</a>的），点击该工程然后再点击左侧菜单的“APIs”选项，可以看到该工程下所有的API接口列表（当然你可以直接通过<a href="https://developers.google.com/apis-explorer/" title="《翻越那道墙，用谷歌Goagent打造自己的chrome利器》">API Explorer</a>来查看谷歌目前所有开放的API列表）。</p>
 <p>由于这些API接口默认都是关闭的，即显示“OFF”，所以我们需要找到自己想要用的那个API接口。点击“OFF”按钮，然后打勾接受谷歌API的开发协议，就可以使用该接口了。</p>
-<p><img alt="谷歌Developers Console所有的API接口列表" src="https://dn-vfhky.qbox.me/2014/03/Google_APIs.png" title="谷歌Developers Console所有的API接口列表" /></p>
+<p><img alt="谷歌Developers Console所有的API接口列表" src="https://o3cex9zsl.qnssl.com/2014/03/Google_APIs.png" title="谷歌Developers Console所有的API接口列表" /></p>
 <h5>2 生成APP KEY</h5>
 <p>当我们启用了该API接口，那么是否可以直接使用了呢？答案是否定的。因为你在调用该接口的时候，需要对你应用所发送的请求进行“身份证明”，否则该API服务器不会“认可”你的请求。而APP KEY或者OAuth 2.0 token正是这张“身份证”。</p>
 <p>如下图所示，工程1-vfhky的“Credentials”选项下面有一个OAuth管理器和一个Public API Access管理器。下面是生成APP KEY的方法：</p>
 <p>1、点击“CREATE NEW KEY”，然后在弹出的灰色框框中，从下面四个选项中选择这个KEY的类型：Server Key、Browser Key、Android Key、iOS Key。</p>
-<p><img alt="谷歌Developers Console点击Browser Key" src="https://dn-vfhky.qbox.me/2014/03/google_shorturl_apikey.png" title="谷歌Developers Console点击Browser Key" /></p>
+<p><img alt="谷歌Developers Console点击Browser Key" src="https://o3cex9zsl.qnssl.com/2014/03/google_shorturl_apikey.png" title="谷歌Developers Console点击Browser Key" /></p>
 <p>这里只说明下Server Key和Browser Key的定义，Android Key和iOS Key不用说大家都知道。</p>
 <div class="highlight"><pre><span class="cm">/* 1.Server Key：*/</span><span class="w"></span>
 This<span class="w"> </span>key<span class="w"> </span>should<span class="w"> </span>be<span class="w"> </span>kept<span class="w"> </span>secret<span class="w"> </span><span class="kr">on</span><span class="w"> </span>your<span class="w"> </span>server<span class="o">.</span><span class="w"> </span>Every<span class="w"> </span>API<span class="w"> </span>request<span class="w"> </span>is<span class="w"> </span>generated<span class="w"> </span><span class="kr">by</span><span class="w"> </span>software<span class="w"> </span>running<span class="w"> </span><span class="kr">on</span><span class="w"> </span>a<span class="w"> </span>machine<span class="w"> </span>that<span class="w"> </span>you<span class="w"> </span>control<span class="o">.</span><span class="w"> </span>Per<span class="o">-</span>user<span class="w"> </span>limits<span class="w"> </span>will<span class="w"> </span>be<span class="w"> </span>enforced<span class="w"> </span>using<span class="w"> </span>the<span class="w"> </span><span class="kr">address</span><span class="w"> </span>found<span class="w"> </span>in<span class="w"> </span>each<span class="w"> </span>request<span class="s">&#39;s userIp parameter, (if specified). If the userIp parameter is missing, your machine&#39;</span>s<span class="w"> </span>IP<span class="w"> </span><span class="kr">address</span><span class="w"> </span>will<span class="w"> </span>be<span class="w"> </span>used<span class="w"> </span>instead<span class="o">.</span><span class="w"></span>
@@ -69,9 +69,9 @@ This<span class="w"> </span>key<span class="w"> </span>can<span class="w"> </spa
 
 
 <p>2、在弹出的小框中输入你认为合法的HTTP referers，例如博主自己的typecodes.com。不过谷歌的这个URL Shortener API接口并没有真正的对每一个请求的HTTP referers进行检查，也即你即使在本地127.0.0.1发送请求，只要程序正确的话，Google还是会返回给你正常的应答。</p>
-<p><img alt="谷歌Developers Console生成KEY设置HTTP referers" src="https://dn-vfhky.qbox.me/2014/03/google_shorturl_getapikey.png" title="谷歌Developers Console生成KEY设置HTTP referers" /></p>
+<p><img alt="谷歌Developers Console生成KEY设置HTTP referers" src="https://o3cex9zsl.qnssl.com/2014/03/google_shorturl_getapikey.png" title="谷歌Developers Console生成KEY设置HTTP referers" /></p>
 <p>3、点击“Create”后，就可以看到如下图的内容了，其中就有需要的APP KEY哦！</p>
-<p><img alt="谷歌Developers Console生成的APP KEY" src="https://dn-vfhky.qbox.me/2014/03/GAE_API_KEY.png" title="谷歌Developers Console生成的APP KEY" /></p>
+<p><img alt="谷歌Developers Console生成的APP KEY" src="https://o3cex9zsl.qnssl.com/2014/03/GAE_API_KEY.png" title="谷歌Developers Console生成的APP KEY" /></p>
 		    	<p class="tags">
 					<div class="post-share">
 						<ul class="post-shareul clearfix">

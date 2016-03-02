@@ -7,7 +7,7 @@
   		<meta name="viewport" content="width=device-width, initial-scale=1">
   		<link href="https://typecodes.com/atom.xml" type="application/atom+xml" rel="alternate" title="TypeCodes Atom Feed" />
 	  	<link href="https://typecodes.com/feed.xml" type="application/rss+xml" rel="alternate" title="TypeCodes RSS Feed" />
-		<link rel="stylesheet" href="https://dn-vfhky.qbox.me/libs/css/pelican-vfhky.css">
+		<link rel="stylesheet" href="https://o3cex9zsl.qnssl.com/libs/css/pelican-vfhky.css">
 		<script>
 			var _hmt = _hmt || [];
 			(function() {
@@ -44,7 +44,7 @@
 </ul>
 <div class="post-content fmt">
 	<p>在Linux TCP通信的调试中，tcpdump应该算是很好的一个工具。这篇文章主要使用Windows作为客户端，向作为服务端的Linux中的一个socket监听端口发送报文信息，然后在Linux中用TCPDUMP工具进行抓包。通过这个实例，可以较为完整的了解TCP通信中的“三次握手”等过程。</p>
-<p><img alt="Linux中使用TCPDUMP进行简单的TCP抓包" src="https://dn-vfhky.qbox.me/2016/02/linuxtcpdump.png" title="Linux中使用TCPDUMP进行简单的TCP抓包" /></p>
+<p><img alt="Linux中使用TCPDUMP进行简单的TCP抓包" src="https://o3cex9zsl.qnssl.com/2016/02/linuxtcpdump.png" title="Linux中使用TCPDUMP进行简单的TCP抓包" /></p>
 
 	<p class="more"><a href="https://typecodes.com/linux/simpletcpdumpapply.html" title="Linux中使用TCPDUMP进行简单的TCP抓包">- 阅读剩余部分 -</a></p>
 			</article>
@@ -64,7 +64,7 @@
 </ul>
 <div class="post-content fmt">
 	<p>使用了Pelican后，最多的操作就是编译Markdown文章生成HTML文件，然后发布到Nginx的博客目录下。</p>
-<p><img alt="我的Pelican博客管理和发布流程" src="https://dn-vfhky.qbox.me/2016/01/github_pelican_nginx.png" title="我的Pelican博客管理和发布流程" /></p>
+<p><img alt="我的Pelican博客管理和发布流程" src="https://o3cex9zsl.qnssl.com/2016/01/github_pelican_nginx.png" title="我的Pelican博客管理和发布流程" /></p>
 
 	<p class="more"><a href="https://typecodes.com/linux/syngithubmarkdownpelican.html" title="同步GitHub Markdown文章到Linux服务器后更新Pelican博客的脚本">- 阅读剩余部分 -</a></p>
 			</article>
@@ -75,7 +75,7 @@
 </ul>
 <div class="post-content fmt">
 	<p>在Linux中如果应用程序会产生日志，那么就需要考虑日志切割，例如按照固定的大小切割、按照日期进行切割等等。同样，在编译<a href="https://typecodes.com/web/centos7compilenginx.html" title="《2015博客升级记(三)：CentOS 7.1编译安装Nginx1.9.0》">Nginx1.9.0</a>、<a href="https://typecodes.com/web/centos7compilemysql.html" title="《2015博客升级记(四)：CentOS 7.1编译安装MySQL5.7.7rc》">MySQL5.7.7rc</a>和<a href="https://typecodes.com/web/centos7compilephp7.html" title="《2015博客升级记(五)：CentOS 7.1编译安装PHP7》">PHP7</a>后，这三个应用服务都会产生日志，尤其是Nginx进程根据配置文件ngnix.conf记录每条访问记录到access.log中。如果所有的日志都打印到同一个文件中的话，那么时间长了的话就会影响效率。</p>
-<p><img alt="Nginx日志切割实例" src="https://dn-vfhky.qbox.me/2015/12/nginx_logs_backup.png" title="Nginx日志切割实例" /></p>
+<p><img alt="Nginx日志切割实例" src="https://o3cex9zsl.qnssl.com/2015/12/nginx_logs_backup.png" title="Nginx日志切割实例" /></p>
 
 	<p class="more"><a href="https://typecodes.com/linux/applogsbackup.html" title="Linux下Nginx、MySQL和PHP等应用的日志切割脚本">- 阅读剩余部分 -</a></p>
 			</article>
@@ -87,7 +87,7 @@
 <div class="post-content fmt">
 	<p>前段时间和其它系统做联调测试，对方系统采用的是负载均衡模式。调试时采用的是多台手机作为客户端发送到对方负载均衡服务器，然后再把报文转发送到我这边的服务端。在测试的时候，对方测试人员说有的手机客户端会偶尔出现报文发不过来的情况。</p>
 <p>故事有点长，先发一张tcp三次握手的过程图镇楼~</p>
-<p><img alt="Linux tcp三次握手" src="https://dn-vfhky.qbox.me/2015/09/tcp_handshake.png" title="Linux tcp三次握手" /></p>
+<p><img alt="Linux tcp三次握手" src="https://o3cex9zsl.qnssl.com/2015/09/tcp_handshake.png" title="Linux tcp三次握手" /></p>
 
 	<p class="more"><a href="https://typecodes.com/linux/tcpconnectiontimedout.html" title="Linux TCP连接Connection Refused和Connection timed out的问题">- 阅读剩余部分 -</a></p>
 			</article>
@@ -98,7 +98,7 @@
 </ul>
 <div class="post-content fmt">
 	<p>昨天在更新完文章<a href="https://typecodes.com/mix/synweibophpmarkdownimgurl.html">《升级博客文章同步微博的插件：PHP正则提取Markdown的图片地址》</a>后，博客突然无法访问了。</p>
-<p><img alt="MySQL的错误日志" src="https://dn-vfhky.qbox.me/2015/08/mysql_space_error.png" title="MySQL的错误日志" /></p>
+<p><img alt="MySQL的错误日志" src="https://o3cex9zsl.qnssl.com/2015/08/mysql_space_error.png" title="MySQL的错误日志" /></p>
 
 	<p class="more"><a href="https://typecodes.com/linux/mysqlerrornospace.html" title="博客MySQL服务惊魂记：Linux磁盘空间不足(Core Dump文件引爆)">- 阅读剩余部分 -</a></p>
 			</article>
@@ -109,7 +109,7 @@
 </ul>
 <div class="post-content fmt">
 	<p>在<a href="https://typecodes.com/linux/gitaccountconfig.html" title="《CentOS系统BitBucket、GitHub和Coding等多git账户的配置》">上一篇文章</a>讲述了如何在Linux系统中配置BitBucket、GitHub和Coding这三个平台的git账户，这篇文章就分享如何通过shell脚本定时获取自己的CentOS7.1服务器上的备份文件，然后使用git命令同步到这三个平台仓库上。</p>
-<p><img alt="CentOS中git同步的shell脚本" src="https://dn-vfhky.qbox.me/2015/07/linux_git.png" title="CentOS中git同步的shell脚本" /></p>
+<p><img alt="CentOS中git同步的shell脚本" src="https://o3cex9zsl.qnssl.com/2015/07/linux_git.png" title="CentOS中git同步的shell脚本" /></p>
 
 	<p class="more"><a href="https://typecodes.com/linux/gitsynbackupshell.html" title="CentOS中将备份文件同步到BitBucket、GitHub和Coding的shell脚本">- 阅读剩余部分 -</a></p>
 			</article>
@@ -121,7 +121,7 @@
 <div class="post-content fmt">
 	<p>目前自己主要在BitBucket、GitHub和Coding这三个Git平台创建了一些项目，所以这篇文章以自己的CentOS7.1服务器作为示例，说说如何在Linux系统中配置不同平台的Git仓库，也即多git账户的配置。</p>
 <p>类似于Windows机器上的git配置方法，在CentOS上也是一样的。通过设置Git全部变量的配置文件<code>~/.ssh/config</code>和当前工作仓库的配置文件<code>your_git_project_root/.git/config</code>即可。</p>
-<p><img alt="当前git工作仓库的.git目录" src="https://dn-vfhky.qbox.me/2015/07/project_git_config_dir.png" title="当前git工作仓库的.git目录" /></p>
+<p><img alt="当前git工作仓库的.git目录" src="https://o3cex9zsl.qnssl.com/2015/07/project_git_config_dir.png" title="当前git工作仓库的.git目录" /></p>
 
 	<p class="more"><a href="https://typecodes.com/linux/gitaccountconfig.html" title="CentOS系统BitBucket、GitHub和Coding等多git账户的配置">- 阅读剩余部分 -</a></p>
 			</article>

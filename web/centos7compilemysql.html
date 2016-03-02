@@ -7,7 +7,7 @@
   		<meta name="viewport" content="width=device-width, initial-scale=1">
   		<link href="https://typecodes.com/atom.xml" type="application/atom+xml" rel="alternate" title="TypeCodes Atom Feed" />
 	  	<link href="https://typecodes.com/feed.xml" type="application/rss+xml" rel="alternate" title="TypeCodes RSS Feed" />
-		<link rel="stylesheet" href="https://dn-vfhky.qbox.me/libs/css/pelican-vfhky.css">
+		<link rel="stylesheet" href="https://o3cex9zsl.qnssl.com/libs/css/pelican-vfhky.css">
 		<script>
 			var _hmt = _hmt || [];
 			(function() {
@@ -127,7 +127,7 @@ CMake suite maintained and supported by Kitware (kitware.com/cmake).
 
 
 <p>执行上面的配置命令的结果如下图所示：</p>
-<p><img alt="MySQL5.7.7rc编译前的配置" src="https://dn-vfhky.qbox.me/2015/06/mysql_cmake.png" title="MySQL5.7.7rc编译前的配置" /></p>
+<p><img alt="MySQL5.7.7rc编译前的配置" src="https://o3cex9zsl.qnssl.com/2015/06/mysql_cmake.png" title="MySQL5.7.7rc编译前的配置" /></p>
 <h5>4 开始编译和安装MySQL5.7.7rc</h5>
 <p>使用make命令编译时，会比较吃CPU。博主当时购买的阿里主机是单核1G内存，编译到55%左右时直接卡住，同时无法新建一个终端连接，内存或者CPU已经严重耗尽。在重新购买了一个物理数据盘并划分出一个swap交换空间后，最终还是编译成功了，耗时约4个小时。所以，如果主机内存在1G一下并且没有设置Linux交换空间的，<code>不建议</code>直接编译MySQL5.7.7rc！</p>
 <div class="highlight"><pre>[root@typecodes mysql-5.7.7-rc]# make &amp;&amp; make install
@@ -135,16 +135,16 @@ CMake suite maintained and supported by Kitware (kitware.com/cmake).
 
 
 <p>下图展示的是<code>make</code>命令执行完毕的情况：</p>
-<p><img alt="编译MySQL5.7.7rc的make命令执行结果" src="https://dn-vfhky.qbox.me/2015/06/mysql_make.png" title="编译MySQL5.7.7rc的make命令执行结果" /></p>
-<p><img alt="编译MySQL5.7.7rc的make命令执行结果" src="https://dn-vfhky.qbox.me/2015/06/mysql_make_process.png" title="编译MySQL5.7.7rc的make命令执行结果" /></p>
+<p><img alt="编译MySQL5.7.7rc的make命令执行结果" src="https://o3cex9zsl.qnssl.com/2015/06/mysql_make.png" title="编译MySQL5.7.7rc的make命令执行结果" /></p>
+<p><img alt="编译MySQL5.7.7rc的make命令执行结果" src="https://o3cex9zsl.qnssl.com/2015/06/mysql_make_process.png" title="编译MySQL5.7.7rc的make命令执行结果" /></p>
 <p>编译MySQL5.7.7rc对CPU和内存消耗比较大，这里截取了两张使用top命令的图片：</p>
-<p><img alt="编译MySQL5.7.7rc的make命令执行结果" src="https://dn-vfhky.qbox.me/2015/06/compile_mysql_require_memory.png" title="编译MySQL5.7.7rc的make命令执行结果" /></p>
-<p><img alt="编译MySQL5.7.7rc的make命令执行结果" src="https://dn-vfhky.qbox.me/2015/06/compile_mysql_require_cpu.png" title="编译MySQL5.7.7rc的make命令执行结果" /></p>
+<p><img alt="编译MySQL5.7.7rc的make命令执行结果" src="https://o3cex9zsl.qnssl.com/2015/06/compile_mysql_require_memory.png" title="编译MySQL5.7.7rc的make命令执行结果" /></p>
+<p><img alt="编译MySQL5.7.7rc的make命令执行结果" src="https://o3cex9zsl.qnssl.com/2015/06/compile_mysql_require_cpu.png" title="编译MySQL5.7.7rc的make命令执行结果" /></p>
 <p>最后，激动人心的时刻，看到下图就代表已经编译安装好了MySQL5.7.7rc！</p>
-<p><img alt="安装MySQL5.7.7rc的make install命令执行结果" src="https://dn-vfhky.qbox.me/2015/06/mysql_make_install.png" title="安装MySQL5.7.7rc的make install命令执行结果" /></p>
+<p><img alt="安装MySQL5.7.7rc的make install命令执行结果" src="https://o3cex9zsl.qnssl.com/2015/06/mysql_make_install.png" title="安装MySQL5.7.7rc的make install命令执行结果" /></p>
 <h5>5 查看编译成功后的MySQL安装目录</h5>
 <p>使用命令查看MySQL的安装目录<code>/usr/local/mysql/</code>下面是否生成了相关目录文件（最重要的当然是bin、sbin和lib目录）。如果lib目录下面没有生成如图所示的.so动态库文件和.a静态库文件，那么说明安装不成功（即使成功了也可能会导致php进程无法找到mysql的相关库文件）。</p>
-<p><img alt="初始化MySQL自身的数据库" src="https://dn-vfhky.qbox.me/2015/06/mysql_success_path.png" title="初始化MySQL自身的数据库" /></p>
+<p><img alt="初始化MySQL自身的数据库" src="https://o3cex9zsl.qnssl.com/2015/06/mysql_success_path.png" title="初始化MySQL自身的数据库" /></p>
 <h5>6 开始设置MySQL的配置文件my.cnf</h5>
 <p>先把编译生成的my.cnf文件备份，然后把<a href="https://typecodes.com/web/centosmysqlconfig.html" title="查看原文">《CentOS系统MySQL的配置文件my.cnf》</a>文中整理的MySQL的配置文件my.cnf上传到服务器的<code>/etc/</code>目录下即可。</p>
 <div class="highlight"><pre>[root@typecodes mysql]# mv /etc/my.cnf /etc/my.cnfbak
@@ -174,7 +174,7 @@ CMake suite maintained and supported by Kitware (kitware.com/cmake).
 
 
 <p>执行完后，可以通过<code>[root@typecodes mysql]# ls -lrt /mydata/mysql/data/</code>命令查看是否生成了MySQL自身的数据库文件。</p>
-<p><img alt="初始化MySQL自身的数据库" src="https://dn-vfhky.qbox.me/2015/06/mysql_ini_dir.png" title="初始化MySQL自身的数据库" /></p>
+<p><img alt="初始化MySQL自身的数据库" src="https://o3cex9zsl.qnssl.com/2015/06/mysql_ini_dir.png" title="初始化MySQL自身的数据库" /></p>
 <h5>10 创建MySQL日志存放目录以及设置开机启动</h5>
 <p>下面配置的MySQL日志存放目录以及权限都是根据前面my.cnf文件写的，也就是两者需要保持一致。</p>
 <div class="highlight"><pre>[root@typecodes ~]# mkdir -p /var/run/mysql &amp;&amp; mkdir -p /var/log/mysql
@@ -202,7 +202,7 @@ CMake suite maintained and supported by Kitware (kitware.com/cmake).
 
 
 <p>然后使用下面这命令<code>ps -ef | grep mysql</code>和<code>netstat -tunpl | grep 3306</code>查看MySQL服务进程和端口监听情况：</p>
-<p><img alt="查看MySQL服务进程和端口监听情况" src="https://dn-vfhky.qbox.me/2015/06/mysql_process_litsen_port.png" title="查看MySQL服务进程和端口监听情况" /></p>
+<p><img alt="查看MySQL服务进程和端口监听情况" src="https://o3cex9zsl.qnssl.com/2015/06/mysql_process_litsen_port.png" title="查看MySQL服务进程和端口监听情况" /></p>
 <h5>12 初始化MySQL数据库的root用户密码</h5>
 <p>和Oracle数据库一样，MySQL数据库也默认自带了一个<code>root</code>用户（这个和当前Linux主机上的root用户是完全不搭边的），我们在设置好MySQL数据库的安全配置后初始化root用户的密码。配置过程中，一路输入<code>y</code>就行了。这里只说明下MySQL5.7.7rc版本中，用户密码策略分成低级<code>LOW</code>、中等<code>MEDIUM</code>和超强<code>STRONG</code>三种，推荐使用中等<code>MEDIUM</code>级别！</p>
 <div class="highlight"><pre>[root@typecodes mysql]# mysql_secure_installation

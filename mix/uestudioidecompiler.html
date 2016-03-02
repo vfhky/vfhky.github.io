@@ -7,7 +7,7 @@
   		<meta name="viewport" content="width=device-width, initial-scale=1">
   		<link href="https://typecodes.com/atom.xml" type="application/atom+xml" rel="alternate" title="TypeCodes Atom Feed" />
 	  	<link href="https://typecodes.com/feed.xml" type="application/rss+xml" rel="alternate" title="TypeCodes RSS Feed" />
-		<link rel="stylesheet" href="https://dn-vfhky.qbox.me/libs/css/pelican-vfhky.css">
+		<link rel="stylesheet" href="https://o3cex9zsl.qnssl.com/libs/css/pelican-vfhky.css">
 		<script>
 			var _hmt = _hmt || [];
 			(function() {
@@ -43,12 +43,12 @@
 </ul>
 <div class="post-content fmt">
 	<p>像Emacs、Vim、UEStudio/UltraEdit、Sublime text等非IDE类的文本编辑器，都不会自带某种语言的编译功能，这对于不想开IDE的程序狗来说很是蛋疼。尤其是需要切换到不同语言做开发时，非常不方便，总不能这边开一个VS，那边开一个Eclipse吧。于是自己折腾了一番，通过配置可以在UEStudio或者UltraEdit中直接将写好的C/C++/C#/JAVA等代码编译并运行输出结果。</p>
-<p><img alt="在UEStudio/UltraEdit中打造C/C#/JAVA等语言的编译器" src="https://dn-vfhky.qbox.me/2015/02/uestudioidecompiler.png" title="在UEStudio/UltraEdit中打造C/C#/JAVA等语言的编译器" /></p>
+<p><img alt="在UEStudio/UltraEdit中打造C/C#/JAVA等语言的编译器" src="https://o3cex9zsl.qnssl.com/2015/02/uestudioidecompiler.png" title="在UEStudio/UltraEdit中打造C/C#/JAVA等语言的编译器" /></p>
 
 
 <h5>1 实现思路</h5>
 <p>要实现直接在UEStudio或者UltraEdit中编译和执行的功能，原理很简单：利用本机已经安装并配置好的环境变量然后在UEStudio或者UltraEdit中简单配置即可。因此，首先需要在自己的Windows环境中安装这种语言所对应的编译器。例如，要编译C或者C++程序，那么可以选择MinGw GCC或者Cygwin GCC编译器，然后利用gcc和g++编译和执行功能；又例如，要编译Java程序，那么的先安装好JDK编译器。注意，安装后一定要设置好环境变量！下图是我的环境变量配置情况（红色划线1,2,3分别是C/C++、Java和C#的环境变量配置）：</p>
-<p><img alt="对应语言的环境变量的配置" src="https://dn-vfhky.qbox.me/2015/02/environmentvariable.png" title="对应语言的环境变量的配置" /></p>
+<p><img alt="对应语言的环境变量的配置" src="https://o3cex9zsl.qnssl.com/2015/02/environmentvariable.png" title="对应语言的环境变量的配置" /></p>
 <h5>2 具体配置</h5>
 <p>下面以配置C/C++、C#、Java这三种开发语言的编译器为例，大家可以举一反三。</p>
 <h6>2.1 配置C/C++编译器</h6>
@@ -60,7 +60,7 @@
 </pre></div>
 
 
-<p><img alt="配置C/C++编译器" src="https://dn-vfhky.qbox.me/2015/02/configccompile.png" title="配置C/C++编译器" /></p>
+<p><img alt="配置C/C++编译器" src="https://o3cex9zsl.qnssl.com/2015/02/configccompile.png" title="配置C/C++编译器" /></p>
 <h6>2.2 配置C#编译器</h6>
 <p>配置C#编译器如下图的界面所示，只要在这里按照规则配置好C#的编译命令即可。</p>
 <div class="highlight"><pre>C#的编译命令配置
@@ -70,7 +70,7 @@
 </pre></div>
 
 
-<p><img alt="配置C#编译器" src="https://dn-vfhky.qbox.me/2015/02/configcsharpcompile.png" title="配置C#编译器" /></p>
+<p><img alt="配置C#编译器" src="https://o3cex9zsl.qnssl.com/2015/02/configcsharpcompile.png" title="配置C#编译器" /></p>
 <h6>2.3 配置C/C++和C#的运行命令</h6>
 <p>由于C/C++和C#经过上面的编译命令后，生成的是可执行的二进制exe文件，所以它们的执行命令都是相同的。因此，可以配置一个公共的“Run”栏目：</p>
 <div class="highlight"><pre>C/C++/C#的运行命令配置
@@ -80,7 +80,7 @@
 </pre></div>
 
 
-<p><img alt="配置C/C++和C#的运行命令" src="https://dn-vfhky.qbox.me/2015/02/configrun.png" title="配置C/C++和C#的运行命令" /></p>
+<p><img alt="配置C/C++和C#的运行命令" src="https://o3cex9zsl.qnssl.com/2015/02/configrun.png" title="配置C/C++和C#的运行命令" /></p>
 <h6>2.4 配置Java编译器</h6>
 <p>配置Java编译器如下图的界面所示，只要在这里按照规则配置好Java的编译命令即可。</p>
 <div class="highlight"><pre>JAVA的编译命令配置
@@ -90,7 +90,7 @@
 </pre></div>
 
 
-<p><img alt="配置Java编译器" src="https://dn-vfhky.qbox.me/2015/02/configjavacompile.png" title="配置Java编译器" /></p>
+<p><img alt="配置Java编译器" src="https://o3cex9zsl.qnssl.com/2015/02/configjavacompile.png" title="配置Java编译器" /></p>
 <h6>2.5 配置Java的执行命令</h6>
 <p>由于Java程序文件经过上面的<code>Jcomp</code>编译命令后，生成的是<code>.class</code>文件，不可以直接运行。还需要将这个<code>.class</code>文件通过命令在JVM虚拟机下运行。</p>
 <div class="highlight"><pre>JAVA的运行命令配置
@@ -100,7 +100,7 @@
 </pre></div>
 
 
-<p><img alt="配置Java的执行命令" src="https://dn-vfhky.qbox.me/2015/02/configjavarun.png" title="配置Java的执行命令" /></p>
+<p><img alt="配置Java的执行命令" src="https://o3cex9zsl.qnssl.com/2015/02/configjavarun.png" title="配置Java的执行命令" /></p>
 <h5>3 通过程序测试是否生效</h5>
 <p>配置完后，点击“高级”栏目，会显示如下图所示。最后写如下3个C、C#和Java的测试程序，然后分别点击对应的上面配置好的“编译”命令，再点击“执行”命令即可查看输出结果。</p>
 <h6>3.1 测试C/C++程序</h6>
@@ -194,7 +194,7 @@
 </td></tr></table>
 
 <h6>3.4 上面C、C#和Java程序执行结果</h6>
-<p><img alt="上面C、C#和Java程序执行结果" src="https://dn-vfhky.qbox.me/2015/02/runresults.png" title="上面C、C#和Java程序执行结果" /></p>
+<p><img alt="上面C、C#和Java程序执行结果" src="https://o3cex9zsl.qnssl.com/2015/02/runresults.png" title="上面C、C#和Java程序执行结果" /></p>
 		    	<p class="tags">
 					<div class="post-share">
 						<ul class="post-shareul clearfix">
