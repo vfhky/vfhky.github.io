@@ -638,7 +638,9 @@ listening on eth0, link-type EN10MB (Ethernet), capture size 65535 bytes
 
 
 &lt;p&gt;效果如下图所示：&lt;/p&gt;
-&lt;p&gt;&lt;img alt="在Linux中使用tcpdump抓包" src="https://o3cex9zsl.qnssl.com/2016/02/tcpdump8000_2.png" title="在Linux中使用tcpdump抓包" /&gt;&lt;/p&gt;</summary><category term="tcpdump"></category><category term="wireshark"></category><category term="tcp"></category><category term="close_wait"></category></entry><entry><title>Linux中使用TCPDUMP进行简单的TCP抓包</title><link href="https://typecodes.com/linux/simpletcpdumpapply.html" rel="alternate"></link><updated>2016-02-26T15:51:00+08:00</updated><author><name>vfhky</name></author><id>tag:typecodes.com,2016-02-26:linux/simpletcpdumpapply.html</id><summary type="html">&lt;p&gt;在Linux TCP通信的调试中，tcpdump应该算是很好的一个工具。这篇文章主要使用Windows作为客户端，向作为服务端的Linux中的一个socket监听端口发送报文信息，然后在Linux中用TCPDUMP工具进行抓包。通过这个实例，可以较为完整的了解TCP通信中的“三次握手”等过程。&lt;/p&gt;
+&lt;p&gt;&lt;img alt="在Linux中使用tcpdump抓包" src="https://o3cex9zsl.qnssl.com/2016/02/tcpdump8000_2.png" title="在Linux中使用tcpdump抓包" /&gt;&lt;/p&gt;
+&lt;h4&gt;7 原因分析&lt;/h4&gt;
+&lt;p&gt;详见&lt;a href="https://typecodes.com/cseries/tcpdumpwiresharkclosewait2.html" title="《使用TCPDUMP和Wireshark排查服务端CLOSE_WAIT（二）》"&gt;下文&lt;/a&gt;。&lt;/p&gt;</summary><category term="tcpdump"></category><category term="wireshark"></category><category term="tcp"></category><category term="close_wait"></category></entry><entry><title>Linux中使用TCPDUMP进行简单的TCP抓包</title><link href="https://typecodes.com/linux/simpletcpdumpapply.html" rel="alternate"></link><updated>2016-02-26T15:51:00+08:00</updated><author><name>vfhky</name></author><id>tag:typecodes.com,2016-02-26:linux/simpletcpdumpapply.html</id><summary type="html">&lt;p&gt;在Linux TCP通信的调试中，tcpdump应该算是很好的一个工具。这篇文章主要使用Windows作为客户端，向作为服务端的Linux中的一个socket监听端口发送报文信息，然后在Linux中用TCPDUMP工具进行抓包。通过这个实例，可以较为完整的了解TCP通信中的“三次握手”等过程。&lt;/p&gt;
 &lt;p&gt;&lt;img alt="Linux中使用TCPDUMP进行简单的TCP抓包" src="https://o3cex9zsl.qnssl.com/2016/02/linuxtcpdump.png" title="Linux中使用TCPDUMP进行简单的TCP抓包" /&gt;&lt;/p&gt;
 
 
