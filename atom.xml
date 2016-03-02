@@ -1097,12 +1097,6 @@ Bye
 &lt;h4&gt;附录1：查看MySQL数据库的配置信息&lt;/h4&gt;
 &lt;p&gt;MySQL的配置文件依然是&lt;code&gt;/etc/my.cnf&lt;/code&gt;，其它安装信息可以通过&lt;code&gt;mysql_config&lt;/code&gt;命令查看。其中，动态库文件存放在&lt;code&gt;/usr/lib64/mysql&lt;/code&gt;目录下。&lt;/p&gt;
 &lt;p&gt;&lt;img alt="mysql_config命令查看mysql数据库的安装信息" src="https://o3cex9zsl.qnssl.com/2016/02/mysql_config.png" title="mysql_config命令查看mysql数据库的安装信息" /&gt;&lt;/p&gt;
-&lt;h4&gt;附录2：安装MySQL数据库的开发者版本&lt;/h4&gt;
-&lt;p&gt;对于纯粹的只需要一个MySQL数据库的应用来说，上面的步骤已经满足需求。如果对于MySQL其它应用程序开发，例如需要MySQL相关头文件等，那么就需要安装MySQL数据库的开发版本。安装方法也很简单，只需要执行下面这个命令即可：&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;[root@typecodes ~]# yum -y install mysql-community-devel
-&lt;/pre&gt;&lt;/div&gt;
-
-
 &lt;h4&gt;附录2：删除MySQL的Repository&lt;/h4&gt;
 &lt;p&gt;因为小节3中安装了MySQL的Yum Repository，所以以后每次执行yum操作时，都会去检查更新。如果想要去掉这种自动检查操作的话，可以使用如下命令卸载MySQL的Repository即可。&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;[root@typecodes ~]# yum -y remove mysql57-community-release-el7-7.noarch
