@@ -313,6 +313,12 @@ Bye
 <p>对于纯粹的只需要一个MySQL数据库的应用来说，上面的步骤已经满足需求。如果对于MySQL其它应用程序开发，例如需要MySQL相关头文件等，那么就需要安装MySQL数据库的开发版本。安装方法也很简单，只需要执行下面这个命令即可：</p>
 <div class="highlight"><pre>[root@typecodes ~]# yum -y install mysql-community-devel
 </pre></div>
+
+
+<h4>附录2：删除MySQL的Repository</h4>
+<p>因为小节3中安装了MySQL的Yum Repository，所以以后每次执行yum操作时，都会去检查更新。如果想要去掉这种自动检查操作的话，可以使用如下命令卸载MySQL的Repository即可。</p>
+<div class="highlight"><pre>[root@typecodes ~]# yum -y remove mysql57-community-release-el7-7.noarch
+</pre></div>
 		    	<p class="tags">
 					<div class="post-share">
 						<ul class="post-shareul clearfix">

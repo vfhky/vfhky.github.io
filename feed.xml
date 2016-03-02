@@ -1100,6 +1100,12 @@ Bye
 &lt;h4&gt;附录2：安装MySQL数据库的开发者版本&lt;/h4&gt;
 &lt;p&gt;对于纯粹的只需要一个MySQL数据库的应用来说，上面的步骤已经满足需求。如果对于MySQL其它应用程序开发，例如需要MySQL相关头文件等，那么就需要安装MySQL数据库的开发版本。安装方法也很简单，只需要执行下面这个命令即可：&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;[root@typecodes ~]# yum -y install mysql-community-devel
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h4&gt;附录2：删除MySQL的Repository&lt;/h4&gt;
+&lt;p&gt;因为小节3中安装了MySQL的Yum Repository，所以以后每次执行yum操作时，都会去检查更新。如果想要去掉这种自动检查操作的话，可以使用如下命令卸载MySQL的Repository即可。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;[root@typecodes ~]# yum -y remove mysql57-community-release-el7-7.noarch
 &lt;/pre&gt;&lt;/div&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">vfhky</dc:creator><pubDate>Fri, 26 Feb 2016 14:55:00 +0800</pubDate><guid>tag:typecodes.com,2016-02-26:linux/yuminstallmysql5710.html</guid><category>mysql</category></item><item><title>Linux多进程和多线程的一次gdb调试实例</title><link>https://typecodes.com/cseries/multilprocessthreadgdb.html</link><description>&lt;p&gt;Linux C/C++开发中gdb进行多进程和多线程的调试一直比较麻烦，在CSDN上看到高科的一篇文章&lt;a href="http://blog.csdn.net/pbymw8iwm/article/details/7876797" title="查看原文"&gt;《gdb调试多进程和多线程命令》&lt;/a&gt;比较有启发，这里就自己重新整理并做了一个GDB多进程/线程的调试实践。&lt;/p&gt;
 
 
