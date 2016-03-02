@@ -5,23 +5,30 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>https://typecodes.com/</loc>
-<lastmod>2016-03-02T23:14:22-00:00</lastmod>
+<lastmod>2016-03-02T23:56:30-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://typecodes.com/archives.html</loc>
-<lastmod>2016-03-02T23:14:22-00:00</lastmod>
+<lastmod>2016-03-02T23:56:30-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://typecodes.com/categories.html</loc>
-<lastmod>2016-03-02T23:14:22-00:00</lastmod>
+<lastmod>2016-03-02T23:56:30-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
+</url>
+
+<url>
+<loc>https://typecodes.com/linux/updatesyngithubpelicanshell.html</loc>
+<lastmod>2016-03-02T23:55:00+08:00</lastmod>
+<changefreq>monthly</changefreq>
+<priority>0.7</priority>
 </url>
 
 <url>
@@ -1538,7 +1545,7 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>https://typecodes.com/linux/index.html</loc>
-<lastmod>2016-02-26T15:51:00+08:06</lastmod>
+<lastmod>2016-03-02T23:55:00+08:06</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
@@ -2336,14 +2343,14 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>https://typecodes.com/tag/pelican.html</loc>
-<lastmod>2016-01-10T22:22:00+08:06</lastmod>
+<lastmod>2016-03-02T23:55:00+08:06</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://typecodes.com/tag/markdown.html</loc>
-<lastmod>2016-01-10T22:22:00+08:06</lastmod>
+<lastmod>2016-03-02T23:55:00+08:06</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
@@ -2959,7 +2966,7 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>https://typecodes.com/tag/github.html</loc>
-<lastmod>2016-01-10T22:22:00+08:06</lastmod>
+<lastmod>2016-03-02T23:55:00+08:06</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>

@@ -1,5 +1,394 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>TypeCodes</title><link href="https://typecodes.com/" rel="alternate"></link><link href="https://typecodes.com/atom.xml" rel="self"></link><id>https://typecodes.com/</id><updated>2016-02-29T11:39:00+08:00</updated><entry><title>一个sigprocmask和sigsuspend函数的综合应用</title><link href="https://typecodes.com/cseries/sigprocmasksigsuspendapp.html" rel="alternate"></link><updated>2016-02-29T11:39:00+08:00</updated><author><name>vfhky</name></author><id>tag:typecodes.com,2016-02-29:cseries/sigprocmasksigsuspendapp.html</id><summary type="html">&lt;p&gt;在Linux服务端后台开发中，经常会用到信号处理函数：&lt;code&gt;sigprocmask&lt;/code&gt;和&lt;code&gt;sigsuspend&lt;/code&gt;。这篇文章主要通过一个综合实例演示如何使用sigprocmask函数屏蔽目标信号（信号掩码）以及sigsuspend函数挂起进程。&lt;/p&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>TypeCodes</title><link href="https://typecodes.com/" rel="alternate"></link><link href="https://typecodes.com/atom.xml" rel="self"></link><id>https://typecodes.com/</id><updated>2016-03-02T23:55:00+08:00</updated><entry><title>更新博客生成发布及同步GitHub的Shell脚本：解决文件名空格问题</title><link href="https://typecodes.com/linux/updatesyngithubpelicanshell.html" rel="alternate"></link><updated>2016-03-02T23:55:00+08:00</updated><author><name>vfhky</name></author><id>tag:typecodes.com,2016-03-02:linux/updatesyngithubpelicanshell.html</id><summary type="html">&lt;p&gt;&lt;a href="https://typecodes.com/linux/syngithubmarkdownpelican.html" title="《同步GitHub Markdown文章到Linux服务器后更新Pelican博客的脚本》"&gt;前面一篇文章&lt;/a&gt;通过Linux Shell脚本的方式，实现博客生成发布及同步GitHub的的功能：先同步GitHub个人仓库中的Markdown文章到本地，然后通过Pelican编译生成静态HTML文件，最后发布到Nginx的web目录下面，同时更新到GitHub个人主页（vfhky.github.io）。&lt;/p&gt;
+&lt;p&gt;由于没仔细考虑到Markdown文件名中可能包含空格的问题，所以在Shell脚本的文件名遍历时（代码第108行）出现了BUG：Linux Shell默认把空格空格做为值与值之间的分隔符，所以原本一个带空格的文件名就被拆分成了几个文件名。&lt;/p&gt;
+&lt;p&gt;&lt;img alt="CentOS7.2服务器默认的IFS为空值" src="https://o3cex9zsl.qnssl.com/2016/03/centos_ifs_default.png" title="CentOS7.2服务器默认的IFS为空值" /&gt;&lt;/p&gt;
+
+
+&lt;h4&gt;1 解决方法&lt;/h4&gt;
+&lt;p&gt;网上查找相关资料后，有两种主要的实现方法：Method 1是通过修改&lt;code&gt;FS(Internal Field Seperator: Linuxshell中预设的分隔符，用来把command line分解成word)&lt;/code&gt;实现。如上图所示，BZ用命令&lt;code&gt;echo $IFS&lt;/code&gt;查看了自己的CentOS7.2服务器默认的IFS为空值。&lt;/p&gt;
+&lt;p&gt;Method 2是直接在使用&lt;code&gt;find&lt;/code&gt;命令遍历文件时，把结果作为&lt;code&gt;while read&lt;/code&gt;的输入，这样就可以避免空格作为文件名的分隔符了。&lt;/p&gt;
+&lt;h4&gt;2 完整代码&lt;/h4&gt;
+&lt;p&gt;根据这两种方法，修改后的代码如下，同时也已经更新到了当前脚本所在的GitHub工程：&lt;a href="https://github.com/vfhky/shell-tools" title="点击查看"&gt;https://github.com/vfhky/shell-tools&lt;/a&gt;。&lt;/p&gt;
+&lt;table class="highlighttable"&gt;&lt;tr&gt;&lt;td class="linenos"&gt;&lt;div class="linenodiv"&gt;&lt;pre&gt;  1
+  2
+  3
+  4
+  5
+  6
+  7
+  8
+  9
+ 10
+ 11
+ 12
+ 13
+ 14
+ 15
+ 16
+ 17
+ 18
+ 19
+ 20
+ 21
+ 22
+ 23
+ 24
+ 25
+ 26
+ 27
+ 28
+ 29
+ 30
+ 31
+ 32
+ 33
+ 34
+ 35
+ 36
+ 37
+ 38
+ 39
+ 40
+ 41
+ 42
+ 43
+ 44
+ 45
+ 46
+ 47
+ 48
+ 49
+ 50
+ 51
+ 52
+ 53
+ 54
+ 55
+ 56
+ 57
+ 58
+ 59
+ 60
+ 61
+ 62
+ 63
+ 64
+ 65
+ 66
+ 67
+ 68
+ 69
+ 70
+ 71
+ 72
+ 73
+ 74
+ 75
+ 76
+ 77
+ 78
+ 79
+ 80
+ 81
+ 82
+ 83
+ 84
+ 85
+ 86
+ 87
+ 88
+ 89
+ 90
+ 91
+ 92
+ 93
+ 94
+ 95
+ 96
+ 97
+ 98
+ 99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150
+151
+152
+153
+154
+155
+156
+157
+158
+159
+160
+161
+162
+163
+164
+165
+166
+167
+168
+169
+170
+171
+172
+173
+174
+175
+176
+177
+178
+179
+180
+181
+182
+183
+184
+185
+186
+187
+188&lt;/pre&gt;&lt;/div&gt;&lt;/td&gt;&lt;td class="code"&gt;&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="c"&gt;#!/bin/bash&lt;/span&gt;
+&lt;span class="c"&gt;# FileName:      github_pelican_nginx.sh&lt;/span&gt;
+&lt;span class="c"&gt;# Description:   Synchronize markdown articles with github, convert to html files using Pelican, deliver it to nginx environment.&lt;/span&gt;
+&lt;span class="c"&gt;# Simple Usage:  ./github_pelican_nginx.sh &amp;quot;commit_comments&amp;quot;&lt;/span&gt;
+&lt;span class="c"&gt;# Crontab Usage: 00 01 * * * /mydata/backups/bak_list/github_pelican_nginx.sh &amp;gt;/dev/null 2&amp;gt;&amp;amp;1&lt;/span&gt;
+&lt;span class="c"&gt;# (c) 2016 vfhky https://typecodes.com/linux/syngithubmarkdownpelican.html&lt;/span&gt;
+&lt;span class="c"&gt;# https://github.com/vfhky/shell-tools/blob/master/synchronize/github_pelican_nginx.sh&lt;/span&gt;
+
+
+&lt;span class="c"&gt;# Basic command.&lt;/span&gt;
+&lt;span class="nv"&gt;FINDCMD&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;find&amp;quot;&lt;/span&gt;
+&lt;span class="nv"&gt;MVCMD&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;\mv -f&amp;quot;&lt;/span&gt;
+&lt;span class="nv"&gt;CPCMD&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;\cp -rf&amp;quot;&lt;/span&gt;
+&lt;span class="nv"&gt;RMCMD&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;\rm -rf&amp;quot;&lt;/span&gt;
+&lt;span class="nv"&gt;TARXCMD&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;tar -zxf&amp;quot;&lt;/span&gt;
+&lt;span class="nv"&gt;TARZIPCMD&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;tar --warning=no-file-changed -zcf&amp;quot;&lt;/span&gt;
+
+&lt;span class="c"&gt;# Pelican compile markdown files to html.&lt;/span&gt;
+&lt;span class="nv"&gt;PELICAN_COMPILE_DIR&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;/mydata/GitBang/pelican
+&lt;span class="c"&gt;# Private bang in github for store your markdown files.&lt;/span&gt;
+&lt;span class="nv"&gt;GITHUB_PELICAN_DIR&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;/mydata/GitBang/GitHub/BlogBak
+&lt;span class="c"&gt;# Backup dir for your website&amp;#39;s version management.&lt;/span&gt;
+&lt;span class="nv"&gt;PELICAN_TAR_DIR&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;/usr/share/nginx/html/pelican_content_bak
+&lt;span class="c"&gt;# Dir of your website in nginx server.&lt;/span&gt;
+&lt;span class="nv"&gt;PELICAN_BLOG_DIR&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;/usr/share/nginx/html/pelican
+&lt;span class="c"&gt;# Dir for this shell script to generate logs automatically.&lt;/span&gt;
+&lt;span class="nv"&gt;BLOG_PUBLISH_LOG_DIR&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;/mydata/backups/logs/blogpublish
+&lt;span class="c"&gt;# Your personal homepage in github.&lt;/span&gt;
+&lt;span class="nv"&gt;GITHUB_PERSONAL_PAGE&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;/mydata/GitBang/GitHub/vfhky.github.io
+&lt;span class="c"&gt;# Articles in 15 minutes are legal.&lt;/span&gt;
+&lt;span class="nv"&gt;TIME_GAP&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;15
+
+&lt;span class="c"&gt;# Get the newest file name.&lt;/span&gt;
+&lt;span class="c"&gt;#Newest_File=&amp;quot;ls -lrt| tail -n 1 | awk &amp;#39;{print $9}&amp;#39;&amp;quot;&lt;/span&gt;
+
+&lt;span class="c"&gt;# Name of this shell script.&lt;/span&gt;
+&lt;span class="nv"&gt;PRGNAME&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;github_pelican_nginx&amp;quot;&lt;/span&gt;
+
+&lt;span class="c"&gt;# Current date format: e.g 20150505_2015.&lt;/span&gt;
+&lt;span class="nv"&gt;Current_Date&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="k"&gt;$(&lt;/span&gt;date +%Y%m%d_%H%M&lt;span class="k"&gt;)&lt;/span&gt;
+
+&lt;span class="c"&gt;# Check if current user is root.&lt;/span&gt;
+&lt;span class="o"&gt;[&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;&lt;span class="k"&gt;$(&lt;/span&gt;id -u&lt;span class="k"&gt;)&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt; !&lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;0&amp;quot;&lt;/span&gt; &lt;span class="o"&gt;]&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;Error: You must be root to run this script.&amp;quot;&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class="nb"&gt;exit &lt;/span&gt;1
+
+&lt;span class="c"&gt;# Check parameter.&lt;/span&gt;
+&lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="o"&gt;[&lt;/span&gt; &lt;span class="nv"&gt;$# &lt;/span&gt;-gt &lt;span class="m"&gt;1&lt;/span&gt; &lt;span class="o"&gt;]&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="k"&gt;then&lt;/span&gt;
+    &lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;Usage:    ./github_pelican_nginx.sh \&amp;quot;commit_comments\&amp;quot;&amp;quot;&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class="nb"&gt;exit &lt;/span&gt;1
+&lt;span class="k"&gt;fi&lt;/span&gt;
+
+&lt;span class="c"&gt;# Run command functions.&lt;/span&gt;
+&lt;span class="k"&gt;function&lt;/span&gt; ERROR&lt;span class="o"&gt;()&lt;/span&gt; &lt;span class="o"&gt;{&lt;/span&gt;
+    &lt;span class="nb"&gt;echo&lt;/span&gt; &amp;gt;/dev/null &lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;[&lt;/span&gt;&lt;span class="k"&gt;$(&lt;/span&gt;date +%H:%M:%S:%N&lt;span class="k"&gt;)&lt;/span&gt;&lt;span class="s2"&gt;][error] &lt;/span&gt;&lt;span class="nv"&gt;$*&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt; &amp;gt;&amp;gt; &lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;BLOG_PUBLISH_LOG_DIR&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;/&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;Current_Date&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;.log
+    &lt;span class="nb"&gt;exit &lt;/span&gt;1
+&lt;span class="o"&gt;}&lt;/span&gt;
+
+&lt;span class="k"&gt;function&lt;/span&gt; NOTICE&lt;span class="o"&gt;()&lt;/span&gt; &lt;span class="o"&gt;{&lt;/span&gt;
+    &lt;span class="nb"&gt;echo&lt;/span&gt; &amp;gt;/dev/null &lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;[&lt;/span&gt;&lt;span class="k"&gt;$(&lt;/span&gt;date +%H:%M:%S:%N&lt;span class="k"&gt;)&lt;/span&gt;&lt;span class="s2"&gt;][notice] &lt;/span&gt;&lt;span class="nv"&gt;$*&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt; &amp;gt;&amp;gt; &lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;BLOG_PUBLISH_LOG_DIR&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;/&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;Current_Date&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;.log
+&lt;span class="o"&gt;}&lt;/span&gt;
+
+&lt;span class="k"&gt;function&lt;/span&gt; RUNCMD&lt;span class="o"&gt;()&lt;/span&gt; &lt;span class="o"&gt;{&lt;/span&gt;
+    &lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;[&lt;/span&gt;&lt;span class="k"&gt;$(&lt;/span&gt;date +%H:%M:%S:%N&lt;span class="k"&gt;)&lt;/span&gt;&lt;span class="s2"&gt;][notice] &lt;/span&gt;&lt;span class="nv"&gt;$*&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt; &amp;gt;&amp;gt; &lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;BLOG_PUBLISH_LOG_DIR&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;/&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;Current_Date&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;.log
+    &lt;span class="nb"&gt;eval&lt;/span&gt; &lt;span class="nv"&gt;$@&lt;/span&gt;
+&lt;span class="o"&gt;}&lt;/span&gt;
+
+&lt;span class="c"&gt;# Git pull command function.&lt;/span&gt;
+&lt;span class="k"&gt;function&lt;/span&gt; Git_Pull&lt;span class="o"&gt;(){&lt;/span&gt;
+    RUNCMD &lt;span class="s2"&gt;&amp;quot;git pull origin master &amp;gt;/dev/null&amp;quot;&lt;/span&gt;
+&lt;span class="o"&gt;}&lt;/span&gt;
+
+&lt;span class="c"&gt;# Git commit command function.&lt;/span&gt;
+&lt;span class="k"&gt;function&lt;/span&gt; Git_Commit&lt;span class="o"&gt;(){&lt;/span&gt;
+    &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="o"&gt;[&lt;/span&gt; &lt;span class="nv"&gt;$# &lt;/span&gt;-ne &lt;span class="m"&gt;1&lt;/span&gt; &lt;span class="o"&gt;]&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="k"&gt;then&lt;/span&gt;
+        ERROR &lt;span class="s2"&gt;&amp;quot;Usage: Git_Commit commit_comments!&amp;quot;&lt;/span&gt;
+        &lt;span class="nb"&gt;exit &lt;/span&gt;1&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="k"&gt;else&lt;/span&gt;
+        RUNCMD &lt;span class="s2"&gt;&amp;quot;git pull &amp;amp;&amp;amp; git add --all &amp;amp;&amp;amp; git commit -m \&amp;quot;&lt;/span&gt;&lt;span class="nv"&gt;$1&lt;/span&gt;&lt;span class="s2"&gt;\&amp;quot; &amp;amp;&amp;amp; git push origin master&amp;quot;&lt;/span&gt;
+    &lt;span class="k"&gt;fi&lt;/span&gt;
+&lt;span class="o"&gt;}&lt;/span&gt;
+
+&lt;span class="c"&gt;# Get the path of markdown articles in TIME_GAP minutes.&lt;/span&gt;
+&lt;span class="c"&gt;# function Get_Files_Path(){&lt;/span&gt;
+&lt;span class="c"&gt;#    RUNCMD &amp;quot;${FINDCMD} . -mmin -${TIME_GAP} -type f -name \&amp;quot;*.md\&amp;quot; -print0&amp;quot;&lt;/span&gt;
+&lt;span class="c"&gt;# }&lt;/span&gt;
+
+&lt;span class="c"&gt;# Lock down permissions.You should be careful when it comes to your website for the permission of files, but it&amp;#39;s safe using 022.&lt;/span&gt;
+&lt;span class="c"&gt;# umask 022&lt;/span&gt;
+
+&lt;span class="c"&gt;# Create the log dir.&lt;/span&gt;
+&lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="o"&gt;[&lt;/span&gt; ! -d &lt;span class="nv"&gt;$BLOG_PUBLISH_LOG_DIR&lt;/span&gt; &lt;span class="o"&gt;]&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="k"&gt;then&lt;/span&gt;
+    mkdir -p &lt;span class="nv"&gt;$BLOG_PUBLISH_LOG_DIR&lt;/span&gt;
+&lt;span class="k"&gt;fi&lt;/span&gt;
+
+
+&lt;span class="c"&gt;# Main process begin.&lt;/span&gt;
+NOTICE &lt;span class="s2"&gt;&amp;quot;[1]Start pull from GitHub.&amp;quot;&lt;/span&gt;
+&lt;span class="nv"&gt;RC&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;0
+RUNCMD &lt;span class="s2"&gt;&amp;quot;cd &lt;/span&gt;&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;GITHUB_PELICAN_DIR&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt;/md_article &amp;amp;&amp;amp; Git_Pull&amp;quot;&lt;/span&gt;
+
+&lt;span class="nv"&gt;RC&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="nv"&gt;$?&lt;/span&gt;
+&lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="o"&gt;[&lt;/span&gt; &lt;span class="nv"&gt;$RC&lt;/span&gt; -gt &lt;span class="m"&gt;0&lt;/span&gt; &lt;span class="o"&gt;]&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="k"&gt;then&lt;/span&gt;
+    ERROR &lt;span class="s2"&gt;&amp;quot;Git pull failed!&amp;quot;&lt;/span&gt;
+&lt;span class="k"&gt;fi&lt;/span&gt;
+
+
+&lt;span class="c"&gt;#### Method 1:Chang the IFS to del with the blank word in the filename.&lt;/span&gt;
+&lt;span class="c"&gt;#old_IFS=$IFS&lt;/span&gt;
+&lt;span class="c"&gt;#IFS=$(echo -en &amp;quot;\n\b&amp;quot;)&lt;/span&gt;
+
+NOTICE &lt;span class="s2"&gt;&amp;quot;[2]Start copy the pulled articles to the compile dir of PELICAN.&amp;quot;&lt;/span&gt;
+&lt;span class="c"&gt;# New_Article_Files=$(Get_Files_Path ${GITHUB_PELICAN_DIR}/md_article)&lt;/span&gt;
+&lt;span class="c"&gt;# You should not delete the double quotation marks in case of existing a blank in the file path.&lt;/span&gt;
+&lt;span class="c"&gt;#### Method 1: for New_Article_File in `${FINDCMD} . -mmin -${TIME_GAP} -type f -name &amp;quot;*.md&amp;quot;`&lt;/span&gt;
+&lt;span class="c"&gt;#### Method 2: use the while recycle.&lt;/span&gt;
+&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;FINDCMD&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt; . -mmin -&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;TIME_GAP&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt; -type f -name &lt;span class="s2"&gt;&amp;quot;*.md&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;|&lt;/span&gt;&lt;span class="k"&gt;while&lt;/span&gt; &lt;span class="nb"&gt;read &lt;/span&gt;New_Article_File
+&lt;span class="k"&gt;do&lt;/span&gt;
+    &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="o"&gt;[&lt;/span&gt; -z &lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;New_Article_File&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt; &lt;span class="o"&gt;]&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="k"&gt;then&lt;/span&gt;
+        &lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;No articles, nothing to do.&amp;quot;&lt;/span&gt;
+        ERROR &lt;span class="s2"&gt;&amp;quot;No articles, nothing to do.&amp;quot;&lt;/span&gt;
+    &lt;span class="k"&gt;fi&lt;/span&gt;
+    &lt;span class="nv"&gt;FILE_PATH&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="k"&gt;$(&lt;/span&gt;dirname &lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;PELICAN_COMPILE_DIR&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;/content/articles/&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;New_Article_File&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="nv"&gt;2&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;&lt;span class="k"&gt;)&lt;/span&gt;
+    RUNCMD &lt;span class="s2"&gt;&amp;quot;mkdir -p &lt;/span&gt;&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;FILE_PATH&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt; &amp;amp;&amp;amp; &lt;/span&gt;&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;CPCMD&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt; \&amp;quot;&lt;/span&gt;&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;New_Article_File&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt;\&amp;quot; &lt;/span&gt;&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;FILE_PATH&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;
+&lt;span class="k"&gt;done&lt;/span&gt;
+
+&lt;span class="nv"&gt;RC&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="nv"&gt;$?&lt;/span&gt;
+&lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="o"&gt;[&lt;/span&gt; &lt;span class="nv"&gt;$RC&lt;/span&gt; -gt &lt;span class="m"&gt;0&lt;/span&gt; &lt;span class="o"&gt;]&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="k"&gt;then&lt;/span&gt;
+    ERROR &lt;span class="s2"&gt;&amp;quot;Copy the pulled articles failed!&amp;quot;&lt;/span&gt;
+&lt;span class="k"&gt;fi&lt;/span&gt;
+
+
+NOTICE &lt;span class="s2"&gt;&amp;quot;[3]Start compile in pelican.&amp;quot;&lt;/span&gt;
+RUNCMD &lt;span class="s2"&gt;&amp;quot;cd &lt;/span&gt;&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;PELICAN_COMPILE_DIR&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt; &amp;amp;&amp;amp; make publish &amp;gt; /dev/null&amp;quot;&lt;/span&gt;
+
+&lt;span class="nv"&gt;RC&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="nv"&gt;$?&lt;/span&gt;
+&lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="o"&gt;[&lt;/span&gt; &lt;span class="nv"&gt;$RC&lt;/span&gt; -gt &lt;span class="m"&gt;0&lt;/span&gt; &lt;span class="o"&gt;]&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="k"&gt;then&lt;/span&gt;
+    ERROR &lt;span class="s2"&gt;&amp;quot;Compile in pelican failed!&amp;quot;&lt;/span&gt;
+&lt;span class="k"&gt;fi&lt;/span&gt;
+
+
+NOTICE &lt;span class="s2"&gt;&amp;quot;[4]Start generate a tar packgage and move it to the backup dir.&amp;quot;&lt;/span&gt;
+&lt;span class="c"&gt;# The command of tar cause the problem that file changed as we read with the value 1, so we should ignore it using OR logic.&lt;/span&gt;
+RUNCMD &lt;span class="s2"&gt;&amp;quot;cd &lt;/span&gt;&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;PELICAN_COMPILE_DIR&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt;/output &amp;amp;&amp;amp; &lt;/span&gt;&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;TARZIPCMD&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt; &lt;/span&gt;&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;Current_Date&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt;.tar.gz . || &lt;/span&gt;&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;MVCMD&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt; &lt;/span&gt;&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;Current_Date&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt;.tar.gz &lt;/span&gt;&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;PELICAN_BLOG_DIR&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;
+
+&lt;span class="nv"&gt;RC&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="nv"&gt;$?&lt;/span&gt;
+&lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="o"&gt;[&lt;/span&gt; &lt;span class="nv"&gt;$RC&lt;/span&gt; -gt &lt;span class="m"&gt;0&lt;/span&gt; &lt;span class="o"&gt;]&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="k"&gt;then&lt;/span&gt;
+    ERROR &lt;span class="s2"&gt;&amp;quot;Generate a tar packgage failed!&amp;quot;&lt;/span&gt;
+&lt;span class="k"&gt;fi&lt;/span&gt;
+
+
+NOTICE &lt;span class="s2"&gt;&amp;quot;[5]Start unpack the target files.&amp;quot;&lt;/span&gt;
+RUNCMD &lt;span class="s2"&gt;&amp;quot;cd &lt;/span&gt;&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;PELICAN_BLOG_DIR&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt; &amp;amp;&amp;amp; &lt;/span&gt;&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;TARXCMD&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt; &lt;/span&gt;&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;Current_Date&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt;.tar.gz &amp;amp;&amp;amp; &lt;/span&gt;&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;MVCMD&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt; &lt;/span&gt;&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;Current_Date&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt;.tar.gz &lt;/span&gt;&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;PELICAN_TAR_DIR&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;
+
+&lt;span class="nv"&gt;RC&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="nv"&gt;$?&lt;/span&gt;
+&lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="o"&gt;[&lt;/span&gt; &lt;span class="nv"&gt;$RC&lt;/span&gt; -gt &lt;span class="m"&gt;0&lt;/span&gt; &lt;span class="o"&gt;]&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="k"&gt;then&lt;/span&gt;
+    ERROR &lt;span class="s2"&gt;&amp;quot;Unpack the target files failed!&amp;quot;&lt;/span&gt;
+&lt;span class="k"&gt;fi&lt;/span&gt;
+
+&lt;span class="c"&gt;# if [ $# -eq 1 ]; then&lt;/span&gt;
+&lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="o"&gt;[&lt;/span&gt; -n &lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;&lt;span class="nv"&gt;$1&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt; &lt;span class="o"&gt;]&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="k"&gt;then&lt;/span&gt;
+    &lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;Ready to synchronize to the homepage on github.com.&amp;quot;&lt;/span&gt;
+    NOTICE &lt;span class="s2"&gt;&amp;quot;[6]Start copy the packgage to the local homepage bang cloned from remote in GitHub.&amp;quot;&lt;/span&gt;
+    RUNCMD &lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;CPCMD&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt; &lt;/span&gt;&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;PELICAN_TAR_DIR&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt;/&lt;/span&gt;&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;Current_Date&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt;.tar.gz &lt;/span&gt;&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;GITHUB_PERSONAL_PAGE&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt; &amp;amp;&amp;amp; cd &lt;/span&gt;&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;GITHUB_PERSONAL_PAGE&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt; &amp;amp;&amp;amp; &lt;/span&gt;&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;TARXCMD&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt; &lt;/span&gt;&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;Current_Date&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt;.tar.gz &amp;amp;&amp;amp; &lt;/span&gt;&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;RMCMD&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt; &lt;/span&gt;&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;Current_Date&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt;.tar.gz&amp;quot;&lt;/span&gt;
+
+    &lt;span class="nv"&gt;RC&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="nv"&gt;$?&lt;/span&gt;
+    &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="o"&gt;[&lt;/span&gt; &lt;span class="nv"&gt;$RC&lt;/span&gt; -gt &lt;span class="m"&gt;0&lt;/span&gt; &lt;span class="o"&gt;]&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="k"&gt;then&lt;/span&gt;
+        ERROR &lt;span class="s2"&gt;&amp;quot;Copy the packgage to the local homepage bang failed!&amp;quot;&lt;/span&gt;
+    &lt;span class="k"&gt;fi&lt;/span&gt;
+
+    NOTICE &lt;span class="s2"&gt;&amp;quot;[7]Start synchronize website to my homepage on GitHub.&amp;quot;&lt;/span&gt;
+    &lt;span class="c"&gt;# read -p &amp;quot;Please input your comments on this commitment: &amp;quot; COMMIT_COMMENTS&lt;/span&gt;
+    &lt;span class="c"&gt;# while [[ -z &amp;quot;${COMMIT_COMMENTS}&amp;quot; ]]&lt;/span&gt;
+    &lt;span class="c"&gt;# do&lt;/span&gt;
+    &lt;span class="c"&gt;#   read -p &amp;quot;Comments can not be empty.Please input again: &amp;quot; COMMIT_COMMENTS&lt;/span&gt;
+    &lt;span class="c"&gt;# done&lt;/span&gt;
+    &lt;span class="c"&gt;# RUNCMD &amp;quot;Git_Commit \&amp;quot;${COMMIT_COMMENTS}\&amp;quot;&amp;quot;&lt;/span&gt;
+    RUNCMD &lt;span class="s2"&gt;&amp;quot;Git_Commit \&amp;quot;&lt;/span&gt;&lt;span class="nv"&gt;$1&lt;/span&gt;&lt;span class="s2"&gt;\&amp;quot;&amp;quot;&lt;/span&gt;
+
+    &lt;span class="nv"&gt;RC&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="nv"&gt;$?&lt;/span&gt;
+    &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="o"&gt;[&lt;/span&gt; &lt;span class="nv"&gt;$RC&lt;/span&gt; -gt &lt;span class="m"&gt;0&lt;/span&gt; &lt;span class="o"&gt;]&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="k"&gt;then&lt;/span&gt;
+        ERROR &lt;span class="s2"&gt;&amp;quot;Synchronize website to GitHub failed!&amp;quot;&lt;/span&gt;
+    &lt;span class="k"&gt;fi&lt;/span&gt;
+&lt;span class="k"&gt;else&lt;/span&gt;
+    &lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;Not synchronize your weibsite to the homepage on github.com.&amp;quot;&lt;/span&gt;
+    NOTICE &lt;span class="s2"&gt;&amp;quot;[6]Not synchronize your weibsite to the homepage on github.com.&amp;quot;&lt;/span&gt;
+&lt;span class="k"&gt;fi&lt;/span&gt;
+
+
+NOTICE &lt;span class="s2"&gt;&amp;quot;------END------&amp;quot;&lt;/span&gt;
+&lt;span class="nb"&gt;exit &lt;/span&gt;0
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+
+&lt;h4&gt;3 脚本执行结果&lt;/h4&gt;
+&lt;p&gt;&lt;img alt="github_pelican_nginx脚本执行结果" src="https://o3cex9zsl.qnssl.com/2016/03/github_pelican_nginx_excute_log.png" title="github_pelican_nginx脚本执行结果" /&gt;&lt;/p&gt;</summary><category term="pelican"></category><category term="github"></category><category term="markdown"></category></entry><entry><title>一个sigprocmask和sigsuspend函数的综合应用</title><link href="https://typecodes.com/cseries/sigprocmasksigsuspendapp.html" rel="alternate"></link><updated>2016-02-29T11:39:00+08:00</updated><author><name>vfhky</name></author><id>tag:typecodes.com,2016-02-29:cseries/sigprocmasksigsuspendapp.html</id><summary type="html">&lt;p&gt;在Linux服务端后台开发中，经常会用到信号处理函数：&lt;code&gt;sigprocmask&lt;/code&gt;和&lt;code&gt;sigsuspend&lt;/code&gt;。这篇文章主要通过一个综合实例演示如何使用sigprocmask函数屏蔽目标信号（信号掩码）以及sigsuspend函数挂起进程。&lt;/p&gt;
 &lt;p&gt;&lt;img alt="Linux中编译执行sigprocmask_sigsuspend程序" src="https://o3cex9zsl.qnssl.com/2016/02/sigprocmask_sigsuspend_init.png" title="Linux中编译执行sigprocmask_sigsuspend程序" /&gt;&lt;/p&gt;
 
 

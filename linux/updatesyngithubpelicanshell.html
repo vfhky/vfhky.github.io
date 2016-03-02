@@ -3,7 +3,7 @@
 	<head>
 		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
   		<meta name="renderer" content="webkit">
-		<title>同步GitHub Markdown文章到Linux服务器后更新Pelican博客的脚本 &mdash; TypeCodes</title>
+		<title>更新博客生成发布及同步GitHub的Shell脚本：解决文件名空格问题 &mdash; TypeCodes</title>
   		<meta name="viewport" content="width=device-width, initial-scale=1">
   		<link href="https://typecodes.com/atom.xml" type="application/atom+xml" rel="alternate" title="TypeCodes Atom Feed" />
 	  	<link href="https://typecodes.com/feed.xml" type="application/rss+xml" rel="alternate" title="TypeCodes RSS Feed" />
@@ -37,44 +37,21 @@
 		<!--2. left sider begin-->
 		<div class="col-md-9" id="blog-main" role="main">
 			<article class="post">
-<h2 class="post-title"><a href="https://typecodes.com/linux/syngithubmarkdownpelican.html">同步GitHub Markdown文章到Linux服务器后更新Pelican博客的脚本</a></h2>
+<h2 class="post-title"><a href="https://typecodes.com/linux/updatesyngithubpelicanshell.html">更新博客生成发布及同步GitHub的Shell脚本：解决文件名空格问题</a></h2>
 <ul class="post-meta">
-	<li>作者：vfhky | 时间：2016-01-10 22:22 | 分类：<a href="https://typecodes.com/linux/index.html">linux</a></li>
+	<li>作者：vfhky | 时间：2016-03-02 23:55 | 分类：<a href="https://typecodes.com/linux/index.html">linux</a></li>
 </ul>
 <div class="post-content fmt">
-	<p>使用了Pelican后，最多的操作就是编译Markdown文章生成HTML文件，然后发布到Nginx的博客目录下。</p>
-<p><img alt="我的Pelican博客管理和发布流程" src="https://o3cex9zsl.qnssl.com/2016/01/github_pelican_nginx.png" title="我的Pelican博客管理和发布流程" /></p>
+	<p><a href="https://typecodes.com/linux/syngithubmarkdownpelican.html" title="《同步GitHub Markdown文章到Linux服务器后更新Pelican博客的脚本》">前面一篇文章</a>通过Linux Shell脚本的方式，实现博客生成发布及同步GitHub的的功能：先同步GitHub个人仓库中的Markdown文章到本地，然后通过Pelican编译生成静态HTML文件，最后发布到Nginx的web目录下面，同时更新到GitHub个人主页（vfhky.github.io）。</p>
+<p>由于没仔细考虑到Markdown文件名中可能包含空格的问题，所以在Shell脚本的文件名遍历时（代码第108行）出现了BUG：Linux Shell默认把空格空格做为值与值之间的分隔符，所以原本一个带空格的文件名就被拆分成了几个文件名。</p>
+<p><img alt="CentOS7.2服务器默认的IFS为空值" src="https://o3cex9zsl.qnssl.com/2016/03/centos_ifs_default.png" title="CentOS7.2服务器默认的IFS为空值" /></p>
 
 
-<p>如上面的流程图所示，目前自己在CentOS7.1服务器上通过Pelican生成和发布博客的做法如下：</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
-2
-3
-4
-5
-6</pre></div></td><td class="code"><div class="highlight"><pre>在Windows中写好Markdown文章，然后git push到GitHub中的私人仓库中；
-在CentOS7.1服务器中git pull到本地仓库；
-把Markdown文件复制到Pelican的文章目录(content)生成HTML文件；
-用tar命令打包Pelcian在OUTPUT目录中生成的所有HTML文件到一个博客版本备份目录形成一个博客版本；
-将这个版本复制到Nginx的博客目录下解压，这样就更新了博客；
-同时，也可以发布到GitHub个人主页上。
-</pre></div>
-</td></tr></table>
-
-<h4>1 考虑点</h4>
-<p>如果每次手动执行上面的操作步骤实在是太麻烦了，所以决定使用shell脚本来自动完成。当然除了实现上面的基本功能点之外，脚本还需具备如下4个特点：</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
-2
-3
-4</pre></div></td><td class="code"><div class="highlight"><pre>脚本执行过程打印到日志文件中，方便查看；
-脚本中每条重要语句的执行时间都有记录在日志中；
-如果没有从GitHub个人仓库中检测到更新的文章，那么直接结束；
-能自动判断是否同步发布到GitHub的个人主页中（博主的是vfhky.github.io）。
-</pre></div>
-</td></tr></table>
-
-<h4>2 具体代码</h4>
-<p>代码比较简单，需要注明的是，如果个人没有Github主页的话，可以直接执行命令<code>./github_pelican_nginx.sh</code>即可，这样就不会执行脚本中的第7个步骤。否则，需要执行命令<code>./github_pelican_nginx.sh "关于本次更新的说明内容"</code>。</p>
+<h4>1 解决方法</h4>
+<p>网上查找相关资料后，有两种主要的实现方法：Method 1是通过修改<code>FS(Internal Field Seperator: Linuxshell中预设的分隔符，用来把command line分解成word)</code>实现。如上图所示，BZ用命令<code>echo $IFS</code>查看了自己的CentOS7.2服务器默认的IFS为空值。</p>
+<p>Method 2是直接在使用<code>find</code>命令遍历文件时，把结果作为<code>while read</code>的输入，这样就可以避免空格作为文件名的分隔符了。</p>
+<h4>2 完整代码</h4>
+<p>根据这两种方法，修改后的代码如下，同时也已经更新到了当前脚本所在的GitHub工程：<a href="https://github.com/vfhky/shell-tools" title="点击查看">https://github.com/vfhky/shell-tools</a>。</p>
 <table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>  1
   2
   3
@@ -256,12 +233,18 @@
 179
 180
 181
-182</pre></div></td><td class="code"><div class="highlight"><pre><span class="c">#!/bin/bash</span>
+182
+183
+184
+185
+186
+187
+188</pre></div></td><td class="code"><div class="highlight"><pre><span class="c">#!/bin/bash</span>
 <span class="c"># FileName:      github_pelican_nginx.sh</span>
 <span class="c"># Description:   Synchronize markdown articles with github, convert to html files using Pelican, deliver it to nginx environment.</span>
 <span class="c"># Simple Usage:  ./github_pelican_nginx.sh &quot;commit_comments&quot;</span>
 <span class="c"># Crontab Usage: 00 01 * * * /mydata/backups/bak_list/github_pelican_nginx.sh &gt;/dev/null 2&gt;&amp;1</span>
-<span class="c"># (c) 2016 vfhky https://typecodes.com/linux/githubpelicanpublishshell.html</span>
+<span class="c"># (c) 2016 vfhky https://typecodes.com/linux/syngithubmarkdownpelican.html</span>
 <span class="c"># https://github.com/vfhky/shell-tools/blob/master/synchronize/github_pelican_nginx.sh</span>
 
 
@@ -336,9 +319,9 @@
 <span class="o">}</span>
 
 <span class="c"># Get the path of markdown articles in TIME_GAP minutes.</span>
-<span class="k">function</span> Get_Files_Path<span class="o">(){</span>
-    RUNCMD <span class="s2">&quot;</span><span class="si">${</span><span class="nv">FINDCMD</span><span class="si">}</span><span class="s2"> . -mmin -</span><span class="si">${</span><span class="nv">TIME_GAP</span><span class="si">}</span><span class="s2"> -type f -name \&quot;*.md\&quot; -print0&quot;</span>
-<span class="o">}</span>
+<span class="c"># function Get_Files_Path(){</span>
+<span class="c">#    RUNCMD &quot;${FINDCMD} . -mmin -${TIME_GAP} -type f -name \&quot;*.md\&quot; -print0&quot;</span>
+<span class="c"># }</span>
 
 <span class="c"># Lock down permissions.You should be careful when it comes to your website for the permission of files, but it&#39;s safe using 022.</span>
 <span class="c"># umask 022</span>
@@ -360,16 +343,22 @@ RUNCMD <span class="s2">&quot;cd </span><span class="si">${</span><span class="n
 <span class="k">fi</span>
 
 
+<span class="c">#### Method 1:Chang the IFS to del with the blank word in the filename.</span>
+<span class="c">#old_IFS=$IFS</span>
+<span class="c">#IFS=$(echo -en &quot;\n\b&quot;)</span>
+
 NOTICE <span class="s2">&quot;[2]Start copy the pulled articles to the compile dir of PELICAN.&quot;</span>
-<span class="nv">New_Article_Files</span><span class="o">=</span><span class="k">$(</span>Get_Files_Path <span class="si">${</span><span class="nv">GITHUB_PELICAN_DIR</span><span class="si">}</span>/md_article<span class="k">)</span>
+<span class="c"># New_Article_Files=$(Get_Files_Path ${GITHUB_PELICAN_DIR}/md_article)</span>
 <span class="c"># You should not delete the double quotation marks in case of existing a blank in the file path.</span>
-<span class="k">for</span> New_Article_File in <span class="s2">&quot;</span><span class="si">${</span><span class="nv">New_Article_Files</span><span class="si">}</span><span class="s2">&quot;</span>
+<span class="c">#### Method 1: for New_Article_File in `${FINDCMD} . -mmin -${TIME_GAP} -type f -name &quot;*.md&quot;`</span>
+<span class="c">#### Method 2: use the while recycle.</span>
+<span class="si">${</span><span class="nv">FINDCMD</span><span class="si">}</span> . -mmin -<span class="si">${</span><span class="nv">TIME_GAP</span><span class="si">}</span> -type f -name <span class="s2">&quot;*.md&quot;</span><span class="p">|</span><span class="k">while</span> <span class="nb">read </span>New_Article_File
 <span class="k">do</span>
     <span class="k">if</span> <span class="o">[</span> -z <span class="s2">&quot;</span><span class="si">${</span><span class="nv">New_Article_File</span><span class="si">}</span><span class="s2">&quot;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
         <span class="nb">echo</span> <span class="s2">&quot;No articles, nothing to do.&quot;</span>
         ERROR <span class="s2">&quot;No articles, nothing to do.&quot;</span>
     <span class="k">fi</span>
-    <span class="nv">FILE_PATH</span><span class="o">=</span><span class="k">$(</span>dirname <span class="si">${</span><span class="nv">PELICAN_COMPILE_DIR</span><span class="si">}</span>/content/articles/<span class="s2">&quot;</span><span class="si">${</span><span class="nv">New_Article_Files</span><span class="p">:</span><span class="nv">2</span><span class="si">}</span><span class="s2">&quot;</span><span class="k">)</span>
+    <span class="nv">FILE_PATH</span><span class="o">=</span><span class="k">$(</span>dirname <span class="si">${</span><span class="nv">PELICAN_COMPILE_DIR</span><span class="si">}</span>/content/articles/<span class="s2">&quot;</span><span class="si">${</span><span class="nv">New_Article_File</span><span class="p">:</span><span class="nv">2</span><span class="si">}</span><span class="s2">&quot;</span><span class="k">)</span>
     RUNCMD <span class="s2">&quot;mkdir -p </span><span class="si">${</span><span class="nv">FILE_PATH</span><span class="si">}</span><span class="s2"> &amp;&amp; </span><span class="si">${</span><span class="nv">CPCMD</span><span class="si">}</span><span class="s2"> \&quot;</span><span class="si">${</span><span class="nv">New_Article_File</span><span class="si">}</span><span class="s2">\&quot; </span><span class="si">${</span><span class="nv">FILE_PATH</span><span class="si">}</span><span class="s2">&quot;</span>
 <span class="k">done</span>
 
@@ -390,7 +379,7 @@ RUNCMD <span class="s2">&quot;cd </span><span class="si">${</span><span class="n
 
 NOTICE <span class="s2">&quot;[4]Start generate a tar packgage and move it to the backup dir.&quot;</span>
 <span class="c"># The command of tar cause the problem that file changed as we read with the value 1, so we should ignore it using OR logic.</span>
-RUNCMD <span class="s2">&quot;cd </span><span class="si">${</span><span class="nv">PELICAN_COMPILE_DIR</span><span class="si">}</span><span class="s2">/output &amp;&amp; </span><span class="si">${</span><span class="nv">TARZIPCMD</span><span class="si">}</span><span class="s2"> </span><span class="si">${</span><span class="nv">Current_Date</span><span class="si">}</span><span class="s2">.tar.gz . || </span><span class="si">${</span><span class="nv">MVCMD</span><span class="si">}</span><span class="s2"> </span><span class="si">${</span><span class="nv">Current_Date</span><span class="si">}</span><span class="s2">.tar.gz </span><span class="si">${</span><span class="nv">PELICAN_TAR_DIR</span><span class="si">}</span><span class="s2">&quot;</span>
+RUNCMD <span class="s2">&quot;cd </span><span class="si">${</span><span class="nv">PELICAN_COMPILE_DIR</span><span class="si">}</span><span class="s2">/output &amp;&amp; </span><span class="si">${</span><span class="nv">TARZIPCMD</span><span class="si">}</span><span class="s2"> </span><span class="si">${</span><span class="nv">Current_Date</span><span class="si">}</span><span class="s2">.tar.gz . || </span><span class="si">${</span><span class="nv">MVCMD</span><span class="si">}</span><span class="s2"> </span><span class="si">${</span><span class="nv">Current_Date</span><span class="si">}</span><span class="s2">.tar.gz </span><span class="si">${</span><span class="nv">PELICAN_BLOG_DIR</span><span class="si">}</span><span class="s2">&quot;</span>
 
 <span class="nv">RC</span><span class="o">=</span><span class="nv">$?</span>
 <span class="k">if</span> <span class="o">[</span> <span class="nv">$RC</span> -gt <span class="m">0</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
@@ -399,7 +388,7 @@ RUNCMD <span class="s2">&quot;cd </span><span class="si">${</span><span class="n
 
 
 NOTICE <span class="s2">&quot;[5]Start unpack the target files.&quot;</span>
-RUNCMD <span class="s2">&quot;</span><span class="si">${</span><span class="nv">CPCMD</span><span class="si">}</span><span class="s2"> </span><span class="si">${</span><span class="nv">PELICAN_TAR_DIR</span><span class="si">}</span><span class="s2">/</span><span class="si">${</span><span class="nv">Current_Date</span><span class="si">}</span><span class="s2">.tar.gz </span><span class="si">${</span><span class="nv">PELICAN_BLOG_DIR</span><span class="si">}</span><span class="s2"> &amp;&amp; cd </span><span class="si">${</span><span class="nv">PELICAN_BLOG_DIR</span><span class="si">}</span><span class="s2"> &amp;&amp; </span><span class="si">${</span><span class="nv">TARXCMD</span><span class="si">}</span><span class="s2"> </span><span class="si">${</span><span class="nv">Current_Date</span><span class="si">}</span><span class="s2">.tar.gz &amp;&amp; </span><span class="si">${</span><span class="nv">RMCMD</span><span class="si">}</span><span class="s2"> </span><span class="si">${</span><span class="nv">Current_Date</span><span class="si">}</span><span class="s2">.tar.gz&quot;</span>
+RUNCMD <span class="s2">&quot;cd </span><span class="si">${</span><span class="nv">PELICAN_BLOG_DIR</span><span class="si">}</span><span class="s2"> &amp;&amp; </span><span class="si">${</span><span class="nv">TARXCMD</span><span class="si">}</span><span class="s2"> </span><span class="si">${</span><span class="nv">Current_Date</span><span class="si">}</span><span class="s2">.tar.gz &amp;&amp; </span><span class="si">${</span><span class="nv">MVCMD</span><span class="si">}</span><span class="s2"> </span><span class="si">${</span><span class="nv">Current_Date</span><span class="si">}</span><span class="s2">.tar.gz </span><span class="si">${</span><span class="nv">PELICAN_TAR_DIR</span><span class="si">}</span><span class="s2">&quot;</span>
 
 <span class="nv">RC</span><span class="o">=</span><span class="nv">$?</span>
 <span class="k">if</span> <span class="o">[</span> <span class="nv">$RC</span> -gt <span class="m">0</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
@@ -408,7 +397,7 @@ RUNCMD <span class="s2">&quot;</span><span class="si">${</span><span class="nv">
 
 <span class="c"># if [ $# -eq 1 ]; then</span>
 <span class="k">if</span> <span class="o">[</span> -n <span class="s2">&quot;</span><span class="nv">$1</span><span class="s2">&quot;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
-    <span class="nb">echo</span> <span class="s2">&quot;You&#39;re going to synchronize your weibsite to the homepage on github.com.&quot;</span>
+    <span class="nb">echo</span> <span class="s2">&quot;Ready to synchronize to the homepage on github.com.&quot;</span>
     NOTICE <span class="s2">&quot;[6]Start copy the packgage to the local homepage bang cloned from remote in GitHub.&quot;</span>
     RUNCMD <span class="s2">&quot;</span><span class="si">${</span><span class="nv">CPCMD</span><span class="si">}</span><span class="s2"> </span><span class="si">${</span><span class="nv">PELICAN_TAR_DIR</span><span class="si">}</span><span class="s2">/</span><span class="si">${</span><span class="nv">Current_Date</span><span class="si">}</span><span class="s2">.tar.gz </span><span class="si">${</span><span class="nv">GITHUB_PERSONAL_PAGE</span><span class="si">}</span><span class="s2"> &amp;&amp; cd </span><span class="si">${</span><span class="nv">GITHUB_PERSONAL_PAGE</span><span class="si">}</span><span class="s2"> &amp;&amp; </span><span class="si">${</span><span class="nv">TARXCMD</span><span class="si">}</span><span class="s2"> </span><span class="si">${</span><span class="nv">Current_Date</span><span class="si">}</span><span class="s2">.tar.gz &amp;&amp; </span><span class="si">${</span><span class="nv">RMCMD</span><span class="si">}</span><span class="s2"> </span><span class="si">${</span><span class="nv">Current_Date</span><span class="si">}</span><span class="s2">.tar.gz&quot;</span>
 
@@ -442,23 +431,21 @@ NOTICE <span class="s2">&quot;------END------&quot;</span>
 </td></tr></table>
 
 <h4>3 脚本执行结果</h4>
-<p><img alt="github_pelican_nginx脚本执行结果" src="https://o3cex9zsl.qnssl.com/2016/01/pelican_shell_excute_result.png" title="github_pelican_nginx脚本执行结果" /></p>
-<h4>4 脚本管理</h4>
-<p>目前已经把这个脚本放在Github了，地址是<a href="https://github.com/vfhky/shell-tools" title="点击查看">https://github.com/vfhky/shell-tools</a>，以后脚本的更新或者更多好用的脚本也都会加入到这个工程中。</p>
+<p><img alt="github_pelican_nginx脚本执行结果" src="https://o3cex9zsl.qnssl.com/2016/03/github_pelican_nginx_excute_log.png" title="github_pelican_nginx脚本执行结果" /></p>
 		    	<p class="tags">
 					<div class="post-share">
 						<ul class="post-shareul clearfix">
 							<li class="post-shareli">
-								<a href="http://note.youdao.com/memory/?url=https://typecodes.com/linux/syngithubmarkdownpelican.html&title=同步GitHub Markdown文章到Linux服务器后更新Pelican博客的脚本" class="post-sharea ydshare" target="_blank" rel="nofollow">有道云笔记</a>
+								<a href="http://note.youdao.com/memory/?url=https://typecodes.com/linux/updatesyngithubpelicanshell.html&title=更新博客生成发布及同步GitHub的Shell脚本：解决文件名空格问题" class="post-sharea ydshare" target="_blank" rel="nofollow">有道云笔记</a>
 							</li>
 							<li class="post-shareli">
-								<a href="http://v.t.sina.com.cn/share/share.php?url=https://typecodes.com/linux/syngithubmarkdownpelican.html&title=同步GitHub Markdown文章到Linux服务器后更新Pelican博客的脚本&source=https://typecodes.com" class="post-sharea wbshare" target="_blank" rel="nofollow">新浪微博</a>
+								<a href="http://v.t.sina.com.cn/share/share.php?url=https://typecodes.com/linux/updatesyngithubpelicanshell.html&title=更新博客生成发布及同步GitHub的Shell脚本：解决文件名空格问题&source=https://typecodes.com" class="post-sharea wbshare" target="_blank" rel="nofollow">新浪微博</a>
 							</li>
 							<li class="post-shareli">
-								<a href="http://v.t.qq.com/share/share.php?title=同步GitHub Markdown文章到Linux服务器后更新Pelican博客的脚本&url=https://typecodes.com/linux/syngithubmarkdownpelican.html&site=https://typecodes.com" class="post-sharea twbshare" target="_blank" rel="nofollow">腾讯微博</a>
+								<a href="http://v.t.qq.com/share/share.php?title=更新博客生成发布及同步GitHub的Shell脚本：解决文件名空格问题&url=https://typecodes.com/linux/updatesyngithubpelicanshell.html&site=https://typecodes.com" class="post-sharea twbshare" target="_blank" rel="nofollow">腾讯微博</a>
 							</li>
 							<li class="post-shareli">
-								<a href="http://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=https://typecodes.com/linux/syngithubmarkdownpelican.html&title=同步GitHub Markdown文章到Linux服务器后更新Pelican博客的脚本&content='utf-8'" class="post-sharea qzoneshare" target="_blank" rel="nofollow">QZone</a>
+								<a href="http://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=https://typecodes.com/linux/updatesyngithubpelicanshell.html&title=更新博客生成发布及同步GitHub的Shell脚本：解决文件名空格问题&content='utf-8'" class="post-sharea qzoneshare" target="_blank" rel="nofollow">QZone</a>
 							</li>
 						</ul>
 					</div>
@@ -582,9 +569,9 @@ NOTICE <span class="s2">&quot;------END------&quot;</span>
 </footer>
 <script type="text/javascript">
 	var disqus_shortname = 'typecodes';
-	var disqus_identifier = '/linux/syngithubmarkdownpelican.html';
-	var disqus_url = 'https://typecodes.com/linux/syngithubmarkdownpelican.html';
-	var disqus_title = '同步GitHub Markdown文章到Linux服务器后更新Pelican博客的脚本';
+	var disqus_identifier = '/linux/updatesyngithubpelicanshell.html';
+	var disqus_url = 'https://typecodes.com/linux/updatesyngithubpelicanshell.html';
+	var disqus_title = '更新博客生成发布及同步GitHub的Shell脚本：解决文件名空格问题';
 	(function() {
 		var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
 		dsq.src = "//" + disqus_shortname + '.disqus.com/embed.js';
