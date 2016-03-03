@@ -38,6 +38,18 @@
 		<div class="col-md-9" id="blog-main" role="main">
 		  	<!--article recycle-->
 			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/cseries/pointermemaccess0xC0000005.html">再谈“0xC0000005读取写入位置冲突”——正确使用指针访问内存</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2014-09-03 22:26 | 分类：<a href="https://typecodes.com/cseries/index.html">cseries</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>在<a href="https://typecodes.com/cseries/trimspace0xC0000005.html" title="未经处理的异常:0xC0000005:读取/写入位置冲突——从去掉字符串所有空格说起">前面一篇文章</a>中，总结了错误使用指针指向一个字符串常量，然后对该字符串常量进行写入操作导致出错：“未经处理的异常：0xC0000005: 读取/写入位置发生访问冲突”。</p>
+<p>这篇文章继续使用指针来探索这个问题。</p>
+<h5>1 测试程序：“异常: 0xC0000005: 写入位置 0xxxxxxxxx 时发生访问冲突”</h5>
+
+	<p class="more"><a href="https://typecodes.com/cseries/pointermemaccess0xC0000005.html" title="再谈“0xC0000005读取写入位置冲突”——正确使用指针访问内存">- 阅读剩余部分 -</a></p>
+			</article>
+			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/mix/getsaegift.html">千里佳音，收到新浪云(SAE)的一份礼物</a></h2>
 <ul class="post-meta">
 	<li>作者：vfhky | 时间：2014-08-31 13:54 | 分类：<a href="https://typecodes.com/mix/index.html">mix</a></li>
@@ -126,26 +138,6 @@
 
 	<p class="more"><a href="https://typecodes.com/web/aliyuncentoslnmpiptables.html" title="阿里云CentOS主机 LNMP 环境之主机安全篇二">- 阅读剩余部分 -</a></p>
 			</article>
-			<article class="post">
-<h2 class="post-title"><a href="https://typecodes.com/web/aliyuncentoslnmphostssh.html">阿里云CentOS主机 LNMP 环境之主机安全篇一</a></h2>
-<ul class="post-meta">
-	<li>作者：vfhky | 时间：2014-08-16 16:32 | 分类：<a href="https://typecodes.com/web/index.html">web</a></li>
-</ul>
-<div class="post-content fmt">
-	<p>在<a href="https://typecodes.com/web/aliyuncentoslnmpwebsafeconf.html" title="阿里云CentOS主机 LNMP 环境之web安全篇">前面一篇文章</a>介绍了阿里云的CentOS 6.5系统 LNMP 环境下，如何让 web 站点的更为安全。这篇文章主要从用户登录主机方式入手，简单分享下如何让自己的 Linux 主机更安全。</p>
-<h5>1 禁止 CentOS 系统中除 root 外的用户登录</h5>
-<div class="highlight"><pre>###### 查看 CentOS 系统中的所有用户
-[root@typecodes ~]# cat /etc/passwd
-root:x:0:0:root:/root:/bin/bash
-bin:x:1:1:bin:/bin:/sbin/nologin
-###### 只需简单在 /etc 目录下建立 nologin 文件即可禁止除root外的用户登录
-[root@typecodes ~]# touch /etc/nologin
-</pre></div>
-
-
-
-	<p class="more"><a href="https://typecodes.com/web/aliyuncentoslnmphostssh.html" title="阿里云CentOS主机 LNMP 环境之主机安全篇一">- 阅读剩余部分 -</a></p>
-			</article>
 		  	<!--page navigation-->
 <ol class="page-navigator">
 <li class="prev"><a href="https://typecodes.com/index9.html">&laquo; 前一页</a></li><li><a href="https://typecodes.com/index.html">1</a>
@@ -187,7 +179,7 @@ bin:x:1:1:bin:/bin:/sbin/nologin
 		        <a href="https://typecodes.com/linux/index.html">Linux</a> (21)
 		      </li>
 		      <li class="current">
-		        <a href="https://typecodes.com/mix/index.html">Mix</a> (53)
+		        <a href="https://typecodes.com/mix/index.html">Mix</a> (54)
 		      </li>
 		      <li class="current">
 		        <a href="https://typecodes.com/web/index.html">Web</a> (88)
@@ -197,6 +189,9 @@ bin:x:1:1:bin:/bin:/sbin/nologin
 	<section class="widget">
 		<h3 class="widget-title">Recent Posts</h3>
 		<ul class="widget-list">
+			<li class="post">
+				<a href="https://typecodes.com/mix/disqushtmltaghighlight.html">Disqus支持的HTML标签和代码高亮方法</a>
+			</li>
 			<li class="post">
 				<a href="https://typecodes.com/linux/updatesyngithubpelicanshell.html">更新博客生成发布及同步GitHub的Shell脚本：解决文件名空格问题</a>
 			</li>
@@ -214,9 +209,6 @@ bin:x:1:1:bin:/bin:/sbin/nologin
 			</li>
 			<li class="post">
 				<a href="https://typecodes.com/linux/simpletcpdumpapply.html">Linux中使用TCPDUMP进行简单的TCP抓包</a>
-			</li>
-			<li class="post">
-				<a href="https://typecodes.com/linux/yuminstallmysql5710.html">CentOS 7.2使用yum安装MYSQL 5.7.10</a>
 			</li>
 		</ul>
 	</section>

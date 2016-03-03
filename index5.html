@@ -38,6 +38,17 @@
 		<div class="col-md-9" id="blog-main" role="main">
 		  	<!--article recycle-->
 			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/web/centos7compilemysql5.html">阿里云CentOS 7.1编译安装MySql5.6.24</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2015-06-25 09:42 | 分类：<a href="https://typecodes.com/web/index.html">web</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>继<a href="https://typecodes.com/web/centos7compilemysql.html" title="《2015博客升级记(四)：CentOS 7.1编译安装MySQL5.7.7rc》">前文</a>记述了如何在Linux系统中，通过源码编译安装MySQL5.7.7 Release Candidate版本的过程，这篇文章主要是记录源码编译安装MySql5.6.24的过程。</p>
+<p>鉴于官方MySql5.6.24相对是一个比较稳定的版本，所以博主之前也在自己的另一台CentOS7.1主机上安装了一遍。不过最后还是图新鲜，选择了MySQL5.7.7rc版本。下面是具体的安装过程，由于和MySQL5.7.7rc的编译安装过程很类似，所以这里尽可能精简文字：</p>
+
+	<p class="more"><a href="https://typecodes.com/web/centos7compilemysql5.html" title="阿里云CentOS 7.1编译安装MySql5.6.24">- 阅读剩余部分 -</a></p>
+			</article>
+			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/web/solvemysqlcompileerror.html">MySQL编译安装时常见错误分析</a></h2>
 <ul class="post-meta">
 	<li>作者：vfhky | 时间：2015-06-23 19:20 | 分类：<a href="https://typecodes.com/web/index.html">web</a></li>
@@ -132,17 +143,6 @@
 
 	<p class="more"><a href="https://typecodes.com/mix/typechoexmailconfig.html" title="Typecho评论邮件通知插件中使用腾讯企业邮箱SSL功能">- 阅读剩余部分 -</a></p>
 			</article>
-			<article class="post">
-<h2 class="post-title"><a href="https://typecodes.com/web/nginxserviceoptshell.html">Nginx服务启动、停止和重启等操作的SHELL脚本</a></h2>
-<ul class="post-meta">
-	<li>作者：vfhky | 时间：2015-06-06 13:42 | 分类：<a href="https://typecodes.com/web/index.html">web</a></li>
-</ul>
-<div class="post-content fmt">
-	<p>由于使用源码编译安装Nginx，不会像yum install那样自动生成Nginx服务控制脚本，所以需要自己添加一个操作脚本。谷歌上搜了一下，shell脚本的代码基本类似，因此自己稍微整理改动了下。</p>
-<p>下面的shell脚本内容，需要根据Nginx实际编译安装的配置，修改<code>NGINX_CONF_FILE="/etc/nginx/nginx.conf"</code>和<code>lockfile=/var/lock/nginx.lock</code>这两个参数（即前文<a href="https://typecodes.com/web/centos7compilenginx.html" title="查看原文">《2015博客升级记(三)：CentOS 7.1编译安装Nginx1.9.0》</a>中的configure配置）。</p>
-
-	<p class="more"><a href="https://typecodes.com/web/nginxserviceoptshell.html" title="Nginx服务启动、停止和重启等操作的SHELL脚本">- 阅读剩余部分 -</a></p>
-			</article>
 		  	<!--page navigation-->
 <ol class="page-navigator">
 <li class="prev"><a href="https://typecodes.com/index4.html">&laquo; 前一页</a></li><li><a href="https://typecodes.com/index.html">1</a>
@@ -185,7 +185,7 @@
 		        <a href="https://typecodes.com/linux/index.html">Linux</a> (21)
 		      </li>
 		      <li class="current">
-		        <a href="https://typecodes.com/mix/index.html">Mix</a> (53)
+		        <a href="https://typecodes.com/mix/index.html">Mix</a> (54)
 		      </li>
 		      <li class="current">
 		        <a href="https://typecodes.com/web/index.html">Web</a> (88)
@@ -195,6 +195,9 @@
 	<section class="widget">
 		<h3 class="widget-title">Recent Posts</h3>
 		<ul class="widget-list">
+			<li class="post">
+				<a href="https://typecodes.com/mix/disqushtmltaghighlight.html">Disqus支持的HTML标签和代码高亮方法</a>
+			</li>
 			<li class="post">
 				<a href="https://typecodes.com/linux/updatesyngithubpelicanshell.html">更新博客生成发布及同步GitHub的Shell脚本：解决文件名空格问题</a>
 			</li>
@@ -212,9 +215,6 @@
 			</li>
 			<li class="post">
 				<a href="https://typecodes.com/linux/simpletcpdumpapply.html">Linux中使用TCPDUMP进行简单的TCP抓包</a>
-			</li>
-			<li class="post">
-				<a href="https://typecodes.com/linux/yuminstallmysql5710.html">CentOS 7.2使用yum安装MYSQL 5.7.10</a>
 			</li>
 		</ul>
 	</section>

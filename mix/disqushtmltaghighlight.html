@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="zh-CN" class="no-js">
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+  		<meta name="renderer" content="webkit">
+		<title>Disqus支持的HTML标签和代码高亮方法 &mdash; TypeCodes</title>
+  		<meta name="viewport" content="width=device-width, initial-scale=1">
+  		<link href="https://typecodes.com/atom.xml" type="application/atom+xml" rel="alternate" title="TypeCodes Atom Feed" />
+	  	<link href="https://typecodes.com/feed.xml" type="application/rss+xml" rel="alternate" title="TypeCodes RSS Feed" />
+		<link rel="stylesheet" href="https://o3cex9zsl.qnssl.com/libs/css/pelican-vfhky.css">
+		<script>
+			var _hmt = _hmt || [];
+			(function() {
+			  var hm = document.createElement("script");
+			  hm.src = "//hm.baidu.com/hm.js?c15c4ab8e91ba9ac3d5a12293cc93359";
+			  var s = document.getElementsByTagName("script")[0]; 
+			  s.parentNode.insertBefore(hm, s);
+			})();
+		</script>
+	</head>
+	<body>
+		<!--1. header navigation begin-->
+		<header role="banner" id="te-site-header">
+			<div class="container">
+				<a href="https://typecodes.com" class="te-site-logo" role="logo" target="_self"> TypeCodes</a>
+				<ul class="nav nav-pills" id="te-site-nav" role="navigation">
+					<li><a href="https://typecodes.com">Home</a></li><li><a href="https://typecodes.com/archives.html" title="Archives">Archives</a></li><li><a href="https://typecodes.com/about.html" title="About">About</a></li></ul>
+			</div>
+		</header>
+		<div class="te-headline">
+			<div class="container">
+				<h2 class="te-headline-title"> <a href="https://typecodes.com">TypeCodes</a></h2>
+			</div>
+		</div>
+		<div class="container">
+			<div class="row">
+		<!--2. left sider begin-->
+		<div class="col-md-9" id="blog-main" role="main">
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/mix/disqushtmltaghighlight.html">Disqus支持的HTML标签和代码高亮方法</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2016-03-03 13:09 | 分类：<a href="https://typecodes.com/mix/index.html">mix</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>由于Disqus不支持Markdown的原因，所以在评论中使用HTML标签和代码高亮就不像Markdown那样方便了。在查看了<a href="https://help.disqus.com/customer/portal/articles/466253-what-html-tags-are-allowed-within-comments" title="点击查看">Disqus官方</a>关于HTML标签和代码高亮的说明后，发现Disqus只支持原生的HTML标签和代码高亮方式。</p>
+<p><img alt="Disqus中HTML标签和代码高亮的效果" src="https://o3cex9zsl.qnssl.com/2016/03/disqus_htmltag_highlight_result.png" title="Disqus中HTML标签和代码高亮的效果" /></p>
+
+
+<h4>1 支持的HTML标签</h4>
+<p>Disqus官方给出的HTML标签如下，BZ推测大部分原生的HTML TAG应该都是支持的。</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13</pre></div></td><td class="code"><div class="highlight"><pre><span class="nt">&lt;br&gt;</span>Defines a single line break.<span class="nt">&lt;/br&gt;</span>
+<span class="nt">&lt;i&gt;</span>italic text<span class="nt">&lt;/i&gt;</span>
+<span class="nt">&lt;a&gt;</span> Defines an anchor.<span class="nt">&lt;/a&gt;</span>
+<span class="nt">&lt;strong&gt;</span> Defines bold text.<span class="nt">&lt;/strong&gt;</span>
+<span class="nt">&lt;blockquote&gt;</span> Defines a long quotation.<span class="nt">&lt;/blockquote&gt;</span>
+<span class="nt">&lt;caption&gt;</span> Defines a table caption.<span class="nt">&lt;/caption&gt;</span>
+<span class="nt">&lt;cite&gt;</span> Defines a citation.<span class="nt">&lt;/cite&gt;</span>
+<span class="nt">&lt;em&gt;</span> Defines italic text.<span class="nt">&lt;/em&gt;</span>
+<span class="nt">&lt;p&gt;</span> Defines a paragraph.<span class="nt">&lt;/p&gt;</span>
+<span class="nt">&lt;span&gt;</span> Defines a section in a document.<span class="nt">&lt;/span&gt;</span>
+<span class="nt">&lt;s&gt;</span> Defines strikethrough text.<span class="nt">&lt;/s&gt;</span>
+<span class="nt">&lt;strike&gt;</span> Defines strikethrough text.<span class="nt">&lt;/strike&gt;</span>
+<span class="nt">&lt;u&gt;</span> Defines strikethrough text.<span class="nt">&lt;/u&gt;</span>
+</pre></div>
+</td></tr></table>
+
+<h4>2 支持的代码高亮方式</h4>
+<p>只要将代码包含在<code>&lt;pre&gt;&lt;code class="代码类型"&gt;......&lt;/code&gt;&lt;/pre&gt;</code>标签内就行了。目前官方支持的代码类型包括：</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12</pre></div></td><td class="code"><div class="highlight"><pre>C#
+HTML/XML (Note: You must first HTML-encode these tags to display them)
+Java
+Python
+C/C++
+HTTP
+JavaScript
+Ruby
+CSS
+Ini
+PHP
+SQL
+</pre></div>
+</td></tr></table>
+
+<h4>3 演示</h4>
+<p>这里演示了在Disqus评论中使用<code>blockquote</code>标签以及代码高亮的方法，如下图所示：</p>
+<p><img alt="Disqus中HTML标签和代码高亮的使用方法" src="https://o3cex9zsl.qnssl.com/2016/03/disqus_htmltag_highlight.png" title="Disqus中HTML标签和代码高亮的使用方法" /></p>
+<p>最终的效果如本文第一张图片所示。</p>
+		    	<p class="tags">
+					<div class="post-share">
+						<ul class="post-shareul clearfix">
+							<li class="post-shareli">
+								<a href="http://note.youdao.com/memory/?url=https://typecodes.com/mix/disqushtmltaghighlight.html&title=Disqus支持的HTML标签和代码高亮方法" class="post-sharea ydshare" target="_blank" rel="nofollow">有道云笔记</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://v.t.sina.com.cn/share/share.php?url=https://typecodes.com/mix/disqushtmltaghighlight.html&title=Disqus支持的HTML标签和代码高亮方法&source=https://typecodes.com" class="post-sharea wbshare" target="_blank" rel="nofollow">新浪微博</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://v.t.qq.com/share/share.php?title=Disqus支持的HTML标签和代码高亮方法&url=https://typecodes.com/mix/disqushtmltaghighlight.html&site=https://typecodes.com" class="post-sharea twbshare" target="_blank" rel="nofollow">腾讯微博</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=https://typecodes.com/mix/disqushtmltaghighlight.html&title=Disqus支持的HTML标签和代码高亮方法&content='utf-8'" class="post-sharea qzoneshare" target="_blank" rel="nofollow">QZone</a>
+							</li>
+						</ul>
+					</div>
+					<div>
+						Tags: <a href="https://typecodes.com/tag/pelican.html">pelican</a>,<a href="https://typecodes.com/tag/disqus.html">disqus</a>,<a href="https://typecodes.com/tag/dai-ma-gao-liang.html">代码高亮</a>					</div>
+				</p>
+			</article>
+			
+			<div id="comments">
+				<h4 class="num">Comments &raquo;</h4>
+		    	<div id="disqus_thread" aria-live="polite"></div>
+		    	<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+		    </div>
+		</div>
+		<!--3. right sider begin-->
+<div class="col-md-3" id="blog-secondary" role="complementary">
+	<section class="widget">
+		<ul class="widget-list">
+			<form id="search" method="get" action="https://typecodes.com/search.html">
+				<input type="text" name="q" id="s" size="20" x-webkit-speech="" x-webkit-grammar="builtin:search" onwebkitspeechchange="this.value = this.value.replace(this.defaultValue, '')" value="Google...." onfocus="this.value = (this.value == this.defaultValue) ? '' : this.value" onblur="this.value = (this.value == '') ? this.defaultValue : this.value">
+			</form>
+		</ul>
+	</section>
+	<section class="widget">
+		<h3 class="widget-title">Categories</h3>
+		<ul class="widget-list">
+		      <li class="current">
+		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (33)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/csharp/index.html">Csharp</a> (6)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/database/index.html">Database</a> (11)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/java/index.html">Java</a> (1)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/linux/index.html">Linux</a> (21)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/mix/index.html">Mix</a> (54)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/web/index.html">Web</a> (88)
+		      </li>
+		</ul>
+	</section>
+	<section class="widget">
+		<h3 class="widget-title">Recent Posts</h3>
+		<ul class="widget-list">
+			<li class="post">
+				<a href="https://typecodes.com/mix/disqushtmltaghighlight.html">Disqus支持的HTML标签和代码高亮方法</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/updatesyngithubpelicanshell.html">更新博客生成发布及同步GitHub的Shell脚本：解决文件名空格问题</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/sigprocmasksigsuspendapp.html">一个sigprocmask和sigsuspend函数的综合应用</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/tcpclosewaitsigpipe.html">Linux TCP通信出现CLOSE_WAIT后导致服务端进程挂掉</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/tcpdumpwiresharkclosewait2.html">使用TCPDUMP和Wireshark排查服务端CLOSE_WAIT（二）</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/tcpdumpwiresharkclosewait1.html">使用TCPDUMP和Wireshark排查服务端CLOSE_WAIT（一）</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/simpletcpdumpapply.html">Linux中使用TCPDUMP进行简单的TCP抓包</a>
+			</li>
+		</ul>
+	</section>
+	<section class="widget widget-feed">
+		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
+	</section>
+</div>
+				</div>
+			</div>
+		</div>
+		<!--4. bottom begin-->
+		<footer id="te-site-footer"><div class="container">
+	<div class="row" role="contentinfo">
+		<section class="col-md-2 col-md-offset-1">
+			<h3>Links</h3>
+			<ul><li><a href="http://edi.wang/" title="" target="_blank">Edi Wang</a></li></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul>
+				<li><a href="https://typecodes.com/links.html">More..</a></li>
+			</ul>
+		</section>
+		<section class="col-md-2">
+			<h3>Following</h3>
+			<ul>
+				<li><a href="https://github.com/vfhky" class="following github" target="_blank" rel="external nofollow">GitHub</a></li>
+				<li><a href="http://weibo.com/typecodes" class="following weibo" target="_blank" rel="external nofollow">Weibo</a></li>
+				<li><a href="http://vfhky.sinaapp.com" class="following sae" target="_blank" rel="external nofollow">SAE</a></li>
+				<li><a href="http://www.dwz.cn/mYiwa" class="following qqgroup" target="_blank" rel="external nofollow">Group</a></li>
+			</ul>
+		</section>
+		<div class="col-md-12 copyright">
+			<a href="#top"><i class="i-logo-s">TOP</i></a>
+			<p>
+				&copy;  2012-2016 							<a href="https://typecodes.com">TypeCodes</a>. All Rights Reserved<br>Powered by <a href="http://getpelican.com" rel="external" target="_blank">Pelican</a>. <a href="http://www.miitbeian.gov.cn" rel="external nofollow" target="_blank">粤ICP备14050695号</a>
+			</p>
+		</div>
+	</div>
+</div>
+</footer>
+<script type="text/javascript">
+	var disqus_shortname = 'typecodes';
+	var disqus_identifier = '/mix/disqushtmltaghighlight.html';
+	var disqus_url = 'https://typecodes.com/mix/disqushtmltaghighlight.html';
+	var disqus_title = 'Disqus支持的HTML标签和代码高亮方法';
+	(function() {
+		var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+		dsq.src = "//" + disqus_shortname + '.disqus.com/embed.js';
+		(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	 })();
+</script>
+	</body>
+</html>

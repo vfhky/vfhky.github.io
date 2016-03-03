@@ -1,5 +1,70 @@
 <?xml version="1.0" encoding="utf-8"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>TypeCodes</title><link>https://typecodes.com/</link><description>Beauty of programming</description><atom:link href="https://typecodes.com/feed.xml" rel="self"></atom:link><lastBuildDate>Wed, 02 Mar 2016 23:55:00 +0800</lastBuildDate><item><title>更新博客生成发布及同步GitHub的Shell脚本：解决文件名空格问题</title><link>https://typecodes.com/linux/updatesyngithubpelicanshell.html</link><description>&lt;p&gt;&lt;a href="https://typecodes.com/linux/syngithubmarkdownpelican.html" title="《同步GitHub Markdown文章到Linux服务器后更新Pelican博客的脚本》"&gt;前面一篇文章&lt;/a&gt;通过Linux Shell脚本的方式，实现博客生成发布及同步GitHub的的功能：先同步GitHub个人仓库中的Markdown文章到本地，然后通过Pelican编译生成静态HTML文件，最后发布到Nginx的web目录下面，同时更新到GitHub个人主页（vfhky.github.io）。&lt;/p&gt;
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>TypeCodes</title><link>https://typecodes.com/</link><description>Beauty of programming</description><atom:link href="https://typecodes.com/feed.xml" rel="self"></atom:link><lastBuildDate>Thu, 03 Mar 2016 13:09:00 +0800</lastBuildDate><item><title>Disqus支持的HTML标签和代码高亮方法</title><link>https://typecodes.com/mix/disqushtmltaghighlight.html</link><description>&lt;p&gt;由于Disqus不支持Markdown的原因，所以在评论中使用HTML标签和代码高亮就不像Markdown那样方便了。在查看了&lt;a href="https://help.disqus.com/customer/portal/articles/466253-what-html-tags-are-allowed-within-comments" title="点击查看"&gt;Disqus官方&lt;/a&gt;关于HTML标签和代码高亮的说明后，发现Disqus只支持原生的HTML标签和代码高亮方式。&lt;/p&gt;
+&lt;p&gt;&lt;img alt="Disqus中HTML标签和代码高亮的效果" src="https://o3cex9zsl.qnssl.com/2016/03/disqus_htmltag_highlight_result.png" title="Disqus中HTML标签和代码高亮的效果" /&gt;&lt;/p&gt;
+
+
+&lt;h4&gt;1 支持的HTML标签&lt;/h4&gt;
+&lt;p&gt;Disqus官方给出的HTML标签如下，BZ推测大部分原生的HTML TAG应该都是支持的。&lt;/p&gt;
+&lt;table class="highlighttable"&gt;&lt;tr&gt;&lt;td class="linenos"&gt;&lt;div class="linenodiv"&gt;&lt;pre&gt; 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13&lt;/pre&gt;&lt;/div&gt;&lt;/td&gt;&lt;td class="code"&gt;&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="nt"&gt;&amp;lt;br&amp;gt;&lt;/span&gt;Defines a single line break.&lt;span class="nt"&gt;&amp;lt;/br&amp;gt;&lt;/span&gt;
+&lt;span class="nt"&gt;&amp;lt;i&amp;gt;&lt;/span&gt;italic text&lt;span class="nt"&gt;&amp;lt;/i&amp;gt;&lt;/span&gt;
+&lt;span class="nt"&gt;&amp;lt;a&amp;gt;&lt;/span&gt; Defines an anchor.&lt;span class="nt"&gt;&amp;lt;/a&amp;gt;&lt;/span&gt;
+&lt;span class="nt"&gt;&amp;lt;strong&amp;gt;&lt;/span&gt; Defines bold text.&lt;span class="nt"&gt;&amp;lt;/strong&amp;gt;&lt;/span&gt;
+&lt;span class="nt"&gt;&amp;lt;blockquote&amp;gt;&lt;/span&gt; Defines a long quotation.&lt;span class="nt"&gt;&amp;lt;/blockquote&amp;gt;&lt;/span&gt;
+&lt;span class="nt"&gt;&amp;lt;caption&amp;gt;&lt;/span&gt; Defines a table caption.&lt;span class="nt"&gt;&amp;lt;/caption&amp;gt;&lt;/span&gt;
+&lt;span class="nt"&gt;&amp;lt;cite&amp;gt;&lt;/span&gt; Defines a citation.&lt;span class="nt"&gt;&amp;lt;/cite&amp;gt;&lt;/span&gt;
+&lt;span class="nt"&gt;&amp;lt;em&amp;gt;&lt;/span&gt; Defines italic text.&lt;span class="nt"&gt;&amp;lt;/em&amp;gt;&lt;/span&gt;
+&lt;span class="nt"&gt;&amp;lt;p&amp;gt;&lt;/span&gt; Defines a paragraph.&lt;span class="nt"&gt;&amp;lt;/p&amp;gt;&lt;/span&gt;
+&lt;span class="nt"&gt;&amp;lt;span&amp;gt;&lt;/span&gt; Defines a section in a document.&lt;span class="nt"&gt;&amp;lt;/span&amp;gt;&lt;/span&gt;
+&lt;span class="nt"&gt;&amp;lt;s&amp;gt;&lt;/span&gt; Defines strikethrough text.&lt;span class="nt"&gt;&amp;lt;/s&amp;gt;&lt;/span&gt;
+&lt;span class="nt"&gt;&amp;lt;strike&amp;gt;&lt;/span&gt; Defines strikethrough text.&lt;span class="nt"&gt;&amp;lt;/strike&amp;gt;&lt;/span&gt;
+&lt;span class="nt"&gt;&amp;lt;u&amp;gt;&lt;/span&gt; Defines strikethrough text.&lt;span class="nt"&gt;&amp;lt;/u&amp;gt;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+
+&lt;h4&gt;2 支持的代码高亮方式&lt;/h4&gt;
+&lt;p&gt;只要将代码包含在&lt;code&gt;&amp;lt;pre&amp;gt;&amp;lt;code class="代码类型"&amp;gt;......&amp;lt;/code&amp;gt;&amp;lt;/pre&amp;gt;&lt;/code&gt;标签内就行了。目前官方支持的代码类型包括：&lt;/p&gt;
+&lt;table class="highlighttable"&gt;&lt;tr&gt;&lt;td class="linenos"&gt;&lt;div class="linenodiv"&gt;&lt;pre&gt; 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12&lt;/pre&gt;&lt;/div&gt;&lt;/td&gt;&lt;td class="code"&gt;&lt;div class="highlight"&gt;&lt;pre&gt;C#
+HTML/XML (Note: You must first HTML-encode these tags to display them)
+Java
+Python
+C/C++
+HTTP
+JavaScript
+Ruby
+CSS
+Ini
+PHP
+SQL
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+
+&lt;h4&gt;3 演示&lt;/h4&gt;
+&lt;p&gt;这里演示了在Disqus评论中使用&lt;code&gt;blockquote&lt;/code&gt;标签以及代码高亮的方法，如下图所示：&lt;/p&gt;
+&lt;p&gt;&lt;img alt="Disqus中HTML标签和代码高亮的使用方法" src="https://o3cex9zsl.qnssl.com/2016/03/disqus_htmltag_highlight.png" title="Disqus中HTML标签和代码高亮的使用方法" /&gt;&lt;/p&gt;
+&lt;p&gt;最终的效果如本文第一张图片所示。&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">vfhky</dc:creator><pubDate>Thu, 03 Mar 2016 13:09:00 +0800</pubDate><guid>tag:typecodes.com,2016-03-03:mix/disqushtmltaghighlight.html</guid><category>pelican</category><category>disqus</category><category>代码高亮</category></item><item><title>更新博客生成发布及同步GitHub的Shell脚本：解决文件名空格问题</title><link>https://typecodes.com/linux/updatesyngithubpelicanshell.html</link><description>&lt;p&gt;&lt;a href="https://typecodes.com/linux/syngithubmarkdownpelican.html" title="《同步GitHub Markdown文章到Linux服务器后更新Pelican博客的脚本》"&gt;前面一篇文章&lt;/a&gt;通过Linux Shell脚本的方式，实现博客生成发布及同步GitHub的的功能：先同步GitHub个人仓库中的Markdown文章到本地，然后通过Pelican编译生成静态HTML文件，最后发布到Nginx的web目录下面，同时更新到GitHub个人主页（vfhky.github.io）。&lt;/p&gt;
 &lt;p&gt;由于没仔细考虑到Markdown文件名中可能包含空格的问题，所以在Shell脚本的文件名遍历时（代码第108行）出现了BUG：Linux Shell默认把空格空格做为值与值之间的分隔符，所以原本一个带空格的文件名就被拆分成了几个文件名。&lt;/p&gt;
 &lt;p&gt;&lt;img alt="CentOS7.2服务器默认的IFS为空值" src="https://o3cex9zsl.qnssl.com/2016/03/centos_ifs_default.png" title="CentOS7.2服务器默认的IFS为空值" /&gt;&lt;/p&gt;
 
@@ -13654,7 +13719,7 @@ For bug reporting instructions, please see:
 &lt;h5&gt;3 附录：在文章或者评论中设置关键词高亮&lt;/h5&gt;
 &lt;p&gt;wordpress文章内容或者评论内容的某些关键词高亮，效果如本文中蓝色背景的词语所示。只要在wordpress后台文章中使用：&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="nt"&gt;&amp;lt;span&lt;/span&gt; &lt;span class="na"&gt;class=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;highwords&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;关键词&lt;span class="nt"&gt;&amp;lt;/span&amp;gt;&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">vfhky</dc:creator><pubDate>Sun, 16 Feb 2014 12:54:00 +0800</pubDate><guid>tag:typecodes.com,2014-02-16:mix/vfhkyhighlightcode.html</guid><category>google-code-prettify</category><category>wordpress</category><category>wordpress代码高亮</category></item><item><title>教程：主题【vfhky】如何在文章中插入音乐播放器</title><link>https://typecodes.com/mix/vfhkyinsertmusicplayer.html</link><description>&lt;p&gt;博客主题【vfhky 1.0】版本，在functions.php中封装了三种音乐播放器的短代码函数。因此，在wordpress后台写文章时可以插入三种不同风格的音乐播放器，并可设置是否自动+循环播放模式。不多说了，直接上代码：其中参数auto值为yes表示自动播放，no或者不填写auto则不自动播放；参数loop值为loop表示循环播放，no或者不填写表示不循环播放。注意将代码中的【替换为[，同样把】替换为]。&lt;/p&gt;
+&lt;/pre&gt;&lt;/div&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">vfhky</dc:creator><pubDate>Sun, 16 Feb 2014 12:54:00 +0800</pubDate><guid>tag:typecodes.com,2014-02-16:mix/vfhkyhighlightcode.html</guid><category>google-code-prettify</category><category>wordpress</category><category>代码高亮</category></item><item><title>教程：主题【vfhky】如何在文章中插入音乐播放器</title><link>https://typecodes.com/mix/vfhkyinsertmusicplayer.html</link><description>&lt;p&gt;博客主题【vfhky 1.0】版本，在functions.php中封装了三种音乐播放器的短代码函数。因此，在wordpress后台写文章时可以插入三种不同风格的音乐播放器，并可设置是否自动+循环播放模式。不多说了，直接上代码：其中参数auto值为yes表示自动播放，no或者不填写auto则不自动播放；参数loop值为loop表示循环播放，no或者不填写表示不循环播放。注意将代码中的【替换为[，同样把】替换为]。&lt;/p&gt;
 &lt;h5&gt;1 灰色简洁风格&lt;/h5&gt;
 &lt;p&gt;&lt;img alt="灰色简洁风格" src="https://o3cex9zsl.qnssl.com/2014/02/smusic.png" title="灰色简洁风格" /&gt;&lt;/p&gt;
 
