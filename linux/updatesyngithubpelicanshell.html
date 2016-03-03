@@ -239,7 +239,10 @@
 185
 186
 187
-188</pre></div></td><td class="code"><div class="highlight"><pre><span class="c">#!/bin/bash</span>
+188
+189
+190
+191</pre></div></td><td class="code"><div class="highlight"><pre><span class="c">#!/bin/bash</span>
 <span class="c"># FileName:      github_pelican_nginx.sh</span>
 <span class="c"># Description:   Synchronize markdown articles with github, convert to html files using Pelican, deliver it to nginx environment.</span>
 <span class="c"># Simple Usage:  ./github_pelican_nginx.sh &quot;commit_comments&quot;</span>
@@ -361,6 +364,9 @@ NOTICE <span class="s2">&quot;[2]Start copy the pulled articles to the compile d
     <span class="nv">FILE_PATH</span><span class="o">=</span><span class="k">$(</span>dirname <span class="si">${</span><span class="nv">PELICAN_COMPILE_DIR</span><span class="si">}</span>/content/articles/<span class="s2">&quot;</span><span class="si">${</span><span class="nv">New_Article_File</span><span class="p">:</span><span class="nv">2</span><span class="si">}</span><span class="s2">&quot;</span><span class="k">)</span>
     RUNCMD <span class="s2">&quot;mkdir -p </span><span class="si">${</span><span class="nv">FILE_PATH</span><span class="si">}</span><span class="s2"> &amp;&amp; </span><span class="si">${</span><span class="nv">CPCMD</span><span class="si">}</span><span class="s2"> \&quot;</span><span class="si">${</span><span class="nv">New_Article_File</span><span class="si">}</span><span class="s2">\&quot; </span><span class="si">${</span><span class="nv">FILE_PATH</span><span class="si">}</span><span class="s2">&quot;</span>
 <span class="k">done</span>
+
+<span class="c">#### Method 1:Recovery the IFS setting.</span>
+<span class="c">#IFS=${old_IFS}</span>
 
 <span class="nv">RC</span><span class="o">=</span><span class="nv">$?</span>
 <span class="k">if</span> <span class="o">[</span> <span class="nv">$RC</span> -gt <span class="m">0</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
