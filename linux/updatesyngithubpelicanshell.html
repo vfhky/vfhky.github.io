@@ -48,7 +48,7 @@
 
 
 <h4>1 解决方法</h4>
-<p>网上查找相关资料后，有两种主要的实现方法：Method 1是通过修改<code>FS(Internal Field Seperator: Linuxshell中预设的分隔符，用来把command line分解成word)</code>实现。如上图所示，BZ用命令<code>echo $IFS</code>查看了自己的CentOS7.2服务器默认的IFS为空值。</p>
+<p>网上查找相关资料后，有两种主要的实现方法：Method 1是通过修改<code>IFS(Internal Field Seperator: Linuxshell中预设的分隔符，用来把command line分解成word)</code>实现。如上图所示，BZ用命令<code>echo $IFS</code>查看了自己的CentOS7.2服务器默认的IFS为空值。</p>
 <p>Method 2是直接在使用<code>find</code>命令遍历文件时，把结果作为<code>while read</code>的输入，这样就可以避免空格作为文件名的分隔符了。</p>
 <h4>2 完整代码</h4>
 <p>根据这两种方法，修改后的代码如下，同时也已经更新到了当前脚本所在的GitHub工程：<a href="https://github.com/vfhky/shell-tools" title="点击查看">https://github.com/vfhky/shell-tools</a>。</p>
@@ -539,7 +539,7 @@ NOTICE <span class="s2">&quot;------END------&quot;</span>
 	<div class="row" role="contentinfo">
 		<section class="col-md-2 col-md-offset-1">
 			<h3>Links</h3>
-			<ul><li><a href="http://edi.wang/" title="" target="_blank">Edi Wang</a></li></ul>
+			<ul><li><a href="https://tinygg.cn/" title="四道风’s 博客" target="_blank">tinygg</a></li><li><a href="https://edi.wang/" title="Edi Wang" target="_blank">Edi Wang</a></li></ul>
 		</section>
 		<section class="col-md-2">
 			<h3>&nbsp;</h3>

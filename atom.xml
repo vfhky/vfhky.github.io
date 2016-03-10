@@ -70,7 +70,7 @@ SQL
 
 
 &lt;h4&gt;1 解决方法&lt;/h4&gt;
-&lt;p&gt;网上查找相关资料后，有两种主要的实现方法：Method 1是通过修改&lt;code&gt;FS(Internal Field Seperator: Linuxshell中预设的分隔符，用来把command line分解成word)&lt;/code&gt;实现。如上图所示，BZ用命令&lt;code&gt;echo $IFS&lt;/code&gt;查看了自己的CentOS7.2服务器默认的IFS为空值。&lt;/p&gt;
+&lt;p&gt;网上查找相关资料后，有两种主要的实现方法：Method 1是通过修改&lt;code&gt;IFS(Internal Field Seperator: Linuxshell中预设的分隔符，用来把command line分解成word)&lt;/code&gt;实现。如上图所示，BZ用命令&lt;code&gt;echo $IFS&lt;/code&gt;查看了自己的CentOS7.2服务器默认的IFS为空值。&lt;/p&gt;
 &lt;p&gt;Method 2是直接在使用&lt;code&gt;find&lt;/code&gt;命令遍历文件时，把结果作为&lt;code&gt;while read&lt;/code&gt;的输入，这样就可以避免空格作为文件名的分隔符了。&lt;/p&gt;
 &lt;h4&gt;2 完整代码&lt;/h4&gt;
 &lt;p&gt;根据这两种方法，修改后的代码如下，同时也已经更新到了当前脚本所在的GitHub工程：&lt;a href="https://github.com/vfhky/shell-tools" title="点击查看"&gt;https://github.com/vfhky/shell-tools&lt;/a&gt;。&lt;/p&gt;
