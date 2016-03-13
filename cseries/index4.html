@@ -38,6 +38,25 @@
 		<div class="col-md-9" id="blog-main" role="main">
 		  	<!--article recycle-->
 			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/cseries/sizeofbyteorder.html">C语言字节序的大小端模式</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2014-11-05 23:33 | 分类：<a href="https://typecodes.com/cseries/index.html">cseries</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>关于字节序的大小端模式，个人认为CSDN上Hackbuteer1作者的这篇文章<a href="http://blog.csdn.net/hackbuteer1/article/details/7722667" title="大端模式和小端模式">《大端模式和小端模式》</a>讲解的很清晰。这里MARK一下自己的学习心得：</p>
+<p><img alt="C程序内存映射模式" src="https://o3cex9zsl.qnssl.com/2014/11/memorymapping.png" title="C程序内存映射模式" /></p>
+<h5>1 原文精华</h5>
+<div class="highlight"><pre>小端模式[Little-Endian]：内存块低地址存放元素的低位(字节)，内存块高地址存放元素的高位(字节)；
+大端模式[Big-Endian]：内存块低地址存放元素的高位(字节)，内存块高地址存放元素的低位(字节)。
+</pre></div>
+
+
+<p>采用小端模式的处理器包括：<code>PDP-11、VAX、Intel系列微处理器和一些网络通信设备</code>；
+采用大端模式的处理器包括：<code>IBM3700系列、PDP-10、Mortolora微处理器系列和绝大多数的RISC处理器</code>。</p>
+
+	<p class="more"><a href="https://typecodes.com/cseries/sizeofbyteorder.html" title="C语言字节序的大小端模式">- 阅读剩余部分 -</a></p>
+			</article>
+			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/cseries/clangintegerstrtointeger.html">C语言将十进制字符串转成十进制整数</a></h2>
 <ul class="post-meta">
 	<li>作者：vfhky | 时间：2014-11-05 22:05 | 分类：<a href="https://typecodes.com/cseries/index.html">cseries</a></li>
@@ -178,17 +197,6 @@
 
 	<p class="more"><a href="https://typecodes.com/cseries/windowsinstallmingwgcc.html" title="Windows平台如何安装最新的MinGW GCC编译器">- 阅读剩余部分 -</a></p>
 			</article>
-			<article class="post">
-<h2 class="post-title"><a href="https://typecodes.com/cseries/netbeanscdevenv.html">完美配置NetBeans IDE中的C/C++开发环境</a></h2>
-<ul class="post-meta">
-	<li>作者：vfhky | 时间：2012-12-29 01:09 | 分类：<a href="https://typecodes.com/cseries/index.html">cseries</a></li>
-</ul>
-<div class="post-content fmt">
-	<p>目前众多C/C++开发人员使用的开发工具都是微软VC6.0、VC08、VS之类的IDE，那么对于需要进行C/C++开发的java程序猿们是否也要安装这些大块头呢？答案是否定的，因为目前java主要的两大开源IDE——Eclipse和NetBeans都是扩展性很好的开发平台，它们能够利用开源社区贡献的插件灵活地加入PHP、C/C++等开发环境。</p>
-<p>而相对于Eclipse，博主还是比较中意NetBeans。所以在本文中，博主用的是NetBeans7.2.1作为实例演示。在配置C/C++之前，博主也在网上查了很多资料，基本上写得比较乱，所以自己整理了一份完整的NetBeans中配置C/C++开发环境的方案。在具体的演示之前，大家需要明白的几个问题。</p>
-
-	<p class="more"><a href="https://typecodes.com/cseries/netbeanscdevenv.html" title="完美配置NetBeans IDE中的C/C++开发环境">- 阅读剩余部分 -</a></p>
-			</article>
 		  	<!--page navigation-->
 <ol class="page-navigator">
 <li class="prev"><a href="https://typecodes.com/cseries/index3.html">&laquo; 前一页</a></li><li><a href="https://typecodes.com/cseries/index.html">1</a><li><a href="https://typecodes.com/cseries/index2.html">2</a>
@@ -211,7 +219,7 @@
 		<h3 class="widget-title">Categories</h3>
 		<ul class="widget-list">
 		      <li class="current">
-		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (33)
+		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (34)
 		      </li>
 		      <li class="current">
 		        <a href="https://typecodes.com/csharp/index.html">Csharp</a> (6)
@@ -237,6 +245,9 @@
 		<h3 class="widget-title">Recent Posts</h3>
 		<ul class="widget-list">
 			<li class="post">
+				<a href="https://typecodes.com/cseries/vsnprintffilenameline.html">vsnprintf字符串格式化输出实例：日志中打印程序名和行号</a>
+			</li>
+			<li class="post">
 				<a href="https://typecodes.com/cseries/sigprocmasksigsuspendapp.html">一个sigprocmask和sigsuspend函数的综合应用</a>
 			</li>
 			<li class="post">
@@ -253,9 +264,6 @@
 			</li>
 			<li class="post">
 				<a href="https://typecodes.com/cseries/linuxgccgconnectmysql.html">Linux c语言连接MySQL数据库实例</a>
-			</li>
-			<li class="post">
-				<a href="https://typecodes.com/cseries/gccgensharedlib.html">Linux gcc编译生成静态库及使用方法</a>
 			</li>
 		</ul>
 	</section>

@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="zh-CN" class="no-js">
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+  		<meta name="renderer" content="webkit">
+		<title>vsnprintf字符串格式化输出实例：日志中打印程序名和行号 &mdash; TypeCodes</title>
+  		<meta name="viewport" content="width=device-width, initial-scale=1">
+  		<link href="https://typecodes.com/atom.xml" type="application/atom+xml" rel="alternate" title="TypeCodes Atom Feed" />
+	  	<link href="https://typecodes.com/feed.xml" type="application/rss+xml" rel="alternate" title="TypeCodes RSS Feed" />
+		<link rel="stylesheet" href="https://o3cex9zsl.qnssl.com/libs/css/pelican-vfhky.css">
+		<script>
+			var _hmt = _hmt || [];
+			(function() {
+			  var hm = document.createElement("script");
+			  hm.src = "//hm.baidu.com/hm.js?c15c4ab8e91ba9ac3d5a12293cc93359";
+			  var s = document.getElementsByTagName("script")[0]; 
+			  s.parentNode.insertBefore(hm, s);
+			})();
+		</script>
+	</head>
+	<body>
+		<!--1. header navigation begin-->
+		<header role="banner" id="te-site-header">
+			<div class="container">
+				<a href="https://typecodes.com" class="te-site-logo" role="logo" target="_self"> TypeCodes</a>
+				<ul class="nav nav-pills" id="te-site-nav" role="navigation">
+					<li><a href="https://typecodes.com">Home</a></li><li><a href="https://typecodes.com/archives.html" title="Archives">Archives</a></li><li><a href="https://typecodes.com/about.html" title="About">About</a></li></ul>
+			</div>
+		</header>
+		<div class="te-headline">
+			<div class="container">
+				<h2 class="te-headline-title"> <a href="https://typecodes.com">TypeCodes</a></h2>
+			</div>
+		</div>
+		<div class="container">
+			<div class="row">
+		<!--2. left sider begin-->
+		<div class="col-md-9" id="blog-main" role="main">
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/cseries/vsnprintffilenameline.html">vsnprintf字符串格式化输出实例：日志中打印程序名和行号</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2016-03-13 23:28 | 分类：<a href="https://typecodes.com/cseries/index.html">cseries</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>在Linux C/C++程序中打印日志时，可能会由于需要打印未知个数的变量参数，那么<code>vsnprintf</code>函数就排上用场了。这里使用一个简单的C程序例子，演示在打印源程序文件名和该打印函数所在的行号的同时，使用vsnprintf函数打印个数未知的参数变量。</p>
+
+
+<h4>1 完整程序</h4>
+<p>代码比较简单，如果需要把内容打印在日志文件中的话，还需要调用文件处理函数。为了便于理解，这里直接把内容输出到控制台上了。需要说明的三个地方：</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3</pre></div></td><td class="code"><div class="highlight"><pre>静态全局变量 c_FileName 和 i_FileLineNum 分别用于存储源程序文件名和打印函数所在的行号；
+自定义标识符 PRINT 先调用源程序文件名和行号的赋值函数 Get_File_Line ，然后调用个数未知的参数的处理函数 F_vsnprintf；
+类似于sprintf和snprintf这两个函数，相比vsprintf函数，vsnprintf加了最大字节( MAXBYTES )的限制，防止内存溢出。
+</pre></div>
+</td></tr></table>
+
+<p>具体代码如下：</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59</pre></div></td><td class="code"><div class="highlight"><pre><span class="cm">/**</span>
+<span class="cm"> * @FileName    vsnprintf_name_line.c</span>
+<span class="cm"> * @Describe    A simple example for using vsnprintf to print the name and line-num of source file in linux.</span>
+<span class="cm"> * @Author      vfhky 2016-03-13 23:28 https://typecodes.com/cseries/vsnprintffilenameline.html</span>
+<span class="cm"> * @Compile     gcc vsnprintf_name_line.c -o vsnprintf_name_line</span>
+<span class="cm"> */</span>
+<span class="cp">#include &lt;stdio.h&gt;</span>
+<span class="cp">#include &lt;string.h&gt;</span>
+<span class="cp">#include &lt;stdarg.h&gt;</span>
+
+<span class="cp">#define FILENAME_LEN 100</span>
+<span class="cp">#define MAXLINE 1024</span>
+<span class="cp">#define MAXBYTES 50</span>
+
+<span class="k">static</span> <span class="kt">char</span> <span class="n">c_FileName</span><span class="p">[</span><span class="n">FILENAME_LEN</span><span class="p">];</span>
+<span class="k">static</span> <span class="kt">int</span>  <span class="n">i_FileLineNum</span><span class="p">;</span>
+
+<span class="c1">//Self-define a function which can print the name and line-number of the source file calling it.</span>
+<span class="cp">#define PRINT Get_File_Line( __FILE__, __LINE__ );\</span>
+<span class="cp">              F_vsnprintf</span>
+
+<span class="cm">/**</span>
+<span class="cm"> * Get the linenum and filename of the source file.</span>
+<span class="cm"> * @Para-in:        p_FileName: The name of the source file.</span>
+<span class="cm"> * @Para-in:        i_FileLine: The line-number of the source file.</span>
+<span class="cm"> */</span>
+<span class="kt">void</span> <span class="nf">Get_File_Line</span><span class="p">(</span> <span class="kt">char</span> <span class="o">*</span><span class="n">p_FileName</span><span class="p">,</span> <span class="kt">int</span> <span class="n">i_FileLine</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">strcpy</span><span class="p">(</span> <span class="n">c_FileName</span><span class="p">,</span> <span class="n">p_FileName</span> <span class="p">);</span>
+    <span class="n">i_FileLineNum</span> <span class="o">=</span> <span class="n">i_FileLine</span><span class="p">;</span>
+    <span class="k">return</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="cm">/**</span>
+<span class="cm"> * Print the arguments according to the first argument, name as fmt.</span>
+<span class="cm"> */</span>
+<span class="kt">void</span> <span class="nf">F_vsnprintf</span><span class="p">(</span> <span class="kt">char</span> <span class="o">*</span><span class="n">fmt</span><span class="p">,</span> <span class="p">...</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="kt">char</span> <span class="n">buf</span><span class="p">[</span><span class="n">MAXLINE</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="mh">0x00</span><span class="p">};</span>
+    <span class="n">snprintf</span><span class="p">(</span> <span class="n">buf</span><span class="p">,</span> <span class="n">MAXBYTES</span><span class="p">,</span> <span class="s">&quot;[%s:%d] &quot;</span><span class="p">,</span> <span class="n">c_FileName</span><span class="p">,</span> <span class="n">i_FileLineNum</span> <span class="p">);</span>
+    <span class="kt">va_list</span> <span class="n">ap</span><span class="p">;</span>
+    <span class="n">va_start</span><span class="p">(</span> <span class="n">ap</span><span class="p">,</span> <span class="n">fmt</span> <span class="p">);</span>
+    <span class="n">vsnprintf</span><span class="p">(</span> <span class="n">buf</span><span class="o">+</span><span class="n">strlen</span><span class="p">(</span><span class="n">buf</span><span class="p">),</span> <span class="n">MAXLINE</span><span class="p">,</span> <span class="n">fmt</span><span class="p">,</span> <span class="n">ap</span> <span class="p">);</span>
+    <span class="n">va_end</span><span class="p">(</span> <span class="n">ap</span> <span class="p">);</span>
+
+    <span class="n">strcat</span><span class="p">(</span> <span class="n">buf</span><span class="p">,</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span> <span class="p">);</span>
+    <span class="n">fflush</span><span class="p">(</span> <span class="n">stdout</span> <span class="p">);</span>
+
+    <span class="n">fputs</span><span class="p">(</span> <span class="n">buf</span><span class="p">,</span> <span class="n">stderr</span> <span class="p">);</span>
+    <span class="n">fflush</span><span class="p">(</span> <span class="nb">NULL</span> <span class="p">);</span>
+    <span class="k">return</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span> <span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">**</span><span class="n">argv</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">PRINT</span><span class="p">(</span> <span class="s">&quot;[%s]&quot;</span><span class="p">,</span> <span class="s">&quot;Hellow.&quot;</span> <span class="p">);</span>
+    <span class="n">PRINT</span><span class="p">(</span> <span class="s">&quot;[%s %s]&quot;</span><span class="p">,</span> <span class="s">&quot;Hellow&quot;</span><span class="p">,</span> <span class="s">&quot;world.&quot;</span> <span class="p">);</span>
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</td></tr></table>
+
+<h4>2 执行结果</h4>
+<p>使用<a href="https://typecodes.com/cseries/cppgeneralmakefile.html" title="查看原文">《Linux C/C++工程中可生成ELF、动/静态库文件的通用Makefile》</a>一文中的Makefile文件进行程序编译（当然也可以使用命令进行编译<code>gcc vsnprintf_name_line.c -o vsnprintf_name_line</code>），接着执行该程序，得到如下图所示的结果：</p>
+<p><img alt="vsnprintf字符串格式化输出实例" src="https://o3cex9zsl.qnssl.com/2016/03/vsnprintf_name_line.png" title="vsnprintf字符串格式化输出实例" /></p>
+		    	<p class="tags">
+					<div class="post-share">
+						<ul class="post-shareul clearfix">
+							<li class="post-shareli">
+								<a href="http://note.youdao.com/memory/?url=https://typecodes.com/cseries/vsnprintffilenameline.html&title=vsnprintf字符串格式化输出实例：日志中打印程序名和行号" class="post-sharea ydshare" target="_blank" rel="nofollow">有道云笔记</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://v.t.sina.com.cn/share/share.php?url=https://typecodes.com/cseries/vsnprintffilenameline.html&title=vsnprintf字符串格式化输出实例：日志中打印程序名和行号&source=https://typecodes.com" class="post-sharea wbshare" target="_blank" rel="nofollow">新浪微博</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://v.t.qq.com/share/share.php?title=vsnprintf字符串格式化输出实例：日志中打印程序名和行号&url=https://typecodes.com/cseries/vsnprintffilenameline.html&site=https://typecodes.com" class="post-sharea twbshare" target="_blank" rel="nofollow">腾讯微博</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=https://typecodes.com/cseries/vsnprintffilenameline.html&title=vsnprintf字符串格式化输出实例：日志中打印程序名和行号&content='utf-8'" class="post-sharea qzoneshare" target="_blank" rel="nofollow">QZone</a>
+							</li>
+						</ul>
+					</div>
+					<div>
+						Tags: <a href="https://typecodes.com/tag/vsnprintf.html">vsnprintf</a>,<a href="https://typecodes.com/tag/zi-fu-chuan-ge-shi-hua.html">字符串格式化</a>					</div>
+				</p>
+			</article>
+			
+			<div id="comments">
+				<h4 class="num">Comments &raquo;</h4>
+		    	<div id="disqus_thread" aria-live="polite"></div>
+		    	<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+		    </div>
+		</div>
+		<!--3. right sider begin-->
+<div class="col-md-3" id="blog-secondary" role="complementary">
+	<section class="widget">
+		<ul class="widget-list">
+			<form id="search" method="get" action="https://typecodes.com/search.html">
+				<input type="text" name="q" id="s" size="20" x-webkit-speech="" x-webkit-grammar="builtin:search" onwebkitspeechchange="this.value = this.value.replace(this.defaultValue, '')" value="Google...." onfocus="this.value = (this.value == this.defaultValue) ? '' : this.value" onblur="this.value = (this.value == '') ? this.defaultValue : this.value">
+			</form>
+		</ul>
+	</section>
+	<section class="widget">
+		<h3 class="widget-title">Categories</h3>
+		<ul class="widget-list">
+		      <li class="current">
+		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (34)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/csharp/index.html">Csharp</a> (6)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/database/index.html">Database</a> (11)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/java/index.html">Java</a> (1)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/linux/index.html">Linux</a> (21)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/mix/index.html">Mix</a> (54)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/web/index.html">Web</a> (88)
+		      </li>
+		</ul>
+	</section>
+	<section class="widget">
+		<h3 class="widget-title">Recent Posts</h3>
+		<ul class="widget-list">
+			<li class="post">
+				<a href="https://typecodes.com/cseries/vsnprintffilenameline.html">vsnprintf字符串格式化输出实例：日志中打印程序名和行号</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/mix/disqushtmltaghighlight.html">Disqus支持的HTML标签和代码高亮方法</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/updatesyngithubpelicanshell.html">更新博客生成发布及同步GitHub的Shell脚本：解决文件名空格问题</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/sigprocmasksigsuspendapp.html">一个sigprocmask和sigsuspend函数的综合应用</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/tcpclosewaitsigpipe.html">Linux TCP通信出现CLOSE_WAIT后导致服务端进程挂掉</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/tcpdumpwiresharkclosewait2.html">使用TCPDUMP和Wireshark排查服务端CLOSE_WAIT（二）</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/tcpdumpwiresharkclosewait1.html">使用TCPDUMP和Wireshark排查服务端CLOSE_WAIT（一）</a>
+			</li>
+		</ul>
+	</section>
+	<section class="widget widget-feed">
+		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
+	</section>
+</div>
+				</div>
+			</div>
+		</div>
+		<!--4. bottom begin-->
+		<footer id="te-site-footer"><div class="container">
+	<div class="row" role="contentinfo">
+		<section class="col-md-2 col-md-offset-1">
+			<h3>Links</h3>
+			<ul><li><a href="https://tinygg.cn/" title="四道风’s 博客" target="_blank">tinygg</a></li><li><a href="https://edi.wang/" title="Edi Wang" target="_blank">Edi Wang</a></li></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul>
+				<li><a href="https://typecodes.com/links.html">More..</a></li>
+			</ul>
+		</section>
+		<section class="col-md-2">
+			<h3>Following</h3>
+			<ul>
+				<li><a href="https://github.com/vfhky" class="following github" target="_blank" rel="external nofollow">GitHub</a></li>
+				<li><a href="http://weibo.com/typecodes" class="following weibo" target="_blank" rel="external nofollow">Weibo</a></li>
+				<li><a href="http://vfhky.sinaapp.com" class="following sae" target="_blank" rel="external nofollow">SAE</a></li>
+				<li><a href="http://www.dwz.cn/mYiwa" class="following qqgroup" target="_blank" rel="external nofollow">Group</a></li>
+			</ul>
+		</section>
+		<div class="col-md-12 copyright">
+			<a href="#top"><i class="i-logo-s">TOP</i></a>
+			<p>
+				&copy;  2012-2016 							<a href="https://typecodes.com">TypeCodes</a>. All Rights Reserved<br>Powered by <a href="http://getpelican.com" rel="external" target="_blank">Pelican</a>. <a href="http://www.miitbeian.gov.cn" rel="external nofollow" target="_blank">粤ICP备14050695号</a>
+			</p>
+		</div>
+	</div>
+</div>
+</footer>
+<script type="text/javascript">
+	var disqus_shortname = 'typecodes';
+	var disqus_identifier = '/cseries/vsnprintffilenameline.html';
+	var disqus_url = 'https://typecodes.com/cseries/vsnprintffilenameline.html';
+	var disqus_title = 'vsnprintf字符串格式化输出实例：日志中打印程序名和行号';
+	(function() {
+		var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+		dsq.src = "//" + disqus_shortname + '.disqus.com/embed.js';
+		(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	 })();
+</script>
+	</body>
+</html>

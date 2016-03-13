@@ -38,6 +38,17 @@
 		<div class="col-md-9" id="blog-main" role="main">
 		  	<!--article recycle-->
 			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/linux/linuxnotregisteredrhn.html">解决Redhat Linux5 yum出现This system is not registered with RHN</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2013-03-08 14:04 | 分类：<a href="https://typecodes.com/linux/index.html">linux</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>最近博主在学习Linux，菜鸟级别的的选手连装个Chrome都觉得难，悲了个催的……百度了很多教程，大多是类似的。博主的配置是在VM8下搭建的RHEL5.3 (Tikanga)版本，不知道什么原因，每次在输入yum install google-chrome-stable之后就会出现“This system is not registered with RHN”的错误提示，蛋疼不已。百度无果后，GG大神帮上忙了（搜索Redhat This system is not registered with RHN，会冒出很多国外大牛的文章）。</p>
+<p>出现这个错误的原因是你的Linux木有花钱在红帽网络上注册^^，所以无法下载谷歌Chrome的软件包，解决方案可以使用从Redhat演化而来的免费Linux版本CentOS，通过CentOS的yum更新源来实现RHEL5的YUM功能。下面博主结合GG到的国外文章谈谈How to Install CentOS YUM on Redhat Linux RHEL5，以此来解决This system is not registered with RHN的问题。</p>
+
+	<p class="more"><a href="https://typecodes.com/linux/linuxnotregisteredrhn.html" title="解决Redhat Linux5 yum出现This system is not registered with RHN">- 阅读剩余部分 -</a></p>
+			</article>
+			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/web/xamppmysqlrootloginerr.html">解决XAMPP的phpmyadmin平台修改mysql的root密码无法登陆的问题</a></h2>
 <ul class="post-meta">
 	<li>作者：vfhky | 时间：2013-01-13 12:03 | 分类：<a href="https://typecodes.com/web/index.html">web</a></li>
@@ -111,17 +122,6 @@
 
 	<p class="more"><a href="https://typecodes.com/web/wpmathverifycode.html" title="博客优化第二波(三)：wordpress评论添加算术验证码">- 阅读剩余部分 -</a></p>
 			</article>
-			<article class="post">
-<h2 class="post-title"><a href="https://typecodes.com/web/wpcommentfacepicpath.html">博客优化第二波(二)：wordpress评论表情图片路径修改的两种方法</a></h2>
-<ul class="post-meta">
-	<li>作者：vfhky | 时间：2012-12-12 15:29 | 分类：<a href="https://typecodes.com/web/index.html">web</a></li>
-</ul>
-<div class="post-content fmt">
-	<p>wordpress评论框上的22个表情的图片默认是放在wp-include/images/smilies路径中的，这样做的好处是能够比较快的读取图片，安全性也好；缺点是每次遇到wp程序升级，你精心设计的这22个表情图标（BZ设计了两套表情图标，<a href="http://pan.baidu.com/share/link?shareid=78704&amp;uk=1879910561" title="wordpress表情包">点击下载</a>）就会被覆盖成wp默认的那些图标，所以我想把它整到博客的主题images/smilies/中去。具体步骤如下：</p>
-<h5>（一）获取smiley.php文件</h5>
-
-	<p class="more"><a href="https://typecodes.com/web/wpcommentfacepicpath.html" title="博客优化第二波(二)：wordpress评论表情图片路径修改的两种方法">- 阅读剩余部分 -</a></p>
-			</article>
 		  	<!--page navigation-->
 <ol class="page-navigator">
 <li class="prev"><a href="https://typecodes.com/index19.html">&laquo; 前一页</a></li><li><a href="https://typecodes.com/index.html">1</a>
@@ -148,7 +148,7 @@
 		<h3 class="widget-title">Categories</h3>
 		<ul class="widget-list">
 		      <li class="current">
-		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (33)
+		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (34)
 		      </li>
 		      <li class="current">
 		        <a href="https://typecodes.com/csharp/index.html">Csharp</a> (6)
@@ -174,6 +174,9 @@
 		<h3 class="widget-title">Recent Posts</h3>
 		<ul class="widget-list">
 			<li class="post">
+				<a href="https://typecodes.com/cseries/vsnprintffilenameline.html">vsnprintf字符串格式化输出实例：日志中打印程序名和行号</a>
+			</li>
+			<li class="post">
 				<a href="https://typecodes.com/mix/disqushtmltaghighlight.html">Disqus支持的HTML标签和代码高亮方法</a>
 			</li>
 			<li class="post">
@@ -190,9 +193,6 @@
 			</li>
 			<li class="post">
 				<a href="https://typecodes.com/cseries/tcpdumpwiresharkclosewait1.html">使用TCPDUMP和Wireshark排查服务端CLOSE_WAIT（一）</a>
-			</li>
-			<li class="post">
-				<a href="https://typecodes.com/linux/simpletcpdumpapply.html">Linux中使用TCPDUMP进行简单的TCP抓包</a>
 			</li>
 		</ul>
 	</section>

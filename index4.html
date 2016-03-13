@@ -38,6 +38,24 @@
 		<div class="col-md-9" id="blog-main" role="main">
 		  	<!--article recycle-->
 			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/cseries/unixsigtermkill.html">Unix系统进程对SIGTERM、SIGUSR1和SIGUSR2信号处理</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2015-08-05 17:41 | 分类：<a href="https://typecodes.com/cseries/index.html">cseries</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>好久没更新博客了，写篇文章除除草。这篇文章主要通过简单的例子说明一下Unix/Linux进程中如果捕捉和处理<code>SIGTERM</code>、<code>SIGUSR1</code>和<code>SIGUSR2</code>信号。</p>
+<p>先说明一下这三个信号：</p>
+<div class="highlight"><pre>信号(signal)是*nix系统中进程之间通信(IPC)的一种常见方式。
+SIGTERM：进程终止信号，效果等同于*nix shell中不带-9的kill命令；
+SIGUSR1：保留给用户使用的信号；
+SIGUSR2：同SIGUSR1，保留给用户使用的信号。
+</pre></div>
+
+
+
+	<p class="more"><a href="https://typecodes.com/cseries/unixsigtermkill.html" title="Unix系统进程对SIGTERM、SIGUSR1和SIGUSR2信号处理">- 阅读剩余部分 -</a></p>
+			</article>
+			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/linux/gitsynbackupshell.html">CentOS中将备份文件同步到BitBucket、GitHub和Coding的shell脚本</a></h2>
 <ul class="post-meta">
 	<li>作者：vfhky | 时间：2015-07-07 00:30 | 分类：<a href="https://typecodes.com/linux/index.html">linux</a></li>
@@ -127,16 +145,6 @@
 
 	<p class="more"><a href="https://typecodes.com/web/centos7compilephp7.html" title="2015博客升级记(五)：CentOS 7.1编译安装PHP7">- 阅读剩余部分 -</a></p>
 			</article>
-			<article class="post">
-<h2 class="post-title"><a href="https://typecodes.com/web/centos7yuminstallmysql5.html">阿里云CentOS 7.1使用yum安装MySql5.6.24</a></h2>
-<ul class="post-meta">
-	<li>作者：vfhky | 时间：2015-06-25 09:43 | 分类：<a href="https://typecodes.com/web/index.html">web</a></li>
-</ul>
-<div class="post-content fmt">
-	<p>在前面两篇文章<a href="https://typecodes.com/web/centos7compilemysql.html" title="查看原文">《2015博客升级记(四)：CentOS 7.1编译安装MySQL5.7.7rc》</a>和<a href="https://typecodes.com/web/centos7compilemysql5.html" title="查看原文">《阿里云CentOS 7.1编译安装MySql5.6.24》</a>中，都是采用编译MySQL源码的方式安装的，过程相对比较复杂。所以，这篇文章演示如何使用yum的方式安装MySql5.6.24。</p>
-
-	<p class="more"><a href="https://typecodes.com/web/centos7yuminstallmysql5.html" title="阿里云CentOS 7.1使用yum安装MySql5.6.24">- 阅读剩余部分 -</a></p>
-			</article>
 		  	<!--page navigation-->
 <ol class="page-navigator">
 <li class="prev"><a href="https://typecodes.com/index3.html">&laquo; 前一页</a></li><li><a href="https://typecodes.com/index.html">1</a>
@@ -164,7 +172,7 @@
 		<h3 class="widget-title">Categories</h3>
 		<ul class="widget-list">
 		      <li class="current">
-		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (33)
+		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (34)
 		      </li>
 		      <li class="current">
 		        <a href="https://typecodes.com/csharp/index.html">Csharp</a> (6)
@@ -190,6 +198,9 @@
 		<h3 class="widget-title">Recent Posts</h3>
 		<ul class="widget-list">
 			<li class="post">
+				<a href="https://typecodes.com/cseries/vsnprintffilenameline.html">vsnprintf字符串格式化输出实例：日志中打印程序名和行号</a>
+			</li>
+			<li class="post">
 				<a href="https://typecodes.com/mix/disqushtmltaghighlight.html">Disqus支持的HTML标签和代码高亮方法</a>
 			</li>
 			<li class="post">
@@ -206,9 +217,6 @@
 			</li>
 			<li class="post">
 				<a href="https://typecodes.com/cseries/tcpdumpwiresharkclosewait1.html">使用TCPDUMP和Wireshark排查服务端CLOSE_WAIT（一）</a>
-			</li>
-			<li class="post">
-				<a href="https://typecodes.com/linux/simpletcpdumpapply.html">Linux中使用TCPDUMP进行简单的TCP抓包</a>
 			</li>
 		</ul>
 	</section>

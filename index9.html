@@ -38,6 +38,25 @@
 		<div class="col-md-9" id="blog-main" role="main">
 		  	<!--article recycle-->
 			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/cseries/sizeofbyteorder.html">C语言字节序的大小端模式</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2014-11-05 23:33 | 分类：<a href="https://typecodes.com/cseries/index.html">cseries</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>关于字节序的大小端模式，个人认为CSDN上Hackbuteer1作者的这篇文章<a href="http://blog.csdn.net/hackbuteer1/article/details/7722667" title="大端模式和小端模式">《大端模式和小端模式》</a>讲解的很清晰。这里MARK一下自己的学习心得：</p>
+<p><img alt="C程序内存映射模式" src="https://o3cex9zsl.qnssl.com/2014/11/memorymapping.png" title="C程序内存映射模式" /></p>
+<h5>1 原文精华</h5>
+<div class="highlight"><pre>小端模式[Little-Endian]：内存块低地址存放元素的低位(字节)，内存块高地址存放元素的高位(字节)；
+大端模式[Big-Endian]：内存块低地址存放元素的高位(字节)，内存块高地址存放元素的低位(字节)。
+</pre></div>
+
+
+<p>采用小端模式的处理器包括：<code>PDP-11、VAX、Intel系列微处理器和一些网络通信设备</code>；
+采用大端模式的处理器包括：<code>IBM3700系列、PDP-10、Mortolora微处理器系列和绝大多数的RISC处理器</code>。</p>
+
+	<p class="more"><a href="https://typecodes.com/cseries/sizeofbyteorder.html" title="C语言字节序的大小端模式">- 阅读剩余部分 -</a></p>
+			</article>
+			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/cseries/clangintegerstrtointeger.html">C语言将十进制字符串转成十进制整数</a></h2>
 <ul class="post-meta">
 	<li>作者：vfhky | 时间：2014-11-05 22:05 | 分类：<a href="https://typecodes.com/cseries/index.html">cseries</a></li>
@@ -140,18 +159,6 @@ SSL证书提供商：    PositiveSSL from Namecheap
 
 	<p class="more"><a href="https://typecodes.com/web/scsfortypecho.html" title="新浪云存储(SCS) for Typecho 插件">- 阅读剩余部分 -</a></p>
 			</article>
-			<article class="post">
-<h2 class="post-title"><a href="https://typecodes.com/web/typechomp3player.html">音乐播放器PlayAtWill for typecho插件（移植自wordpress）</a></h2>
-<ul class="post-meta">
-	<li>作者：vfhky | 时间：2014-09-05 22:53 | 分类：<a href="https://typecodes.com/web/index.html">web</a></li>
-</ul>
-<div class="post-content fmt">
-	<h5>1 移植wordpress音乐播放器到typecho</h5>
-<p>在之前的wordpress主题 [vfhky] 中，集成了三款不同风格的<a href="https://typecodes.com/mix/vfhkyinsertmusicplayer.html" title="教程：主题【vfhky】如何在文章中插入音乐播放器">音乐播放器</a>，觉得挺不错的。于是想把它们移植到typecho中，顺便学习一下typecho插件的制作。</p>
-<p>由于typecho不能像wordpress那样可直接在functions.php中使用hook，它只能以插件plugins的形式实现。</p>
-
-	<p class="more"><a href="https://typecodes.com/web/typechomp3player.html" title="音乐播放器PlayAtWill for typecho插件（移植自wordpress）">- 阅读剩余部分 -</a></p>
-			</article>
 		  	<!--page navigation-->
 <ol class="page-navigator">
 <li class="prev"><a href="https://typecodes.com/index8.html">&laquo; 前一页</a></li><li><a href="https://typecodes.com/index.html">1</a>
@@ -178,7 +185,7 @@ SSL证书提供商：    PositiveSSL from Namecheap
 		<h3 class="widget-title">Categories</h3>
 		<ul class="widget-list">
 		      <li class="current">
-		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (33)
+		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (34)
 		      </li>
 		      <li class="current">
 		        <a href="https://typecodes.com/csharp/index.html">Csharp</a> (6)
@@ -204,6 +211,9 @@ SSL证书提供商：    PositiveSSL from Namecheap
 		<h3 class="widget-title">Recent Posts</h3>
 		<ul class="widget-list">
 			<li class="post">
+				<a href="https://typecodes.com/cseries/vsnprintffilenameline.html">vsnprintf字符串格式化输出实例：日志中打印程序名和行号</a>
+			</li>
+			<li class="post">
 				<a href="https://typecodes.com/mix/disqushtmltaghighlight.html">Disqus支持的HTML标签和代码高亮方法</a>
 			</li>
 			<li class="post">
@@ -220,9 +230,6 @@ SSL证书提供商：    PositiveSSL from Namecheap
 			</li>
 			<li class="post">
 				<a href="https://typecodes.com/cseries/tcpdumpwiresharkclosewait1.html">使用TCPDUMP和Wireshark排查服务端CLOSE_WAIT（一）</a>
-			</li>
-			<li class="post">
-				<a href="https://typecodes.com/linux/simpletcpdumpapply.html">Linux中使用TCPDUMP进行简单的TCP抓包</a>
 			</li>
 		</ul>
 	</section>

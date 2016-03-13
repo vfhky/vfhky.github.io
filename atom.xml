@@ -1,5 +1,141 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>TypeCodes</title><link href="https://typecodes.com/" rel="alternate"></link><link href="https://typecodes.com/atom.xml" rel="self"></link><id>https://typecodes.com/</id><updated>2016-03-03T13:09:00+08:00</updated><entry><title>Disqus支持的HTML标签和代码高亮方法</title><link href="https://typecodes.com/mix/disqushtmltaghighlight.html" rel="alternate"></link><updated>2016-03-03T13:09:00+08:00</updated><author><name>vfhky</name></author><id>tag:typecodes.com,2016-03-03:mix/disqushtmltaghighlight.html</id><summary type="html">&lt;p&gt;由于Disqus不支持Markdown的原因，所以在评论中使用HTML标签和代码高亮就不像Markdown那样方便了。在查看了&lt;a href="https://help.disqus.com/customer/portal/articles/466253-what-html-tags-are-allowed-within-comments" title="点击查看"&gt;Disqus官方&lt;/a&gt;关于HTML标签和代码高亮的说明后，发现Disqus只支持原生的HTML标签和代码高亮方式。&lt;/p&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>TypeCodes</title><link href="https://typecodes.com/" rel="alternate"></link><link href="https://typecodes.com/atom.xml" rel="self"></link><id>https://typecodes.com/</id><updated>2016-03-13T23:28:00+08:00</updated><entry><title>vsnprintf字符串格式化输出实例：日志中打印程序名和行号</title><link href="https://typecodes.com/cseries/vsnprintffilenameline.html" rel="alternate"></link><updated>2016-03-13T23:28:00+08:00</updated><author><name>vfhky</name></author><id>tag:typecodes.com,2016-03-13:cseries/vsnprintffilenameline.html</id><summary type="html">&lt;p&gt;在Linux C/C++程序中打印日志时，可能会由于需要打印未知个数的变量参数，那么&lt;code&gt;vsnprintf&lt;/code&gt;函数就排上用场了。这里使用一个简单的C程序例子，演示在打印源程序文件名和该打印函数所在的行号的同时，使用vsnprintf函数打印个数未知的参数变量。&lt;/p&gt;
+
+
+&lt;h4&gt;1 完整程序&lt;/h4&gt;
+&lt;p&gt;代码比较简单，如果需要把内容打印在日志文件中的话，还需要调用文件处理函数。为了便于理解，这里直接把内容输出到控制台上了。需要说明的三个地方：&lt;/p&gt;
+&lt;table class="highlighttable"&gt;&lt;tr&gt;&lt;td class="linenos"&gt;&lt;div class="linenodiv"&gt;&lt;pre&gt;1
+2
+3&lt;/pre&gt;&lt;/div&gt;&lt;/td&gt;&lt;td class="code"&gt;&lt;div class="highlight"&gt;&lt;pre&gt;静态全局变量 c_FileName 和 i_FileLineNum 分别用于存储源程序文件名和打印函数所在的行号；
+自定义标识符 PRINT 先调用源程序文件名和行号的赋值函数 Get_File_Line ，然后调用个数未知的参数的处理函数 F_vsnprintf；
+类似于sprintf和snprintf这两个函数，相比vsprintf函数，vsnprintf加了最大字节( MAXBYTES )的限制，防止内存溢出。
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+
+&lt;p&gt;具体代码如下：&lt;/p&gt;
+&lt;table class="highlighttable"&gt;&lt;tr&gt;&lt;td class="linenos"&gt;&lt;div class="linenodiv"&gt;&lt;pre&gt; 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59&lt;/pre&gt;&lt;/div&gt;&lt;/td&gt;&lt;td class="code"&gt;&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="cm"&gt;/**&lt;/span&gt;
+&lt;span class="cm"&gt; * @FileName    vsnprintf_name_line.c&lt;/span&gt;
+&lt;span class="cm"&gt; * @Describe    A simple example for using vsnprintf to print the name and line-num of source file in linux.&lt;/span&gt;
+&lt;span class="cm"&gt; * @Author      vfhky 2016-03-13 23:28 https://typecodes.com/cseries/vsnprintffilenameline.html&lt;/span&gt;
+&lt;span class="cm"&gt; * @Compile     gcc vsnprintf_name_line.c -o vsnprintf_name_line&lt;/span&gt;
+&lt;span class="cm"&gt; */&lt;/span&gt;
+&lt;span class="cp"&gt;#include &amp;lt;stdio.h&amp;gt;&lt;/span&gt;
+&lt;span class="cp"&gt;#include &amp;lt;string.h&amp;gt;&lt;/span&gt;
+&lt;span class="cp"&gt;#include &amp;lt;stdarg.h&amp;gt;&lt;/span&gt;
+
+&lt;span class="cp"&gt;#define FILENAME_LEN 100&lt;/span&gt;
+&lt;span class="cp"&gt;#define MAXLINE 1024&lt;/span&gt;
+&lt;span class="cp"&gt;#define MAXBYTES 50&lt;/span&gt;
+
+&lt;span class="k"&gt;static&lt;/span&gt; &lt;span class="kt"&gt;char&lt;/span&gt; &lt;span class="n"&gt;c_FileName&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;FILENAME_LEN&lt;/span&gt;&lt;span class="p"&gt;];&lt;/span&gt;
+&lt;span class="k"&gt;static&lt;/span&gt; &lt;span class="kt"&gt;int&lt;/span&gt;  &lt;span class="n"&gt;i_FileLineNum&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+
+&lt;span class="c1"&gt;//Self-define a function which can print the name and line-number of the source file calling it.&lt;/span&gt;
+&lt;span class="cp"&gt;#define PRINT Get_File_Line( __FILE__, __LINE__ );\&lt;/span&gt;
+&lt;span class="cp"&gt;              F_vsnprintf&lt;/span&gt;
+
+&lt;span class="cm"&gt;/**&lt;/span&gt;
+&lt;span class="cm"&gt; * Get the linenum and filename of the source file.&lt;/span&gt;
+&lt;span class="cm"&gt; * @Para-in:        p_FileName: The name of the source file.&lt;/span&gt;
+&lt;span class="cm"&gt; * @Para-in:        i_FileLine: The line-number of the source file.&lt;/span&gt;
+&lt;span class="cm"&gt; */&lt;/span&gt;
+&lt;span class="kt"&gt;void&lt;/span&gt; &lt;span class="nf"&gt;Get_File_Line&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt; &lt;span class="kt"&gt;char&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;p_FileName&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;i_FileLine&lt;/span&gt; &lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="n"&gt;strcpy&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt; &lt;span class="n"&gt;c_FileName&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;p_FileName&lt;/span&gt; &lt;span class="p"&gt;);&lt;/span&gt;
+    &lt;span class="n"&gt;i_FileLineNum&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;i_FileLine&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="k"&gt;return&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+
+&lt;span class="cm"&gt;/**&lt;/span&gt;
+&lt;span class="cm"&gt; * Print the arguments according to the first argument, name as fmt.&lt;/span&gt;
+&lt;span class="cm"&gt; */&lt;/span&gt;
+&lt;span class="kt"&gt;void&lt;/span&gt; &lt;span class="nf"&gt;F_vsnprintf&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt; &lt;span class="kt"&gt;char&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;fmt&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="p"&gt;...&lt;/span&gt; &lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="kt"&gt;char&lt;/span&gt; &lt;span class="n"&gt;buf&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;MAXLINE&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="mh"&gt;0x00&lt;/span&gt;&lt;span class="p"&gt;};&lt;/span&gt;
+    &lt;span class="n"&gt;snprintf&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt; &lt;span class="n"&gt;buf&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;MAXBYTES&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;[%s:%d] &amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;c_FileName&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;i_FileLineNum&lt;/span&gt; &lt;span class="p"&gt;);&lt;/span&gt;
+    &lt;span class="kt"&gt;va_list&lt;/span&gt; &lt;span class="n"&gt;ap&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="n"&gt;va_start&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt; &lt;span class="n"&gt;ap&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;fmt&lt;/span&gt; &lt;span class="p"&gt;);&lt;/span&gt;
+    &lt;span class="n"&gt;vsnprintf&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt; &lt;span class="n"&gt;buf&lt;/span&gt;&lt;span class="o"&gt;+&lt;/span&gt;&lt;span class="n"&gt;strlen&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;buf&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt; &lt;span class="n"&gt;MAXLINE&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;fmt&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;ap&lt;/span&gt; &lt;span class="p"&gt;);&lt;/span&gt;
+    &lt;span class="n"&gt;va_end&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt; &lt;span class="n"&gt;ap&lt;/span&gt; &lt;span class="p"&gt;);&lt;/span&gt;
+
+    &lt;span class="n"&gt;strcat&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt; &lt;span class="n"&gt;buf&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;&lt;/span&gt;&lt;span class="se"&gt;\n&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;&lt;/span&gt; &lt;span class="p"&gt;);&lt;/span&gt;
+    &lt;span class="n"&gt;fflush&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt; &lt;span class="n"&gt;stdout&lt;/span&gt; &lt;span class="p"&gt;);&lt;/span&gt;
+
+    &lt;span class="n"&gt;fputs&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt; &lt;span class="n"&gt;buf&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;stderr&lt;/span&gt; &lt;span class="p"&gt;);&lt;/span&gt;
+    &lt;span class="n"&gt;fflush&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt; &lt;span class="nb"&gt;NULL&lt;/span&gt; &lt;span class="p"&gt;);&lt;/span&gt;
+    &lt;span class="k"&gt;return&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+
+&lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="nf"&gt;main&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt; &lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;argc&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="kt"&gt;char&lt;/span&gt; &lt;span class="o"&gt;**&lt;/span&gt;&lt;span class="n"&gt;argv&lt;/span&gt; &lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="n"&gt;PRINT&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;[%s]&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;Hellow.&amp;quot;&lt;/span&gt; &lt;span class="p"&gt;);&lt;/span&gt;
+    &lt;span class="n"&gt;PRINT&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;[%s %s]&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;Hellow&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;world.&amp;quot;&lt;/span&gt; &lt;span class="p"&gt;);&lt;/span&gt;
+    &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+
+&lt;h4&gt;2 执行结果&lt;/h4&gt;
+&lt;p&gt;使用&lt;a href="https://typecodes.com/cseries/cppgeneralmakefile.html" title="查看原文"&gt;《Linux C/C++工程中可生成ELF、动/静态库文件的通用Makefile》&lt;/a&gt;一文中的Makefile文件进行程序编译（当然也可以使用命令进行编译&lt;code&gt;gcc vsnprintf_name_line.c -o vsnprintf_name_line&lt;/code&gt;），接着执行该程序，得到如下图所示的结果：&lt;/p&gt;
+&lt;p&gt;&lt;img alt="vsnprintf字符串格式化输出实例" src="https://o3cex9zsl.qnssl.com/2016/03/vsnprintf_name_line.png" title="vsnprintf字符串格式化输出实例" /&gt;&lt;/p&gt;</summary><category term="vsnprintf"></category><category term="字符串格式化"></category></entry><entry><title>Disqus支持的HTML标签和代码高亮方法</title><link href="https://typecodes.com/mix/disqushtmltaghighlight.html" rel="alternate"></link><updated>2016-03-03T13:09:00+08:00</updated><author><name>vfhky</name></author><id>tag:typecodes.com,2016-03-03:mix/disqushtmltaghighlight.html</id><summary type="html">&lt;p&gt;由于Disqus不支持Markdown的原因，所以在评论中使用HTML标签和代码高亮就不像Markdown那样方便了。在查看了&lt;a href="https://help.disqus.com/customer/portal/articles/466253-what-html-tags-are-allowed-within-comments" title="点击查看"&gt;Disqus官方&lt;/a&gt;关于HTML标签和代码高亮的说明后，发现Disqus只支持原生的HTML标签和代码高亮方式。&lt;/p&gt;
 &lt;p&gt;&lt;img alt="Disqus中HTML标签和代码高亮的效果" src="https://o3cex9zsl.qnssl.com/2016/03/disqus_htmltag_highlight_result.png" title="Disqus中HTML标签和代码高亮的效果" /&gt;&lt;/p&gt;
 
 
