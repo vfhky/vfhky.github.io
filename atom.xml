@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom"><title>TypeCodes</title><link href="https://typecodes.com/" rel="alternate"></link><link href="https://typecodes.com/atom.xml" rel="self"></link><id>https://typecodes.com/</id><updated>2016-03-14T17:52:00+08:00</updated><entry><title>UNIX环境高级编程（APUE）之单实例守护进程</title><link href="https://typecodes.com/cseries/apuesingledaemonprocess.html" rel="alternate"></link><updated>2016-03-14T17:52:00+08:00</updated><author><name>vfhky</name></author><id>tag:typecodes.com,2016-03-14:cseries/apuesingledaemonprocess.html</id><summary type="html">&lt;p&gt;在UNIX环境高级编程（APUE）中提到了守护进程的创建方法，思路很清晰，所以这里通过代码具体研究下。&lt;/p&gt;
-&lt;p&gt;&lt;img alt="man 2 kill查看关于形参0的说明" src="https://o3cex9zsl.qnssl.com/2016/03/man2kill0.png" title="man 2 kill查看关于形参0的说明" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img alt="UNIX环境高级编程（APUE）之单实例守护进程" src="https://o3cex9zsl.qnssl.com/2016/03/apue.png" title="UNIX环境高级编程（APUE）之单实例守护进程" /&gt;&lt;/p&gt;
 
 
 &lt;h4&gt;1 完整程序：单实例守护进程&lt;/h4&gt;
