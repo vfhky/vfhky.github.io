@@ -38,6 +38,23 @@
 		<div class="col-md-9" id="blog-main" role="main">
 		  	<!--article recycle-->
 			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/cseries/gcclderrlibrarypath.html">Linux gcc链接动态库出错：LIBRARY_PATH和LD_LIBRARY_PATH的区别</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2015-08-08 22:51 | 分类：<a href="https://typecodes.com/cseries/index.html">cseries</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>昨天在自己的CentOs7.1上写makefile的时候，发现在一个C程序在编译并链接一个已生成好的lib动态库的时候出错。链接命令大概是这样的：</p>
+<div class="highlight"><pre>[root@typecodes tcpmsg]# gcc -o hello main.c -lmyhello
+/usr/bin/ld: cannot find -lmyhello
+collect2: error: ld returned 1 exit status
+</pre></div>
+
+
+<p><img alt="Linux gcc链接动态库出错" src="https://o3cex9zsl.qnssl.com/2015/08/gcc_linux.png" title="Linux gcc链接动态库出错" /></p>
+
+	<p class="more"><a href="https://typecodes.com/cseries/gcclderrlibrarypath.html" title="Linux gcc链接动态库出错：LIBRARY_PATH和LD_LIBRARY_PATH的区别">- 阅读剩余部分 -</a></p>
+			</article>
+			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/cseries/unixsigtermkill.html">Unix系统进程对SIGTERM、SIGUSR1和SIGUSR2信号处理</a></h2>
 <ul class="post-meta">
 	<li>作者：vfhky | 时间：2015-08-05 17:41 | 分类：<a href="https://typecodes.com/cseries/index.html">cseries</a></li>
@@ -122,29 +139,6 @@ SIGUSR2：同SIGUSR1，保留给用户使用的信号。
 
 	<p class="more"><a href="https://typecodes.com/web/php7configure.html" title="PHP7中php.ini、php-fpm和www.conf的配置">- 阅读剩余部分 -</a></p>
 			</article>
-			<article class="post">
-<h2 class="post-title"><a href="https://typecodes.com/web/centos7compilephp7.html">2015博客升级记(五)：CentOS 7.1编译安装PHP7</a></h2>
-<ul class="post-meta">
-	<li>作者：vfhky | 时间：2015-06-26 19:16 | 分类：<a href="https://typecodes.com/web/index.html">web</a></li>
-</ul>
-<div class="post-content fmt">
-	<p>这是<a href="https://typecodes.com/mix/2015updateblog.html" title="查看原文">《2015年博客升级记》</a>系列文章的第五篇，主要记录在Linux系统中如何编译安装PHP7。</p>
-<h5>1 创建php用户和用户组，并在github下载php7源码</h5>
-<p>首先创建一个名为php且<code>没有登录权限</code>的用户和一个名为php的用户组，然后去GitHub下载php7源码包。</p>
-<div class="highlight"><pre>#######新建php用户和php组
-[root@typecodes ~]# groupadd -r php &amp;&amp; useradd -r -g php -s /bin/false -d /usr/local/php7 -M php
-######从GitHub下载php7安装包
-[root@typecodes ~]# wget -c --no-check-certificate -O php7-src-master.zip https://github.com/php/php-src/archive/master.zip
-######开始解压php7包
-[root@typecodes ~]# unzip -q php7-src-master.zip &amp;&amp; cd php-src-master
-#####安装编译php7时需要的依赖包
-[root@typecodes php-src-master]# yum -y install libxml2 libxml2-devel openssl openssl-devel curl-devel libjpeg-devel libpng-devel freetype-devel libmcrypt-devel
-</pre></div>
-
-
-
-	<p class="more"><a href="https://typecodes.com/web/centos7compilephp7.html" title="2015博客升级记(五)：CentOS 7.1编译安装PHP7">- 阅读剩余部分 -</a></p>
-			</article>
 		  	<!--page navigation-->
 <ol class="page-navigator">
 <li class="prev"><a href="https://typecodes.com/index3.html">&laquo; 前一页</a></li><li><a href="https://typecodes.com/index.html">1</a>
@@ -172,7 +166,7 @@ SIGUSR2：同SIGUSR1，保留给用户使用的信号。
 		<h3 class="widget-title">Categories</h3>
 		<ul class="widget-list">
 		      <li class="current">
-		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (34)
+		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (35)
 		      </li>
 		      <li class="current">
 		        <a href="https://typecodes.com/csharp/index.html">Csharp</a> (6)
@@ -198,6 +192,9 @@ SIGUSR2：同SIGUSR1，保留给用户使用的信号。
 		<h3 class="widget-title">Recent Posts</h3>
 		<ul class="widget-list">
 			<li class="post">
+				<a href="https://typecodes.com/cseries/kill0checkprocessifexist.html">Linux使用KILL 0检测进程是否存在</a>
+			</li>
+			<li class="post">
 				<a href="https://typecodes.com/cseries/vsnprintffilenameline.html">vsnprintf字符串格式化输出实例：日志中打印程序名和行号</a>
 			</li>
 			<li class="post">
@@ -214,9 +211,6 @@ SIGUSR2：同SIGUSR1，保留给用户使用的信号。
 			</li>
 			<li class="post">
 				<a href="https://typecodes.com/cseries/tcpdumpwiresharkclosewait2.html">使用TCPDUMP和Wireshark排查服务端CLOSE_WAIT（二）</a>
-			</li>
-			<li class="post">
-				<a href="https://typecodes.com/cseries/tcpdumpwiresharkclosewait1.html">使用TCPDUMP和Wireshark排查服务端CLOSE_WAIT（一）</a>
 			</li>
 		</ul>
 	</section>

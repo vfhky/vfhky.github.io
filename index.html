@@ -38,6 +38,17 @@
 		<div class="col-md-9" id="blog-main" role="main">
 		  	<!--article recycle-->
 			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/cseries/kill0checkprocessifexist.html">Linux使用KILL 0检测进程是否存在</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2016-03-14 11:48 | 分类：<a href="https://typecodes.com/cseries/index.html">cseries</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>之前遇到过<code>kill( pid, 0 )</code>的情况，由于平常没注意到kill函数的形参为0的情况，不知道它的作用。后面用<code>man 2 kill</code>命令查看了下kill函数的说明，发现可以用来检测进程的存在情况。</p>
+<p><img alt="man 2 kill查看关于形参0的说明" src="https://o3cex9zsl.qnssl.com/2016/03/man2kill0.png" title="man 2 kill查看关于形参0的说明" /></p>
+
+	<p class="more"><a href="https://typecodes.com/cseries/kill0checkprocessifexist.html" title="Linux使用KILL 0检测进程是否存在">- 阅读剩余部分 -</a></p>
+			</article>
+			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/cseries/vsnprintffilenameline.html">vsnprintf字符串格式化输出实例：日志中打印程序名和行号</a></h2>
 <ul class="post-meta">
 	<li>作者：vfhky | 时间：2016-03-13 23:28 | 分类：<a href="https://typecodes.com/cseries/index.html">cseries</a></li>
@@ -114,17 +125,6 @@
 
 	<p class="more"><a href="https://typecodes.com/cseries/tcpdumpwiresharkclosewait1.html" title="使用TCPDUMP和Wireshark排查服务端CLOSE_WAIT（一）">- 阅读剩余部分 -</a></p>
 			</article>
-			<article class="post">
-<h2 class="post-title"><a href="https://typecodes.com/linux/simpletcpdumpapply.html">Linux中使用TCPDUMP进行简单的TCP抓包</a></h2>
-<ul class="post-meta">
-	<li>作者：vfhky | 时间：2016-02-26 15:51 | 分类：<a href="https://typecodes.com/linux/index.html">linux</a></li>
-</ul>
-<div class="post-content fmt">
-	<p>在Linux TCP通信的调试中，tcpdump应该算是很好的一个工具。这篇文章主要使用Windows作为客户端，向作为服务端的Linux中的一个socket监听端口发送报文信息，然后在Linux中用TCPDUMP工具进行抓包。通过这个实例，可以较为完整的了解TCP通信中的“三次握手”等过程。</p>
-<p><img alt="Linux中使用TCPDUMP进行简单的TCP抓包" src="https://o3cex9zsl.qnssl.com/2016/02/linuxtcpdump.png" title="Linux中使用TCPDUMP进行简单的TCP抓包" /></p>
-
-	<p class="more"><a href="https://typecodes.com/linux/simpletcpdumpapply.html" title="Linux中使用TCPDUMP进行简单的TCP抓包">- 阅读剩余部分 -</a></p>
-			</article>
 		  	<!--page navigation-->
 <ol class="page-navigator">
 <li class="current"><a href="https://typecodes.com/index.html">1</a>
@@ -152,7 +152,7 @@
 		<h3 class="widget-title">Categories</h3>
 		<ul class="widget-list">
 		      <li class="current">
-		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (34)
+		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (35)
 		      </li>
 		      <li class="current">
 		        <a href="https://typecodes.com/csharp/index.html">Csharp</a> (6)
@@ -178,6 +178,9 @@
 		<h3 class="widget-title">Recent Posts</h3>
 		<ul class="widget-list">
 			<li class="post">
+				<a href="https://typecodes.com/cseries/kill0checkprocessifexist.html">Linux使用KILL 0检测进程是否存在</a>
+			</li>
+			<li class="post">
 				<a href="https://typecodes.com/cseries/vsnprintffilenameline.html">vsnprintf字符串格式化输出实例：日志中打印程序名和行号</a>
 			</li>
 			<li class="post">
@@ -194,9 +197,6 @@
 			</li>
 			<li class="post">
 				<a href="https://typecodes.com/cseries/tcpdumpwiresharkclosewait2.html">使用TCPDUMP和Wireshark排查服务端CLOSE_WAIT（二）</a>
-			</li>
-			<li class="post">
-				<a href="https://typecodes.com/cseries/tcpdumpwiresharkclosewait1.html">使用TCPDUMP和Wireshark排查服务端CLOSE_WAIT（一）</a>
 			</li>
 		</ul>
 	</section>

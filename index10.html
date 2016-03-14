@@ -38,6 +38,18 @@
 		<div class="col-md-9" id="blog-main" role="main">
 		  	<!--article recycle-->
 			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/web/scsfortypecho.html">新浪云存储(SCS) for Typecho 插件</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2014-09-08 12:39 | 分类：<a href="https://typecodes.com/web/index.html">web</a></li>
+</ul>
+<div class="post-content fmt">
+	<h5>1 SCS插件说明</h5>
+<p>由于博主平常喜欢刷微博，所以关注了不少活动。最近在微博上看到 <a href="http://weibo.com/cloudtrans" title="新浪云储存SCS官方微博">新浪云储存SCS</a> 正在公测云储存服务（类似于七牛、百度BCS），于是私信获得了邀请码。测试发现其功能和性价比都不错，所以决定把博客所有的图片、下载文件等附件放到SCS上来。</p>
+<p>因此，写了一个Typecho博客的插件——SCS，它能自动将文章上传的附件转存至新浪云储存SCS中。</p>
+
+	<p class="more"><a href="https://typecodes.com/web/scsfortypecho.html" title="新浪云存储(SCS) for Typecho 插件">- 阅读剩余部分 -</a></p>
+			</article>
+			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/web/typechomp3player.html">音乐播放器PlayAtWill for typecho插件（移植自wordpress）</a></h2>
 <ul class="post-meta">
 	<li>作者：vfhky | 时间：2014-09-05 22:53 | 分类：<a href="https://typecodes.com/web/index.html">web</a></li>
@@ -120,25 +132,6 @@
 
 	<p class="more"><a href="https://typecodes.com/web/installtypechofail.html" title="解决阿里云无法安装typecho 1.0，页面全变空白">- 阅读剩余部分 -</a></p>
 			</article>
-			<article class="post">
-<h2 class="post-title"><a href="https://typecodes.com/web/iptablessshnologin.html">阿里云iptables防火墙配置出错导致ssh无法远程登录</a></h2>
-<ul class="post-meta">
-	<li>作者：vfhky | 时间：2014-08-16 23:19 | 分类：<a href="https://typecodes.com/web/index.html">web</a></li>
-</ul>
-<div class="post-content fmt">
-	<h5>1 悲催的 iptables 探索</h5>
-<p>由于之前对 iptables 不熟悉，所以在配置 iptables 的时候，直接执行命令<code>iptables -F</code>。结果导致 Securecrt 中所有连接远端服务器的窗口都断掉了，而且博客的所有页面都无法打开。心中顿时一慌，ssh无法登录，即使博客中的程序和数据库已经备份了也无法取出了。</p>
-<p>网上搜了一下，原来在使用这个命令之前一定要先执行命令<code>iptables -P INPUT ACCEPT</code>。</p>
-<div class="highlight"><pre>###### 即先把 policy 设定为 ACCEPT, 允许所有的封包传输. 否则, 当前连接远程服务器的终端会立即断掉
-[root@typecodes ~]# iptables -P INPUT ACCEPT
-###### 可以通过清除所有规则来暂时停止防火墙：(警告：这只适合在没有配置防火墙的环境中，如果已经配置过默认规则为deny的环境，此步骤将使系统的所有网络访问中断)
-[root@typecodes ~]# iptables -F
-</pre></div>
-
-
-
-	<p class="more"><a href="https://typecodes.com/web/iptablessshnologin.html" title="阿里云iptables防火墙配置出错导致ssh无法远程登录">- 阅读剩余部分 -</a></p>
-			</article>
 		  	<!--page navigation-->
 <ol class="page-navigator">
 <li class="prev"><a href="https://typecodes.com/index9.html">&laquo; 前一页</a></li><li><a href="https://typecodes.com/index.html">1</a>
@@ -165,7 +158,7 @@
 		<h3 class="widget-title">Categories</h3>
 		<ul class="widget-list">
 		      <li class="current">
-		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (34)
+		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (35)
 		      </li>
 		      <li class="current">
 		        <a href="https://typecodes.com/csharp/index.html">Csharp</a> (6)
@@ -191,6 +184,9 @@
 		<h3 class="widget-title">Recent Posts</h3>
 		<ul class="widget-list">
 			<li class="post">
+				<a href="https://typecodes.com/cseries/kill0checkprocessifexist.html">Linux使用KILL 0检测进程是否存在</a>
+			</li>
+			<li class="post">
 				<a href="https://typecodes.com/cseries/vsnprintffilenameline.html">vsnprintf字符串格式化输出实例：日志中打印程序名和行号</a>
 			</li>
 			<li class="post">
@@ -207,9 +203,6 @@
 			</li>
 			<li class="post">
 				<a href="https://typecodes.com/cseries/tcpdumpwiresharkclosewait2.html">使用TCPDUMP和Wireshark排查服务端CLOSE_WAIT（二）</a>
-			</li>
-			<li class="post">
-				<a href="https://typecodes.com/cseries/tcpdumpwiresharkclosewait1.html">使用TCPDUMP和Wireshark排查服务端CLOSE_WAIT（一）</a>
 			</li>
 		</ul>
 	</section>

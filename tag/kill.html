@@ -3,7 +3,7 @@
 	<head>
 		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
   		<meta name="renderer" content="webkit">
-		<title>标签 进程 下的文章 - TypeCodes</title>
+		<title>标签 kill 下的文章 - TypeCodes</title>
   		<meta name="viewport" content="width=device-width, initial-scale=1">
   		<link href="https://typecodes.com/atom.xml" type="application/atom+xml" rel="alternate" title="TypeCodes Atom Feed" />
 	  	<link href="https://typecodes.com/feed.xml" type="application/rss+xml" rel="alternate" title="TypeCodes RSS Feed" />
@@ -38,14 +38,15 @@
 		<div class="col-md-9" id="blog-main" role="main">
 		  	<!--article recycle-->
 			<article class="post">
-<h2 class="post-title"><a href="https://typecodes.com/cseries/multilprocessthreadgdb.html">Linux多进程和多线程的一次gdb调试实例</a></h2>
+<h2 class="post-title"><a href="https://typecodes.com/cseries/kill0checkprocessifexist.html">Linux使用KILL 0检测进程是否存在</a></h2>
 <ul class="post-meta">
-	<li>作者：vfhky | 时间：2016-02-25 23:18 | 分类：<a href="https://typecodes.com/cseries/index.html">cseries</a></li>
+	<li>作者：vfhky | 时间：2016-03-14 11:48 | 分类：<a href="https://typecodes.com/cseries/index.html">cseries</a></li>
 </ul>
 <div class="post-content fmt">
-	<p>Linux C/C++开发中gdb进行多进程和多线程的调试一直比较麻烦，在CSDN上看到高科的一篇文章<a href="http://blog.csdn.net/pbymw8iwm/article/details/7876797" title="查看原文">《gdb调试多进程和多线程命令》</a>比较有启发，这里就自己重新整理并做了一个GDB多进程/线程的调试实践。</p>
+	<p>之前遇到过<code>kill( pid, 0 )</code>的情况，由于平常没注意到kill函数的形参为0的情况，不知道它的作用。后面用<code>man 2 kill</code>命令查看了下kill函数的说明，发现可以用来检测进程的存在情况。</p>
+<p><img alt="man 2 kill查看关于形参0的说明" src="https://o3cex9zsl.qnssl.com/2016/03/man2kill0.png" title="man 2 kill查看关于形参0的说明" /></p>
 
-	<p class="more"><a href="https://typecodes.com/cseries/multilprocessthreadgdb.html" title="Linux多进程和多线程的一次gdb调试实例">- 阅读剩余部分 -</a></p>
+	<p class="more"><a href="https://typecodes.com/cseries/kill0checkprocessifexist.html" title="Linux使用KILL 0检测进程是否存在">- 阅读剩余部分 -</a></p>
 			</article>
 		  	<!--page navigation-->
 <ol class="page-navigator">
@@ -89,7 +90,7 @@
 		<h3 class="widget-title">Recent Posts</h3>
 		<ul class="widget-list">
 			<li class="post">
-				<a href="https://typecodes.com/cseries/multilprocessthreadgdb.html">Linux多进程和多线程的一次gdb调试实例</a>
+				<a href="https://typecodes.com/cseries/kill0checkprocessifexist.html">Linux使用KILL 0检测进程是否存在</a>
 			</li>
 		</ul>
 	</section>

@@ -5,23 +5,30 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>https://typecodes.com/</loc>
-<lastmod>2016-03-14T10:24:18-00:00</lastmod>
+<lastmod>2016-03-14T11:50:20-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://typecodes.com/archives.html</loc>
-<lastmod>2016-03-14T10:24:18-00:00</lastmod>
+<lastmod>2016-03-14T11:50:20-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://typecodes.com/categories.html</loc>
-<lastmod>2016-03-14T10:24:18-00:00</lastmod>
+<lastmod>2016-03-14T11:50:20-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
+</url>
+
+<url>
+<loc>https://typecodes.com/cseries/kill0checkprocessifexist.html</loc>
+<lastmod>2016-03-14T11:48:00+08:00</lastmod>
+<changefreq>monthly</changefreq>
+<priority>0.7</priority>
 </url>
 
 <url>
@@ -1531,7 +1538,7 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>https://typecodes.com/cseries/index.html</loc>
-<lastmod>2016-03-13T23:28:00+08:06</lastmod>
+<lastmod>2016-03-14T11:48:00+08:06</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
@@ -1580,7 +1587,7 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>https://typecodes.com/tag/xin-hao.html</loc>
-<lastmod>2016-02-29T11:39:00+08:06</lastmod>
+<lastmod>2016-03-14T11:48:00+08:06</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
@@ -1607,8 +1614,8 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 </url>
 
 <url>
-<loc>https://typecodes.com/tag/plsqldiao-shi.html</loc>
-<lastmod>2014-12-31T21:00:00+08:06</lastmod>
+<loc>https://typecodes.com/tag/pelican.html</loc>
+<lastmod>2016-03-03T13:09:00+08:06</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
@@ -1663,8 +1670,15 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 </url>
 
 <url>
-<loc>https://typecodes.com/tag/mysql.html</loc>
-<lastmod>2016-02-26T14:55:00+08:06</lastmod>
+<loc>https://typecodes.com/tag/kill.html</loc>
+<lastmod>2016-03-14T11:48:00+08:06</lastmod>
+<changefreq>daily</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
+<loc>https://typecodes.com/tag/jing-tai-ku.html</loc>
+<lastmod>2016-01-05T22:48:00+08:06</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
@@ -2027,8 +2041,8 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 </url>
 
 <url>
-<loc>https://typecodes.com/tag/jing-tai-ku.html</loc>
-<lastmod>2016-01-05T22:48:00+08:06</lastmod>
+<loc>https://typecodes.com/tag/mysql.html</loc>
+<lastmod>2016-02-26T14:55:00+08:06</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
@@ -2363,8 +2377,8 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 </url>
 
 <url>
-<loc>https://typecodes.com/tag/pelican.html</loc>
-<lastmod>2016-03-03T13:09:00+08:06</lastmod>
+<loc>https://typecodes.com/tag/plsqldiao-shi.html</loc>
+<lastmod>2014-12-31T21:00:00+08:06</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
