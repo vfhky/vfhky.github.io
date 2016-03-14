@@ -5,23 +5,30 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>https://typecodes.com/</loc>
-<lastmod>2016-03-14T11:50:20-00:00</lastmod>
+<lastmod>2016-03-14T17:52:01-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://typecodes.com/archives.html</loc>
-<lastmod>2016-03-14T11:50:20-00:00</lastmod>
+<lastmod>2016-03-14T17:52:01-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://typecodes.com/categories.html</loc>
-<lastmod>2016-03-14T11:50:20-00:00</lastmod>
+<lastmod>2016-03-14T17:52:01-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
+</url>
+
+<url>
+<loc>https://typecodes.com/cseries/apuesingledaemonprocess.html</loc>
+<lastmod>2016-03-14T17:52:00+08:00</lastmod>
+<changefreq>monthly</changefreq>
+<priority>0.7</priority>
 </url>
 
 <url>
@@ -1538,7 +1545,7 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>https://typecodes.com/cseries/index.html</loc>
-<lastmod>2016-03-14T11:48:00+08:06</lastmod>
+<lastmod>2016-03-14T17:52:00+08:06</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
@@ -1854,6 +1861,13 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 <url>
 <loc>https://typecodes.com/tag/pi-chu-li.html</loc>
 <lastmod>2013-12-16T16:07:00+08:06</lastmod>
+<changefreq>daily</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
+<loc>https://typecodes.com/tag/google-code-prettify.html</loc>
+<lastmod>2014-02-16T12:54:00+08:06</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
@@ -2426,8 +2440,8 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 </url>
 
 <url>
-<loc>https://typecodes.com/tag/google-code-prettify.html</loc>
-<lastmod>2014-02-16T12:54:00+08:06</lastmod>
+<loc>https://typecodes.com/tag/gu-ge-duan-wang-zhi-api.html</loc>
+<lastmod>2014-03-12T22:20:00+08:06</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
@@ -2748,6 +2762,13 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 </url>
 
 <url>
+<loc>https://typecodes.com/tag/ora-27101.html</loc>
+<lastmod>2013-07-21T20:55:00+08:06</lastmod>
+<changefreq>daily</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
 <loc>https://typecodes.com/tag/vsnprintf.html</loc>
 <lastmod>2016-03-13T23:28:00+08:06</lastmod>
 <changefreq>daily</changefreq>
@@ -2755,8 +2776,8 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 </url>
 
 <url>
-<loc>https://typecodes.com/tag/gu-ge-duan-wang-zhi-api.html</loc>
-<lastmod>2014-03-12T22:20:00+08:06</lastmod>
+<loc>https://typecodes.com/tag/shou-hu-jin-cheng.html</loc>
+<lastmod>2016-03-14T17:52:00+08:06</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
@@ -2804,8 +2825,8 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 </url>
 
 <url>
-<loc>https://typecodes.com/tag/ora-27101.html</loc>
-<lastmod>2013-07-21T20:55:00+08:06</lastmod>
+<loc>https://typecodes.com/tag/apue.html</loc>
+<lastmod>2016-03-14T17:52:00+08:06</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
