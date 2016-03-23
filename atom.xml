@@ -575,7 +575,7 @@
     &lt;span class="p"&gt;}&lt;/span&gt;
 
     &lt;span class="cm"&gt;/**&lt;/span&gt;
-&lt;span class="cm"&gt;     * 第7步：通过文件锁避免重复运行多个守护进程&lt;/span&gt;
+&lt;span class="cm"&gt;     * 第七步：通过文件锁避免重复运行多个守护进程&lt;/span&gt;
 &lt;span class="cm"&gt;     */&lt;/span&gt;
     &lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;lockfd&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;open&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt; &lt;span class="n"&gt;LOCK_FILE&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;O_RDWR&lt;/span&gt; &lt;span class="p"&gt;);&lt;/span&gt;
     &lt;span class="k"&gt;if&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt; &lt;span class="n"&gt;lockfd&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt; &lt;span class="p"&gt;)&lt;/span&gt;

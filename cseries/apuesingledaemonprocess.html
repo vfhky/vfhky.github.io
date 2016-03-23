@@ -370,7 +370,7 @@
     <span class="p">}</span>
 
     <span class="cm">/**</span>
-<span class="cm">     * 第7步：通过文件锁避免重复运行多个守护进程</span>
+<span class="cm">     * 第七步：通过文件锁避免重复运行多个守护进程</span>
 <span class="cm">     */</span>
     <span class="kt">int</span> <span class="n">lockfd</span> <span class="o">=</span> <span class="n">open</span><span class="p">(</span> <span class="n">LOCK_FILE</span><span class="p">,</span> <span class="n">O_RDWR</span> <span class="p">);</span>
     <span class="k">if</span><span class="p">(</span> <span class="n">lockfd</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="p">)</span>
