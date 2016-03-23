@@ -5,23 +5,30 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>https://typecodes.com/</loc>
-<lastmod>2016-03-14T17:53:43-00:00</lastmod>
+<lastmod>2016-03-23T22:45:02-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://typecodes.com/archives.html</loc>
-<lastmod>2016-03-14T17:53:43-00:00</lastmod>
+<lastmod>2016-03-23T22:45:02-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://typecodes.com/categories.html</loc>
-<lastmod>2016-03-14T17:53:43-00:00</lastmod>
+<lastmod>2016-03-23T22:45:02-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
+</url>
+
+<url>
+<loc>https://typecodes.com/cseries/deldisorderintarrrepeatele.html</loc>
+<lastmod>2016-03-23T22:44:00+08:00</lastmod>
+<changefreq>monthly</changefreq>
+<priority>0.7</priority>
 </url>
 
 <url>
@@ -1545,7 +1552,7 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>https://typecodes.com/cseries/index.html</loc>
-<lastmod>2016-03-14T17:52:00+08:06</lastmod>
+<lastmod>2016-03-23T22:44:00+08:06</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
@@ -1719,8 +1726,8 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 </url>
 
 <url>
-<loc>https://typecodes.com/tag/wordpressyin-yong-hui-fu.html</loc>
-<lastmod>2012-09-24T17:10:00+08:06</lastmod>
+<loc>https://typecodes.com/tag/jin-cheng.html</loc>
+<lastmod>2016-02-25T23:18:00+08:06</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
@@ -2398,6 +2405,13 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 </url>
 
 <url>
+<loc>https://typecodes.com/tag/wordpressyin-yong-hui-fu.html</loc>
+<lastmod>2012-09-24T17:10:00+08:06</lastmod>
+<changefreq>daily</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
 <loc>https://typecodes.com/tag/markdown.html</loc>
 <lastmod>2016-03-02T23:55:00+08:06</lastmod>
 <changefreq>daily</changefreq>
@@ -2412,8 +2426,8 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 </url>
 
 <url>
-<loc>https://typecodes.com/tag/jin-cheng.html</loc>
-<lastmod>2016-02-25T23:18:00+08:06</lastmod>
+<loc>https://typecodes.com/tag/shu-zu.html</loc>
+<lastmod>2016-03-23T22:44:00+08:06</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
@@ -3107,6 +3121,13 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 <url>
 <loc>https://typecodes.com/tag/oracle.html</loc>
 <lastmod>2015-01-10T14:44:00+08:06</lastmod>
+<changefreq>daily</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
+<loc>https://typecodes.com/tag/shi-jian-fu-za-du.html</loc>
+<lastmod>2016-03-23T22:44:00+08:06</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>

@@ -38,6 +38,19 @@
 		<div class="col-md-9" id="blog-main" role="main">
 		  	<!--article recycle-->
 			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/web/mysqlimportmessy.html">完美解决Mysql导入数据库中文乱码的问题</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2014-08-18 22:24 | 分类：<a href="https://typecodes.com/web/index.html">web</a></li>
+</ul>
+<div class="post-content fmt">
+	<h5>1 问题由来：博客从 WordPress 转向 Typecho</h5>
+<p>在由 <a href="https://typecodes.com/mix/eventualwptotypecho.html" title="《终于从WordPress转向Typecho了》">WordPress 转向 Typecho</a> 的过程中，主要难点是将 WordPress 中的文章和评论数据用 <a href="http://plugins.typecho.me/plugins/wordpress-to-typecho.html" title="插件wordpress to typecho">wordpress to typecho</a> 插件剥离出来。经整理后再重新将文章转换为 markdown 格式发布到由ty搭建的本博客上，最后把评论导入到对应的文章下面，并对评论id重新排序。</p>
+<h5>2 本地编辑剥离出的文章和评论的.sql备份文件</h5>
+<p>通过插件把wordpress中文章和评论的数据转换成 typecho 形式的文章和评论数据，并导出为.sql备份文件。由于评论数据有1521条，对其id重新排序比较困难，所以博主将它们分拆为两个 .sql 文件（其中一个是utf-8格式的resultsql1.sql，另一个是gbk格式的resultsql2.sql）。</p>
+
+	<p class="more"><a href="https://typecodes.com/web/mysqlimportmessy.html" title="完美解决Mysql导入数据库中文乱码的问题">- 阅读剩余部分 -</a></p>
+			</article>
+			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/web/installtypechofail.html">解决阿里云无法安装typecho 1.0，页面全变空白</a></h2>
 <ul class="post-meta">
 	<li>作者：vfhky | 时间：2014-08-17 21:33 | 分类：<a href="https://typecodes.com/web/index.html">web</a></li>
@@ -162,17 +175,6 @@ Zend Extension Api No:  20090626
 
 	<p class="more"><a href="https://typecodes.com/web/aliyuncentoslnmpnginxconf.html" title="阿里云CentOS主机 LNMP 环境配置之Nginx篇">- 阅读剩余部分 -</a></p>
 			</article>
-			<article class="post">
-<h2 class="post-title"><a href="https://typecodes.com/web/aliyuncentoslnmpmysqlconf.html">阿里云CentOS主机 LNMP 环境配置之Mysql篇</a></h2>
-<ul class="post-meta">
-	<li>作者：vfhky | 时间：2014-08-12 22:41 | 分类：<a href="https://typecodes.com/web/index.html">web</a></li>
-</ul>
-<div class="post-content fmt">
-	<p><a href="https://typecodes.com/web/aliyuncentos6creatlnmp.html" title="阿里云CentOS 6.5搭建LNMP环境（非一键脚本）">上文中</a>分享了在aliyun主机 CentOS 6.5 系统上搭建了 LNMP 环境，其实就是很简单的一行 yum install 命令搞定了。这篇文章简要说说 LNMP 环境下 Mysql 数据库的一些配置和使用，当然以后我们还得主动去学习数据库安全、优化等知识。</p>
-<h5>1 掌握 Linux(包括CentOS) 系统下基本的mysql操作命令</h5>
-
-	<p class="more"><a href="https://typecodes.com/web/aliyuncentoslnmpmysqlconf.html" title="阿里云CentOS主机 LNMP 环境配置之Mysql篇">- 阅读剩余部分 -</a></p>
-			</article>
 		  	<!--page navigation-->
 <ol class="page-navigator">
 <li class="prev"><a href="https://typecodes.com/index10.html">&laquo; 前一页</a></li><li><a href="https://typecodes.com/index.html">1</a>
@@ -199,7 +201,7 @@ Zend Extension Api No:  20090626
 		<h3 class="widget-title">Categories</h3>
 		<ul class="widget-list">
 		      <li class="current">
-		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (36)
+		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (37)
 		      </li>
 		      <li class="current">
 		        <a href="https://typecodes.com/csharp/index.html">Csharp</a> (6)
@@ -225,6 +227,9 @@ Zend Extension Api No:  20090626
 		<h3 class="widget-title">Recent Posts</h3>
 		<ul class="widget-list">
 			<li class="post">
+				<a href="https://typecodes.com/cseries/deldisorderintarrrepeatele.html">C语言删除无序整型数组中的重复元素及时间复杂度</a>
+			</li>
+			<li class="post">
 				<a href="https://typecodes.com/cseries/apuesingledaemonprocess.html">UNIX环境高级编程（APUE）之单实例守护进程</a>
 			</li>
 			<li class="post">
@@ -242,9 +247,6 @@ Zend Extension Api No:  20090626
 			<li class="post">
 				<a href="https://typecodes.com/cseries/sigprocmasksigsuspendapp.html">一个sigprocmask和sigsuspend函数的综合应用</a>
 			</li>
-			<li class="post">
-				<a href="https://typecodes.com/cseries/tcpclosewaitsigpipe.html">Linux TCP通信出现CLOSE_WAIT后导致服务端进程挂掉</a>
-			</li>
 		</ul>
 	</section>
 	<section class="widget widget-feed">
@@ -259,7 +261,7 @@ Zend Extension Api No:  20090626
 	<div class="row" role="contentinfo">
 		<section class="col-md-2 col-md-offset-1">
 			<h3>Links</h3>
-			<ul><li><a href="https://tinygg.cn/" title="四道风’s 博客" target="_blank">tinygg</a></li><li><a href="https://edi.wang/" title="Edi Wang" target="_blank">Edi Wang</a></li></ul>
+			<ul><li><a href="http://blog.vmeila.com/" title="墨迹的Blog" target="_blank">vmeila</a></li><li><a href="https://tinygg.cn/" title="四道风’s 博客" target="_blank">tinygg</a></li><li><a href="https://edi.wang/" title="Edi Wang" target="_blank">Edi Wang</a></li></ul>
 		</section>
 		<section class="col-md-2">
 			<h3>&nbsp;</h3>

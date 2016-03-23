@@ -38,6 +38,17 @@
 		<div class="col-md-9" id="blog-main" role="main">
 		  	<!--article recycle-->
 			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/linux/applogsbackup.html">Linux下Nginx、MySQL和PHP等应用的日志切割脚本</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2015-12-18 21:01 | 分类：<a href="https://typecodes.com/linux/index.html">linux</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>在Linux中如果应用程序会产生日志，那么就需要考虑日志切割，例如按照固定的大小切割、按照日期进行切割等等。同样，在编译<a href="https://typecodes.com/web/centos7compilenginx.html" title="《2015博客升级记(三)：CentOS 7.1编译安装Nginx1.9.0》">Nginx1.9.0</a>、<a href="https://typecodes.com/web/centos7compilemysql.html" title="《2015博客升级记(四)：CentOS 7.1编译安装MySQL5.7.7rc》">MySQL5.7.7rc</a>和<a href="https://typecodes.com/web/centos7compilephp7.html" title="《2015博客升级记(五)：CentOS 7.1编译安装PHP7》">PHP7</a>后，这三个应用服务都会产生日志，尤其是Nginx进程根据配置文件ngnix.conf记录每条访问记录到access.log中。如果所有的日志都打印到同一个文件中的话，那么时间长了的话就会影响效率。</p>
+<p><img alt="Nginx日志切割实例" src="https://o3cex9zsl.qnssl.com/2015/12/nginx_logs_backup.png" title="Nginx日志切割实例" /></p>
+
+	<p class="more"><a href="https://typecodes.com/linux/applogsbackup.html" title="Linux下Nginx、MySQL和PHP等应用的日志切割脚本">- 阅读剩余部分 -</a></p>
+			</article>
+			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/mix/sucesstypechotopelican.html">成功将博客从Typecho迁移到Pelican</a></h2>
 <ul class="post-meta">
 	<li>作者：vfhky | 时间：2015-12-10 22:06 | 分类：<a href="https://typecodes.com/mix/index.html">mix</a></li>
@@ -116,23 +127,6 @@
 
 	<p class="more"><a href="https://typecodes.com/cseries/libraryundefinedref.html" title="解决make编译链接动态库错误：libxx.so: undefined reference to xx">- 阅读剩余部分 -</a></p>
 			</article>
-			<article class="post">
-<h2 class="post-title"><a href="https://typecodes.com/cseries/nmobjectfilesymbol.html">Unix系统中nm命令展示目标文件符号的方法</a></h2>
-<ul class="post-meta">
-	<li>作者：vfhky | 时间：2015-08-12 00:07 | 分类：<a href="https://typecodes.com/cseries/index.html">cseries</a></li>
-</ul>
-<div class="post-content fmt">
-	<p>在*nix系统中，通过gnu开源gcc或者g++工具生成的目标文件（object file），可以用<code>nm</code>、<code>objdump</code>和<code>readelf</code>这三个命令来查看。</p>
-<div class="highlight"><pre>nm：显示目标文件中的符号；
-objdump：打印目标文件中的详细信息；
-readelf：显示关于 ELF 目标文件的信息。
-</pre></div>
-
-
-<p>之前在调试makefile文件的时候，链接动态库出错：<code>libsrcpbl.so: undefined reference to 'gcProgramName'</code>。也就是变量gcProgramName没定义，后来通过<code>nm -u libsrcpbl.so</code>命令辅助排查解决了。</p>
-
-	<p class="more"><a href="https://typecodes.com/cseries/nmobjectfilesymbol.html" title="Unix系统中nm命令展示目标文件符号的方法">- 阅读剩余部分 -</a></p>
-			</article>
 		  	<!--page navigation-->
 <ol class="page-navigator">
 <li class="prev"><a href="https://typecodes.com/index2.html">&laquo; 前一页</a></li><li><a href="https://typecodes.com/index.html">1</a>
@@ -160,7 +154,7 @@ readelf：显示关于 ELF 目标文件的信息。
 		<h3 class="widget-title">Categories</h3>
 		<ul class="widget-list">
 		      <li class="current">
-		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (36)
+		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (37)
 		      </li>
 		      <li class="current">
 		        <a href="https://typecodes.com/csharp/index.html">Csharp</a> (6)
@@ -186,6 +180,9 @@ readelf：显示关于 ELF 目标文件的信息。
 		<h3 class="widget-title">Recent Posts</h3>
 		<ul class="widget-list">
 			<li class="post">
+				<a href="https://typecodes.com/cseries/deldisorderintarrrepeatele.html">C语言删除无序整型数组中的重复元素及时间复杂度</a>
+			</li>
+			<li class="post">
 				<a href="https://typecodes.com/cseries/apuesingledaemonprocess.html">UNIX环境高级编程（APUE）之单实例守护进程</a>
 			</li>
 			<li class="post">
@@ -203,9 +200,6 @@ readelf：显示关于 ELF 目标文件的信息。
 			<li class="post">
 				<a href="https://typecodes.com/cseries/sigprocmasksigsuspendapp.html">一个sigprocmask和sigsuspend函数的综合应用</a>
 			</li>
-			<li class="post">
-				<a href="https://typecodes.com/cseries/tcpclosewaitsigpipe.html">Linux TCP通信出现CLOSE_WAIT后导致服务端进程挂掉</a>
-			</li>
 		</ul>
 	</section>
 	<section class="widget widget-feed">
@@ -220,7 +214,7 @@ readelf：显示关于 ELF 目标文件的信息。
 	<div class="row" role="contentinfo">
 		<section class="col-md-2 col-md-offset-1">
 			<h3>Links</h3>
-			<ul><li><a href="https://tinygg.cn/" title="四道风’s 博客" target="_blank">tinygg</a></li><li><a href="https://edi.wang/" title="Edi Wang" target="_blank">Edi Wang</a></li></ul>
+			<ul><li><a href="http://blog.vmeila.com/" title="墨迹的Blog" target="_blank">vmeila</a></li><li><a href="https://tinygg.cn/" title="四道风’s 博客" target="_blank">tinygg</a></li><li><a href="https://edi.wang/" title="Edi Wang" target="_blank">Edi Wang</a></li></ul>
 		</section>
 		<section class="col-md-2">
 			<h3>&nbsp;</h3>

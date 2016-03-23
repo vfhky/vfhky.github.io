@@ -38,6 +38,20 @@
 		<div class="col-md-9" id="blog-main" role="main">
 		  	<!--article recycle-->
 			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/cseries/hexstrxor.html">十六进制字符串异或</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2014-11-10 22:20 | 分类：<a href="https://typecodes.com/cseries/index.html">cseries</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>十六进制字符串异或是C/C++工作中经常遇到的情况，因此自己写了一个异或方法。程序中关键的三点：</p>
+<h5>1 关键点一</h5>
+<p>弄清十六进制字符串异或的思路：一个十六进制字符其实表示的是一个字节的低4位，但是在ASCII码表中，它是作为一个字符，即占用了1个字节。所以需要先把这个字符转换成对应的十进制数（范围是0~15），这个就是<code>int char2int( char input )</code>函数所做的工作；同理在异或完后，需要根据ASCII码表将范围是0~15的<code>字符</code>转换成对应的占用1字节的字符串中的字符，这个就是<code>int int2char( char input )</code>函数所做的工作。</p>
+<p>PS：这其实就是前面这两篇文章的提炼——
+<a href="https://typecodes.com/cseries/clangintegerstrtointeger.html" title="《C语言将十进制字符串转成十进制整数》">《C语言将十进制字符串转成十进制整数》</a>、<a href="https://typecodes.com/cseries/clanghexstrtointeger.html" title="《C语言将十六进制字符串转成十进制整数》">《C语言将十六进制字符串转成十进制整数》</a>。</p>
+
+	<p class="more"><a href="https://typecodes.com/cseries/hexstrxor.html" title="十六进制字符串异或">- 阅读剩余部分 -</a></p>
+			</article>
+			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/cseries/studentssoundoffgame.html">由学生按某规则依次报数的游戏引发的问题</a></h2>
 <ul class="post-meta">
 	<li>作者：vfhky | 时间：2014-11-08 19:02 | 分类：<a href="https://typecodes.com/cseries/index.html">cseries</a></li>
@@ -172,25 +186,6 @@ SSL证书提供商：    PositiveSSL from Namecheap
 
 	<p class="more"><a href="https://typecodes.com/web/lnmppositivessl.html" title="阿里云CentOS 6.5系统LNMP环境安装SSL证书">- 阅读剩余部分 -</a></p>
 			</article>
-			<article class="post">
-<h2 class="post-title"><a href="https://typecodes.com/web/scsfortypechov111.html">更新新浪云存储(SCS) for Typecho 插件版本V1.1.1</a></h2>
-<ul class="post-meta">
-	<li>作者：vfhky | 时间：2014-09-20 11:34 | 分类：<a href="https://typecodes.com/web/index.html">web</a></li>
-</ul>
-<div class="post-content fmt">
-	<h5>1 更新说明</h5>
-<p>感谢 @奇趣铺 的使用反馈，插件版本更新至最新的V1.1.1。更新内容如下：</p>
-<div class="highlight"><pre>1、更新官方SDK文件；
-2、增加SCS存储路径参数配置，用户能更自由定义SCS存储路径；
-3、取消SCS附件前缀用Unix time stamp格式命名，保持原附件名称不变。
-</pre></div>
-
-
-<h5>2 版本升级方法</h5>
-<p>下面对于 Linux主机 和 Windows主机 的升级方法同样适用于之前没有安装该插件的童鞋，步骤完全一样。</p>
-
-	<p class="more"><a href="https://typecodes.com/web/scsfortypechov111.html" title="更新新浪云存储(SCS) for Typecho 插件版本V1.1.1">- 阅读剩余部分 -</a></p>
-			</article>
 		  	<!--page navigation-->
 <ol class="page-navigator">
 <li class="prev"><a href="https://typecodes.com/index8.html">&laquo; 前一页</a></li><li><a href="https://typecodes.com/index.html">1</a>
@@ -217,7 +212,7 @@ SSL证书提供商：    PositiveSSL from Namecheap
 		<h3 class="widget-title">Categories</h3>
 		<ul class="widget-list">
 		      <li class="current">
-		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (36)
+		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (37)
 		      </li>
 		      <li class="current">
 		        <a href="https://typecodes.com/csharp/index.html">Csharp</a> (6)
@@ -243,6 +238,9 @@ SSL证书提供商：    PositiveSSL from Namecheap
 		<h3 class="widget-title">Recent Posts</h3>
 		<ul class="widget-list">
 			<li class="post">
+				<a href="https://typecodes.com/cseries/deldisorderintarrrepeatele.html">C语言删除无序整型数组中的重复元素及时间复杂度</a>
+			</li>
+			<li class="post">
 				<a href="https://typecodes.com/cseries/apuesingledaemonprocess.html">UNIX环境高级编程（APUE）之单实例守护进程</a>
 			</li>
 			<li class="post">
@@ -260,9 +258,6 @@ SSL证书提供商：    PositiveSSL from Namecheap
 			<li class="post">
 				<a href="https://typecodes.com/cseries/sigprocmasksigsuspendapp.html">一个sigprocmask和sigsuspend函数的综合应用</a>
 			</li>
-			<li class="post">
-				<a href="https://typecodes.com/cseries/tcpclosewaitsigpipe.html">Linux TCP通信出现CLOSE_WAIT后导致服务端进程挂掉</a>
-			</li>
 		</ul>
 	</section>
 	<section class="widget widget-feed">
@@ -277,7 +272,7 @@ SSL证书提供商：    PositiveSSL from Namecheap
 	<div class="row" role="contentinfo">
 		<section class="col-md-2 col-md-offset-1">
 			<h3>Links</h3>
-			<ul><li><a href="https://tinygg.cn/" title="四道风’s 博客" target="_blank">tinygg</a></li><li><a href="https://edi.wang/" title="Edi Wang" target="_blank">Edi Wang</a></li></ul>
+			<ul><li><a href="http://blog.vmeila.com/" title="墨迹的Blog" target="_blank">vmeila</a></li><li><a href="https://tinygg.cn/" title="四道风’s 博客" target="_blank">tinygg</a></li><li><a href="https://edi.wang/" title="Edi Wang" target="_blank">Edi Wang</a></li></ul>
 		</section>
 		<section class="col-md-2">
 			<h3>&nbsp;</h3>
