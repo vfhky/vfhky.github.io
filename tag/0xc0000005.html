@@ -3,7 +3,7 @@
 	<head>
 		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
   		<meta name="renderer" content="webkit">
-		<title>标签 异常0xc0000005 下的文章 - TypeCodes</title>
+		<title>标签 0xc0000005 下的文章 - TypeCodes</title>
   		<meta name="viewport" content="width=device-width, initial-scale=1">
   		<link href="https://typecodes.com/atom.xml" type="application/atom+xml" rel="alternate" title="TypeCodes Atom Feed" />
 	  	<link href="https://typecodes.com/feed.xml" type="application/rss+xml" rel="alternate" title="TypeCodes RSS Feed" />
@@ -38,16 +38,15 @@
 		<div class="col-md-9" id="blog-main" role="main">
 		  	<!--article recycle-->
 			<article class="post">
-<h2 class="post-title"><a href="https://typecodes.com/cseries/pointermemaccess0xC0000005.html">再谈“0xC0000005读取写入位置冲突”——正确使用指针访问内存</a></h2>
+<h2 class="post-title"><a href="https://typecodes.com/cseries/trimspace0xC0000005.html">未经处理的异常:0xC0000005:读取/写入位置冲突——从去掉字符串所有空格说起</a></h2>
 <ul class="post-meta">
-	<li>作者：vfhky | 时间：2014-09-03 22:26 | 分类：<a href="https://typecodes.com/cseries/index.html">cseries</a></li>
+	<li>作者：vfhky | 时间：2014-08-30 13:17 | 分类：<a href="https://typecodes.com/cseries/index.html">cseries</a></li>
 </ul>
 <div class="post-content fmt">
-	<p>在<a href="https://typecodes.com/cseries/trimspace0xC0000005.html" title="未经处理的异常:0xC0000005:读取/写入位置冲突——从去掉字符串所有空格说起">前面一篇文章</a>中，总结了错误使用指针指向一个字符串常量，然后对该字符串常量进行写入操作导致出错：“未经处理的异常：0xC0000005: 读取/写入位置发生访问冲突”。</p>
-<p>这篇文章继续使用指针来探索这个问题。</p>
-<h5>1 测试程序：“异常: 0xC0000005: 写入位置 0xxxxxxxxx 时发生访问冲突”</h5>
+	<p>在c/c++中，有时会遇到0xC0000005: 读取/写入位置冲突的问题。明明编译器编译通过，但是在执行的时候就出现<code>Segmentation fault(coredump)</code>了。</p>
+<p>该错误是由于内存访问出错引起的，最常见于指针的错误使用和数组越界等。下面是博主之前的一个经历——去掉一个字符串前后的所有空格。</p>
 
-	<p class="more"><a href="https://typecodes.com/cseries/pointermemaccess0xC0000005.html" title="再谈“0xC0000005读取写入位置冲突”——正确使用指针访问内存">- 阅读剩余部分 -</a></p>
+	<p class="more"><a href="https://typecodes.com/cseries/trimspace0xC0000005.html" title="未经处理的异常:0xC0000005:读取/写入位置冲突——从去掉字符串所有空格说起">- 阅读剩余部分 -</a></p>
 			</article>
 		  	<!--page navigation-->
 <ol class="page-navigator">
@@ -91,7 +90,7 @@
 		<h3 class="widget-title">Recent Posts</h3>
 		<ul class="widget-list">
 			<li class="post">
-				<a href="https://typecodes.com/cseries/pointermemaccess0xC0000005.html">再谈“0xC0000005读取写入位置冲突”——正确使用指针访问内存</a>
+				<a href="https://typecodes.com/cseries/trimspace0xC0000005.html">未经处理的异常:0xC0000005:读取/写入位置冲突——从去掉字符串所有空格说起</a>
 			</li>
 		</ul>
 	</section>
