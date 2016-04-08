@@ -38,6 +38,17 @@
 		<div class="col-md-9" id="blog-main" role="main">
 		  	<!--article recycle-->
 			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/cseries/tcpdumpwiresharkclosewait1.html">使用TCPDUMP和Wireshark排查服务端CLOSE_WAIT（一）</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2016-02-26 18:41 | 分类：<a href="https://typecodes.com/cseries/index.html">cseries</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>在Linux后端服务网络通信开发中，可能会遇到CLOSE_WAIT的状况。引起TCP CLOSE_WAIT状态的情况很多，归根结底还是由于被动关闭的一方没有关闭socket链路导致的。这篇文章主要是通过用一个简单的例子通过TCPDUMP和Wireshark这两个工具来模拟产生CLOSE_WAIT的情况，<a href="https://typecodes.com/cseries/tcpdumpwiresharkclosewait2.html" title="《使用TCPDUMP和Wireshark排查服务端CLOSE_WAIT（二）》">下一篇</a>主要是对这个问题的原理解释。</p>
+<p><img alt="CentOS服务端建立监听端口" src="https://o3cex9zsl.qnssl.com/2016/02/server_socket_8000.png" title="CentOS服务端建立监听端口" /></p>
+
+	<p class="more"><a href="https://typecodes.com/cseries/tcpdumpwiresharkclosewait1.html" title="使用TCPDUMP和Wireshark排查服务端CLOSE_WAIT（一）">- 阅读剩余部分 -</a></p>
+			</article>
+			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/cseries/multilprocessthreadgdb.html">Linux多进程和多线程的一次gdb调试实例</a></h2>
 <ul class="post-meta">
 	<li>作者：vfhky | 时间：2016-02-25 23:18 | 分类：<a href="https://typecodes.com/cseries/index.html">cseries</a></li>
@@ -123,24 +134,6 @@ collect2: error: ld returned 1 exit status
 
 	<p class="more"><a href="https://typecodes.com/cseries/gcclderrlibrarypath.html" title="Linux gcc链接动态库出错：LIBRARY_PATH和LD_LIBRARY_PATH的区别">- 阅读剩余部分 -</a></p>
 			</article>
-			<article class="post">
-<h2 class="post-title"><a href="https://typecodes.com/cseries/unixsigtermkill.html">Unix系统进程对SIGTERM、SIGUSR1和SIGUSR2信号处理</a></h2>
-<ul class="post-meta">
-	<li>作者：vfhky | 时间：2015-08-05 17:41 | 分类：<a href="https://typecodes.com/cseries/index.html">cseries</a></li>
-</ul>
-<div class="post-content fmt">
-	<p>好久没更新博客了，写篇文章除除草。这篇文章主要通过简单的例子说明一下Unix/Linux进程中如果捕捉和处理<code>SIGTERM</code>、<code>SIGUSR1</code>和<code>SIGUSR2</code>信号。</p>
-<p>先说明一下这三个信号：</p>
-<div class="highlight"><pre>信号(signal)是*nix系统中进程之间通信(IPC)的一种常见方式。
-SIGTERM：进程终止信号，效果等同于*nix shell中不带-9的kill命令；
-SIGUSR1：保留给用户使用的信号；
-SIGUSR2：同SIGUSR1，保留给用户使用的信号。
-</pre></div>
-
-
-
-	<p class="more"><a href="https://typecodes.com/cseries/unixsigtermkill.html" title="Unix系统进程对SIGTERM、SIGUSR1和SIGUSR2信号处理">- 阅读剩余部分 -</a></p>
-			</article>
 		  	<!--page navigation-->
 <ol class="page-navigator">
 <li class="prev"><a href="https://typecodes.com/cseries/index.html">&laquo; 前一页</a></li><li><a href="https://typecodes.com/cseries/index.html">1</a><li class="current"><a href="https://typecodes.com/cseries/index2.html">2</a>
@@ -163,7 +156,7 @@ SIGUSR2：同SIGUSR1，保留给用户使用的信号。
 		<h3 class="widget-title">Categories</h3>
 		<ul class="widget-list">
 		      <li class="current">
-		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (37)
+		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (38)
 		      </li>
 		      <li class="current">
 		        <a href="https://typecodes.com/csharp/index.html">Csharp</a> (6)
@@ -189,6 +182,9 @@ SIGUSR2：同SIGUSR1，保留给用户使用的信号。
 		<h3 class="widget-title">Recent Posts</h3>
 		<ul class="widget-list">
 			<li class="post">
+				<a href="https://typecodes.com/cseries/networkselfdefineconv.html">自己实现inet_aton和inet_ntoa函数功能</a>
+			</li>
+			<li class="post">
 				<a href="https://typecodes.com/cseries/deldisorderintarrrepeatele.html">C语言删除无序整型数组中的重复元素及时间复杂度</a>
 			</li>
 			<li class="post">
@@ -205,9 +201,6 @@ SIGUSR2：同SIGUSR1，保留给用户使用的信号。
 			</li>
 			<li class="post">
 				<a href="https://typecodes.com/cseries/tcpclosewaitsigpipe.html">Linux TCP通信出现CLOSE_WAIT后导致服务端进程挂掉</a>
-			</li>
-			<li class="post">
-				<a href="https://typecodes.com/cseries/tcpdumpwiresharkclosewait2.html">使用TCPDUMP和Wireshark排查服务端CLOSE_WAIT（二）</a>
 			</li>
 		</ul>
 	</section>

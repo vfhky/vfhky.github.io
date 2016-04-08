@@ -38,6 +38,17 @@
 		<div class="col-md-9" id="blog-main" role="main">
 		  	<!--article recycle-->
 			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/linux/centos7mysqlregularbackup.html">2015博客升级记(七)：CentOS7定时备份MySql的shell脚本</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2015-06-29 22:41 | 分类：<a href="https://typecodes.com/linux/index.html">linux</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>这是<a href="https://typecodes.com/mix/2015updateblog.html" title="查看原文">《2015年博客升级记》</a>系列文章的第七篇，主要记录在Linux系统中如何使用shell脚本备份服务器上的mysql数据库。</p>
+<p><img alt="CentOS7定时备份MySql的shell脚本" src="https://o3cex9zsl.qnssl.com/2015/06/centos_mysql_backup.png" title="CentOS7定时备份MySql的shell脚本" /></p>
+
+	<p class="more"><a href="https://typecodes.com/linux/centos7mysqlregularbackup.html" title="2015博客升级记(七)：CentOS7定时备份MySql的shell脚本">- 阅读剩余部分 -</a></p>
+			</article>
+			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/mix/codinggitsshbug.html">Coding.net上git仓库ssh地址的"bug"</a></h2>
 <ul class="post-meta">
 	<li>作者：vfhky | 时间：2015-06-28 19:34 | 分类：<a href="https://typecodes.com/mix/index.html">mix</a></li>
@@ -125,19 +136,6 @@
 
 	<p class="more"><a href="https://typecodes.com/web/centosmysqlconfig.html" title="CentOS系统MySQL的配置文件my.cnf">- 阅读剩余部分 -</a></p>
 			</article>
-			<article class="post">
-<h2 class="post-title"><a href="https://typecodes.com/web/solvenginxcompileerror.html">Nginx编译安装时常见错误分析</a></h2>
-<ul class="post-meta">
-	<li>作者：vfhky | 时间：2015-06-22 17:02 | 分类：<a href="https://typecodes.com/web/index.html">web</a></li>
-</ul>
-<div class="post-content fmt">
-	<p>这篇文章主要是关于Nginx在编译安装时，可能出现的错误的解决方法。Nginx正确的编译安装操作见前文<a href="https://typecodes.com/web/centos7compilenginx.html" title="查看原文">《2015博客升级记(三)：CentOS 7.1编译安装Nginx1.9.0》</a>。</p>
-<h5>1 Nginx启动脚本错误：env: /etc/init.d/nginx: No such file or directory</h5>
-<p>明明上传了Nginx服务控制脚本<code>nginx</code>，但是在执行<code>service nginx start</code>命令时，却会报上面的错误。</p>
-<p>解决方法：启动脚本的格式有问题，例如该脚本是dos格式，在Linux系统是中无法识别的。可以通过vim打开该文件，如果可以看到出现<code>^M</code>的字符，就可以确定是DOS格式的了。那么可以在vim中执行命令<code>:%s/\r\+$//e</code>，将其转换成Unix格式即可。</p>
-
-	<p class="more"><a href="https://typecodes.com/web/solvenginxcompileerror.html" title="Nginx编译安装时常见错误分析">- 阅读剩余部分 -</a></p>
-			</article>
 		  	<!--page navigation-->
 <ol class="page-navigator">
 <li class="prev"><a href="https://typecodes.com/index4.html">&laquo; 前一页</a></li><li><a href="https://typecodes.com/index.html">1</a>
@@ -165,7 +163,7 @@
 		<h3 class="widget-title">Categories</h3>
 		<ul class="widget-list">
 		      <li class="current">
-		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (37)
+		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (38)
 		      </li>
 		      <li class="current">
 		        <a href="https://typecodes.com/csharp/index.html">Csharp</a> (6)
@@ -191,6 +189,9 @@
 		<h3 class="widget-title">Recent Posts</h3>
 		<ul class="widget-list">
 			<li class="post">
+				<a href="https://typecodes.com/cseries/networkselfdefineconv.html">自己实现inet_aton和inet_ntoa函数功能</a>
+			</li>
+			<li class="post">
 				<a href="https://typecodes.com/cseries/deldisorderintarrrepeatele.html">C语言删除无序整型数组中的重复元素及时间复杂度</a>
 			</li>
 			<li class="post">
@@ -207,9 +208,6 @@
 			</li>
 			<li class="post">
 				<a href="https://typecodes.com/linux/updatesyngithubpelicanshell.html">更新博客生成发布及同步GitHub的Shell脚本：解决文件名空格问题</a>
-			</li>
-			<li class="post">
-				<a href="https://typecodes.com/cseries/sigprocmasksigsuspendapp.html">一个sigprocmask和sigsuspend函数的综合应用</a>
 			</li>
 		</ul>
 	</section>

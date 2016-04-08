@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="zh-CN" class="no-js">
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+  		<meta name="renderer" content="webkit">
+		<title>自己实现inet_aton和inet_ntoa函数功能 &mdash; TypeCodes</title>
+  		<meta name="viewport" content="width=device-width, initial-scale=1">
+  		<link href="https://typecodes.com/atom.xml" type="application/atom+xml" rel="alternate" title="TypeCodes Atom Feed" />
+	  	<link href="https://typecodes.com/feed.xml" type="application/rss+xml" rel="alternate" title="TypeCodes RSS Feed" />
+		<link rel="stylesheet" href="https://o3cex9zsl.qnssl.com/libs/css/pelican-vfhky.css">
+		<script>
+			var _hmt = _hmt || [];
+			(function() {
+			  var hm = document.createElement("script");
+			  hm.src = "//hm.baidu.com/hm.js?c15c4ab8e91ba9ac3d5a12293cc93359";
+			  var s = document.getElementsByTagName("script")[0]; 
+			  s.parentNode.insertBefore(hm, s);
+			})();
+		</script>
+	</head>
+	<body>
+		<!--1. header navigation begin-->
+		<header role="banner" id="te-site-header">
+			<div class="container">
+				<a href="https://typecodes.com" class="te-site-logo" role="logo" target="_self"> TypeCodes</a>
+				<ul class="nav nav-pills" id="te-site-nav" role="navigation">
+					<li><a href="https://typecodes.com">Home</a></li><li><a href="https://typecodes.com/archives.html" title="Archives">Archives</a></li><li><a href="https://typecodes.com/about.html" title="About">About</a></li></ul>
+			</div>
+		</header>
+		<div class="te-headline">
+			<div class="container">
+				<h2 class="te-headline-title"> <a href="https://typecodes.com">TypeCodes</a></h2>
+			</div>
+		</div>
+		<div class="container">
+			<div class="row">
+		<!--2. left sider begin-->
+		<div class="col-md-9" id="blog-main" role="main">
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/cseries/networkselfdefineconv.html">自己实现inet_aton和inet_ntoa函数功能</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2016-04-08 13:11 | 分类：<a href="https://typecodes.com/cseries/index.html">cseries</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>之前遇到过要自己实现<code>inet_aton</code>和<code>inet_ntoa</code>函数的问题，这里总结一下。</p>
+<h4>1 基本知识</h4>
+<p>网络字节序是大端模式，那么内存中的低地址存放的是数据的高位，内存中的高地址存放的是数据的低位。
+<code>inet_aton</code>是将IPv4地址（点分法）转换成对应的十进制整数；而<code>inet_ntoa</code>是将十进制整数转换成对应的IPv4地址（点分法）</p>
+
+
+<h4>2 完整代码</h4>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90</pre></div></td><td class="code"><div class="highlight"><pre><span class="cm">/**</span>
+<span class="cm"> * @FileName    network_selfdefine.c</span>
+<span class="cm"> * @Describe    A simple example for using sigprocmask and sigsuspend functions in linux.</span>
+<span class="cm"> * @Author      vfhky 2016-04-08 13:11 https://typecodes.com/cseries/networkselfdefineconv.html</span>
+<span class="cm"> * @Compile     gcc network_selfdefine.c -o network_selfdefine</span>
+<span class="cm"> */</span>
+<span class="cp">#include &lt;stdio.h&gt;</span>
+<span class="cp">#include &lt;ctype.h&gt;</span>
+<span class="cp">#include &quot;print.h&quot;</span>
+<span class="cp">#define IP_ADRESS &quot;192.168.1.177&quot;</span>
+
+<span class="cm">/*</span>
+<span class="cm"> * 将IPv4地址（点分法）转换成对应的十进制整数</span>
+<span class="cm"> * 原函数声明：</span>
+<span class="cm"> * int inet_aton(const char *cp, struct in_addr *inp);</span>
+<span class="cm"> */</span>
+<span class="kt">unsigned</span> <span class="kt">int</span> <span class="nf">__inet_aton</span><span class="p">(</span> <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">c_ipaddr</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">u_ipaddr</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">u_tmp</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="kt">char</span> <span class="n">c</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">i_base</span> <span class="o">=</span> <span class="mi">10</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">i_shift</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">i_recycle</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+
+    <span class="n">c</span> <span class="o">=</span> <span class="o">*</span><span class="n">c_ipaddr</span><span class="p">;</span>
+    <span class="k">while</span><span class="p">(</span> <span class="mi">1</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">u_tmp</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+        <span class="k">while</span><span class="p">(</span> <span class="mi">1</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="c1">//如果是数字</span>
+            <span class="k">if</span><span class="p">(</span> <span class="n">isdigit</span><span class="p">(</span><span class="n">c</span><span class="p">)</span> <span class="p">)</span>
+            <span class="p">{</span>
+                <span class="n">u_tmp</span> <span class="o">=</span> <span class="p">(</span><span class="n">u_tmp</span> <span class="o">*</span> <span class="n">i_base</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="n">c</span> <span class="o">-</span> <span class="mh">0x30</span><span class="p">);</span>
+                <span class="n">c</span> <span class="o">=</span> <span class="o">*++</span><span class="n">c_ipaddr</span><span class="p">;</span>
+            <span class="p">}</span>
+            <span class="k">else</span>
+            <span class="p">{</span>
+                <span class="c1">//如果不是数字而是.符号，说明.符号前面的数据已经处理完毕</span>
+                <span class="k">break</span><span class="p">;</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+
+        <span class="c1">//字节移位，注意网络字节序是大端模式</span>
+        <span class="n">i_shift</span> <span class="o">=</span> <span class="mi">8</span><span class="o">*</span><span class="n">i_recycle</span><span class="o">++</span><span class="p">;</span>
+        <span class="n">u_tmp</span> <span class="o">&lt;&lt;=</span> <span class="n">i_shift</span><span class="p">;</span>
+        <span class="n">u_ipaddr</span> <span class="o">+=</span> <span class="n">u_tmp</span><span class="p">;</span>
+
+        <span class="c1">//对点(.)符号的处理</span>
+        <span class="k">if</span><span class="p">(</span> <span class="n">c</span> <span class="o">==</span> <span class="sc">&#39;.&#39;</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">c</span> <span class="o">=</span> <span class="o">*++</span><span class="n">c_ipaddr</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="k">else</span>
+        <span class="p">{</span>
+            <span class="c1">//如果是其它符号（例如结束符\0等）则跳出整个循环</span>
+            <span class="k">break</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="c1">//检查是否包含非结束符、空格等符号，是则返回0</span>
+    <span class="k">if</span><span class="p">(</span> <span class="n">c</span> <span class="o">!=</span> <span class="sc">&#39;\0&#39;</span> <span class="o">&amp;&amp;</span> <span class="p">(</span> <span class="o">!</span><span class="n">isspace</span><span class="p">(</span><span class="n">c</span><span class="p">)</span> <span class="p">)</span> <span class="p">)</span>
+        <span class="k">goto</span> <span class="n">ret_0</span><span class="p">;</span>
+
+    <span class="k">return</span> <span class="n">u_ipaddr</span><span class="p">;</span>
+<span class="nl">ret_0</span><span class="p">:</span>
+    <span class="k">return</span> <span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="cm">/**</span>
+<span class="cm"> * 将十进制整数转换成对应的IPv4地址（点分法），其中由于网络字节序是大端表示，所以第一个字节对应的是整数的低位byte[0]</span>
+<span class="cm"> * 原函数声明：</span>
+<span class="cm"> * int inet_aton(const char *cp, struct in_addr *inp);</span>
+<span class="cm"> */</span>
+<span class="k">static</span> <span class="kt">char</span> <span class="n">buffer</span><span class="p">[</span><span class="mi">16</span><span class="p">];</span>
+<span class="kt">char</span> <span class="o">*</span>  <span class="nf">__inet_ntoa</span><span class="p">(</span> <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">in</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="kt">unsigned</span> <span class="kt">char</span> <span class="o">*</span><span class="n">bytes</span> <span class="o">=</span> <span class="p">(</span><span class="kt">unsigned</span> <span class="kt">char</span> <span class="o">*</span><span class="p">)</span> <span class="o">&amp;</span><span class="n">in</span><span class="p">;</span>
+    <span class="n">snprintf</span><span class="p">(</span> <span class="n">buffer</span><span class="p">,</span> <span class="k">sizeof</span> <span class="p">(</span><span class="n">buffer</span><span class="p">),</span> <span class="s">&quot;%d.%d.%d.%d&quot;</span><span class="p">,</span> <span class="n">bytes</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">bytes</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">bytes</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">bytes</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="p">);</span>
+    <span class="k">return</span> <span class="n">buffer</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span> <span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">**</span><span class="n">argv</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">PRINT</span><span class="p">(</span> <span class="s">&quot;IP_ADRESS[%s] ==&gt; [%lu].&quot;</span><span class="p">,</span> <span class="n">IP_ADRESS</span><span class="p">,</span> <span class="n">__inet_aton</span><span class="p">(</span> <span class="n">IP_ADRESS</span> <span class="p">)</span> <span class="p">);</span>
+    <span class="n">PRINT</span><span class="p">(</span> <span class="s">&quot;[%lu]=[0x%x].&quot;</span><span class="p">,</span> <span class="n">__inet_aton</span><span class="p">(</span> <span class="n">IP_ADRESS</span> <span class="p">),</span> <span class="n">__inet_aton</span><span class="p">(</span> <span class="n">IP_ADRESS</span> <span class="p">)</span> <span class="p">);</span>
+    <span class="n">PRINT</span><span class="p">(</span> <span class="s">&quot;Network orders[%lu] ==&gt; [%s].&quot;</span><span class="p">,</span> <span class="n">__inet_aton</span><span class="p">(</span> <span class="n">IP_ADRESS</span> <span class="p">),</span> <span class="n">__inet_ntoa</span><span class="p">(</span><span class="n">__inet_aton</span><span class="p">(</span> <span class="n">IP_ADRESS</span> <span class="p">))</span> <span class="p">);</span>
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</td></tr></table>
+
+<h4>3 编译执行</h4>
+<p>使用<a href="https://typecodes.com/cseries/cppgeneralmakefile.html" title="查看原文">《Linux C/C++工程中可生成ELF、动/静态库文件的通用Makefile》</a>一文中的Makefile文件进行程序编译（当然也可以使用命令进行编译<code>gcc network_selfdefine.c -o network_selfdefine</code>），接着执行该程序，得到如下图所示的结果：</p>
+<p><img alt="自己实现inet_aton和inet_ntoa函数功能" src="https://o3cex9zsl.qnssl.com/2016/04/network_selfdefine.png" title="自己实现inet_aton和inet_ntoa函数功能" /></p>
+<p>需要说明的是从第结果中的<code>[2969675968]=[0xb101a8c0].</code>可以看出，低字节的0xC0(即192)由于大端模式存放在内存中的高位，高字节的0xB1(即177)存放在内存中的低位。</p>
+<h4>4 附录</h4>
+<p>关于<code>inet_aton</code>的man说明：</p>
+<div class="highlight"><pre><span class="p">[</span><span class="n">vfhky</span><span class="err">@</span><span class="n">typecodes</span> <span class="n">xlei</span><span class="p">]</span><span class="err">$</span> <span class="n">man</span> <span class="n">inet_aton</span>
+<span class="n">INET</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>                         <span class="n">Linux</span> <span class="n">Programmer</span><span class="err">&#39;</span><span class="n">s</span> <span class="n">Manual</span>                        <span class="n">INET</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+
+<span class="n">NAME</span>
+       <span class="n">inet_aton</span><span class="p">,</span>   <span class="n">inet_addr</span><span class="p">,</span>   <span class="n">inet_network</span><span class="p">,</span>   <span class="n">inet_ntoa</span><span class="p">,</span>  <span class="n">inet_makeaddr</span><span class="p">,</span>  <span class="n">inet_lnaof</span><span class="p">,</span>
+       <span class="n">inet_netof</span> <span class="o">-</span> <span class="n">Internet</span> <span class="n">address</span> <span class="n">manipulation</span> <span class="n">routines</span>
+
+<span class="n">SYNOPSIS</span>
+       <span class="cp">#include &lt;sys/socket.h&gt;</span>
+       <span class="cp">#include &lt;netinet/in.h&gt;</span>
+       <span class="cp">#include &lt;arpa/inet.h&gt;</span>
+
+       <span class="kt">int</span> <span class="n">inet_aton</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">cp</span><span class="p">,</span> <span class="k">struct</span> <span class="n">in_addr</span> <span class="o">*</span><span class="n">inp</span><span class="p">);</span>
+
+       <span class="kt">in_addr_t</span> <span class="nf">inet_addr</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">cp</span><span class="p">);</span>
+
+       <span class="kt">in_addr_t</span> <span class="nf">inet_network</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">cp</span><span class="p">);</span>
+
+       <span class="kt">char</span> <span class="o">*</span><span class="nf">inet_ntoa</span><span class="p">(</span><span class="k">struct</span> <span class="n">in_addr</span> <span class="n">in</span><span class="p">);</span>
+
+       <span class="k">struct</span> <span class="n">in_addr</span> <span class="nf">inet_makeaddr</span><span class="p">(</span><span class="kt">int</span> <span class="n">net</span><span class="p">,</span> <span class="kt">int</span> <span class="n">host</span><span class="p">);</span>
+
+       <span class="kt">in_addr_t</span> <span class="nf">inet_lnaof</span><span class="p">(</span><span class="k">struct</span> <span class="n">in_addr</span> <span class="n">in</span><span class="p">);</span>
+
+       <span class="kt">in_addr_t</span> <span class="nf">inet_netof</span><span class="p">(</span><span class="k">struct</span> <span class="n">in_addr</span> <span class="n">in</span><span class="p">);</span>
+
+   <span class="n">Feature</span> <span class="n">Test</span> <span class="n">Macro</span> <span class="n">Requirements</span> <span class="k">for</span> <span class="n">glibc</span> <span class="p">(</span><span class="n">see</span> <span class="n">feature_test_macros</span><span class="p">(</span><span class="mi">7</span><span class="p">))</span><span class="o">:</span>
+
+       <span class="n">inet_aton</span><span class="p">(),</span> <span class="n">inet_ntoa</span><span class="p">()</span><span class="o">:</span> <span class="n">_BSD_SOURCE</span> <span class="o">||</span> <span class="n">_SVID_SOURCE</span>
+
+<span class="n">DESCRIPTION</span>
+       <span class="n">inet_aton</span><span class="p">()</span> <span class="n">converts</span> <span class="n">the</span> <span class="n">Internet</span> <span class="n">host</span> <span class="n">address</span> <span class="n">cp</span> <span class="n">from</span> <span class="n">the</span> <span class="n">IPv4</span>  <span class="n">numbers</span><span class="o">-</span><span class="n">and</span><span class="o">-</span><span class="n">dots</span>
+       <span class="n">notation</span>  <span class="n">into</span> <span class="n">binary</span> <span class="n">form</span> <span class="p">(</span><span class="n">in</span> <span class="n">network</span> <span class="n">byte</span> <span class="n">order</span><span class="p">)</span> <span class="n">and</span> <span class="n">stores</span> <span class="n">it</span> <span class="n">in</span> <span class="n">the</span> <span class="n">structure</span>
+       <span class="n">that</span> <span class="n">inp</span> <span class="n">points</span> <span class="n">to</span><span class="p">.</span>  <span class="n">inet_aton</span><span class="p">()</span> <span class="n">returns</span> <span class="n">nonzero</span> <span class="k">if</span> <span class="n">the</span> <span class="n">address</span> <span class="n">is</span> <span class="n">valid</span><span class="p">,</span> <span class="n">zero</span> <span class="k">if</span>
+       <span class="n">not</span><span class="p">.</span>
+</pre></div>
+
+
+<p>关于<code>inet_aton</code>的man说明：</p>
+<div class="highlight"><pre><span class="p">[</span><span class="n">vfhky</span><span class="err">@</span><span class="n">typecodes</span> <span class="o">~</span><span class="p">]</span><span class="err">$</span> <span class="n">man</span> <span class="n">inet_ntoa</span>
+<span class="n">INET</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>                         <span class="n">Linux</span> <span class="n">Programmer</span><span class="err">&#39;</span><span class="n">s</span> <span class="n">Manual</span>                        <span class="n">INET</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+
+<span class="n">NAME</span>
+       <span class="n">inet_aton</span><span class="p">,</span>   <span class="n">inet_addr</span><span class="p">,</span>   <span class="n">inet_network</span><span class="p">,</span>   <span class="n">inet_ntoa</span><span class="p">,</span>  <span class="n">inet_makeaddr</span><span class="p">,</span>  <span class="n">inet_lnaof</span><span class="p">,</span>
+       <span class="n">inet_netof</span> <span class="o">-</span> <span class="n">Internet</span> <span class="n">address</span> <span class="n">manipulation</span> <span class="n">routines</span>
+
+<span class="n">SYNOPSIS</span>
+       <span class="cp">#include &lt;sys/socket.h&gt;</span>
+       <span class="cp">#include &lt;netinet/in.h&gt;</span>
+       <span class="cp">#include &lt;arpa/inet.h&gt;</span>
+
+       <span class="kt">int</span> <span class="n">inet_aton</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">cp</span><span class="p">,</span> <span class="k">struct</span> <span class="n">in_addr</span> <span class="o">*</span><span class="n">inp</span><span class="p">);</span>
+
+       <span class="kt">in_addr_t</span> <span class="nf">inet_addr</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">cp</span><span class="p">);</span>
+
+       <span class="kt">in_addr_t</span> <span class="nf">inet_network</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">cp</span><span class="p">);</span>
+
+       <span class="kt">char</span> <span class="o">*</span><span class="nf">inet_ntoa</span><span class="p">(</span><span class="k">struct</span> <span class="n">in_addr</span> <span class="n">in</span><span class="p">);</span>
+
+       <span class="k">struct</span> <span class="n">in_addr</span> <span class="nf">inet_makeaddr</span><span class="p">(</span><span class="kt">int</span> <span class="n">net</span><span class="p">,</span> <span class="kt">int</span> <span class="n">host</span><span class="p">);</span>
+
+       <span class="kt">in_addr_t</span> <span class="nf">inet_lnaof</span><span class="p">(</span><span class="k">struct</span> <span class="n">in_addr</span> <span class="n">in</span><span class="p">);</span>
+
+       <span class="kt">in_addr_t</span> <span class="nf">inet_netof</span><span class="p">(</span><span class="k">struct</span> <span class="n">in_addr</span> <span class="n">in</span><span class="p">);</span>
+
+   <span class="n">Feature</span> <span class="n">Test</span> <span class="n">Macro</span> <span class="n">Requirements</span> <span class="k">for</span> <span class="n">glibc</span> <span class="p">(</span><span class="n">see</span> <span class="n">feature_test_macros</span><span class="p">(</span><span class="mi">7</span><span class="p">))</span><span class="o">:</span>
+
+       <span class="n">inet_aton</span><span class="p">(),</span> <span class="n">inet_ntoa</span><span class="p">()</span><span class="o">:</span> <span class="n">_BSD_SOURCE</span> <span class="o">||</span> <span class="n">_SVID_SOURCE</span>
+
+<span class="n">DESCRIPTION</span>
+       <span class="n">inet_aton</span><span class="p">()</span> <span class="n">converts</span> <span class="n">the</span> <span class="n">Internet</span> <span class="n">host</span> <span class="n">address</span> <span class="n">cp</span> <span class="n">from</span> <span class="n">the</span> <span class="n">IPv4</span>  <span class="n">numbers</span><span class="o">-</span><span class="n">and</span><span class="o">-</span><span class="n">dots</span>
+       <span class="n">notation</span>  <span class="n">into</span> <span class="n">binary</span> <span class="n">form</span> <span class="p">(</span><span class="n">in</span> <span class="n">network</span> <span class="n">byte</span> <span class="n">order</span><span class="p">)</span> <span class="n">and</span> <span class="n">stores</span> <span class="n">it</span> <span class="n">in</span> <span class="n">the</span> <span class="n">structure</span>
+       <span class="n">that</span> <span class="n">inp</span> <span class="n">points</span> <span class="n">to</span><span class="p">.</span>  <span class="n">inet_aton</span><span class="p">()</span> <span class="n">returns</span> <span class="n">nonzero</span> <span class="k">if</span> <span class="n">the</span> <span class="n">address</span> <span class="n">is</span> <span class="n">valid</span><span class="p">,</span> <span class="n">zero</span> <span class="k">if</span>
+       <span class="n">not</span><span class="p">.</span>
+</pre></div>
+		    	<p class="tags">
+					<div class="post-share">
+						<ul class="post-shareul clearfix">
+							<li class="post-shareli">
+								<a href="http://note.youdao.com/memory/?url=https://typecodes.com/cseries/networkselfdefineconv.html&title=自己实现inet_aton和inet_ntoa函数功能" class="post-sharea ydshare" target="_blank" rel="nofollow">有道云笔记</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://v.t.sina.com.cn/share/share.php?url=https://typecodes.com/cseries/networkselfdefineconv.html&title=自己实现inet_aton和inet_ntoa函数功能&source=https://typecodes.com" class="post-sharea wbshare" target="_blank" rel="nofollow">新浪微博</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://v.t.qq.com/share/share.php?title=自己实现inet_aton和inet_ntoa函数功能&url=https://typecodes.com/cseries/networkselfdefineconv.html&site=https://typecodes.com" class="post-sharea twbshare" target="_blank" rel="nofollow">腾讯微博</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=https://typecodes.com/cseries/networkselfdefineconv.html&title=自己实现inet_aton和inet_ntoa函数功能&content='utf-8'" class="post-sharea qzoneshare" target="_blank" rel="nofollow">QZone</a>
+							</li>
+						</ul>
+					</div>
+					<div>
+						Tags: <a href="https://typecodes.com/tag/vsnprintf.html">vsnprintf</a>,<a href="https://typecodes.com/tag/zi-fu-chuan-ge-shi-hua.html">字符串格式化</a>					</div>
+				</p>
+			</article>
+			
+			<div id="comments">
+				<h4 class="num">Comments &raquo;</h4>
+		    	<div id="disqus_thread" aria-live="polite"></div>
+		    	<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+		    </div>
+		</div>
+		<!--3. right sider begin-->
+<div class="col-md-3" id="blog-secondary" role="complementary">
+	<section class="widget">
+		<ul class="widget-list">
+			<form id="search" method="get" action="https://typecodes.com/search.html">
+				<input type="text" name="q" id="s" size="20" x-webkit-speech="" x-webkit-grammar="builtin:search" onwebkitspeechchange="this.value = this.value.replace(this.defaultValue, '')" value="Google...." onfocus="this.value = (this.value == this.defaultValue) ? '' : this.value" onblur="this.value = (this.value == '') ? this.defaultValue : this.value">
+			</form>
+		</ul>
+	</section>
+	<section class="widget">
+		<h3 class="widget-title">Categories</h3>
+		<ul class="widget-list">
+		      <li class="current">
+		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (38)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/csharp/index.html">Csharp</a> (6)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/database/index.html">Database</a> (11)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/java/index.html">Java</a> (1)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/linux/index.html">Linux</a> (21)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/mix/index.html">Mix</a> (54)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/web/index.html">Web</a> (88)
+		      </li>
+		</ul>
+	</section>
+	<section class="widget">
+		<h3 class="widget-title">Recent Posts</h3>
+		<ul class="widget-list">
+			<li class="post">
+				<a href="https://typecodes.com/cseries/networkselfdefineconv.html">自己实现inet_aton和inet_ntoa函数功能</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/deldisorderintarrrepeatele.html">C语言删除无序整型数组中的重复元素及时间复杂度</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/apuesingledaemonprocess.html">UNIX环境高级编程（APUE）之单实例守护进程</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/kill0checkprocessifexist.html">Linux使用KILL 0检测进程是否存在</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/vsnprintffilenameline.html">vsnprintf字符串格式化输出实例：日志中打印程序名和行号</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/mix/disqushtmltaghighlight.html">Disqus支持的HTML标签和代码高亮方法</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/updatesyngithubpelicanshell.html">更新博客生成发布及同步GitHub的Shell脚本：解决文件名空格问题</a>
+			</li>
+		</ul>
+	</section>
+	<section class="widget widget-feed">
+		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
+	</section>
+</div>
+				</div>
+			</div>
+		</div>
+		<!--4. bottom begin-->
+		<footer id="te-site-footer"><div class="container">
+	<div class="row" role="contentinfo">
+		<section class="col-md-2 col-md-offset-1">
+			<h3>Links</h3>
+			<ul><li><a href="http://blog.vmeila.com/" title="墨迹的Blog" target="_blank">vmeila</a></li><li><a href="https://tinygg.cn/" title="四道风’s 博客" target="_blank">tinygg</a></li><li><a href="https://edi.wang/" title="Edi Wang" target="_blank">Edi Wang</a></li></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul>
+				<li><a href="https://typecodes.com/links.html">More..</a></li>
+			</ul>
+		</section>
+		<section class="col-md-2">
+			<h3>Following</h3>
+			<ul>
+				<li><a href="https://github.com/vfhky" class="following github" target="_blank" rel="external nofollow">GitHub</a></li>
+				<li><a href="http://weibo.com/typecodes" class="following weibo" target="_blank" rel="external nofollow">Weibo</a></li>
+				<li><a href="http://vfhky.sinaapp.com" class="following sae" target="_blank" rel="external nofollow">SAE</a></li>
+				<li><a href="http://www.dwz.cn/mYiwa" class="following qqgroup" target="_blank" rel="external nofollow">Group</a></li>
+			</ul>
+		</section>
+		<div class="col-md-12 copyright">
+			<a href="#top"><i class="i-logo-s">TOP</i></a>
+			<p>
+				&copy;  2012-2016 							<a href="https://typecodes.com">TypeCodes</a>. All Rights Reserved<br>Powered by <a href="http://getpelican.com" rel="external" target="_blank">Pelican</a>. <a href="http://www.miitbeian.gov.cn" rel="external nofollow" target="_blank">粤ICP备14050695号</a>
+			</p>
+		</div>
+	</div>
+</div>
+</footer>
+<script type="text/javascript">
+	var disqus_shortname = 'typecodes';
+	var disqus_identifier = '/cseries/networkselfdefineconv.html';
+	var disqus_url = 'https://typecodes.com/cseries/networkselfdefineconv.html';
+	var disqus_title = '自己实现inet_aton和inet_ntoa函数功能';
+	(function() {
+		var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+		dsq.src = "//" + disqus_shortname + '.disqus.com/embed.js';
+		(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	 })();
+</script>
+	</body>
+</html>
