@@ -3,7 +3,7 @@
 	<head>
 		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
   		<meta name="renderer" content="webkit">
-		<title>标签 vsnprintf 下的文章 - TypeCodes</title>
+		<title>标签 inet_aton 下的文章 - TypeCodes</title>
   		<meta name="viewport" content="width=device-width, initial-scale=1">
   		<link href="https://typecodes.com/atom.xml" type="application/atom+xml" rel="alternate" title="TypeCodes Atom Feed" />
 	  	<link href="https://typecodes.com/feed.xml" type="application/rss+xml" rel="alternate" title="TypeCodes RSS Feed" />
@@ -38,14 +38,17 @@
 		<div class="col-md-9" id="blog-main" role="main">
 		  	<!--article recycle-->
 			<article class="post">
-<h2 class="post-title"><a href="https://typecodes.com/cseries/vsnprintffilenameline.html">vsnprintf字符串格式化输出实例：日志中打印程序名和行号</a></h2>
+<h2 class="post-title"><a href="https://typecodes.com/cseries/networkselfdefineconv.html">自己实现inet_aton和inet_ntoa函数功能</a></h2>
 <ul class="post-meta">
-	<li>作者：vfhky | 时间：2016-03-13 23:28 | 分类：<a href="https://typecodes.com/cseries/index.html">cseries</a></li>
+	<li>作者：vfhky | 时间：2016-04-08 13:11 | 分类：<a href="https://typecodes.com/cseries/index.html">cseries</a></li>
 </ul>
 <div class="post-content fmt">
-	<p>在Linux C/C++程序中打印日志时，可能会由于需要打印未知个数的变量参数，那么<code>vsnprintf</code>函数就排上用场了。这里使用一个简单的C程序例子，演示在打印源程序文件名和该打印函数所在的行号的同时，使用vsnprintf函数打印个数未知的参数变量。</p>
+	<p>之前遇到过要自己实现<code>inet_aton</code>和<code>inet_ntoa</code>函数的问题，这里总结一下。</p>
+<h4>1 基本知识</h4>
+<p>网络字节序是大端模式，那么内存中的低地址存放的是数据的高位，内存中的高地址存放的是数据的低位。
+<code>inet_aton</code>是将IPv4地址（点分法）转换成对应的十进制整数；而<code>inet_ntoa</code>是将十进制整数转换成对应的IPv4地址（点分法）</p>
 
-	<p class="more"><a href="https://typecodes.com/cseries/vsnprintffilenameline.html" title="vsnprintf字符串格式化输出实例：日志中打印程序名和行号">- 阅读剩余部分 -</a></p>
+	<p class="more"><a href="https://typecodes.com/cseries/networkselfdefineconv.html" title="自己实现inet_aton和inet_ntoa函数功能">- 阅读剩余部分 -</a></p>
 			</article>
 		  	<!--page navigation-->
 <ol class="page-navigator">
@@ -89,7 +92,7 @@
 		<h3 class="widget-title">Recent Posts</h3>
 		<ul class="widget-list">
 			<li class="post">
-				<a href="https://typecodes.com/cseries/vsnprintffilenameline.html">vsnprintf字符串格式化输出实例：日志中打印程序名和行号</a>
+				<a href="https://typecodes.com/cseries/networkselfdefineconv.html">自己实现inet_aton和inet_ntoa函数功能</a>
 			</li>
 		</ul>
 	</section>
