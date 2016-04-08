@@ -191,7 +191,7 @@
 &lt;h4&gt;3 编译执行&lt;/h4&gt;
 &lt;p&gt;使用&lt;a href="https://typecodes.com/cseries/cppgeneralmakefile.html" title="查看原文"&gt;《Linux C/C++工程中可生成ELF、动/静态库文件的通用Makefile》&lt;/a&gt;一文中的Makefile文件进行程序编译（当然也可以使用命令进行编译&lt;code&gt;gcc network_selfdefine.c -o network_selfdefine&lt;/code&gt;），接着执行该程序，得到如下图所示的结果：&lt;/p&gt;
 &lt;p&gt;&lt;img alt="自己实现inet_aton和inet_ntoa函数功能" src="https://o3cex9zsl.qnssl.com/2016/04/network_selfdefine.png" title="自己实现inet_aton和inet_ntoa函数功能" /&gt;&lt;/p&gt;
-&lt;p&gt;需要说明的是从第结果中的&lt;code&gt;[2969675968]=[0xb101a8c0].&lt;/code&gt;可以看出，低字节的0xC0(即192)由于大端模式存放在内存中的高位，高字节的0xB1(即177)存放在内存中的低位。&lt;/p&gt;
+&lt;p&gt;需要说明的是从第87行输出的&lt;code&gt;[2969675968]=[0xb101a8c0].&lt;/code&gt;可以看出，低字节的0xC0(即192)由于网络字节序大端模式的关系存放在内存中的高位，高字节的0xB1(即177)存放在内存中的低位。&lt;/p&gt;
 &lt;h4&gt;4 附录&lt;/h4&gt;
 &lt;p&gt;关于&lt;code&gt;inet_aton&lt;/code&gt;的man说明：&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;vfhky&lt;/span&gt;&lt;span class="err"&gt;@&lt;/span&gt;&lt;span class="n"&gt;typecodes&lt;/span&gt; &lt;span class="n"&gt;xlei&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;&lt;span class="err"&gt;$&lt;/span&gt; &lt;span class="n"&gt;man&lt;/span&gt; &lt;span class="n"&gt;inet_aton&lt;/span&gt;
