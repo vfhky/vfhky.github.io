@@ -42,10 +42,10 @@
 	<li>作者：vfhky | 时间：2016-04-08 13:11 | 分类：<a href="https://typecodes.com/cseries/index.html">cseries</a></li>
 </ul>
 <div class="post-content fmt">
-	<p>之前遇到过要自己实现<code>inet_aton</code>和<code>inet_ntoa</code>函数的问题，这里总结一下。</p>
+	<p>之前遇到过要自己实现<code>inet_aton</code>和<code>inet_ntoa</code>函数功能的问题，这里总结一下。</p>
 <h4>1 基本知识</h4>
 <p>网络字节序是大端模式，那么内存中的低地址存放的是数据的高位，内存中的高地址存放的是数据的低位。
-<code>inet_aton</code>是将IPv4地址（点分法）转换成对应的十进制整数；而<code>inet_ntoa</code>是将十进制整数转换成对应的IPv4地址（点分法）</p>
+<code>inet_aton</code>是将IPv4地址（点分法）转换成对应的十进制整数；而<code>inet_ntoa</code>是将十进制整数转换成对应的IPv4地址（点分法）。</p>
 
 
 <h4>2 完整代码</h4>
