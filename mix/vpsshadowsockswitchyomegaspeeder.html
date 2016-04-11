@@ -55,7 +55,7 @@
 <p>1、一台国外的VPS：BZ买的是<a href="https://bandwagonhost.com/vps-hosting.php" title="点击进入">搬瓦工(bandwagon) VPS</a>；</p>
 <p>2、搭Shadowsocks梯子的给力教程：来自<a href="https://www.ifshow.com/centos-7-installation-and-configuration-shadowsocks/" title="查看教程">boxwang</a>童鞋；</p>
 <p>3、net-speeder优化Shadowsocks梯子的给力教程：来自<a href="http://wuchong.me/blog/2015/02/02/shadowsocks-install-and-optimize/">Jark</a>童鞋；不过建议将net-speeder采用后台运行的模式，只要将<code>./net_speeder eth0 "ip"</code>改成<code>./net_speeder eth0 "ip" &amp;</code>即可。</p>
-<p>4、Chrome插件Proxy SwitchyOmega 2.3.15：<a href="https://o3cex9zsl.qnssl.com/libs/google/SwitchyOmega.crx" title="点击下载">本地备份下载</a>，完成后把它拖到Chrome浏览器中就行了；</p>
+<p>4、Chrome插件Proxy SwitchyOmega 2.3.15：<a href="https://o3cex9zsl.qnssl.com/libs/google/SwitchyOmega.crx" title="点击下载">本地备份下载</a>，完成后把它拖到Chrome浏览器中就行了，然后导入<a href="https://o3cex9zsl.qnssl.com/libs/google/OmegaOptions.bak" title="点击下载">SwitchyOmega的配置文件</a>即可；</p>
 <p>5、Shadowsocks的Windows GUI客户端：<a href="https://o3cex9zsl.qnssl.com/libs/google/Shadowsocks.exe" title="点击下载">本地备份下载</a>，完成后直接运行然后配置VPS服务器上Shadowsocks的IP、端口和密码就行了。话说GitHub上的<a href="https://github.com/shadowsocks/shadowsocks-windows" title="点击查看">C#源码</a>用vs编译不过去，不知道有没有遇到过的童鞋。</p>
 <h4>3 利用Crontab定时执行shell脚本清除tcp连接</h4>
 <p>net-speeder缺点就是如果同时连接Shadowsocks服务端的请求过多的话，会导致梯子速度变慢。如下图所示，Shadowsocks服务端tcp出现了很多<code>SYN_RECV</code>、<code>TIME_WAIT</code>等状态。</p>
