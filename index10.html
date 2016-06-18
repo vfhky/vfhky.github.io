@@ -38,6 +38,19 @@
 		<div class="col-md-9" id="blog-main" role="main">
 		  	<!--article recycle-->
 			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/web/shutdownblogssl.html">决定关闭博客使用SSL证书访问</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2014-10-17 23:37 | 分类：<a href="https://typecodes.com/web/index.html">web</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>前几天博客使用了NameCheap的证书，将原来的http访问改成了https访问（详戳<a href="https://typecodes.com/web/lnmppositivessl.html" title="阿里云CentOS 6.5系统LNMP环境安装SSL证书">这里</a>）。由于下面的原因，现决定不再使用SSL证书，恢复http访问。</p>
+<p><img alt="使用SSL证书访问博客" src="https://o3cex9zsl.qnssl.com/2014/10/blogbeginusessl.png" title="使用SSL证书访问博客" /></p>
+<h5>1 无法通过https加载站外静态资源文件</h5>
+<p>主要是因为目前博客所有的静态资源文件，如css样式文件、js脚本文件、图片文件等，都使用了新浪SCS云存储。最初，博客程序中还存在类似于<code>https://o3cex9zsl.qnssl.com/libs/img/typecodes.png</code>这种http请求，所以浏览器地址栏会出现黄色警告图标。后来将所有的http请求全部改成https，结果浏览器地址栏图标变成正常的绿色图标了。</p>
+
+	<p class="more"><a href="https://typecodes.com/web/shutdownblogssl.html" title="决定关闭博客使用SSL证书访问">- 阅读剩余部分 -</a></p>
+			</article>
+			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/web/lnmppositivessl.html">阿里云CentOS 6.5系统LNMP环境安装SSL证书</a></h2>
 <ul class="post-meta">
 	<li>作者：vfhky | 时间：2014-10-15 00:02 | 分类：<a href="https://typecodes.com/web/index.html">web</a></li>
@@ -141,17 +154,6 @@ SSL证书提供商：    PositiveSSL from Namecheap
 
 	<p class="more"><a href="https://typecodes.com/mix/getsaegift.html" title="千里佳音，收到新浪云(SAE)的一份礼物">- 阅读剩余部分 -</a></p>
 			</article>
-			<article class="post">
-<h2 class="post-title"><a href="https://typecodes.com/cseries/trimspace0xC0000005.html">未经处理的异常:0xC0000005:读取/写入位置冲突——从去掉字符串所有空格说起</a></h2>
-<ul class="post-meta">
-	<li>作者：vfhky | 时间：2014-08-30 13:17 | 分类：<a href="https://typecodes.com/cseries/index.html">cseries</a></li>
-</ul>
-<div class="post-content fmt">
-	<p>在c/c++中，有时会遇到0xC0000005: 读取/写入位置冲突的问题。明明编译器编译通过，但是在执行的时候就出现<code>Segmentation fault(coredump)</code>了。</p>
-<p>该错误是由于内存访问出错引起的，最常见于指针的错误使用和数组越界等。下面是博主之前的一个经历——去掉一个字符串前后的所有空格。</p>
-
-	<p class="more"><a href="https://typecodes.com/cseries/trimspace0xC0000005.html" title="未经处理的异常:0xC0000005:读取/写入位置冲突——从去掉字符串所有空格说起">- 阅读剩余部分 -</a></p>
-			</article>
 		  	<!--page navigation-->
 <ol class="page-navigator">
 <li class="prev"><a href="https://typecodes.com/index9.html">&laquo; 前一页</a></li><li><a href="https://typecodes.com/index.html">1</a>
@@ -190,7 +192,7 @@ SSL证书提供商：    PositiveSSL from Namecheap
 		        <a href="https://typecodes.com/java/index.html">Java</a> (1)
 		      </li>
 		      <li class="current">
-		        <a href="https://typecodes.com/linux/index.html">Linux</a> (21)
+		        <a href="https://typecodes.com/linux/index.html">Linux</a> (22)
 		      </li>
 		      <li class="current">
 		        <a href="https://typecodes.com/mix/index.html">Mix</a> (54)
@@ -203,6 +205,9 @@ SSL证书提供商：    PositiveSSL from Namecheap
 	<section class="widget">
 		<h3 class="widget-title">Recent Posts</h3>
 		<ul class="widget-list">
+			<li class="post">
+				<a href="https://typecodes.com/linux/handlemakefilebysed.html">使用sed命令批量处理Makefile文件的脚本</a>
+			</li>
 			<li class="post">
 				<a href="https://typecodes.com/cseries/networkselfdefineconv.html">自己实现inet_aton和inet_ntoa函数功能</a>
 			</li>
@@ -220,9 +225,6 @@ SSL证书提供商：    PositiveSSL from Namecheap
 			</li>
 			<li class="post">
 				<a href="https://typecodes.com/mix/disqushtmltaghighlight.html">Disqus支持的HTML标签和代码高亮方法</a>
-			</li>
-			<li class="post">
-				<a href="https://typecodes.com/linux/updatesyngithubpelicanshell.html">更新博客生成发布及同步GitHub的Shell脚本：解决文件名空格问题</a>
 			</li>
 		</ul>
 	</section>

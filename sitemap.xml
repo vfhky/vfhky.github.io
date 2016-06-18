@@ -5,23 +5,30 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>https://typecodes.com/</loc>
-<lastmod>2016-04-13T11:08:23-00:00</lastmod>
+<lastmod>2016-06-18T16:03:56-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://typecodes.com/archives.html</loc>
-<lastmod>2016-04-13T11:08:23-00:00</lastmod>
+<lastmod>2016-06-18T16:03:56-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://typecodes.com/categories.html</loc>
-<lastmod>2016-04-13T11:08:23-00:00</lastmod>
+<lastmod>2016-06-18T16:03:56-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
+</url>
+
+<url>
+<loc>https://typecodes.com/linux/handlemakefilebysed.html</loc>
+<lastmod>2016-06-18T15:56:00+08:00</lastmod>
+<changefreq>monthly</changefreq>
+<priority>0.7</priority>
 </url>
 
 <url>
@@ -1587,7 +1594,7 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>https://typecodes.com/linux/index.html</loc>
-<lastmod>2016-03-02T23:55:00+08:06</lastmod>
+<lastmod>2016-06-18T15:56:00+08:06</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
@@ -2006,6 +2013,13 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 </url>
 
 <url>
+<loc>https://typecodes.com/tag/asp.html</loc>
+<lastmod>2012-06-30T00:08:00+08:06</lastmod>
+<changefreq>daily</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
 <loc>https://typecodes.com/tag/shadowsocks.html</loc>
 <lastmod>2015-08-09T14:09:00+08:06</lastmod>
 <changefreq>daily</changefreq>
@@ -2104,8 +2118,8 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 </url>
 
 <url>
-<loc>https://typecodes.com/tag/asp.html</loc>
-<lastmod>2012-06-30T00:08:00+08:06</lastmod>
+<loc>https://typecodes.com/tag/sed.html</loc>
+<lastmod>2016-06-18T15:56:00+08:06</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
@@ -2574,7 +2588,7 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>https://typecodes.com/tag/makefile.html</loc>
-<lastmod>2015-08-14T20:27:00+08:06</lastmod>
+<lastmod>2016-06-18T15:56:00+08:06</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
@@ -2644,7 +2658,7 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>https://typecodes.com/tag/shell.html</loc>
-<lastmod>2015-12-18T21:01:00+08:06</lastmod>
+<lastmod>2016-06-18T15:56:00+08:06</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>

@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="zh-CN" class="no-js">
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+  		<meta name="renderer" content="webkit">
+		<title>使用sed命令批量处理Makefile文件的脚本 &mdash; TypeCodes</title>
+  		<meta name="viewport" content="width=device-width, initial-scale=1">
+  		<link href="https://typecodes.com/atom.xml" type="application/atom+xml" rel="alternate" title="TypeCodes Atom Feed" />
+	  	<link href="https://typecodes.com/feed.xml" type="application/rss+xml" rel="alternate" title="TypeCodes RSS Feed" />
+		<link rel="stylesheet" href="https://o3cex9zsl.qnssl.com/libs/css/pelican-vfhky.css">
+		<script>
+			var _hmt = _hmt || [];
+			(function() {
+			  var hm = document.createElement("script");
+			  hm.src = "//hm.baidu.com/hm.js?c15c4ab8e91ba9ac3d5a12293cc93359";
+			  var s = document.getElementsByTagName("script")[0]; 
+			  s.parentNode.insertBefore(hm, s);
+			})();
+		</script>
+	</head>
+	<body>
+		<!--1. header navigation begin-->
+		<header role="banner" id="te-site-header">
+			<div class="container">
+				<a href="https://typecodes.com" class="te-site-logo" role="logo" target="_self"> TypeCodes</a>
+				<ul class="nav nav-pills" id="te-site-nav" role="navigation">
+					<li><a href="https://typecodes.com">Home</a></li><li><a href="https://typecodes.com/archives.html" title="Archives">Archives</a></li><li><a href="https://typecodes.com/about.html" title="About">About</a></li></ul>
+			</div>
+		</header>
+		<div class="te-headline">
+			<div class="container">
+				<h2 class="te-headline-title"> <a href="https://typecodes.com">TypeCodes</a></h2>
+			</div>
+		</div>
+		<div class="container">
+			<div class="row">
+		<!--2. left sider begin-->
+		<div class="col-md-9" id="blog-main" role="main">
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/linux/handlemakefilebysed.html">使用sed命令批量处理Makefile文件的脚本</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2016-06-18 15:56 | 分类：<a href="https://typecodes.com/linux/index.html">linux</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>前面写了一篇文章<a href="https://typecodes.com/cseries/cppgeneralmakefile.html" title="查看原文">《Linux C/C++工程中可生成ELF、动/静态库文件的通用Makefile》</a>，里面的Makefile代码有个不好的地方需要修改。当编译.cpp文件时，使用的<code>STD_OPT</code>变量仍然是编译.c文件时的参数<code>-std=c99</code>，这个在C++中是不支持的。</p>
+<p><img alt="使用sed命令批量处理Makefile文件的脚本" src="https://o3cex9zsl.qnssl.com/2016/06/handle_makefile.png" title="使用sed命令批量处理Makefile文件的脚本" /></p>
+
+
+<h4>1 sed命令的简要说明</h4>
+<p>由于sed命令可用的参数太多了，这里只列举脚本中用到的几个参数：</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3</pre></div></td><td class="code"><div class="highlight"><pre>sed -i：直接修改文件而不是将处理的结果在屏幕上输出；
+sed -e：多个操作action按顺序执行；
+sed -e &#39;/help:/ a 要追加的内容&#39;：表示在help:文字后面追加内容。
+</pre></div>
+</td></tr></table>
+
+<h4>2 具体代码</h4>
+<p>代码比较简单，直接执行命令<code>./handle_makefile.sh</code>即可。其中<code>handle</code>函数主要用到了正则替换，追加，删除这三个action操作。</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46</pre></div></td><td class="code"><div class="highlight"><pre><span class="c">#!/bin/bash</span>
+<span class="c"># FileName:      handle_makefile.sh</span>
+<span class="c"># Description:   Simple usage of sed command to modify many Makefiles in batch processing.</span>
+<span class="c"># Simple Usage:  ./handle_makefile.sh</span>
+<span class="c"># (c) 2016 vfhky https://typecodes.com/linux/handlemakefilebysed.html</span>
+<span class="c"># https://github.com/vfhky/shell-tools/blob/master/filehandle/handle_makefile.sh</span>
+
+
+<span class="c"># Dir to be handled.</span>
+<span class="nv">SRC_DIR</span><span class="o">=</span><span class="s2">&quot;/home/vfhky/shell&quot;</span>
+<span class="c"># The makefile you want to modify.</span>
+<span class="nv">SEARCH_NAME</span><span class="o">=</span><span class="s2">&quot;Makefile&quot;</span>
+
+<span class="c">####</span>
+<span class="c"># @param:   $1  Name of the file</span>
+<span class="c">####</span>
+<span class="k">function</span> handle<span class="o">()</span>
+<span class="o">{</span>
+    <span class="nb">echo</span> -e <span class="s1">&#39;Handling file=[&#39;</span><span class="nv">$1</span><span class="s1">&#39;]&#39;</span>
+    sed -i <span class="se">\</span>
+        -e <span class="s1">&#39;s/-std=c99 -D_GNU_SOURCE /-D_GNU_SOURCE/&#39;</span>   <span class="se">\</span>
+        -e <span class="s1">&#39;s/CC        += $(STD_OPT)/CC        += -std=c99 $(STD_OPT)/&#39;</span>    <span class="se">\</span>
+        -e <span class="s1">&#39;/help:/ a\</span>
+<span class="s1">    @echo CC=[$(CC)]\</span>
+<span class="s1">    @echo CXX=[$(CXX)]\</span>
+<span class="s1">    @echo CFLAGS=[$(CFLAGS)]\</span>
+<span class="s1">    @echo CXXFLAGS=[$(CXXFLAGS)]&#39;</span>   <span class="se">\</span>
+        -e <span class="s1">&#39;/   @echo STD_OPT=\[$(STD_OPT)\]/d&#39;</span> <span class="se">\</span>
+        -e <span class="s1">&#39;/   @echo CFLAGS=\[$(CFLAGS)\]/d&#39;</span>   <span class="se">\</span>
+         <span class="nv">$1</span>
+    <span class="c">#echo &quot;&quot; | awk &#39;{fflush()}&#39;</span>
+<span class="o">}</span>
+
+<span class="c"># Get the target files you want to modify.</span>
+<span class="nv">ALL_MAKEFILE</span><span class="o">=</span><span class="k">$(</span>find <span class="si">${</span><span class="nv">SRC_DIR</span><span class="si">}</span> -type f -name <span class="si">${</span><span class="nv">SEARCH_NAME</span><span class="si">}</span><span class="k">)</span>
+
+
+<span class="c"># Traverse the target files.</span>
+<span class="k">for</span> FILE in <span class="si">${</span><span class="nv">ALL_MAKEFILE</span><span class="si">}</span>
+<span class="k">do</span>
+    handle <span class="si">${</span><span class="nv">FILE</span><span class="si">}</span>
+    <span class="k">if</span> <span class="o">[</span> <span class="nv">$?</span> -gt <span class="m">0</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+        <span class="nb">echo</span> <span class="s1">&#39;failed.&#39;</span>
+        <span class="c">#echo &quot;&quot; | awk &#39;{fflush()}&#39;</span>
+    <span class="k">fi</span>  
+<span class="k">done</span>
+</pre></div>
+</td></tr></table>
+
+<h4>3 脚本执行结果</h4>
+<p>如上图所示，脚本不断遍历src目录下的Makefile文件，然后进行处理。</p>
+<p><img alt="脚本执行结果" src="https://o3cex9zsl.qnssl.com/2016/06/handle_makefile_result.png" title="脚本执行结果" /></p>
+<h4>4 脚本管理</h4>
+<p>目前已经把这个脚本放在Github了，地址是<a href="https://github.com/vfhky/shell-tools" title="点击查看">https://github.com/vfhky/shell-tools</a>，以后脚本的更新或者更多好用的脚本也都会加入到这个工程中。</p>
+		    	<p class="tags">
+					<div class="post-share">
+						<ul class="post-shareul clearfix">
+							<li class="post-shareli">
+								<a href="http://note.youdao.com/memory/?url=https://typecodes.com/linux/handlemakefilebysed.html&title=使用sed命令批量处理Makefile文件的脚本" class="post-sharea ydshare" target="_blank" rel="nofollow">有道云笔记</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://v.t.sina.com.cn/share/share.php?url=https://typecodes.com/linux/handlemakefilebysed.html&title=使用sed命令批量处理Makefile文件的脚本&source=https://typecodes.com" class="post-sharea wbshare" target="_blank" rel="nofollow">新浪微博</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://v.t.qq.com/share/share.php?title=使用sed命令批量处理Makefile文件的脚本&url=https://typecodes.com/linux/handlemakefilebysed.html&site=https://typecodes.com" class="post-sharea twbshare" target="_blank" rel="nofollow">腾讯微博</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=https://typecodes.com/linux/handlemakefilebysed.html&title=使用sed命令批量处理Makefile文件的脚本&content='utf-8'" class="post-sharea qzoneshare" target="_blank" rel="nofollow">QZone</a>
+							</li>
+						</ul>
+					</div>
+					<div>
+						Tags: <a href="https://typecodes.com/tag/sed.html">sed</a>,<a href="https://typecodes.com/tag/shell.html">shell</a>,<a href="https://typecodes.com/tag/makefile.html">makefile</a>					</div>
+				</p>
+			</article>
+			
+			<div id="comments">
+				<h4 class="num">Comments &raquo;</h4>
+		    	<div id="disqus_thread" aria-live="polite"></div>
+		    	<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+		    </div>
+		</div>
+		<!--3. right sider begin-->
+<div class="col-md-3" id="blog-secondary" role="complementary">
+	<section class="widget">
+		<ul class="widget-list">
+			<form id="search" method="get" action="https://typecodes.com/search.html">
+				<input type="text" name="q" id="s" size="20" x-webkit-speech="" x-webkit-grammar="builtin:search" onwebkitspeechchange="this.value = this.value.replace(this.defaultValue, '')" value="Google...." onfocus="this.value = (this.value == this.defaultValue) ? '' : this.value" onblur="this.value = (this.value == '') ? this.defaultValue : this.value">
+			</form>
+		</ul>
+	</section>
+	<section class="widget">
+		<h3 class="widget-title">Categories</h3>
+		<ul class="widget-list">
+		      <li class="current">
+		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (38)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/csharp/index.html">Csharp</a> (6)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/database/index.html">Database</a> (11)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/java/index.html">Java</a> (1)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/linux/index.html">Linux</a> (22)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/mix/index.html">Mix</a> (54)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/web/index.html">Web</a> (88)
+		      </li>
+		</ul>
+	</section>
+	<section class="widget">
+		<h3 class="widget-title">Recent Posts</h3>
+		<ul class="widget-list">
+			<li class="post">
+				<a href="https://typecodes.com/linux/handlemakefilebysed.html">使用sed命令批量处理Makefile文件的脚本</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/networkselfdefineconv.html">自己实现inet_aton和inet_ntoa函数功能</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/deldisorderintarrrepeatele.html">C语言删除无序整型数组中的重复元素及时间复杂度</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/apuesingledaemonprocess.html">UNIX环境高级编程（APUE）之单实例守护进程</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/kill0checkprocessifexist.html">Linux使用KILL 0检测进程是否存在</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/vsnprintffilenameline.html">vsnprintf字符串格式化输出实例：日志中打印程序名和行号</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/mix/disqushtmltaghighlight.html">Disqus支持的HTML标签和代码高亮方法</a>
+			</li>
+		</ul>
+	</section>
+	<section class="widget widget-feed">
+		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
+	</section>
+</div>
+				</div>
+			</div>
+		</div>
+		<!--4. bottom begin-->
+		<footer id="te-site-footer"><div class="container">
+	<div class="row" role="contentinfo">
+		<section class="col-md-2 col-md-offset-1">
+			<h3>Links</h3>
+			<ul><li><a href="http://blog.vmeila.com/" title="墨迹的Blog" target="_blank">vmeila</a></li><li><a href="https://tinygg.cn/" title="四道风’s 博客" target="_blank">tinygg</a></li><li><a href="https://edi.wang/" title="Edi Wang" target="_blank">Edi Wang</a></li></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul>
+				<li><a href="https://typecodes.com/links.html">More..</a></li>
+			</ul>
+		</section>
+		<section class="col-md-2">
+			<h3>Following</h3>
+			<ul>
+				<li><a href="https://github.com/vfhky" class="following github" target="_blank" rel="external nofollow">GitHub</a></li>
+				<li><a href="http://weibo.com/typecodes" class="following weibo" target="_blank" rel="external nofollow">Weibo</a></li>
+				<li><a href="http://vfhky.sinaapp.com" class="following sae" target="_blank" rel="external nofollow">SAE</a></li>
+				<li><a href="http://www.dwz.cn/mYiwa" class="following qqgroup" target="_blank" rel="external nofollow">Group</a></li>
+			</ul>
+		</section>
+		<div class="col-md-12 copyright">
+			<a href="#top"><i class="i-logo-s">TOP</i></a>
+			<p>
+				&copy;  2012-2016 							<a href="https://typecodes.com">TypeCodes</a>. All Rights Reserved<br>Powered by <a href="http://getpelican.com" rel="external" target="_blank">Pelican</a>. <a href="http://www.miitbeian.gov.cn" rel="external nofollow" target="_blank">粤ICP备14050695号</a>
+			</p>
+		</div>
+	</div>
+</div>
+</footer>
+<script type="text/javascript">
+	var disqus_shortname = 'typecodes';
+	var disqus_identifier = '/linux/handlemakefilebysed.html';
+	var disqus_url = 'https://typecodes.com/linux/handlemakefilebysed.html';
+	var disqus_title = '使用sed命令批量处理Makefile文件的脚本';
+	(function() {
+		var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+		dsq.src = "//" + disqus_shortname + '.disqus.com/embed.js';
+		(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	 })();
+</script>
+	</body>
+</html>

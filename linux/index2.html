@@ -38,6 +38,17 @@
 		<div class="col-md-9" id="blog-main" role="main">
 		  	<!--article recycle-->
 			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/linux/gitsynbackupshell.html">CentOS中将备份文件同步到BitBucket、GitHub和Coding的shell脚本</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2015-07-07 00:30 | 分类：<a href="https://typecodes.com/linux/index.html">linux</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>在<a href="https://typecodes.com/linux/gitaccountconfig.html" title="《CentOS系统BitBucket、GitHub和Coding等多git账户的配置》">上一篇文章</a>讲述了如何在Linux系统中配置BitBucket、GitHub和Coding这三个平台的git账户，这篇文章就分享如何通过shell脚本定时获取自己的CentOS7.1服务器上的备份文件，然后使用git命令同步到这三个平台仓库上。</p>
+<p><img alt="CentOS中git同步的shell脚本" src="https://o3cex9zsl.qnssl.com/2015/07/linux_git.png" title="CentOS中git同步的shell脚本" /></p>
+
+	<p class="more"><a href="https://typecodes.com/linux/gitsynbackupshell.html" title="CentOS中将备份文件同步到BitBucket、GitHub和Coding的shell脚本">- 阅读剩余部分 -</a></p>
+			</article>
+			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/linux/gitaccountconfig.html">CentOS系统BitBucket、GitHub和Coding等多git账户的配置</a></h2>
 <ul class="post-meta">
 	<li>作者：vfhky | 时间：2015-07-05 22:22 | 分类：<a href="https://typecodes.com/linux/index.html">linux</a></li>
@@ -121,27 +132,6 @@ Linux系统：       阿里云CentOS 7.1（20G）
 
 	<p class="more"><a href="https://typecodes.com/linux/centos7chghostname.html" title="CentOS7系统如何修改主机名">- 阅读剩余部分 -</a></p>
 			</article>
-			<article class="post">
-<h2 class="post-title"><a href="https://typecodes.com/linux/linuxalarmknockfunc.html">Linux进程之alarm()信号传送闹钟函数</a></h2>
-<ul class="post-meta">
-	<li>作者：vfhky | 时间：2013-08-14 22:09 | 分类：<a href="https://typecodes.com/linux/index.html">linux</a></li>
-</ul>
-<div class="post-content fmt">
-	<p>最近在学习Linux系统编程遇到了一个很有意思的函数：alarm()，它是一个用来设置信号传送的闹钟函数。网上找了一些资料，结合自己的学习体会，现在Mark一下。</p>
-<h5>1 alarm()函数说明</h5>
-<div class="highlight"><pre>[1] 引用头文件：#include &lt;unistd.h&gt;;
-
-[2] 函数标准式：unsigned int alarm(unsigned int seconds);
-
-[3] 功能与作用：alarm()函数的主要功能是设置信号传送闹钟，即用来设置信号SIGALRM在经过参数seconds秒数后发送给目前的进程。如果未设置信号SIGALARM的处理函数，那么alarm()默认处理终止进程。
-
-[4] 函数返回值：如果在seconds秒内再次调用了alarm函数设置了新的闹钟，则后面定时器的设置将覆盖前面的设置，即之前设置的秒数被新的闹钟时间取代；当参数seconds为0时，之前设置的定时器闹钟将被取消，并将剩下的时间返回。
-</pre></div>
-
-
-
-	<p class="more"><a href="https://typecodes.com/linux/linuxalarmknockfunc.html" title="Linux进程之alarm()信号传送闹钟函数">- 阅读剩余部分 -</a></p>
-			</article>
 		  	<!--page navigation-->
 <ol class="page-navigator">
 <li class="prev"><a href="https://typecodes.com/linux/index.html">&laquo; 前一页</a></li><li><a href="https://typecodes.com/linux/index.html">1</a><li class="current"><a href="https://typecodes.com/linux/index2.html">2</a>
@@ -174,7 +164,7 @@ Linux系统：       阿里云CentOS 7.1（20G）
 		        <a href="https://typecodes.com/java/index.html">Java</a> (1)
 		      </li>
 		      <li class="current">
-		        <a href="https://typecodes.com/linux/index.html">Linux</a> (21)
+		        <a href="https://typecodes.com/linux/index.html">Linux</a> (22)
 		      </li>
 		      <li class="current">
 		        <a href="https://typecodes.com/mix/index.html">Mix</a> (54)
@@ -187,6 +177,9 @@ Linux系统：       阿里云CentOS 7.1（20G）
 	<section class="widget">
 		<h3 class="widget-title">Recent Posts</h3>
 		<ul class="widget-list">
+			<li class="post">
+				<a href="https://typecodes.com/linux/handlemakefilebysed.html">使用sed命令批量处理Makefile文件的脚本</a>
+			</li>
 			<li class="post">
 				<a href="https://typecodes.com/linux/updatesyngithubpelicanshell.html">更新博客生成发布及同步GitHub的Shell脚本：解决文件名空格问题</a>
 			</li>
@@ -204,9 +197,6 @@ Linux系统：       阿里云CentOS 7.1（20G）
 			</li>
 			<li class="post">
 				<a href="https://typecodes.com/linux/tcpconnectiontimedout.html">Linux TCP连接Connection Refused和Connection timed out的问题</a>
-			</li>
-			<li class="post">
-				<a href="https://typecodes.com/linux/mysqlerrornospace.html">博客MySQL服务惊魂记：Linux磁盘空间不足(Core Dump文件引爆)</a>
 			</li>
 		</ul>
 	</section>
