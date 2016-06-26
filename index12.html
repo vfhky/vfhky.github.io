@@ -38,6 +38,27 @@
 		<div class="col-md-9" id="blog-main" role="main">
 		  	<!--article recycle-->
 			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/web/aliyuncentoslnmpwebsafeconf.html">阿里云CentOS主机 LNMP 环境之web安全篇</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2014-08-15 21:25 | 分类：<a href="https://typecodes.com/web/index.html">web</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>前面几篇文章介绍了阿里云的CentOS 6.5系统中如何搭建和配置 LNMP 环境，这篇文章主要说说 web 站点的安全配置。</p>
+<h5>1 修改 CentOS 系统的主机名(关系不大, 看个人喜好)</h5>
+<p>默认同开通的阿里云 Linux 主机都是以 AY+随机数 命名的，修改方法如下：</p>
+<div class="highlight"><pre>[root@typecodes ~]# vi /etc/sysconfig/network
+###### 修改主机名HOSTNAME, 例如 HOSTNAME=typecodes , 然后:wq保存退出
+HOSTNAME=typecodes
+###### 接着执行 hostname 命令
+[root@typecodes ~]# hostname typecodes
+###### 退出ssh, 然后重新登录即可
+</pre></div>
+
+
+
+	<p class="more"><a href="https://typecodes.com/web/aliyuncentoslnmpwebsafeconf.html" title="阿里云CentOS主机 LNMP 环境之web安全篇">- 阅读剩余部分 -</a></p>
+			</article>
+			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/web/aliyuncentoslnmpxcacheconf.html">阿里云CentOS主机 LNMP 环境配置之Php篇——安装XCache加速器</a></h2>
 <ul class="post-meta">
 	<li>作者：vfhky | 时间：2014-08-14 23:06 | 分类：<a href="https://typecodes.com/web/index.html">web</a></li>
@@ -202,17 +223,6 @@ Zend Extension Api No:  20090626
 
 	<p class="more"><a href="https://typecodes.com/cseries/vsbugonvariable.html" title="小心visual studio的“BUG”：变量的声明和使用">- 阅读剩余部分 -</a></p>
 			</article>
-			<article class="post">
-<h2 class="post-title"><a href="https://typecodes.com/mix/postwvfhkygithub.html">GitHub个人仓库更新：wordpress主题[W_vfhky]</a></h2>
-<ul class="post-meta">
-	<li>作者：vfhky | 时间：2014-03-18 18:42 | 分类：<a href="https://typecodes.com/mix/index.html">mix</a></li>
-</ul>
-<div class="post-content fmt">
-	<p>今天往自己的github仓库中扔进另一份博客wordpress主题[W_vfhky]。这份主题是从12年6月12建立至2013年7月，博主一直在用的。原型是威少的主题<a href="http://www.weisay.com/">weisaysimple</a>，简洁明了，很适合IT类的博客。精炼的页面设计，让博客的内容主次分明，详略得当，真的是让人爱不释手。</p>
-<p>当然，我也对weisaysimple修改了N多次，做了很多代码优化和个性化需求的定制和改进。例如，博客右上角的综合谷歌自定义搜索和百度搜索为一体的博客站内搜索，博客右侧栏的Jquery滚动公告，右侧栏的Jquery滚动最新评论和样式设计，评论列表纯真IP库的使用，邮件通知的改进，博客整站的avatar个性头像缓存等等。</p>
-
-	<p class="more"><a href="https://typecodes.com/mix/postwvfhkygithub.html" title="GitHub个人仓库更新：wordpress主题[W_vfhky]">- 阅读剩余部分 -</a></p>
-			</article>
 		  	<!--page navigation-->
 <ol class="page-navigator">
 <li class="prev"><a href="https://typecodes.com/index11.html">&laquo; 前一页</a></li><li><a href="https://typecodes.com/index.html">1</a>
@@ -239,7 +249,7 @@ Zend Extension Api No:  20090626
 		<h3 class="widget-title">Categories</h3>
 		<ul class="widget-list">
 		      <li class="current">
-		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (38)
+		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (39)
 		      </li>
 		      <li class="current">
 		        <a href="https://typecodes.com/csharp/index.html">Csharp</a> (6)
@@ -265,6 +275,9 @@ Zend Extension Api No:  20090626
 		<h3 class="widget-title">Recent Posts</h3>
 		<ul class="widget-list">
 			<li class="post">
+				<a href="https://typecodes.com/cseries/mapdelintstring.html">C++删除map容器中指定值的元素</a>
+			</li>
+			<li class="post">
 				<a href="https://typecodes.com/linux/handlemakefilebysed.html">使用sed命令批量处理Makefile文件的脚本</a>
 			</li>
 			<li class="post">
@@ -281,9 +294,6 @@ Zend Extension Api No:  20090626
 			</li>
 			<li class="post">
 				<a href="https://typecodes.com/cseries/vsnprintffilenameline.html">vsnprintf字符串格式化输出实例：日志中打印程序名和行号</a>
-			</li>
-			<li class="post">
-				<a href="https://typecodes.com/mix/disqushtmltaghighlight.html">Disqus支持的HTML标签和代码高亮方法</a>
 			</li>
 		</ul>
 	</section>
