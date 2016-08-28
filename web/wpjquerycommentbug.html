@@ -7,7 +7,7 @@
   		<meta name="viewport" content="width=device-width, initial-scale=1">
   		<link href="https://typecodes.com/atom.xml" type="application/atom+xml" rel="alternate" title="TypeCodes Atom Feed" />
 	  	<link href="https://typecodes.com/feed.xml" type="application/rss+xml" rel="alternate" title="TypeCodes RSS Feed" />
-		<link rel="stylesheet" href="https://o3cex9zsl.qnssl.com/libs/css/pelican-vfhky.css">
+		<link rel="stylesheet" href="https://o3cex9zsl.qnssl.com/libs/css/pelican_vfhky_v1.0.css">
 		<script>
 			var _hmt = _hmt || [];
 			(function() {
@@ -94,7 +94,36 @@
 <p>星期天早上起来，硬着头皮决定把整个主题整理一下，看看能不能找到一些头绪。当整理到js文件目录时，突然想到这些开源js应该更新了。于是上jQuery官网看了下，果然jquery.min.js更新到了2.0.3了。而博客所用到的这个压缩js还只是1.6的版本，立马更换掉。再打开博客首页看看有没有异常，结果发现首页的幻灯片竟然错位了。好吧，当看到官网下面图片的时候蛋都碎了一地。这不是又折腾兼容么，无力吐槽！那只能按版本从高到低一路测试下来，到1.8.3版本的时候，IE和搜狗都显示正常了。</p>
 <p><img alt="jquery2.x不支持IE9以下的浏览器" src="https://o3cex9zsl.qnssl.com/2013/08/jquery2.x.png" title="jquery2.x不支持IE9以下的浏览器" /></p>
 <p>完后，又回到了周六的“BUG”：评论快捷键提交后直接跳转到wp-comments-post.php。不过，在vfhky重新测试时，惊奇的发现评论框下出现了“请使用Gravatar头像留言。”的提示。尼玛，原来都是jQuery惹的祸！</p>
-		    	<p class="tags">
+		    	<div class="tags">
+					<div class="post_tags">
+						Tags: <a href="https://typecodes.com/tag/wordpress-jquery-bug.html">wordpress jquery bug</a>					</div>
+					<div class="donate_div">
+						<p><a href="javascript:void(0)" onclick="donateToggle()" class="donate_word" title="打赏，支持一下">打赏</a></p>
+						<div class="hide_box"></div>
+						<div class="donate_box">
+							<a class="donate_close" href="javascript:void(0)" onclick="donateToggle()" title="关闭"><img src="https://o3cex9zsl.qnssl.com/libs/img/donate_close.png" width="11px" height="10px" alt="取消" /></a>
+							<div class="donate_thk">
+								<p>感谢您的支持，我会继续努力的!</p>
+							</div>
+							<div class="donate_payimg">
+								<img src="https://o3cex9zsl.qnssl.com/libs/img/donate_weipayqr.png" width="140px" height="140px" alt="扫码支持" title="扫一扫" />
+							</div>
+								<div class="pay_explain">扫码打赏，你说多少就多少</div>
+							<div class="donate_way">
+								<div class="donate_way_item checked" data-id="weipay">
+									<span class="donate_radio"></span>
+									<img src="https://o3cex9zsl.qnssl.com/libs/img/donate_wechat.png" width="112px" height="28px" alt="微信" />
+								</div>
+								<div class="donate_way_item" data-id="alipay">
+									<span class="donate_radio"></span>
+									<img src="https://o3cex9zsl.qnssl.com/libs/img/donate_alipay.png" width="85px" height="28px" alt="支付宝" />
+								</div>
+							</div>
+							<div class="shang_info">
+								<p>打开<span id="shang_pay_txt">微信</span>扫一扫，即可进行扫码打赏哦</p>
+							</div>
+						</div>
+					</div>
 					<div class="post-share">
 						<ul class="post-shareul clearfix">
 							<li class="post-shareli">
@@ -111,9 +140,7 @@
 							</li>
 						</ul>
 					</div>
-					<div>
-						Tags: <a href="https://typecodes.com/tag/wordpress-jquery-bug.html">wordpress jquery bug</a>					</div>
-				</p>
+				</div>
 			</article>
 			
 			<div id="comments">
@@ -191,7 +218,8 @@
 			</div>
 		</div>
 		<!--4. bottom begin-->
-		<footer id="te-site-footer"><div class="container">
+		<footer id="te-site-footer">
+<div class="container">
 	<div class="row" role="contentinfo">
 		<section class="col-md-2 col-md-offset-1">
 			<h3>Links</h3>
@@ -227,8 +255,7 @@
 			</p>
 		</div>
 	</div>
-</div>
-</footer>
+</div>		</footer>
 <script type="text/javascript">
 	var disqus_shortname = 'typecodes';
 	var disqus_identifier = '/web/wpjquerycommentbug.html';
@@ -240,5 +267,6 @@
 		(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
 	 })();
 </script>
+		<script src="https://o3cex9zsl.qnssl.com/libs/js/jquery_1.5.2.min_v1.0.js"></script>
 	</body>
 </html>

@@ -7,7 +7,7 @@
   		<meta name="viewport" content="width=device-width, initial-scale=1">
   		<link href="https://typecodes.com/atom.xml" type="application/atom+xml" rel="alternate" title="TypeCodes Atom Feed" />
 	  	<link href="https://typecodes.com/feed.xml" type="application/rss+xml" rel="alternate" title="TypeCodes RSS Feed" />
-		<link rel="stylesheet" href="https://o3cex9zsl.qnssl.com/libs/css/pelican-vfhky.css">
+		<link rel="stylesheet" href="https://o3cex9zsl.qnssl.com/libs/css/pelican_vfhky_v1.0.css">
 		<script>
 			var _hmt = _hmt || [];
 			(function() {
@@ -53,7 +53,36 @@
 
 <p>也就是只需要在平常的输入框代码内添加x-webkit-speech属性就可以了。但是这个属性只能在Chrome 11版本以上的浏览器上才能实现。因为，从这个属性的命名可以看出，它是一个webkit内核浏览器的私有属性，所以只能在Chrome浏览器来实现。因此，我们可以分别用IE和谷歌Chrome两种不同内核浏览器打开博客首页地址https://typecodes.com查看效果。而其实x-webkit-speech是HTML5的speech 功能的API，Google对HTML5、CSS3的新技术标准支持比较快。</p>
 <p>所以，我们可以在Chrome上体验到这种新奇好玩的功能。虽然说现在语音识别技术效果还是不怎么令人满意，尤其是国内的一些语音搜索应用对英语的支持还是比价差的，中文由于各种方言的存在也不是很令人满意。但是我还是相信随着HTML5的各种标准和技术的成熟，未来我们的搜索引擎肯定会更加个性化和人性化的。</p>
-		    	<p class="tags">
+		    	<div class="tags">
+					<div class="post_tags">
+						Tags: <a href="https://typecodes.com/tag/google.html">google</a>,<a href="https://typecodes.com/tag/yu-yin-sou-suo.html">语音搜索</a>					</div>
+					<div class="donate_div">
+						<p><a href="javascript:void(0)" onclick="donateToggle()" class="donate_word" title="打赏，支持一下">打赏</a></p>
+						<div class="hide_box"></div>
+						<div class="donate_box">
+							<a class="donate_close" href="javascript:void(0)" onclick="donateToggle()" title="关闭"><img src="https://o3cex9zsl.qnssl.com/libs/img/donate_close.png" width="11px" height="10px" alt="取消" /></a>
+							<div class="donate_thk">
+								<p>感谢您的支持，我会继续努力的!</p>
+							</div>
+							<div class="donate_payimg">
+								<img src="https://o3cex9zsl.qnssl.com/libs/img/donate_weipayqr.png" width="140px" height="140px" alt="扫码支持" title="扫一扫" />
+							</div>
+								<div class="pay_explain">扫码打赏，你说多少就多少</div>
+							<div class="donate_way">
+								<div class="donate_way_item checked" data-id="weipay">
+									<span class="donate_radio"></span>
+									<img src="https://o3cex9zsl.qnssl.com/libs/img/donate_wechat.png" width="112px" height="28px" alt="微信" />
+								</div>
+								<div class="donate_way_item" data-id="alipay">
+									<span class="donate_radio"></span>
+									<img src="https://o3cex9zsl.qnssl.com/libs/img/donate_alipay.png" width="85px" height="28px" alt="支付宝" />
+								</div>
+							</div>
+							<div class="shang_info">
+								<p>打开<span id="shang_pay_txt">微信</span>扫一扫，即可进行扫码打赏哦</p>
+							</div>
+						</div>
+					</div>
 					<div class="post-share">
 						<ul class="post-shareul clearfix">
 							<li class="post-shareli">
@@ -70,9 +99,7 @@
 							</li>
 						</ul>
 					</div>
-					<div>
-						Tags: <a href="https://typecodes.com/tag/google.html">google</a>,<a href="https://typecodes.com/tag/yu-yin-sou-suo.html">语音搜索</a>					</div>
-				</p>
+				</div>
 			</article>
 			
 			<div id="comments">
@@ -150,7 +177,8 @@
 			</div>
 		</div>
 		<!--4. bottom begin-->
-		<footer id="te-site-footer"><div class="container">
+		<footer id="te-site-footer">
+<div class="container">
 	<div class="row" role="contentinfo">
 		<section class="col-md-2 col-md-offset-1">
 			<h3>Links</h3>
@@ -186,8 +214,7 @@
 			</p>
 		</div>
 	</div>
-</div>
-</footer>
+</div>		</footer>
 <script type="text/javascript">
 	var disqus_shortname = 'typecodes';
 	var disqus_identifier = '/web/voicesearchengine.html';
@@ -199,5 +226,6 @@
 		(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
 	 })();
 </script>
+		<script src="https://o3cex9zsl.qnssl.com/libs/js/jquery_1.5.2.min_v1.0.js"></script>
 	</body>
 </html>
