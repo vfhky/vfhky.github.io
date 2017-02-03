@@ -8607,7 +8607,10 @@ mysql&amp;gt; exit;            [创建完毕，root用户退出]
 21
 22
 23
-24&lt;/pre&gt;&lt;/div&gt;&lt;/td&gt;&lt;td class="code"&gt;&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="c"&gt;#!/bin/bash&lt;/span&gt;
+24
+25
+26
+27&lt;/pre&gt;&lt;/div&gt;&lt;/td&gt;&lt;td class="code"&gt;&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="c"&gt;#!/bin/bash&lt;/span&gt;
 
 &lt;span class="c"&gt;### Filename: coredumpshell.sh&lt;/span&gt;
 &lt;span class="c"&gt;### Description: enable coredump and format the name of core file on centos system&lt;/span&gt;
@@ -8629,6 +8632,9 @@ mysql&amp;gt; exit;            [创建完毕，root用户退出]
 &lt;span class="c"&gt;# %e – 程序文件名&lt;/span&gt;
 &lt;span class="nb"&gt;echo&lt;/span&gt; -e &lt;span class="s2"&gt;&amp;quot;/mydata/corefile/core-%e-%s-%u-%g-%p-%t&amp;quot;&lt;/span&gt; &amp;gt; /proc/sys/kernel/core_pattern
 
+&lt;span class="c"&gt;# for centos7 system(update 2017.2.3 21:44)&lt;/span&gt;
+&lt;span class="nb"&gt;echo&lt;/span&gt; -e &lt;span class="s2"&gt;&amp;quot;/mydata/corefile/core-%e-%s-%u-%g-%p-%t&amp;quot;&lt;/span&gt; &amp;gt; /etc/sysctl.conf
+
 &lt;span class="c"&gt;# suffix of the core file name&lt;/span&gt;
 &lt;span class="nb"&gt;echo&lt;/span&gt; -e &lt;span class="s2"&gt;&amp;quot;1&amp;quot;&lt;/span&gt; &amp;gt; /proc/sys/kernel/core_uses_pid
 &lt;/pre&gt;&lt;/div&gt;
@@ -8649,7 +8655,9 @@ mysql&amp;gt; exit;            [创建完毕，root用户退出]
 
 
 &lt;p&gt;使用命令&lt;code&gt;gcc test.c -o test&lt;/code&gt;编译后执行，然后故意输入错误的数据，让进程报错。这时，在&lt;code&gt;/mydata/corefile/&lt;/code&gt;目录就生成了相应的core文件&lt;code&gt;core-test-11-0-0-27124-1434029850&lt;/code&gt;。&lt;/p&gt;
-&lt;p&gt;&lt;img alt="core文件生成目录" src="https://o3cex9zsl.qnssl.com/2015/06/gdb_test_corefile.png" title="core文件生成目录" /&gt; &lt;/p&gt;</summary><category term="coredump"></category><category term="gdb"></category></entry><entry><title>Typecho评论邮件通知插件中使用腾讯企业邮箱SSL功能</title><link href="https://typecodes.com/mix/typechoexmailconfig.html" rel="alternate"></link><updated>2015-06-06T19:45:00+08:00</updated><author><name>vfhky</name></author><id>tag:typecodes.com,2015-06-06:mix/typechoexmailconfig.html</id><summary type="html">&lt;p&gt;前段时间，在查看博客绑定的腾讯企业邮箱时，发现POP3/SMTP协议支持SSL。由于正好使用了Typecho版的CommentToMail评论邮件通知插件，就顺便也升级成SSL协议。&lt;/p&gt;
+&lt;p&gt;&lt;img alt="core文件生成目录" src="https://o3cex9zsl.qnssl.com/2015/06/gdb_test_corefile.png" title="core文件生成目录" /&gt; &lt;/p&gt;
+&lt;h4&gt;update 2017.2.3 21:44&lt;/h4&gt;
+&lt;p&gt;每次重启CentOS7后，由于proc目录是动态更新的，所以系统会初始化core_pattern的值。如果想永久设置coredump文件为上面的格式，那么需要使用编辑文件 /etc/sysctl.conf ，加入&lt;code&gt;kernel.core_pattern=/mydata/corefile/core-%e-%s-%u-%g-%p-%t&lt;/code&gt;，然后使用命令&lt;code&gt;sysctl -p /etc/sysctl.conf&lt;/code&gt;重新加载。&lt;/p&gt;</summary><category term="coredump"></category><category term="gdb"></category></entry><entry><title>Typecho评论邮件通知插件中使用腾讯企业邮箱SSL功能</title><link href="https://typecodes.com/mix/typechoexmailconfig.html" rel="alternate"></link><updated>2015-06-06T19:45:00+08:00</updated><author><name>vfhky</name></author><id>tag:typecodes.com,2015-06-06:mix/typechoexmailconfig.html</id><summary type="html">&lt;p&gt;前段时间，在查看博客绑定的腾讯企业邮箱时，发现POP3/SMTP协议支持SSL。由于正好使用了Typecho版的CommentToMail评论邮件通知插件，就顺便也升级成SSL协议。&lt;/p&gt;
 &lt;p&gt;&lt;img alt="腾讯企业邮箱SSL配置" src="https://o3cex9zsl.qnssl.com/2015/06/exmailsslconfig.png" title="腾讯企业邮箱SSL配置" /&gt;&lt;/p&gt;
 
 
