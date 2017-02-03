@@ -72,7 +72,7 @@ Saving to: ‘mysql57-community-release-el7-7.noarch.rpm’
 
 <h4>3 安装MySQL的Yum Repository</h4>
 <p>安装完MySQL的Yum Repository，每次执行yum update都会检查MySQL是否更新。</p>
-<div class="highlight"><pre>[root@typecodes ~]# yum -y linstall mysql57-community-release-el7-7.noarch.rpm
+<div class="highlight"><pre>[root@typecodes ~]# yum -y install mysql57-community-release-el7-7.noarch.rpm
 Loaded plugins: axelget, fastestmirror, langpacks
 Examining mysql57-community-release-el7-7.noarch.rpm: mysql57-community-release-el7-7.noarch
 Marking mysql57-community-release-el7-7.noarch.rpm to be installed
@@ -309,13 +309,17 @@ Bye
 <h4>附录1：查看MySQL数据库的配置信息</h4>
 <p>MySQL的配置文件依然是<code>/etc/my.cnf</code>，其它安装信息可以通过<code>mysql_config</code>命令查看。其中，动态库文件存放在<code>/usr/lib64/mysql</code>目录下。</p>
 <p><img alt="mysql_config命令查看mysql数据库的安装信息" src="https://o3cex9zsl.qnssl.com/2016/02/mysql_config.png" title="mysql_config命令查看mysql数据库的安装信息" /></p>
-<h4>附录2：删除MySQL的Repository</h4>
+<h4>附录2：对于C/C++等开发者</h4>
+<p>由于需要用到类似mysql.h等头文件，需要执行下面的命令安装mysql开发版本即可。</p>
+<div class="highlight"><pre>[root@typecodes ~]# yum -y install mysql-community-devel
+</pre></div>
+
+
+<h4>附录3：删除MySQL的Repository</h4>
 <p>因为小节3中安装了MySQL的Yum Repository，所以以后每次执行yum操作时，都会去检查更新。如果想要去掉这种自动检查操作的话，可以使用如下命令卸载MySQL的Repository即可。</p>
 <div class="highlight"><pre>[root@typecodes ~]# yum -y remove mysql57-community-release-el7-7.noarch
 </pre></div>
-		    	<div class="tags">
-					<div class="post_tags">
-						Tags: <a href="https://typecodes.com/tag/mysql.html">mysql</a>					</div>
+		    	<div class="donate_div_container">
 					<div class="donate_div">
 						<p><a href="javascript:void(0)" onclick="donateToggle()" class="donate_word" title="打赏，支持一下">打赏</a></p>
 						<div class="hide_box"></div>
@@ -343,6 +347,10 @@ Bye
 							</div>
 						</div>
 					</div>
+				</div>
+		    	<div class="tags">
+					<div class="post_tags">
+						Tags: <a href="https://typecodes.com/tag/mysql.html">mysql</a>					</div>
 					<div class="post-share">
 						<ul class="post-shareul clearfix">
 							<li class="post-shareli">

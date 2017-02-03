@@ -122,9 +122,7 @@ s)
 <p>这才想起在<a href="https://typecodes.com/linux/centoscoredumpcfgshell.html" title="查看原文">《CentOS开启coredump转储并生成core文件的配置》</a>文中，设置了Core Dump文件大小为<code>unlimited</code>。日积月累，终于把MySQL搞挂掉了！</p>
 <h4>4 解决</h4>
 <p>先删掉corefile目录下面的大部分Core Dump文件，然后使用命令<code>ulimit -c 10240</code>设置coredump file-size为10M。最后，使用命令<code>service mysqld start</code>成功启动MySQL服务！看了下时间，从发现问题到解决用了40多分钟，还好只是个个人博客~</p>
-		    	<div class="tags">
-					<div class="post_tags">
-						Tags: <a href="https://typecodes.com/tag/coredump.html">coredump</a>,<a href="https://typecodes.com/tag/mysql.html">mysql</a>					</div>
+		    	<div class="donate_div_container">
 					<div class="donate_div">
 						<p><a href="javascript:void(0)" onclick="donateToggle()" class="donate_word" title="打赏，支持一下">打赏</a></p>
 						<div class="hide_box"></div>
@@ -152,6 +150,10 @@ s)
 							</div>
 						</div>
 					</div>
+				</div>
+		    	<div class="tags">
+					<div class="post_tags">
+						Tags: <a href="https://typecodes.com/tag/coredump.html">coredump</a>,<a href="https://typecodes.com/tag/mysql.html">mysql</a>					</div>
 					<div class="post-share">
 						<ul class="post-shareul clearfix">
 							<li class="post-shareli">

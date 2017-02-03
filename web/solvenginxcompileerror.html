@@ -104,9 +104,7 @@ root      7981  0.0  0.0 112644   964 pts/0    S+   21:19   0:00 grep --color=au
 <p>然后使用命令<code>nginx -t</code>查看配置是否正常，如下图所示，同样报错。 </p>
 <p><img alt="nginx -t查看错误信息" src="https://o3cex9zsl.qnssl.com/2015/05/nginx-t-error.png" title="nginx -t查看错误信息" /></p>
 <p>解决方法：从图中可以看出由于<code>Can't load '/usr/local/lib64/perl5/auto/nginx/nginx.so' for module nginx: /usr/local/lib64/perl5/au...m line 68.</code>的错误，导致了Nginx在调用函数时失败：<code>perl_parse() failed</code>。也就是证明是之前没有安装perl依赖包，于是通过执行命令<code>yum -y install perl-devel perl-ExtUtils-Embed</code>后，再次编译安装Nginx解决。</p>
-		    	<div class="tags">
-					<div class="post_tags">
-						Tags: <a href="https://typecodes.com/tag/nginx.html">nginx</a>					</div>
+		    	<div class="donate_div_container">
 					<div class="donate_div">
 						<p><a href="javascript:void(0)" onclick="donateToggle()" class="donate_word" title="打赏，支持一下">打赏</a></p>
 						<div class="hide_box"></div>
@@ -134,6 +132,10 @@ root      7981  0.0  0.0 112644   964 pts/0    S+   21:19   0:00 grep --color=au
 							</div>
 						</div>
 					</div>
+				</div>
+		    	<div class="tags">
+					<div class="post_tags">
+						Tags: <a href="https://typecodes.com/tag/nginx.html">nginx</a>					</div>
 					<div class="post-share">
 						<ul class="post-shareul clearfix">
 							<li class="post-shareli">

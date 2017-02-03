@@ -132,9 +132,7 @@ RewriteRule .*\.(gif|jpg|jpeg|png|bmp|zip|rar|7z|swf|mp3)$ http://vfhky.sinaapp.
 
 
 <p>其中，第一行 RewriteBase /wp-content/uploads/ 表示该目录下的文件是禁止盗链的。即如果uploads目录是你上传文件图片视频音乐等文件的地方，一般盗链耗流量的大户都在这里；第二行 RewriteCond %{HTTP_REFERER} !^$ [NC] 表示如果是用户直接访问你的图片则正常显示图片；另外，像 RewriteCond %{HTTP_REFERER} !royaso.com [NC] 这样的代码表示允许像百度、谷歌、qq之类的“盗链”，也显示正常的图片；倒数第二行 RewriteRule .*.(gif|jpg|jpeg|png|bmp|zip|rar|7z|swf|mp3)$ 表示设置防盗链的文件类型：图片、压缩文件、视频、音乐；最后一行代码表示如果不是上述的几种情况，那么将会被视为盗链，盗链后显示的图片为fangdaolian.png。</p>
-		    	<div class="tags">
-					<div class="post_tags">
-						Tags: <a href="https://typecodes.com/tag/robots.html">robots</a>,<a href="https://typecodes.com/tag/htaccess.html">.htaccess</a>					</div>
+		    	<div class="donate_div_container">
 					<div class="donate_div">
 						<p><a href="javascript:void(0)" onclick="donateToggle()" class="donate_word" title="打赏，支持一下">打赏</a></p>
 						<div class="hide_box"></div>
@@ -162,6 +160,10 @@ RewriteRule .*\.(gif|jpg|jpeg|png|bmp|zip|rar|7z|swf|mp3)$ http://vfhky.sinaapp.
 							</div>
 						</div>
 					</div>
+				</div>
+		    	<div class="tags">
+					<div class="post_tags">
+						Tags: <a href="https://typecodes.com/tag/robots.html">robots</a>,<a href="https://typecodes.com/tag/htaccess.html">.htaccess</a>					</div>
 					<div class="post-share">
 						<ul class="post-shareul clearfix">
 							<li class="post-shareli">

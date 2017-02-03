@@ -122,9 +122,7 @@
 <p>其实，通过上面的单步调试，我们也已经知道原因了。现总结一下：因为指针变量p1（0x00d7576c）所指向的字符串常量“abcd”后面，也即字符'd'的地址是 0x00d7576c+3=0x00d7576f 。</p>
 <p>而它后面以地址 0x00d75770 开始的内存块是不属于指针变量p1的，没有访问权限，所以把拷贝自指针变量p2（0x00d75774）指向的字符串“efgh”到以 0x00d75770 为起始地址的内存块中会报错。可以把语句 <code>p1 = "abcd";</code> 改成 <code>p1 = p3;</code>，然后直接使用 <code>strcat( p1, p2 );</code>，这样是合法的。</p>
 <p><img alt="地址 0x00d75770 不能写入操作" src="https://o3cex9zsl.qnssl.com/2014/09/write0x00d75770err.png" title="地址 0x00d75770 不能写入操作" /></p>
-		    	<div class="tags">
-					<div class="post_tags">
-						Tags: <a href="https://typecodes.com/tag/yi-chang-0xc0000005.html">异常0xc0000005</a>,<a href="https://typecodes.com/tag/du-qu-xie-ru-wei-zhi-chong-tu.html">读取/写入位置冲突</a>					</div>
+		    	<div class="donate_div_container">
 					<div class="donate_div">
 						<p><a href="javascript:void(0)" onclick="donateToggle()" class="donate_word" title="打赏，支持一下">打赏</a></p>
 						<div class="hide_box"></div>
@@ -152,6 +150,10 @@
 							</div>
 						</div>
 					</div>
+				</div>
+		    	<div class="tags">
+					<div class="post_tags">
+						Tags: <a href="https://typecodes.com/tag/yi-chang-0xc0000005.html">异常0xc0000005</a>,<a href="https://typecodes.com/tag/du-qu-xie-ru-wei-zhi-chong-tu.html">读取/写入位置冲突</a>					</div>
 					<div class="post-share">
 						<ul class="post-shareul clearfix">
 							<li class="post-shareli">

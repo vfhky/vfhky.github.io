@@ -79,9 +79,7 @@ TCP尝试发送已排队等待发送到对端的任何数据，发送完毕后�
 <p>到这里问题其实已经很简单明了了，Linux内核完成“三次握手”跟服务端进程无关，当然这点也可以由程序没有打印第51、60行的数据证实。</p>
 <h4>4 总结</h4>
 <p>socket被动关闭的服务端产生CLOSE_WAIT的根本原因是没有调用<code>close()</code>函数关闭socket链路，也即没有发送<code>FIN</code>标志的报文给主动关闭TCP链路的客户端。</p>
-		    	<div class="tags">
-					<div class="post_tags">
-						Tags: <a href="https://typecodes.com/tag/tcpdump.html">tcpdump</a>,<a href="https://typecodes.com/tag/wireshark.html">wireshark</a>,<a href="https://typecodes.com/tag/tcp.html">tcp</a>,<a href="https://typecodes.com/tag/close_wait.html">close_wait</a>					</div>
+		    	<div class="donate_div_container">
 					<div class="donate_div">
 						<p><a href="javascript:void(0)" onclick="donateToggle()" class="donate_word" title="打赏，支持一下">打赏</a></p>
 						<div class="hide_box"></div>
@@ -109,6 +107,10 @@ TCP尝试发送已排队等待发送到对端的任何数据，发送完毕后�
 							</div>
 						</div>
 					</div>
+				</div>
+		    	<div class="tags">
+					<div class="post_tags">
+						Tags: <a href="https://typecodes.com/tag/tcpdump.html">tcpdump</a>,<a href="https://typecodes.com/tag/wireshark.html">wireshark</a>,<a href="https://typecodes.com/tag/tcp.html">tcp</a>,<a href="https://typecodes.com/tag/close_wait.html">close_wait</a>					</div>
 					<div class="post-share">
 						<ul class="post-shareul clearfix">
 							<li class="post-shareli">

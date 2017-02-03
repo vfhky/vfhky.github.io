@@ -2926,7 +2926,7 @@ Saving to: ‘mysql57-community-release-el7-7.noarch.rpm’
 
 &lt;h4&gt;3 安装MySQL的Yum Repository&lt;/h4&gt;
 &lt;p&gt;安装完MySQL的Yum Repository，每次执行yum update都会检查MySQL是否更新。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;[root@typecodes ~]# yum -y linstall mysql57-community-release-el7-7.noarch.rpm
+&lt;div class="highlight"&gt;&lt;pre&gt;[root@typecodes ~]# yum -y install mysql57-community-release-el7-7.noarch.rpm
 Loaded plugins: axelget, fastestmirror, langpacks
 Examining mysql57-community-release-el7-7.noarch.rpm: mysql57-community-release-el7-7.noarch
 Marking mysql57-community-release-el7-7.noarch.rpm to be installed
@@ -3163,7 +3163,13 @@ Bye
 &lt;h4&gt;附录1：查看MySQL数据库的配置信息&lt;/h4&gt;
 &lt;p&gt;MySQL的配置文件依然是&lt;code&gt;/etc/my.cnf&lt;/code&gt;，其它安装信息可以通过&lt;code&gt;mysql_config&lt;/code&gt;命令查看。其中，动态库文件存放在&lt;code&gt;/usr/lib64/mysql&lt;/code&gt;目录下。&lt;/p&gt;
 &lt;p&gt;&lt;img alt="mysql_config命令查看mysql数据库的安装信息" src="https://o3cex9zsl.qnssl.com/2016/02/mysql_config.png" title="mysql_config命令查看mysql数据库的安装信息" /&gt;&lt;/p&gt;
-&lt;h4&gt;附录2：删除MySQL的Repository&lt;/h4&gt;
+&lt;h4&gt;附录2：对于C/C++等开发者&lt;/h4&gt;
+&lt;p&gt;由于需要用到类似mysql.h等头文件，需要执行下面的命令安装mysql开发版本即可。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;[root@typecodes ~]# yum -y install mysql-community-devel
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h4&gt;附录3：删除MySQL的Repository&lt;/h4&gt;
 &lt;p&gt;因为小节3中安装了MySQL的Yum Repository，所以以后每次执行yum操作时，都会去检查更新。如果想要去掉这种自动检查操作的话，可以使用如下命令卸载MySQL的Repository即可。&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;[root@typecodes ~]# yum -y remove mysql57-community-release-el7-7.noarch
 &lt;/pre&gt;&lt;/div&gt;</summary><category term="mysql"></category></entry><entry><title>Linux多进程和多线程的一次gdb调试实例</title><link href="https://typecodes.com/cseries/multilprocessthreadgdb.html" rel="alternate"></link><updated>2016-02-25T23:18:00+08:00</updated><author><name>vfhky</name></author><id>tag:typecodes.com,2016-02-25:cseries/multilprocessthreadgdb.html</id><summary type="html">&lt;p&gt;Linux C/C++开发中gdb进行多进程和多线程的调试一直比较麻烦，在CSDN上看到高科的一篇文章&lt;a href="http://blog.csdn.net/pbymw8iwm/article/details/7876797" title="查看原文"&gt;《gdb调试多进程和多线程命令》&lt;/a&gt;比较有启发，这里就自己重新整理并做了一个GDB多进程/线程的调试实践。&lt;/p&gt;

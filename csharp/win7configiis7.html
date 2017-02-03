@@ -60,9 +60,7 @@
 <p>由于动易SitsFactory也使用.NET2.0的平台，因此也需要配置IIS。比如常见的错误：安装时出现<code>/服务程序错误</code>，解决办法就是在网站的虚拟目录上点击右键选择“添加应用池”，再选择Classic.NET AppPool不要选择DefaultAppPool那个(除非在开始的IIS配置过程中，你已经把这两个应用池的”管道模式“都设置成了”经典“)。或者直接右键选择“转换为应用程序”。</p>
 <h5>4 同时配置Apache</h5>
 <p>如果需要同时配置IIS的ASP/ASP.NET和支持PHP的Apache环境，建议的安装顺序是<code>IIS、Phpnow、Sql Server、Visual Studio</code>。首先，虽然在安装IIS的时候会默认使用80端口，但是IIS的端口修改还是比较容易的。而要是先安装PHPNOW（也是默认占用80端口）在安装IIS，会出现一些问题；其次，PHPNOW要安装在SQL SERVER的前面，否则会出现端口的占用的情况（一般会是pid为4的SQL REPORT SERVICE占用了80端口，改起来比较麻烦）；而SQL SERVER也一定要安装在Visual Studio的前面，以前有过深刻教训。</p>
-		    	<div class="tags">
-					<div class="post_tags">
-						Tags: <a href="https://typecodes.com/tag/iis.html">iis</a>,<a href="https://typecodes.com/tag/dong-yi-sitefactory.html">动易sitefactory</a>					</div>
+		    	<div class="donate_div_container">
 					<div class="donate_div">
 						<p><a href="javascript:void(0)" onclick="donateToggle()" class="donate_word" title="打赏，支持一下">打赏</a></p>
 						<div class="hide_box"></div>
@@ -90,6 +88,10 @@
 							</div>
 						</div>
 					</div>
+				</div>
+		    	<div class="tags">
+					<div class="post_tags">
+						Tags: <a href="https://typecodes.com/tag/iis.html">iis</a>,<a href="https://typecodes.com/tag/dong-yi-sitefactory.html">动易sitefactory</a>					</div>
 					<div class="post-share">
 						<ul class="post-shareul clearfix">
 							<li class="post-shareli">
