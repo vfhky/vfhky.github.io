@@ -4150,7 +4150,7 @@ NOTICE &lt;span class="s2"&gt;&amp;quot;------END------&amp;quot;&lt;/span&gt;
 111&lt;/pre&gt;&lt;/div&gt;&lt;/td&gt;&lt;td class="code"&gt;&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="cm"&gt;/** &lt;/span&gt;
 &lt;span class="cm"&gt; * @FileName    linux_c_mysql.c&lt;/span&gt;
 &lt;span class="cm"&gt; * @Describe    A simple example for operating mysql using c programming in linux system.&lt;/span&gt;
-&lt;span class="cm"&gt; * @Author      vfhky 2015.12.29 15:40 https://typecodes.com/cseries/linuxconnectmysql.html&lt;/span&gt;
+&lt;span class="cm"&gt; * @Author      vfhky 2015.12.29 15:40 https://typecodes.com/cseries/linuxgccgconnectmysql.html&lt;/span&gt;
 &lt;span class="cm"&gt; * @Compile     gcc -I/usr/local/mysql/include  -L/usr/local/mysql/lib -lmysqlclient  linux_c_mysql.c -o linux_c_mysql&lt;/span&gt;
 &lt;span class="cm"&gt; * @Reference   http://dev.mysql.com/doc/refman/5.7/en/c-api-function-overview.html&lt;/span&gt;
 &lt;span class="cm"&gt; */&lt;/span&gt;
