@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html dir="ltr" lang="zh-CN" class="no-js">
+<html class="no-js">
 	<head>
-		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
   		<meta name="renderer" content="webkit">
 		<title>wordpress回复内容前面添加@作者样式 &mdash; TypeCodes</title>
 		<meta name="description" content="wordpress回复内容前面添加@作者样式 &mdash; TypeCodes" />
@@ -34,8 +35,7 @@
 			</div>
 		</div>
 		<div class="container">
-			<div class="row">
-		<!--2. left sider begin-->
+			<div class="row">		<!--2. left sider begin-->
 		<div class="col-md-9" id="blog-main" role="main">
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/web/wpatcommentauthor.html">wordpress回复内容前面添加@作者样式</a></h2>
@@ -47,10 +47,10 @@
 <p>当然，目前最时尚的方式就是像微博那样使用一个@某某，确实也很方便实用。那么这篇文章也要实现这种效果，即在wordpress回复内容前面添加@。方法如下（<code>终于领略了jQuery的强大</code>）</p>
 
 
-<p><img alt="在wordpress回复内容前面添加@方式" src="https://o3cex9zsl.qnssl.com/2012/09/13.png" title="在wordpress回复内容前面添加@方式" /></p>
+<p><img alt="在wordpress回复内容前面添加@方式" src="https://o3cex9zsl.qnssl.com/2012/09/13.png" title="在wordpress回复内容前面添加@方式"></p>
 <p>1、由于要使用到jQuery，所以要确保主题评论的web结构比较标准，与WordPress官方主题默认的评论结构相差不大（一般的主题都符合，只要不是那些特别风骚的主题都ok）。</p>
 <p>2、根据评论结构(主要是用jQuery获取链接和姓名)，写出如下jQuery代码并命名为reply.js 文件，保存到主题所在的js目录下（大家可以参考我的主题评论的web结构，修改atid和atname）。</p>
-<div class="highlight"><pre><span class="cm">/* @replyer js by vfhky */</span>
+<div class="highlight"><pre><span></span><span class="cm">/* @replyer js by vfhky */</span>
 <span class="n">jQuery</span><span class="p">(</span><span class="n">document</span><span class="p">).</span><span class="n">ready</span><span class="p">(</span><span class="n">function</span><span class="p">(</span><span class="err">$</span><span class="p">){</span> <span class="c1">//Begin jQuery</span>
     <span class="err">$</span><span class="p">(</span><span class="err">&#39;</span><span class="p">.</span><span class="n">reply</span><span class="err">&#39;</span><span class="p">).</span><span class="n">click</span><span class="p">(</span><span class="n">function</span><span class="p">()</span> <span class="p">{</span>
     <span class="n">var</span> <span class="n">atid</span> <span class="o">=</span> <span class="err">&#39;</span><span class="s">&quot;#&#39; + $(this).parent().attr(&quot;</span><span class="kt">id</span><span class="s">&quot;) + &#39;&quot;</span><span class="err">&#39;</span><span class="p">;</span><span class="c1">//获取当前评论的链接地址</span>
@@ -66,7 +66,7 @@
 
 <p>3、添加jQuery所需的另个一文件jquery.min.js，同样保存到主题所在的js目录下。由于代码比较长，所以我放到了谷歌代码里面（<a href="http://huangkeye-blog.googlecode.com/files/jquery.min.js.zip">点击下载</a>）。</p>
 <p>4、加载jQuery库：在header.php里面找到<code>&lt;?php wp_head(); ?&gt;</code>，然后在它前面添加如下代码</p>
-<div class="highlight"><pre><span class="c">&lt;!--Google CDN提供的jQuery库的地址采用了协议相对路径，它可以很好的解决https引起的一些问题--&gt;</span>
+<div class="highlight"><pre><span></span><span class="c">&lt;!--Google CDN提供的jQuery库的地址采用了协议相对路径，它可以很好的解决https引起的一些问题--&gt;</span>
 <span class="nt">&lt;script</span> <span class="na">type=</span><span class="s">&quot;text/javascript&quot;</span> <span class="na">src=</span><span class="s">&quot;//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js&quot;</span><span class="nt">&gt;&lt;/script&gt;</span>
 
 <span class="c">&lt;!--SAE开发者中心提供的jQuery库的地址，我们也可以采用了协议相对路径--&gt;</span>
@@ -84,7 +84,7 @@
 
 <p>注意：上面提供了3种不同的jquery库的地址，都起到了节省流量、减少服务器负载、提高访问速度的作用。但是，在写代码的时候我们只需要采用其中一种就行了。（PS：由于一些因素，Google服务在中国还是不怎么稳定，所以比较推荐新浪SAE提供的jQuery库）</p>
 <p>5、搞定，有问题的话可以留言额，大家一起来解决</p>
-		    	<div class="donate_div_container">
+</div>		    	<div class="donate_div_container">
 					<div class="donate_div">
 						<p><a href="javascript:void(0)" onclick="donateToggle()" class="donate_word" title="打赏，支持一下">打赏</a></p>
 						<div class="hide_box"></div>
@@ -114,7 +114,7 @@
 					</div>
 				</div>
 		    	<div class="tags">
-					<div class="post_tags">
+					<div class="post_tags" itemprop="keywords">
 						Tags: <a href="https://typecodes.com/tag/wordpress-wordpresshui-fu.html">wordpress， wordpress回复@</a>					</div>
 					<div class="post-share">
 						<ul class="post-shareul clearfix">
@@ -206,7 +206,6 @@
 		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
 	</section>
 </div>
-				</div>
 			</div>
 		</div>
 		<!--4. bottom begin-->

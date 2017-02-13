@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html dir="ltr" lang="zh-CN" class="no-js">
+<html class="no-js">
 	<head>
-		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
   		<meta name="renderer" content="webkit">
 		<title>从一段ASP代码分析HTML、CSS、ASP、SQL（二） &mdash; TypeCodes</title>
 		<meta name="description" content="从一段ASP代码分析HTML、CSS、ASP、SQL（二） &mdash; TypeCodes" />
@@ -34,8 +35,7 @@
 			</div>
 		</div>
 		<div class="container">
-			<div class="row">
-		<!--2. left sider begin-->
+			<div class="row">		<!--2. left sider begin-->
 		<div class="col-md-9" id="blog-main" role="main">
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/web/aspanalyzetwo.html">从一段ASP代码分析HTML、CSS、ASP、SQL（二）</a></h2>
@@ -48,7 +48,7 @@
 <p>中部又由左边(第21行)和右边(第23行)构成，即 left.html 和 div id="right" 。中部的右边又由位于上面部分的1个flash层和2个content1层、下面部分的2个content层和1个留言板content2层。所以整个CSS布局框架就是这样的。值得注意的是中间部分嵌套了2个层(即左右两层)，右边的层又嵌套了6个层（1个flash层,2个content1层,2个content层,1个content2层）。</p>
 
 
-<p><img alt="从一段ASP代码分析HTML、CSS、ASP、SQL（二）" src="https://o3cex9zsl.qnssl.com/2012/06/3.png" title="从一段ASP代码分析HTML、CSS、ASP、SQL（二）-1" /></p>
+<p><img alt="从一段ASP代码分析HTML、CSS、ASP、SQL（二）" src="https://o3cex9zsl.qnssl.com/2012/06/3.png" title="从一段ASP代码分析HTML、CSS、ASP、SQL（二）-1"></p>
 <h5>（二）ASP和PHP比较</h5>
 <p>1 第4行<code>&lt;!--#include file="Connection/conn.asp"--&gt;</code>表示引入conn.asp(数据库Access连接文件)。在PHP中可以用两种方法引入文件：</p>
 <table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
@@ -58,7 +58,7 @@
 5
 6
 7
-8</pre></div></td><td class="code"><div class="highlight"><pre><span class="x">/*</span>
+8</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="x">/*</span>
 <span class="x">PHP程序在执行前，就会先读入所指定引入的文件，使它变成 PHP程序的一部份。常用的函数，亦可以这个方法将它引入网页中。</span>
 <span class="x">*/</span>
 <span class="cp">&lt;?php</span> <span class="k">require</span><span class="p">(</span><span class="s2">&quot;left.php&quot;</span><span class="p">);</span> <span class="cp">?&gt;</span><span class="x"></span>
@@ -86,7 +86,7 @@
 11
 12
 13
-14</pre></div></td><td class="code"><div class="highlight"><pre><span class="cp">&lt;%</span>
+14</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="cp">&lt;%</span>
     <span class="n">classid1</span><span class="o">=</span><span class="n">rs</span><span class="p">(</span><span class="s2">&quot;classid&quot;</span><span class="p">)</span>
     <span class="n">sql</span><span class="o">=</span><span class="s2">&quot;select  top 3 * from news where classid=&quot;</span><span class="o">&amp;</span><span class="n">classid1</span><span class="o">&amp;</span><span class="s2">&quot; order by time desc &quot;</span>
     <span class="n">set</span> <span class="n">rs1</span><span class="o">=</span><span class="n">conn</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">sql</span><span class="p">)</span>
@@ -106,7 +106,7 @@
 <p>首先查询<code>classid="&amp;classid1&amp;"</code>最新的3条新闻信息，并按时间递减排列；然后如果所查询的记录集rs1没有结束的话则循环执行中间的循环部分，最后输出这3条信息并且关闭数据库的连接，清空记录集。这段代码是VB和SQL语句的结合。当然这个index.asp里面还有其它的SQL语句，就留给大家分析了。</p>
 <h5>（四）结语</h5>
 <p>虽然ASP和ACCESS已经退出时代舞台了，但是对那些入门WEB技术的人来说我觉得还是有很好的帮助提升作用的。</p>
-		    	<div class="donate_div_container">
+</div>		    	<div class="donate_div_container">
 					<div class="donate_div">
 						<p><a href="javascript:void(0)" onclick="donateToggle()" class="donate_word" title="打赏，支持一下">打赏</a></p>
 						<div class="hide_box"></div>
@@ -136,7 +136,7 @@
 					</div>
 				</div>
 		    	<div class="tags">
-					<div class="post_tags">
+					<div class="post_tags" itemprop="keywords">
 						Tags: <a href="https://typecodes.com/tag/asp.html">asp</a>					</div>
 					<div class="post-share">
 						<ul class="post-shareul clearfix">
@@ -228,7 +228,6 @@
 		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
 	</section>
 </div>
-				</div>
 			</div>
 		</div>
 		<!--4. bottom begin-->

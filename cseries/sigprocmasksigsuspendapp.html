@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html dir="ltr" lang="zh-CN" class="no-js">
+<html class="no-js">
 	<head>
-		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
   		<meta name="renderer" content="webkit">
 		<title>一个sigprocmask和sigsuspend函数的综合应用 &mdash; TypeCodes</title>
 		<meta name="description" content="一个sigprocmask和sigsuspend函数的综合应用 &mdash; TypeCodes" />
@@ -34,8 +35,7 @@
 			</div>
 		</div>
 		<div class="container">
-			<div class="row">
-		<!--2. left sider begin-->
+			<div class="row">		<!--2. left sider begin-->
 		<div class="col-md-9" id="blog-main" role="main">
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/cseries/sigprocmasksigsuspendapp.html">一个sigprocmask和sigsuspend函数的综合应用</a></h2>
@@ -44,12 +44,12 @@
 </ul>
 <div class="post-content fmt">
 	<p>在Linux服务端后台开发中，经常会用到信号处理函数：<code>sigprocmask</code>和<code>sigsuspend</code>。这篇文章主要通过一个综合实例演示如何使用sigprocmask函数屏蔽目标信号（信号掩码）以及sigsuspend函数挂起进程。</p>
-<p><img alt="Linux中编译执行sigprocmask_sigsuspend程序" src="https://o3cex9zsl.qnssl.com/2016/02/sigprocmask_sigsuspend_init.png" title="Linux中编译执行sigprocmask_sigsuspend程序" /></p>
+<p><img alt="Linux中编译执行sigprocmask_sigsuspend程序" src="https://o3cex9zsl.qnssl.com/2016/02/sigprocmask_sigsuspend_init.png" title="Linux中编译执行sigprocmask_sigsuspend程序"></p>
 
 
 <h4>1 sigprocmask和sigsuspend函数的说明</h4>
 <p>关于<code>sigprocmask</code>函数的说明：</p>
-<div class="highlight"><pre>头文件：    #include &lt;signal.h&gt;
+<div class="highlight"><pre><span></span>头文件：    #include &lt;signal.h&gt;
 函数：     int sigprocmask(int how, const sigset_t *set, sigset_t *oldset);
 功能：     用于获取或者改变当前进程的信号掩码（当前进程屏蔽的信号集）。
 返回值：    0成功，-1失败（具体原因由errno值表示）。
@@ -57,7 +57,7 @@
 
 
 <p>关于<code>sigsuspend</code>函数的说明：</p>
-<div class="highlight"><pre>头文件：    #include &lt;signal.h&gt;
+<div class="highlight"><pre><span></span>头文件：    #include &lt;signal.h&gt;
 函数：     int sigsuspend(const sigset_t *mask);
 功能：     阻塞当前进程（TASK_INTERRUPTIBLE可中断状态），等待mask信号集（信号掩码）之外的任何信号的到来。
             在收到pendmask之外）信号后，先调用该信号的处理函数，然后把信号集mask还原为原来的信号集，接着从sigsuspend调用处返回（进程恢复执行）。
@@ -134,18 +134,18 @@
 65
 66
 67
-68</pre></div></td><td class="code"><div class="highlight"><pre><span class="cm">/**</span>
+68</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="cm">/**</span>
 <span class="cm"> * @FileName    sigprocmask_sigsuspend.c</span>
 <span class="cm"> * @Describe    A simple example for using sigprocmask and sigsuspend functions in linux.</span>
 <span class="cm"> * @Author      vfhky 2016-02-29 11:21 https://typecodes.com/cseries/sigprocmasksigsuspendapp.html</span>
 <span class="cm"> * @Compile     gcc sigprocmask_sigsuspend.c -o sigprocmask_sigsuspend</span>
 <span class="cm"> */</span>
-<span class="cp">#include &lt;stdio.h&gt;</span>
-<span class="cp">#include &lt;stdlib.h&gt;</span>
-<span class="cp">#include &lt;sys/types.h&gt;</span>
-<span class="cp">#include &lt;unistd.h&gt;</span>
-<span class="cp">#include &lt;signal.h&gt;</span>
-<span class="cp">#include &lt;errno.h&gt;</span>
+<span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;stdlib.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;sys/types.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;unistd.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;signal.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;errno.h&gt;</span><span class="cp"></span>
 
 <span class="c1">//Signal handle function.</span>
 <span class="kt">void</span> <span class="nf">sig_handler</span><span class="p">(</span> <span class="kt">int</span> <span class="n">signal</span> <span class="p">)</span>
@@ -207,15 +207,15 @@
 
 <h4>3 发送SIGUSR1和SIGUSR2信号</h4>
 <p>如下图所示，使用<code>kill</code>命令向进程（PID:7154）发送<code>SIGUSR1</code>和<code>SIGUSR2</code>信号。</p>
-<p><img alt="发送SIGUSR1和SIGUSR2信号" src="https://o3cex9zsl.qnssl.com/2016/02/kill_sigusr1_sigusr2.png" title="发送SIGUSR1和SIGUSR2信号" /></p>
+<p><img alt="发送SIGUSR1和SIGUSR2信号" src="https://o3cex9zsl.qnssl.com/2016/02/kill_sigusr1_sigusr2.png" title="发送SIGUSR1和SIGUSR2信号"></p>
 <p>由于<code>sigsuspend</code>函数把信号<code>SIGUSR1</code>和<code>SIGUSR2</code>加入到信号掩码<code>pendmask</code>中，所以这两个信号的到来对当前进程没有任何影响。</p>
 <h4>4 发送SIGINT信号</h4>
 <p>使用命令<code>kill -SIGINT 7154</code>向当前进程（PID:7154）发送<code>SIGINT</code>信号。由于该信号不在信号掩码<code>pendmask</code>中，所以先调用<code>SIGINT</code>信号的处理函数sig_handler，然后把现在的信号集<code>pendmask</code>还原为原来的<code>new_set</code>信号集。</p>
 <p>这时，由于之前由于信号掩码<code>pendmask</code>被屏蔽的未决信号信号<code>SIGUSR1</code>和<code>SIGUSR2</code>由内核重新传递，所以进程会执行<code>SIGUSR2</code>信号的处理函数（SIGUSR1信号被信号集new_set所屏蔽，因此不会执行）。接着进程从sigsuspend调用处返回，恢复执行（进入while循环）。</p>
-<p><img alt="执行SIGINT和SIGUSR2信号处理函数" src="https://o3cex9zsl.qnssl.com/2016/02/sigint_while.png" title="执行SIGINT和SIGUSR2信号处理函数" /></p>
+<p><img alt="执行SIGINT和SIGUSR2信号处理函数" src="https://o3cex9zsl.qnssl.com/2016/02/sigint_while.png" title="执行SIGINT和SIGUSR2信号处理函数"></p>
 <p>如果继续发送<code>SIGINT</code>信号，因为被加入到了当前信号掩码<code>new_set</code>中，所以也会被屏蔽（对进程无影响）。最后可以通过命令<code>kill -SIGKILL 7154</code>将整个进程关闭。</p>
-<p><img alt="继续发送SIGINT和SIGKILL信号" src="https://o3cex9zsl.qnssl.com/2016/02/sigint_sigkill.png" title="继续发送SIGINT和SIGKILL信号" /></p>
-		    	<div class="donate_div_container">
+<p><img alt="继续发送SIGINT和SIGKILL信号" src="https://o3cex9zsl.qnssl.com/2016/02/sigint_sigkill.png" title="继续发送SIGINT和SIGKILL信号"></p>
+</div>		    	<div class="donate_div_container">
 					<div class="donate_div">
 						<p><a href="javascript:void(0)" onclick="donateToggle()" class="donate_word" title="打赏，支持一下">打赏</a></p>
 						<div class="hide_box"></div>
@@ -245,7 +245,7 @@
 					</div>
 				</div>
 		    	<div class="tags">
-					<div class="post_tags">
+					<div class="post_tags" itemprop="keywords">
 						Tags: <a href="https://typecodes.com/tag/sigprocmask.html">sigprocmask</a>,<a href="https://typecodes.com/tag/sigsuspend.html">sigsuspend</a>,<a href="https://typecodes.com/tag/xin-hao.html">信号</a>					</div>
 					<div class="post-share">
 						<ul class="post-shareul clearfix">
@@ -337,7 +337,6 @@
 		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
 	</section>
 </div>
-				</div>
 			</div>
 		</div>
 		<!--4. bottom begin-->

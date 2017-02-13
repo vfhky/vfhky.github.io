@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html dir="ltr" lang="zh-CN" class="no-js">
+<html class="no-js">
 	<head>
-		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
   		<meta name="renderer" content="webkit">
 		<title>C语言将十进制字符串转成十进制整数 &mdash; TypeCodes</title>
 		<meta name="description" content="C语言将十进制字符串转成十进制整数 &mdash; TypeCodes" />
@@ -34,8 +35,7 @@
 			</div>
 		</div>
 		<div class="container">
-			<div class="row">
-		<!--2. left sider begin-->
+			<div class="row">		<!--2. left sider begin-->
 		<div class="col-md-9" id="blog-main" role="main">
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/cseries/clangintegerstrtointeger.html">C语言将十进制字符串转成十进制整数</a></h2>
@@ -97,7 +97,7 @@
 49
 50
 51
-52</pre></div></td><td class="code"><div class="highlight"><pre><span class="cm">/** </span>
+52</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="cm">/** </span>
 <span class="cm"> * 将十进制字符串转十进制数函数[从低位到高位单个字符转换]</span>
 <span class="cm"> * @author  vfhky 2014.10.24 https://typecodes.com</span>
 <span class="cm"> * @param   [in]    HexStr 十进制字符串（例如&quot;0621&quot;、&quot;+621&quot;、&quot;6210&quot;、&quot;-1234&quot;等） </span>
@@ -153,7 +153,7 @@
 </td></tr></table>
 
 <p>如下图所示，用GCC编译(<code>gcc integerstrtointeger.c -o integerstrtointeger</code>)测试程序并执行，结果将三个测试用的十进制的字符串"0621"、"+621"、"6210"、"-1234"分别转换成了对应的十进制整数：621、621、6210、-1234。用下面第二种方法结果也是一样的。</p>
-<p><img alt="十进制字符串转成十进制整数" src="https://o3cex9zsl.qnssl.com/2014/11/clangintegerstrtointeger.png" title="十进制字符串转成十进制整数" /></p>
+<p><img alt="十进制字符串转成十进制整数" src="https://o3cex9zsl.qnssl.com/2014/11/clangintegerstrtointeger.png" title="十进制字符串转成十进制整数"></p>
 <table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
  2
  3
@@ -203,7 +203,7 @@
 47
 48
 49
-50</pre></div></td><td class="code"><div class="highlight"><pre><span class="cm">/** </span>
+50</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="cm">/** </span>
 <span class="cm"> * 将十进制字符串转十进制数函数[从高位到低位单个字符转换]</span>
 <span class="cm"> * @author  vfhky 2014.10.24 https://typecodes.com</span>
 <span class="cm"> * @param   [in]    HexStr 十进制字符串（例如&quot;0621&quot;、&quot;+621&quot;、&quot;6210&quot;、&quot;-1234&quot;等） </span>
@@ -294,12 +294,12 @@
 35
 36
 37
-38</pre></div></td><td class="code"><div class="highlight"><pre><span class="cm">/** </span>
+38</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="cm">/** </span>
 <span class="cm"> * C/C++的lib库中atoi、atof字符串转换短整型、浮点型的测试</span>
 <span class="cm"> * @author  vfhky 2014.10.24 https://typecodes.com</span>
 <span class="cm"> */</span>
-<span class="cp">#include &quot;stdio.h&quot;</span>
-<span class="cp">#include &quot;stdlib.h&quot;</span>
+<span class="cp">#include</span> <span class="cpf">&quot;stdio.h&quot;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&quot;stdlib.h&quot;</span><span class="cp"></span>
 
 <span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>
 <span class="p">{</span>
@@ -335,8 +335,8 @@
 </pre></div>
 </td></tr></table>
 
-<p><img alt="C/C++的lib库中atoi、atof字符串转换短整型、浮点型的测试" src="https://o3cex9zsl.qnssl.com/2014/11/clibatoiatof.png" title="C/C++的lib库中atoi、atof字符串转换短整型、浮点型的测试" /></p>
-		    	<div class="donate_div_container">
+<p><img alt="C/C++的lib库中atoi、atof字符串转换短整型、浮点型的测试" src="https://o3cex9zsl.qnssl.com/2014/11/clibatoiatof.png" title="C/C++的lib库中atoi、atof字符串转换短整型、浮点型的测试"></p>
+</div>		    	<div class="donate_div_container">
 					<div class="donate_div">
 						<p><a href="javascript:void(0)" onclick="donateToggle()" class="donate_word" title="打赏，支持一下">打赏</a></p>
 						<div class="hide_box"></div>
@@ -366,7 +366,7 @@
 					</div>
 				</div>
 		    	<div class="tags">
-					<div class="post_tags">
+					<div class="post_tags" itemprop="keywords">
 						Tags: <a href="https://typecodes.com/tag/zi-fu-chuan-zhuan-huan.html">字符串转换</a>,<a href="https://typecodes.com/tag/atoi.html">atoi</a>,<a href="https://typecodes.com/tag/atof.html">atof</a>,<a href="https://typecodes.com/tag/shi-jin-zhi-zi-fu-chuan-zhuan-huan.html">十进制字符串转换</a>					</div>
 					<div class="post-share">
 						<ul class="post-shareul clearfix">
@@ -458,7 +458,6 @@
 		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
 	</section>
 </div>
-				</div>
 			</div>
 		</div>
 		<!--4. bottom begin-->

@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html dir="ltr" lang="zh-CN" class="no-js">
+<html class="no-js">
 	<head>
-		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
   		<meta name="renderer" content="webkit">
 		<title>配置IIS出现错误的解决方法 &mdash; TypeCodes</title>
 		<meta name="description" content="配置IIS出现错误的解决方法 &mdash; TypeCodes" />
@@ -34,8 +35,7 @@
 			</div>
 		</div>
 		<div class="container">
-			<div class="row">
-		<!--2. left sider begin-->
+			<div class="row">		<!--2. left sider begin-->
 		<div class="col-md-9" id="blog-main" role="main">
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/web/crlfloophole.html">配置IIS出现错误的解决方法</a></h2>
@@ -48,7 +48,7 @@
 <p>HTTP响应拆分是一个新的应用程序的攻击技术，使网页缓存中毒，跨用户涂改，如各种新的攻击，劫持用户的敏感信息和跨站点脚本（XSS）的网页。</p>
 
 
-<p><img alt="小议网站HTTP响应拆分漏洞-1" src="https://o3cex9zsl.qnssl.com/2012/07/12.png" title="小议网站HTTP响应拆分漏洞-1" /></p>
+<p><img alt="小议网站HTTP响应拆分漏洞-1" src="https://o3cex9zsl.qnssl.com/2012/07/12.png" title="小议网站HTTP响应拆分漏洞-1"></p>
 <h5>2 解决思路</h5>
 <p>根据常识，这种现象往往表现在带有参数传递的网页，例如 <code>typecodes.com/?page=传递的参数</code> 。于是，我赶紧查看了一下这个插件。在它的一个页面里面我看到了两行代码： $post = $_GET['p'];、$download = $_GET['download']; 。然而，它后面却没有对这两个传递的参数$post和$download 进行处理。这样就很可能造成注入漏洞。例如，在数据库的操作中就很注重一些防注入的处理。在“PHP和ASP的数据库连接代码”这篇文章的conn.asp的代码中就对回车键和换行键进行了处理。所以，对参数$post和$download运用PHP语法中的正则表达式ereg_replace或者字符串处理函数str_replace进行操作。大家只要在参数被写入到数据库之前把它过滤即可。</p>
 <h5>3 解决代码</h5>
@@ -63,7 +63,7 @@
  7
  8
  9
-10</pre></div></td><td class="code"><div class="highlight"><pre><span class="cp">&lt;?php</span>
+10</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
     <span class="nv">$post</span> <span class="o">=</span> <span class="nb">trim</span><span class="p">(</span><span class="nv">$post</span><span class="p">);</span> <span class="c1">//$post为需要过滤的参数</span>
     <span class="nv">$post</span> <span class="o">=</span> <span class="nb">strip_tags</span><span class="p">(</span><span class="nv">$post</span><span class="p">,</span><span class="s2">&quot;&quot;</span><span class="p">);</span> <span class="c1">//清除HTML如&lt;br/&gt;等代码</span>
     <span class="nv">$post</span> <span class="o">=</span> <span class="nb">ereg_replace</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">,</span><span class="s2">&quot;&quot;</span><span class="p">,</span><span class="nv">$post</span><span class="p">);</span> <span class="c1">//去掉制表符号</span>
@@ -85,7 +85,7 @@
 6
 7
 8
-9</pre></div></td><td class="code"><div class="highlight"><pre><span class="cp">&lt;?php</span>
+9</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
     <span class="nv">$post</span> <span class="o">=</span> <span class="nb">trim</span><span class="p">(</span><span class="nv">$post</span><span class="p">);</span> <span class="c1">//$post为需要过滤的参数</span>
     <span class="nv">$post</span> <span class="o">=</span> <span class="nb">strip_tags</span><span class="p">(</span><span class="nv">$post</span><span class="p">,</span><span class="s2">&quot;&quot;</span><span class="p">);</span> <span class="c1">//清除HTML如&lt;br/&gt;等代码</span>
     <span class="nv">$post</span> <span class="o">=</span> <span class="nb">str_replace</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="nb">str_replace</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="nv">$post</span><span class="p">));</span><span class="c1">//去掉空格和换行</span>
@@ -99,10 +99,10 @@
 
 <h6>3.3 问题延伸讨论</h6>
 <p>当然对$download参数的处理也是类似的（即把上述代码中的$post全部改成$download即可），就不贴出代码了。通过这个处理，解决了“HTTP响应拆分漏洞”的问题。</p>
-<p><img alt="小议网站HTTP响应拆分-2" src="https://o3cex9zsl.qnssl.com/2012/07/22.png" title="小议网站HTTP响应拆分-2" /></p>
+<p><img alt="小议网站HTTP响应拆分-2" src="https://o3cex9zsl.qnssl.com/2012/07/22.png" title="小议网站HTTP响应拆分-2"></p>
 <h5>4 Update 2012-12-30 18:26</h5>
 <h6>4.1 存在“http响应拆分漏洞”的CMS系统</h6>
-<div class="highlight"><pre>WordPress的wp-codebox插件
+<div class="highlight"><pre><span></span>WordPress的wp-codebox插件
 Shopex商城系统
 wordpress评论者链接网址重定向跳转插件
 ecshop商城系统
@@ -139,7 +139,7 @@ UCHOME
 25
 26
 27
-28</pre></div></td><td class="code"><div class="highlight"><pre><span class="cp">&lt;?php</span>
+28</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
     <span class="k">function</span> <span class="nf">handel_http</span><span class="p">(</span><span class="nv">$parameter</span><span class="p">){</span>
         <span class="nv">$parameter</span> <span class="o">=</span> <span class="nb">trim</span><span class="p">(</span><span class="nv">$parameter</span><span class="p">);</span> <span class="c1">//$parameter为需要过滤的参数</span>
         <span class="nv">$parameter</span> <span class="o">=</span> <span class="nb">strip_tags</span><span class="p">(</span><span class="nv">$parameter</span><span class="p">,</span><span class="s2">&quot;&quot;</span><span class="p">);</span> <span class="c1">//清除HTML如&lt;br/&gt;等代码</span>
@@ -179,7 +179,7 @@ UCHOME
 5
 6
 7
-8</pre></div></td><td class="code"><div class="highlight"><pre><span class="cp">&lt;?php</span>
+8</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
   <span class="nv">$username</span> <span class="o">=</span> <span class="nx">handel_http</span><span class="p">(</span><span class="nv">$username</span><span class="p">);</span> 
   <span class="o">/</span>
   <span class="o">***</span><span class="nx">接下来对</span><span class="nv">$username的任何操作就都安全了</span><span class="o">***</span>
@@ -197,7 +197,7 @@ UCHOME
 <p>更新于2013-03-11 20:31。针对UCHOME中的link.php造成的http拆分响应漏洞，博主给出的解决方案依然是在上面的下载地址中。大家测试看看，记得反馈额。</p>
 <h5>6 Update 2013-7-15 23:35</h5>
 <p>根据 @神情话意 的评论反馈，由于函数ereg_replace在PHP5.3中被弃用而报错，所以废除ereg_replace函数的解决方案。建议大家无论自己的服务器的PHP版本是5.2或是5.3等等，统一使用str_replace函数的解决方案。</p>
-		    	<div class="donate_div_container">
+</div>		    	<div class="donate_div_container">
 					<div class="donate_div">
 						<p><a href="javascript:void(0)" onclick="donateToggle()" class="donate_word" title="打赏，支持一下">打赏</a></p>
 						<div class="hide_box"></div>
@@ -227,7 +227,7 @@ UCHOME
 					</div>
 				</div>
 		    	<div class="tags">
-					<div class="post_tags">
+					<div class="post_tags" itemprop="keywords">
 						Tags: <a href="https://typecodes.com/tag/crlflou-dong.html">crlf漏洞</a>,<a href="https://typecodes.com/tag/httpxiang-ying-chai-fen.html">http响应拆分</a>					</div>
 					<div class="post-share">
 						<ul class="post-shareul clearfix">
@@ -319,7 +319,6 @@ UCHOME
 		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
 	</section>
 </div>
-				</div>
 			</div>
 		</div>
 		<!--4. bottom begin-->

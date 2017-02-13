@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html dir="ltr" lang="zh-CN" class="no-js">
+<html class="no-js">
 	<head>
-		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
   		<meta name="renderer" content="webkit">
 		<title>调试API接口的利器——获取返回数据中的信息提示字段 &mdash; TypeCodes</title>
 		<meta name="description" content="调试API接口的利器——获取返回数据中的信息提示字段 &mdash; TypeCodes" />
@@ -34,8 +35,7 @@
 			</div>
 		</div>
 		<div class="container">
-			<div class="row">
-		<!--2. left sider begin-->
+			<div class="row">		<!--2. left sider begin-->
 		<div class="col-md-9" id="blog-main" role="main">
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/web/testapiedgetoolreturnmessage.html">调试API接口的利器——获取返回数据中的信息提示字段</a></h2>
@@ -45,7 +45,7 @@
 <div class="post-content fmt">
 	<h5>1 调试腾讯开放平台QQ登录API</h5>
 <p>最近博主在测试腾讯开放平台的QQ登录API时，遇到了一个棘手问题。根据腾讯官方API文档，vfhky写了一个调用 <a href="http://wiki.connect.qq.com/get_info" title="查看腾讯官方关于get_info的API文档">get_info</a> 接口的程序。该接口能够获取QQ登录用户的微博信息，例如用户的出身日期、教育信息、FANS数目、微博内容等。具体大家也可以看看官方给出的API接口信息，地址是 http://wiki.connect.qq.com/get_info。</p>
-<p><img alt="腾讯后台API管理" src="https://o3cex9zsl.qnssl.com/2013/08/QQAPI_Oauth.png" title="腾讯后台API管理" /></p>
+<p><img alt="腾讯后台API管理" src="https://o3cex9zsl.qnssl.com/2013/08/QQAPI_Oauth.png" title="腾讯后台API管理"></p>
 
 
 <h5>2 调用 get_info 接口的程序</h5>
@@ -89,7 +89,7 @@
 37
 38
 39
-40</pre></div></td><td class="code"><div class="highlight"><pre><span class="x">//1、拼接请求URI，调用get_info接口    </span>
+40</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="x">//1、拼接请求URI，调用get_info接口    </span>
 <span class="x">$getuser_info_url =  &quot;https://graph.qq.com/user/get_info?access_token=&quot;.$params[&#39;access_token&#39;].&quot;&amp;oauth_consumer_key=&quot;.$app_id.&quot;&amp;openid=&quot;.$user-&gt;openid .&quot;&amp;format=json&quot; ;</span>
 
 <span class="x">/*************************************************</span>
@@ -135,14 +135,14 @@
 <h5>3 DEBUG无任何结果</h5>
 <p>结果很郁闷的是：无论如何debug，总是一片空白，无法在前台显示对应的数据。上周末问了腾讯开放平台的工作人员，仍没得到结果。说是技术支持人员不是，让我上官方论坛提问。结果一上论坛，小伙伴们惊得目瞪口呆，广告和僵尸问题几乎占满了所有帖子。这场景让我想起了前几年的动易论坛，不知现在怎么样了……好吧，有问题还得自己扛住！</p>
 <p>晚上回来仔细再琢磨了下API文档，发现返回的数据可能是xml格式也可能是json格式的，那么上面的程序应该也没错。问题出在哪呢？无意间，突然注意到了“错误返回示例”中提到了一个“msg”字段，对应的数据表示数据返回的信息提示。于是，立马，把上面的第3个步骤改成。</p>
-<div class="highlight"><pre><span class="x">echo  &quot;[生日：]&quot;. </span><span class="p">$</span><span class="nv">getuser_info_results</span><span class="x">-&gt;msg;</span>
+<div class="highlight"><pre><span></span>echo  &quot;[生日：]&quot;. $getuser_info_results-&gt;msg;
 </pre></div>
 
 
 <h5>4 曙光：获取返回数据中的信息提示字段</h5>
-<p><img alt="前台显示msg返回的信息" src="https://o3cex9zsl.qnssl.com/2013/08/QQAPI_errormsg.png" title="前台显示msg返回的信息" /></p>
+<p><img alt="前台显示msg返回的信息" src="https://o3cex9zsl.qnssl.com/2013/08/QQAPI_errormsg.png" title="前台显示msg返回的信息"></p>
 <p>结果终于出来了，如上图所示。提示信息为“this api without user authorization”，意思是“该API接口没有取得用户授权”。估计是由于先前在获取Authorization Code时，没有加入scope授权列表字段造成的。虽然说问题暂时还没解决，但是一个错误提示让博主看到了希望！激动不已，是以速成该文。所以在大家测试API接口的时候，千万不要忘了这把利器——获取返回数据中的信息提示字段！</p>
-		    	<div class="donate_div_container">
+</div>		    	<div class="donate_div_container">
 					<div class="donate_div">
 						<p><a href="javascript:void(0)" onclick="donateToggle()" class="donate_word" title="打赏，支持一下">打赏</a></p>
 						<div class="hide_box"></div>
@@ -172,7 +172,7 @@
 					</div>
 				</div>
 		    	<div class="tags">
-					<div class="post_tags">
+					<div class="post_tags" itemprop="keywords">
 						Tags: <a href="https://typecodes.com/tag/teng-xun-kai-fang-ping-tai-api.html">腾讯开放平台api</a>,<a href="https://typecodes.com/tag/apidiao-shi.html">api调试</a>					</div>
 					<div class="post-share">
 						<ul class="post-shareul clearfix">
@@ -264,7 +264,6 @@
 		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
 	</section>
 </div>
-				</div>
 			</div>
 		</div>
 		<!--4. bottom begin-->

@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html dir="ltr" lang="zh-CN" class="no-js">
+<html class="no-js">
 	<head>
-		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
   		<meta name="renderer" content="webkit">
 		<title>搭了个Shadowsocks+Proxy SwitchyOmega+net-speeder梯子 &mdash; TypeCodes</title>
 		<meta name="description" content="搭了个Shadowsocks+Proxy SwitchyOmega+net-speeder梯子 &mdash; TypeCodes" />
@@ -34,8 +35,7 @@
 			</div>
 		</div>
 		<div class="container">
-			<div class="row">
-		<!--2. left sider begin-->
+			<div class="row">		<!--2. left sider begin-->
 		<div class="col-md-9" id="blog-main" role="main">
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/mix/vpsshadowsockswitchyomegaspeeder.html">搭了个Shadowsocks+Proxy SwitchyOmega+net-speeder梯子</a></h2>
@@ -51,7 +51,7 @@
 <p>在v2ex搜了下大伙推荐的vps，大概集中在Linode、Digial Ocean、bandwagon、Azure HK这几个上，不过貌似Linode也被Q得厉害。网上搜了一个优惠码，在bandwagon上的选了个一年$19.99配置的VPS（竟然支持支付宝~）。</p>
 <p>在更换VPS的操作系统为CentOS7.1 64位后，网上找了些Shadowsocks的教程搭了个梯子（耗时不到1个小时）。</p>
 <p>已经用了三天，连接vps的ssh速度比较给力（BZ的最爱），通过Shadowsocks+Proxy SwitchyOmega+net-speeder梯子上谷歌也很快。</p>
-<p><img alt="Shadowsocks+Proxy SwitchyOmega+net-speeder梯子" src="https://o3cex9zsl.qnssl.com/2015/08/shadowsocks_proxyswitchyomega.png" title="Shadowsocks+Proxy SwitchyOmega+net-speeder梯子" /></p>
+<p><img alt="Shadowsocks+Proxy SwitchyOmega+net-speeder梯子" src="https://o3cex9zsl.qnssl.com/2015/08/shadowsocks_proxyswitchyomega.png" title="Shadowsocks+Proxy SwitchyOmega+net-speeder梯子"></p>
 <h4>2 分享下自己的操作过程</h4>
 <p>1、一台国外的VPS：BZ买的是<a href="https://bandwagonhost.com/vps-hosting.php" title="点击进入">搬瓦工(bandwagon) VPS</a>；</p>
 <p>2、搭Shadowsocks梯子的给力教程：来自<a href="https://www.ifshow.com/centos-7-installation-and-configuration-shadowsocks/" title="查看教程">boxwang</a>童鞋；</p>
@@ -60,9 +60,9 @@
 <p>5、Shadowsocks的Windows GUI客户端：<a href="https://o3cex9zsl.qnssl.com/libs/google/Shadowsocks.exe" title="点击下载">本地备份下载</a>，完成后直接运行然后配置VPS服务器上Shadowsocks的IP、端口和密码就行了。话说GitHub上的<a href="https://github.com/shadowsocks/shadowsocks-windows" title="点击查看">C#源码</a>用vs编译不过去，不知道有没有遇到过的童鞋。</p>
 <h4>3 利用Crontab定时执行shell脚本清除tcp连接</h4>
 <p>net-speeder缺点就是如果同时连接Shadowsocks服务端的请求过多的话，会导致梯子速度变慢。如下图所示，Shadowsocks服务端tcp出现了很多<code>SYN_RECV</code>、<code>TIME_WAIT</code>等状态。</p>
-<p><img alt="Shadowsocks+Proxy SwitchyOmega+net-speeder梯子" src="https://o3cex9zsl.qnssl.com/2015/08/shadowsocks_netstat.png" title="Shadowsocks+Proxy SwitchyOmega+net-speeder梯子" /></p>
+<p><img alt="Shadowsocks+Proxy SwitchyOmega+net-speeder梯子" src="https://o3cex9zsl.qnssl.com/2015/08/shadowsocks_netstat.png" title="Shadowsocks+Proxy SwitchyOmega+net-speeder梯子"></p>
 <p>解决方法：先创建一个shell控制脚本，然后通过crontab定时执行关闭所有net-speeder进程后重启net-speeder。</p>
-<div class="highlight"><pre>[root@typecodes net_speeder]# pwd
+<div class="highlight"><pre><span></span>[root@typecodes net_speeder]# pwd
 /root/net_speeder
 ###### build.sh脚本用于gcc编译net_speeder.c生成net_speeder二进制文件
 [root@typecodes net_speeder]# ls
@@ -79,7 +79,7 @@ killall net_speeder
 no crontab for root - using an empty one
 0 1 * * * /root/net_speeder/net_speeder_crontab.sh &gt;/dev/null 2&gt;&amp;1
 </pre></div>
-		    	<div class="donate_div_container">
+</div>		    	<div class="donate_div_container">
 					<div class="donate_div">
 						<p><a href="javascript:void(0)" onclick="donateToggle()" class="donate_word" title="打赏，支持一下">打赏</a></p>
 						<div class="hide_box"></div>
@@ -109,7 +109,7 @@ no crontab for root - using an empty one
 					</div>
 				</div>
 		    	<div class="tags">
-					<div class="post_tags">
+					<div class="post_tags" itemprop="keywords">
 						Tags: <a href="https://typecodes.com/tag/shadowsocks.html">shadowsocks</a>,<a href="https://typecodes.com/tag/ti-zi.html">梯子</a>					</div>
 					<div class="post-share">
 						<ul class="post-shareul clearfix">
@@ -201,7 +201,6 @@ no crontab for root - using an empty one
 		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
 	</section>
 </div>
-				</div>
 			</div>
 		</div>
 		<!--4. bottom begin-->

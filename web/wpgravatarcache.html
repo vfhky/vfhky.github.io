@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html dir="ltr" lang="zh-CN" class="no-js">
+<html class="no-js">
 	<head>
-		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
   		<meta name="renderer" content="webkit">
 		<title>WordPress中Gravatar头像缓存至本地服务器——暨博客优化实录 &mdash; TypeCodes</title>
 		<meta name="description" content="WordPress中Gravatar头像缓存至本地服务器——暨博客优化实录 &mdash; TypeCodes" />
@@ -34,8 +35,7 @@
 			</div>
 		</div>
 		<div class="container">
-			<div class="row">
-		<!--2. left sider begin-->
+			<div class="row">		<!--2. left sider begin-->
 		<div class="col-md-9" id="blog-main" role="main">
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/web/wpgravatarcache.html">WordPress中Gravatar头像缓存至本地服务器——暨博客优化实录</a></h2>
@@ -48,13 +48,13 @@
 
 <h5>（一）去繁存简，使用便捷</h5>
 <p>1、主要针对右侧栏的界面优化，去掉“同步微博vs公告栏”字样，修改CSS以突出订阅栏目的四个小图标。</p>
-<p><img alt="右侧栏界面优化（对比图）" src="https://o3cex9zsl.qnssl.com/2012/11/compare1.jpg" title="右侧栏界面优化（对比图）" /></p>
+<p><img alt="右侧栏界面优化（对比图）" src="https://o3cex9zsl.qnssl.com/2012/11/compare1.jpg" title="右侧栏界面优化（对比图）"></p>
 <p>2、优化一些PHP程序，例如博客主题在判断后台是否开启了头像缓存功能时，使用如下代码 &lt;?php if (get_option('swt_type') == 'Display') ?&gt; 。我直接删除该条语句，并用接下来（二）中的方法开启gravatar头像本地服务器缓存。效果如下图所示，大家可以右键查看图片的路径是否改成了博客服务器的文件路径。</p>
-<p><img alt="右侧栏“最新评论”的头像缓存" src="https://o3cex9zsl.qnssl.com/2012/11/opt1.png" title="右侧栏“最新评论”的头像缓存" /></p>
-<p><img alt="博客“留言吧”的头像缓存" src="https://o3cex9zsl.qnssl.com/2012/11/opt2.png" title="博客“留言吧”的头像缓存" /></p>
+<p><img alt="右侧栏“最新评论”的头像缓存" src="https://o3cex9zsl.qnssl.com/2012/11/opt1.png" title="右侧栏“最新评论”的头像缓存"></p>
+<p><img alt="博客“留言吧”的头像缓存" src="https://o3cex9zsl.qnssl.com/2012/11/opt2.png" title="博客“留言吧”的头像缓存"></p>
 <h5>（二）老生常谈，WordPress中的Gravatar头像本地服务器缓存，加快响应速度</h5>
 <p>先把下面的代码加入到主题的functions.php中，然后在需要的地方（例如，我的博客右侧栏的“读者粉丝墙”以及留言吧等等）调用这个my_avatar( )函数；然后在博客的主题下面新建一个avatar文件夹（用于保存头像），上传到空间后的权限是755。</p>
-<div class="highlight"><pre><span class="c1">//头像缓存 by vfhky</span>
+<div class="highlight"><pre><span></span><span class="c1">//头像缓存 by vfhky</span>
 <span class="kd">function</span> <span class="nx">my_avatar</span><span class="p">(</span> <span class="nx">$email</span><span class="p">,</span> <span class="nx">$size</span> <span class="o">=</span> <span class="s1">&#39;40&#39;</span><span class="p">,</span> <span class="nx">$default</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="nx">$alt</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span> <span class="p">)</span> <span class="p">{</span>
   <span class="c1">// $alt = (false === $alt) ? &#39;&#39; : esc_attr( $alt );</span>
   <span class="nx">$alt</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;&#39;</span> <span class="o">==</span> <span class="nx">$alt</span><span class="p">)</span> <span class="o">?</span> <span class="s1">&#39;&#39;</span> <span class="o">:</span>  <span class="nx">$alt</span> <span class="p">;</span><span class="c1">//用于设置当鼠标移到头像上显示提示文字</span>
@@ -65,7 +65,7 @@
   <span class="nx">$default_random</span> <span class="o">=</span> <span class="nx">array</span><span class="p">(</span><span class="s1">&#39;default1.jpg&#39;</span><span class="p">,</span> <span class="s1">&#39;default2.jpg&#39;</span><span class="p">,</span><span class="s1">&#39;default3.jpg&#39;</span><span class="p">,</span><span class="s1">&#39;default4.jpg&#39;</span><span class="p">,</span><span class="s1">&#39;default5.jpg&#39;</span><span class="p">,</span><span class="s1">&#39;default6.jpg&#39;</span><span class="p">,</span><span class="s1">&#39;default7.jpg&#39;</span><span class="p">,</span><span class="s1">&#39;default8.jpg&#39;</span><span class="p">,</span><span class="s1">&#39;default9.jpg&#39;</span><span class="p">,</span><span class="s1">&#39;default10.jpg&#39;</span><span class="p">,</span><span class="s1">&#39;default12.jpg&#39;</span><span class="p">,</span><span class="s1">&#39;default13.jpg&#39;</span><span class="p">,</span><span class="s1">&#39;default14.jpg&#39;</span><span class="p">,</span><span class="s1">&#39;default15.jpg&#39;</span><span class="p">,</span><span class="s1">&#39;default16.jpg&#39;</span><span class="p">,</span><span class="s1">&#39;default17.jpg&#39;</span><span class="p">,</span><span class="s1">&#39;default18.jpg&#39;</span><span class="p">);</span> <span class="c1">//在default文件夹下添加18个自己喜欢的头像，作为没有gravatar头像的人使用</span>
   <span class="nx">$default_random_num</span> <span class="o">=</span> <span class="nx">array_rand</span><span class="p">(</span><span class="nx">$default_random</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span> <span class="c1">//随机从上面18张头像中选出一张 </span>
   <span class="nx">$t</span> <span class="o">=</span> <span class="mi">432000</span><span class="p">;</span> <span class="c1">//设置头像更新时间为5天</span>
-  <span class="k">if</span> <span class="p">(</span> <span class="nx">empty</span><span class="p">(</span><span class="nx">$default</span><span class="p">)</span> <span class="p">)</span> <span class="nx">$default</span> <span class="o">=</span> <span class="nx">$default_random_abs</span><span class="p">.</span><span class="nx">$default_random</span><span class="cp">[</span><span class="nv">$default_random_num</span><span class="cp">]</span><span class="p">;</span>
+  <span class="k">if</span> <span class="p">(</span> <span class="nx">empty</span><span class="p">(</span><span class="nx">$default</span><span class="p">)</span> <span class="p">)</span> <span class="nx">$default</span> <span class="o">=</span> <span class="nx">$default_random_abs</span><span class="p">.</span><span class="nx">$default_random</span><span class="p">[</span><span class="nx">$default_random_num</span><span class="p">];</span>
   <span class="k">if</span> <span class="p">(</span> <span class="o">!</span><span class="nx">is_file</span><span class="p">(</span><span class="nx">$e</span><span class="p">)</span> <span class="o">||</span> <span class="p">(</span><span class="nx">time</span><span class="p">()</span> <span class="o">-</span> <span class="nx">filemtime</span><span class="p">(</span><span class="nx">$e</span><span class="p">))</span> <span class="o">&amp;</span><span class="nx">gt</span><span class="p">;</span> <span class="nx">$t</span> <span class="p">){</span> <span class="c1">//当头像不存在或文件不超过5天才更新</span>
   <span class="c1">//$g = sprintf( &quot;http://%d.gravatar.com&quot;, ( hexdec( $f{0} ) % 2 ) ). &#39;/avatar/&#39;. $f. &#39;?s=&#39;. $size. &#39;&amp;d=&#39;. $default. &#39;&amp;r=&#39;. $r; // wp 3.0 的服务器</span>
   <span class="nx">$g</span> <span class="o">=</span> <span class="s1">&#39;http://www.gravatar.com/avatar/&#39;</span><span class="p">.</span> <span class="nx">$f</span><span class="p">.</span> <span class="s1">&#39;?s=&#39;</span><span class="p">.</span> <span class="nx">$size</span><span class="p">.</span> <span class="s1">&#39;&amp;d=&#39;</span><span class="p">.</span> <span class="nx">$default</span><span class="p">.</span> <span class="s1">&#39;&amp;r=&#39;</span><span class="p">.</span> <span class="nx">$r</span><span class="p">;</span> <span class="c1">// 旧服务器 (哪个快就开哪个)</span>
@@ -80,29 +80,29 @@
 
 
 <p><code>温馨提示：</code>上述代码和预先自定义的头像我已经放到了<a href="https://typecodes.com/about" title="about | TypeCodes">博客的共享资源区</a>（115网盘or百度云盘or谷歌托管代码），大家可以参考下。这步完成后，我们就可以在自己需要的地方调用了。例如，我博客中的<a href="https://typecodes.com/contributors" title="Contributors | TypeCodes">contributes</a>里面有段代码是调用get_avatar()函数来获取gravatar.com设置的头像的。</p>
-<div class="highlight"><pre><span class="x">foreach (</span><span class="p">$</span><span class="nv">wall</span><span class="x"> as </span><span class="p">$</span><span class="nv">comment</span><span class="x">)</span><span class="err">{</span><span class="x"></span>
-<span class="x">  if( </span><span class="p">$</span><span class="nv">comment</span><span class="x">-&amp;gt;comment_author_url )</span>
-<span class="x">  </span><span class="p">$</span><span class="nv">url</span><span class="x"> = </span><span class="p">$</span><span class="nv">comment</span><span class="x">-&amp;gt;comment_author_url;</span>
-<span class="x">  else </span><span class="p">$</span><span class="nv">url</span><span class="x">=&quot;</span><span class="err">#</span><span class="x">&quot;;</span>
-<span class="x">  </span><span class="p">$</span><span class="nv">r</span><span class="x">=&quot;rel=&#39;external nofollow&#39;&quot;;</span>
-<span class="x">  </span><span class="p">$</span><span class="nv">tmp</span><span class="x"> = &quot;&amp;lt;a href=&#39;&quot;.</span><span class="p">$</span><span class="nv">url</span><span class="x">.&quot;&#39; &#39;&quot;.</span><span class="p">$</span><span class="nv">r</span><span class="x">.&quot;&#39; title=&#39;&quot;.</span><span class="p">$</span><span class="nv">comment</span><span class="x">-&amp;gt;comment_author.&quot; (留下&quot;.</span><span class="p">$</span><span class="nv">comment</span><span class="x">-&amp;gt;cnt.&quot;个脚印)&#39;&amp;gt;&quot;.get_avatar(</span><span class="p">$</span><span class="nv">comment</span><span class="x">-&amp;gt;comment_author_email, 36).&quot;&amp;lt;/a&amp;gt;&quot;;</span>
-<span class="x">  </span><span class="p">$</span><span class="nv">output</span><span class="x"> .= </span><span class="p">$</span><span class="nv">tmp</span><span class="x">;//调用get_avatar()函数来获取gravatar.com设置的头像</span>
-<span class="x">}</span>
-<span class="x">echo </span><span class="p">$</span><span class="nv">output</span><span class="x"> ;</span>
+<div class="highlight"><pre><span></span>foreach ($wall as $comment){
+  if( $comment-&amp;gt;comment_author_url )
+  $url = $comment-&amp;gt;comment_author_url;
+  else $url=&quot;#&quot;;
+  $r=&quot;rel=&#39;external nofollow&#39;&quot;;
+  $tmp = &quot;&amp;lt;a href=&#39;&quot;.$url.&quot;&#39; &#39;&quot;.$r.&quot;&#39; title=&#39;&quot;.$comment-&amp;gt;comment_author.&quot; (留下&quot;.$comment-&amp;gt;cnt.&quot;个脚印)&#39;&amp;gt;&quot;.get_avatar($comment-&amp;gt;comment_author_email, 36).&quot;&amp;lt;/a&amp;gt;&quot;;
+  $output .= $tmp;//调用get_avatar()函数来获取gravatar.com设置的头像
+}
+echo $output ;
 </pre></div>
 
 
 <p>那么，现在我就可以使用刚在functions.php定义的my_avatar( )函数来获取本地服务器缓存的头像了，修改如下：</p>
-<div class="highlight"><pre><span class="x">echo my_avatar(</span><span class="p">$</span><span class="nv">comment</span><span class="x">-&gt;comment_author_email, </span><span class="p">$</span><span class="nv">size</span><span class="x"> = &#39;36&#39; ,</span><span class="p">$</span><span class="nv">default</span><span class="x"> = &#39;&#39;,</span><span class="p">$</span><span class="nv">alt</span><span class="x">=&#39;&#39;);//其余代码省略，需要完整代码的话大家可以联系我</span>
+<div class="highlight"><pre><span></span>echo my_avatar($comment-&gt;comment_author_email, $size = &#39;36&#39; ,$default = &#39;&#39;,$alt=&#39;&#39;);//其余代码省略，需要完整代码的话大家可以联系我
 </pre></div>
 
 
 <h5>（三）结语：更简洁的界面、更快速的响应，更好的用户体验！</h5>
-<p><img alt="更快的响应速度，有木有！" src="https://o3cex9zsl.qnssl.com/2012/11/result.png" title="更快的响应速度，有木有！" /></p>
+<p><img alt="更快的响应速度，有木有！" src="https://o3cex9zsl.qnssl.com/2012/11/result.png" title="更快的响应速度，有木有！"></p>
 <p>在把博客的“留言吧”优化后，顺势把右侧栏的“读者粉丝墙”和“最新评论”优化。完后，博客是不是更好看、更想用、更好用了呢O(∩_∩)O哈哈~</p>
 <h5>Update 2012-12-30</h5>
 <p>在（二）中谈到的Gravatar头像本地服务器缓存，上面的代码造成了一个比较严重的问题。具体解决方案见最新关于WordPress中Gravatar头像缓存至本地服务器的文章<a href="https://typecodes.com/web/againwpgravatarcache.html" title="再议Gravatar头像缓存至本地服务器">《再议Gravatar头像缓存至本地服务器》</a>。</p>
-		    	<div class="donate_div_container">
+</div>		    	<div class="donate_div_container">
 					<div class="donate_div">
 						<p><a href="javascript:void(0)" onclick="donateToggle()" class="donate_word" title="打赏，支持一下">打赏</a></p>
 						<div class="hide_box"></div>
@@ -132,7 +132,7 @@
 					</div>
 				</div>
 		    	<div class="tags">
-					<div class="post_tags">
+					<div class="post_tags" itemprop="keywords">
 						Tags: <a href="https://typecodes.com/tag/wordpress.html">wordpress</a>,<a href="https://typecodes.com/tag/gravatartou-xiang-huan-cun.html">gravatar头像缓存</a>					</div>
 					<div class="post-share">
 						<ul class="post-shareul clearfix">
@@ -224,7 +224,6 @@
 		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
 	</section>
 </div>
-				</div>
 			</div>
 		</div>
 		<!--4. bottom begin-->

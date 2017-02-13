@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html dir="ltr" lang="zh-CN" class="no-js">
+<html class="no-js">
 	<head>
-		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
   		<meta name="renderer" content="webkit">
 		<title>分类 web 下的文章 - TypeCodes</title>
 		<meta name="description" content="分类 web 下的文章 - TypeCodes" />
@@ -34,8 +35,7 @@
 			</div>
 		</div>
 		<div class="container">
-			<div class="row">
-		<!--2. left sider begin-->
+			<div class="row">		<!--2. left sider begin-->
 		<div class="col-md-9" id="blog-main" role="main">
 		  	<!--article recycle-->
 			<article class="post">
@@ -47,7 +47,7 @@
 	<p>通过这篇文章，我们继续学习动易SiteFactory的标签制作。相信大家在文章列表模板页面或者是下载列表页面又或者是在图片列表页面都会涉及到分页的情况。那么动易SiteFactory又是如何通过标签进行分页的呢？下面我就为大家介绍一下分页标签的具体实现过程以及调用方法。</p>
 
 	<p class="more"><a href="https://typecodes.com/web/sfaddpagenavtag.html" title="动易SiteFactory系列教程四:如何添加一个分页标签">- 阅读剩余部分 -</a></p>
-			</article>
+</div>			</article>
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/web/sfnewstag.html">动易SiteFactory系列教程三:最新头条新闻标签制作</a></h2>
 <ul class="post-meta">
@@ -57,7 +57,7 @@
 	<p>在上一篇最新头条新闻带图片标签制作的教程中，我们熟悉了动易标签制作的大体流程。那么，这篇通过文章，我们继续学习动易SiteFactory的标签制作。本篇教程的主题是以大家访问一些网站的时候经常见到的头条新闻列表来演示动易SiteFactory如何制作出这种风格的标签。</p>
 
 	<p class="more"><a href="https://typecodes.com/web/sfnewstag.html" title="动易SiteFactory系列教程三:最新头条新闻标签制作">- 阅读剩余部分 -</a></p>
-			</article>
+</div>			</article>
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/web/sfcommontag.html">动易SiteFactory系列教程二:动易常用的标签</a></h2>
 <ul class="post-meta">
@@ -65,19 +65,19 @@
 </ul>
 <div class="post-content fmt">
 	<p>1.显示某个栏目的标题及链接：</p>
-<div class="highlight"><pre><span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&#39;{PE.Label id=&quot;取得节点链接路径&quot; nodeid=&quot;1&quot;/}&#39;</span> <span class="nt">&gt;</span>{PE.Label id=&quot;取得节点名称&quot; nodeid=&quot;1&quot;/}<span class="nt">&lt;/a&gt;</span>
+<div class="highlight"><pre><span></span><span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&#39;{PE.Label id=&quot;取得节点链接路径&quot; nodeid=&quot;1&quot;/}&#39;</span> <span class="nt">&gt;</span>{PE.Label id=&quot;取得节点名称&quot; nodeid=&quot;1&quot;/}<span class="nt">&lt;/a&gt;</span>
 显示“文章中心”及链接。也可以用nodes=&quot;@RequestInt_Id&quot;自动取值。
 </pre></div>
 
 
 <p>2.显示图片带标题（左边图片，右边文章标题）：</p>
-<div class="highlight"><pre>{PE.Label id=&quot;通用带图片的信息列表&quot; outputQty=&quot;1&quot; titleLength=&quot;30&quot; contentLength=&quot;80&quot; models=&quot;1&quot; titleClass=&quot;tv_u_thumb_title&quot; imageClass=&quot;tv_u_thumb&quot; imageWidth=&quot;160&quot; imageHeight=&quot;120&quot; picExist=&quot;true&quot;/}
+<div class="highlight"><pre><span></span>{PE.Label id=&quot;通用带图片的信息列表&quot; outputQty=&quot;1&quot; titleLength=&quot;30&quot; contentLength=&quot;80&quot; models=&quot;1&quot; titleClass=&quot;tv_u_thumb_title&quot; imageClass=&quot;tv_u_thumb&quot; imageWidth=&quot;160&quot; imageHeight=&quot;120&quot; picExist=&quot;true&quot;/}
 </pre></div>
 
 
 
 	<p class="more"><a href="https://typecodes.com/web/sfcommontag.html" title="动易SiteFactory系列教程二:动易常用的标签">- 阅读剩余部分 -</a></p>
-			</article>
+</div>			</article>
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/web/sfnewscontenttag.html">动易SiteFactory系列教程一:最新头条新闻带内容标签的制作</a></h2>
 <ul class="post-meta">
@@ -85,10 +85,10 @@
 </ul>
 <div class="post-content fmt">
 	<p>如何运用cms建立一个网站？我认为，可以分为3个步骤：第一个步骤是设计好整个网站的模板页面，这个主要有前台开发人员设计；第二个是熟悉后台的各种栏目（或者频道或者节点）的设置。不能小看这个步骤，很多标签都跟栏目使用的模板有关，不能通用；第三个步骤是后台开发人员根据相应的前台设计以及相应的要求添加相应的标签，调用出数据库内容（或者一些已经设计好的静态内容）。那么，这一系列的动易CMS教程主要讲解动易Sitefactory的标签。我将通过几个制作实例来讲解相关操作.</p>
-<p><img alt="最新头条新闻带图片标签制作" src="https://o3cex9zsl.qnssl.com/2012/08/13.png" title="最新头条新闻带图片标签制作" /></p>
+<p><img alt="最新头条新闻带图片标签制作" src="https://o3cex9zsl.qnssl.com/2012/08/13.png" title="最新头条新闻带图片标签制作"></p>
 
 	<p class="more"><a href="https://typecodes.com/web/sfnewscontenttag.html" title="动易SiteFactory系列教程一:最新头条新闻带内容标签的制作">- 阅读剩余部分 -</a></p>
-			</article>
+</div>			</article>
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/web/installsitefactory.html">动易SiteFactory的详细安装以及常见错误解决方案</a></h2>
 <ul class="post-meta">
@@ -100,7 +100,7 @@
 <p>虽然动易SiteFactory的安装包里面已经附录了比较完整的安装过程，但是我想做一些重要补充和提示。</p>
 
 	<p class="more"><a href="https://typecodes.com/web/installsitefactory.html" title="动易SiteFactory的详细安装以及常见错误解决方案">- 阅读剩余部分 -</a></p>
-			</article>
+</div>			</article>
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/web/aboutdedecms.html">对动易CMS和织梦CMS的一些认识——织梦CMS篇</a></h2>
 <ul class="post-meta">
@@ -109,10 +109,10 @@
 <div class="post-content fmt">
 	<h5>1 织梦CMS的概况</h5>
 <p>织梦（DEDECMS）目前有两大系列产品，即DedeCMS、DedeEIMS。这两种CMS都是基于PHP+MYSQL的开发环境的，其中，DedeCMS应该算是目前国内最受欢迎的的基于PHP环境的CMS了；DedeEIMS(全称EIMSDede Enterprise Information Management System)是针对中小型企业的CMS系统，类似动易的BizIdea。貌似现在织梦推出了一套淘宝客的程序，网上挺火的。</p>
-<p><img alt="织梦CMS" src="https://o3cex9zsl.qnssl.com/2012/08/1.jpg" title="织梦CMS" /></p>
+<p><img alt="织梦CMS" src="https://o3cex9zsl.qnssl.com/2012/08/1.jpg" title="织梦CMS"></p>
 
 	<p class="more"><a href="https://typecodes.com/web/aboutdedecms.html" title="对动易CMS和织梦CMS的一些认识——织梦CMS篇">- 阅读剩余部分 -</a></p>
-			</article>
+</div>			</article>
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/web/aboutsitefactorycms.html">对动易CMS和织梦CMS的一些认识——动易CMS篇</a></h2>
 <ul class="post-meta">
@@ -123,7 +123,7 @@
 <p>可能是由于主办方觉得是一难得的奇葩吧，也让我进入了决赛。后来想想，还是觉得自己的CSS设计太戳了，就两个字“难看”。那时，坤哥推荐我用动易的CMS做网站。这样我就加入了CMS的行列。不过，在初次使用动易CMS的时候遇到的麻烦还是挺多的，所以在从那次以后也没怎么使用SiteFactory这个CMS了。直到这次，网上一Q友找我修改他的这个动易CMS网站，我又重新接触了动易SiteFactory（此前大多时候都用的是织梦的CMS）。再加上近段时间，我也在学习C#，对微软.NET平台比较感兴趣，所以还是接受了。下面，我就通过两篇文章来说说我对动易CMS和织梦CMS的一些看法（当然有一定的局限性，不妥的地方还望指正！）</p>
 
 	<p class="more"><a href="https://typecodes.com/web/aboutsitefactorycms.html" title="对动易CMS和织梦CMS的一些认识——动易CMS篇">- 阅读剩余部分 -</a></p>
-			</article>
+</div>			</article>
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/web/phpsolvewparticleid.html">PHP程序解决WordPress重新排列不连续的文章ID</a></h2>
 <ul class="post-meta">
@@ -133,18 +133,28 @@
 	<p>wordpress有个缺点，那就是在后天发表文章的时候，系统会自动等时间地帮你备份。虽然出发点是好的，但是却导致了发表的文章的ID不连续。比如，前一篇文章的网站是27.html，很可能在你发表下一篇文章的时候网站会变成45.html。至此为止，博客中总共18篇文章，在我没进行重新排序之前，文章的ID已经达到了300多了。所以趁文章还不多的，赶紧采取一些措施解决下。废话少说，贴出代码（代码中已注释）。其中数据库表的前缀默认为wp_，应该根据自己的表进行修改。(温馨提示：在任何数据库的操作前，最好先备份数据库！！！）</p>
 
 	<p class="more"><a href="https://typecodes.com/web/phpsolvewparticleid.html" title="PHP程序解决WordPress重新排列不连续的文章ID">- 阅读剩余部分 -</a></p>
-			</article>
+</div>			</article>
 		  	<!--page navigation-->
 <ol class="page-navigator">
-<li class="prev"><a href="https://typecodes.com/web/index9.html">&laquo; 前一页</a></li><li><a href="https://typecodes.com/web/index.html">1</a>
-       <li><a href="https://typecodes.com/web/index2.html">2</a>
-       		</li><li><span>...</span></li><li><a href="https://typecodes.com/web/index5.html">5</a>
-       		</li><li><a href="https://typecodes.com/web/index6.html">6</a>
-       		</li><li><a href="https://typecodes.com/web/index7.html">7</a>
-       		</li><li><a href="https://typecodes.com/web/index8.html">8</a>
-       		</li><li><a href="https://typecodes.com/web/index9.html">9</a>
-       		</li><li class="current"><a href="https://typecodes.com/web/index10.html">10</a>
-       		</li><li><a href="https://typecodes.com/web/index11.html">11</a>
+<li class="prev"><a href="https://typecodes.com/web/index9.html">&laquo; 前一页</a></li><li>
+       			<a href="https://typecodes.com/web/index1.html">1</a>
+       		</li>
+       <li>
+       			<a href="https://typecodes.com/web/index2.html">2</a>
+       		</li><li><span>...</span></li><li>
+       			<a href="https://typecodes.com/web/index5.html">5</a>
+       		</li><li>
+       			<a href="https://typecodes.com/web/index6.html">6</a>
+       		</li><li>
+       			<a href="https://typecodes.com/web/index7.html">7</a>
+       		</li><li>
+       			<a href="https://typecodes.com/web/index8.html">8</a>
+       		</li><li>
+       			<a href="https://typecodes.com/web/index9.html">9</a>
+       		</li><li class="current">
+       			<a href="https://typecodes.com/web/index.html">10</a>
+       		</li><li>
+       			<a href="https://typecodes.com/web/index11.html">11</a>
        		</li><li class="next">
        		<a href="https://typecodes.com/web/index11.html">后一页 &raquo;</a>
        </li></ol>		</div>
@@ -213,7 +223,6 @@
 		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
 	</section>
 </div>
-				</div>
 			</div>
 		</div>
 		<!--4. bottom begin-->

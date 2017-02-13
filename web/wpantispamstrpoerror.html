@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html dir="ltr" lang="zh-CN" class="no-js">
+<html class="no-js">
 	<head>
-		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
   		<meta name="renderer" content="webkit">
 		<title>再议wordpress反垃圾评论：都是strpos函数惹的祸 &mdash; TypeCodes</title>
 		<meta name="description" content="再议wordpress反垃圾评论：都是strpos函数惹的祸 &mdash; TypeCodes" />
@@ -34,8 +35,7 @@
 			</div>
 		</div>
 		<div class="container">
-			<div class="row">
-		<!--2. left sider begin-->
+			<div class="row">		<!--2. left sider begin-->
 		<div class="col-md-9" id="blog-main" role="main">
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/web/wpantispamstrpoerror.html">再议wordpress反垃圾评论：都是strpos函数惹的祸</a></h2>
@@ -49,7 +49,7 @@
 
 <h5>2 strpos函数的原型</h5>
 <p>相信大家对strpos函数并不陌生，经常在字符串的处理中能看到它的身影。strpos函数原型是：</p>
-<div class="highlight"><pre><span class="c">/**</span>
+<div class="highlight"><pre><span></span><span class="c">/**</span>
 <span class="c"> * @Para string $source:  在该字符串中进行查找</span><span class="cp">[</span><span class="o">*</span><span class="cp">]</span><span class="c"></span>
 <span class="c"> * @Para mixed $target:  要查找的字符串；如若不是字符串，将被转换为整型并被视为字符的顺序值</span><span class="cp">[</span><span class="o">*</span><span class="cp">]</span><span class="c"></span>
 <span class="c"> * @Para int $offset:  查找的起始位置</span>
@@ -87,7 +87,7 @@
 24
 25
 26
-27</pre></div></td><td class="code"><div class="highlight"><pre><span class="x">/**</span>
+27</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="x">/**</span>
 <span class="x"> * @Author：  vfhky 2013年09月21日20:35</span>
 <span class="x"> * @Description:  通过两个不同的测试变量$test_1和$test_2直击关键</span>
 <span class="x"> */</span>
@@ -118,7 +118,7 @@
 </td></tr></table>
 
 <p>测试结果如下图所示：</p>
-<p><img alt="再议wordpress反垃圾评论：都是strpos函数惹的祸" src="https://o3cex9zsl.qnssl.com/2013/09/strpos_test.png" title="再议wordpress反垃圾评论：都是strpos函数惹的祸" /></p>
+<p><img alt="再议wordpress反垃圾评论：都是strpos函数惹的祸" src="https://o3cex9zsl.qnssl.com/2013/09/strpos_test.png" title="再议wordpress反垃圾评论：都是strpos函数惹的祸"></p>
 <h5>4 strpos函数的测试结果分析</h5>
 <p>上面这段代码中有两个不同的测试变量$test_1和$test_2，并且二者都包含了黑名单中的关键词：购。但是从图中显示的测试结果来看，$test_1变量没有别有效屏蔽，而变量$test_2却被提示包含广告词。奥秘就在于变量$test_1和$test_2中的“购”字出现的位置就！当关键词“购”出现在最前面时($test_1)，<span class="">strpos($test_1,$word[$i],0)</span>函数的执行结果为0，因为“购”字在字符串“购买TT”的最前面。那么for循环中的if语句变成了<span class="">if(0){}</span>，从而不会被视为垃圾评论，这就造成了BUG。下面分别是继续用strpos函数和使用PHP正则表达式，两种方法来实现“wordpress关键词黑名单：反垃圾评论再升级”。</p>
 <h6>5.1 正确使用strpos函数修正BUG</h6>
@@ -135,7 +135,7 @@
 11
 12
 13
-14</pre></div></td><td class="code"><div class="highlight"><pre><span class="x">/**</span>
+14</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="x">/**</span>
 <span class="x"> * @Author：  vfhky 2013年09月24日20:06</span>
 <span class="x"> * @Description:   正确使用strpos函数，解决上一篇文章代码的BUG</span>
 <span class="x"> * @Related article:  https://typecodes.com/web/wpantispamstrpoerror.html</span>
@@ -166,7 +166,7 @@
 11
 12
 13
-14</pre></div></td><td class="code"><div class="highlight"><pre><span class="x">/**</span>
+14</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="x">/**</span>
 <span class="x"> * @Author：  vfhky 2013年09月24日20:06</span>
 <span class="x"> * @Description:   使用PHP正则表达式修正BUG，实现“wordpress关键词黑名单：反垃圾评论再升级（非插件）”</span>
 <span class="x"> * @Related article:  https://typecodes.com/web/wpantispamstrpoerror.html</span>
@@ -184,7 +184,7 @@
 </td></tr></table>
 
 <h5>6 函数strpos的重要提醒</h5>
-<div class="highlight"><pre>使用strpos函数还需要注意的一点就是：它可能返回布尔值 FALSE，但也可能返回等同于 FALSE 的非布尔值。
+<div class="highlight"><pre><span></span>使用strpos函数还需要注意的一点就是：它可能返回布尔值 FALSE，但也可能返回等同于 FALSE 的非布尔值。
 例如返回整型0，浮点型值0.0，空字符串，字符串 &quot;0&quot;，不包括任何元素的数组，不包括任何成员变量的对象，特殊类型NULL等等。
 因此，应使用会检查返回的值的类型的恒等运算符“===”来测试此函数的返回值，而不是使用简单的等号“==”来判别。
 </pre></div>
@@ -200,7 +200,7 @@
 5
 6
 7
-8</pre></div></td><td class="code"><div class="highlight"><pre><span class="x">$words = array(&quot;com&quot;,&quot;cn&quot;,&quot;info&quot;,&quot;net&quot;,&quot;www&quot;,&quot;http&quot;,&quot;cc&quot;,&quot;host&quot;,&quot;代理&quot;,&quot;移动&quot;,&quot;电&quot;,&quot;国&quot;,&quot;港&quot;,&quot;购&quot;);</span>
+8</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="x">$words = array(&quot;com&quot;,&quot;cn&quot;,&quot;info&quot;,&quot;net&quot;,&quot;www&quot;,&quot;http&quot;,&quot;cc&quot;,&quot;host&quot;,&quot;代理&quot;,&quot;移动&quot;,&quot;电&quot;,&quot;国&quot;,&quot;港&quot;,&quot;购&quot;);</span>
 <span class="x">$num = count($words);</span>
 <span class="x">for($i=0;$i&lt; $num ;$i++){</span>
 <span class="x">    if (strpos($comment_author,$words[$i],0) !== false || strpos($comment_content,$words[$i],0) !== false){</span>
@@ -219,7 +219,7 @@
 5
 6
 7
-8</pre></div></td><td class="code"><div class="highlight"><pre><span class="x">$words = array(&quot;com&quot;,&quot;cn&quot;,&quot;info&quot;,&quot;net&quot;,&quot;www&quot;,&quot;http&quot;,&quot;cc&quot;,&quot;host&quot;,&quot;代理&quot;,&quot;移动&quot;,&quot;电&quot;,&quot;国&quot;,&quot;港&quot;,&quot;购&quot;);</span>
+8</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="x">$words = array(&quot;com&quot;,&quot;cn&quot;,&quot;info&quot;,&quot;net&quot;,&quot;www&quot;,&quot;http&quot;,&quot;cc&quot;,&quot;host&quot;,&quot;代理&quot;,&quot;移动&quot;,&quot;电&quot;,&quot;国&quot;,&quot;港&quot;,&quot;购&quot;);</span>
 <span class="x">$num = count($words);</span>
 <span class="x">    for($i=0;$i&lt; $num ;$i++){</span>
 <span class="x">        if( preg_match(&quot;/$words[$i]/i&quot;, $comment_author) || preg_match(&quot;/$words[$i]/i&quot;, $comment_content) ){</span>
@@ -229,7 +229,7 @@
 <span class="x">}</span>
 </pre></div>
 </td></tr></table>
-		    	<div class="donate_div_container">
+</div>		    	<div class="donate_div_container">
 					<div class="donate_div">
 						<p><a href="javascript:void(0)" onclick="donateToggle()" class="donate_word" title="打赏，支持一下">打赏</a></p>
 						<div class="hide_box"></div>
@@ -259,7 +259,7 @@
 					</div>
 				</div>
 		    	<div class="tags">
-					<div class="post_tags">
+					<div class="post_tags" itemprop="keywords">
 						Tags: <a href="https://typecodes.com/tag/wordpressla-ji-ping-lun.html">wordpress垃圾评论</a>					</div>
 					<div class="post-share">
 						<ul class="post-shareul clearfix">
@@ -351,7 +351,6 @@
 		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
 	</section>
 </div>
-				</div>
 			</div>
 		</div>
 		<!--4. bottom begin-->

@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html dir="ltr" lang="zh-CN" class="no-js">
+<html class="no-js">
 	<head>
-		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
   		<meta name="renderer" content="webkit">
 		<title>TypeCodes</title>
 		<meta name="description" content="TypeCodes" />
@@ -34,8 +35,7 @@
 			</div>
 		</div>
 		<div class="container">
-			<div class="row">
-		<!--2. left sider begin-->
+			<div class="row">		<!--2. left sider begin-->
 		<div class="col-md-9" id="blog-main" role="main">
 		  	<!--article recycle-->
 			<article class="post">
@@ -46,10 +46,10 @@
 <div class="post-content fmt">
 	<p><a href="https://typecodes.com/linux/syngithubmarkdownpelican.html" title="《同步GitHub Markdown文章到Linux服务器后更新Pelican博客的脚本》">前面一篇文章</a>通过Linux Shell脚本的方式，实现博客生成发布及同步GitHub的的功能：先同步GitHub个人仓库中的Markdown文章到本地，然后通过Pelican编译生成静态HTML文件，最后发布到Nginx的web目录下面，同时更新到GitHub个人主页（vfhky.github.io）。</p>
 <p>由于没仔细考虑到Markdown文件名中可能包含空格的问题，所以在Shell脚本的文件名遍历时（代码第108行）出现了BUG：Linux Shell默认把空格空格做为值与值之间的分隔符，所以原本一个带空格的文件名就被拆分成了几个文件名。</p>
-<p><img alt="CentOS7.2服务器默认的IFS为空值" src="https://o3cex9zsl.qnssl.com/2016/03/centos_ifs_default.png" title="CentOS7.2服务器默认的IFS为空值" /></p>
+<p><img alt="CentOS7.2服务器默认的IFS为空值" src="https://o3cex9zsl.qnssl.com/2016/03/centos_ifs_default.png" title="CentOS7.2服务器默认的IFS为空值"></p>
 
 	<p class="more"><a href="https://typecodes.com/linux/updatesyngithubpelicanshell.html" title="更新博客生成发布及同步GitHub的Shell脚本：解决文件名空格问题">- 阅读剩余部分 -</a></p>
-			</article>
+</div>			</article>
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/cseries/sigprocmasksigsuspendapp.html">一个sigprocmask和sigsuspend函数的综合应用</a></h2>
 <ul class="post-meta">
@@ -57,10 +57,10 @@
 </ul>
 <div class="post-content fmt">
 	<p>在Linux服务端后台开发中，经常会用到信号处理函数：<code>sigprocmask</code>和<code>sigsuspend</code>。这篇文章主要通过一个综合实例演示如何使用sigprocmask函数屏蔽目标信号（信号掩码）以及sigsuspend函数挂起进程。</p>
-<p><img alt="Linux中编译执行sigprocmask_sigsuspend程序" src="https://o3cex9zsl.qnssl.com/2016/02/sigprocmask_sigsuspend_init.png" title="Linux中编译执行sigprocmask_sigsuspend程序" /></p>
+<p><img alt="Linux中编译执行sigprocmask_sigsuspend程序" src="https://o3cex9zsl.qnssl.com/2016/02/sigprocmask_sigsuspend_init.png" title="Linux中编译执行sigprocmask_sigsuspend程序"></p>
 
 	<p class="more"><a href="https://typecodes.com/cseries/sigprocmasksigsuspendapp.html" title="一个sigprocmask和sigsuspend函数的综合应用">- 阅读剩余部分 -</a></p>
-			</article>
+</div>			</article>
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/cseries/tcpclosewaitsigpipe.html">Linux TCP通信出现CLOSE_WAIT后导致服务端进程挂掉</a></h2>
 <ul class="post-meta">
@@ -68,10 +68,10 @@
 </ul>
 <div class="post-content fmt">
 	<p>在<a href="https://typecodes.com/cseries/tcpdumpwiresharkclosewait2.html" title="《使用TCPDUMP和Wireshark排查服务端CLOSE_WAIT（二）》">前文</a>中讲述了Linux服务端TCP通信出现<code>CLOSE_WAIT</code>状态的原因，这篇文章主要通过一个实例演示它个一个“恶劣”影响：直接使服务端进程Down掉。</p>
-<p><img alt="CentOS服务端建立监听端口" src="https://o3cex9zsl.qnssl.com/2016/02/tcp_socket_server1.png" title="CentOS服务端建立监听端口" /></p>
+<p><img alt="CentOS服务端建立监听端口" src="https://o3cex9zsl.qnssl.com/2016/02/tcp_socket_server1.png" title="CentOS服务端建立监听端口"></p>
 
 	<p class="more"><a href="https://typecodes.com/cseries/tcpclosewaitsigpipe.html" title="Linux TCP通信出现CLOSE_WAIT后导致服务端进程挂掉">- 阅读剩余部分 -</a></p>
-			</article>
+</div>			</article>
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/cseries/tcpdumpwiresharkclosewait2.html">使用TCPDUMP和Wireshark排查服务端CLOSE_WAIT（二）</a></h2>
 <ul class="post-meta">
@@ -79,10 +79,10 @@
 </ul>
 <div class="post-content fmt">
 	<p>前文<a href="https://typecodes.com/cseries/tcpdumpwiresharkclosewait1.html" title="查看原文">《使用TCPDUMP和Wireshark排查服务端CLOSE_WAIT（一）》</a>通过TCPDUMP和Wireshark在利用CentOS7作为服务端、Windows10作为客户端，模拟演示了一个TCP通信的CLOSE_WAIT状态，这篇文章主要利用前文的数据尝试解释Linux服务端产生CLOSE_WAIT状态的原因。</p>
-<p><img alt="客户端和服务端的TCP通信流程" src="https://o3cex9zsl.qnssl.com/2016/02/socket_tcpflow.png" title="客户端和服务端的TCP通信流程" /></p>
+<p><img alt="客户端和服务端的TCP通信流程" src="https://o3cex9zsl.qnssl.com/2016/02/socket_tcpflow.png" title="客户端和服务端的TCP通信流程"></p>
 
 	<p class="more"><a href="https://typecodes.com/cseries/tcpdumpwiresharkclosewait2.html" title="使用TCPDUMP和Wireshark排查服务端CLOSE_WAIT（二）">- 阅读剩余部分 -</a></p>
-			</article>
+</div>			</article>
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/cseries/tcpdumpwiresharkclosewait1.html">使用TCPDUMP和Wireshark排查服务端CLOSE_WAIT（一）</a></h2>
 <ul class="post-meta">
@@ -90,10 +90,10 @@
 </ul>
 <div class="post-content fmt">
 	<p>在Linux后端服务网络通信开发中，可能会遇到CLOSE_WAIT的状况。引起TCP CLOSE_WAIT状态的情况很多，归根结底还是由于被动关闭的一方没有关闭socket链路导致的。这篇文章主要是通过用一个简单的例子通过TCPDUMP和Wireshark这两个工具来模拟产生CLOSE_WAIT的情况，<a href="https://typecodes.com/cseries/tcpdumpwiresharkclosewait2.html" title="《使用TCPDUMP和Wireshark排查服务端CLOSE_WAIT（二）》">下一篇</a>主要是对这个问题的原理解释。</p>
-<p><img alt="CentOS服务端建立监听端口" src="https://o3cex9zsl.qnssl.com/2016/02/server_socket_8000.png" title="CentOS服务端建立监听端口" /></p>
+<p><img alt="CentOS服务端建立监听端口" src="https://o3cex9zsl.qnssl.com/2016/02/server_socket_8000.png" title="CentOS服务端建立监听端口"></p>
 
 	<p class="more"><a href="https://typecodes.com/cseries/tcpdumpwiresharkclosewait1.html" title="使用TCPDUMP和Wireshark排查服务端CLOSE_WAIT（一）">- 阅读剩余部分 -</a></p>
-			</article>
+</div>			</article>
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/linux/simpletcpdumpapply.html">Linux中使用TCPDUMP进行简单的TCP抓包</a></h2>
 <ul class="post-meta">
@@ -101,19 +101,19 @@
 </ul>
 <div class="post-content fmt">
 	<p>在Linux TCP通信的调试中，tcpdump应该算是很好的一个工具。这篇文章主要使用Windows作为客户端，向作为服务端的Linux中的一个socket监听端口发送报文信息，然后在Linux中用TCPDUMP工具进行抓包。通过这个实例，可以较为完整的了解TCP通信中的“三次握手”等过程。</p>
-<p><img alt="Linux中使用TCPDUMP进行简单的TCP抓包" src="https://o3cex9zsl.qnssl.com/2016/02/linuxtcpdump.png" title="Linux中使用TCPDUMP进行简单的TCP抓包" /></p>
+<p><img alt="Linux中使用TCPDUMP进行简单的TCP抓包" src="https://o3cex9zsl.qnssl.com/2016/02/linuxtcpdump.png" title="Linux中使用TCPDUMP进行简单的TCP抓包"></p>
 
 	<p class="more"><a href="https://typecodes.com/linux/simpletcpdumpapply.html" title="Linux中使用TCPDUMP进行简单的TCP抓包">- 阅读剩余部分 -</a></p>
-			</article>
+</div>			</article>
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/linux/yuminstallmysql5710.html">CentOS 7.2使用yum安装MYSQL 5.7.10</a></h2>
 <ul class="post-meta">
 	<li>作者：vfhky | 时间：2016-02-26 14:55 | 分类：<a href="https://typecodes.com/linux/index.html">linux</a></li>
 </ul>
 <div class="post-content fmt">
-	<p>前面两篇文章<a href="https://typecodes.com/web/centos7compilemysql.html" title="查看原文">《2015博客升级记(四)：CentOS 7.1编译安装MySQL5.7.7rc》</a>、<a href="https://typecodes.com/web/centos7yuminstallmysql5.html" title="查看原文">《阿里云CentOS 7.1使用yum安装MySql5.6.24》</a>分别使用源码编译和YUM方法安装MySQL数据库，这篇文章同样是使用YUM方法在CentOS7.2(64bits)的机器上安装最新的MySQL5.7.10数据库 ...</p>
+	<p>前面两篇文章<a href="https://typecodes.com/web/centos7compilemysql.html" title="查看原文">《2015博客升级记(四)：CentOS 7.1编译安装MySQL5.7.7rc》</a>、<a href="https://typecodes.com/web/centos7yuminstallmysql5.html" title="查看原文">《阿里云CentOS 7.1使用yum安装MySql5.6.24》</a>分别使用源码编译和YUM方法安装MySQL数据库，这篇文章同样是使用YUM方法在CentOS7.2(64bits)的机器上安装最新的MySQL5.7.10数据库 …</p>
 	<p class="more"><a href="https://typecodes.com/linux/yuminstallmysql5710.html" title="CentOS 7.2使用yum安装MYSQL 5.7.10">- 阅读剩余部分 -</a></p>
-			</article>
+</div>			</article>
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/cseries/multilprocessthreadgdb.html">Linux多进程和多线程的一次gdb调试实例</a></h2>
 <ul class="post-meta">
@@ -123,18 +123,28 @@
 	<p>Linux C/C++开发中gdb进行多进程和多线程的调试一直比较麻烦，在CSDN上看到高科的一篇文章<a href="http://blog.csdn.net/pbymw8iwm/article/details/7876797" title="查看原文">《gdb调试多进程和多线程命令》</a>比较有启发，这里就自己重新整理并做了一个GDB多进程/线程的调试实践。</p>
 
 	<p class="more"><a href="https://typecodes.com/cseries/multilprocessthreadgdb.html" title="Linux多进程和多线程的一次gdb调试实例">- 阅读剩余部分 -</a></p>
-			</article>
+</div>			</article>
 		  	<!--page navigation-->
 <ol class="page-navigator">
-<li class="prev"><a href="https://typecodes.com/index.html">&laquo; 前一页</a></li><li><a href="https://typecodes.com/index.html">1</a>
-       <li class="current"><a href="https://typecodes.com/index2.html">2</a>
-       		</li><li><a href="https://typecodes.com/index3.html">3</a>
-       		</li><li><a href="https://typecodes.com/index4.html">4</a>
-       		</li><li><a href="https://typecodes.com/index5.html">5</a>
-       		</li><li><a href="https://typecodes.com/index6.html">6</a>
-       		</li><li><a href="https://typecodes.com/index7.html">7</a>
-       		</li><li><span>...</span></li><li><a href="https://typecodes.com/index27.html">27</a>
-       		</li><li><a href="https://typecodes.com/index28.html">28</a>
+<li class="prev"><a href="https://typecodes.com/index.html">&laquo; 前一页</a></li><li>
+       			<a href="https://typecodes.com/index1.html">1</a>
+       		</li>
+       <li class="current">
+       			<a href="https://typecodes.com/index.html">2</a>
+       		</li><li>
+       			<a href="https://typecodes.com/index3.html">3</a>
+       		</li><li>
+       			<a href="https://typecodes.com/index4.html">4</a>
+       		</li><li>
+       			<a href="https://typecodes.com/index5.html">5</a>
+       		</li><li>
+       			<a href="https://typecodes.com/index6.html">6</a>
+       		</li><li>
+       			<a href="https://typecodes.com/index7.html">7</a>
+       		</li><li><span>...</span></li><li>
+       			<a href="https://typecodes.com/index27.html">27</a>
+       		</li><li>
+       			<a href="https://typecodes.com/index28.html">28</a>
        		</li><li class="next">
        		<a href="https://typecodes.com/index3.html">后一页 &raquo;</a>
        </li></ol>		</div>
@@ -203,7 +213,6 @@
 		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
 	</section>
 </div>
-				</div>
 			</div>
 		</div>
 		<!--4. bottom begin-->

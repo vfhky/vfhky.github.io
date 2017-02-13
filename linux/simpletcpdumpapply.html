@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html dir="ltr" lang="zh-CN" class="no-js">
+<html class="no-js">
 	<head>
-		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
   		<meta name="renderer" content="webkit">
 		<title>Linux中使用TCPDUMP进行简单的TCP抓包 &mdash; TypeCodes</title>
 		<meta name="description" content="Linux中使用TCPDUMP进行简单的TCP抓包 &mdash; TypeCodes" />
@@ -34,8 +35,7 @@
 			</div>
 		</div>
 		<div class="container">
-			<div class="row">
-		<!--2. left sider begin-->
+			<div class="row">		<!--2. left sider begin-->
 		<div class="col-md-9" id="blog-main" role="main">
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/linux/simpletcpdumpapply.html">Linux中使用TCPDUMP进行简单的TCP抓包</a></h2>
@@ -44,7 +44,7 @@
 </ul>
 <div class="post-content fmt">
 	<p>在Linux TCP通信的调试中，tcpdump应该算是很好的一个工具。这篇文章主要使用Windows作为客户端，向作为服务端的Linux中的一个socket监听端口发送报文信息，然后在Linux中用TCPDUMP工具进行抓包。通过这个实例，可以较为完整的了解TCP通信中的“三次握手”等过程。</p>
-<p><img alt="Linux中使用TCPDUMP进行简单的TCP抓包" src="https://o3cex9zsl.qnssl.com/2016/02/linuxtcpdump.png" title="Linux中使用TCPDUMP进行简单的TCP抓包" /></p>
+<p><img alt="Linux中使用TCPDUMP进行简单的TCP抓包" src="https://o3cex9zsl.qnssl.com/2016/02/linuxtcpdump.png" title="Linux中使用TCPDUMP进行简单的TCP抓包"></p>
 
 
 <h5>1 CentOS服务端建立监听并抓包</h5>
@@ -120,19 +120,19 @@
 69
 70
 71
-72</pre></div></td><td class="code"><div class="highlight"><pre><span class="cm">/** </span>
+72</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="cm">/** </span>
 <span class="cm"> * @FileName    server_socket.c</span>
 <span class="cm"> * @Describe    A simple example for creating a listen as a server in linux system.</span>
 <span class="cm"> * @Author      vfhky 2015-09-25 21:32 https://typecodes.com/linux/simpletcpdumpapply.html</span>
 <span class="cm"> * @Compile     gcc server_socket.c -o server_socket</span>
 <span class="cm"> */</span>
-<span class="cp">#include &lt;stdio.h&gt;</span>
-<span class="cp">#include &lt;string.h&gt;</span>
-<span class="cp">#include &lt;sys/types.h&gt;</span>
-<span class="cp">#include &lt;sys/socket.h&gt;</span>
-<span class="cp">#include &lt;netinet/in.h&gt;</span>
-<span class="cp">#include &lt;arpa/inet.h&gt;</span>
-<span class="cp">#include &lt;errno.h&gt;</span>
+<span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;string.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;sys/types.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;sys/socket.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;netinet/in.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;arpa/inet.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;errno.h&gt;</span><span class="cp"></span>
 
 <span class="kt">int</span> <span class="nf">main</span><span class="p">(</span> <span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">**</span><span class="n">argv</span> <span class="p">)</span>
 <span class="p">{</span>
@@ -198,45 +198,45 @@
 <h5>2 Windows客户端发送请求报文</h5>
 <p>在本地Windows机器（192.168.1.109）使用报文发送工具连接到虚拟机服务器192.168.1.178，然后发送两次请求报文。</p>
 <p>其中，第一次发送“11111”的报文：</p>
-<p><img alt="客户端第一次发送请求报文" src="https://o3cex9zsl.qnssl.com/2016/02/client_first_send.png" title="客户端第一次发送请求报文" /></p>
+<p><img alt="客户端第一次发送请求报文" src="https://o3cex9zsl.qnssl.com/2016/02/client_first_send.png" title="客户端第一次发送请求报文"></p>
 <p>第二次发送“123321”的请求报文：</p>
-<p><img alt="客户端第二次发送请求报文" src="https://o3cex9zsl.qnssl.com/2016/02/client_second_send.png" title="客户端第二次发送请求报文" /></p>
+<p><img alt="客户端第二次发送请求报文" src="https://o3cex9zsl.qnssl.com/2016/02/client_second_send.png" title="客户端第二次发送请求报文"></p>
 <h5>3 Windows客户端关闭socket</h5>
 <p>点击左边配置菜单栏中的“关闭”按钮，断开tcp连接。</p>
-<p><img alt="客户端关闭socket" src="https://o3cex9zsl.qnssl.com/2016/02/client_close.png" title="客户端关闭socket" /></p>
+<p><img alt="客户端关闭socket" src="https://o3cex9zsl.qnssl.com/2016/02/client_close.png" title="客户端关闭socket"></p>
 <h5>4 分析抓包的情况</h5>
 <p>在Linux服务端的抓包情况如下，其中抓包内容中出现冒号表示范围，例如seq 1:6表示seq序号范围从1到6。另外，抓包中的<code>iRDMI</code>代表<code>iRDMI/Shoutcast Server</code>，对应着8000端口。</p>
-<div class="highlight"><pre><span class="cp">[</span><span class="nx">root</span><span class="p">@</span><span class="nx">typecodes</span> <span class="err">~</span><span class="cp">]</span><span class="err">#</span> <span class="nx">tcpdump</span> <span class="o">-</span><span class="nx">n</span> <span class="nx">port</span> <span class="mi">8000</span>
-<span class="nx">tcpdump</span><span class="o">:</span> <span class="nx">verbose</span> <span class="nx">output</span> <span class="nx">suppressed</span><span class="p">,</span> <span class="nx">use</span> <span class="o">-</span><span class="nx">v</span> <span class="nx">or</span> <span class="o">-</span><span class="nx">vv</span> <span class="k">for</span> <span class="nx">full</span> <span class="nx">protocol</span> <span class="nx">decode</span>
-<span class="nx">listening</span> <span class="nx">on</span> <span class="nx">eth0</span><span class="p">,</span> <span class="nx">link</span><span class="o">-</span><span class="nx">type</span> <span class="nx">EN10MB</span> <span class="p">(</span><span class="nx">Ethernet</span><span class="p">),</span> <span class="nx">capture</span> <span class="nx">size</span> <span class="mi">65535</span> <span class="nx">bytes</span>
+<div class="highlight"><pre><span></span>[root@typecodes ~]# tcpdump -n port 8000
+tcpdump: verbose output suppressed, use -v or -vv for full protocol decode
+listening on eth0, link-type EN10MB (Ethernet), capture size 65535 bytes
 
-<span class="c1">//内容格式</span>
-<span class="c1">//时分秒           客户端IP和端口         服务端IP和端口   SYN(客户端主动请求连接服务器)  包序号  8192(Window size),  长度0</span>
-<span class="mi">11</span><span class="o">:</span><span class="mi">12</span><span class="o">:</span><span class="mf">02.534303</span> <span class="nx">IP</span> <span class="mf">192.168</span><span class="p">.</span><span class="mf">1.109</span><span class="p">.</span><span class="mi">8886</span> <span class="o">&gt;</span> <span class="mf">192.168</span><span class="p">.</span><span class="mf">1.178</span><span class="p">.</span><span class="nx">irdmi</span><span class="o">:</span> <span class="nx">Flags</span> <span class="cp">[</span><span class="nx">S</span><span class="cp">]</span><span class="p">,</span> <span class="nx">seq</span> <span class="mi">2639909369</span><span class="p">,</span> <span class="nx">win</span> <span class="mi">8192</span><span class="p">,</span> <span class="nx">options</span> <span class="cp">[</span><span class="nx">mss</span> <span class="mi">1460</span><span class="p">,</span><span class="nx">nop</span><span class="p">,</span><span class="nx">wscale</span> <span class="mi">8</span><span class="p">,</span><span class="nx">nop</span><span class="p">,</span><span class="nx">nop</span><span class="p">,</span><span class="nx">sackOK</span><span class="cp">]</span><span class="p">,</span> <span class="nx">length</span> <span class="mi">0</span>
+//内容格式
+//时分秒           客户端IP和端口         服务端IP和端口   SYN(客户端主动请求连接服务器)  包序号  8192(Window size),  长度0
+11:12:02.534303 IP 192.168.1.109.8886 &gt; 192.168.1.178.irdmi: Flags [S], seq 2639909369, win 8192, options [mss 1460,nop,wscale 8,nop,nop,sackOK], length 0
 
-<span class="c1">//服务器端发送SYN+ACK(.)的报文给客户端,  ack=seq+1=2639909369+1,  长度0</span>
-<span class="mi">11</span><span class="o">:</span><span class="mi">12</span><span class="o">:</span><span class="mf">02.534339</span> <span class="nx">IP</span> <span class="mf">192.168</span><span class="p">.</span><span class="mf">1.178</span><span class="p">.</span><span class="nx">irdmi</span> <span class="o">&gt;</span> <span class="mf">192.168</span><span class="p">.</span><span class="mf">1.109</span><span class="p">.</span><span class="mi">8886</span><span class="o">:</span> <span class="nx">Flags</span> <span class="cp">[</span><span class="nx">S.</span><span class="cp">]</span><span class="p">,</span> <span class="nx">seq</span> <span class="mi">1984808639</span><span class="p">,</span> <span class="nx">ack</span> <span class="mi">2639909370</span><span class="p">,</span> <span class="nx">win</span> <span class="mi">14600</span><span class="p">,</span> <span class="nx">options</span> <span class="cp">[</span><span class="nx">mss</span> <span class="mi">1460</span><span class="p">,</span><span class="nx">nop</span><span class="p">,</span><span class="nx">nop</span><span class="p">,</span><span class="nx">sackOK</span><span class="p">,</span><span class="nx">nop</span><span class="p">,</span><span class="nx">wscale</span> <span class="mi">7</span><span class="cp">]</span><span class="p">,</span> <span class="nx">length</span> <span class="mi">0</span>
+//服务器端发送SYN+ACK(.)的报文给客户端,  ack=seq+1=2639909369+1,  长度0
+11:12:02.534339 IP 192.168.1.178.irdmi &gt; 192.168.1.109.8886: Flags [S.], seq 1984808639, ack 2639909370, win 14600, options [mss 1460,nop,nop,sackOK,nop,wscale 7], length 0
 
-<span class="c1">//客户端收到确认包后，发送ACK(.)报文给服务端,  长度0</span>
-<span class="mi">11</span><span class="o">:</span><span class="mi">12</span><span class="o">:</span><span class="mf">02.534528</span> <span class="nx">IP</span> <span class="mf">192.168</span><span class="p">.</span><span class="mf">1.109</span><span class="p">.</span><span class="mi">8886</span> <span class="o">&gt;</span> <span class="mf">192.168</span><span class="p">.</span><span class="mf">1.178</span><span class="p">.</span><span class="nx">irdmi</span><span class="o">:</span> <span class="nx">Flags</span> <span class="cp">[</span><span class="nx">.</span><span class="cp">]</span><span class="p">,</span> <span class="nx">ack</span> <span class="mi">1</span><span class="p">,</span> <span class="nx">win</span> <span class="mi">256</span><span class="p">,</span> <span class="nx">length</span> <span class="mi">0</span>
+//客户端收到确认包后，发送ACK(.)报文给服务端,  长度0
+11:12:02.534528 IP 192.168.1.109.8886 &gt; 192.168.1.178.irdmi: Flags [.], ack 1, win 256, length 0
 
-<span class="c1">//三次握手成功后,  客户端发送&quot;11111&quot;报文内容给服务端, 长度为5字节, 标识P即PSH(Push function)为1时, 代表要发送缓冲区的封包, 无需等待缓冲区满了才送</span>
-<span class="mi">11</span><span class="o">:</span><span class="mi">12</span><span class="o">:</span><span class="mf">16.501177</span> <span class="nx">IP</span> <span class="mf">192.168</span><span class="p">.</span><span class="mf">1.109</span><span class="p">.</span><span class="mi">8886</span> <span class="o">&gt;</span> <span class="mf">192.168</span><span class="p">.</span><span class="mf">1.178</span><span class="p">.</span><span class="nx">irdmi</span><span class="o">:</span> <span class="nx">Flags</span> <span class="cp">[</span><span class="nx">P.</span><span class="cp">]</span><span class="p">,</span> <span class="nx">seq</span> <span class="mi">1</span><span class="o">:</span><span class="mi">6</span><span class="p">,</span> <span class="nx">ack</span> <span class="mi">1</span><span class="p">,</span> <span class="nx">win</span> <span class="mi">256</span><span class="p">,</span> <span class="nx">length</span> <span class="mi">5</span>
+//三次握手成功后,  客户端发送&quot;11111&quot;报文内容给服务端, 长度为5字节, 标识P即PSH(Push function)为1时, 代表要发送缓冲区的封包, 无需等待缓冲区满了才送
+11:12:16.501177 IP 192.168.1.109.8886 &gt; 192.168.1.178.irdmi: Flags [P.], seq 1:6, ack 1, win 256, length 5
 
-<span class="c1">//服务端收到客户端请求报文包后, 发送ACK(.)报文给客户端,  长度为0字节,  ACK=SEQ+LENGTH=1+5</span>
-<span class="mi">11</span><span class="o">:</span><span class="mi">12</span><span class="o">:</span><span class="mf">16.501208</span> <span class="nx">IP</span> <span class="mf">192.168</span><span class="p">.</span><span class="mf">1.178</span><span class="p">.</span><span class="nx">irdmi</span> <span class="o">&gt;</span> <span class="mf">192.168</span><span class="p">.</span><span class="mf">1.109</span><span class="p">.</span><span class="mi">8886</span><span class="o">:</span> <span class="nx">Flags</span> <span class="cp">[</span><span class="nx">.</span><span class="cp">]</span><span class="p">,</span> <span class="nx">ack</span> <span class="mi">6</span><span class="p">,</span> <span class="nx">win</span> <span class="mi">115</span><span class="p">,</span> <span class="nx">length</span> <span class="mi">0</span>
+//服务端收到客户端请求报文包后, 发送ACK(.)报文给客户端,  长度为0字节,  ACK=SEQ+LENGTH=1+5
+11:12:16.501208 IP 192.168.1.178.irdmi &gt; 192.168.1.109.8886: Flags [.], ack 6, win 115, length 0
 
-<span class="c1">//客户端继续发送请求报文, 内容为&quot;123321&quot;, 长度6字节</span>
-<span class="mi">11</span><span class="o">:</span><span class="mi">44</span><span class="o">:</span><span class="mf">16.181474</span> <span class="nx">IP</span> <span class="mf">192.168</span><span class="p">.</span><span class="mf">1.109</span><span class="p">.</span><span class="mi">8886</span> <span class="o">&gt;</span> <span class="mf">192.168</span><span class="p">.</span><span class="mf">1.178</span><span class="p">.</span><span class="nx">irdmi</span><span class="o">:</span> <span class="nx">Flags</span> <span class="cp">[</span><span class="nx">P.</span><span class="cp">]</span><span class="p">,</span> <span class="nx">seq</span> <span class="mi">6</span><span class="o">:</span><span class="mi">12</span><span class="p">,</span> <span class="nx">ack</span> <span class="mi">1</span><span class="p">,</span> <span class="nx">win</span> <span class="mi">256</span><span class="p">,</span> <span class="nx">length</span> <span class="mi">6</span>
+//客户端继续发送请求报文, 内容为&quot;123321&quot;, 长度6字节
+11:44:16.181474 IP 192.168.1.109.8886 &gt; 192.168.1.178.irdmi: Flags [P.], seq 6:12, ack 1, win 256, length 6
 
-<span class="c1">//服务端发送ACK(.)应答报文给客户端, ack=SEQ+length=6+6=12</span>
-<span class="mi">11</span><span class="o">:</span><span class="mi">44</span><span class="o">:</span><span class="mf">16.181508</span> <span class="nx">IP</span> <span class="mf">192.168</span><span class="p">.</span><span class="mf">1.178</span><span class="p">.</span><span class="nx">irdmi</span> <span class="o">&gt;</span> <span class="mf">192.168</span><span class="p">.</span><span class="mf">1.109</span><span class="p">.</span><span class="mi">8886</span><span class="o">:</span> <span class="nx">Flags</span> <span class="cp">[</span><span class="nx">.</span><span class="cp">]</span><span class="p">,</span> <span class="nx">ack</span> <span class="mi">12</span><span class="p">,</span> <span class="nx">win</span> <span class="mi">115</span><span class="p">,</span> <span class="nx">length</span> <span class="mi">0</span>
+//服务端发送ACK(.)应答报文给客户端, ack=SEQ+length=6+6=12
+11:44:16.181508 IP 192.168.1.178.irdmi &gt; 192.168.1.109.8886: Flags [.], ack 12, win 115, length 0
 
-<span class="c1">//客户端关闭后向服务端发送标识为(R+.ACK), RST(Reset)为1时, 表示tcp连接马上会被结束，而无需等待终止确认手续. 也就是说, 这是个强制结束的连线, 且发送端已经断开.</span>
-<span class="c1">//这里即使服务端没有调用close(accept_sockfd)来向客户端发送FIN报文，两者之间建立的tcp链路都会被关闭！！！</span>
-<span class="mi">11</span><span class="o">:</span><span class="mi">50</span><span class="o">:</span><span class="mf">55.047977</span> <span class="nx">IP</span> <span class="mf">192.168</span><span class="p">.</span><span class="mf">1.109</span><span class="p">.</span><span class="mi">8886</span> <span class="o">&gt;</span> <span class="mf">192.168</span><span class="p">.</span><span class="mf">1.178</span><span class="p">.</span><span class="nx">irdmi</span><span class="o">:</span> <span class="nx">Flags</span> <span class="cp">[</span><span class="nx">R.</span><span class="cp">]</span><span class="p">,</span> <span class="nx">seq</span> <span class="mi">12</span><span class="p">,</span> <span class="nx">ack</span> <span class="mi">1</span><span class="p">,</span> <span class="nx">win</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">length</span> <span class="mi">0</span>
+//客户端关闭后向服务端发送标识为(R+.ACK), RST(Reset)为1时, 表示tcp连接马上会被结束，而无需等待终止确认手续. 也就是说, 这是个强制结束的连线, 且发送端已经断开.
+//这里即使服务端没有调用close(accept_sockfd)来向客户端发送FIN报文，两者之间建立的tcp链路都会被关闭！！！
+11:50:55.047977 IP 192.168.1.109.8886 &gt; 192.168.1.178.irdmi: Flags [R.], seq 12, ack 1, win 0, length 0
 </pre></div>
-		    	<div class="donate_div_container">
+</div>		    	<div class="donate_div_container">
 					<div class="donate_div">
 						<p><a href="javascript:void(0)" onclick="donateToggle()" class="donate_word" title="打赏，支持一下">打赏</a></p>
 						<div class="hide_box"></div>
@@ -266,7 +266,7 @@
 					</div>
 				</div>
 		    	<div class="tags">
-					<div class="post_tags">
+					<div class="post_tags" itemprop="keywords">
 						Tags: <a href="https://typecodes.com/tag/tcpdump.html">tcpdump</a>,<a href="https://typecodes.com/tag/tcp.html">tcp</a>					</div>
 					<div class="post-share">
 						<ul class="post-shareul clearfix">
@@ -358,7 +358,6 @@
 		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
 	</section>
 </div>
-				</div>
 			</div>
 		</div>
 		<!--4. bottom begin-->

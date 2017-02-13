@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html dir="ltr" lang="zh-CN" class="no-js">
+<html class="no-js">
 	<head>
-		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
   		<meta name="renderer" content="webkit">
 		<title>CentOS开启coredump转储并生成core文件的配置 &mdash; TypeCodes</title>
 		<meta name="description" content="CentOS开启coredump转储并生成core文件的配置 &mdash; TypeCodes" />
@@ -34,8 +35,7 @@
 			</div>
 		</div>
 		<div class="container">
-			<div class="row">
-		<!--2. left sider begin-->
+			<div class="row">		<!--2. left sider begin-->
 		<div class="col-md-9" id="blog-main" role="main">
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/linux/centoscoredumpcfgshell.html">CentOS开启coredump转储并生成core文件的配置</a></h2>
@@ -72,41 +72,41 @@
 24
 25
 26
-27</pre></div></td><td class="code"><div class="highlight"><pre><span class="c">#!/bin/bash</span>
+27</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="ch">#!/bin/bash</span>
 
-<span class="c">### Filename: coredumpshell.sh</span>
-<span class="c">### Description: enable coredump and format the name of core file on centos system</span>
+<span class="c1">### Filename: coredumpshell.sh</span>
+<span class="c1">### Description: enable coredump and format the name of core file on centos system</span>
 
-<span class="c"># enable coredump whith unlimited file-size for all users</span>
+<span class="c1"># enable coredump whith unlimited file-size for all users</span>
 <span class="nb">echo</span> -e <span class="s2">&quot;\n# enable coredump whith unlimited file-size for all users\n* soft core unlimited&quot;</span> &gt;&gt; /etc/security/limits.conf
 
-<span class="c"># set the path of core file with permission 777 </span>
+<span class="c1"># set the path of core file with permission 777 </span>
 <span class="nb">cd</span> /mydata <span class="o">&amp;&amp;</span> mkdir corefile <span class="o">&amp;&amp;</span> chmod <span class="m">777</span> corefile
 
-<span class="c"># format the name of core file.   </span>
-<span class="c"># %% – 符号%</span>
-<span class="c"># %p – 进程号</span>
-<span class="c"># %u – 进程用户id</span>
-<span class="c"># %g – 进程用户组id</span>
-<span class="c"># %s – 生成core文件时收到的信号</span>
-<span class="c"># %t – 生成core文件的时间戳(seconds since 0:00h, 1 Jan 1970)</span>
-<span class="c"># %h – 主机名</span>
-<span class="c"># %e – 程序文件名</span>
+<span class="c1"># format the name of core file.   </span>
+<span class="c1"># %% – 符号%</span>
+<span class="c1"># %p – 进程号</span>
+<span class="c1"># %u – 进程用户id</span>
+<span class="c1"># %g – 进程用户组id</span>
+<span class="c1"># %s – 生成core文件时收到的信号</span>
+<span class="c1"># %t – 生成core文件的时间戳(seconds since 0:00h, 1 Jan 1970)</span>
+<span class="c1"># %h – 主机名</span>
+<span class="c1"># %e – 程序文件名</span>
 <span class="nb">echo</span> -e <span class="s2">&quot;/mydata/corefile/core-%e-%s-%u-%g-%p-%t&quot;</span> &gt; /proc/sys/kernel/core_pattern
 
-<span class="c"># for centos7 system(update 2017.2.3 21:44)</span>
+<span class="c1"># for centos7 system(update 2017.2.3 21:44)</span>
 <span class="nb">echo</span> -e <span class="s2">&quot;/mydata/corefile/core-%e-%s-%u-%g-%p-%t&quot;</span> &gt; /etc/sysctl.conf
 
-<span class="c"># suffix of the core file name</span>
+<span class="c1"># suffix of the core file name</span>
 <span class="nb">echo</span> -e <span class="s2">&quot;1&quot;</span> &gt; /proc/sys/kernel/core_uses_pid
 </pre></div>
 </td></tr></table>
 
 <p>在Linux终端上执行完上面的脚本后，退出并重新登录即可生效。可以通过<code>[root@typecodes ~]# ulimit -a</code>命令查看效果，如下图所示：</p>
-<p><img alt="CentOS7.1开启coredump核心转储功能" src="https://o3cex9zsl.qnssl.com/2015/06/ulimit_a.png" title="CentOS7.1开启coredump核心转储功能" /> </p>
+<p><img alt="CentOS7.1开启coredump核心转储功能" src="https://o3cex9zsl.qnssl.com/2015/06/ulimit_a.png" title="CentOS7.1开启coredump核心转储功能"> </p>
 <p>最后，写了一个简单C程序测试CentOS是否生成了相应的core文件。</p>
-<div class="highlight"><pre><span class="p">[</span><span class="n">root</span><span class="err">@</span><span class="n">typecodes</span> <span class="n">test</span><span class="p">]</span><span class="err">#</span> <span class="n">vim</span> <span class="n">test</span><span class="p">.</span><span class="n">c</span> 
-<span class="cp">#include &lt;stdio.h&gt;</span>
+<div class="highlight"><pre><span></span><span class="p">[</span><span class="n">root</span><span class="err">@</span><span class="n">typecodes</span> <span class="n">test</span><span class="p">]</span><span class="err">#</span> <span class="n">vim</span> <span class="n">test</span><span class="p">.</span><span class="n">c</span> 
+<span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
 <span class="kt">int</span> <span class="n">main</span><span class="p">(</span> <span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span> <span class="n">argv</span><span class="p">[]</span> <span class="p">)</span>
 <span class="p">{</span>
     <span class="kt">char</span> <span class="n">a</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span>
@@ -117,10 +117,10 @@
 
 
 <p>使用命令<code>gcc test.c -o test</code>编译后执行，然后故意输入错误的数据，让进程报错。这时，在<code>/mydata/corefile/</code>目录就生成了相应的core文件<code>core-test-11-0-0-27124-1434029850</code>。</p>
-<p><img alt="core文件生成目录" src="https://o3cex9zsl.qnssl.com/2015/06/gdb_test_corefile.png" title="core文件生成目录" /> </p>
+<p><img alt="core文件生成目录" src="https://o3cex9zsl.qnssl.com/2015/06/gdb_test_corefile.png" title="core文件生成目录"> </p>
 <h4>update 2017.2.3 21:44</h4>
 <p>每次重启CentOS7后，由于proc目录是动态更新的，所以系统会初始化core_pattern的值。如果想永久设置coredump文件为上面的格式，那么需要使用编辑文件 /etc/sysctl.conf ，加入<code>kernel.core_pattern=/mydata/corefile/core-%e-%s-%u-%g-%p-%t</code>，然后使用命令<code>sysctl -p /etc/sysctl.conf</code>重新加载。</p>
-		    	<div class="donate_div_container">
+</div>		    	<div class="donate_div_container">
 					<div class="donate_div">
 						<p><a href="javascript:void(0)" onclick="donateToggle()" class="donate_word" title="打赏，支持一下">打赏</a></p>
 						<div class="hide_box"></div>
@@ -150,7 +150,7 @@
 					</div>
 				</div>
 		    	<div class="tags">
-					<div class="post_tags">
+					<div class="post_tags" itemprop="keywords">
 						Tags: <a href="https://typecodes.com/tag/coredump.html">coredump</a>,<a href="https://typecodes.com/tag/gdb.html">gdb</a>					</div>
 					<div class="post-share">
 						<ul class="post-shareul clearfix">
@@ -242,7 +242,6 @@
 		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
 	</section>
 </div>
-				</div>
 			</div>
 		</div>
 		<!--4. bottom begin-->

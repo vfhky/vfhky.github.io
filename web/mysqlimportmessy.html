@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html dir="ltr" lang="zh-CN" class="no-js">
+<html class="no-js">
 	<head>
-		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
   		<meta name="renderer" content="webkit">
 		<title>完美解决Mysql导入数据库中文乱码的问题 &mdash; TypeCodes</title>
 		<meta name="description" content="完美解决Mysql导入数据库中文乱码的问题 &mdash; TypeCodes" />
@@ -34,8 +35,7 @@
 			</div>
 		</div>
 		<div class="container">
-			<div class="row">
-		<!--2. left sider begin-->
+			<div class="row">		<!--2. left sider begin-->
 		<div class="col-md-9" id="blog-main" role="main">
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/web/mysqlimportmessy.html">完美解决Mysql导入数据库中文乱码的问题</a></h2>
@@ -53,19 +53,19 @@
 <h5>3 解决方法：</h5>
 <p>思路：先在本地数据库将gbk的格式 resultsql2.sql 转换成<code>Unicode</code>格式，然后导入到本地数据库中，最后以utf-8的格式导出，再把导出的.sql文件导入到阿里云远程数据库中。这里用到了SQLog工具。</p>
 <p>1、在本地电脑打开SQLog软件，然后建立本地数据库连接。</p>
-<p><img alt="SQLog连接本地数据库 typecho " src="https://o3cex9zsl.qnssl.com/2014/08/sqloglinktosql.png" title="SQLog连接本地数据库 typecho " /></p>
+<p><img alt="SQLog连接本地数据库 typecho " src="https://o3cex9zsl.qnssl.com/2014/08/sqloglinktosql.png" title="SQLog连接本地数据库 typecho "></p>
 <p>2、将gbk文件 resultsql2.sql 用记事本打开，然后选择“另存为”，在底部的编码一栏中选择第二项<code>Unicode</code>。保存好后，再用记事本打开，然后复制所有内容；</p>
 <p>3、把刚才复制的信息粘贴到下图框中，然后点击左上角的双箭头按钮，或者快捷键“Ctrl + F9”执行所有复制的语句。</p>
-<p><img alt="SQLog执行所有sql语句 typecho " src="https://o3cex9zsl.qnssl.com/2014/08/sqllogimport.png" title="SQLog执行所有sql语句" /></p>
+<p><img alt="SQLog执行所有sql语句 typecho " src="https://o3cex9zsl.qnssl.com/2014/08/sqllogimport.png" title="SQLog执行所有sql语句"></p>
 <p>4、执行完步骤3中所有的SQL语句成功，就可以在SQLog底部看到下图所示“信息”。这时点击SQLog左上角的“刷新”按钮。然后用phpmyadmin查看表 typecho_comments 中的中文是否还是乱码。很庆幸，显示正常了。</p>
-<p><img alt="SQLog执行结果没有乱码的中文" src="https://o3cex9zsl.qnssl.com/2014/08/sqllogimpoinfo.png" title="SQLog执行结果没有乱码的中文" /></p>
+<p><img alt="SQLog执行结果没有乱码的中文" src="https://o3cex9zsl.qnssl.com/2014/08/sqllogimpoinfo.png" title="SQLog执行结果没有乱码的中文"></p>
 <p>5、最后一个步骤，如果本地数据库中的表 typecho_comments 没有乱码，那么就将这个表导出为 utf-8 格式的 resultsql2.sql 文件，然后上传到阿里云远程主机上，再执行以下命令导入到博客数据库中就解决了。</p>
-<div class="highlight"><pre>###### 一定要和创建数据库时设置的编码utf8一致
+<div class="highlight"><pre><span></span>###### 一定要和创建数据库时设置的编码utf8一致
 [root@typecodes ~]# mysql -u typecodes -p typecodes &lt; /root/resultsql2.sql -f --default-character-set=utf8;
 Enter password:   #输入用户typecode的密码然后回车
 mysql&gt;    #然后就可以查看 typecho_comments 没有乱码的中文了
 </pre></div>
-		    	<div class="donate_div_container">
+</div>		    	<div class="donate_div_container">
 					<div class="donate_div">
 						<p><a href="javascript:void(0)" onclick="donateToggle()" class="donate_word" title="打赏，支持一下">打赏</a></p>
 						<div class="hide_box"></div>
@@ -95,7 +95,7 @@ mysql&gt;    #然后就可以查看 typecho_comments 没有乱码的中文了
 					</div>
 				</div>
 		    	<div class="tags">
-					<div class="post_tags">
+					<div class="post_tags" itemprop="keywords">
 						Tags: <a href="https://typecodes.com/tag/mysql.html">mysql</a>,<a href="https://typecodes.com/tag/mysql-sqlog.html">mysql sqlog</a>					</div>
 					<div class="post-share">
 						<ul class="post-shareul clearfix">
@@ -187,7 +187,6 @@ mysql&gt;    #然后就可以查看 typecho_comments 没有乱码的中文了
 		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
 	</section>
 </div>
-				</div>
 			</div>
 		</div>
 		<!--4. bottom begin-->

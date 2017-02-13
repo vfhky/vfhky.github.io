@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html dir="ltr" lang="zh-CN" class="no-js">
+<html class="no-js">
 	<head>
-		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
   		<meta name="renderer" content="webkit">
 		<title>分类 web 下的文章 - TypeCodes</title>
 		<meta name="description" content="分类 web 下的文章 - TypeCodes" />
@@ -34,8 +35,7 @@
 			</div>
 		</div>
 		<div class="container">
-			<div class="row">
-		<!--2. left sider begin-->
+			<div class="row">		<!--2. left sider begin-->
 		<div class="col-md-9" id="blog-main" role="main">
 		  	<!--article recycle-->
 			<article class="post">
@@ -46,7 +46,7 @@
 <div class="post-content fmt">
 	<p>在完成了上面两篇关于阿里云CentOS 6.5主机中 Nginx 和 Mysql 的配置的经验分享后，这篇文章说说如何安装 php 的“加速器”——<a href="http://xcache.lighttpd.net/wiki/ReleaseArchive" title="XCache稳定版官方介绍">XCache</a>。相信大家听说过 php 的几款缓存加速器：APC、xcache、eaccelerator等（对于小站咱就不要使用 Memcached 了）。</p>
 <h5>1 官网下载 XCache 3.1.0 源码(支持php5.1 ~ 5.4)</h5>
-<div class="highlight"><pre>###### 下载XCache 3.1.0稳定版
+<div class="highlight"><pre><span></span>###### 下载XCache 3.1.0稳定版
 [root@typecodes ~]# wget http://xcache.lighttpd.net/pub/Releases/3.1.0/xcache-3.1.0.tar.gz
 ###### 解压到当前目录
 [root@typecodes ~]# tar -zxvf xcache-3.1.0.tar.gz
@@ -66,7 +66,7 @@ Zend Extension Api No:  20090626
 
 
 	<p class="more"><a href="https://typecodes.com/web/aliyuncentoslnmpxcacheconf.html" title="阿里云CentOS主机 LNMP 环境配置之Php篇——安装XCache加速器">- 阅读剩余部分 -</a></p>
-			</article>
+</div>			</article>
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/web/aliyuncentoslnmpnginxconf.html">阿里云CentOS主机 LNMP 环境配置之Nginx篇</a></h2>
 <ul class="post-meta">
@@ -78,7 +78,7 @@ Zend Extension Api No:  20090626
 <p>在 nginx.conf 文件中，会看到 nginx 默认的错误日志保存文件：error.log。它记录了服务器端由nginx处理的错误信息，例如永久跳转301、页面不存在404错误、服务器错误500错误等等。</p>
 
 	<p class="more"><a href="https://typecodes.com/web/aliyuncentoslnmpnginxconf.html" title="阿里云CentOS主机 LNMP 环境配置之Nginx篇">- 阅读剩余部分 -</a></p>
-			</article>
+</div>			</article>
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/web/aliyuncentoslnmpmysqlconf.html">阿里云CentOS主机 LNMP 环境配置之Mysql篇</a></h2>
 <ul class="post-meta">
@@ -89,7 +89,7 @@ Zend Extension Api No:  20090626
 <h5>1 掌握 Linux(包括CentOS) 系统下基本的mysql操作命令</h5>
 
 	<p class="more"><a href="https://typecodes.com/web/aliyuncentoslnmpmysqlconf.html" title="阿里云CentOS主机 LNMP 环境配置之Mysql篇">- 阅读剩余部分 -</a></p>
-			</article>
+</div>			</article>
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/web/aliyuncentos6creatlnmp.html">阿里云CentOS 6.5搭建LNMP环境（非一键脚本）</a></h2>
 <ul class="post-meta">
@@ -98,14 +98,14 @@ Zend Extension Api No:  20090626
 <div class="post-content fmt">
 	<p>个人不太喜欢网上的“一键脚本”，原因很简单：我的地盘我做主。下面是自己在5月初购买aliyun初级ECS后，8月初在CentOS 6.5上搭建 LNMP 环境的心得。大鸟请自动飘过，如若错误，请大家指正！</p>
 <h5>1 先脑补下Linux系统</h5>
-<div class="highlight"><pre>Linux系统分支众多，其发行版本可以根据打包方式分为两类：一类是基于Dpkg的Debian系，一类是基于RPM的Red Hat系。前者由社区组织维护发行，包括Debian、Ubuntu等；后者一般是商业公司维护发布，包括CentOS、Fedora、RHEL等。在稳定性方面，红帽RHEL和CentOS性能相对较好。
+<div class="highlight"><pre><span></span>Linux系统分支众多，其发行版本可以根据打包方式分为两类：一类是基于Dpkg的Debian系，一类是基于RPM的Red Hat系。前者由社区组织维护发行，包括Debian、Ubuntu等；后者一般是商业公司维护发布，包括CentOS、Fedora、RHEL等。在稳定性方面，红帽RHEL和CentOS性能相对较好。
 </pre></div>
 
 
 <p>很牛逼的样子？NO，请叫我 <a href="http://zh.wikipedia.org/wiki/Linux%E5%8F%91%E8%A1%8C%E7%89%88%E5%88%97%E8%A1%A8" title="Linux发行版列表——wiki百科">wiki 搬运工</a>。那么如何查看自己的主机类型呢？</p>
 
 	<p class="more"><a href="https://typecodes.com/web/aliyuncentos6creatlnmp.html" title="阿里云CentOS 6.5搭建LNMP环境（非一键脚本）">- 阅读剩余部分 -</a></p>
-			</article>
+</div>			</article>
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/web/againwplimitnogravatar.html">再议wordpress中限制没有Gravatar头像的访客提交评论</a></h2>
 <ul class="post-meta">
@@ -113,10 +113,10 @@ Zend Extension Api No:  20090626
 </ul>
 <div class="post-content fmt">
 	<p>今天博客收到<a href="https://typecodes.com/web/wplimitnogravatar.html" title="查看评论详情">@羽中</a>童鞋关于文章<a href="https://typecodes.com/web/wplimitnogravatar.html" title="《wordpress中限制没有Gravatar头像的访客提交评论》">《wordpress中限制没有Gravatar头像的访客提交评论》</a>的评论，对代码中使用 get_headers 函数的效率提出质疑。于是写这篇文章来讨论一下。</p>
-<p><img alt="wordpress中限制没有Gravatar头像的访客提交评论" src="https://o3cex9zsl.qnssl.com/2013/09/wordpress_no_gravatar.png" title="wordpress中限制没有Gravatar头像的访客提交评论" /></p>
+<p><img alt="wordpress中限制没有Gravatar头像的访客提交评论" src="https://o3cex9zsl.qnssl.com/2013/09/wordpress_no_gravatar.png" title="wordpress中限制没有Gravatar头像的访客提交评论"></p>
 
 	<p class="more"><a href="https://typecodes.com/web/againwplimitnogravatar.html" title="再议wordpress中限制没有Gravatar头像的访客提交评论">- 阅读剩余部分 -</a></p>
-			</article>
+</div>			</article>
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/web/chromephpsimulatelogwpone.html">PHP模拟登录WordPress后台一：使用Chrome浏览器网络抓包</a></h2>
 <ul class="post-meta">
@@ -126,10 +126,10 @@ Zend Extension Api No:  20090626
 	<p>使用PHP的curl函数，可以模拟登录各种类型的网站后台，例如Discuz、QQ邮箱、WordPress、DeDeCMS等等。模拟登录需要两个步骤，第一个是了解目标网站后台登录时所需要提交的数据字段，第二个才是用curl函数模拟向网站后台提交数据。那么这篇文章先通过讲解使用Chrome浏览器进行网络抓包，获取目标网站后台登录时所需要的数据。下一篇文章才是PHP模拟登录演示。</p>
 <h5>1 以本地登录WordPress后台为例</h5>
 <p>在本地搭建一个wordpress博客程序，那么默认的后台登录地址就类似于：http://127.0.0.1/wpupdate/wp-admin。于是，先打开Chrome浏览器，然后按下F12键打开“审查元素”的界面，接着点击“Network”选项。可以看到这时没发生任何网络信息交互，抓包为空。</p>
-<p><img alt="chrome抓包" src="https://o3cex9zsl.qnssl.com/2014/03/chrome_crab8.png" title="chrome抓包" /></p>
+<p><img alt="chrome抓包" src="https://o3cex9zsl.qnssl.com/2014/03/chrome_crab8.png" title="chrome抓包"></p>
 
 	<p class="more"><a href="https://typecodes.com/web/chromephpsimulatelogwpone.html" title="PHP模拟登录WordPress后台一：使用Chrome浏览器网络抓包">- 阅读剩余部分 -</a></p>
-			</article>
+</div>			</article>
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/web/phgoogleshorturlapi.html">PHP实现谷歌短网址服务的API接口调用</a></h2>
 <ul class="post-meta">
@@ -139,13 +139,13 @@ Zend Extension Api No:  20090626
 	<p>前面整理了一篇文章<a href="https://typecodes.com/web/phpbd163sinashorturlapi.html" title="点击查看">《PHP实现百度、网易、新浪短网址服务的API接口调用》</a>，这篇文章就来说说如何用PHP实现谷歌短网址API接口的调用。谷歌短网址的API接口功能比较丰富，还能analytics某个短网址，例如点击量创建时间等等。</p>
 <h5>1 谷歌短网址API接口介绍</h5>
 <p>谷歌短网址（Google url shortener）页面是http://goo.gl/，官方API文档说明是：<a href="https://developers.google.com/url-shortener/v1/getting_started" title="点击查看">点击进入</a>。同新浪短网址的API一样，谷歌短网址的API调用可以通过两种授权方式（Authentication）实现。正如文档中所提到的：</p>
-<div class="highlight"><pre>Every request your application sends to the Google URL Shortener API needs to identify your application to Google. There are two ways to identify your application: using an OAuth 2.0 token (which also authorizes the request) and/or using the application&#39;s API key.（你的应用向谷歌短网址API服务器所发送的每一个请求，都需要向Google提供合法证明。有如下两种渠道来识别你的应用：使用一个OAuth 2.0 token，或者使用应用的API KEY）。由于OAuth 2.0的认证过程相对麻烦，而且谷歌官方文档也说了“An API key is highly recommended”，所以这里就使用第二种API KEY来实现。
+<div class="highlight"><pre><span></span>Every request your application sends to the Google URL Shortener API needs to identify your application to Google. There are two ways to identify your application: using an OAuth 2.0 token (which also authorizes the request) and/or using the application&#39;s API key.（你的应用向谷歌短网址API服务器所发送的每一个请求，都需要向Google提供合法证明。有如下两种渠道来识别你的应用：使用一个OAuth 2.0 token，或者使用应用的API KEY）。由于OAuth 2.0的认证过程相对麻烦，而且谷歌官方文档也说了“An API key is highly recommended”，所以这里就使用第二种API KEY来实现。
 </pre></div>
 
 
 
 	<p class="more"><a href="https://typecodes.com/web/phgoogleshorturlapi.html" title="PHP实现谷歌短网址服务的API接口调用">- 阅读剩余部分 -</a></p>
-			</article>
+</div>			</article>
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/web/phpbd163sinashorturlapi.html">PHP实现百度、网易、新浪短网址服务的API接口调用</a></h2>
 <ul class="post-meta">
@@ -157,18 +157,28 @@ Zend Extension Api No:  20090626
 <p>百度短网址API接口完全对外开放，用户不需申请其开放平台的APPKEY，也不用采用OAuth的协议，因此相对简单方便；谷歌的短网址API接口有两种形式，一种类似于百度无需进行繁复的OAuth认证，不过限制比多；另一种是采用GAE平台OAuth2.0的认证方式，限制较少。</p>
 
 	<p class="more"><a href="https://typecodes.com/web/phpbd163sinashorturlapi.html" title="PHP实现百度、网易、新浪短网址服务的API接口调用">- 阅读剩余部分 -</a></p>
-			</article>
+</div>			</article>
 		  	<!--page navigation-->
 <ol class="page-navigator">
-<li class="prev"><a href="https://typecodes.com/web/index3.html">&laquo; 前一页</a></li><li><a href="https://typecodes.com/web/index.html">1</a>
-       <li><a href="https://typecodes.com/web/index2.html">2</a>
-       		</li><li><a href="https://typecodes.com/web/index3.html">3</a>
-       		</li><li class="current"><a href="https://typecodes.com/web/index4.html">4</a>
-       		</li><li><a href="https://typecodes.com/web/index5.html">5</a>
-       		</li><li><a href="https://typecodes.com/web/index6.html">6</a>
-       		</li><li><a href="https://typecodes.com/web/index7.html">7</a>
-       		</li><li><span>...</span></li><li><a href="https://typecodes.com/web/index10.html">10</a>
-       		</li><li><a href="https://typecodes.com/web/index11.html">11</a>
+<li class="prev"><a href="https://typecodes.com/web/index3.html">&laquo; 前一页</a></li><li>
+       			<a href="https://typecodes.com/web/index1.html">1</a>
+       		</li>
+       <li>
+       			<a href="https://typecodes.com/web/index2.html">2</a>
+       		</li><li>
+       			<a href="https://typecodes.com/web/index3.html">3</a>
+       		</li><li class="current">
+       			<a href="https://typecodes.com/web/index.html">4</a>
+       		</li><li>
+       			<a href="https://typecodes.com/web/index5.html">5</a>
+       		</li><li>
+       			<a href="https://typecodes.com/web/index6.html">6</a>
+       		</li><li>
+       			<a href="https://typecodes.com/web/index7.html">7</a>
+       		</li><li><span>...</span></li><li>
+       			<a href="https://typecodes.com/web/index10.html">10</a>
+       		</li><li>
+       			<a href="https://typecodes.com/web/index11.html">11</a>
        		</li><li class="next">
        		<a href="https://typecodes.com/web/index5.html">后一页 &raquo;</a>
        </li></ol>		</div>
@@ -237,7 +247,6 @@ Zend Extension Api No:  20090626
 		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
 	</section>
 </div>
-				</div>
 			</div>
 		</div>
 		<!--4. bottom begin-->

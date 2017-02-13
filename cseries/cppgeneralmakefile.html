@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html dir="ltr" lang="zh-CN" class="no-js">
+<html class="no-js">
 	<head>
-		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
   		<meta name="renderer" content="webkit">
 		<title>Linux C/C++工程中可生成ELF、动/静态库文件的通用Makefile &mdash; TypeCodes</title>
 		<meta name="description" content="Linux C/C++工程中可生成ELF、动/静态库文件的通用Makefile &mdash; TypeCodes" />
@@ -34,8 +35,7 @@
 			</div>
 		</div>
 		<div class="container">
-			<div class="row">
-		<!--2. left sider begin-->
+			<div class="row">		<!--2. left sider begin-->
 		<div class="col-md-9" id="blog-main" role="main">
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/cseries/cppgeneralmakefile.html">Linux C/C++工程中可生成ELF、动/静态库文件的通用Makefile</a></h2>
@@ -44,18 +44,18 @@
 </ul>
 <div class="post-content fmt">
 	<p>最近写了一个*nix环境下的Makefile文件，支持编译C/C++，同时能够通过参数配置生成ELF目标文件、动态链接库(.so)和静态链接库(.a)文件。</p>
-<p><img alt="Linux C/C++工程中可生成ELF、动/静态库文件的通用Makefile" src="https://o3cex9zsl.qnssl.com/2015/08/linux_general_makefile.png" title="Linux C/C++工程中可生成ELF、动/静态库文件的通用Makefile" /></p>
+<p><img alt="Linux C/C++工程中可生成ELF、动/静态库文件的通用Makefile" src="https://o3cex9zsl.qnssl.com/2015/08/linux_general_makefile.png" title="Linux C/C++工程中可生成ELF、动/静态库文件的通用Makefile"></p>
 
 
 <h4>1 Makefile文件配置说明</h4>
 <p>首先，根据生成的目标文件类型（ELF可执行文件，动态链接库文件或静态链接库文件），配置<code>GEN_LIBS</code>、<code>GEN_DYN_LIB</code>、<code>EXCUTE_BIN</code>、<code>STATIC_LIBS</code>和<code>DYNAMIC_LIBS</code>等变量。</p>
 <p>其次，如果生成的目标文件依赖其它库文件，那么只要将<code>LD_LIB_DIR</code>设置成该动态库所在的目录，<code>LD_LIBS</code>设置成要链接的动态库文件名即可。更建议的做法是在当前C/C++工程的配置文件中设置<code>LIBPATH</code>参数为动态库所在的目录，这样就不用在设置变量<code>LD_LIB_DIR</code>的值了，例如：</p>
-<div class="highlight"><pre>export LIBPATH=/usr/lib64/:<span class="cp">${</span><span class="n">LIBPATH</span><span class="cp">}</span>:/home/typecodes/lib
+<div class="highlight"><pre><span></span>export LIBPATH=/usr/lib64/:<span class="cp">${</span><span class="n">LIBPATH</span><span class="cp">}</span>:/home/typecodes/lib
 </pre></div>
 
 
 <p>最后需要说明的是，变量<code>$(PROJECT_DIR)</code>表示当前C/C++工程的根路径，可以直接将本Makefile文件中的命令<code># PROJECT_DIR   := /home/typecodes</code>前面的<code>#</code>号去掉，然后设置成自己的工程根目录即可。同样，更建议在工程的配置文件中配置，例如：</p>
-<div class="highlight"><pre>export PROJECT_DIR=/home/typecodes
+<div class="highlight"><pre><span></span>export PROJECT_DIR=/home/typecodes
 </pre></div>
 
 
@@ -235,7 +235,7 @@
 167
 168
 169
-170</pre></div></td><td class="code"><div class="highlight"><pre><span class="c">##################################################################</span>
+170</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="c">##################################################################</span>
 <span class="c">#</span>
 <span class="c"># FILENAME   :  Makefile</span>
 <span class="c"># DESCRIPT   :  A general makefile to generate an ELF or a</span>
@@ -311,16 +311,16 @@
 <span class="nv">CUR_DEP</span>     <span class="o">:=</span> <span class="k">$(</span>strip <span class="k">$(</span>CUR_CPP:.cpp<span class="o">=</span>.d<span class="k">)</span> <span class="k">$(</span>CUR_C:.c<span class="o">=</span>.d<span class="k">))</span>
 
 <span class="c"># Create directory in the header files, bin and library directory.</span>
-<span class="k">$(</span><span class="nv">foreach</span> <span class="nv">dirname</span>,<span class="k">$</span>(<span class="nv">sort</span> <span class="k">$</span>(<span class="nv">PRG_INC_DIR</span><span class="k">)</span> <span class="k">$(</span><span class="nv">PRG_BIN_DIR</span><span class="k">)</span> <span class="k">$(</span><span class="nv">PRG_LIB_DIR</span><span class="k">)</span><span class="err">),\</span>
-  <span class="k">$(</span><span class="nv">shell</span> <span class="k">$</span>(<span class="nv">MKDIR</span><span class="k">)</span> <span class="k">$(</span><span class="nv">dirname</span><span class="k">)</span><span class="err">))</span>
+<span class="k">$(</span><span class="nv">foreach</span> <span class="nv">dirname</span>,<span class="k">$(</span><span class="nv">sort</span> <span class="k">$(</span><span class="nv">PRG_INC_DIR</span><span class="k">)</span> <span class="k">$(</span><span class="nv">PRG_BIN_DIR</span><span class="k">)</span> <span class="k">$(</span><span class="nv">PRG_LIB_DIR</span><span class="k">))</span>,\
+  <span class="k">$(</span><span class="nv">shell</span> <span class="k">$(</span><span class="nv">MKDIR</span><span class="k">)</span> <span class="k">$(</span><span class="nv">dirname</span><span class="k">)))</span>
 
 <span class="c"># Complie and link variables. LD_LIBS means the dynamic or static library needed for the object file.</span>
 <span class="nv">CFLAGS</span>      <span class="o">:=</span> <span class="k">$(if</span> <span class="k">$(</span>DEBUG<span class="k">)</span>,-g -Wall, -O2 -Wall<span class="k">)</span>
 <span class="nv">CFLAGS</span>      <span class="o">+=</span> <span class="k">$(if</span> <span class="k">$(</span>GEN_DYN_LIB<span class="k">)</span>, <span class="k">$(</span>addprefix -fPIC -I ,<span class="k">$(</span>sort <span class="k">$(</span>dir <span class="k">$(</span>SRC_H<span class="k">))))</span>, <span class="k">$(</span>addprefix -I ,<span class="k">$(</span>sort <span class="k">$(</span>dir <span class="k">$(</span>SRC_H<span class="k">)))))</span>
 <span class="nv">CXXFLAGS</span>    <span class="o">=</span> <span class="k">$(</span>CFLAGS<span class="k">)</span>
 <span class="nv">LDFLAGS</span>     <span class="o">:=</span> 
-<span class="nv">LD_LIB_DIR</span>  <span class="o">:=</span> <span class="c">#-L $(PRG_LIB_DIR)</span>
-<span class="nv">LD_LIBS</span>     <span class="o">:=</span> <span class="c">#-lsrcpbl -lmysqlclient</span>
+<span class="nv">LD_LIB_DIR</span>  <span class="o">:=</span> <span class="c1">#-L $(PRG_LIB_DIR)</span>
+<span class="nv">LD_LIBS</span>     <span class="o">:=</span> <span class="c1">#-lsrcpbl -lmysqlclient</span>
 <span class="nv">XLD_FLG</span>     <span class="o">:=</span> -Xlinker <span class="s2">&quot;-(&quot;</span> <span class="k">$(</span>LDFLAGS<span class="k">)</span> -Xlinker <span class="s2">&quot;-)&quot;</span>
 
 <span class="c"># Add vpath.</span>
@@ -349,35 +349,35 @@
 
 <span class="c"># Rules to generate objects file(.o) from .c or .cpp files.</span>
 <span class="nf">$(CURDIR)/%.o</span><span class="o">:</span> %.<span class="n">c</span>
-    @<span class="k">$(</span>call gen_depend,<span class="k">$(</span>patsubst %.o,%.d,<span class="nv">$@</span><span class="k">)</span>,<span class="nv">$&lt;</span>,<span class="nv">$@</span>,<span class="k">$(</span>CC<span class="k">))</span>
-    <span class="k">$(</span>CC<span class="k">)</span> <span class="k">$(</span>CFLAGS<span class="k">)</span> -o <span class="nv">$@</span> -c <span class="nv">$&lt;</span>
+    @<span class="k">$(</span>call gen_depend,<span class="k">$(</span>patsubst %.o,%.d,<span class="nv">$@</span><span class="k">)</span>,$&lt;,<span class="nv">$@</span>,<span class="k">$(</span>CC<span class="k">))</span>
+    <span class="k">$(</span>CC<span class="k">)</span> <span class="k">$(</span>CFLAGS<span class="k">)</span> -o <span class="nv">$@</span> -c $&lt;
 
 <span class="nf">$(CURDIR)/%.o</span><span class="o">:</span> %.<span class="n">cpp</span>
-    @<span class="k">$(</span>call gen_depend,<span class="k">$(</span>patsubst %.o,%.d,<span class="nv">$@</span><span class="k">)</span>,<span class="nv">$&lt;</span>,<span class="nv">$@</span>,<span class="k">$(</span>CXX<span class="k">))</span>
-    <span class="k">$(</span>CXX<span class="k">)</span> <span class="k">$(</span>CXXFLAGS<span class="k">)</span> -o <span class="nv">$@</span> -c <span class="nv">$&lt;</span>
+    @<span class="k">$(</span>call gen_depend,<span class="k">$(</span>patsubst %.o,%.d,<span class="nv">$@</span><span class="k">)</span>,$&lt;,<span class="nv">$@</span>,<span class="k">$(</span>CXX<span class="k">))</span>
+    <span class="k">$(</span>CXX<span class="k">)</span> <span class="k">$(</span>CXXFLAGS<span class="k">)</span> -o <span class="nv">$@</span> -c $&lt;
 
 <span class="c"># Gen_excbin(target,CUR_OBJ,cc). This command-package is used to generate a excutable file.</span>
 <span class="cp">define gen_excbin</span>
-  ULT_BIN +<span class="o">=</span> <span class="k">$(</span>PRG_BIN_DIR<span class="k">)</span>/<span class="nv">$1</span>
+  <span class="nv">ULT_BIN</span> <span class="o">+=</span> <span class="k">$(</span>PRG_BIN_DIR<span class="k">)</span>/<span class="nv">$1</span>
   <span class="k">$(</span>PRG_BIN_DIR<span class="k">)</span>/<span class="nv">$1</span>: <span class="nv">$2</span>
     <span class="nv">$3</span> <span class="k">$(</span>LDFLAGS<span class="k">)</span> <span class="nv">$$</span>^ <span class="k">$(</span>LD_LIB_DIR<span class="k">)</span> <span class="k">$(</span>LD_LIBS<span class="k">)</span> <span class="k">$(</span>XLD_FLG<span class="k">)</span> -o <span class="nv">$$</span>@
 <span class="cp">endef</span>
 
 <span class="c"># Gen_libs(libs,CUR_OBJ,cc). This command-package is used to generate a dynamic lib or a static lib.</span>
 <span class="cp">define gen_libs</span>
-  ULT_LIBS +<span class="o">=</span> <span class="k">$(</span>PRG_LIB_DIR<span class="k">)</span>/<span class="nv">$1</span>
+  <span class="nv">ULT_LIBS</span> <span class="o">+=</span> <span class="k">$(</span>PRG_LIB_DIR<span class="k">)</span>/<span class="nv">$1</span>
   <span class="k">$(</span>PRG_LIB_DIR<span class="k">)</span>/<span class="nv">$1</span>: <span class="nv">$2</span>
     <span class="nv">$3</span> <span class="k">$(if</span> <span class="k">$(</span>GEN_DYN_LIB<span class="k">)</span>,-shared <span class="nv">$$</span>^ <span class="k">$(</span>CXXFLAGS<span class="k">)</span> <span class="k">$(</span>LD_LIB_DIR<span class="k">)</span> <span class="k">$(</span>LD_LIBS<span class="k">)</span> <span class="k">$(</span>XLD_FLG<span class="k">)</span> -o <span class="nv">$$</span>@,<span class="nv">$$</span>@ <span class="nv">$$</span>^<span class="k">)</span>
 <span class="cp">endef</span>
 
 <span class="c"># Call gen_excbin to generate a excutale file.</span>
-<span class="k">$(</span><span class="nv">foreach</span> <span class="nv">bin</span>,<span class="k">$</span>(<span class="nv">EXCUTE_BIN</span><span class="k">)</span><span class="err">,</span><span class="k">$(</span><span class="nv">eval</span> <span class="k">$</span>(<span class="nv">call</span> <span class="nv">gen_excbin</span>,<span class="k">$</span>(<span class="nv">bin</span><span class="k">)</span><span class="err">,</span><span class="k">$(</span><span class="nv">CUR_OBJ</span><span class="k">)</span><span class="err">,</span><span class="k">$(</span><span class="nv">CXX</span><span class="k">)</span><span class="err">)))</span>
+<span class="k">$(</span><span class="nv">foreach</span> <span class="nv">bin</span>,<span class="k">$(</span><span class="nv">EXCUTE_BIN</span><span class="k">)</span>,<span class="k">$(</span><span class="nv">eval</span> <span class="k">$(</span><span class="nv">call</span> <span class="nv">gen_excbin</span>,<span class="k">$(</span><span class="nv">bin</span><span class="k">)</span>,<span class="k">$(</span><span class="nv">CUR_OBJ</span><span class="k">)</span>,<span class="k">$(</span><span class="nv">CXX</span><span class="k">))))</span>
 
 <span class="c"># Call gen_libs to generate a dynamic lib.</span>
-<span class="k">$(</span><span class="nv">foreach</span> <span class="nv">lib</span>,<span class="k">$</span>(<span class="nv">DYNAMIC_LIBS</span><span class="k">)</span><span class="err">,</span><span class="k">$(</span><span class="nv">eval</span> <span class="k">$</span>(<span class="nv">call</span> <span class="nv">gen_libs</span>,<span class="k">$</span>(<span class="nv">lib</span><span class="k">)</span><span class="err">,</span><span class="k">$(</span><span class="nv">CUR_OBJ</span><span class="k">)</span><span class="err">,</span><span class="k">$(</span><span class="nv">CXX</span><span class="k">)</span><span class="err">)))</span>
+<span class="k">$(</span><span class="nv">foreach</span> <span class="nv">lib</span>,<span class="k">$(</span><span class="nv">DYNAMIC_LIBS</span><span class="k">)</span>,<span class="k">$(</span><span class="nv">eval</span> <span class="k">$(</span><span class="nv">call</span> <span class="nv">gen_libs</span>,<span class="k">$(</span><span class="nv">lib</span><span class="k">)</span>,<span class="k">$(</span><span class="nv">CUR_OBJ</span><span class="k">)</span>,<span class="k">$(</span><span class="nv">CXX</span><span class="k">))))</span>
 
 <span class="c"># Call gen_libs to generate a static lib.</span>
-<span class="k">$(</span><span class="nv">foreach</span> <span class="nv">lib</span>,<span class="k">$</span>(<span class="nv">STATIC_LIBS</span><span class="k">)</span><span class="err">,</span><span class="k">$(</span><span class="nv">eval</span> <span class="k">$</span>(<span class="nv">call</span> <span class="nv">gen_libs</span>,<span class="k">$</span>(<span class="nv">lib</span><span class="k">)</span><span class="err">,</span><span class="k">$(</span><span class="nv">CUR_OBJ</span><span class="k">)</span><span class="err">,</span><span class="k">$(</span><span class="nv">AR</span><span class="k">)</span><span class="err">)))</span>
+<span class="k">$(</span><span class="nv">foreach</span> <span class="nv">lib</span>,<span class="k">$(</span><span class="nv">STATIC_LIBS</span><span class="k">)</span>,<span class="k">$(</span><span class="nv">eval</span> <span class="k">$(</span><span class="nv">call</span> <span class="nv">gen_libs</span>,<span class="k">$(</span><span class="nv">lib</span><span class="k">)</span>,<span class="k">$(</span><span class="nv">CUR_OBJ</span><span class="k">)</span>,<span class="k">$(</span><span class="nv">AR</span><span class="k">))))</span>
 
 
 <span class="nf">all</span><span class="o">:</span> <span class="k">$(</span><span class="nv">ULT_BIN</span><span class="k">)</span> <span class="k">$(</span><span class="nv">ULT_LIBS</span><span class="k">)</span>
@@ -407,7 +407,7 @@
     @echo <span class="nv">DYNAMIC_LIBS</span><span class="o">=[</span><span class="k">$(</span>DYNAMIC_LIBS<span class="k">)</span><span class="o">]</span>
 </pre></div>
 </td></tr></table>
-		    	<div class="donate_div_container">
+</div>		    	<div class="donate_div_container">
 					<div class="donate_div">
 						<p><a href="javascript:void(0)" onclick="donateToggle()" class="donate_word" title="打赏，支持一下">打赏</a></p>
 						<div class="hide_box"></div>
@@ -437,7 +437,7 @@
 					</div>
 				</div>
 		    	<div class="tags">
-					<div class="post_tags">
+					<div class="post_tags" itemprop="keywords">
 						Tags: <a href="https://typecodes.com/tag/makefile.html">makefile</a>					</div>
 					<div class="post-share">
 						<ul class="post-shareul clearfix">
@@ -529,7 +529,6 @@
 		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
 	</section>
 </div>
-				</div>
 			</div>
 		</div>
 		<!--4. bottom begin-->

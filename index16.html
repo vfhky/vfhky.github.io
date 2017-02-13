@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html dir="ltr" lang="zh-CN" class="no-js">
+<html class="no-js">
 	<head>
-		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
   		<meta name="renderer" content="webkit">
 		<title>TypeCodes</title>
 		<meta name="description" content="TypeCodes" />
@@ -34,8 +35,7 @@
 			</div>
 		</div>
 		<div class="container">
-			<div class="row">
-		<!--2. left sider begin-->
+			<div class="row">		<!--2. left sider begin-->
 		<div class="col-md-9" id="blog-main" role="main">
 		  	<!--article recycle-->
 			<article class="post">
@@ -46,10 +46,10 @@
 <div class="post-content fmt">
 	<h5>1 淘宝IP库惊现503错误</h5>
 <p>吃完晚饭，大概6点半了，天色已暗，太阳早就落山了。回到宿舍打开博客一看，傻眼了：博客每篇文章的评论者的地理信息全部处于“正在查询中……”的状态。这神马情况，不会是被淘宝封了吧？但是就凭博客这点小流量应该不至于达到QPS小于10的限制吧？难道是js文件加载出错了？检查了一遍还是没问题啊。囧，在万般无奈之际，博主决定简单测试。于是ping了下度娘，得到ip地址123.125.114.144。于是直接用浏览器打开<code>http://ip.taobao.com/service/getIpInfo.php?ip=123.125.114.144</code>。结果看到下面的画面，小伙伴们惊呆了……</p>
-<p><img alt="淘宝IP地址库的API接口挂掉了" src="https://o3cex9zsl.qnssl.com/2013/09/taobao_api_503error.png" title="淘宝IP地址库的API接口挂掉了" /></p>
+<p><img alt="淘宝IP地址库的API接口挂掉了" src="https://o3cex9zsl.qnssl.com/2013/09/taobao_api_503error.png" title="淘宝IP地址库的API接口挂掉了"></p>
 
 	<p class="more"><a href="https://typecodes.com/mix/taobaoipapi503.html" title="伟大的淘宝IP库的API接口竟然提示503挂掉了">- 阅读剩余部分 -</a></p>
-			</article>
+</div>			</article>
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/web/wpantispamstrpoerror.html">再议wordpress反垃圾评论：都是strpos函数惹的祸</a></h2>
 <ul class="post-meta">
@@ -60,7 +60,7 @@
 <p>前天写了一篇文章<a href="https://typecodes.com/web/wpantispamblacklist.html" title="wordpress关键词黑名单：反垃圾评论再升级">《wordpress关键词黑名单：反垃圾评论再升级》</a>。文章内容是关于如何通过在Willin Kan大神写的comments-ajax.php文件中添加关键词黑名单，实现对评论者的昵称和评论内容进行检测，最终判定是否为垃圾评论。在程序中，博主使用了strpos函数，其功能是：查找字符串首次出现的位置。由于对该函数了解不全，上午 @坏坏博客 童鞋一个邪恶测试，发现了上篇文章代码的BUG。晚上下班回来，仔细看了下代码，发现是自己对strpos函数的片面认识，因此做个笔记Mark一下。</p>
 
 	<p class="more"><a href="https://typecodes.com/web/wpantispamstrpoerror.html" title="再议wordpress反垃圾评论：都是strpos函数惹的祸">- 阅读剩余部分 -</a></p>
-			</article>
+</div>			</article>
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/web/wpantispamblacklist.html">wordpress关键词黑名单：反垃圾评论再升级（非插件）</a></h2>
 <ul class="post-meta">
@@ -71,7 +71,7 @@
 <p>wordpress垃圾评论由来已久，在各位博主的有力反抗下，垃圾评论完成了一次又一次的升级。对wp新手来说，肯定不会想到自己的博客会被spam盯上。甚至还可能真认为是某老外关顾了自己的文章（博主曾经就二逼的用英文回复过）。等垃圾评论越来越多时，才仿然大悟。对于一些用wp时间也比较长的博主来说，一些与文章话题无关的评论也是很烦人。为了增强wordpress免疫力，尽量从根源上解决wordpress博客中的垃圾评论，博主也不能闲着，下面就贡献小小的一份力量。</p>
 
 	<p class="more"><a href="https://typecodes.com/web/wpantispamblacklist.html" title="wordpress关键词黑名单：反垃圾评论再升级（非插件）">- 阅读剩余部分 -</a></p>
-			</article>
+</div>			</article>
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/web/phpjquerywponlinenum.html">PHP+jQuery实现wordpress当前在线人数统计</a></h2>
 <ul class="post-meta">
@@ -84,7 +84,7 @@
 <p>网上搜了下相关的教程，代码基本类似，都是直接通过PHP读写txt文件实现的。博主起初采用这种方法，发现页面加载较之前明显变慢。考虑到不断读写文件对页面速度的影响，博主于是改用jQuery加载的方式实现当前在线人数统计。具体方法如下：</p>
 
 	<p class="more"><a href="https://typecodes.com/web/phpjquerywponlinenum.html" title="PHP+jQuery实现wordpress当前在线人数统计">- 阅读剩余部分 -</a></p>
-			</article>
+</div>			</article>
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/web/wplimitnogravatar.html">wordpress中限制没有Gravatar头像的访客提交评论</a></h2>
 <ul class="post-meta">
@@ -97,7 +97,7 @@
 <p>2、屏蔽广告。很多spamer都是没有gravatar头像的，限制没有gravatar头像的访客就等于过滤掉了相当一部分的垃圾广告。扯远一点，多说插件为众多广告商做出了巨大贡献。</p>
 
 	<p class="more"><a href="https://typecodes.com/web/wplimitnogravatar.html" title="wordpress中限制没有Gravatar头像的访客提交评论">- 阅读剩余部分 -</a></p>
-			</article>
+</div>			</article>
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/mix/collectallqqapi.html">集齐腾讯开放平台的所有API接口权限</a></h2>
 <ul class="post-meta">
@@ -110,7 +110,7 @@
 <p>记得第一次腾讯把申请上线的应用给退了回来，原因大致是“QQ登录不规范”。应该是因为我就在wordpress后台的登录页面添加了一个QQ登录的图标，然后腾讯不同意。于是又找到官方文档（http://wiki.connect.qq.com/网站前端页面规范），细细看了一遍，最后改用了腾讯官方提供的JS SDK开发包方式放置登录按钮。只需简单两步就可以实现常见的QQ登录方式，这也是JS SDK开发包的优势所在。</p>
 
 	<p class="more"><a href="https://typecodes.com/mix/collectallqqapi.html" title="集齐腾讯开放平台的所有API接口权限">- 阅读剩余部分 -</a></p>
-			</article>
+</div>			</article>
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/web/wpcommentajaxbug.html">折腾comment-ajax造成wordpress后台页面空白的BUG</a></h2>
 <ul class="post-meta">
@@ -119,16 +119,16 @@
 <div class="post-content fmt">
 	<h5>1 折腾Willin Kan评论代码的一个“BUG”</h5>
 <p>前几天折腾了下Willin Kan的comment-ajax.php文件，改动了一些代码，结果博客好几天都没收到评论了。昨晚上还在纳闷，会不会是文章写得太烂了又或者是360的节点挂了？反正是百思不得其解。随便翻看着之前写的文章，突然想到了自己前几天修改了comment-ajax.php文件。会不会跟这个有关？赶紧UE打开看看！比较了下之前备份的comment_parentnt-ajax.php文件，发现最新的这份PHP文件中多出了下面几行代码。这个和前几天发现的一个BUG有关：查看了大多数有用Willin Kan大神的评论代码（comment-ajax.php、comment-ajax.js）的博客，只要在文章地址后面添加类似“?replytocom=1123'”的语句就会出现“BUG”（还在研究解决中，不多说了……）。</p>
-<div class="highlight"><pre><span class="x">//父评论不存在时，恶意提交评论</span>
-<span class="x">if(</span><span class="p">$</span><span class="nv">post</span><span class="x">-&gt;comment_parent == &quot;&quot;)</span><span class="err">{</span><span class="x"></span>
-<span class="x"> exit;  //直接退出，不给出提示</span>
-<span class="x">}</span>
+<div class="highlight"><pre><span></span>//父评论不存在时，恶意提交评论
+if($post-&gt;comment_parent == &quot;&quot;){
+ exit;  //直接退出，不给出提示
+}
 </pre></div>
 
 
 
 	<p class="more"><a href="https://typecodes.com/web/wpcommentajaxbug.html" title="折腾comment-ajax造成wordpress后台页面空白的BUG">- 阅读剩余部分 -</a></p>
-			</article>
+</div>			</article>
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/web/qqapifollowweibo.html">上线第一个腾讯开放平台的API应用：收听微博用户（Beta版）</a></h2>
 <ul class="post-meta">
@@ -138,20 +138,29 @@
 	<p>经过近段时间的努力，博主研究的腾讯开放平台API接口终于有所“突破”了。今天正式上线第一个测试版的接口应用：收听腾讯微博用户。先上效果图（也是add_idol接口调用的整个流程），希望大家提提意见。</p>
 <h5>1 add_idol接口调用流程</h5>
 <p>（1）点击博客右侧栏的“腾讯微博”图标，准备接口调用。</p>
-<p><img alt="腾讯API调用接口" src="https://o3cex9zsl.qnssl.com/2013/09/qq_weibo_idol.png" /></p>
+<p><img alt="腾讯API调用接口" src="https://o3cex9zsl.qnssl.com/2013/09/qq_weibo_idol.png"></p>
 
 	<p class="more"><a href="https://typecodes.com/web/qqapifollowweibo.html" title="上线第一个腾讯开放平台的API应用：收听微博用户（Beta版）">- 阅读剩余部分 -</a></p>
-			</article>
+</div>			</article>
 		  	<!--page navigation-->
 <ol class="page-navigator">
-<li class="prev"><a href="https://typecodes.com/index15.html">&laquo; 前一页</a></li><li><a href="https://typecodes.com/index.html">1</a>
-       <li><a href="https://typecodes.com/index2.html">2</a>
-       		</li><li><span>...</span></li><li><a href="https://typecodes.com/index14.html">14</a>
-       		</li><li><a href="https://typecodes.com/index15.html">15</a>
-       		</li><li class="current"><a href="https://typecodes.com/index16.html">16</a>
-       		</li><li><a href="https://typecodes.com/index17.html">17</a>
-       		</li><li><span>...</span></li><li><a href="https://typecodes.com/index27.html">27</a>
-       		</li><li><a href="https://typecodes.com/index28.html">28</a>
+<li class="prev"><a href="https://typecodes.com/index15.html">&laquo; 前一页</a></li><li>
+       			<a href="https://typecodes.com/index1.html">1</a>
+       		</li>
+       <li>
+       			<a href="https://typecodes.com/index2.html">2</a>
+       		</li><li><span>...</span></li><li>
+       			<a href="https://typecodes.com/index14.html">14</a>
+       		</li><li>
+       			<a href="https://typecodes.com/index15.html">15</a>
+       		</li><li class="current">
+       			<a href="https://typecodes.com/index.html">16</a>
+       		</li><li>
+       			<a href="https://typecodes.com/index17.html">17</a>
+       		</li><li><span>...</span></li><li>
+       			<a href="https://typecodes.com/index27.html">27</a>
+       		</li><li>
+       			<a href="https://typecodes.com/index28.html">28</a>
        		</li><li class="next">
        		<a href="https://typecodes.com/index17.html">后一页 &raquo;</a>
        </li></ol>		</div>
@@ -220,7 +229,6 @@
 		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
 	</section>
 </div>
-				</div>
 			</div>
 		</div>
 		<!--4. bottom begin-->

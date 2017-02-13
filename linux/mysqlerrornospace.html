@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html dir="ltr" lang="zh-CN" class="no-js">
+<html class="no-js">
 	<head>
-		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
   		<meta name="renderer" content="webkit">
 		<title>博客MySQL服务惊魂记：Linux磁盘空间不足(Core Dump文件引爆) &mdash; TypeCodes</title>
 		<meta name="description" content="博客MySQL服务惊魂记：Linux磁盘空间不足(Core Dump文件引爆) &mdash; TypeCodes" />
@@ -34,8 +35,7 @@
 			</div>
 		</div>
 		<div class="container">
-			<div class="row">
-		<!--2. left sider begin-->
+			<div class="row">		<!--2. left sider begin-->
 		<div class="col-md-9" id="blog-main" role="main">
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/linux/mysqlerrornospace.html">博客MySQL服务惊魂记：Linux磁盘空间不足(Core Dump文件引爆)</a></h2>
@@ -44,45 +44,45 @@
 </ul>
 <div class="post-content fmt">
 	<p>昨天在更新完文章<a href="https://typecodes.com/mix/synweibophpmarkdownimgurl.html">《升级博客文章同步微博的插件：PHP正则提取Markdown的图片地址》</a>后，博客突然无法访问了。</p>
-<p><img alt="MySQL的错误日志" src="https://o3cex9zsl.qnssl.com/2015/08/mysql_space_error.png" title="MySQL的错误日志" /></p>
+<p><img alt="MySQL的错误日志" src="https://o3cex9zsl.qnssl.com/2015/08/mysql_space_error.png" title="MySQL的错误日志"></p>
 
 
 <h4>1 查看Nginx的错误日志error.log</h4>
 <p>惊愕之余，换了多个浏览器打开博客首页无果(一直显示加载状态)，最终报内部服务器500的错误。立即查看Nginx服务的错误日志：</p>
-<div class="highlight"><pre>[root@typecodes nginx]# vim error.log 
+<div class="highlight"><pre><span></span>[root@typecodes nginx]# vim error.log 
 ........
 [error] 19620#0: *1 FastCGI sent in stderr: &quot;PHP message: SQLSTATE[HY000] [2002] No such file or directory&quot; while reading response header from php-fpm.sock:&quot;, host: &quot;typecodes.com&quot;
 ........
 </pre></div>
 
 
-<p><img alt="Nginx的错误日志" src="https://o3cex9zsl.qnssl.com/2015/08/php_cannot_mysql.png" title="Nginx的错误日志" /></p>
+<p><img alt="Nginx的错误日志" src="https://o3cex9zsl.qnssl.com/2015/08/php_cannot_mysql.png" title="Nginx的错误日志"></p>
 <h4>2 查看MySQL的错误日志error.log</h4>
 <p>从上面的Nginx错误日志中可以看出，可能是MySQL的错误。于是查看MySQL的错误日志error.log，但是当时没注意到下面这条重要错误信息提示：<code>No space left on device</code>。</p>
-<div class="highlight"><pre><span class="err">####</span> <span class="nx">查看MySQL的错误日志error</span><span class="p">.</span><span class="nx">log</span>
-<span class="cp">[</span><span class="nx">root</span><span class="p">@</span><span class="nx">typecodes</span> <span class="nx">mysql</span><span class="cp">]</span><span class="err">#</span> <span class="nx">ls</span>
-<span class="nx">error</span><span class="p">.</span><span class="nx">log</span>  <span class="nx">mysql</span><span class="p">.</span><span class="nx">pid</span>
-<span class="cp">[</span><span class="nx">root</span><span class="p">@</span><span class="nx">typecodes</span> <span class="nx">mysql</span><span class="cp">]</span><span class="err">#</span> <span class="nx">vim</span> <span class="nx">error</span><span class="p">.</span><span class="nx">log</span> 
-<span class="cp">[</span><span class="mi">02</span><span class="p">:</span><span class="mi">47</span><span class="p">:</span><span class="mi">34</span><span class="cp">]</span> <span class="cp">[</span><span class="mi">20150816</span><span class="nx">_02</span><span class="p">:</span><span class="mi">47</span><span class="p">:</span><span class="mi">34</span><span class="cp">]</span> <span class="mi">103</span> <span class="mi">2015</span><span class="o">-</span><span class="mi">08</span><span class="o">-</span><span class="mi">15</span><span class="nx">T18</span><span class="o">:</span><span class="mi">47</span><span class="o">:</span><span class="mf">11.843790</span><span class="nx">Z</span> <span class="mi">0</span> <span class="cp">[</span><span class="nx">ERROR</span><span class="cp">]</span> <span class="nx">InnoDB</span><span class="o">:</span> <span class="nb">Error</span> <span class="nx">number</span> <span class="mi">28</span> <span class="nx">means</span> <span class="s1">&#39;No space left on device&#39;</span><span class="p">.</span>
-<span class="cp">[</span><span class="mi">02</span><span class="p">:</span><span class="mi">47</span><span class="p">:</span><span class="mi">34</span><span class="cp">]</span> <span class="cp">[</span><span class="mi">20150816</span><span class="nx">_02</span><span class="p">:</span><span class="mi">47</span><span class="p">:</span><span class="mi">34</span><span class="cp">]</span>     <span class="nx">es</span><span class="p">.</span><span class="nx">html</span>
-<span class="cp">[</span><span class="mi">02</span><span class="p">:</span><span class="mi">47</span><span class="p">:</span><span class="mi">34</span><span class="cp">]</span> <span class="cp">[</span><span class="mi">20150816</span><span class="nx">_02</span><span class="p">:</span><span class="mi">47</span><span class="p">:</span><span class="mi">34</span><span class="cp">]</span> <span class="mi">105</span> <span class="mi">2015</span><span class="o">-</span><span class="mi">08</span><span class="o">-</span><span class="mi">15</span><span class="nx">T18</span><span class="o">:</span><span class="mi">47</span><span class="o">:</span><span class="mf">11.843805</span><span class="nx">Z</span> <span class="mi">0</span> <span class="cp">[</span><span class="nx">Warning</span><span class="cp">]</span> <span class="nx">InnoDB</span><span class="o">:</span> <span class="nx">Retry</span> <span class="nx">attempts</span> <span class="k">for</span> <span class="nx">writing</span> <span class="nx">partial</span> <span class="nx">data</span> <span class="nx">failed</span><span class="p">.</span>
-<span class="cp">[</span><span class="mi">02</span><span class="p">:</span><span class="mi">47</span><span class="p">:</span><span class="mi">34</span><span class="cp">]</span> <span class="cp">[</span><span class="mi">20150816</span><span class="nx">_02</span><span class="p">:</span><span class="mi">47</span><span class="p">:</span><span class="mi">34</span><span class="cp">]</span> <span class="mi">106</span> <span class="mi">2015</span><span class="o">-</span><span class="mi">08</span><span class="o">-</span><span class="mi">15</span><span class="nx">T18</span><span class="o">:</span><span class="mi">47</span><span class="o">:</span><span class="mf">11.843812</span><span class="nx">Z</span> <span class="mi">0</span> <span class="cp">[</span><span class="nx">ERROR</span><span class="cp">]</span> <span class="nx">InnoDB</span><span class="o">:</span> <span class="nx">Write</span> <span class="nx">to</span> <span class="nx">file</span> <span class="p">.</span><span class="o">/</span><span class="nx">ibtmp1</span> <span class="nx">failed</span> <span class="nx">at</span> <span class="nx">offset</span> <span class="mi">11534336</span><span class="p">.</span> <span class="mi">1048576</span> <span class="nx">bytes</span> <span class="nx">should</span> <span class="nx">have</span> <span class="nx">been</span> <span class="nx">written</span><span class="p">,</span> <span class="nx">only</span> <span class="mi">1044480</span> <span class="nx">were</span> <span class="nx">written</span><span class="p">.</span>
-<span class="cp">[</span><span class="mi">02</span><span class="p">:</span><span class="mi">47</span><span class="p">:</span><span class="mi">34</span><span class="cp">]</span> <span class="cp">[</span><span class="mi">20150816</span><span class="nx">_02</span><span class="p">:</span><span class="mi">47</span><span class="p">:</span><span class="mi">34</span><span class="cp">]</span>     <span class="nx">Check</span> <span class="nx">that</span> <span class="nx">your</span> <span class="nx">OS</span> <span class="nx">and</span> <span class="nx">file</span> <span class="nx">system</span> <span class="nx">support</span> <span class="nx">files</span> <span class="nx">of</span>  <span class="k">this</span> <span class="nx">size</span><span class="p">.</span> <span class="nx">Check</span> <span class="nx">also</span> <span class="nx">that</span> <span class="nx">the</span> <span class="nx">disk</span> <span class="nx">is</span> <span class="nx">not</span> <span class="nx">full</span> <span class="nx">or</span> <span class="nx">a</span> <span class="nx">disk</span> <span class="nx">quota</span>  <span class="nx">exceeded</span><span class="p">.</span>
-<span class="cp">[</span><span class="mi">02</span><span class="p">:</span><span class="mi">47</span><span class="p">:</span><span class="mi">34</span><span class="cp">]</span> <span class="cp">[</span><span class="mi">20150816</span><span class="nx">_02</span><span class="p">:</span><span class="mi">47</span><span class="p">:</span><span class="mi">34</span><span class="cp">]</span> <span class="mi">107</span> <span class="mi">2015</span><span class="o">-</span><span class="mi">08</span><span class="o">-</span><span class="mi">15</span><span class="nx">T18</span><span class="o">:</span><span class="mi">47</span><span class="o">:</span><span class="mf">11.843821</span><span class="nx">Z</span> <span class="mi">0</span> <span class="cp">[</span><span class="nx">ERROR</span><span class="cp">]</span> <span class="nx">InnoDB</span><span class="o">:</span> <span class="nx">Could</span> <span class="nx">not</span> <span class="nx">set</span> <span class="nx">the</span> <span class="nx">file</span> <span class="nx">size</span> <span class="nx">of</span> <span class="s1">&#39;./ibtmp1&#39;</span><span class="p">.</span> <span class="nx">Probably</span> <span class="nx">out</span> <span class="nx">of</span> <span class="nx">disk</span> <span class="nx">space</span>
-<span class="cp">[</span><span class="mi">02</span><span class="p">:</span><span class="mi">47</span><span class="p">:</span><span class="mi">34</span><span class="cp">]</span> <span class="cp">[</span><span class="mi">20150816</span><span class="nx">_02</span><span class="p">:</span><span class="mi">47</span><span class="p">:</span><span class="mi">34</span><span class="cp">]</span> <span class="mi">108</span> <span class="mi">2015</span><span class="o">-</span><span class="mi">08</span><span class="o">-</span><span class="mi">15</span><span class="nx">T18</span><span class="o">:</span><span class="mi">47</span><span class="o">:</span><span class="mf">11.843828</span><span class="nx">Z</span> <span class="mi">0</span> <span class="cp">[</span><span class="nx">ERROR</span><span class="cp">]</span> <span class="nx">InnoDB</span><span class="o">:</span> <span class="nx">Unable</span> <span class="nx">to</span> <span class="nx">create</span> <span class="nx">the</span> <span class="nx">shared</span> <span class="nx">innodb_temporary</span>
-<span class="cp">[</span><span class="mi">02</span><span class="p">:</span><span class="mi">47</span><span class="p">:</span><span class="mi">34</span><span class="cp">]</span> <span class="cp">[</span><span class="mi">20150816</span><span class="nx">_02</span><span class="p">:</span><span class="mi">47</span><span class="p">:</span><span class="mi">34</span><span class="cp">]</span> <span class="mi">109</span> <span class="mi">2015</span><span class="o">-</span><span class="mi">08</span><span class="o">-</span><span class="mi">15</span><span class="nx">T18</span><span class="o">:</span><span class="mi">47</span><span class="o">:</span><span class="mf">11.947045</span><span class="nx">Z</span> <span class="mi">0</span> <span class="cp">[</span><span class="nx">Note</span><span class="cp">]</span> <span class="nx">InnoDB</span><span class="o">:</span> <span class="nx">Removed</span> <span class="nx">temporary</span> <span class="nx">tablespace</span> <span class="nx">data</span> <span class="nx">file</span><span class="o">:</span> <span class="s2">&quot;ibtmp1&quot;</span>
-<span class="cp">[</span><span class="mi">02</span><span class="p">:</span><span class="mi">47</span><span class="p">:</span><span class="mi">34</span><span class="cp">]</span> <span class="cp">[</span><span class="mi">20150816</span><span class="nx">_02</span><span class="p">:</span><span class="mi">47</span><span class="p">:</span><span class="mi">34</span><span class="cp">]</span> <span class="mi">110</span> <span class="mi">2015</span><span class="o">-</span><span class="mi">08</span><span class="o">-</span><span class="mi">15</span><span class="nx">T18</span><span class="o">:</span><span class="mi">47</span><span class="o">:</span><span class="mf">11.947081</span><span class="nx">Z</span> <span class="mi">0</span> <span class="cp">[</span><span class="nx">ERROR</span><span class="cp">]</span> <span class="nx">Plugin</span> <span class="s1">&#39;InnoDB&#39;</span> <span class="nx">init</span> <span class="kd">function</span> <span class="nx">returned</span> <span class="nx">error</span><span class="p">.</span>
-<span class="cp">[</span><span class="mi">02</span><span class="p">:</span><span class="mi">47</span><span class="p">:</span><span class="mi">34</span><span class="cp">]</span> <span class="cp">[</span><span class="mi">20150816</span><span class="nx">_02</span><span class="p">:</span><span class="mi">47</span><span class="p">:</span><span class="mi">34</span><span class="cp">]</span> <span class="mi">111</span> <span class="mi">2015</span><span class="o">-</span><span class="mi">08</span><span class="o">-</span><span class="mi">15</span><span class="nx">T18</span><span class="o">:</span><span class="mi">47</span><span class="o">:</span><span class="mf">11.947089</span><span class="nx">Z</span> <span class="mi">0</span> <span class="cp">[</span><span class="nx">ERROR</span><span class="cp">]</span> <span class="nx">Plugin</span> <span class="s1">&#39;InnoDB&#39;</span> <span class="nx">registration</span> <span class="nx">as</span> <span class="nx">a</span> <span class="nx">STORAGE</span> <span class="nx">ENGINE</span> <span class="nx">failed</span><span class="p">.</span>
-<span class="cp">[</span><span class="mi">02</span><span class="p">:</span><span class="mi">47</span><span class="p">:</span><span class="mi">34</span><span class="cp">]</span> <span class="cp">[</span><span class="mi">20150816</span><span class="nx">_02</span><span class="p">:</span><span class="mi">47</span><span class="p">:</span><span class="mi">34</span><span class="cp">]</span> <span class="mi">112</span> <span class="mi">2015</span><span class="o">-</span><span class="mi">08</span><span class="o">-</span><span class="mi">15</span><span class="nx">T18</span><span class="o">:</span><span class="mi">47</span><span class="o">:</span><span class="mf">11.947098</span><span class="nx">Z</span> <span class="mi">0</span> <span class="cp">[</span><span class="nx">ERROR</span><span class="cp">]</span> <span class="nx">Failed</span> <span class="nx">to</span> <span class="nx">initialize</span> <span class="nx">plugins</span><span class="p">.</span>
-<span class="cp">[</span><span class="mi">02</span><span class="p">:</span><span class="mi">47</span><span class="p">:</span><span class="mi">34</span><span class="cp">]</span> <span class="cp">[</span><span class="mi">20150816</span><span class="nx">_02</span><span class="p">:</span><span class="mi">47</span><span class="p">:</span><span class="mi">34</span><span class="cp">]</span> <span class="mi">113</span> <span class="mi">2015</span><span class="o">-</span><span class="mi">08</span><span class="o">-</span><span class="mi">15</span><span class="nx">T18</span><span class="o">:</span><span class="mi">47</span><span class="o">:</span><span class="mf">11.947143</span><span class="nx">Z</span> <span class="mi">0</span> <span class="cp">[</span><span class="nx">ERROR</span><span class="cp">]</span> <span class="nx">Aborting</span>
-<span class="cp">[</span><span class="mi">02</span><span class="p">:</span><span class="mi">47</span><span class="p">:</span><span class="mi">34</span><span class="cp">]</span> <span class="cp">[</span><span class="mi">20150816</span><span class="nx">_02</span><span class="p">:</span><span class="mi">47</span><span class="p">:</span><span class="mi">34</span><span class="cp">]</span> <span class="mi">114</span> 
-<span class="cp">[</span><span class="mi">02</span><span class="p">:</span><span class="mi">47</span><span class="p">:</span><span class="mi">34</span><span class="cp">]</span> <span class="cp">[</span><span class="mi">20150816</span><span class="nx">_02</span><span class="p">:</span><span class="mi">47</span><span class="p">:</span><span class="mi">34</span><span class="cp">]</span> <span class="mi">115</span> <span class="mi">2015</span><span class="o">-</span><span class="mi">08</span><span class="o">-</span><span class="mi">15</span><span class="nx">T18</span><span class="o">:</span><span class="mi">47</span><span class="o">:</span><span class="mf">11.947154</span><span class="nx">Z</span> <span class="mi">0</span> <span class="cp">[</span><span class="nx">Note</span><span class="cp">]</span> <span class="nx">Binlog</span> <span class="nx">end</span>
-<span class="cp">[</span><span class="mi">02</span><span class="p">:</span><span class="mi">47</span><span class="p">:</span><span class="mi">34</span><span class="cp">]</span> <span class="cp">[</span><span class="mi">20150816</span><span class="nx">_02</span><span class="p">:</span><span class="mi">47</span><span class="p">:</span><span class="mi">34</span><span class="cp">]</span> <span class="mi">116</span> <span class="mi">2015</span><span class="o">-</span><span class="mi">08</span><span class="o">-</span><span class="mi">15</span><span class="nx">T18</span><span class="o">:</span><span class="mi">47</span><span class="o">:</span><span class="mf">11.947598</span><span class="nx">Z</span> <span class="mi">0</span> <span class="cp">[</span><span class="nx">Note</span><span class="cp">]</span> <span class="o">/</span><span class="nx">usr</span><span class="o">/</span><span class="nx">local</span><span class="o">/</span><span class="nx">mysql</span><span class="o">/</span><span class="nx">bin</span><span class="o">/</span><span class="nx">mysqld</span><span class="o">:</span> <span class="nx">Shutdown</span> <span class="nx">complete</span>
+<div class="highlight"><pre><span></span>#### 查看MySQL的错误日志error.log
+[root@typecodes mysql]# ls
+error.log  mysql.pid
+[root@typecodes mysql]# vim error.log 
+[02:47:34] [20150816_02:47:34] 103 2015-08-15T18:47:11.843790Z 0 [ERROR] InnoDB: Error number 28 means &#39;No space left on device&#39;.
+[02:47:34] [20150816_02:47:34]     es.html
+[02:47:34] [20150816_02:47:34] 105 2015-08-15T18:47:11.843805Z 0 [Warning] InnoDB: Retry attempts for writing partial data failed.
+[02:47:34] [20150816_02:47:34] 106 2015-08-15T18:47:11.843812Z 0 [ERROR] InnoDB: Write to file ./ibtmp1 failed at offset 11534336. 1048576 bytes should have been written, only 1044480 were written.
+[02:47:34] [20150816_02:47:34]     Check that your OS and file system support files of  this size. Check also that the disk is not full or a disk quota  exceeded.
+[02:47:34] [20150816_02:47:34] 107 2015-08-15T18:47:11.843821Z 0 [ERROR] InnoDB: Could not set the file size of &#39;./ibtmp1&#39;. Probably out of disk space
+[02:47:34] [20150816_02:47:34] 108 2015-08-15T18:47:11.843828Z 0 [ERROR] InnoDB: Unable to create the shared innodb_temporary
+[02:47:34] [20150816_02:47:34] 109 2015-08-15T18:47:11.947045Z 0 [Note] InnoDB: Removed temporary tablespace data file: &quot;ibtmp1&quot;
+[02:47:34] [20150816_02:47:34] 110 2015-08-15T18:47:11.947081Z 0 [ERROR] Plugin &#39;InnoDB&#39; init function returned error.
+[02:47:34] [20150816_02:47:34] 111 2015-08-15T18:47:11.947089Z 0 [ERROR] Plugin &#39;InnoDB&#39; registration as a STORAGE ENGINE failed.
+[02:47:34] [20150816_02:47:34] 112 2015-08-15T18:47:11.947098Z 0 [ERROR] Failed to initialize plugins.
+[02:47:34] [20150816_02:47:34] 113 2015-08-15T18:47:11.947143Z 0 [ERROR] Aborting
+[02:47:34] [20150816_02:47:34] 114 
+[02:47:34] [20150816_02:47:34] 115 2015-08-15T18:47:11.947154Z 0 [Note] Binlog end
+[02:47:34] [20150816_02:47:34] 116 2015-08-15T18:47:11.947598Z 0 [Note] /usr/local/mysql/bin/mysqld: Shutdown complete
 </pre></div>
 
 
 <p>由于本能反应（BZ的CentOS7.1服务器20G系统盘+20G数据盘），服务器不可能会出现磁盘空间不足的问题。结果再一次忽略了<code>No space left on device</code>提示。</p>
-<div class="highlight"><pre>[root@typecodes mysql]# vim error.log 
+<div class="highlight"><pre><span></span>[root@typecodes mysql]# vim error.log 
 ........
 mysql/data
 etting it to a valid, non-empty path.
@@ -108,7 +108,7 @@ s)
 
 
 <p>后面尝试使用一个MySQL测试用户登录数据库，还是报错：</p>
-<div class="highlight"><pre>[root@typecodes ~]# mysql -u TypeCodes_test -p
+<div class="highlight"><pre><span></span>[root@typecodes ~]# mysql -u TypeCodes_test -p
 [02:43:32] [20150816_02:43:32] Enter password: 
 [02:43:32] [20150816_02:43:32] ERROR 2002 (HY000): Can&#39;t connect to local MySQL server through socket &#39;/var/run/mysql/mysql.sock&#39; (2)
 </pre></div>
@@ -117,13 +117,13 @@ s)
 <p>找不到方法，只能先重启一下MySQL服务，结果一直报<code>The server quit without updating PID file</code>的错误。又一次查看日志，最终确认从问题<code>No space left on device</code>入手。</p>
 <h4>3 查看Linux磁盘空间信息</h4>
 <p>根据上面MySQL的<code>No space left on device</code>提示，立马使用<code>df -hl</code>命令查看当前CentOS7.1服务器的磁盘空间信息。结果很明显，挂载在<code>/dev/xvdb2</code>数据盘下面的分区<code>/mydata</code>只剩的<code>12M</code>的空间了！而mysql得数据文件正好存放在mydata分区中，悲剧！</p>
-<p><img alt="CentOS7.1服务器上查看磁盘空间" src="https://o3cex9zsl.qnssl.com/2015/08/centos_space.png" title="CentOS7.1服务器上查看磁盘空间]" /></p>
+<p><img alt="CentOS7.1服务器上查看磁盘空间" src="https://o3cex9zsl.qnssl.com/2015/08/centos_space.png" title="CentOS7.1服务器上查看磁盘空间]"></p>
 <p>接着进入到<code>/mydata</code>分区，使用命令<code>du -sh</code>查看当前目录下各个子目录所占用的空间大小。结果太出乎意料了，竟然是存放Core Dump文件的corefile目录占用了16G的空间！</p>
-<p><img alt="Core Dump文件占用空间过大" src="https://o3cex9zsl.qnssl.com/2015/08/corefile_too_large.png" title="Core Dump文件占用空间过大" /></p>
+<p><img alt="Core Dump文件占用空间过大" src="https://o3cex9zsl.qnssl.com/2015/08/corefile_too_large.png" title="Core Dump文件占用空间过大"></p>
 <p>这才想起在<a href="https://typecodes.com/linux/centoscoredumpcfgshell.html" title="查看原文">《CentOS开启coredump转储并生成core文件的配置》</a>文中，设置了Core Dump文件大小为<code>unlimited</code>。日积月累，终于把MySQL搞挂掉了！</p>
 <h4>4 解决</h4>
 <p>先删掉corefile目录下面的大部分Core Dump文件，然后使用命令<code>ulimit -c 10240</code>设置coredump file-size为10M。最后，使用命令<code>service mysqld start</code>成功启动MySQL服务！看了下时间，从发现问题到解决用了40多分钟，还好只是个个人博客~</p>
-		    	<div class="donate_div_container">
+</div>		    	<div class="donate_div_container">
 					<div class="donate_div">
 						<p><a href="javascript:void(0)" onclick="donateToggle()" class="donate_word" title="打赏，支持一下">打赏</a></p>
 						<div class="hide_box"></div>
@@ -153,7 +153,7 @@ s)
 					</div>
 				</div>
 		    	<div class="tags">
-					<div class="post_tags">
+					<div class="post_tags" itemprop="keywords">
 						Tags: <a href="https://typecodes.com/tag/coredump.html">coredump</a>,<a href="https://typecodes.com/tag/mysql.html">mysql</a>					</div>
 					<div class="post-share">
 						<ul class="post-shareul clearfix">
@@ -245,7 +245,6 @@ s)
 		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
 	</section>
 </div>
-				</div>
 			</div>
 		</div>
 		<!--4. bottom begin-->

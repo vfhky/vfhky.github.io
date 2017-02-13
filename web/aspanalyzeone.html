@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html dir="ltr" lang="zh-CN" class="no-js">
+<html class="no-js">
 	<head>
-		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
   		<meta name="renderer" content="webkit">
 		<title>从一段ASP代码分析HTML、CSS、ASP、SQL（一） &mdash; TypeCodes</title>
 		<meta name="description" content="从一段ASP代码分析HTML、CSS、ASP、SQL（一） &mdash; TypeCodes" />
@@ -34,8 +35,7 @@
 			</div>
 		</div>
 		<div class="container">
-			<div class="row">
-		<!--2. left sider begin-->
+			<div class="row">		<!--2. left sider begin-->
 		<div class="col-md-9" id="blog-main" role="main">
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/web/aspanalyzeone.html">从一段ASP代码分析HTML、CSS、ASP、SQL（一）</a></h2>
@@ -46,7 +46,7 @@
 	<p>在大二的时候参加学校的一个网页设计比赛，做了一个关于党建90周年的网站。这个网站是用CSS+ASP+ACCESS2003写的。虽说access数据库现在基本没人用了，但是这对初学者来说是很好的一个数据库操作平台。尤其是在学习SQL时，用Access比MSSQL和MYSQL要容易上手些，因为Access数据库很直观并且各种操作也很简洁明了。但是微软自己Access已经被MSSQL代替了，而且当前流行的Web技术都集中在了PHP上，而PHP和MYSQL向来是黄金搭档，所以几乎没人用了。随之是ASP升级为ASP.NET，搭配MSSQL数据库。我写这篇博文的目的是给一些WEB的初学者，当然也算是自己的一个心路总结了。下面是首页index.asp代码，我就从这里入手。</p>
 
 
-<div class="highlight"><pre><span class="cp">&lt;%</span><span class="vi">@LANGUAGE</span><span class="o">=</span><span class="s2">&quot;VBSCRIPT&quot;</span> <span class="no">CODEPAGE</span><span class="o">=</span><span class="s2">&quot;936&quot;</span><span class="cp">%&gt;</span>
+<div class="highlight"><pre><span></span><span class="cp">&lt;%</span><span class="vi">@LANGUAGE</span><span class="o">=</span><span class="s2">&quot;VBSCRIPT&quot;</span> <span class="no">CODEPAGE</span><span class="o">=</span><span class="s2">&quot;936&quot;</span><span class="cp">%&gt;</span>
 <span class="cp">&lt;!DOCTYPE html PUBLIC &quot;-//W3C//DTD XHTML 1.0 Transitional//EN&quot; &quot;http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd&quot;&gt;</span>
 <span class="nt">&lt;html</span> <span class="na">xmlns=</span><span class="s">&quot;http://www.w3.org/1999/xhtml&quot;</span><span class="nt">&gt;</span>
 <span class="c">&lt;!--#include file=&quot;Connection/conn.asp&quot;--&gt;</span>
@@ -181,7 +181,7 @@
 
 
 <p>接下来是重点分析这里面的一些东东了，点击马上进入<a href="https://typecodes.com/web/aspanalyzetwo.html" title="从一段ASP代码分析HTML、CSS、ASP、SQL（二）">《从一段ASP代码分析HTML、CSS、ASP、SQL（二）》</a>。</p>
-		    	<div class="donate_div_container">
+</div>		    	<div class="donate_div_container">
 					<div class="donate_div">
 						<p><a href="javascript:void(0)" onclick="donateToggle()" class="donate_word" title="打赏，支持一下">打赏</a></p>
 						<div class="hide_box"></div>
@@ -211,7 +211,7 @@
 					</div>
 				</div>
 		    	<div class="tags">
-					<div class="post_tags">
+					<div class="post_tags" itemprop="keywords">
 						Tags: <a href="https://typecodes.com/tag/asp.html">asp</a>					</div>
 					<div class="post-share">
 						<ul class="post-shareul clearfix">
@@ -303,7 +303,6 @@
 		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
 	</section>
 </div>
-				</div>
 			</div>
 		</div>
 		<!--4. bottom begin-->

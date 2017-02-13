@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html dir="ltr" lang="zh-CN" class="no-js">
+<html class="no-js">
 	<head>
-		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
   		<meta name="renderer" content="webkit">
 		<title>配置IIS出现错误的解决方法 &mdash; TypeCodes</title>
 		<meta name="description" content="配置IIS出现错误的解决方法 &mdash; TypeCodes" />
@@ -34,8 +35,7 @@
 			</div>
 		</div>
 		<div class="container">
-			<div class="row">
-		<!--2. left sider begin-->
+			<div class="row">		<!--2. left sider begin-->
 		<div class="col-md-9" id="blog-main" role="main">
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/web/configiiserr.html">配置IIS出现错误的解决方法</a></h2>
@@ -51,7 +51,7 @@
 <h5>2 错误提示：HTTP 错误 500.19</h5>
 <p>当遇到 【HTTP 错误 500.19 - Internal Server Error web.config 文件的 system.webServer/httpErrors 节中不允许绝对物理路径“C:\inetpub\custerr” 。请改用相对路径。】的错误时，可以通过以下方式解决。</p>
 <p>该错误是由于在配置ASP的过程中，配置了”错误页”中的“500.html”为“500.asp”的缘故，在ASP网站目录中生成了一个web.cofig的文件，只要打开自己的ASP网站所在的文件夹，删除该文件即可。没有的的话，就到 C:\inetpub\wwwroot\web.cofig 中删除从 httperrors 到 /httperrors 结束的这段代码即可，其中包括 %SystemDrive%\inetpub\custerr" path="500.asp" responseMode="File" 这段代码。</p>
-		    	<div class="donate_div_container">
+</div>		    	<div class="donate_div_container">
 					<div class="donate_div">
 						<p><a href="javascript:void(0)" onclick="donateToggle()" class="donate_word" title="打赏，支持一下">打赏</a></p>
 						<div class="hide_box"></div>
@@ -81,7 +81,7 @@
 					</div>
 				</div>
 		    	<div class="tags">
-					<div class="post_tags">
+					<div class="post_tags" itemprop="keywords">
 						Tags: <a href="https://typecodes.com/tag/iis.html">iis</a>					</div>
 					<div class="post-share">
 						<ul class="post-shareul clearfix">
@@ -173,7 +173,6 @@
 		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
 	</section>
 </div>
-				</div>
 			</div>
 		</div>
 		<!--4. bottom begin-->

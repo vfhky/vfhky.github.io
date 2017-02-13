@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html dir="ltr" lang="zh-CN" class="no-js">
+<html class="no-js">
 	<head>
-		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
   		<meta name="renderer" content="webkit">
 		<title>PHP实现谷歌短网址服务的API接口调用 &mdash; TypeCodes</title>
 		<meta name="description" content="PHP实现谷歌短网址服务的API接口调用 &mdash; TypeCodes" />
@@ -34,8 +35,7 @@
 			</div>
 		</div>
 		<div class="container">
-			<div class="row">
-		<!--2. left sider begin-->
+			<div class="row">		<!--2. left sider begin-->
 		<div class="col-md-9" id="blog-main" role="main">
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/web/phgoogleshorturlapi.html">PHP实现谷歌短网址服务的API接口调用</a></h2>
@@ -46,7 +46,7 @@
 	<p>前面整理了一篇文章<a href="https://typecodes.com/web/phpbd163sinashorturlapi.html" title="点击查看">《PHP实现百度、网易、新浪短网址服务的API接口调用》</a>，这篇文章就来说说如何用PHP实现谷歌短网址API接口的调用。谷歌短网址的API接口功能比较丰富，还能analytics某个短网址，例如点击量创建时间等等。</p>
 <h5>1 谷歌短网址API接口介绍</h5>
 <p>谷歌短网址（Google url shortener）页面是http://goo.gl/，官方API文档说明是：<a href="https://developers.google.com/url-shortener/v1/getting_started" title="点击查看">点击进入</a>。同新浪短网址的API一样，谷歌短网址的API调用可以通过两种授权方式（Authentication）实现。正如文档中所提到的：</p>
-<div class="highlight"><pre>Every request your application sends to the Google URL Shortener API needs to identify your application to Google. There are two ways to identify your application: using an OAuth 2.0 token (which also authorizes the request) and/or using the application&#39;s API key.（你的应用向谷歌短网址API服务器所发送的每一个请求，都需要向Google提供合法证明。有如下两种渠道来识别你的应用：使用一个OAuth 2.0 token，或者使用应用的API KEY）。由于OAuth 2.0的认证过程相对麻烦，而且谷歌官方文档也说了“An API key is highly recommended”，所以这里就使用第二种API KEY来实现。
+<div class="highlight"><pre><span></span>Every request your application sends to the Google URL Shortener API needs to identify your application to Google. There are two ways to identify your application: using an OAuth 2.0 token (which also authorizes the request) and/or using the application&#39;s API key.（你的应用向谷歌短网址API服务器所发送的每一个请求，都需要向Google提供合法证明。有如下两种渠道来识别你的应用：使用一个OAuth 2.0 token，或者使用应用的API KEY）。由于OAuth 2.0的认证过程相对麻烦，而且谷歌官方文档也说了“An API key is highly recommended”，所以这里就使用第二种API KEY来实现。
 </pre></div>
 
 
@@ -96,7 +96,7 @@
 40
 41
 42
-43</pre></div></td><td class="code"><div class="highlight"><pre><span class="cp">&lt;?php</span>
+43</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
     <span class="sd">/**</span>
 <span class="sd">    * @author: vfhky 201403012 20:31</span>
 <span class="sd">    * @description: PHP调用谷歌短网址API接口</span>
@@ -143,9 +143,9 @@
 </td></tr></table>
 
 <h5>3 要说明的地方1</h5>
-<p><img alt="PHP实现谷歌短网址服务的API接口调用" src="https://o3cex9zsl.qnssl.com/2014/03/google_shorturl_api.png" title="PHP实现谷歌短网址服务的API接口调用" />](https://o3cex9zsl.qnssl.com/2014/03/google_shorturl_api.png)</p>
+<p><img alt="PHP实现谷歌短网址服务的API接口调用" src="https://o3cex9zsl.qnssl.com/2014/03/google_shorturl_api.png" title="PHP实现谷歌短网址服务的API接口调用">](https://o3cex9zsl.qnssl.com/2014/03/google_shorturl_api.png)</p>
 <p>从上面的测试结果图片可以看出，“长转短”和“短转长”的返回的对象中的成员类似，“短转长”多了一个status成员而已。下面是json格式的视图：</p>
-<div class="highlight"><pre><span class="cm">/* 1短网址转长网址 */</span><span class="w"></span>
+<div class="highlight"><pre><span></span><span class="cm">/* 1短网址转长网址 */</span><span class="w"></span>
 <span class="err">{</span><span class="w"></span>
 <span class="w">  </span><span class="s">&quot;kind&quot;</span><span class="err">:</span><span class="w"> </span><span class="s">&quot;urlshortener#url&quot;</span><span class="o">,</span><span class="w"></span>
 <span class="w">  </span><span class="s">&quot;id&quot;</span><span class="err">:</span><span class="w"> </span><span class="s">&quot;http://goo.gl/F90bfL&quot;</span><span class="o">,</span><span class="w"></span>
@@ -164,14 +164,14 @@
 
 <h5>4 要说明的地方2</h5>
 <p>上面代码输出的是对象，大家可以直接输出里面的成员，例如输出“短转长”中返回的短网址和长网址</p>
-<div class="highlight"><pre><span class="o">$</span><span class="nt">result</span> <span class="o">=</span> <span class="nt">ggUrlAPI</span><span class="o">(</span><span class="nt">0</span><span class="o">,</span><span class="s1">&#39;http://goo.gl/F90bfL&#39;</span><span class="o">);</span>
+<div class="highlight"><pre><span></span><span class="o">$</span><span class="nt">result</span> <span class="o">=</span> <span class="nt">ggUrlAPI</span><span class="o">(</span><span class="nt">0</span><span class="o">,</span><span class="s1">&#39;http://goo.gl/F90bfL&#39;</span><span class="o">);</span>
 <span class="nt">echo</span> <span class="o">$</span><span class="nt">result-</span><span class="o">&gt;</span><span class="nt">id</span><span class="o">.$</span><span class="nt">result-</span><span class="o">&gt;</span><span class="nt">longUrl</span><span class="o">.</span><span class="s1">&#39;&lt;br/&gt;&lt;br/&gt;&#39;</span><span class="o">;</span>
 </pre></div>
 
 
 <h5>5 错误响应Error responses</h5>
 <p>假如输入的数据有误或者其它原因造成接口返回错误数据，那么可以通过错误数据进行调试。谷歌短网址API返回的错误信息包括：a status code(状态码), a human readable message(人工可读的消息), and a list of error details(错误详细列表)。</p>
-<div class="highlight"><pre>{
+<div class="highlight"><pre><span></span>{
  &quot;error&quot;: {
   &quot;errors&quot;: [
    {
@@ -187,7 +187,7 @@
  }
 }
 </pre></div>
-		    	<div class="donate_div_container">
+</div>		    	<div class="donate_div_container">
 					<div class="donate_div">
 						<p><a href="javascript:void(0)" onclick="donateToggle()" class="donate_word" title="打赏，支持一下">打赏</a></p>
 						<div class="hide_box"></div>
@@ -217,7 +217,7 @@
 					</div>
 				</div>
 		    	<div class="tags">
-					<div class="post_tags">
+					<div class="post_tags" itemprop="keywords">
 						Tags: <a href="https://typecodes.com/tag/duan-wang-zhi-api.html">短网址api</a>,<a href="https://typecodes.com/tag/gu-ge-duan-wang-zhi-api.html">谷歌短网址api</a>					</div>
 					<div class="post-share">
 						<ul class="post-shareul clearfix">
@@ -309,7 +309,6 @@
 		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
 	</section>
 </div>
-				</div>
 			</div>
 		</div>
 		<!--4. bottom begin-->

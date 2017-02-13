@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html dir="ltr" lang="zh-CN" class="no-js">
+<html class="no-js">
 	<head>
-		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
   		<meta name="renderer" content="webkit">
 		<title>MFC回车键不关闭对话框以及变成TAB键效果 &mdash; TypeCodes</title>
 		<meta name="description" content="MFC回车键不关闭对话框以及变成TAB键效果 &mdash; TypeCodes" />
@@ -34,8 +35,7 @@
 			</div>
 		</div>
 		<div class="container">
-			<div class="row">
-		<!--2. left sider begin-->
+			<div class="row">		<!--2. left sider begin-->
 		<div class="col-md-9" id="blog-main" role="main">
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/cseries/mfcreturnkeyshutdialog.html">MFC回车键不关闭对话框以及变成TAB键效果</a></h2>
@@ -51,16 +51,16 @@
 
 
 <p>在类视图中点击对话框类（CHexStrXorDlg），然后在“属性”中点击菜单栏上的“重写”按钮，可以选择需要重写的函数。</p>
-<p><img alt="mfc类视图中重载函数" src="https://o3cex9zsl.qnssl.com/2014/11/mfcclassviewoverload.png" title="mfc类视图中重载函数" /></p>
+<p><img alt="mfc类视图中重载函数" src="https://o3cex9zsl.qnssl.com/2014/11/mfcclassviewoverload.png" title="mfc类视图中重载函数"></p>
 <p>或者直接点击“项目”——“类向导”，“类名”选择对话框类（CHexStrXorDlg），点击“虚函数”就可以看到可以被重载的函数了，右侧是已经被重载了的函数。</p>
-<p><img alt="mfc类向导中重载函数" src="https://o3cex9zsl.qnssl.com/2014/11/mfcprjviewoverload.png" title="mfc类向导中重载函数" /></p>
+<p><img alt="mfc类向导中重载函数" src="https://o3cex9zsl.qnssl.com/2014/11/mfcprjviewoverload.png" title="mfc类向导中重载函数"></p>
 <h5>3 取消回车的效果</h5>
 <p>通过重载OnOK()函数，然后函数体内不做任何处理，这样就可以直接屏蔽回车键的效果了。</p>
 <table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
 2
 3
 4
-5</pre></div></td><td class="code"><div class="highlight"><pre><span class="kt">void</span> <span class="n">CHexStrXorDlg</span><span class="o">::</span><span class="n">OnOK</span><span class="p">()</span>
+5</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="kt">void</span> <span class="n">CHexStrXorDlg</span><span class="o">::</span><span class="n">OnOK</span><span class="p">()</span>
 <span class="p">{</span>
     <span class="c1">//CDialog::OnOK();</span>
     <span class="k">return</span><span class="p">;</span>
@@ -100,7 +100,7 @@
 28
 29
 30
-31</pre></div></td><td class="code"><div class="highlight"><pre><span class="n">BOOL</span> <span class="n">CHexStrXorDlg</span><span class="o">::</span><span class="n">PreTranslateMessage</span><span class="p">(</span><span class="n">MSG</span><span class="o">*</span> <span class="n">pMsg</span><span class="p">)</span>
+31</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="n">BOOL</span> <span class="n">CHexStrXorDlg</span><span class="o">::</span><span class="n">PreTranslateMessage</span><span class="p">(</span><span class="n">MSG</span><span class="o">*</span> <span class="n">pMsg</span><span class="p">)</span>
 <span class="p">{</span>
     <span class="c1">// TODO:  在此添加专用代码和/或调用基类</span>
     <span class="k">if</span> <span class="p">((</span><span class="n">pMsg</span><span class="o">-&gt;</span><span class="n">message</span> <span class="o">==</span> <span class="n">WM_KEYDOWN</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="kt">int</span><span class="p">)</span><span class="n">pMsg</span><span class="o">-&gt;</span><span class="n">wParam</span> <span class="o">==</span> <span class="n">VK_RETURN</span><span class="p">))</span>
@@ -148,7 +148,7 @@
 10
 11
 12
-13</pre></div></td><td class="code"><div class="highlight"><pre><span class="n">BOOL</span> <span class="n">CHexStrXorDlg</span><span class="o">::</span><span class="n">PreTranslateMessage</span><span class="p">(</span><span class="n">MSG</span><span class="o">*</span> <span class="n">pMsg</span><span class="p">)</span>
+13</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="n">BOOL</span> <span class="n">CHexStrXorDlg</span><span class="o">::</span><span class="n">PreTranslateMessage</span><span class="p">(</span><span class="n">MSG</span><span class="o">*</span> <span class="n">pMsg</span><span class="p">)</span>
 <span class="p">{</span>
     <span class="k">if</span> <span class="p">((</span><span class="n">pMsg</span><span class="o">-&gt;</span><span class="n">message</span> <span class="o">==</span> <span class="n">WM_KEYDOWN</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="kt">int</span><span class="p">)</span><span class="n">pMsg</span><span class="o">-&gt;</span><span class="n">wParam</span> <span class="o">==</span> <span class="n">VK_RETURN</span><span class="p">))</span>
     <span class="p">{</span>
@@ -163,7 +163,7 @@
 <span class="p">}</span>
 </pre></div>
 </td></tr></table>
-		    	<div class="donate_div_container">
+</div>		    	<div class="donate_div_container">
 					<div class="donate_div">
 						<p><a href="javascript:void(0)" onclick="donateToggle()" class="donate_word" title="打赏，支持一下">打赏</a></p>
 						<div class="hide_box"></div>
@@ -193,7 +193,7 @@
 					</div>
 				</div>
 		    	<div class="tags">
-					<div class="post_tags">
+					<div class="post_tags" itemprop="keywords">
 						Tags: <a href="https://typecodes.com/tag/mfc.html">mfc</a>					</div>
 					<div class="post-share">
 						<ul class="post-shareul clearfix">
@@ -285,7 +285,6 @@
 		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
 	</section>
 </div>
-				</div>
 			</div>
 		</div>
 		<!--4. bottom begin-->

@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html dir="ltr" lang="zh-CN" class="no-js">
+<html class="no-js">
 	<head>
-		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
   		<meta name="renderer" content="webkit">
 		<title>2015博客升级记(八)：CentOS7定时备份博客程序的shell脚本 &mdash; TypeCodes</title>
 		<meta name="description" content="2015博客升级记(八)：CentOS7定时备份博客程序的shell脚本 &mdash; TypeCodes" />
@@ -34,8 +35,7 @@
 			</div>
 		</div>
 		<div class="container">
-			<div class="row">
-		<!--2. left sider begin-->
+			<div class="row">		<!--2. left sider begin-->
 		<div class="col-md-9" id="blog-main" role="main">
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/linux/centos7blogregularbackup.html">2015博客升级记(八)：CentOS7定时备份博客程序的shell脚本</a></h2>
@@ -44,13 +44,13 @@
 </ul>
 <div class="post-content fmt">
 	<p>这是<a href="https://typecodes.com/mix/2015updateblog.html" title="查看原文">《2015年博客升级记》</a>系列文章的第八篇，同时也是这一系列文章的最后一篇，内容主要记录在Linux系统中如何使用shell脚本备份服务器上的博客程序（当然也可以是主机上的任何目录或者文件）。</p>
-<p><img alt="CentOS7定时备份博客程序的shell脚本" src="https://o3cex9zsl.qnssl.com/2015/06/centos_files_backup_shell.png" title="CentOS7定时备份博客程序的shell脚本" /></p>
+<p><img alt="CentOS7定时备份博客程序的shell脚本" src="https://o3cex9zsl.qnssl.com/2015/06/centos_files_backup_shell.png" title="CentOS7定时备份博客程序的shell脚本"></p>
 
 
 <h5>1 使用说明</h5>
 <p>下面是Linux系统文件的shell备份脚本，其中参数<code>BACKUPDIR</code>表示备份文件的存储路径、<code>ORGDIR</code>是待备份的Linux文件路径、<code>NUMDAYS</code>表示保留多少天以内的备份文件。最终，每次执行这个脚本生成的备份文件名类似于<code>系统日期时间+.tar.gz</code>，例如20150606.tar.gz。</p>
 <p>使用时通过<code>chmod +x typecodes_backup.sh</code>命令添加执行权限，然后可以利用Linux系统的crontab定时任务工具执行该脚本。例如下面这个配置就是每天凌晨1点的时候执行该shell脚本，生成博客程序的备份文件。当然也可以手动执行命令<code>./typecodes_backup.sh</code>即可立即生成备份文件。</p>
-<div class="highlight"><pre>[root@typecodes bak_list]# crontab -e
+<div class="highlight"><pre><span></span>[root@typecodes bak_list]# crontab -e
 0 1 * * * /mydata/backups/bak_list/typecodes_backup.sh
 </pre></div>
 
@@ -175,28 +175,28 @@
 116
 117
 118
-119</pre></div></td><td class="code"><div class="highlight"><pre><span class="c">#!/bin/bash</span>
-<span class="c"># Blog Program Backup Script v1.0.0(applying to backup any linux directory or files)</span>
-<span class="c"># (c) 2015 vfhky https://typecodes.com/linux/centos7blogregularbackup.html</span>
-<span class="c"># https://github.com/vfhky/shell-tools/blob/master/backup/typcodes-backup.sh</span>
-<span class="c"># https://coding.net/u/vfhky/p/shell-tools/git/blob/master/backup/typcodes-backup.sh</span>
+119</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="ch">#!/bin/bash</span>
+<span class="c1"># Blog Program Backup Script v1.0.0(applying to backup any linux directory or files)</span>
+<span class="c1"># (c) 2015 vfhky https://typecodes.com/linux/centos7blogregularbackup.html</span>
+<span class="c1"># https://github.com/vfhky/shell-tools/blob/master/backup/typcodes-backup.sh</span>
+<span class="c1"># https://coding.net/u/vfhky/p/shell-tools/git/blob/master/backup/typcodes-backup.sh</span>
 
-<span class="c"># Shell Script Alias Name</span>
+<span class="c1"># Shell Script Alias Name</span>
 <span class="nv">PRGNAME</span><span class="o">=</span><span class="s2">&quot;typecodes&quot;</span>
 
-<span class="c"># Backup to this directory</span>
+<span class="c1"># Backup to this directory</span>
 <span class="nv">BACKUPDIR</span><span class="o">=</span>/mydata/backups/data/typecodes
-<span class="c"># The blog programs dir</span>
+<span class="c1"># The blog programs dir</span>
 <span class="nv">ORGDIR</span><span class="o">=</span>/usr/share/nginx/html
 
-<span class="c"># Number of days to keep</span>
-<span class="nv">NUMDAYS</span><span class="o">=</span>60
+<span class="c1"># Number of days to keep</span>
+<span class="nv">NUMDAYS</span><span class="o">=</span><span class="m">60</span>
 
-<span class="c"># Some linux command</span>
+<span class="c1"># Some linux command</span>
 <span class="nv">FINDCMD</span><span class="o">=</span><span class="s2">&quot;find&quot;</span>
 <span class="nv">TARCMD</span><span class="o">=</span><span class="s2">&quot;tar -zcf&quot;</span>
 
-<span class="c"># Backup date format,e.g 20150505_2010</span>
+<span class="c1"># Backup date format,e.g 20150505_2010</span>
 <span class="nv">BACKUPDATE</span><span class="o">=</span><span class="sb">`</span>date +%Y%m%d_%H%M<span class="sb">`</span>
 
 <span class="k">function</span> USAGE<span class="o">()</span> <span class="o">{</span>
@@ -220,7 +220,7 @@ cat <span class="s">&lt;&lt; EOF</span>
       <span class="p">;;</span>
     h<span class="o">)</span>
       USAGE
-      <span class="nb">exit </span>1
+      <span class="nb">exit</span> <span class="m">1</span>
       <span class="p">;;</span>
     l<span class="o">)</span>
       <span class="nv">PRGNAME</span><span class="o">=</span><span class="s2">&quot;</span><span class="nv">$OPTARG</span><span class="s2">&quot;</span>
@@ -233,15 +233,15 @@ cat <span class="s">&lt;&lt; EOF</span>
       <span class="nb">exit</span>
       <span class="p">;;</span>
     :<span class="o">)</span>
-      <span class="nb">echo</span> <span class="s2">&quot;Option -</span><span class="nv">$OPTARG</span><span class="s2"> requires an argument.&quot;</span> &gt;<span class="p">&amp;</span>2
-      <span class="nb">exit </span>1
+      <span class="nb">echo</span> <span class="s2">&quot;Option -</span><span class="nv">$OPTARG</span><span class="s2"> requires an argument.&quot;</span> &gt;<span class="p">&amp;</span><span class="m">2</span>
+      <span class="nb">exit</span> <span class="m">1</span>
       <span class="p">;;</span>
   <span class="k">esac</span>
 <span class="k">done</span>
 
 <span class="k">function</span> ERROR<span class="o">()</span> <span class="o">{</span>
   <span class="nb">echo</span> <span class="o">&amp;&amp;</span> <span class="nb">echo</span> <span class="s2">&quot;[error] </span><span class="nv">$@</span><span class="s2">&quot;</span>
-  <span class="nb">exit </span>1
+  <span class="nb">exit</span> <span class="m">1</span>
 <span class="o">}</span>
 
 <span class="k">function</span> NOTICE<span class="o">()</span> <span class="o">{</span>
@@ -253,28 +253,28 @@ cat <span class="s">&lt;&lt; EOF</span>
   <span class="nb">eval</span> <span class="nv">$@</span>
 <span class="o">}</span>
 
-<span class="c"># Sanity checks</span>
+<span class="c1"># Sanity checks</span>
 <span class="k">if</span> <span class="o">[</span> ! -n <span class="s2">&quot;</span><span class="nv">$BACKUPDIR</span><span class="s2">&quot;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
   ERROR <span class="s2">&quot;Invalid backup directory&quot;</span>
 <span class="k">fi</span>
 
-<span class="k">if</span> <span class="o">[[</span> ! <span class="nv">$NUMDAYS</span> <span class="o">=</span>~ ^<span class="o">[</span>0-9<span class="o">]</span>+<span class="nv">$ </span><span class="o">]]</span><span class="p">;</span> <span class="k">then</span>
+<span class="k">if</span> <span class="o">[[</span> ! <span class="nv">$NUMDAYS</span> <span class="o">=</span>~ ^<span class="o">[</span><span class="m">0</span>-9<span class="o">]</span>+$ <span class="o">]]</span><span class="p">;</span> <span class="k">then</span>
   ERROR <span class="s2">&quot;Invalid number of days: </span><span class="nv">$NUMDAYS</span><span class="s2">&quot;</span>
 <span class="k">elif</span> <span class="o">[</span> <span class="s2">&quot;</span><span class="nv">$NUMDAYS</span><span class="s2">&quot;</span> -eq <span class="s2">&quot;0&quot;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
   ERROR <span class="s2">&quot;Number of days must be greater than zero&quot;</span>
 <span class="k">fi</span>
 
-<span class="c"># Lock down permissions</span>
-<span class="nb">umask </span>077
+<span class="c1"># Lock down permissions</span>
+<span class="nb">umask</span> <span class="m">077</span>
 
-<span class="c"># Create directory if needed</span>
+<span class="c1"># Create directory if needed</span>
 RUNCMD mkdir -p -v <span class="nv">$BACKUPDIR</span>
 
 <span class="k">if</span> <span class="o">[</span> ! -d <span class="nv">$BACKUPDIR</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
   ERROR <span class="s2">&quot;Invalid directory: </span><span class="nv">$BACKUPDIR</span><span class="s2">&quot;</span>
 <span class="k">fi</span>
 
-<span class="nv">RC</span><span class="o">=</span>0
+<span class="nv">RC</span><span class="o">=</span><span class="m">0</span>
 
 RUNCMD <span class="s2">&quot;cd </span><span class="nv">$ORGDIR</span><span class="s2"> &amp;&amp; </span><span class="nv">$TARCMD</span><span class="s2"> </span><span class="nv">$BACKUPDATE</span><span class="s2">.tar.gz ./ || mv </span><span class="nv">$BACKUPDATE</span><span class="s2">.tar.gz </span><span class="nv">$BACKUPDIR</span><span class="s2">&quot;</span>
 <span class="nv">RC</span><span class="o">=</span><span class="nv">$?</span>
@@ -293,7 +293,7 @@ RUNCMD <span class="s2">&quot;cd </span><span class="nv">$ORGDIR</span><span cla
 
 <span class="k">fi</span>
 
-<span class="c"># exit 0</span>
+<span class="c1"># exit 0</span>
 </pre></div>
 </td></tr></table>
 
@@ -301,7 +301,7 @@ RUNCMD <span class="s2">&quot;cd </span><span class="nv">$ORGDIR</span><span cla
 <p>同<a href="https://typecodes.com/linux/centos7mysqlregularbackup.html" title="《2015博客升级记(七)：CentOS7定时备份MySql的shell脚本》">前文</a>的mysql备份脚本一样，这个博客程序备份脚本也托管在自己的Coding.net和GitHub上：</p>
 <p>Coding.net地址：<a href="https://github.com/vfhky/shell-tools/" title="点击查看">https://github.com/vfhky/shell-tools/</a>；</p>
 <p>GitHub地址：<a href="https://coding.net/u/vfhky/p/shell-tools/git" title="点击查看">https://coding.net/u/vfhky/p/shell-tools/git</a>。</p>
-		    	<div class="donate_div_container">
+</div>		    	<div class="donate_div_container">
 					<div class="donate_div">
 						<p><a href="javascript:void(0)" onclick="donateToggle()" class="donate_word" title="打赏，支持一下">打赏</a></p>
 						<div class="hide_box"></div>
@@ -331,7 +331,7 @@ RUNCMD <span class="s2">&quot;cd </span><span class="nv">$ORGDIR</span><span cla
 					</div>
 				</div>
 		    	<div class="tags">
-					<div class="post_tags">
+					<div class="post_tags" itemprop="keywords">
 						Tags: <a href="https://typecodes.com/tag/bo-ke-cheng-chang-lu.html">博客成长录</a>,<a href="https://typecodes.com/tag/shell.html">shell</a>					</div>
 					<div class="post-share">
 						<ul class="post-shareul clearfix">
@@ -423,7 +423,6 @@ RUNCMD <span class="s2">&quot;cd </span><span class="nv">$ORGDIR</span><span cla
 		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
 	</section>
 </div>
-				</div>
 			</div>
 		</div>
 		<!--4. bottom begin-->

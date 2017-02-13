@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html dir="ltr" lang="zh-CN" class="no-js">
+<html class="no-js">
 	<head>
-		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
   		<meta name="renderer" content="webkit">
 		<title>CentOS中将备份文件同步到BitBucket、GitHub和Coding的shell脚本 &mdash; TypeCodes</title>
 		<meta name="description" content="CentOS中将备份文件同步到BitBucket、GitHub和Coding的shell脚本 &mdash; TypeCodes" />
@@ -34,8 +35,7 @@
 			</div>
 		</div>
 		<div class="container">
-			<div class="row">
-		<!--2. left sider begin-->
+			<div class="row">		<!--2. left sider begin-->
 		<div class="col-md-9" id="blog-main" role="main">
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/linux/gitsynbackupshell.html">CentOS中将备份文件同步到BitBucket、GitHub和Coding的shell脚本</a></h2>
@@ -44,12 +44,12 @@
 </ul>
 <div class="post-content fmt">
 	<p>在<a href="https://typecodes.com/linux/gitaccountconfig.html" title="《CentOS系统BitBucket、GitHub和Coding等多git账户的配置》">上一篇文章</a>讲述了如何在Linux系统中配置BitBucket、GitHub和Coding这三个平台的git账户，这篇文章就分享如何通过shell脚本定时获取自己的CentOS7.1服务器上的备份文件，然后使用git命令同步到这三个平台仓库上。</p>
-<p><img alt="CentOS中git同步的shell脚本" src="https://o3cex9zsl.qnssl.com/2015/07/linux_git.png" title="CentOS中git同步的shell脚本" /></p>
+<p><img alt="CentOS中git同步的shell脚本" src="https://o3cex9zsl.qnssl.com/2015/07/linux_git.png" title="CentOS中git同步的shell脚本"></p>
 
 
 <h5>1 功能需求描述</h5>
 <p>我自己为这个shell同步脚本设定了以下三个需求功能点：</p>
-<div class="highlight"><pre>1、自动获取数据库备份目和程序备份目录下自动生成的最新的备份文件；
+<div class="highlight"><pre><span></span>1、自动获取数据库备份目和程序备份目录下自动生成的最新的备份文件；
 2、将获取到的最新的备份数据库和程序文件自动同步到BitBucket、GitHub和Coding这三个Git平台；
 3、生成相应的执行日志文件。
 </pre></div>
@@ -58,7 +58,7 @@
 <h5>2 shell脚本的思路和流程</h5>
 <p>根据上面的需求，整理出脚本思路：先获取最新的备份文件，然后复制到本地的BitBucket、GitHub和Coding仓库目录下，然后通过Git命令同步到远端仓库即可，整个过程执行的命令以追加的方式保存到同一个日志文件中。</p>
 <p>脚本的主要流程：</p>
-<div class="highlight"><pre>1、先声明变量`Source_DB_Dir`、`Source_PRG_Dir`表示自己的CentOS服务器上的数据库和程序备份目录，然后`Git_Err_Log_Dir`是生成的执行日志目录。
+<div class="highlight"><pre><span></span>1、先声明变量`Source_DB_Dir`、`Source_PRG_Dir`表示自己的CentOS服务器上的数据库和程序备份目录，然后`Git_Err_Log_Dir`是生成的执行日志目录。
 
 2、接着声明BitBucket、GitHub和Coding这3个Git平台的本地仓库所在目录（主要是数据库DB目录和程序PRG目录）；
 
@@ -210,34 +210,34 @@
 137
 138
 139
-140</pre></div></td><td class="code"><div class="highlight"><pre><span class="c">#!/bin/bash</span>
-<span class="c"># TypeCodes Git Synchronous Script v1.0.0</span>
-<span class="c"># (c) 2015 vfhky https://typecodes.com/linux/gitsynbackupshell.html</span>
+140</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="ch">#!/bin/bash</span>
+<span class="c1"># TypeCodes Git Synchronous Script v1.0.0</span>
+<span class="c1"># (c) 2015 vfhky https://typecodes.com/linux/gitsynbackupshell.html</span>
 
 
 <span class="nv">Source_DB_Dir</span><span class="o">=</span>/mydata/backups/data/mysql
 <span class="nv">Source_PRG_Dir</span><span class="o">=</span>/mydata/backups/data/typecodes
 <span class="nv">Git_Err_Log_Dir</span><span class="o">=</span>/mydata/backups/logs/git
 
-<span class="c"># Coding.net</span>
+<span class="c1"># Coding.net</span>
 <span class="nv">CodingNet_DB_Dir</span><span class="o">=</span>/mydata/GitBang/CodingNet/myblog/db
 <span class="nv">CodingNet_PRG_Dir</span><span class="o">=</span>/mydata/GitBang/CodingNet/myblog/program
 
-<span class="c"># BitBucket.org</span>
+<span class="c1"># BitBucket.org</span>
 <span class="nv">BitBucket_Dir</span><span class="o">=</span>/mydata/GitBang/BitBucket/myblog/db
 <span class="nv">BitBucket_PRG_Dir</span><span class="o">=</span>/mydata/GitBang/BitBucket/myblog/program
 
-<span class="c"># GitHub.com</span>
+<span class="c1"># GitHub.com</span>
 <span class="nv">GitHub_Dir</span><span class="o">=</span>/mydata/GitBang/GitHub/myblog/db
 <span class="nv">GitHub_PRG_Dir</span><span class="o">=</span>/mydata/GitBang/GitHub/myblog/program
 
-<span class="c"># Get the newest file name</span>
-<span class="c">#Newest_File=&quot;ls -lrt| tail -n 1 | awk &#39;{print $9}&#39;&quot;</span>
+<span class="c1"># Get the newest file name</span>
+<span class="c1">#Newest_File=&quot;ls -lrt| tail -n 1 | awk &#39;{print $9}&#39;&quot;</span>
 
-<span class="c"># Space separated list of databases</span>
+<span class="c1"># Space separated list of databases</span>
 <span class="nv">PRGNAME</span><span class="o">=</span><span class="s2">&quot;Git_Synchronous&quot;</span>
 
-<span class="c"># Current date format: e.g 20150505_2015</span>
+<span class="c1"># Current date format: e.g 20150505_2015</span>
 <span class="nv">Current_Date</span><span class="o">=</span><span class="sb">`</span>date +%Y%m%d_%H%M<span class="sb">`</span>
 
 <span class="k">function</span> USAGE<span class="o">()</span> <span class="o">{</span>
@@ -259,7 +259,7 @@ cat <span class="s">&lt;&lt; EOF</span>
       <span class="p">;;</span>
     h<span class="o">)</span>
       USAGE
-      <span class="nb">exit </span>1
+      <span class="nb">exit</span> <span class="m">1</span>
       <span class="p">;;</span>
     l<span class="o">)</span>
       <span class="nv">PRGNAME</span><span class="o">=</span><span class="s2">&quot;</span><span class="nv">$OPTARG</span><span class="s2">&quot;</span>
@@ -272,15 +272,15 @@ cat <span class="s">&lt;&lt; EOF</span>
       <span class="nb">exit</span>
       <span class="p">;;</span>
     :<span class="o">)</span>
-      <span class="nb">echo</span> <span class="s2">&quot;Option -</span><span class="nv">$OPTARG</span><span class="s2"> requires an argument.&quot;</span> &gt;<span class="p">&amp;</span>2
-      <span class="nb">exit </span>1
+      <span class="nb">echo</span> <span class="s2">&quot;Option -</span><span class="nv">$OPTARG</span><span class="s2"> requires an argument.&quot;</span> &gt;<span class="p">&amp;</span><span class="m">2</span>
+      <span class="nb">exit</span> <span class="m">1</span>
       <span class="p">;;</span>
   <span class="k">esac</span>
 <span class="k">done</span>
 
 <span class="k">function</span> ERROR<span class="o">()</span> <span class="o">{</span>
   <span class="nb">echo</span> <span class="o">&amp;&amp;</span> <span class="nb">echo</span> <span class="s2">&quot;[error] </span><span class="nv">$@</span><span class="s2">&quot;</span> &gt;&gt; <span class="nv">$Git_Err_Log_Dir</span>/Git_<span class="nv">$Current_Date</span>.log
-  <span class="nb">exit </span>1
+  <span class="nb">exit</span> <span class="m">1</span>
 <span class="o">}</span>
 
 <span class="k">function</span> NOTICE<span class="o">()</span> <span class="o">{</span>
@@ -292,24 +292,24 @@ cat <span class="s">&lt;&lt; EOF</span>
   <span class="nb">eval</span> <span class="nv">$@</span>
 <span class="o">}</span>
 
-<span class="c"># Git commit command function</span>
+<span class="c1"># Git commit command function</span>
 <span class="k">function</span> Git_Commit<span class="o">(){</span>
-  <span class="k">if</span> <span class="o">[</span> <span class="nv">$# </span>-ne <span class="m">0</span> -a <span class="nv">$# </span>-ne <span class="m">1</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+  <span class="k">if</span> <span class="o">[</span> <span class="nv">$#</span> -ne <span class="m">0</span> -a <span class="nv">$#</span> -ne <span class="m">1</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
     ERROR <span class="s2">&quot;Usage: Git_Commit or Git_Commit file_path!&quot;</span>
-    <span class="nb">exit </span>1<span class="p">;</span>
-  <span class="k">elif</span> <span class="o">[</span> <span class="nv">$# </span>-lt <span class="m">1</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+    <span class="nb">exit</span> <span class="m">1</span><span class="p">;</span>
+  <span class="k">elif</span> <span class="o">[</span> <span class="nv">$#</span> -lt <span class="m">1</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
     RUNCMD git pull <span class="o">&amp;&amp;</span> git add --all <span class="o">&amp;&amp;</span> git commit -m <span class="s2">&quot;Backup from TypeCodes.com [Time:</span><span class="nv">$Current_Date</span><span class="s2">]&quot;</span> <span class="o">&amp;&amp;</span> git push origin master
   <span class="k">else</span>
     RUNCMD git pull <span class="o">&amp;&amp;</span> git add <span class="nv">$1</span> <span class="o">&amp;&amp;</span> git commit -m <span class="s2">&quot;Backup from TypeCodes.com [Time:</span><span class="nv">$Current_Date</span><span class="s2">]&quot;</span> <span class="o">&amp;&amp;</span> git push origin master
   <span class="k">fi</span>
 <span class="o">}</span>
 
-<span class="c"># $1:path  $2:filter file-type</span>
+<span class="c1"># $1:path  $2:filter file-type</span>
 <span class="k">function</span> Get_last_file<span class="o">(){</span>
-  <span class="k">if</span> <span class="o">[</span> <span class="nv">$# </span>-ne <span class="m">1</span> -a <span class="nv">$# </span>-ne <span class="m">2</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+  <span class="k">if</span> <span class="o">[</span> <span class="nv">$#</span> -ne <span class="m">1</span> -a <span class="nv">$#</span> -ne <span class="m">2</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
     ERROR <span class="s2">&quot;Usage: Get_last_file file_path or Get_last_file file_path file_type!&quot;</span>
-    <span class="nb">exit </span>1<span class="p">;</span>
-  <span class="k">elif</span> <span class="o">[</span> <span class="nv">$# </span>-lt <span class="m">2</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+    <span class="nb">exit</span> <span class="m">1</span><span class="p">;</span>
+  <span class="k">elif</span> <span class="o">[</span> <span class="nv">$#</span> -lt <span class="m">2</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
     ls -lrt <span class="nv">$1</span> <span class="p">|</span> tail -n <span class="m">1</span> <span class="p">|</span> awk <span class="s1">&#39;{print $9}&#39;</span>
   <span class="k">else</span>
     ls -lrt <span class="nv">$1</span> <span class="p">|</span> awk <span class="s2">&quot;/</span><span class="nv">$2</span><span class="s2">/&quot;</span> <span class="p">|</span> tail -n <span class="m">1</span> <span class="p">|</span> awk <span class="s1">&#39;{print $9}&#39;</span>
@@ -322,7 +322,7 @@ cat <span class="s">&lt;&lt; EOF</span>
 
 
 NOTICE <span class="s2">&quot;Start copy the db_file to git index&quot;</span>
-<span class="nv">RC</span><span class="o">=</span>0
+<span class="nv">RC</span><span class="o">=</span><span class="m">0</span>
 <span class="nv">Last_Source_DB_File</span><span class="o">=</span><span class="k">$(</span>Get_last_file <span class="nv">$Source_DB_Dir</span><span class="k">)</span>
 RUNCMD <span class="s2">&quot;cd </span><span class="nv">$Source_DB_Dir</span><span class="s2"> &amp;&amp; \cp -rf </span><span class="nv">$Last_Source_DB_File</span><span class="s2"> </span><span class="nv">$CodingNet_DB_Dir</span><span class="s2"> &amp;&amp; \cp -rf </span><span class="nv">$Last_Source_DB_File</span><span class="s2"> </span><span class="nv">$BitBucket_Dir</span><span class="s2"> &amp;&amp; \cp -rf </span><span class="nv">$Last_Source_DB_File</span><span class="s2"> </span><span class="nv">$GitHub_Dir</span><span class="s2">&quot;</span>
 
@@ -349,26 +349,26 @@ RUNCMD <span class="s2">&quot;cd </span><span class="nv">$BitBucket_PRG_Dir</spa
 NOTICE <span class="s2">&quot;Start push to GitHub&quot;</span>
 RUNCMD <span class="s2">&quot;cd </span><span class="nv">$GitHub_PRG_Dir</span><span class="s2"> &amp;&amp; tar -zxf </span><span class="k">$(</span>Get_last_file <span class="nv">$GitHub_PRG_Dir</span> .tar.gz<span class="k">)</span><span class="s2"> &amp;&amp; cd ../ &amp;&amp; Git_Commit&quot;</span>
 
-<span class="c"># exit 0</span>
+<span class="c1"># exit 0</span>
 </pre></div>
 </td></tr></table>
 
 <h5>4 单独执行该shell脚本</h5>
 <p>可以将这个脚本保存为git.sh，然后使用时通过<code>chmod +x git.sh</code>命令添加执行权限，最后通过<code>./git.sh</code>执行该脚本即可。附图如下：</p>
 <p>同步到BitBucket仓库时的截图：
-<img alt="同步到BitBucket仓库时" src="https://o3cex9zsl.qnssl.com/2015/07/git_shell_bitbucket_syn.png" title="同步到BitBucket仓库时" /></p>
+<img alt="同步到BitBucket仓库时" src="https://o3cex9zsl.qnssl.com/2015/07/git_shell_bitbucket_syn.png" title="同步到BitBucket仓库时"></p>
 <p>同步到GitHub仓库时的截图：
-<img alt="同步到GitHub仓库时" src="https://o3cex9zsl.qnssl.com/2015/07/git_shell_github_syn.png" title="同步到GitHub仓库时" /></p>
+<img alt="同步到GitHub仓库时" src="https://o3cex9zsl.qnssl.com/2015/07/git_shell_github_syn.png" title="同步到GitHub仓库时"></p>
 <h5>5 定时执行该shell脚本</h5>
 <p>利用Linux系统的crontab定时任务工具执行该脚本，例如下面这个配置就是每天凌晨1点的时候执行该shell脚本。</p>
-<div class="highlight"><pre>[root@typecodes bak_list]# crontab -e
+<div class="highlight"><pre><span></span>[root@typecodes bak_list]# crontab -e
 0 1 * * * /mydata/backups/bak_list/git.sh
 </pre></div>
 
 
 <p>根据脚本中的配置，生成的日志类似于<code>/mydata/backups/logs/git/Git_20150706_0100.log</code>：</p>
-<p><img alt="git同步的shell脚本执行生成的日志" src="https://o3cex9zsl.qnssl.com/2015/07/git_syn_log.png" title="git同步的shell脚本执行生成的日志" /></p>
-		    	<div class="donate_div_container">
+<p><img alt="git同步的shell脚本执行生成的日志" src="https://o3cex9zsl.qnssl.com/2015/07/git_syn_log.png" title="git同步的shell脚本执行生成的日志"></p>
+</div>		    	<div class="donate_div_container">
 					<div class="donate_div">
 						<p><a href="javascript:void(0)" onclick="donateToggle()" class="donate_word" title="打赏，支持一下">打赏</a></p>
 						<div class="hide_box"></div>
@@ -398,7 +398,7 @@ RUNCMD <span class="s2">&quot;cd </span><span class="nv">$GitHub_PRG_Dir</span><
 					</div>
 				</div>
 		    	<div class="tags">
-					<div class="post_tags">
+					<div class="post_tags" itemprop="keywords">
 						Tags: <a href="https://typecodes.com/tag/git.html">git</a>,<a href="https://typecodes.com/tag/shell.html">shell</a>					</div>
 					<div class="post-share">
 						<ul class="post-shareul clearfix">
@@ -490,7 +490,6 @@ RUNCMD <span class="s2">&quot;cd </span><span class="nv">$GitHub_PRG_Dir</span><
 		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
 	</section>
 </div>
-				</div>
 			</div>
 		</div>
 		<!--4. bottom begin-->

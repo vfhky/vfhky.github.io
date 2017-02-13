@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html dir="ltr" lang="zh-CN" class="no-js">
+<html class="no-js">
 	<head>
-		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
   		<meta name="renderer" content="webkit">
 		<title>解决make编译链接动态库错误：libxx.so: undefined reference to xx &mdash; TypeCodes</title>
 		<meta name="description" content="解决make编译链接动态库错误：libxx.so: undefined reference to xx &mdash; TypeCodes" />
@@ -34,8 +35,7 @@
 			</div>
 		</div>
 		<div class="container">
-			<div class="row">
-		<!--2. left sider begin-->
+			<div class="row">		<!--2. left sider begin-->
 		<div class="col-md-9" id="blog-main" role="main">
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/cseries/libraryundefinedref.html">解决make编译链接动态库错误：libxx.so: undefined reference to xx</a></h2>
@@ -61,13 +61,13 @@
 10
 11
 12
-13</pre></div></td><td class="code"><div class="highlight"><pre><span class="cm">/** </span>
+13</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="cm">/** </span>
 <span class="cm"> * @FileName    tst.c</span>
 <span class="cm"> * @Describe    a simple test program to find out the reason of dynamic library undefined reference.</span>
 <span class="cm"> * @Author      vfhky 2015.08.12 https://typecodes.com/cseries/libraryundefinedref.html</span>
 <span class="cm"> */</span>
-<span class="cp">#include &lt;stdio.h&gt;</span>
-<span class="cp">#include &quot;pbl_global.h&quot;     </span><span class="c1">//为减少“干扰”，还可以去掉这个头文件引用</span>
+<span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&quot;pbl_global.h&quot;     //为减少“干扰”，还可以去掉这个头文件引用</span><span class="cp"></span>
 
 <span class="kt">int</span> <span class="nf">main</span><span class="p">(</span> <span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">**</span> <span class="n">argv</span> <span class="p">)</span>
 <span class="p">{</span>
@@ -78,7 +78,7 @@
 </td></tr></table>
 
 <p>接着使用<code>make</code>命令编译链接生成目标ELF文件test，但是在ld链接自定义的动态库libsrcpbl.so的时候报错。为了减少<code>干扰</code>，还可以把pbl_global.h头文件引用去掉。也就是tst.c中是一个及其普通的程序，与libsrcpbl.so中的数据完全没关系，但是还是报出同样的错误：</p>
-<div class="highlight"><pre>[root@typecodes test]# make
+<div class="highlight"><pre><span></span>[root@typecodes test]# make
 gcc -std=c99 -D_GNU_SOURCE  -g -Wall  -I /root/gcc_test/tcp_msg/include/ -I /root/gcc_test/tcp_msg/include/CommAPI/ -I /root/gcc_test/tcp_msg/include/pbl/ -o /root/gcc_test/tcp_msg/src/test/tst.o -c tst.c
 g++ -std=c99 -D_GNU_SOURCE   /root/gcc_test/tcp_msg/src/test/tst.o -L /root/gcc_test/tcp_msg/lib  -lsrcpbl -Xlinker &quot;-(&quot;  -Xlinker &quot;-)&quot; -o /root/gcc_test/tcp_msg/bin/test
 /root/gcc_test/tcp_msg/lib/libsrcpbl.so: undefined reference to `gcProgramName&#39;
@@ -87,20 +87,20 @@ make: *** [/root/gcc_test/tcp_msg/bin/test] Error 1
 </pre></div>
 
 
-<p><img alt="ld链接时报错：undefined reference" src="https://o3cex9zsl.qnssl.com/2015/08/library_undefined_reference.png" title="ld链接时报错：undefined reference" /></p>
+<p><img alt="ld链接时报错：undefined reference" src="https://o3cex9zsl.qnssl.com/2015/08/library_undefined_reference.png" title="ld链接时报错：undefined reference"></p>
 <h4>2 查找 libsrcpbl.so: undefined reference to gcProgramName 的原因</h4>
 <p>通过make显示的内容，基本判断Makefile文件是正确的。用<code>nm libsrcpbl.so</code>命令查看一下链接的动态库，结果如下：</p>
-<div class="highlight"><pre>##### 使用nm查看动态库
+<div class="highlight"><pre><span></span>##### 使用nm查看动态库
 [root@typecodes test]# nm -A /root/gcc_test/tcp_msg/lib/libsrcpbl.so|grep gcProgramName
 /root/gcc_test/tcp_msg/lib/libsrcpbl.so:                 U gcProgramName
 [root@typecodes test]#
 </pre></div>
 
 
-<p><img alt="使用nm查看动态库中的符号" src="https://o3cex9zsl.qnssl.com/2015/08/nm_library_grep.png" title="使用nm查看动态库中的符号" /></p>
+<p><img alt="使用nm查看动态库中的符号" src="https://o3cex9zsl.qnssl.com/2015/08/nm_library_grep.png" title="使用nm查看动态库中的符号"></p>
 <p>根据上图中的信息，结合前文<a href="https://typecodes.com/cseries/nmobjectfilesymbol.html" title="查看原文">《Unix系统中nm命令展示目标文件符号的方法》</a>nm命令的man手册关于符号<code>U</code>的说明，推测可能原因：libsrcpbl.so动态库文件中存在gcProgramName符号（即变量），需要从test.o对象文件中链接进来，但是test.c程序中没有定义gcProgramName变量，所以报错了。</p>
 <p>于是查看原工程中的头文件pbl_global.h，果然发现了gcProgramName是一个外部全局变量，其声明如下：</p>
-<div class="highlight"><pre>extern char gcProgramName[20 + 1];
+<div class="highlight"><pre><span></span>extern char gcProgramName[20 + 1];
 </pre></div>
 
 
@@ -117,7 +117,7 @@ make: *** [/root/gcc_test/tcp_msg/bin/test] Error 1
  8
  9
 10
-11</pre></div></td><td class="code"><div class="highlight"><pre><span class="cp">#include &lt;stdio.h&gt;</span>
+11</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
 
 <span class="c1">//定义外部全局变量，解决libsrcpbl.so: undefined reference to gcProgramName的问题</span>
 <span class="kt">char</span> <span class="n">gcProgramName</span><span class="p">[</span><span class="mi">20</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="mh">0x00</span><span class="p">};</span>
@@ -132,13 +132,13 @@ make: *** [/root/gcc_test/tcp_msg/bin/test] Error 1
 </td></tr></table>
 
 <p>最后重新make一下，链接生成ELF文件成功！</p>
-<p><img alt="使用nm查看动态库中的符号" src="https://o3cex9zsl.qnssl.com/2015/08/make_link_library_sucess.png" title="使用nm查看动态库中的符号" /></p>
+<p><img alt="使用nm查看动态库中的符号" src="https://o3cex9zsl.qnssl.com/2015/08/make_link_library_sucess.png" title="使用nm查看动态库中的符号"></p>
 <h5>4 总结</h5>
 <p>在make编译链接某个动态库lxx.so时，如果报<code>libxx.so: undefined reference to xx</code>的话，很可能是由下面两种原因引起的。Unix/Linux系统中使用<code>nm</code>、<code>objdump</code>和<code>readelf</code>命令可以辅助调试目标文件。</p>
-<div class="highlight"><pre>1、链接的动态库中存在只做了声明的自定义的函数/全局变量，但是在其它对象文件中没有实现定义；
+<div class="highlight"><pre><span></span>1、链接的动态库中存在只做了声明的自定义的函数/全局变量，但是在其它对象文件中没有实现定义；
 2、链接生成的目标文件中引用了某动态库的自定义函数/全局变量，但是没有通过`-lXX`选项链接进来。
 </pre></div>
-		    	<div class="donate_div_container">
+</div>		    	<div class="donate_div_container">
 					<div class="donate_div">
 						<p><a href="javascript:void(0)" onclick="donateToggle()" class="donate_word" title="打赏，支持一下">打赏</a></p>
 						<div class="hide_box"></div>
@@ -168,7 +168,7 @@ make: *** [/root/gcc_test/tcp_msg/bin/test] Error 1
 					</div>
 				</div>
 		    	<div class="tags">
-					<div class="post_tags">
+					<div class="post_tags" itemprop="keywords">
 						Tags: <a href="https://typecodes.com/tag/nm.html">nm</a>,<a href="https://typecodes.com/tag/undefined-reference.html">undefined reference</a>					</div>
 					<div class="post-share">
 						<ul class="post-shareul clearfix">
@@ -260,7 +260,6 @@ make: *** [/root/gcc_test/tcp_msg/bin/test] Error 1
 		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
 	</section>
 </div>
-				</div>
 			</div>
 		</div>
 		<!--4. bottom begin-->

@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html dir="ltr" lang="zh-CN" class="no-js">
+<html class="no-js">
 	<head>
-		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
   		<meta name="renderer" content="webkit">
 		<title>再谈“0xC0000005读取写入位置冲突”——正确使用指针访问内存 &mdash; TypeCodes</title>
 		<meta name="description" content="再谈“0xC0000005读取写入位置冲突”——正确使用指针访问内存 &mdash; TypeCodes" />
@@ -34,8 +35,7 @@
 			</div>
 		</div>
 		<div class="container">
-			<div class="row">
-		<!--2. left sider begin-->
+			<div class="row">		<!--2. left sider begin-->
 		<div class="col-md-9" id="blog-main" role="main">
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/cseries/pointermemaccess0xC0000005.html">再谈“0xC0000005读取写入位置冲突”——正确使用指针访问内存</a></h2>
@@ -72,14 +72,14 @@
 21
 22
 23
-24</pre></div></td><td class="code"><div class="highlight"><pre><span class="cm">/**</span>
+24</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="cm">/**</span>
 <span class="cm"> * @FileName :  pointermemaccess0xC0000005.c</span>
 <span class="cm"> * @Author   :  vfhky https://typecodes.com 2014.08.25 20:00</span>
 <span class="cm"> * @Functions:  不正确使用指针p1导致出现“异常: 0xC0000005”和正确使用数组实现字符串的连接</span>
 <span class="cm">*/</span>
-<span class="cp">#include &lt;stdio.h&gt;</span>
-<span class="cp">#include &lt;string.h&gt;</span>
-<span class="cp">#include &lt;stdlib.h&gt;</span>
+<span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;string.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;stdlib.h&gt;</span><span class="cp"></span>
 <span class="kt">int</span> <span class="nf">main</span><span class="p">(</span> <span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span> <span class="n">argv</span><span class="p">[]</span> <span class="p">)</span>
 <span class="p">{</span>
     <span class="kt">char</span> <span class="o">*</span> <span class="n">p1</span> <span class="o">=</span> <span class="p">(</span><span class="kt">char</span> <span class="o">*</span><span class="p">)</span><span class="n">malloc</span><span class="p">(</span> <span class="k">sizeof</span><span class="p">(</span><span class="kt">char</span><span class="p">)</span><span class="o">*</span><span class="mi">20</span> <span class="p">);</span>
@@ -101,29 +101,29 @@
 
 <h5>2 在vs中设置断点并调试</h5>
 <p>如下图设置好断点后，单步执行到第10行。此时指针变量p1的值是 0x008734c0 ，p2的值是 0x00d75774 ，数组p3的起始地址是 0x0036f928 。</p>
-<p><img alt="在vs中设置断点并单步调试" src="https://o3cex9zsl.qnssl.com/2014/09/vsbreakp0xc00000005.png" title="在vs中设置断点并单步调试" /></p>
+<p><img alt="在vs中设置断点并单步调试" src="https://o3cex9zsl.qnssl.com/2014/09/vsbreakp0xc00000005.png" title="在vs中设置断点并单步调试"></p>
 <h6>2.1详细查看指针变量p1、p2以及数组p3的内存情况：（第10行）</h6>
 <p>此时，指针变量p1通过语句 <code>char * p1 = (char *)malloc( sizeof(char)*20 );</code> 指向起始地址为 0x008734c0 到 地址 0x008734d3 的内存块（大小为 20 字节）。</p>
-<p><img alt="初始化指针变量p1的内存地址" src="https://o3cex9zsl.qnssl.com/2014/09/oldp1address0xc00000005.png" title="初始化指针变量p1的内存地址" /></p>
+<p><img alt="初始化指针变量p1的内存地址" src="https://o3cex9zsl.qnssl.com/2014/09/oldp1address0xc00000005.png" title="初始化指针变量p1的内存地址"></p>
 <p>指针变量 p2 通过执行 <code>char * p2 = "efgh";</code> 指向起始地址为  0x00d75774 的字符串“efgh”（共占 4 字节）。</p>
-<p><img alt="初始化指针变量p2的内存地址" src="https://o3cex9zsl.qnssl.com/2014/09/oldp2address0xc00000005.png" title="初始化指针变量p2的内存地址" /></p>
+<p><img alt="初始化指针变量p2的内存地址" src="https://o3cex9zsl.qnssl.com/2014/09/oldp2address0xc00000005.png" title="初始化指针变量p2的内存地址"></p>
 <p>数组 p3 通过 <code>char p3[20]= "igkl";</code> 开辟了起始地址为 0x0036f928 的内存块（共占 4 字节），存储字符串“igkl”。</p>
-<p><img alt="初始化数组p3的内存块" src="https://o3cex9zsl.qnssl.com/2014/09/oldp3address0xc00000005.png" title="初始化数组p3的内存块" /></p>
+<p><img alt="初始化数组p3的内存块" src="https://o3cex9zsl.qnssl.com/2014/09/oldp3address0xc00000005.png" title="初始化数组p3的内存块"></p>
 <h6>2.2继续单步调试并查看内存情况：（第11行）</h6>
 <p>上述变量初始化完毕后，单步执行到第 11 行的断点。这时指针变量p1由最初的指向 0x008734c0 变成指向字符串“abcd”的地址 0x00d7576c 。p2 的地址仍不变（0x00d75774），p3的地址也不变（0x0036f928）。</p>
-<p><img alt="指针变量p1指向字符串“abcd”的首地址" src="https://o3cex9zsl.qnssl.com/2014/09/newpointeraddress0xc00000005.png" title="指针变量p1指向字符串“abcd”的首地址" /></p>
+<p><img alt="指针变量p1指向字符串“abcd”的首地址" src="https://o3cex9zsl.qnssl.com/2014/09/newpointeraddress0xc00000005.png" title="指针变量p1指向字符串“abcd”的首地址"></p>
 <p>详细查看指针变量p1的内存情况：起始地址是 0x00d7576c ，该内存块存储的字符串是“abcd”。</p>
-<p><img alt="指针变量p1的内存情况" src="https://o3cex9zsl.qnssl.com/2014/09/newp1address0xc00000005.png" title="指针变量p1的内存情况" /></p>
+<p><img alt="指针变量p1的内存情况" src="https://o3cex9zsl.qnssl.com/2014/09/newp1address0xc00000005.png" title="指针变量p1的内存情况"></p>
 <h6>2.3继续单步调试并查看内存情况：（第12行）</h6>
 <p>然后，单步执行到第 12 行的断点，出现错误：test.exe 中的 0x0f85d2e9 (msvcr100d.dll) 处有未经处理的异常: 0xC0000005: 写入位置 0x00d75770 时发生访问冲突。</p>
 <p>也即在执行第11行的 <code>strcat( p1, p2 );</code> 语句时，发生内存访问错误。该语句是把作为src的指针变量p2（0x00d75774）指向的内存块中的字符串“efgh”拷贝一份，然后复制到作为dst的指针变量p1（0x00d7576c）所指向内存块中的的字符串常量“abcd”后面。调用堆栈可以看到，当执行 <code>msvcr100d.dll!strcat(unsigned char * dst, unsigned char * src)</code> 对应的strcat.asm汇编文件中第178行语句 <code>mov [edi], edx</code> 时出错。</p>
-<p><img alt="未经处理的异常: 0xC0000005: 写入位置 0x00d75770 时发生访问冲突" src="https://o3cex9zsl.qnssl.com/2014/09/asm0xc00000005error.png" title="未经处理的异常: 0xC0000005: 写入位置 0x00d75770 时发生访问冲突" /></p>
-<p><img alt="strcat.asm汇编文件mov指令出错" src="https://o3cex9zsl.qnssl.com/2014/09/strcatasm0xc00000005.png" title="strcat.asm汇编文件mov指令出错" /></p>
+<p><img alt="未经处理的异常: 0xC0000005: 写入位置 0x00d75770 时发生访问冲突" src="https://o3cex9zsl.qnssl.com/2014/09/asm0xc00000005error.png" title="未经处理的异常: 0xC0000005: 写入位置 0x00d75770 时发生访问冲突"></p>
+<p><img alt="strcat.asm汇编文件mov指令出错" src="https://o3cex9zsl.qnssl.com/2014/09/strcatasm0xc00000005.png" title="strcat.asm汇编文件mov指令出错"></p>
 <h5>3 原因分析</h5>
 <p>其实，通过上面的单步调试，我们也已经知道原因了。现总结一下：因为指针变量p1（0x00d7576c）所指向的字符串常量“abcd”后面，也即字符'd'的地址是 0x00d7576c+3=0x00d7576f 。</p>
 <p>而它后面以地址 0x00d75770 开始的内存块是不属于指针变量p1的，没有访问权限，所以把拷贝自指针变量p2（0x00d75774）指向的字符串“efgh”到以 0x00d75770 为起始地址的内存块中会报错。可以把语句 <code>p1 = "abcd";</code> 改成 <code>p1 = p3;</code>，然后直接使用 <code>strcat( p1, p2 );</code>，这样是合法的。</p>
-<p><img alt="地址 0x00d75770 不能写入操作" src="https://o3cex9zsl.qnssl.com/2014/09/write0x00d75770err.png" title="地址 0x00d75770 不能写入操作" /></p>
-		    	<div class="donate_div_container">
+<p><img alt="地址 0x00d75770 不能写入操作" src="https://o3cex9zsl.qnssl.com/2014/09/write0x00d75770err.png" title="地址 0x00d75770 不能写入操作"></p>
+</div>		    	<div class="donate_div_container">
 					<div class="donate_div">
 						<p><a href="javascript:void(0)" onclick="donateToggle()" class="donate_word" title="打赏，支持一下">打赏</a></p>
 						<div class="hide_box"></div>
@@ -153,7 +153,7 @@
 					</div>
 				</div>
 		    	<div class="tags">
-					<div class="post_tags">
+					<div class="post_tags" itemprop="keywords">
 						Tags: <a href="https://typecodes.com/tag/yi-chang-0xc0000005.html">异常0xc0000005</a>,<a href="https://typecodes.com/tag/du-qu-xie-ru-wei-zhi-chong-tu.html">读取/写入位置冲突</a>					</div>
 					<div class="post-share">
 						<ul class="post-shareul clearfix">
@@ -245,7 +245,6 @@
 		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
 	</section>
 </div>
-				</div>
 			</div>
 		</div>
 		<!--4. bottom begin-->

@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html dir="ltr" lang="zh-CN" class="no-js">
+<html class="no-js">
 	<head>
-		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
   		<meta name="renderer" content="webkit">
 		<title>wordpress如何防止访客冒充博主发表评论 &mdash; TypeCodes</title>
 		<meta name="description" content="wordpress如何防止访客冒充博主发表评论 &mdash; TypeCodes" />
@@ -34,8 +35,7 @@
 			</div>
 		</div>
 		<div class="container">
-			<div class="row">
-		<!--2. left sider begin-->
+			<div class="row">		<!--2. left sider begin-->
 		<div class="col-md-9" id="blog-main" role="main">
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/web/wpantisimulateblogger.html">wordpress如何防止访客冒充博主发表评论</a></h2>
@@ -54,7 +54,7 @@
 6
 7
 8
-9</pre></div></td><td class="code"><div class="highlight"><pre><span class="x">// 防止访客冒充博主发表评论</span>
+9</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="x">// 防止访客冒充博主发表评论</span>
 <span class="x">function  users_checking($incoming_comment) {</span>
 <span class="x">    global $user_ID;</span>
 <span class="x">    $isSpam = 0;</span>
@@ -67,8 +67,8 @@
 </td></tr></table>
 
 <p>最终效果如下：</p>
-<p><img alt="wordpress如何防止访客冒充博主发表评论" src="https://o3cex9zsl.qnssl.com/2012/09/1.jpg" title="wordpress如何防止访客冒充博主发表评论" /></p>
-		    	<div class="donate_div_container">
+<p><img alt="wordpress如何防止访客冒充博主发表评论" src="https://o3cex9zsl.qnssl.com/2012/09/1.jpg" title="wordpress如何防止访客冒充博主发表评论"></p>
+</div>		    	<div class="donate_div_container">
 					<div class="donate_div">
 						<p><a href="javascript:void(0)" onclick="donateToggle()" class="donate_word" title="打赏，支持一下">打赏</a></p>
 						<div class="hide_box"></div>
@@ -98,7 +98,7 @@
 					</div>
 				</div>
 		    	<div class="tags">
-					<div class="post_tags">
+					<div class="post_tags" itemprop="keywords">
 						Tags: <a href="https://typecodes.com/tag/wordpress.html">wordpress</a>,<a href="https://typecodes.com/tag/wordpressmou-chong-bo-zhu.html">wordpress冒充博主</a>					</div>
 					<div class="post-share">
 						<ul class="post-shareul clearfix">
@@ -190,7 +190,6 @@
 		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
 	</section>
 </div>
-				</div>
 			</div>
 		</div>
 		<!--4. bottom begin-->

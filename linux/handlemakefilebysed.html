@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html dir="ltr" lang="zh-CN" class="no-js">
+<html class="no-js">
 	<head>
-		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
   		<meta name="renderer" content="webkit">
 		<title>使用sed命令批量处理Makefile文件的脚本 &mdash; TypeCodes</title>
 		<meta name="description" content="使用sed命令批量处理Makefile文件的脚本 &mdash; TypeCodes" />
@@ -34,8 +35,7 @@
 			</div>
 		</div>
 		<div class="container">
-			<div class="row">
-		<!--2. left sider begin-->
+			<div class="row">		<!--2. left sider begin-->
 		<div class="col-md-9" id="blog-main" role="main">
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/linux/handlemakefilebysed.html">使用sed命令批量处理Makefile文件的脚本</a></h2>
@@ -44,14 +44,14 @@
 </ul>
 <div class="post-content fmt">
 	<p>前面写了一篇文章<a href="https://typecodes.com/cseries/cppgeneralmakefile.html" title="查看原文">《Linux C/C++工程中可生成ELF、动/静态库文件的通用Makefile》</a>，里面的Makefile代码有个不好的地方需要修改。当编译.cpp文件时，使用的<code>STD_OPT</code>变量仍然是编译.c文件时的参数<code>-std=c99</code>，这个在C++中是不支持的。</p>
-<p><img alt="使用sed命令批量处理Makefile文件的脚本" src="https://o3cex9zsl.qnssl.com/2016/06/handle_makefile.png" title="使用sed命令批量处理Makefile文件的脚本" /></p>
+<p><img alt="使用sed命令批量处理Makefile文件的脚本" src="https://o3cex9zsl.qnssl.com/2016/06/handle_makefile.png" title="使用sed命令批量处理Makefile文件的脚本"></p>
 
 
 <h4>1 sed命令的简要说明</h4>
 <p>由于sed命令可用的参数太多了，这里只列举脚本中用到的几个参数：</p>
 <table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
 2
-3</pre></div></td><td class="code"><div class="highlight"><pre>sed -i：直接修改文件而不是将处理的结果在屏幕上输出；
+3</pre></div></td><td class="code"><div class="highlight"><pre><span></span>sed -i：直接修改文件而不是将处理的结果在屏幕上输出；
 sed -e：多个操作action按顺序执行；
 sed -e &#39;/help:/ a 要追加的内容&#39;：表示在help:文字后面追加内容。
 </pre></div>
@@ -104,22 +104,22 @@ sed -e &#39;/help:/ a 要追加的内容&#39;：表示在help:文字后面追加
 43
 44
 45
-46</pre></div></td><td class="code"><div class="highlight"><pre><span class="c">#!/bin/bash</span>
-<span class="c"># FileName:      handle_makefile.sh</span>
-<span class="c"># Description:   Simple usage of sed command to modify many Makefiles in batch processing.</span>
-<span class="c"># Simple Usage:  ./handle_makefile.sh</span>
-<span class="c"># (c) 2016 vfhky https://typecodes.com/linux/handlemakefilebysed.html</span>
-<span class="c"># https://github.com/vfhky/shell-tools/blob/master/filehandle/handle_makefile.sh</span>
+46</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="ch">#!/bin/bash</span>
+<span class="c1"># FileName:      handle_makefile.sh</span>
+<span class="c1"># Description:   Simple usage of sed command to modify many Makefiles in batch processing.</span>
+<span class="c1"># Simple Usage:  ./handle_makefile.sh</span>
+<span class="c1"># (c) 2016 vfhky https://typecodes.com/linux/handlemakefilebysed.html</span>
+<span class="c1"># https://github.com/vfhky/shell-tools/blob/master/filehandle/handle_makefile.sh</span>
 
 
-<span class="c"># Dir to be handled.</span>
+<span class="c1"># Dir to be handled.</span>
 <span class="nv">SRC_DIR</span><span class="o">=</span><span class="s2">&quot;/home/vfhky/shell&quot;</span>
-<span class="c"># The makefile you want to modify.</span>
+<span class="c1"># The makefile you want to modify.</span>
 <span class="nv">SEARCH_NAME</span><span class="o">=</span><span class="s2">&quot;Makefile&quot;</span>
 
-<span class="c">####</span>
-<span class="c"># @param:   $1  Name of the file</span>
-<span class="c">####</span>
+<span class="c1">####</span>
+<span class="c1"># @param:   $1  Name of the file</span>
+<span class="c1">####</span>
 <span class="k">function</span> handle<span class="o">()</span>
 <span class="o">{</span>
     <span class="nb">echo</span> -e <span class="s1">&#39;Handling file=[&#39;</span><span class="nv">$1</span><span class="s1">&#39;]&#39;</span>
@@ -134,20 +134,20 @@ sed -e &#39;/help:/ a 要追加的内容&#39;：表示在help:文字后面追加
         -e <span class="s1">&#39;/   @echo STD_OPT=\[$(STD_OPT)\]/d&#39;</span> <span class="se">\</span>
         -e <span class="s1">&#39;/   @echo CFLAGS=\[$(CFLAGS)\]/d&#39;</span>   <span class="se">\</span>
          <span class="nv">$1</span>
-    <span class="c">#echo &quot;&quot; | awk &#39;{fflush()}&#39;</span>
+    <span class="c1">#echo &quot;&quot; | awk &#39;{fflush()}&#39;</span>
 <span class="o">}</span>
 
-<span class="c"># Get the target files you want to modify.</span>
+<span class="c1"># Get the target files you want to modify.</span>
 <span class="nv">ALL_MAKEFILE</span><span class="o">=</span><span class="k">$(</span>find <span class="si">${</span><span class="nv">SRC_DIR</span><span class="si">}</span> -type f -name <span class="si">${</span><span class="nv">SEARCH_NAME</span><span class="si">}</span><span class="k">)</span>
 
 
-<span class="c"># Traverse the target files.</span>
+<span class="c1"># Traverse the target files.</span>
 <span class="k">for</span> FILE in <span class="si">${</span><span class="nv">ALL_MAKEFILE</span><span class="si">}</span>
 <span class="k">do</span>
     handle <span class="si">${</span><span class="nv">FILE</span><span class="si">}</span>
     <span class="k">if</span> <span class="o">[</span> <span class="nv">$?</span> -gt <span class="m">0</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
         <span class="nb">echo</span> <span class="s1">&#39;failed.&#39;</span>
-        <span class="c">#echo &quot;&quot; | awk &#39;{fflush()}&#39;</span>
+        <span class="c1">#echo &quot;&quot; | awk &#39;{fflush()}&#39;</span>
     <span class="k">fi</span>  
 <span class="k">done</span>
 </pre></div>
@@ -155,10 +155,10 @@ sed -e &#39;/help:/ a 要追加的内容&#39;：表示在help:文字后面追加
 
 <h4>3 脚本执行结果</h4>
 <p>如上图所示，脚本不断遍历src目录下的Makefile文件，然后进行处理。</p>
-<p><img alt="脚本执行结果" src="https://o3cex9zsl.qnssl.com/2016/06/handle_makefile_result.png" title="脚本执行结果" /></p>
+<p><img alt="脚本执行结果" src="https://o3cex9zsl.qnssl.com/2016/06/handle_makefile_result.png" title="脚本执行结果"></p>
 <h4>4 脚本管理</h4>
 <p>目前已经把这个脚本放在Github了，地址是<a href="https://github.com/vfhky/shell-tools" title="点击查看">https://github.com/vfhky/shell-tools</a>，以后脚本的更新或者更多好用的脚本也都会加入到这个工程中。</p>
-		    	<div class="donate_div_container">
+</div>		    	<div class="donate_div_container">
 					<div class="donate_div">
 						<p><a href="javascript:void(0)" onclick="donateToggle()" class="donate_word" title="打赏，支持一下">打赏</a></p>
 						<div class="hide_box"></div>
@@ -188,7 +188,7 @@ sed -e &#39;/help:/ a 要追加的内容&#39;：表示在help:文字后面追加
 					</div>
 				</div>
 		    	<div class="tags">
-					<div class="post_tags">
+					<div class="post_tags" itemprop="keywords">
 						Tags: <a href="https://typecodes.com/tag/sed.html">sed</a>,<a href="https://typecodes.com/tag/shell.html">shell</a>,<a href="https://typecodes.com/tag/makefile.html">makefile</a>					</div>
 					<div class="post-share">
 						<ul class="post-shareul clearfix">
@@ -280,7 +280,6 @@ sed -e &#39;/help:/ a 要追加的内容&#39;：表示在help:文字后面追加
 		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
 	</section>
 </div>
-				</div>
 			</div>
 		</div>
 		<!--4. bottom begin-->

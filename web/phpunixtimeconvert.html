@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html dir="ltr" lang="zh-CN" class="no-js">
+<html class="no-js">
 	<head>
-		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
   		<meta name="renderer" content="webkit">
 		<title>PHP中将Unix timestamp时间戳转换成北京时间 &mdash; TypeCodes</title>
 		<meta name="description" content="PHP中将Unix timestamp时间戳转换成北京时间 &mdash; TypeCodes" />
@@ -34,8 +35,7 @@
 			</div>
 		</div>
 		<div class="container">
-			<div class="row">
-		<!--2. left sider begin-->
+			<div class="row">		<!--2. left sider begin-->
 		<div class="col-md-9" id="blog-main" role="main">
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/web/phpunixtimeconvert.html">PHP中将Unix timestamp时间戳转换成北京时间</a></h2>
@@ -49,32 +49,32 @@
 
 <h5>1 推荐的必杀技：修改php配置文件php.ini</h5>
 <p>先查看当前Linux系统的日期与时间（locale time）</p>
-<div class="highlight"><pre>[root@typecodes ~]# date
+<div class="highlight"><pre><span></span>[root@typecodes ~]# date
 Tue Aug 19 21:36:33 CST 2014
 </pre></div>
 
 
 <p>然后修改php.ini文件的第 943 行处的 date.timezone( 设置时区 )</p>
-<div class="highlight"><pre><span class="cp">[</span><span class="nx">root</span><span class="p">@</span><span class="nx">typecodes</span> <span class="err">~</span><span class="cp">]</span><span class="err">#</span> <span class="nx">vi</span> <span class="o">/</span><span class="nx">etc</span><span class="o">/</span><span class="nx">php</span><span class="p">.</span><span class="nx">ini</span>
-<span class="mi">943</span> <span class="cp">[</span><span class="kt">Date</span><span class="cp">]</span>
-<span class="mi">944</span> <span class="p">;</span> <span class="nx">Defines</span> <span class="nx">the</span> <span class="k">default</span> <span class="nx">timezone</span> <span class="nx">used</span> <span class="nx">by</span> <span class="nx">the</span> <span class="nx">date</span> <span class="nx">functions</span>
-<span class="mi">945</span> <span class="p">;</span> <span class="nx">http</span><span class="o">:</span><span class="c1">//www.php.net/manual/en/datetime.configuration.php#ini.date.timezone</span>
-<span class="mi">946</span> <span class="nx">date</span><span class="p">.</span><span class="nx">timezone</span> <span class="o">=</span> <span class="nx">Asia</span><span class="o">/</span><span class="nx">Shanghai</span>
-<span class="err">######</span> <span class="nx">Asia</span><span class="o">/</span><span class="nx">Shanghai</span> <span class="nx">还可以改成</span> <span class="nx">PRC</span><span class="err">、</span><span class="nx">Asia</span><span class="o">/</span><span class="nx">Chongqing</span><span class="err">、</span><span class="nx">Asia</span><span class="o">/</span><span class="nx">Taipei等中国时区</span>
+<div class="highlight"><pre><span></span>[root@typecodes ~]# vi /etc/php.ini
+943 [Date]
+944 ; Defines the default timezone used by the date functions
+945 ; http://www.php.net/manual/en/datetime.configuration.php#ini.date.timezone
+946 date.timezone = Asia/Shanghai
+###### Asia/Shanghai 还可以改成 PRC、Asia/Chongqing、Asia/Taipei等中国时区
 </pre></div>
 
 
 <h5>2 使用PHP代码的解决方法</h5>
 <p>如果主机不能修改 php.ini 文件，那么只能使用临时办法解决了：先把 Unix timestamp 的值加 8 个小时（相当于 8 * 3600 = 28800 秒），再使用 date 函数格式化输出。例如，将上面的php代码<code>date('Y-m-d H:i', $older_date)</code>改成<code>date('Y-m-d H:i', $older_date+28800)</code>即可转换成标准的北京时间。</p>
 <p>评论中 @mumuno 提供的PHP方法也是行的：</p>
-<div class="highlight"><pre><span class="nt">date_default_timezone_set</span><span class="o">(</span><span class="s2">&quot;PRC&quot;</span><span class="o">);</span>
+<div class="highlight"><pre><span></span><span class="nt">date_default_timezone_set</span><span class="o">(</span><span class="s2">&quot;PRC&quot;</span><span class="o">);</span>
 <span class="nt">date</span><span class="o">(</span><span class="s2">&quot;Y-m-d H:i&quot;</span><span class="o">);</span>
 </pre></div>
 
 
 <h5>3 计算机时间概要</h5>
 <p>以下内容整理自互联网和 <a href="http://zoroeye.iteye.com/blog/2008381" title="计算机世界中的时间概念">计算机世界中的时间概念</a> 一文。</p>
-<div class="highlight"><pre>格林威治时间（Greenwich Mean Time, GMT）。
+<div class="highlight"><pre><span></span>格林威治时间（Greenwich Mean Time, GMT）。
 
 通用协调时间（Universal Time Coordinated, UTC）。UTC的表示方式为：年（y）、月（m）、日（d）、时（h）、分（min）、秒（s），均用数字表示。若以「世界标准时间」的角度来说，UTC比GMT来得更加精准： *UTC = GMT +/- 0.9* 。
 
@@ -82,7 +82,7 @@ Tue Aug 19 21:36:33 CST 2014
 
 Unix时间戳(Unix timestamp)，又称 Unix时间(Unix time) 或 POSIX时间(POSIX time) ，它从格林威治时间1970年01月01日00时00分00秒起至现在的总秒数。
 </pre></div>
-		    	<div class="donate_div_container">
+</div>		    	<div class="donate_div_container">
 					<div class="donate_div">
 						<p><a href="javascript:void(0)" onclick="donateToggle()" class="donate_word" title="打赏，支持一下">打赏</a></p>
 						<div class="hide_box"></div>
@@ -112,7 +112,7 @@ Unix时间戳(Unix timestamp)，又称 Unix时间(Unix time) 或 POSIX时间(POS
 					</div>
 				</div>
 		    	<div class="tags">
-					<div class="post_tags">
+					<div class="post_tags" itemprop="keywords">
 						Tags: <a href="https://typecodes.com/tag/unix-timestampzhuan-huan.html">unix timestamp转换</a>					</div>
 					<div class="post-share">
 						<ul class="post-shareul clearfix">
@@ -204,7 +204,6 @@ Unix时间戳(Unix timestamp)，又称 Unix时间(Unix time) 或 POSIX时间(POS
 		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
 	</section>
 </div>
-				</div>
 			</div>
 		</div>
 		<!--4. bottom begin-->

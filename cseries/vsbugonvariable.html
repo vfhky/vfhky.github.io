@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html dir="ltr" lang="zh-CN" class="no-js">
+<html class="no-js">
 	<head>
-		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
   		<meta name="renderer" content="webkit">
 		<title>小心visual studio的“BUG”：变量的声明和使用 &mdash; TypeCodes</title>
 		<meta name="description" content="小心visual studio的“BUG”：变量的声明和使用 &mdash; TypeCodes" />
@@ -34,8 +35,7 @@
 			</div>
 		</div>
 		<div class="container">
-			<div class="row">
-		<!--2. left sider begin-->
+			<div class="row">		<!--2. left sider begin-->
 		<div class="col-md-9" id="blog-main" role="main">
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/cseries/vsbugonvariable.html">小心visual studio的“BUG”：变量的声明和使用</a></h2>
@@ -73,7 +73,7 @@
 27
 28
 29
-30</pre></div></td><td class="code"><div class="highlight"><pre><span class="cp">#include &lt;stdio.h&gt;</span>
+30</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
 <span class="kt">void</span> <span class="nf">fun</span><span class="p">(</span><span class="kt">int</span> <span class="o">*</span><span class="n">a</span><span class="p">,</span> <span class="kt">int</span> <span class="o">*</span><span class="n">n</span><span class="p">)</span>
 <span class="p">{</span>
    <span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">2000</span><span class="p">,</span> <span class="n">sum</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
@@ -109,28 +109,28 @@
 <p>然后ctrl+F5执行，结果很意外的报错了：</p>
 
 
-<div class="highlight"><pre><span class="nt">1</span><span class="o">&gt;</span><span class="nt">------</span> <span class="err">已启动生成</span><span class="o">:</span> <span class="err">项目</span><span class="o">:</span> <span class="nt">test</span><span class="o">,</span> <span class="err">配置</span><span class="o">:</span> <span class="nt">Debug</span> <span class="nt">Win32</span> <span class="nt">------</span>
-<span class="nt">1</span><span class="o">&gt;</span><span class="err">生成启动时间为</span> <span class="nt">2014</span><span class="o">/</span><span class="nt">3</span><span class="o">/</span><span class="nt">18</span> <span class="nt">16</span><span class="nd">:30:15</span><span class="err">。</span>
+<div class="highlight"><pre><span></span><span class="nt">1</span><span class="o">&gt;</span><span class="nt">------</span> <span class="err">已启动生成</span><span class="o">:</span> <span class="err">项目</span><span class="o">:</span> <span class="nt">test</span><span class="o">,</span> <span class="err">配置</span><span class="o">:</span> <span class="nt">Debug</span> <span class="nt">Win32</span> <span class="nt">------</span>
+<span class="nt">1</span><span class="o">&gt;</span><span class="err">生成启动时间为</span> <span class="nt">2014</span><span class="o">/</span><span class="nt">3</span><span class="o">/</span><span class="nt">18</span> <span class="nt">16</span><span class="p">:</span><span class="nd">30</span><span class="p">:</span><span class="nd">15</span><span class="err">。</span>
 <span class="nt">1</span><span class="o">&gt;</span><span class="nt">InitializeBuildStatus</span><span class="o">:</span>
-<span class="nt">1</span><span class="o">&gt;</span>  <span class="err">正在创建“</span><span class="nt">Debug</span><span class="err">\</span><span class="nt">test</span><span class="nc">.unsuccessfulbuild</span><span class="err">”，因为已指定“</span><span class="nt">AlwaysCreate</span><span class="err">”。</span>
+<span class="nt">1</span><span class="o">&gt;</span>  <span class="err">正在创建“</span><span class="nt">Debug</span><span class="err">\</span><span class="nt">test</span><span class="p">.</span><span class="nc">unsuccessfulbuild</span><span class="err">”，因为已指定“</span><span class="nt">AlwaysCreate</span><span class="err">”。</span>
 <span class="nt">1</span><span class="o">&gt;</span><span class="nt">ClCompile</span><span class="o">:</span>
-<span class="nt">1</span><span class="o">&gt;</span>  <span class="nt">1</span><span class="nc">.c</span>
-<span class="nt">1</span><span class="o">&gt;</span><span class="nt">g</span><span class="o">:</span><span class="err">\</span><span class="nt">vsprj</span><span class="err">\</span><span class="nt">test</span><span class="err">\</span><span class="nt">test</span><span class="err">\</span><span class="nt">1</span><span class="nc">.c</span><span class="o">(</span><span class="nt">23</span><span class="o">):</span> <span class="nt">error</span> <span class="nt">C2143</span><span class="o">:</span> <span class="err">语法错误</span> <span class="o">:</span> <span class="err">缺少“</span><span class="o">;</span><span class="err">”</span><span class="o">(</span><span class="err">在“类型”的前面</span><span class="o">)</span>
-<span class="nt">1</span><span class="o">&gt;</span><span class="nt">g</span><span class="o">:</span><span class="err">\</span><span class="nt">vsprj</span><span class="err">\</span><span class="nt">test</span><span class="err">\</span><span class="nt">test</span><span class="err">\</span><span class="nt">1</span><span class="nc">.c</span><span class="o">(</span><span class="nt">24</span><span class="o">):</span> <span class="nt">error</span> <span class="nt">C2065</span><span class="o">:</span> <span class="err">“</span><span class="nt">pt</span><span class="err">”</span><span class="o">:</span> <span class="err">未声明的标识符</span>
-<span class="nt">1</span><span class="o">&gt;</span><span class="nt">g</span><span class="o">:</span><span class="err">\</span><span class="nt">vsprj</span><span class="err">\</span><span class="nt">test</span><span class="err">\</span><span class="nt">test</span><span class="err">\</span><span class="nt">1</span><span class="nc">.c</span><span class="o">(</span><span class="nt">24</span><span class="o">):</span> <span class="nt">warning</span> <span class="nt">C4047</span><span class="o">:</span> <span class="err">“</span><span class="o">&lt;</span><span class="err">”</span><span class="o">:</span><span class="err">“</span><span class="nt">int</span><span class="err">”与“</span><span class="nt">int</span> <span class="o">*</span><span class="err">”的间接级别不同</span>
-<span class="nt">1</span><span class="o">&gt;</span><span class="nt">g</span><span class="o">:</span><span class="err">\</span><span class="nt">vsprj</span><span class="err">\</span><span class="nt">test</span><span class="err">\</span><span class="nt">test</span><span class="err">\</span><span class="nt">1</span><span class="nc">.c</span><span class="o">(</span><span class="nt">24</span><span class="o">):</span> <span class="nt">error</span> <span class="nt">C2065</span><span class="o">:</span> <span class="err">“</span><span class="nt">pt</span><span class="err">”</span><span class="o">:</span> <span class="err">未声明的标识符</span>
-<span class="nt">1</span><span class="o">&gt;</span><span class="nt">g</span><span class="o">:</span><span class="err">\</span><span class="nt">vsprj</span><span class="err">\</span><span class="nt">test</span><span class="err">\</span><span class="nt">test</span><span class="err">\</span><span class="nt">1</span><span class="nc">.c</span><span class="o">(</span><span class="nt">26</span><span class="o">):</span> <span class="nt">error</span> <span class="nt">C2065</span><span class="o">:</span> <span class="err">“</span><span class="nt">pt</span><span class="err">”</span><span class="o">:</span> <span class="err">未声明的标识符</span>
-<span class="nt">1</span><span class="o">&gt;</span><span class="nt">g</span><span class="o">:</span><span class="err">\</span><span class="nt">vsprj</span><span class="err">\</span><span class="nt">test</span><span class="err">\</span><span class="nt">test</span><span class="err">\</span><span class="nt">1</span><span class="nc">.c</span><span class="o">(</span><span class="nt">26</span><span class="o">):</span> <span class="nt">error</span> <span class="nt">C2100</span><span class="o">:</span> <span class="err">非法的间接寻址</span>
+<span class="nt">1</span><span class="o">&gt;</span>  <span class="nt">1</span><span class="p">.</span><span class="nc">c</span>
+<span class="nt">1</span><span class="o">&gt;</span><span class="nt">g</span><span class="o">:</span><span class="err">\</span><span class="nt">vsprj</span><span class="err">\</span><span class="nt">test</span><span class="err">\</span><span class="nt">test</span><span class="err">\</span><span class="nt">1</span><span class="p">.</span><span class="nc">c</span><span class="o">(</span><span class="nt">23</span><span class="o">):</span> <span class="nt">error</span> <span class="nt">C2143</span><span class="o">:</span> <span class="err">语法错误</span> <span class="o">:</span> <span class="err">缺少“</span><span class="o">;</span><span class="err">”</span><span class="o">(</span><span class="err">在“类型”的前面</span><span class="o">)</span>
+<span class="nt">1</span><span class="o">&gt;</span><span class="nt">g</span><span class="o">:</span><span class="err">\</span><span class="nt">vsprj</span><span class="err">\</span><span class="nt">test</span><span class="err">\</span><span class="nt">test</span><span class="err">\</span><span class="nt">1</span><span class="p">.</span><span class="nc">c</span><span class="o">(</span><span class="nt">24</span><span class="o">):</span> <span class="nt">error</span> <span class="nt">C2065</span><span class="o">:</span> <span class="err">“</span><span class="nt">pt</span><span class="err">”</span><span class="o">:</span> <span class="err">未声明的标识符</span>
+<span class="nt">1</span><span class="o">&gt;</span><span class="nt">g</span><span class="o">:</span><span class="err">\</span><span class="nt">vsprj</span><span class="err">\</span><span class="nt">test</span><span class="err">\</span><span class="nt">test</span><span class="err">\</span><span class="nt">1</span><span class="p">.</span><span class="nc">c</span><span class="o">(</span><span class="nt">24</span><span class="o">):</span> <span class="nt">warning</span> <span class="nt">C4047</span><span class="o">:</span> <span class="err">“</span><span class="o">&lt;</span><span class="err">”</span><span class="o">:</span><span class="err">“</span><span class="nt">int</span><span class="err">”与“</span><span class="nt">int</span> <span class="o">*</span><span class="err">”的间接级别不同</span>
+<span class="nt">1</span><span class="o">&gt;</span><span class="nt">g</span><span class="o">:</span><span class="err">\</span><span class="nt">vsprj</span><span class="err">\</span><span class="nt">test</span><span class="err">\</span><span class="nt">test</span><span class="err">\</span><span class="nt">1</span><span class="p">.</span><span class="nc">c</span><span class="o">(</span><span class="nt">24</span><span class="o">):</span> <span class="nt">error</span> <span class="nt">C2065</span><span class="o">:</span> <span class="err">“</span><span class="nt">pt</span><span class="err">”</span><span class="o">:</span> <span class="err">未声明的标识符</span>
+<span class="nt">1</span><span class="o">&gt;</span><span class="nt">g</span><span class="o">:</span><span class="err">\</span><span class="nt">vsprj</span><span class="err">\</span><span class="nt">test</span><span class="err">\</span><span class="nt">test</span><span class="err">\</span><span class="nt">1</span><span class="p">.</span><span class="nc">c</span><span class="o">(</span><span class="nt">26</span><span class="o">):</span> <span class="nt">error</span> <span class="nt">C2065</span><span class="o">:</span> <span class="err">“</span><span class="nt">pt</span><span class="err">”</span><span class="o">:</span> <span class="err">未声明的标识符</span>
+<span class="nt">1</span><span class="o">&gt;</span><span class="nt">g</span><span class="o">:</span><span class="err">\</span><span class="nt">vsprj</span><span class="err">\</span><span class="nt">test</span><span class="err">\</span><span class="nt">test</span><span class="err">\</span><span class="nt">1</span><span class="p">.</span><span class="nc">c</span><span class="o">(</span><span class="nt">26</span><span class="o">):</span> <span class="nt">error</span> <span class="nt">C2100</span><span class="o">:</span> <span class="err">非法的间接寻址</span>
 <span class="nt">1</span><span class="o">&gt;</span>
 <span class="nt">1</span><span class="o">&gt;</span><span class="err">生成失败。</span>
 <span class="nt">1</span><span class="o">&gt;</span>
-<span class="nt">1</span><span class="o">&gt;</span><span class="err">已用时间</span> <span class="nt">00</span><span class="nd">:00:00</span><span class="nc">.65</span>
+<span class="nt">1</span><span class="o">&gt;</span><span class="err">已用时间</span> <span class="nt">00</span><span class="p">:</span><span class="nd">00</span><span class="p">:</span><span class="nd">00</span><span class="p">.</span><span class="nc">65</span>
 <span class="o">==========</span> <span class="err">生成</span><span class="o">:</span> <span class="err">成功</span> <span class="nt">0</span> <span class="err">个，失败</span> <span class="nt">1</span> <span class="err">个，最新</span> <span class="nt">0</span> <span class="err">个，跳过</span> <span class="nt">0</span> <span class="err">个</span> <span class="o">==========</span>
 </pre></div>
 
 
 <p>无奈，只能根据上面的错误信息一个一个排查了。但很显然，第23行的int *pt = a;前面不缺分号，另外pt也声明为指针了，所以整个程序应该是没错的。检查了好几遍还是没看出问题，估计是vs编译出错了，于是决定用cygwin编译器重新编译一下。win+r打开cmd命令窗口，输入编译命令<code>gcc G:\VSprj\test\test\1.c -o 1</code>，然后直接执行1.exe。见证奇迹的时刻，竟然输出了数据。</p>
-<p><img alt="cmd命令窗口gcc编译" src="https://o3cex9zsl.qnssl.com/2014/03/gcc_compile.png" /></p>
+<p><img alt="cmd命令窗口gcc编译" src="https://o3cex9zsl.qnssl.com/2014/03/gcc_compile.png"></p>
 <p>回头想想，记得以前网上看过一个帖子，说是visual c++和visual studio对变量的声明要求特别严格，局部/全局变量一定要先声明在函数的最前面。于是把main函数中的指针pt声明调整到在fun函数的前面，再编译就没报错了。</p>
 <table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
  2
@@ -170,11 +170,11 @@
 36
 37
 38
-39</pre></div></td><td class="code"><div class="highlight"><pre><span class="cm">/**</span>
+39</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="cm">/**</span>
 <span class="cm"> * 使用指针和数组求2000到2500之内能被7或者17或者27整除，但是不能同时被7和17整除也不能同时被17和27整除的整数</span>
 <span class="cm"> * @author: vfhky 20140318 16:52</span>
 <span class="cm"> */</span>
-<span class="cp">#include &lt;stdio.h&gt;</span>
+<span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
 <span class="kt">void</span> <span class="nf">fun</span><span class="p">(</span><span class="kt">int</span> <span class="o">*</span><span class="n">a</span><span class="p">,</span> <span class="kt">int</span> <span class="o">*</span><span class="n">n</span><span class="p">)</span>
 <span class="p">{</span>
    <span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">2000</span><span class="p">,</span> <span class="n">sum</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
@@ -213,7 +213,7 @@
 </td></tr></table>
 
 <p>虽然说vs对变量的使用比较“苛刻”，造成类似上面的“bug”，提供的错误信息“误导”了开发人员。但是细想之下，又觉得vs这种做法很“规范”：任何变量在使用之前必须先声明！而为了增强程序的可读性，也应该把声明语句尽量放在最前面！</p>
-		    	<div class="donate_div_container">
+</div>		    	<div class="donate_div_container">
 					<div class="donate_div">
 						<p><a href="javascript:void(0)" onclick="donateToggle()" class="donate_word" title="打赏，支持一下">打赏</a></p>
 						<div class="hide_box"></div>
@@ -243,7 +243,7 @@
 					</div>
 				</div>
 		    	<div class="tags">
-					<div class="post_tags">
+					<div class="post_tags" itemprop="keywords">
 						Tags: <a href="https://typecodes.com/tag/visual-studio.html">visual studio</a>					</div>
 					<div class="post-share">
 						<ul class="post-shareul clearfix">
@@ -335,7 +335,6 @@
 		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
 	</section>
 </div>
-				</div>
 			</div>
 		</div>
 		<!--4. bottom begin-->

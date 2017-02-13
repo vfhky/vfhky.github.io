@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html dir="ltr" lang="zh-CN" class="no-js">
+<html class="no-js">
 	<head>
-		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
   		<meta name="renderer" content="webkit">
 		<title>博客优化第二波(一)：同时使用谷歌自定义搜索和百度站内搜索 &mdash; TypeCodes</title>
 		<meta name="description" content="博客优化第二波(一)：同时使用谷歌自定义搜索和百度站内搜索 &mdash; TypeCodes" />
@@ -34,8 +35,7 @@
 			</div>
 		</div>
 		<div class="container">
-			<div class="row">
-		<!--2. left sider begin-->
+			<div class="row">		<!--2. left sider begin-->
 		<div class="col-md-9" id="blog-main" role="main">
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/web/googlecustbaidusearch.html">博客优化第二波(一)：同时使用谷歌自定义搜索和百度站内搜索</a></h2>
@@ -47,11 +47,11 @@
 
 
 <p>尝试同时使用谷歌自定义搜索和百度站内搜索。概念如下：博客优先使用谷歌搜索（考虑到一些VPN用户或者说不定哪天TC不玩河蟹了），若5秒内谷歌没自动显示出结果，说明仍被Qiang中；这时，用户只需要在百度的搜索框中输入要搜索的内容，点击搜索按钮之后就可以使用百度进行站内搜索了。效果如下面三幅图片所示，当然大家可以在博客的右上角亲自动手试一试！</p>
-<p><img alt="敢进入搜索页面" src="https://o3cex9zsl.qnssl.com/2012/12/11.png" title="刚进入搜索页面" /></p>
-<p><img alt="5秒内谷歌没显示搜索结果" src="https://o3cex9zsl.qnssl.com/2012/12/21.png" title="5秒内谷歌没显示搜索结果" /></p>
-<p><img alt="谷歌搜索正常显示结果" src="https://o3cex9zsl.qnssl.com/2012/12/31.png" title="谷歌搜索正常显示结果" /></p>
+<p><img alt="敢进入搜索页面" src="https://o3cex9zsl.qnssl.com/2012/12/11.png" title="刚进入搜索页面"></p>
+<p><img alt="5秒内谷歌没显示搜索结果" src="https://o3cex9zsl.qnssl.com/2012/12/21.png" title="5秒内谷歌没显示搜索结果"></p>
+<p><img alt="谷歌搜索正常显示结果" src="https://o3cex9zsl.qnssl.com/2012/12/31.png" title="谷歌搜索正常显示结果"></p>
 <p>不多说了，代码如下（为了方便理解，大家可以结合博客中的搜索页面进行比较查看）</p>
-<div class="highlight"><pre><span class="c">&lt;!--开始调用谷歌站内搜索--&gt;</span>
+<div class="highlight"><pre><span></span><span class="c">&lt;!--开始调用谷歌站内搜索--&gt;</span>
 <span class="nt">&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;&lt;br</span> <span class="nt">/&gt;&lt;/p&gt;</span>
 <span class="nt">&lt;font</span> <span class="na">color=</span><span class="s">&quot;#FF0000&quot;</span> <span class="na">face=</span><span class="s">&quot;微软雅黑&quot;</span> <span class="na">size=</span><span class="s">&quot;4px&quot;</span><span class="nt">&gt;</span>搜索<span class="nt">&lt;/font&gt;&lt;font</span> <span class="na">color=</span><span class="s">&quot;#0000FF&quot;</span> <span class="na">face=</span><span class="s">&quot;微软雅黑&quot;</span><span class="nt">&gt;</span>“<span class="cp">&lt;?php</span> <span class="nx">the_search_query</span><span class="p">();</span> <span class="cp">?&gt;</span>”<span class="nt">&lt;/font&gt;</span>的结果
 <span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">&quot;cse&quot;</span> <span class="na">style=</span><span class="s">&quot;width: 100%;&quot;</span><span class="nt">&gt;</span><span class="c">&lt;!--开始调用百度站内搜索--&gt;</span>
@@ -79,7 +79,7 @@
 
 <h5>下面这段JS代码是从谷歌自定义搜索中复制的，它的作用就是显示搜索结果。</h5>
 <p>大家可以把它放在自己的搜索页面的最后面，以便加快载入速度。例如，黄克业的博客中的站内搜索search.php就把它放在 &lt;?php get_footer(); ?&gt; 的后面。search.php的下载地址见文章的末尾处。</p>
-<div class="highlight"><pre><span class="nt">&lt;script</span> <span class="na">src=</span><span class="s">&quot;http://www.google.com.hk/jsapi&quot;</span> <span class="na">type=</span><span class="s">&quot;text/javascript&quot;</span><span class="nt">&gt;&lt;/script&gt;</span>
+<div class="highlight"><pre><span></span><span class="nt">&lt;script</span> <span class="na">src=</span><span class="s">&quot;http://www.google.com.hk/jsapi&quot;</span> <span class="na">type=</span><span class="s">&quot;text/javascript&quot;</span><span class="nt">&gt;&lt;/script&gt;</span>
 <span class="nt">&lt;script</span> <span class="na">type=</span><span class="s">&quot;text/javascript&quot;</span><span class="nt">&gt;</span> 
   google.load(&#39;search&#39;, &#39;1&#39;, {language : &#39;zh-CN&#39;, style : google.loader.themes.BUBBLEGUM});
   google.setOnLoadCallback(function() {
@@ -267,7 +267,7 @@
 
 <h5>search.php的下载地址:</h5>
 <p>http://pan.baidu.com/share/link?shareid=78704&amp;uk=1879910561</p>
-		    	<div class="donate_div_container">
+</div>		    	<div class="donate_div_container">
 					<div class="donate_div">
 						<p><a href="javascript:void(0)" onclick="donateToggle()" class="donate_word" title="打赏，支持一下">打赏</a></p>
 						<div class="hide_box"></div>
@@ -297,7 +297,7 @@
 					</div>
 				</div>
 		    	<div class="tags">
-					<div class="post_tags">
+					<div class="post_tags" itemprop="keywords">
 						Tags: <a href="https://typecodes.com/tag/gu-ge-zi-ding-yi-sou-suo.html">谷歌自定义搜索</a>,<a href="https://typecodes.com/tag/bai-du-zhan-nei-sou-suo.html">百度站内搜索</a>					</div>
 					<div class="post-share">
 						<ul class="post-shareul clearfix">
@@ -389,7 +389,6 @@
 		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
 	</section>
 </div>
-				</div>
 			</div>
 		</div>
 		<!--4. bottom begin-->

@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html dir="ltr" lang="zh-CN" class="no-js">
+<html class="no-js">
 	<head>
-		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
   		<meta name="renderer" content="webkit">
 		<title>TypeCodes</title>
 		<meta name="description" content="TypeCodes" />
@@ -34,8 +35,7 @@
 			</div>
 		</div>
 		<div class="container">
-			<div class="row">
-		<!--2. left sider begin-->
+			<div class="row">		<!--2. left sider begin-->
 		<div class="col-md-9" id="blog-main" role="main">
 		  	<!--article recycle-->
 			<article class="post">
@@ -47,7 +47,7 @@
 	<p>前面几篇文章介绍了阿里云的CentOS 6.5系统中如何搭建和配置 LNMP 环境，这篇文章主要说说 web 站点的安全配置。</p>
 <h5>1 修改 CentOS 系统的主机名(关系不大, 看个人喜好)</h5>
 <p>默认同开通的阿里云 Linux 主机都是以 AY+随机数 命名的，修改方法如下：</p>
-<div class="highlight"><pre>[root@typecodes ~]# vi /etc/sysconfig/network
+<div class="highlight"><pre><span></span>[root@typecodes ~]# vi /etc/sysconfig/network
 ###### 修改主机名HOSTNAME, 例如 HOSTNAME=typecodes , 然后:wq保存退出
 HOSTNAME=typecodes
 ###### 接着执行 hostname 命令
@@ -58,7 +58,7 @@ HOSTNAME=typecodes
 
 
 	<p class="more"><a href="https://typecodes.com/web/aliyuncentoslnmpwebsafeconf.html" title="阿里云CentOS主机 LNMP 环境之web安全篇">- 阅读剩余部分 -</a></p>
-			</article>
+</div>			</article>
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/web/aliyuncentoslnmpxcacheconf.html">阿里云CentOS主机 LNMP 环境配置之Php篇——安装XCache加速器</a></h2>
 <ul class="post-meta">
@@ -67,7 +67,7 @@ HOSTNAME=typecodes
 <div class="post-content fmt">
 	<p>在完成了上面两篇关于阿里云CentOS 6.5主机中 Nginx 和 Mysql 的配置的经验分享后，这篇文章说说如何安装 php 的“加速器”——<a href="http://xcache.lighttpd.net/wiki/ReleaseArchive" title="XCache稳定版官方介绍">XCache</a>。相信大家听说过 php 的几款缓存加速器：APC、xcache、eaccelerator等（对于小站咱就不要使用 Memcached 了）。</p>
 <h5>1 官网下载 XCache 3.1.0 源码(支持php5.1 ~ 5.4)</h5>
-<div class="highlight"><pre>###### 下载XCache 3.1.0稳定版
+<div class="highlight"><pre><span></span>###### 下载XCache 3.1.0稳定版
 [root@typecodes ~]# wget http://xcache.lighttpd.net/pub/Releases/3.1.0/xcache-3.1.0.tar.gz
 ###### 解压到当前目录
 [root@typecodes ~]# tar -zxvf xcache-3.1.0.tar.gz
@@ -87,7 +87,7 @@ Zend Extension Api No:  20090626
 
 
 	<p class="more"><a href="https://typecodes.com/web/aliyuncentoslnmpxcacheconf.html" title="阿里云CentOS主机 LNMP 环境配置之Php篇——安装XCache加速器">- 阅读剩余部分 -</a></p>
-			</article>
+</div>			</article>
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/web/aliyuncentoslnmpnginxconf.html">阿里云CentOS主机 LNMP 环境配置之Nginx篇</a></h2>
 <ul class="post-meta">
@@ -99,7 +99,7 @@ Zend Extension Api No:  20090626
 <p>在 nginx.conf 文件中，会看到 nginx 默认的错误日志保存文件：error.log。它记录了服务器端由nginx处理的错误信息，例如永久跳转301、页面不存在404错误、服务器错误500错误等等。</p>
 
 	<p class="more"><a href="https://typecodes.com/web/aliyuncentoslnmpnginxconf.html" title="阿里云CentOS主机 LNMP 环境配置之Nginx篇">- 阅读剩余部分 -</a></p>
-			</article>
+</div>			</article>
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/web/aliyuncentoslnmpmysqlconf.html">阿里云CentOS主机 LNMP 环境配置之Mysql篇</a></h2>
 <ul class="post-meta">
@@ -110,7 +110,7 @@ Zend Extension Api No:  20090626
 <h5>1 掌握 Linux(包括CentOS) 系统下基本的mysql操作命令</h5>
 
 	<p class="more"><a href="https://typecodes.com/web/aliyuncentoslnmpmysqlconf.html" title="阿里云CentOS主机 LNMP 环境配置之Mysql篇">- 阅读剩余部分 -</a></p>
-			</article>
+</div>			</article>
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/web/aliyuncentos6creatlnmp.html">阿里云CentOS 6.5搭建LNMP环境（非一键脚本）</a></h2>
 <ul class="post-meta">
@@ -119,14 +119,14 @@ Zend Extension Api No:  20090626
 <div class="post-content fmt">
 	<p>个人不太喜欢网上的“一键脚本”，原因很简单：我的地盘我做主。下面是自己在5月初购买aliyun初级ECS后，8月初在CentOS 6.5上搭建 LNMP 环境的心得。大鸟请自动飘过，如若错误，请大家指正！</p>
 <h5>1 先脑补下Linux系统</h5>
-<div class="highlight"><pre>Linux系统分支众多，其发行版本可以根据打包方式分为两类：一类是基于Dpkg的Debian系，一类是基于RPM的Red Hat系。前者由社区组织维护发行，包括Debian、Ubuntu等；后者一般是商业公司维护发布，包括CentOS、Fedora、RHEL等。在稳定性方面，红帽RHEL和CentOS性能相对较好。
+<div class="highlight"><pre><span></span>Linux系统分支众多，其发行版本可以根据打包方式分为两类：一类是基于Dpkg的Debian系，一类是基于RPM的Red Hat系。前者由社区组织维护发行，包括Debian、Ubuntu等；后者一般是商业公司维护发布，包括CentOS、Fedora、RHEL等。在稳定性方面，红帽RHEL和CentOS性能相对较好。
 </pre></div>
 
 
 <p>很牛逼的样子？NO，请叫我 <a href="http://zh.wikipedia.org/wiki/Linux%E5%8F%91%E8%A1%8C%E7%89%88%E5%88%97%E8%A1%A8" title="Linux发行版列表——wiki百科">wiki 搬运工</a>。那么如何查看自己的主机类型呢？</p>
 
 	<p class="more"><a href="https://typecodes.com/web/aliyuncentos6creatlnmp.html" title="阿里云CentOS 6.5搭建LNMP环境（非一键脚本）">- 阅读剩余部分 -</a></p>
-			</article>
+</div>			</article>
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/cseries/cfree5ldexedwarferr.html">解决C-FREE 5编译出现“ld.exe: Dwarf Error: found dwarf version '0'”的问题</a></h2>
 <ul class="post-meta">
@@ -135,10 +135,10 @@ Zend Extension Api No:  20090626
 <div class="post-content fmt">
 	<h5>1问题描述</h5>
 <p>之前自己在win7 64bit的机器上，安装了MinGW编译器，GCC版本是4.8.1，安装目录是 C:\MinGW ，同时安装了C-FREE 5这款C/C++集成开发环境到 D:\C-Free 5\ 目录。用c-free编译程序的时候总是报：C-FREE~1\mingw\bin\ld.exe: Dwarf Error: found dwarf version '0', this reader only handles version 2 and 3 information。如下图所示：</p>
-<p><img alt="C-FREE 5编译出现“ld.exe: Dwarf Error: found dwarf version '0'”" src="https://o3cex9zsl.qnssl.com/2014/08/cfree5ldexedwarferr.png" title="C-FREE 5编译出现“ld.exe: Dwarf Error: found dwarf version '0'”" /></p>
+<p><img alt="C-FREE 5编译出现“ld.exe: Dwarf Error: found dwarf version '0'”" src="https://o3cex9zsl.qnssl.com/2014/08/cfree5ldexedwarferr.png" title="C-FREE 5编译出现“ld.exe: Dwarf Error: found dwarf version '0'”"></p>
 
 	<p class="more"><a href="https://typecodes.com/cseries/cfree5ldexedwarferr.html" title="解决C-FREE 5编译出现“ld.exe: Dwarf Error: found dwarf version '0'”的问题">- 阅读剩余部分 -</a></p>
-			</article>
+</div>			</article>
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/mix/eventualwptotypecho.html">终于从WordPress转向Typecho了</a></h2>
 <ul class="post-meta">
@@ -147,10 +147,10 @@ Zend Extension Api No:  20090626
 <div class="post-content fmt">
 	<p>4月底，博客的虚拟主机到期。因为不想再用绑定几百个站点的虚拟主机了，所以决定买个vps或者云主机。在比较了几个vps和云主机后，发现阿里的ECS相对来说价格还比较合适，稳定性不错。于是选了个最低配置的CentOS主机，期限为一年。</p>
 <p>买完后，由于没时间去备案，所以5，6，7月份博客都处于无法访问状态。7月底下决心准备把博客重新捡起来，顺带完成去年年底就准备的工作——<a href="https://typecodes.com/mix/wptoconcisetypecho.html" title="简洁的哲学：从华丽的WordPress转Typecho">从wordpress转向typecho</a>。</p>
-<p><img alt="终于从WordPress转向Typecho了" src="https://o3cex9zsl.qnssl.com/2013/10/typecho.png" title="终于从WordPress转向Typecho了" /></p>
+<p><img alt="终于从WordPress转向Typecho了" src="https://o3cex9zsl.qnssl.com/2013/10/typecho.png" title="终于从WordPress转向Typecho了"></p>
 
 	<p class="more"><a href="https://typecodes.com/mix/eventualwptotypecho.html" title="终于从WordPress转向Typecho了">- 阅读剩余部分 -</a></p>
-			</article>
+</div>			</article>
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/cseries/vsbugonvariable.html">小心visual studio的“BUG”：变量的声明和使用</a></h2>
 <ul class="post-meta">
@@ -187,7 +187,7 @@ Zend Extension Api No:  20090626
 27
 28
 29
-30</pre></div></td><td class="code"><div class="highlight"><pre><span class="cp">#include &lt;stdio.h&gt;</span>
+30</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
 <span class="kt">void</span> <span class="nf">fun</span><span class="p">(</span><span class="kt">int</span> <span class="o">*</span><span class="n">a</span><span class="p">,</span> <span class="kt">int</span> <span class="o">*</span><span class="n">n</span><span class="p">)</span>
 <span class="p">{</span>
    <span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">2000</span><span class="p">,</span> <span class="n">sum</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
@@ -223,17 +223,26 @@ Zend Extension Api No:  20090626
 <p>然后ctrl+F5执行，结果很意外的报错了：</p>
 
 	<p class="more"><a href="https://typecodes.com/cseries/vsbugonvariable.html" title="小心visual studio的“BUG”：变量的声明和使用">- 阅读剩余部分 -</a></p>
-			</article>
+</div>			</article>
 		  	<!--page navigation-->
 <ol class="page-navigator">
-<li class="prev"><a href="https://typecodes.com/index11.html">&laquo; 前一页</a></li><li><a href="https://typecodes.com/index.html">1</a>
-       <li><a href="https://typecodes.com/index2.html">2</a>
-       		</li><li><span>...</span></li><li><a href="https://typecodes.com/index10.html">10</a>
-       		</li><li><a href="https://typecodes.com/index11.html">11</a>
-       		</li><li class="current"><a href="https://typecodes.com/index12.html">12</a>
-       		</li><li><a href="https://typecodes.com/index13.html">13</a>
-       		</li><li><span>...</span></li><li><a href="https://typecodes.com/index27.html">27</a>
-       		</li><li><a href="https://typecodes.com/index28.html">28</a>
+<li class="prev"><a href="https://typecodes.com/index11.html">&laquo; 前一页</a></li><li>
+       			<a href="https://typecodes.com/index1.html">1</a>
+       		</li>
+       <li>
+       			<a href="https://typecodes.com/index2.html">2</a>
+       		</li><li><span>...</span></li><li>
+       			<a href="https://typecodes.com/index10.html">10</a>
+       		</li><li>
+       			<a href="https://typecodes.com/index11.html">11</a>
+       		</li><li class="current">
+       			<a href="https://typecodes.com/index.html">12</a>
+       		</li><li>
+       			<a href="https://typecodes.com/index13.html">13</a>
+       		</li><li><span>...</span></li><li>
+       			<a href="https://typecodes.com/index27.html">27</a>
+       		</li><li>
+       			<a href="https://typecodes.com/index28.html">28</a>
        		</li><li class="next">
        		<a href="https://typecodes.com/index13.html">后一页 &raquo;</a>
        </li></ol>		</div>
@@ -302,7 +311,6 @@ Zend Extension Api No:  20090626
 		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
 	</section>
 </div>
-				</div>
 			</div>
 		</div>
 		<!--4. bottom begin-->

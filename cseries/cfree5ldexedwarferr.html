@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html dir="ltr" lang="zh-CN" class="no-js">
+<html class="no-js">
 	<head>
-		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
   		<meta name="renderer" content="webkit">
 		<title>解决C-FREE 5编译出现“ld.exe: Dwarf Error: found dwarf version '0'”的问题 &mdash; TypeCodes</title>
 		<meta name="description" content="解决C-FREE 5编译出现“ld.exe: Dwarf Error: found dwarf version '0'”的问题 &mdash; TypeCodes" />
@@ -34,8 +35,7 @@
 			</div>
 		</div>
 		<div class="container">
-			<div class="row">
-		<!--2. left sider begin-->
+			<div class="row">		<!--2. left sider begin-->
 		<div class="col-md-9" id="blog-main" role="main">
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/cseries/cfree5ldexedwarferr.html">解决C-FREE 5编译出现“ld.exe: Dwarf Error: found dwarf version '0'”的问题</a></h2>
@@ -45,12 +45,12 @@
 <div class="post-content fmt">
 	<h5>1问题描述</h5>
 <p>之前自己在win7 64bit的机器上，安装了MinGW编译器，GCC版本是4.8.1，安装目录是 C:\MinGW ，同时安装了C-FREE 5这款C/C++集成开发环境到 D:\C-Free 5\ 目录。用c-free编译程序的时候总是报：C-FREE~1\mingw\bin\ld.exe: Dwarf Error: found dwarf version '0', this reader only handles version 2 and 3 information。如下图所示：</p>
-<p><img alt="C-FREE 5编译出现“ld.exe: Dwarf Error: found dwarf version '0'”" src="https://o3cex9zsl.qnssl.com/2014/08/cfree5ldexedwarferr.png" title="C-FREE 5编译出现“ld.exe: Dwarf Error: found dwarf version '0'”" /></p>
+<p><img alt="C-FREE 5编译出现“ld.exe: Dwarf Error: found dwarf version '0'”" src="https://o3cex9zsl.qnssl.com/2014/08/cfree5ldexedwarferr.png" title="C-FREE 5编译出现“ld.exe: Dwarf Error: found dwarf version '0'”"></p>
 
 
 <h5>2检查c-free的配置项：</h5>
 <p>通过“构建”--“构建选项”--“路径”检查c-free中三个配置项：</p>
-<div class="highlight"><pre>Include Files 主路径: $(CFRoot)\mingw\include、$(CFRoot)\mingw\lib\gcc\mingw32\3.4.5\include
+<div class="highlight"><pre><span></span>Include Files 主路径: $(CFRoot)\mingw\include、$(CFRoot)\mingw\lib\gcc\mingw32\3.4.5\include
 Library Files 主路径: $(CFRoot)\mingw\lib、$(CFRoot)\mingw\mingw32\lib
 Excuteable Files 主路径: $(CFRoot)\mingw\bin、$(CFRoot)\mingw\mingw32\bin
 </pre></div>
@@ -58,18 +58,18 @@ Excuteable Files 主路径: $(CFRoot)\mingw\bin、$(CFRoot)\mingw\mingw32\bin
 
 <p>这样都设置成 C-FREE 5 的相关路径。按理说应该没错的，但是在编译程序的时候总是报上面的错误。</p>
 <h5>3谷歌搜到一个关于Qt编译的类似错误</h5>
-<div class="highlight"><pre>The problem stems from the fact that you are using terribly outdated GCC, while your Qt binaries are most likely built with bleeding-edge GCC (or the one close to it). For instance, as the error message shows, DWARF is outdated in case of your current GCC and is incompatible with the one used by your current Qt. Furthermore, even if it wouldn&#39;t, you&#39;d still hit other problems with binary incompatibilities, since you essentially mix compilers with different major version numbers, which is strongly discouraged. Notice, that your problem has nothing to do with CMake at all. You can see it yourself in the error message, i.e. the error is reported by ld, the linker utility from (your outdated) GCC toolchain. To conclude, your only option is to update GCC, ideally exactly to the one which was used to build your current Qt.
+<div class="highlight"><pre><span></span>The problem stems from the fact that you are using terribly outdated GCC, while your Qt binaries are most likely built with bleeding-edge GCC (or the one close to it). For instance, as the error message shows, DWARF is outdated in case of your current GCC and is incompatible with the one used by your current Qt. Furthermore, even if it wouldn&#39;t, you&#39;d still hit other problems with binary incompatibilities, since you essentially mix compilers with different major version numbers, which is strongly discouraged. Notice, that your problem has nothing to do with CMake at all. You can see it yourself in the error message, i.e. the error is reported by ld, the linker utility from (your outdated) GCC toolchain. To conclude, your only option is to update GCC, ideally exactly to the one which was used to build your current Qt.
 </pre></div>
 
 
 <p>自己脑残翻译一下</p>
-<div class="highlight"><pre>问题源于这样一个事实：使用的是非常过时的GCC版本，但Qt二进制文件却是用最新或将近最新的GCC构建的。正如错误信息所示，当前的GCC的DWARF已经过时，并且不符合当前使用的Qt版本。另外，即使不出现上面的情况，你还是会遇到其它二进制不兼容性的问题。因为你把不同主版本号的编译器混淆了，这是非常不鼓励的。另外，这根本跟CMake无关。这点你可以从错误消息中看出来，例如来自(过时的)GCC的链接器功能ld报告的错误。总之，唯一的选择就是更新GCC，最好是能正好用于构建当前Qt的版本。
+<div class="highlight"><pre><span></span>问题源于这样一个事实：使用的是非常过时的GCC版本，但Qt二进制文件却是用最新或将近最新的GCC构建的。正如错误信息所示，当前的GCC的DWARF已经过时，并且不符合当前使用的Qt版本。另外，即使不出现上面的情况，你还是会遇到其它二进制不兼容性的问题。因为你把不同主版本号的编译器混淆了，这是非常不鼓励的。另外，这根本跟CMake无关。这点你可以从错误消息中看出来，例如来自(过时的)GCC的链接器功能ld报告的错误。总之，唯一的选择就是更新GCC，最好是能正好用于构建当前Qt的版本。
 </pre></div>
 
 
 <h5>4问题解决</h5>
 <p>既然可能是gcc版本不够新引起的编译问题，那么将MinGW编译器中的GCC版本，也即将 C:\MinGW 下面的<code>所有</code>文件（当然包括 <code>C:\MinGW\bin\ld.ex</code> 和 <code>C:\MinGW\mingw32\bin\ld.exe</code>）复制到 C-FREE 5 安装目录中的 D:\C-Free 5\mingw 目录下面。这样c-free中旧的 GCC 版本文件就被替换成新的了。然后重启c-free，问题解决。</p>
-		    	<div class="donate_div_container">
+</div>		    	<div class="donate_div_container">
 					<div class="donate_div">
 						<p><a href="javascript:void(0)" onclick="donateToggle()" class="donate_word" title="打赏，支持一下">打赏</a></p>
 						<div class="hide_box"></div>
@@ -99,7 +99,7 @@ Excuteable Files 主路径: $(CFRoot)\mingw\bin、$(CFRoot)\mingw\mingw32\bin
 					</div>
 				</div>
 		    	<div class="tags">
-					<div class="post_tags">
+					<div class="post_tags" itemprop="keywords">
 						Tags: <a href="https://typecodes.com/tag/ldexe-dwarf-error.html">ld.exe: dwarf error</a>					</div>
 					<div class="post-share">
 						<ul class="post-shareul clearfix">
@@ -191,7 +191,6 @@ Excuteable Files 主路径: $(CFRoot)\mingw\bin、$(CFRoot)\mingw\mingw32\bin
 		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
 	</section>
 </div>
-				</div>
 			</div>
 		</div>
 		<!--4. bottom begin-->

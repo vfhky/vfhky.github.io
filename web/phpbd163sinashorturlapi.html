@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html dir="ltr" lang="zh-CN" class="no-js">
+<html class="no-js">
 	<head>
-		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
   		<meta name="renderer" content="webkit">
 		<title>PHP实现百度、网易、新浪短网址服务的API接口调用 &mdash; TypeCodes</title>
 		<meta name="description" content="PHP实现百度、网易、新浪短网址服务的API接口调用 &mdash; TypeCodes" />
@@ -34,8 +35,7 @@
 			</div>
 		</div>
 		<div class="container">
-			<div class="row">
-		<!--2. left sider begin-->
+			<div class="row">		<!--2. left sider begin-->
 		<div class="col-md-9" id="blog-main" role="main">
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/web/phpbd163sinashorturlapi.html">PHP实现百度、网易、新浪短网址服务的API接口调用</a></h2>
@@ -49,7 +49,7 @@
 
 
 <p>新浪微博的短网址API接口服务也类似于谷歌，第一种只需要取得新浪微博开放平台的APPKEY即可使用，第二种是采用OAuth2.0认证的方式。网易只提供类似于新浪微博提供的第二种API接口调用方式，即需要申请APPKEY，不过申请非常容易通过，这点不同于新浪微博。值得一提的是，经博主测试，网易的短网址API接口貌似有bug。最终三个接口的测试效果如下图所示：</p>
-<p><img alt="百度网易新浪微博短网址API接口" src="https://o3cex9zsl.qnssl.com/2014/03/shorturlAPI.png" title="百度网易新浪微博短网址API接口" /></p>
+<p><img alt="百度网易新浪微博短网址API接口" src="https://o3cex9zsl.qnssl.com/2014/03/shorturlAPI.png" title="百度网易新浪微博短网址API接口"></p>
 <h5>2 PHP实现百度短网址API接口调用</h5>
 <p>百度短网址的API接口封装不是很好，需要针对长网址转短网址和短网址转长网址请求不同的页面（create.php和query.php），另外官方的示例程序也有错误。</p>
 <table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
@@ -88,7 +88,7 @@
 34
 35
 36
-37</pre></div></td><td class="code"><div class="highlight"><pre><span class="cp">&lt;?php</span>
+37</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
  <span class="sd">/**</span>
 <span class="sd"> * @author: vfhky 20130304 20:10</span>
 <span class="sd"> * @description: PHP调用百度短网址API接口</span>
@@ -129,7 +129,7 @@
 </td></tr></table>
 
 <h5>3 PHP实现网易短网址API接口调用</h5>
-<p><img alt="网易短网址API接口" src="https://o3cex9zsl.qnssl.com/2014/03/neteasy.png" title="网易短网址API接口" /></p>
+<p><img alt="网易短网址API接口" src="https://o3cex9zsl.qnssl.com/2014/03/neteasy.png" title="网易短网址API接口"></p>
 <p>用户首先需要申请一个appkey，申请地址是http://126.am/，登录进去即可申请，并且很快得到审核。不过，经过测试发现一个bug：用接口生成的短网址无法通过API接口还原为之前的长网址，提示“NOT_MATCH”（对应的官方说明是：Key和短地址不匹配，无法还原）。但是如上图所示，如果在http://126.am/user.action的页面生成的短网址却能够通过API还原为原来的长网址。</p>
 <table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
  2
@@ -167,7 +167,7 @@
 34
 35
 36
-37</pre></div></td><td class="code"><div class="highlight"><pre><span class="cp">&lt;?php</span>
+37</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
  <span class="sd">/**</span>
 <span class="sd"> * @author: vfhky 20130304 20:10</span>
 <span class="sd"> * @description: PHP调用网易短网址API接口</span>
@@ -241,7 +241,7 @@
 30
 31
 32
-33</pre></div></td><td class="code"><div class="highlight"><pre><span class="cp">&lt;?php</span>
+33</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
  <span class="sd">/**</span>
 <span class="sd"> * @author: vfhky 20130304 20:10</span>
 <span class="sd"> * @description: PHP调用新浪短网址API接口</span>
@@ -280,7 +280,7 @@
 <h5>5 后记</h5>
 <p>综上，百度的短网址API相对方便，而且限制较少；新浪和网易的API接口相对麻烦；网易的短网址API是唯一具备API请求统计功能的，但很容易受到“请求过于频繁而遭到REQUEST_LIMIT”。</p>
 <p>另外，对于任何API接口的调试工作，一定要使用其接口提供的错误信息，例如上面百度接口的$arrResponse['status']字段、网易的$arrResponse['status_code']字段。</p>
-		    	<div class="donate_div_container">
+</div>		    	<div class="donate_div_container">
 					<div class="donate_div">
 						<p><a href="javascript:void(0)" onclick="donateToggle()" class="donate_word" title="打赏，支持一下">打赏</a></p>
 						<div class="hide_box"></div>
@@ -310,7 +310,7 @@
 					</div>
 				</div>
 		    	<div class="tags">
-					<div class="post_tags">
+					<div class="post_tags" itemprop="keywords">
 						Tags: <a href="https://typecodes.com/tag/duan-wang-zhi-api.html">短网址api</a>					</div>
 					<div class="post-share">
 						<ul class="post-shareul clearfix">
@@ -402,7 +402,6 @@
 		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
 	</section>
 </div>
-				</div>
 			</div>
 		</div>
 		<!--4. bottom begin-->

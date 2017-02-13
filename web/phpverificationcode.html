@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html dir="ltr" lang="zh-CN" class="no-js">
+<html class="no-js">
 	<head>
-		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
   		<meta name="renderer" content="webkit">
 		<title>PHP中验证码的设计 &mdash; TypeCodes</title>
 		<meta name="description" content="PHP中验证码的设计 &mdash; TypeCodes" />
@@ -34,8 +35,7 @@
 			</div>
 		</div>
 		<div class="container">
-			<div class="row">
-		<!--2. left sider begin-->
+			<div class="row">		<!--2. left sider begin-->
 		<div class="col-md-9" id="blog-main" role="main">
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/web/phpverificationcode.html">PHP中验证码的设计</a></h2>
@@ -47,7 +47,7 @@
 
 
 <p>而随着验证码的使用，很多不法分子“跟进”了它们的技术，所以当前很多门户网站的验证码都做了相应的改进。于是出现了文字长度变长，汉字夹杂数字或者字母的情况.</p>
-<p><img alt="PHP中的验证码设计" src="https://o3cex9zsl.qnssl.com/2012/08/110.png" title="PHP中的验证码设计" /></p>
+<p><img alt="PHP中的验证码设计" src="https://o3cex9zsl.qnssl.com/2012/08/110.png" title="PHP中的验证码设计"></p>
 <h5>1 一个简单的验证码实例</h5>
 <h6>1.1 显示验证码的图片</h6>
 <table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
@@ -56,7 +56,7 @@
 4
 5
 6
-7</pre></div></td><td class="code"><div class="highlight"><pre><span class="cp">&lt;?php</span> 
+7</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span> 
     <span class="nv">$num</span><span class="o">=</span><span class="nb">intval</span><span class="p">(</span><span class="nb">mt_rand</span><span class="p">(</span><span class="mi">1000</span><span class="p">,</span><span class="mi">9999</span><span class="p">));</span>
     <span class="k">for</span><span class="p">(</span><span class="nv">$i</span><span class="o">=</span><span class="mi">0</span> <span class="p">;</span> <span class="nv">$i</span><span class="o">&lt;</span><span class="mi">4</span> <span class="p">;</span><span class="nv">$i</span><span class="o">++</span><span class="p">)</span>
     <span class="p">{</span>
@@ -71,7 +71,7 @@
 2
 3
 4
-5</pre></div></td><td class="code"><div class="highlight"><pre><span class="x">if (strval($inputyzm)!=strval($num))</span>
+5</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="x">if (strval($inputyzm)!=strval($num))</span>
 <span class="x">{</span>
 <span class="x">    echo &quot;&lt;script&gt;alert(&#39;验证码错误！&#39;);history.go(-1);&lt;/script&gt;&quot;;</span>
 <span class="x">    exit;</span>
@@ -90,7 +90,7 @@
  7
  8
  9
-10</pre></div></td><td class="code"><div class="highlight"><pre><span class="cp">&lt;?php</span>
+10</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
     <span class="nv">$str</span><span class="o">=</span><span class="s2">&quot;汉&quot;</span><span class="p">,</span><span class="s2">&quot;字&quot;</span><span class="p">,</span><span class="s2">&quot;验&quot;</span><span class="p">,</span><span class="s2">&quot;证&quot;</span><span class="p">,</span><span class="s2">&quot;码&quot;</span><span class="p">);</span>      <span class="c1">//可以定义汉字的内容和个数</span>
     <span class="nv">$word</span><span class="o">=</span><span class="nb">strlen</span><span class="p">(</span><span class="nv">$str</span><span class="p">));</span>
     <span class="k">for</span> <span class="p">(</span><span class="nv">$i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="nv">$i</span><span class="o">&lt;</span><span class="mi">4</span><span class="p">;</span><span class="nv">$i</span><span class="o">++</span><span class="p">)</span>
@@ -104,7 +104,7 @@
 </td></tr></table>
 
 <h6>2.2 将生成的随机字符串赋给一个隐藏域</h6>
-<div class="highlight"><pre><span class="o">&lt;</span><span class="nx">input</span> <span class="nx">type</span><span class="o">=</span><span class="s2">&quot;hidden&quot;</span> <span class="nx">name</span><span class="o">=</span><span class="s2">&quot;yzm&quot;</span> <span class="nx">value</span><span class="o">=</span><span class="err">&quot;</span><span class="cp">&lt;?php</span> <span class="k">echo</span> <span class="nv">$pic</span><span class="p">;</span> <span class="o">?/&gt;</span><span class="s2">&quot;&gt;</span>
+<div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="nx">input</span> <span class="nx">type</span><span class="o">=</span><span class="s2">&quot;hidden&quot;</span> <span class="nx">name</span><span class="o">=</span><span class="s2">&quot;yzm&quot;</span> <span class="nx">value</span><span class="o">=</span><span class="err">&quot;</span><span class="cp">&lt;?php</span> <span class="k">echo</span> <span class="nv">$pic</span><span class="p">;</span> <span class="o">?/&gt;</span><span class="s2">&quot;&gt;</span>
 </pre></div>
 
 
@@ -122,7 +122,7 @@
 11
 12
 13
-14</pre></div></td><td class="code"><div class="highlight"><pre><span class="x">&lt;script language=&quot;javascript&quot;&gt;</span>
+14</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="x">&lt;script language=&quot;javascript&quot;&gt;</span>
 <span class="x">    function check(form){</span>
 <span class="x">        if(form.yzm.value==&quot;&quot;){</span>
 <span class="x">        alert(&quot;请输入验证码&quot;);</span>
@@ -138,7 +138,7 @@
 <span class="x">&lt;/script&gt;</span>
 </pre></div>
 </td></tr></table>
-		    	<div class="donate_div_container">
+</div>		    	<div class="donate_div_container">
 					<div class="donate_div">
 						<p><a href="javascript:void(0)" onclick="donateToggle()" class="donate_word" title="打赏，支持一下">打赏</a></p>
 						<div class="hide_box"></div>
@@ -168,7 +168,7 @@
 					</div>
 				</div>
 		    	<div class="tags">
-					<div class="post_tags">
+					<div class="post_tags" itemprop="keywords">
 						Tags: <a href="https://typecodes.com/tag/phpyan-zheng-ma.html">php验证码</a>					</div>
 					<div class="post-share">
 						<ul class="post-shareul clearfix">
@@ -260,7 +260,6 @@
 		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
 	</section>
 </div>
-				</div>
 			</div>
 		</div>
 		<!--4. bottom begin-->

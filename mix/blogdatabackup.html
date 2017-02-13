@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html dir="ltr" lang="zh-CN" class="no-js">
+<html class="no-js">
 	<head>
-		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
   		<meta name="renderer" content="webkit">
 		<title>博客必须养成的良好习惯：数据库备份 &mdash; TypeCodes</title>
 		<meta name="description" content="博客必须养成的良好习惯：数据库备份 &mdash; TypeCodes" />
@@ -34,8 +35,7 @@
 			</div>
 		</div>
 		<div class="container">
-			<div class="row">
-		<!--2. left sider begin-->
+			<div class="row">		<!--2. left sider begin-->
 		<div class="col-md-9" id="blog-main" role="main">
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/mix/blogdatabackup.html">博客必须养成的良好习惯：数据库备份</a></h2>
@@ -47,12 +47,12 @@
 <p>WP3.6应该是在前一周就发布出来了，由于工作的原因，vfhky没及时更新。因为每次升级WP程序之前，我都会把整个主题程序、数据库以及其它几个重要文件备份一遍，这些都需要时间。所以只好等到周末才升级，顺便惯例性的写两篇文章。于是，昨天中午把主题、数据库等都备份好后，博主就迫不及待的把WP3.5升级到了最新的3.6版本。升级完后，发现themes文件夹下多了一个thirteen的主题文件夹。尼玛，不带这样的吧？升个级还要装个主题……记得以前wordpress升级不会安装官方自带的主题的吧，果断删之！</p>
 
 
-<p><img alt="MySQL数据库备份" src="https://o3cex9zsl.qnssl.com/2013/08/MySQL.jpg" title="MySQL数据库备份" /></p>
+<p><img alt="MySQL数据库备份" src="https://o3cex9zsl.qnssl.com/2013/08/MySQL.jpg" title="MySQL数据库备份"></p>
 <p>接着再检查下博客的页面是否和升级前一样正常，不正常的话就可以用之前备份好的主题程序以及其它相关文件替换一下。完后就是到其它机油博客逛了一圈，顺便留几个爪子卖个萌啥的。下午老赵童鞋来博客看了篇关于SEO的文章，顺道踩了几个脚印，挺聊得来的。晚上9点左右，开始写文章了，主题关于下午自己给博客弄的一个乌龙——用安全联盟检测博客程序，接着博客就受到了安全联盟的“模拟攻击”，然后就是自己瞎折腾了一番。</p>
 <p>在UE里面写完后，就贴到博客后台的文章写作栏目去发表了。然后去前台页面看了下，发觉有几个地方不太合适，所以就到服务器的控制面板里面去修改了下。结果，不知道咋就手贱，竟然点了“恢复MySql数据库”按钮边上的“清空MySql数据库”。顿时石化……</p>
 <p>慌乱中突然记起了中午备份过数据库，哈哈，老天不负苦心人呐，有救了！遂以雷霆万钧之势关闭主机，然后马不停蹄地把备份的数据库导入到phpmyadmin中，接着果断重启主机服务。虽然说下午的一部分数据（留言、文章浏览数统计）丢失了一部分，但损失还算不大，也算是“起死回生”咯！</p>
 <p>所以说，做博客必须要养成的一个好习惯：备份数据库。当然对于喜欢折腾的童鞋来说，咱们还得在备份数据库的同时把主题程序也备份一下。这两个步骤做到了，也就是IT银中传说的“数据备份”。其实备份也不是很麻烦，打包压缩-下载-删包，也就三个步骤而已。</p>
-		    	<div class="donate_div_container">
+</div>		    	<div class="donate_div_container">
 					<div class="donate_div">
 						<p><a href="javascript:void(0)" onclick="donateToggle()" class="donate_word" title="打赏，支持一下">打赏</a></p>
 						<div class="hide_box"></div>
@@ -82,7 +82,7 @@
 					</div>
 				</div>
 		    	<div class="tags">
-					<div class="post_tags">
+					<div class="post_tags" itemprop="keywords">
 						Tags: <a href="https://typecodes.com/tag/mysqlbei-fen.html">mysql备份</a>					</div>
 					<div class="post-share">
 						<ul class="post-shareul clearfix">
@@ -174,7 +174,6 @@
 		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
 	</section>
 </div>
-				</div>
 			</div>
 		</div>
 		<!--4. bottom begin-->

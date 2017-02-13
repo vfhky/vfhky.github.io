@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html dir="ltr" lang="zh-CN" class="no-js">
+<html class="no-js">
 	<head>
-		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
   		<meta name="renderer" content="webkit">
 		<title>动易SiteFactory系列教程一:最新头条新闻带内容标签的制作 &mdash; TypeCodes</title>
 		<meta name="description" content="动易SiteFactory系列教程一:最新头条新闻带内容标签的制作 &mdash; TypeCodes" />
@@ -34,8 +35,7 @@
 			</div>
 		</div>
 		<div class="container">
-			<div class="row">
-		<!--2. left sider begin-->
+			<div class="row">		<!--2. left sider begin-->
 		<div class="col-md-9" id="blog-main" role="main">
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/web/sfnewscontenttag.html">动易SiteFactory系列教程一:最新头条新闻带内容标签的制作</a></h2>
@@ -44,26 +44,26 @@
 </ul>
 <div class="post-content fmt">
 	<p>如何运用cms建立一个网站？我认为，可以分为3个步骤：第一个步骤是设计好整个网站的模板页面，这个主要有前台开发人员设计；第二个是熟悉后台的各种栏目（或者频道或者节点）的设置。不能小看这个步骤，很多标签都跟栏目使用的模板有关，不能通用；第三个步骤是后台开发人员根据相应的前台设计以及相应的要求添加相应的标签，调用出数据库内容（或者一些已经设计好的静态内容）。那么，这一系列的动易CMS教程主要讲解动易Sitefactory的标签。我将通过几个制作实例来讲解相关操作.</p>
-<p><img alt="最新头条新闻带图片标签制作" src="https://o3cex9zsl.qnssl.com/2012/08/13.png" title="最新头条新闻带图片标签制作" /></p>
+<p><img alt="最新头条新闻带图片标签制作" src="https://o3cex9zsl.qnssl.com/2012/08/13.png" title="最新头条新闻带图片标签制作"></p>
 
 
 <p>（一）新建一个标签，“标签分类”可以任意选择类别，最好能归入以后能后找得到的标签目录，也可以自己新建一个目录；“数据设置”因为要涉及到数据库，所以选择“系统是数据库SQL查询”；“标签模板处理方式”选择“简单XSLT解析”，涉及数据库方面的标签我们一般都选择这个。</p>
-<p><img alt="添加标签参数" src="https://o3cex9zsl.qnssl.com/2012/08/22.png" title="添加标签参数" /></p>
+<p><img alt="添加标签参数" src="https://o3cex9zsl.qnssl.com/2012/08/22.png" title="添加标签参数"></p>
 <p>（二）添加标签参数，这个看自己的需要而定（也可以不填），这个参数的作用是通过这个参数可以控制下面步骤中标签的一些数据调用。这个可能表抽象，多看几个标签就明白了。</p>
-<p><img alt="标签查询设置1" src="https://o3cex9zsl.qnssl.com/2012/08/33.png" title="标签查询设置1" /></p>
+<p><img alt="标签查询设置1" src="https://o3cex9zsl.qnssl.com/2012/08/33.png" title="标签查询设置1"></p>
 <p>（三）标签查询设置，熟悉的话直接写sql语句；不熟悉的话可以通过“标签查询设置”提示写，效果由下图看出是一样的。</p>
-<div class="highlight"><pre>SELECT TOP 10 PE_CommonModel.*,PE_U_Article.*  FROM PE_CommonModel INNER JOIN PE_U_Article ON PE_CommonModel.GeneralID = PE_U_Article.ID  WHERE  ((PE_CommonModel.NodeID IN (0)) AND (PE_CommonModel.Status = 99))  ORDER BY PE_CommonModel.UpdateTime DESC
+<div class="highlight"><pre><span></span>SELECT TOP 10 PE_CommonModel.*,PE_U_Article.*  FROM PE_CommonModel INNER JOIN PE_U_Article ON PE_CommonModel.GeneralID = PE_U_Article.ID  WHERE  ((PE_CommonModel.NodeID IN (0)) AND (PE_CommonModel.Status = 99))  ORDER BY PE_CommonModel.UpdateTime DESC
 </pre></div>
 
 
 <p>提示：信息内容保存的公共表PE_CommonModel表里面，所以我们只需要查询PE_CommonModel表；Status=99，表示审核通过的信息，其它的就不介绍了。<code>注意把上面SQL与剧中的(0)改成(@node)</code></p>
-<p><img alt="标签查询设置2" src="https://o3cex9zsl.qnssl.com/2012/08/42.png" title="标签查询设置2" /></p>
-<p><img alt="标签查询设置3" src="https://o3cex9zsl.qnssl.com/2012/08/52.png" title="标签查询设置3" /></p>
-<p><img alt="标签查询设置4" src="https://o3cex9zsl.qnssl.com/2012/08/62.png" title="标签查询设置4" /></p>
-<p><img alt="标签查询设置5" src="https://o3cex9zsl.qnssl.com/2012/08/72.png" title="标签查询设置5" /></p>
-<p><img alt="标签查询设置6" src="https://o3cex9zsl.qnssl.com/2012/08/81.png" title="标签查询设置6" /></p>
+<p><img alt="标签查询设置2" src="https://o3cex9zsl.qnssl.com/2012/08/42.png" title="标签查询设置2"></p>
+<p><img alt="标签查询设置3" src="https://o3cex9zsl.qnssl.com/2012/08/52.png" title="标签查询设置3"></p>
+<p><img alt="标签查询设置4" src="https://o3cex9zsl.qnssl.com/2012/08/62.png" title="标签查询设置4"></p>
+<p><img alt="标签查询设置5" src="https://o3cex9zsl.qnssl.com/2012/08/72.png" title="标签查询设置5"></p>
+<p><img alt="标签查询设置6" src="https://o3cex9zsl.qnssl.com/2012/08/81.png" title="标签查询设置6"></p>
 <p>（四）标签内容设置：</p>
-<div class="highlight"><pre><span class="cp">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;</span>
+<div class="highlight"><pre><span></span><span class="cp">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;</span>
 <span class="k">&lt;xsl:stylesheet</span> <span class="na">version=</span><span class="s">&quot;1.0&quot;</span> <span class="na">xmlns:xsl=</span><span class="s">&quot;http://www.w3.org/1999/XSL/Transform&quot;</span> <span class="na">xmlns:pe=</span><span class="s">&quot;labelproc&quot;</span> <span class="na">exclude-result-prefixes=</span><span class="s">&quot;pe&quot;</span><span class="nt">&gt;</span>
 <span class="c">&lt;!--这个是我们开始定义的参数--&gt;</span>
 <span class="k">&lt;xsl:param</span> <span class="na">name=</span><span class="s">&quot;NodeID&quot;</span> <span class="nt">/&gt;</span>
@@ -110,7 +110,7 @@
 
 
 <p>（五）最后只要在相应模板中调用{PE.Label id="最新头条新闻带内容" /}即可。</p>
-		    	<div class="donate_div_container">
+</div>		    	<div class="donate_div_container">
 					<div class="donate_div">
 						<p><a href="javascript:void(0)" onclick="donateToggle()" class="donate_word" title="打赏，支持一下">打赏</a></p>
 						<div class="hide_box"></div>
@@ -140,7 +140,7 @@
 					</div>
 				</div>
 		    	<div class="tags">
-					<div class="post_tags">
+					<div class="post_tags" itemprop="keywords">
 						Tags: <a href="https://typecodes.com/tag/dong-yi-cms.html">动易cms</a>,<a href="https://typecodes.com/tag/zui-xin-tou-tiao-xin-wen-dai-nei-rong-biao-qian-de-zhi-zuo.html">最新头条新闻带内容标签的制作</a>					</div>
 					<div class="post-share">
 						<ul class="post-shareul clearfix">
@@ -232,7 +232,6 @@
 		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
 	</section>
 </div>
-				</div>
 			</div>
 		</div>
 		<!--4. bottom begin-->

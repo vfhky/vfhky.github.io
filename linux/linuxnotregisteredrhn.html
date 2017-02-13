@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html dir="ltr" lang="zh-CN" class="no-js">
+<html class="no-js">
 	<head>
-		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
   		<meta name="renderer" content="webkit">
 		<title>解决Redhat Linux5 yum出现This system is not registered with RHN &mdash; TypeCodes</title>
 		<meta name="description" content="解决Redhat Linux5 yum出现This system is not registered with RHN &mdash; TypeCodes" />
@@ -34,8 +35,7 @@
 			</div>
 		</div>
 		<div class="container">
-			<div class="row">
-		<!--2. left sider begin-->
+			<div class="row">		<!--2. left sider begin-->
 		<div class="col-md-9" id="blog-main" role="main">
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/linux/linuxnotregisteredrhn.html">解决Redhat Linux5 yum出现This system is not registered with RHN</a></h2>
@@ -49,7 +49,7 @@
 
 <h5>1 check what yum package installed</h5>
 <p>查看RHEL是否安装了yum，若是安装了，那么又有哪些yum包：</p>
-<div class="highlight"><pre>[root@localhost ~]# rpm -qa |grep yum
+<div class="highlight"><pre><span></span>[root@localhost ~]# rpm -qa |grep yum
 yum-metadata-parser-1.0-8.fc6
 yum-3.0.1-5.el5
 yum-rhn-plugin-0.4.3-1.el5
@@ -59,7 +59,7 @@ yum-updatesd-3.0.1-5.el5
 
 <h5>2 remove all installed yum packages</h5>
 <p>卸载上面显示的所有yum包：</p>
-<div class="highlight"><pre>[root@localhost ~]# rpm -qa|grep yum|xargs rpm -e --nodeps（不检查依赖，直接删除rpm包）
+<div class="highlight"><pre><span></span>[root@localhost ~]# rpm -qa|grep yum|xargs rpm -e --nodeps（不检查依赖，直接删除rpm包）
 再用
 [root@localhost ~]# rpm -qa |grep yum查看，无信息显示表示已经卸载完成。
 </pre></div>
@@ -67,7 +67,7 @@ yum-updatesd-3.0.1-5.el5
 
 <h5>3 download the centos packages from website</h5>
 <p>下载 CentOS YUM包，首先我们需要找到CentOS YUM的更新源，推荐的有（前三个适用于Redhat Linux5版本，最后一个适用于RHEL6的64位版本，当然不管是RHEL5还是RHEL6等等都可以从下面四个镜像网站中下载）：</p>
-<div class="highlight"><pre>1.国外镜像源http://ftp.heanet.ie/pub/centos/5/os/i386/CentOS/
+<div class="highlight"><pre><span></span>1.国外镜像源http://ftp.heanet.ie/pub/centos/5/os/i386/CentOS/
 2.中国科技大学http://centos.ustc.edu.cn/centos/5/os/i386/CentOS/
 3.网易开源镜像http://mirrors.163.com/centos/5/os/i386/CentOS/
 4.搜狐开源镜像http://mirrors.ustc.edu.cn/centos/6/os/x86_64/Packages/
@@ -75,7 +75,7 @@ yum-updatesd-3.0.1-5.el5
 
 
 <p>接着我们就需要在终端里面输入以下命令进行下载（以博主的RHEL5.3为例，从中国科大下载镜像，下载的目录如果没设置的话就会默认是[root@localhost ~]# pwd显示的路径）</p>
-<div class="highlight"><pre>[root@localhost ~]# wget http://centos.ustc.edu.cn/centos/5/os/i386/CentOS/yum-
+<div class="highlight"><pre><span></span>[root@localhost ~]# wget http://centos.ustc.edu.cn/centos/5/os/i386/CentOS/yum-
 fastestmirror-1.1.16-21.el5.centos.noarch.rpm
 [root@localhost ~]# wget http://centos.ustc.edu.cn/centos/5/os/i386/CentOS/yum-
 metadata-parser-1.1.2-4.el5.i386.rpm
@@ -88,7 +88,7 @@ python-iniparse-0.2.3-6.el5.noarch.rpm
 
 <h5>4 安装这所下载的四个包</h5>
 <p>注意:单个的安装包可能会依赖其它包（例如yum和yum-fastestmirror会相互依赖），所以我们可以把所有这些包放在一起，用一行命令将它们同时安装即可：</p>
-<div class="highlight"><pre>[root@localhost ~]# rpm -ivh  yum-fastestmirror-1.1.16-21.el5.centos.noarch.rpm 
+<div class="highlight"><pre><span></span>[root@localhost ~]# rpm -ivh  yum-fastestmirror-1.1.16-21.el5.centos.noarch.rpm 
 yum-metadata-parser-1.1.2-4.el5.i386.rpm 
 yum-3.2.22-40.el5.centos.noarch.rpm 
 yum-3.2.22-40.el5.centos.noarch.rpm
@@ -99,7 +99,7 @@ yum-3.2.22-40.el5.centos.noarch.rpm
 
 <h5>5 download configure file</h5>
 <p>下载CentOS-Base.repo到/etc/yum.repos.d/文件夹里：</p>
-<div class="highlight"><pre>[root@localhost ~]# wget  http://docs.linuxtone.org/soft/lemp/CentOS-Base.repo 
+<div class="highlight"><pre><span></span>[root@localhost ~]# wget  http://docs.linuxtone.org/soft/lemp/CentOS-Base.repo 
 -O /etc/yum.repos.d/CentOS-Base.repo
 [root@localhost ~]# wget  http://huangkeye-blog.googlecode.com/files/CentOS-Base.repo 
 -O /etc/yum.repos.d/CentOS-Base.repo（以上这两个适用于RHEL版本5）
@@ -109,7 +109,7 @@ yum-3.2.22-40.el5.centos.noarch.rpm
 
 
 <p>也可以直接进入vim修改该文件为以下内容：</p>
-<div class="highlight"><pre><span class="k">[base]</span>
+<div class="highlight"><pre><span></span><span class="k">[base]</span>
 <span class="na">name</span><span class="o">=</span><span class="s">CentOS-5 - Base</span>
 <span class="na">baseurl</span><span class="o">=</span><span class="s">http://centos.ustc.edu.cn/centos/5/os/$basearch/</span>
 <span class="na">gpgcheck</span><span class="o">=</span><span class="s">1</span>
@@ -163,22 +163,22 @@ yum-3.2.22-40.el5.centos.noarch.rpm
 
 <h5>6 [选做]clear cache and rebuild</h5>
 <p>需要清除和重建cache：</p>
-<div class="highlight"><pre>[root@localhost ~]# yum clean metadata
+<div class="highlight"><pre><span></span>[root@localhost ~]# yum clean metadata
 [root@localhost ~]# yum clean dbcache
 [root@localhost ~]# yum makecache
 </pre></div>
 
 
 <h5>7 installation has been completed, testing</h5>
-<div class="highlight"><pre>//安装成功，开始测试：
+<div class="highlight"><pre><span></span>//安装成功，开始测试：
 [root@localhost ~]# yum update
 </pre></div>
 
 
 <h5>8 Yum百科 ：</h5>
-<div class="highlight"><pre>RHEL安装软件包管理器Yum（全称为 Yellow dog Updater, Modified）是一个在Fedora和RedHat以及SUSE、CentOS中的Shell前端软件包管理器。基于RPM包管理，能够从指定的服务器自动下载RPM包并且安装，可以自动处理依赖性关系，并且一次安装所有依赖的软件包，无须繁琐地一次次下载、安装。
+<div class="highlight"><pre><span></span>RHEL安装软件包管理器Yum（全称为 Yellow dog Updater, Modified）是一个在Fedora和RedHat以及SUSE、CentOS中的Shell前端软件包管理器。基于RPM包管理，能够从指定的服务器自动下载RPM包并且安装，可以自动处理依赖性关系，并且一次安装所有依赖的软件包，无须繁琐地一次次下载、安装。
 </pre></div>
-		    	<div class="donate_div_container">
+</div>		    	<div class="donate_div_container">
 					<div class="donate_div">
 						<p><a href="javascript:void(0)" onclick="donateToggle()" class="donate_word" title="打赏，支持一下">打赏</a></p>
 						<div class="hide_box"></div>
@@ -208,7 +208,7 @@ yum-3.2.22-40.el5.centos.noarch.rpm
 					</div>
 				</div>
 		    	<div class="tags">
-					<div class="post_tags">
+					<div class="post_tags" itemprop="keywords">
 						Tags: <a href="https://typecodes.com/tag/registered-with-rhn.html">registered with rhn</a>					</div>
 					<div class="post-share">
 						<ul class="post-shareul clearfix">
@@ -300,7 +300,6 @@ yum-3.2.22-40.el5.centos.noarch.rpm
 		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
 	</section>
 </div>
-				</div>
 			</div>
 		</div>
 		<!--4. bottom begin-->

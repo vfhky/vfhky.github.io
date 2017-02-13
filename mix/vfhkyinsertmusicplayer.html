@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html dir="ltr" lang="zh-CN" class="no-js">
+<html class="no-js">
 	<head>
-		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
   		<meta name="renderer" content="webkit">
 		<title>教程：主题【vfhky】如何在文章中插入音乐播放器 &mdash; TypeCodes</title>
 		<meta name="description" content="教程：主题【vfhky】如何在文章中插入音乐播放器 &mdash; TypeCodes" />
@@ -34,8 +35,7 @@
 			</div>
 		</div>
 		<div class="container">
-			<div class="row">
-		<!--2. left sider begin-->
+			<div class="row">		<!--2. left sider begin-->
 		<div class="col-md-9" id="blog-main" role="main">
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/mix/vfhkyinsertmusicplayer.html">教程：主题【vfhky】如何在文章中插入音乐播放器</a></h2>
@@ -45,33 +45,33 @@
 <div class="post-content fmt">
 	<p>博客主题【vfhky 1.0】版本，在functions.php中封装了三种音乐播放器的短代码函数。因此，在wordpress后台写文章时可以插入三种不同风格的音乐播放器，并可设置是否自动+循环播放模式。不多说了，直接上代码：其中参数auto值为yes表示自动播放，no或者不填写auto则不自动播放；参数loop值为loop表示循环播放，no或者不填写表示不循环播放。注意将代码中的【替换为[，同样把】替换为]。</p>
 <h5>1 灰色简洁风格</h5>
-<p><img alt="灰色简洁风格" src="https://o3cex9zsl.qnssl.com/2014/02/smusic.png" title="灰色简洁风格" /></p>
+<p><img alt="灰色简洁风格" src="https://o3cex9zsl.qnssl.com/2014/02/smusic.png" title="灰色简洁风格"></p>
 
 
 <p>这款灰色简洁播放器和主题风格比较搭调，在wordpress后台文章中插入下面这段代码即可实现上图所示样式。</p>
-<div class="highlight"><pre>【smusic】http://storage.live.com/items/4054252DDEB2E987!285?a.mp3 【/smusic】
+<div class="highlight"><pre><span></span>【smusic】http://storage.live.com/items/4054252DDEB2E987!285?a.mp3 【/smusic】
 
 【smusic auto=yes loop=yes】http://storage.live.com/items/4054252DDEB2E987!285?a.mp3 【/smusic】
 </pre></div>
 
 
 <h5>2 红色喜庆风格</h5>
-<p><img alt="红色喜庆风格" src="https://o3cex9zsl.qnssl.com/2014/02/smusic1.png" title="红色喜庆风格" /></p>
+<p><img alt="红色喜庆风格" src="https://o3cex9zsl.qnssl.com/2014/02/smusic1.png" title="红色喜庆风格"></p>
 <p>红色喜庆风格的播放器同样是单曲目播放，在wordpress后台文章中插入下面这段代码即可实现上图所示样式。</p>
-<div class="highlight"><pre>【smusic1】http://storage.live.com/items/4054252DDEB2E987!285?a.mp3 【/smusic1】
+<div class="highlight"><pre><span></span>【smusic1】http://storage.live.com/items/4054252DDEB2E987!285?a.mp3 【/smusic1】
 
 【smusic1 auto=yes loop=yes】http://storage.live.com/items/4054252DDEB2E987!285?a.mp3 【/smusic1】
 </pre></div>
 
 
 <h5>3 多曲目彩色风格</h5>
-<p><img alt="多曲目彩色风格" src="https://o3cex9zsl.qnssl.com/2014/02/mmusic.png" title="多曲目彩色风格" /></p>
+<p><img alt="多曲目彩色风格" src="https://o3cex9zsl.qnssl.com/2014/02/mmusic.png" title="多曲目彩色风格"></p>
 <p>不同于前面两种播放风格，这段代码能够实现多首曲目的播放，在wordpress后台文章中插入下面这段代码即可实现上图所示样式。</p>
-<div class="highlight"><pre>【mmusic】http://storage.live.com/items/4054252DDEB2E987!285?a.mp3|http://storage.live.com/items/4054252DDEB2E987!266?a.mp3|http://storage.live.com/items/4054252DDEB2E987!267?a.mp3 【/mmusic】
+<div class="highlight"><pre><span></span>【mmusic】http://storage.live.com/items/4054252DDEB2E987!285?a.mp3|http://storage.live.com/items/4054252DDEB2E987!266?a.mp3|http://storage.live.com/items/4054252DDEB2E987!267?a.mp3 【/mmusic】
 
 【mmusic auto=yes loop=yes】http://storage.live.com/items/4054252DDEB2E987!285?a.mp3|http://storage.live.com/items/4054252DDEB2E987!266?a.mp3|http://storage.live.com/items/4054252DDEB2E987!267?a.mp3 【/mmusic】
 </pre></div>
-		    	<div class="donate_div_container">
+</div>		    	<div class="donate_div_container">
 					<div class="donate_div">
 						<p><a href="javascript:void(0)" onclick="donateToggle()" class="donate_word" title="打赏，支持一下">打赏</a></p>
 						<div class="hide_box"></div>
@@ -101,7 +101,7 @@
 					</div>
 				</div>
 		    	<div class="tags">
-					<div class="post_tags">
+					<div class="post_tags" itemprop="keywords">
 						Tags: <a href="https://typecodes.com/tag/wordpress.html">wordpress</a>,<a href="https://typecodes.com/tag/wordpressyin-le-bo-fang-qi.html">wordpress音乐播放器</a>					</div>
 					<div class="post-share">
 						<ul class="post-shareul clearfix">
@@ -193,7 +193,6 @@
 		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
 	</section>
 </div>
-				</div>
 			</div>
 		</div>
 		<!--4. bottom begin-->

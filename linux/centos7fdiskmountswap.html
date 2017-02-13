@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html dir="ltr" lang="zh-CN" class="no-js">
+<html class="no-js">
 	<head>
-		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
   		<meta name="renderer" content="webkit">
 		<title>2015博客升级记(二)：Linux系统磁盘分区挂载和交换空间 &mdash; TypeCodes</title>
 		<meta name="description" content="2015博客升级记(二)：Linux系统磁盘分区挂载和交换空间 &mdash; TypeCodes" />
@@ -34,8 +35,7 @@
 			</div>
 		</div>
 		<div class="container">
-			<div class="row">
-		<!--2. left sider begin-->
+			<div class="row">		<!--2. left sider begin-->
 		<div class="col-md-9" id="blog-main" role="main">
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/linux/centos7fdiskmountswap.html">2015博客升级记(二)：Linux系统磁盘分区挂载和交换空间</a></h2>
@@ -44,7 +44,7 @@
 </ul>
 <div class="post-content fmt">
 	<p>这是<a href="https://typecodes.com/mix/2015updateblog.html" title="查看原文">《2015年博客升级记》</a>系列文章的第二篇，主要记录在Linux系统中如何将磁盘进行分区和挂载。</p>
-<div class="highlight"><pre>------------操作说明------------               
+<div class="highlight"><pre><span></span>------------操作说明------------               
 Linux系统：       阿里云CentOS 7.1（20G）
 操作工具：        SecureCRT 7.0
 待挂载的数据盘：   24G
@@ -56,7 +56,7 @@ Linux系统：       阿里云CentOS 7.1（20G）
 
 <h5>1 查看当前Linux系统分区信息</h5>
 <p>由于阿里云主机默认系统盘大小为20G，通过命令<code>df -h</code>可以看到分区<code>/dev/xvda1</code>挂载在当前CentOS7.1系统的根目录<code>/</code>下面，系统本身占用了2.1G空间。</p>
-<div class="highlight"><pre>[root@typecodes ~]# df -h
+<div class="highlight"><pre><span></span>[root@typecodes ~]# df -h
 Filesystem      Size  Used Avail Use% Mounted on
 /dev/xvda1       20G  2.1G   17G   12% /
 devtmpfs        489M     0  489M   0% /dev
@@ -68,7 +68,7 @@ tmpfs           497M     0  497M   0% /sys/fs/cgroup
 
 <h5>2 列出所有安装的磁盘及分区信息</h5>
 <p>那么，如果主机上还存在额外的未挂载的磁盘，我们可以通过<code>fdisk -l</code>查看这些磁盘的信息。如下所示，磁盘<code>/dev/xvda</code>是阿里云主机自带的，然后被划分成了分区<code>/dev/xvda1</code>；而磁盘<code>/dev/xvdb</code>就是24G大小（实际为25.8G）的阿里云数据盘（还未进行分区）。</p>
-<div class="highlight"><pre>[root@typecodes ~]# fdisk -l
+<div class="highlight"><pre><span></span>[root@typecodes ~]# fdisk -l
 
 Disk /dev/xvda: 21.5 GB, 21474836480 bytes, 41943040 sectors
 Units = sectors of 1 * 512 = 512 bytes
@@ -89,7 +89,7 @@ I/O size (minimum/optimal): 512 bytes / 512 bytes
 
 <h5>3 开始将磁盘进行分区</h5>
 <p>按照先前设定的目标，将磁盘<code>/dev/xvdb</code>划分成两个区：一区用于CentOS7.1系统的交换空间，二区就是普通的Linux物理空间，用作仓库存放备份的数据库文件、程序等等。</p>
-<div class="highlight"><pre>[root@typecodes ~]# fdisk /dev/xvdb
+<div class="highlight"><pre><span></span>[root@typecodes ~]# fdisk /dev/xvdb
 Welcome to fdisk (util-linux 2.23.2).
 
 Changes will remain in memory only, until you decide to write them.
@@ -113,10 +113,10 @@ Partition 1 of type Linux and of size 4 GiB is set
 
 
 <p>同样，使用<code>fdisk /dev/xvdb</code>命令划分区域2。需要说明的是，因为需要将剩余的20G空间全部划分到区域2，所以在第5步<code>Last sector, +sectors or +size{K,M,G} (8390656-50331647, default 50331647)</code>一栏中直接回车即可。这里省略具体执行过程，附图如下：</p>
-<p><img alt="开始对磁盘/dev/xvdb进行分区" src="https://o3cex9zsl.qnssl.com/2015/05/beginfdiskxvdb.png" title="开始对磁盘/dev/xvdb进行分区" /></p>
+<p><img alt="开始对磁盘/dev/xvdb进行分区" src="https://o3cex9zsl.qnssl.com/2015/05/beginfdiskxvdb.png" title="开始对磁盘/dev/xvdb进行分区"></p>
 <h5>4 开始格式化刚划分的第1和第2分区</h5>
 <p>开始分别将分区<code>/dev/xvdb1</code>和<code>/dev/xvdb2</code>格式化为ext4文件系统：</p>
-<div class="highlight"><pre>[root@typecodes /]# mkfs.ext4 /dev/xvdb1
+<div class="highlight"><pre><span></span>[root@typecodes /]# mkfs.ext4 /dev/xvdb1
 mke2fs 1.42.9 (28-Dec-2013)
 Filesystem label=
 OS type: Linux
@@ -141,13 +141,13 @@ Writing superblocks and filesystem accounting information: done
 
 
 <p>同样使用命令<code>mkfs.ext4 /dev/xvdb2</code>格式化分区/dev/xvdb2为ext4文件系统，这里省略具体执行过程，附图如下：</p>
-<p><img alt="格式化分区/dev/xvdb2为ext4文件系统" src="https://o3cex9zsl.qnssl.com/2015/05/mkfs.ext4xvdb2.png" title="格式化分区/dev/xvdb2为ext4文件系统" /></p>
+<p><img alt="格式化分区/dev/xvdb2为ext4文件系统" src="https://o3cex9zsl.qnssl.com/2015/05/mkfs.ext4xvdb2.png" title="格式化分区/dev/xvdb2为ext4文件系统"></p>
 <h5>5 指定第1分区类型为linux Swap分区</h5>
 <p>将第1分区<code>/dev/xvdb1</code>指定为当前CentOS7.1系统的交换空间，这对Linux系统来说是很重要的一部分。Linux系统可用的虚拟内存的总量等于物理内存（硬件的内存）和交换空间的总和。设置交换空间Swap的好处在于：当系统的物理内存耗尽时，系统调度将那些长时间没有什么操作的程序所占用的物理内存中的一部分空间释放出来，并临时保存到Swap交换空间中。等到那些程序要运行时，再将保存的数据从Swap中恢复到内存中。</p>
 <p>这里将分区1<code>/dev/xvdb1</code>改成Swap分区类型，最终操作如下图所示，其中<code>82</code>表示Linux系统Swap交换空间的文件类型。</p>
-<p><img alt="将分区/dev/xvdb1改成Swap分区类型" src="https://o3cex9zsl.qnssl.com/2015/05/linuxswap.png" title="将分区/dev/xvdb1改成Swap分区类型" /></p>
+<p><img alt="将分区/dev/xvdb1改成Swap分区类型" src="https://o3cex9zsl.qnssl.com/2015/05/linuxswap.png" title="将分区/dev/xvdb1改成Swap分区类型"></p>
 <h5>6 使用mkswap命令设置交换分区</h5>
-<div class="highlight"><pre>[root@typecodes /]# mkswap /dev/xvdb1
+<div class="highlight"><pre><span></span>[root@typecodes /]# mkswap /dev/xvdb1
 mkswap: /dev/xvdb1: warning: wiping old ext4 signature.
 Setting up swapspace version 1, size = 2097148 KiB
 no label, UUID=4c90adae-7459-4a99-8999-fef130ff3da1
@@ -164,7 +164,7 @@ Filename        Type        Size        Used    Priority
 
 <h5>7 将分区2挂载到CentOS系统目录</h5>
 <p>根据目标设定，这里将分区2<code>/dev/xvdb2</code>挂载到我的CentOS7.1系统的<code>mydata</code>目录下面，用于存储仓库。</p>
-<div class="highlight"><pre>######在系统根目录新建mydata目录，并将分区2挂载到这个目录
+<div class="highlight"><pre><span></span>######在系统根目录新建mydata目录，并将分区2挂载到这个目录
 [root@typecodes /]# mkdir /mydata
 [root@typecodes /]# mount /dev/xvdb2 /mydata
 </pre></div>
@@ -172,15 +172,15 @@ Filename        Type        Size        Used    Priority
 
 <h5>8 将分区1和分区2的信息分别追加到系统/etc/fstab文件中</h5>
 <p>Linux系统<code>/etc/fstab</code>文件中包含了当前主机磁盘分区以及存储设备如何挂载的信息，所以我们需要将分区1、2的信息分别写入到这个文件中。</p>
-<div class="highlight"><pre>[root@typecodes /]# echo &#39;/dev/xvdb1              swap               swap   defaults        0 0&#39; &gt;&gt; /etc/fstab
+<div class="highlight"><pre><span></span>[root@typecodes /]# echo &#39;/dev/xvdb1              swap               swap   defaults        0 0&#39; &gt;&gt; /etc/fstab
 [root@typecodes /]# echo &#39;/dev/xvdb2              /mydata            ext4   defaults        0 0&#39; &gt;&gt; /etc/fstab
 </pre></div>
 
 
 <h5>9 最后查看效果</h5>
 <p>最后，通过命令<code>df -h</code>和<code>fdisk -l</code>查看分区挂载效果如下图所示：</p>
-<p><img alt="开始对磁盘/dev/xvdb进行分区" src="https://o3cex9zsl.qnssl.com/2015/05/fdiskresult.png" title="开始对磁盘/dev/xvdb进行分区" /></p>
-		    	<div class="donate_div_container">
+<p><img alt="开始对磁盘/dev/xvdb进行分区" src="https://o3cex9zsl.qnssl.com/2015/05/fdiskresult.png" title="开始对磁盘/dev/xvdb进行分区"></p>
+</div>		    	<div class="donate_div_container">
 					<div class="donate_div">
 						<p><a href="javascript:void(0)" onclick="donateToggle()" class="donate_word" title="打赏，支持一下">打赏</a></p>
 						<div class="hide_box"></div>
@@ -210,7 +210,7 @@ Filename        Type        Size        Used    Priority
 					</div>
 				</div>
 		    	<div class="tags">
-					<div class="post_tags">
+					<div class="post_tags" itemprop="keywords">
 						Tags: <a href="https://typecodes.com/tag/bo-ke-cheng-chang-lu.html">博客成长录</a>,<a href="https://typecodes.com/tag/linuxgua-zai.html">linux挂载</a>,<a href="https://typecodes.com/tag/fen-qu-gua-zai.html">分区挂载</a>					</div>
 					<div class="post-share">
 						<ul class="post-shareul clearfix">
@@ -302,7 +302,6 @@ Filename        Type        Size        Used    Priority
 		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
 	</section>
 </div>
-				</div>
 			</div>
 		</div>
 		<!--4. bottom begin-->

@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html dir="ltr" lang="zh-CN" class="no-js">
+<html class="no-js">
 	<head>
-		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
   		<meta name="renderer" content="webkit">
 		<title>音乐播放器PlayAtWill for typecho插件（移植自wordpress） &mdash; TypeCodes</title>
 		<meta name="description" content="音乐播放器PlayAtWill for typecho插件（移植自wordpress） &mdash; TypeCodes" />
@@ -34,8 +35,7 @@
 			</div>
 		</div>
 		<div class="container">
-			<div class="row">
-		<!--2. left sider begin-->
+			<div class="row">		<!--2. left sider begin-->
 		<div class="col-md-9" id="blog-main" role="main">
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/web/typechomp3player.html">音乐播放器PlayAtWill for typecho插件（移植自wordpress）</a></h2>
@@ -51,7 +51,7 @@
 <h5>2 typecho插件制作方法</h5>
 <p>typecho插件入门教程，可以参考：<a href="http://docs.typecho.org/plugins/hello-world" title="《第一个插件Hello World》">官方文档</a>。另外，参考别人写的插件程序也是很有帮助的。尤其是对于目前typecho没有完整的钩子说明文档，通过查看其它插件中所用到的hooks，我们就可以定制自己的插件了。</p>
 <p>typecho插件制作的主流程都是相同的：</p>
-<div class="highlight"><pre>1、写激活插件的方法；
+<div class="highlight"><pre><span></span>1、写激活插件的方法；
 2、写禁用插件的方法
 3、写获取插件配置面板；
 4、写个人用户的配置面板；
@@ -61,7 +61,7 @@
 
 <h5>3 使用方法和效果</h5>
 <p>这款typecho音乐播放器 PlayAtWill 插件，支持播放地址包括站内和在线的mp3、mp4等音乐。使用方法示例：在typecho后台文章内容中任意插入如下短代码（可在一篇文章内同时支持这三种播放模式）： </p>
-<div class="highlight"><pre>### 手工控制播放的灰色风格 ###
+<div class="highlight"><pre><span></span>### 手工控制播放的灰色风格 ###
 <span class="nt">&lt;music1&gt;</span>http://qzone.haoduoge.com/up/6/MTYzMzcyMw.mp3<span class="nt">&lt;/music1&gt;</span>
 
 ### 自动播放的灰色风格 ###
@@ -73,10 +73,10 @@
 
 
 <p>具体演示效果，请点击 <a href="http://t.cn/RhcIUOL" title="插件PlayAtWill的演示效果">这里</a>  体验，截图如下：</p>
-<p><img alt="插件PlayAtWill的风格截图" src="https://o3cex9zsl.qnssl.com/2014/09/pluginplayatwill.png" title="插件PlayAtWill的风格截图" /></p>
+<p><img alt="插件PlayAtWill的风格截图" src="https://o3cex9zsl.qnssl.com/2014/09/pluginplayatwill.png" title="插件PlayAtWill的风格截图"></p>
 <h5>4 代码程序</h5>
 <p>插件 PlayAtWill 的源代码已经提交到了github上面，插件下载地址： <a href="https://github.com/vfhky/PlayAtWill" title="typecho音乐播放器 PlayAtWill ">github</a>  或者 <a href="https://o3cex9zsl.qnssl.com/2014/09/PlayAtWill.zip" title="新浪云存储SCS下载">新浪SCS</a> 。把这个插件（文件目录名是PlayAtWill）提交到typecho的插件目录，然后在后台启用该插件就可使用了。</p>
-		    	<div class="donate_div_container">
+</div>		    	<div class="donate_div_container">
 					<div class="donate_div">
 						<p><a href="javascript:void(0)" onclick="donateToggle()" class="donate_word" title="打赏，支持一下">打赏</a></p>
 						<div class="hide_box"></div>
@@ -106,7 +106,7 @@
 					</div>
 				</div>
 		    	<div class="tags">
-					<div class="post_tags">
+					<div class="post_tags" itemprop="keywords">
 						Tags: <a href="https://typecodes.com/tag/ypechocha-jian.html">ypecho插件</a>,<a href="https://typecodes.com/tag/typechoyin-le-bo-fang-qi.html">typecho音乐播放器</a>,<a href="https://typecodes.com/tag/playatwill.html">playatwill</a>					</div>
 					<div class="post-share">
 						<ul class="post-shareul clearfix">
@@ -198,7 +198,6 @@
 		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
 	</section>
 </div>
-				</div>
 			</div>
 		</div>
 		<!--4. bottom begin-->

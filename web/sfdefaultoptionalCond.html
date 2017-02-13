@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html dir="ltr" lang="zh-CN" class="no-js">
+<html class="no-js">
 	<head>
-		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
   		<meta name="renderer" content="webkit">
 		<title>动易SiteFactory系列教程五:默认列表标签中的optionalCond参数介绍 &mdash; TypeCodes</title>
 		<meta name="description" content="动易SiteFactory系列教程五:默认列表标签中的optionalCond参数介绍 &mdash; TypeCodes" />
@@ -34,8 +35,7 @@
 			</div>
 		</div>
 		<div class="container">
-			<div class="row">
-		<!--2. left sider begin-->
+			<div class="row">		<!--2. left sider begin-->
 		<div class="col-md-9" id="blog-main" role="main">
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/web/sfdefaultoptionalCond.html">动易SiteFactory系列教程五:默认列表标签中的optionalCond参数介绍</a></h2>
@@ -44,12 +44,12 @@
 </ul>
 <div class="post-content fmt">
 	<p>今天为大家讲解一下动易SiteFactory标签里面的一个不常用但是会很有用的参数——optionalCond。大家可以看到，在通用信息列表、内容信息列表、内容带图片的信息列表等标签里面，都带有一个optionalCond参数（可选扩展查询约束条件），这个参数要如何使用？下面举一个例子给大家参考一下。</p>
-<p><img alt="通用信息列表标签——optionalCond参数" src="https://o3cex9zsl.qnssl.com/2012/08/17.png" title="通用信息列表标签——optionalCond参数" /></p>
+<p><img alt="通用信息列表标签——optionalCond参数" src="https://o3cex9zsl.qnssl.com/2012/08/17.png" title="通用信息列表标签——optionalCond参数"></p>
 
 
 <p>optionalCond参数解释为可选扩展查询约束条件，顾名思义是用来扩展查询语句约束条件的参数。通过添加and、or等约束条件来判断自定义字段的值，达到扩展查询语句的效果。</p>
 <p>比如要将不同类别的文章推荐到模板不同的区域上，而且各个区域都需要调用所有栏目的信息。而推荐级别和优先级别只能满足把文章推荐到1-2个区域上，并不能实现多个区域的文章推荐。如果在不调整节点，不添加专题的情况下，要怎样实现这个效果呢？我们可以在文章模型中添加了一个自定义数字字段，字段名为quyu，把最小值设置为1，小数位数为0，用这个数字字段来区分推荐到不同区域的文章。然后为各个区域的列表标签添加参数 optionalCond="and UT.quyu='X'" 控制数据筛选来实现效果（X为1、2、3...N的整数）。</p>
-<div class="highlight"><pre>//例如：
+<div class="highlight"><pre><span></span>//例如：
 {PE.Label id=&quot;通用信息列表&quot; bindStyle=&quot;普通式&quot; outputQty=&quot;5&quot; titleLength=&quot;40&quot; nodes=&quot;64,73&quot; bindModel=&quot;1&quot; listOrderType=&quot;20&quot; eliteLevel=&quot;100&quot; optionalCond=&quot;and UT.quyu=&#39;1&#39;&quot; /}
 
 //再如：
@@ -60,7 +60,7 @@
 <h5>代码提示：</h5>
 <p>1、需要用表名来区别字段是属于哪个表的，这里的UT是PE_U_Article的别名。</p>
 <p>2、对于通用信息列表标签和通用带图片的信息列表标签，在添加这个optionalCond参数的时候，同时需要设置bindModel参数，绑定联结的模型id，文章模型的id为1，所以 bindModel="1"。</p>
-		    	<div class="donate_div_container">
+</div>		    	<div class="donate_div_container">
 					<div class="donate_div">
 						<p><a href="javascript:void(0)" onclick="donateToggle()" class="donate_word" title="打赏，支持一下">打赏</a></p>
 						<div class="hide_box"></div>
@@ -90,7 +90,7 @@
 					</div>
 				</div>
 		    	<div class="tags">
-					<div class="post_tags">
+					<div class="post_tags" itemprop="keywords">
 						Tags: <a href="https://typecodes.com/tag/dong-yi-cms.html">动易cms</a>,<a href="https://typecodes.com/tag/optionalcondcan-shu.html">optionalcond参数</a>					</div>
 					<div class="post-share">
 						<ul class="post-shareul clearfix">
@@ -182,7 +182,6 @@
 		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
 	</section>
 </div>
-				</div>
 			</div>
 		</div>
 		<!--4. bottom begin-->

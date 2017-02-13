@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html dir="ltr" lang="zh-CN" class="no-js">
+<html class="no-js">
 	<head>
-		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
   		<meta name="renderer" content="webkit">
 		<title>去掉最高分和最低分求平均分数的问题 &mdash; TypeCodes</title>
 		<meta name="description" content="去掉最高分和最低分求平均分数的问题 &mdash; TypeCodes" />
@@ -34,8 +35,7 @@
 			</div>
 		</div>
 		<div class="container">
-			<div class="row">
-		<!--2. left sider begin-->
+			<div class="row">		<!--2. left sider begin-->
 		<div class="col-md-9" id="blog-main" role="main">
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/cseries/calculateaveragescore.html">去掉最高分和最低分求平均分数的问题</a></h2>
@@ -88,13 +88,13 @@
 40
 41
 42
-43</pre></div></td><td class="code"><div class="highlight"><pre><span class="cm">/**</span>
+43</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="cm">/**</span>
 <span class="cm"> * 歌唱比赛评委评分，去掉最高分和最低分后求出平均分</span>
 <span class="cm"> * @Filename:  singerscore2.c</span>
 <span class="cm"> * @Source  :  百度知道</span>
 <span class="cm"> */</span>
 
-<span class="cp">#include &lt;stdio.h&gt;</span>
+<span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
 
 <span class="kt">int</span> <span class="nf">main</span><span class="p">(</span> <span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span> <span class="n">argv</span><span class="p">[]</span> <span class="p">)</span>
 <span class="p">{</span>
@@ -135,7 +135,7 @@
 </td></tr></table>
 
 <p>测试结果：</p>
-<div class="highlight"><pre>No.[1] total scores are:[37.060003], average scores are:[9.27]
+<div class="highlight"><pre><span></span>No.[1] total scores are:[37.060003], average scores are:[9.27]
 
 No.[2] total scores are:[38.249997], average scores are:[9.56]
 
@@ -147,7 +147,7 @@ No.[5] total scores are:[36.689996], average scores are:[9.17]
 </pre></div>
 
 
-<p><img alt="去掉最高分和最低分后求出平均分" src="https://o3cex9zsl.qnssl.com/2014/11/singerscore2.png" title="去掉最高分和最低分后求出平均分" /></p>
+<p><img alt="去掉最高分和最低分后求出平均分" src="https://o3cex9zsl.qnssl.com/2014/11/singerscore2.png" title="去掉最高分和最低分后求出平均分"></p>
 <p>自己想了想，还可以用冒泡排序法：先将二维数组中的每一行（即“一维数组”）用冒泡排序法排序，然后每一行中的起始元素和最后一个元素都不用管（分别是最小值、最大值），直接求平均值就行了。实现代码如下：</p>
 <table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
  2
@@ -235,13 +235,13 @@ No.[5] total scores are:[36.689996], average scores are:[9.17]
 84
 85
 86
-87</pre></div></td><td class="code"><div class="highlight"><pre><span class="cm">/**</span>
+87</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="cm">/**</span>
 <span class="cm"> * 歌唱比赛评委评分，去掉最高分和最低分后求出平均分</span>
 <span class="cm"> * @Filename:  singerscore.c</span>
 <span class="cm"> * @author  :  vfhky 2014.11.10 https://typecodes.com</span>
 <span class="cm"> */</span>
 
-<span class="cp">#include &lt;stdio.h&gt;</span>
+<span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
 
 <span class="c1">//一维字符数组的冒泡排序</span>
 <span class="kt">void</span> <span class="nf">BubbleSort</span><span class="p">(</span> <span class="kt">float</span> <span class="n">array</span><span class="p">[],</span> <span class="kt">int</span> <span class="n">n</span> <span class="p">)</span>
@@ -326,7 +326,7 @@ No.[5] total scores are:[36.689996], average scores are:[9.17]
 </td></tr></table>
 
 <p>测试结果：</p>
-<div class="highlight"><pre>*((p+0)[1])=[9.20]  *((p+0)[2])=[9.20]  *((p+0)[3])=[9.31]  *((p+0)[4])=[9.35]  
+<div class="highlight"><pre><span></span>*((p+0)[1])=[9.20]  *((p+0)[2])=[9.20]  *((p+0)[3])=[9.31]  *((p+0)[4])=[9.35]  
 No.[1] total scores are:[37.059998], average scores are:[9.26]
 
 *((p+1)[1])=[9.50]  *((p+1)[2])=[9.52]  *((p+1)[3])=[9.57]  *((p+1)[4])=[9.66]  
@@ -343,8 +343,8 @@ No.[5] total scores are:[36.690002], average scores are:[9.17]
 </pre></div>
 
 
-<p><img alt="二维数组冒泡排序" src="https://o3cex9zsl.qnssl.com/2014/11/singerscore.png" title="二维数组冒泡排序" /></p>
-		    	<div class="donate_div_container">
+<p><img alt="二维数组冒泡排序" src="https://o3cex9zsl.qnssl.com/2014/11/singerscore.png" title="二维数组冒泡排序"></p>
+</div>		    	<div class="donate_div_container">
 					<div class="donate_div">
 						<p><a href="javascript:void(0)" onclick="donateToggle()" class="donate_word" title="打赏，支持一下">打赏</a></p>
 						<div class="hide_box"></div>
@@ -374,7 +374,7 @@ No.[5] total scores are:[36.690002], average scores are:[9.17]
 					</div>
 				</div>
 		    	<div class="tags">
-					<div class="post_tags">
+					<div class="post_tags" itemprop="keywords">
 						Tags: <a href="https://typecodes.com/tag/er-wei-shu-zu.html">二维数组</a>,<a href="https://typecodes.com/tag/mou-pao-pai-xu.html">冒泡排序</a>,<a href="https://typecodes.com/tag/shu-zu-zhi-zhen.html">数组指针</a>					</div>
 					<div class="post-share">
 						<ul class="post-shareul clearfix">
@@ -466,7 +466,6 @@ No.[5] total scores are:[36.690002], average scores are:[9.17]
 		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
 	</section>
 </div>
-				</div>
 			</div>
 		</div>
 		<!--4. bottom begin-->

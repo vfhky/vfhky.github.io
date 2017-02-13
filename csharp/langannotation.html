@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html dir="ltr" lang="zh-CN" class="no-js">
+<html class="no-js">
 	<head>
-		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
   		<meta name="renderer" content="webkit">
 		<title>几种编程语言的注释方法 &mdash; TypeCodes</title>
 		<meta name="description" content="几种编程语言的注释方法 &mdash; TypeCodes" />
@@ -34,8 +35,7 @@
 			</div>
 		</div>
 		<div class="container">
-			<div class="row">
-		<!--2. left sider begin-->
+			<div class="row">		<!--2. left sider begin-->
 		<div class="col-md-9" id="blog-main" role="main">
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/csharp/langannotation.html">几种编程语言的注释方法</a></h2>
@@ -53,16 +53,16 @@
  7
  8
  9
-10</pre></div></td><td class="code"><div class="highlight"><pre><span class="cp">&lt;!doctype html&gt;</span>
-<span class="nt">&lt;html</span> <span class="na">lang=</span><span class="s">&quot;en&quot;</span><span class="nt">&gt;</span>
-    <span class="nt">&lt;head&gt;</span>
-        <span class="nt">&lt;meta</span> <span class="na">charset=</span><span class="s">&quot;UTF-8&quot;</span><span class="nt">&gt;</span>
-        <span class="nt">&lt;title&gt;</span>Document<span class="nt">&lt;/title&gt;</span>
-    <span class="nt">&lt;/head&gt;</span>
-    <span class="nt">&lt;body&gt;</span>
-        <span class="nt">&lt;p&gt;</span>HTML语言如何注释&gt;/p&gt;<span class="c">&lt;!--HTML注释文字--&gt;</span>
-    <span class="nt">&lt;/body&gt;</span>
-<span class="nt">&lt;/html&gt;</span>
+10</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="cp">&lt;!doctype html&gt;</span>
+<span class="p">&lt;</span><span class="nt">html</span> <span class="na">lang</span><span class="o">=</span><span class="s">&quot;en&quot;</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">head</span><span class="p">&gt;</span>
+        <span class="p">&lt;</span><span class="nt">meta</span> <span class="na">charset</span><span class="o">=</span><span class="s">&quot;UTF-8&quot;</span><span class="p">&gt;</span>
+        <span class="p">&lt;</span><span class="nt">title</span><span class="p">&gt;</span>Document<span class="p">&lt;/</span><span class="nt">title</span><span class="p">&gt;</span>
+    <span class="p">&lt;/</span><span class="nt">head</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">body</span><span class="p">&gt;</span>
+        <span class="p">&lt;</span><span class="nt">p</span><span class="p">&gt;</span>HTML语言如何注释&gt;/p&gt;<span class="c">&lt;!--HTML注释文字--&gt;</span>
+    <span class="p">&lt;/</span><span class="nt">body</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">html</span><span class="p">&gt;</span>
 </pre></div>
 </td></tr></table>
 
@@ -70,8 +70,8 @@
 
 <h5>2 CSS样式</h5>
 <table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
-2</pre></div></td><td class="code"><div class="highlight"><pre><span class="nc">.spostinfo</span> <span class="nt">ul</span> <span class="nt">li</span><span class="p">{</span><span class="k">line-height</span><span class="o">:</span><span class="m">24px</span><span class="p">;}</span><span class="c">/*转载注明样式*/</span>
-<span class="nc">.backs</span> <span class="p">{</span><span class="k">cursor</span><span class="o">:</span> <span class="k">pointer</span><span class="p">;}</span><span class="c">/*站外引用trackback*/</span>
+2</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="p">.</span><span class="nc">spostinfo</span> <span class="nt">ul</span> <span class="nt">li</span><span class="p">{</span><span class="k">line-height</span><span class="p">:</span><span class="mi">24</span><span class="kt">px</span><span class="p">;}</span><span class="c">/*转载注明样式*/</span>
+<span class="p">.</span><span class="nc">backs</span> <span class="p">{</span><span class="k">cursor</span><span class="p">:</span> <span class="kc">pointer</span><span class="p">;}</span><span class="c">/*站外引用trackback*/</span>
 </pre></div>
 </td></tr></table>
 
@@ -81,7 +81,7 @@
 3
 4
 5
-6</pre></div></td><td class="code"><div class="highlight"><pre><span class="cp">&lt;%</span>
+6</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="cp">&lt;%</span>
     <span class="n">classid1</span><span class="o">=</span><span class="n">rs</span><span class="p">(</span><span class="s2">&quot;classid&quot;</span><span class="p">)</span>
     <span class="n">sql</span><span class="o">=</span><span class="s2">&quot;select  top 3 * from news where classid=&quot;</span><span class="o">&amp;</span><span class="n">classid1</span><span class="o">&amp;</span><span class="s2">&quot; order by time desc &quot;</span>
     <span class="n">set</span> <span class="n">rs1</span><span class="o">=</span><span class="n">conn</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">sql</span><span class="p">)</span>  <span class="err">&#39;</span><span class="no">ASP</span><span class="err">注释的样式</span>
@@ -98,7 +98,7 @@
 5
 6
 7
-8</pre></div></td><td class="code"><div class="highlight"><pre><span class="x">$arr_ok = str_replace(&#39;&quot;&#39;,&#39;&#39;,$arr_ok);//用C++风格注释PHP</span>
+8</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="x">$arr_ok = str_replace(&#39;&quot;&#39;,&#39;&#39;,$arr_ok);//用C++风格注释PHP</span>
 <span class="x">$arr_ok = str_replace(&quot;\n&quot;, &quot;&quot;, str_replace(&quot; &quot;, &quot;&quot;, $arr_ok));</span>
 <span class="x">/*</span>
 <span class="x"> 用C风格注释PHP</span>
@@ -124,7 +124,7 @@
 12
 13
 14
-15</pre></div></td><td class="code"><div class="highlight"><pre><span class="cm">/*</span>
+15</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="cm">/*</span>
 <span class="cm">方法一：C风格注释JS</span>
 <span class="cm">*/</span>
 <span class="kd">var</span> <span class="nx">xmlHttpObject</span><span class="p">;</span>
@@ -157,9 +157,9 @@
 12
 13
 14
-15</pre></div></td><td class="code"><div class="highlight"><pre><span class="cp">#include &lt;conio.h&gt;</span>
-<span class="cp">#include &lt;string.h&gt;</span>
-<span class="cp">#include &lt;stdio.h&gt;</span>
+15</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;conio.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;string.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
 <span class="kt">int</span> <span class="nf">main</span><span class="p">(</span> <span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">**</span> <span class="n">argv</span> <span class="p">)</span>
 <span class="p">{</span>
     <span class="kt">char</span> <span class="o">*</span><span class="n">s1</span><span class="o">=</span><span class="s">&quot;Hello, Programmers!&quot;</span><span class="p">;</span>  <span class="c1">//单行C注释文字</span>
@@ -188,7 +188,7 @@
 10
 11
 12
-13</pre></div></td><td class="code"><div class="highlight"><pre><span class="k">namespace</span> <span class="nn">Functions</span> 
+13</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="k">namespace</span> <span class="nn">Functions</span> 
 <span class="p">{</span> 
     <span class="k">public</span> <span class="k">class</span> <span class="nc">Factorial</span> 
     <span class="p">{</span> 
@@ -203,7 +203,7 @@
 <span class="p">}</span>
 </pre></div>
 </td></tr></table>
-		    	<div class="donate_div_container">
+</div>		    	<div class="donate_div_container">
 					<div class="donate_div">
 						<p><a href="javascript:void(0)" onclick="donateToggle()" class="donate_word" title="打赏，支持一下">打赏</a></p>
 						<div class="hide_box"></div>
@@ -233,7 +233,7 @@
 					</div>
 				</div>
 		    	<div class="tags">
-					<div class="post_tags">
+					<div class="post_tags" itemprop="keywords">
 						Tags: <a href="https://typecodes.com/tag/cheng-xu-zhu-shi.html">程序注释</a>					</div>
 					<div class="post-share">
 						<ul class="post-shareul clearfix">
@@ -325,7 +325,6 @@
 		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
 	</section>
 </div>
-				</div>
 			</div>
 		</div>
 		<!--4. bottom begin-->

@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html dir="ltr" lang="zh-CN" class="no-js">
+<html class="no-js">
 	<head>
-		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
   		<meta name="renderer" content="webkit">
 		<title>标签 iptables 下的文章 - TypeCodes</title>
 		<meta name="description" content="标签 iptables 下的文章 - TypeCodes" />
@@ -34,8 +35,7 @@
 			</div>
 		</div>
 		<div class="container">
-			<div class="row">
-		<!--2. left sider begin-->
+			<div class="row">		<!--2. left sider begin-->
 		<div class="col-md-9" id="blog-main" role="main">
 		  	<!--article recycle-->
 			<article class="post">
@@ -47,7 +47,7 @@
 	<h5>1 悲催的 iptables 探索</h5>
 <p>由于之前对 iptables 不熟悉，所以在配置 iptables 的时候，直接执行命令<code>iptables -F</code>。结果导致 Securecrt 中所有连接远端服务器的窗口都断掉了，而且博客的所有页面都无法打开。心中顿时一慌，ssh无法登录，即使博客中的程序和数据库已经备份了也无法取出了。</p>
 <p>网上搜了一下，原来在使用这个命令之前一定要先执行命令<code>iptables -P INPUT ACCEPT</code>。</p>
-<div class="highlight"><pre>###### 即先把 policy 设定为 ACCEPT, 允许所有的封包传输. 否则, 当前连接远程服务器的终端会立即断掉
+<div class="highlight"><pre><span></span>###### 即先把 policy 设定为 ACCEPT, 允许所有的封包传输. 否则, 当前连接远程服务器的终端会立即断掉
 [root@typecodes ~]# iptables -P INPUT ACCEPT
 ###### 可以通过清除所有规则来暂时停止防火墙：(警告：这只适合在没有配置防火墙的环境中，如果已经配置过默认规则为deny的环境，此步骤将使系统的所有网络访问中断)
 [root@typecodes ~]# iptables -F
@@ -56,7 +56,7 @@
 
 
 	<p class="more"><a href="https://typecodes.com/web/iptablessshnologin.html" title="阿里云iptables防火墙配置出错导致ssh无法远程登录">- 阅读剩余部分 -</a></p>
-			</article>
+</div>			</article>
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/web/aliyuncentoslnmpiptables.html">阿里云CentOS主机 LNMP 环境之主机安全篇二</a></h2>
 <ul class="post-meta">
@@ -67,7 +67,7 @@
 <p>之前在探索 iptables 也发生过惨案，详见<a href="https://typecodes.com/web/iptablessshnologin.html" title="阿里云iptables防火墙配置出错导致ssh无法远程登录">此文</a>。</p>
 
 	<p class="more"><a href="https://typecodes.com/web/aliyuncentoslnmpiptables.html" title="阿里云CentOS主机 LNMP 环境之主机安全篇二">- 阅读剩余部分 -</a></p>
-			</article>
+</div>			</article>
 		  	<!--page navigation-->
 <ol class="page-navigator">
 </ol>		</div>
@@ -121,7 +121,6 @@
 		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
 	</section>
 </div>
-				</div>
 			</div>
 		</div>
 		<!--4. bottom begin-->

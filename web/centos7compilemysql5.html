@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html dir="ltr" lang="zh-CN" class="no-js">
+<html class="no-js">
 	<head>
-		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
   		<meta name="renderer" content="webkit">
 		<title>阿里云CentOS 7.1编译安装MySql5.6.24 &mdash; TypeCodes</title>
 		<meta name="description" content="阿里云CentOS 7.1编译安装MySql5.6.24 &mdash; TypeCodes" />
@@ -34,8 +35,7 @@
 			</div>
 		</div>
 		<div class="container">
-			<div class="row">
-		<!--2. left sider begin-->
+			<div class="row">		<!--2. left sider begin-->
 		<div class="col-md-9" id="blog-main" role="main">
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/web/centos7compilemysql5.html">阿里云CentOS 7.1编译安装MySql5.6.24</a></h2>
@@ -49,7 +49,7 @@
 
 <h5>1 创建mysql用户和用户组，并下载MySql5.6.24版本</h5>
 <p>首先创建一个名为mysql且<code>没有登录权限</code>的用户和一个名为mysql的用户组，然后去mysql官网下载MySql5.6.24版本。</p>
-<div class="highlight"><pre>#######新建mysql用户和mysql组
+<div class="highlight"><pre><span></span>#######新建mysql用户和mysql组
 [root@typecodes ~]# groupadd -r mysql &amp;&amp; useradd -r -g mysql -s /bin/false -M mysql
 
 ######从官网或者博客备份地址下载MySql5.6.24版本
@@ -68,7 +68,7 @@
 
 <h5>2 下载编译MySql5.6.24时需要的工具（安装过程同编译安装MySQL5.7.7rc完全一致）</h5>
 <p>和编译安装MySQL5.7.7rc版本一样，这里也需要安装CMake、Ncurses、bison和Boost库。</p>
-<div class="highlight"><pre>#######CMake编译工具
+<div class="highlight"><pre><span></span>#######CMake编译工具
 [root@typecodes ~]# wget -c http://git.typecodes.com/libs/ccpp/cmake-3.2.1.tar.gz
 [root@typecodes ~]# tar -zxf cmake-3.2.1.tar.gz &amp;&amp; cd cmake-3.2.1
 [root@typecodes cmake-3.2.1]# ./configure 
@@ -100,12 +100,12 @@ CMake suite maintained and supported by Kitware (kitware.com/cmake).
 
 <h5>3 解决MySQL5.6.24的bug</h5>
 <p>在MySQL5.6.24源码包中的<code>/cmd-line-utils/libedit/terminal.c</code>文件有bug，会导致在安装完后，使用命令报<code>Segmentation fault</code>的错误。</p>
-<p><img alt="MySQL5.6.24的bug" src="https://o3cex9zsl.qnssl.com/2015/06/mysql5.6.24_bug.png" title="MySQL5.6.24的bug" /></p>
+<p><img alt="MySQL5.6.24的bug" src="https://o3cex9zsl.qnssl.com/2015/06/mysql5.6.24_bug.png" title="MySQL5.6.24的bug"></p>
 <p>谷歌到<a href="https://bugs.launchpad.net/percona-server/+bug/1201123" title="《connect using mysql client gives a segmentation fault》">这篇文章</a>解决：注销第869行的 <code>//char buf[TC_BUFSIZE];</code>并将第879行的<code>area = buf;</code>改成<code>area = NULL;</code>。</p>
-<p><img alt="MySQL5.6.24的bug" src="https://o3cex9zsl.qnssl.com/2015/06/solve_mysql5.6.24_bug.png" title="MySQL5.6.24的bug" /></p>
+<p><img alt="MySQL5.6.24的bug" src="https://o3cex9zsl.qnssl.com/2015/06/solve_mysql5.6.24_bug.png" title="MySQL5.6.24的bug"></p>
 <h5>4 开始进行MySql5.6.24编译前的配置</h5>
 <p>这里和编译安装MySQL5.7.7rc时的操作也完全相同：</p>
-<div class="highlight"><pre>######使用cmake命令，开始编译MySql5.6.24
+<div class="highlight"><pre><span></span>######使用cmake命令，开始编译MySql5.6.24
 [root@typecodes mysql-5.6.24]# cmake \
 -DCMAKE_INSTALL_PREFIX=/usr/local/mysql  \              [MySQL安装的根目录]
 -DMYSQL_DATADIR=/mydata/mysql/data  \                   [MySQL数据库文件存放目录]
@@ -132,24 +132,24 @@ CMake suite maintained and supported by Kitware (kitware.com/cmake).
 
 
 <p>执行上面的配置命令的结果如下图所示：</p>
-<p><img alt="MySQL5.7.7rc编译前的配置" src="https://o3cex9zsl.qnssl.com/2015/06/compile_mysql5.6.24_config.png" title="MySQL5.7.7rc编译前的配置" /></p>
+<p><img alt="MySQL5.7.7rc编译前的配置" src="https://o3cex9zsl.qnssl.com/2015/06/compile_mysql5.6.24_config.png" title="MySQL5.7.7rc编译前的配置"></p>
 <h5>5 开始编译和安装MySQL5.6.24</h5>
 <p>相对编译MySQL5.7.7rc来说，编译MySQL5.6.24对主机资源的消耗低很多，而且耗时也少（约1小时）。</p>
-<div class="highlight"><pre>[root@typecodes mysql-5.6.24]# make &amp;&amp; make install
+<div class="highlight"><pre><span></span>[root@typecodes mysql-5.6.24]# make &amp;&amp; make install
 </pre></div>
 
 
 <p>下图展示的是<code>make</code>命令执行完毕的情况：</p>
-<p><img alt="编译MySQL5.6.24的make命令执行结果" src="https://o3cex9zsl.qnssl.com/2015/06/make_mysql5.6.24_step1.png" title="编译MySQL5.6.24的make命令执行结果" /></p>
-<p><img alt="编译MySQL5.6.24的make命令执行结果" src="https://o3cex9zsl.qnssl.com/2015/06/make_mysql5.6.24_step2.png" title="编译MySQL5.6.24的make命令执行结果" /></p>
+<p><img alt="编译MySQL5.6.24的make命令执行结果" src="https://o3cex9zsl.qnssl.com/2015/06/make_mysql5.6.24_step1.png" title="编译MySQL5.6.24的make命令执行结果"></p>
+<p><img alt="编译MySQL5.6.24的make命令执行结果" src="https://o3cex9zsl.qnssl.com/2015/06/make_mysql5.6.24_step2.png" title="编译MySQL5.6.24的make命令执行结果"></p>
 <p><code>make</code>命令执行完后，开始执行<code>make install</code>命令：</p>
-<p><img alt="编译MySQL5.6.24的make命令执行结果" src="https://o3cex9zsl.qnssl.com/2015/06/make_mysql5.6.24_step3.png" title="编译MySQL5.6.24的make命令执行结果" /></p>
-<p><img alt="编译MySQL5.6.24的make命令执行结果" src="https://o3cex9zsl.qnssl.com/2015/06/make_mysql5.6.24_step4.png" title="编译MySQL5.6.24的make命令执行结果" /></p>
+<p><img alt="编译MySQL5.6.24的make命令执行结果" src="https://o3cex9zsl.qnssl.com/2015/06/make_mysql5.6.24_step3.png" title="编译MySQL5.6.24的make命令执行结果"></p>
+<p><img alt="编译MySQL5.6.24的make命令执行结果" src="https://o3cex9zsl.qnssl.com/2015/06/make_mysql5.6.24_step4.png" title="编译MySQL5.6.24的make命令执行结果"></p>
 <p>最后，激动人心的时刻，看到下图就代表已经编译安装好了MySQL5.6.24！</p>
-<p><img alt="安装MySQL5.6.24的make install命令执行结果" src="https://o3cex9zsl.qnssl.com/2015/06/make_mysql5.6.24_step5.png" title="安装MySQL5.7.7rc的MySQL5.6.24命令执行结果" /></p>
+<p><img alt="安装MySQL5.6.24的make install命令执行结果" src="https://o3cex9zsl.qnssl.com/2015/06/make_mysql5.6.24_step5.png" title="安装MySQL5.7.7rc的MySQL5.6.24命令执行结果"></p>
 <h5>6 查看编译成功后的MySQL安装目录</h5>
 <p>同MySQL5.7.7rc一样，需要查看MySQL5.6.24的<code>/usr/local/mysql/lib/</code>目录下是否存在下面的库文件。</p>
-<div class="highlight"><pre>[root@typecodes lib]# ls
+<div class="highlight"><pre><span></span>[root@typecodes lib]# ls
 libmysqlclient.a    libmysqlclient_r.so     libmysqlclient_r.so.18.1.0  libmysqlclient.so.18      libmysqld.a         plugin
 libmysqlclient_r.a  libmysqlclient_r.so.18  libmysqlclient.so           libmysqlclient.so.18.1.0  libmysqlservices.a
 </pre></div>
@@ -157,20 +157,20 @@ libmysqlclient_r.a  libmysqlclient_r.so.18  libmysqlclient.so           libmysql
 
 <h5>7 开始设置MySQL的配置文件my.cnf</h5>
 <p>同MySQL5.7.7rc的配置文件my.cnf一样，直接把<a href="https://typecodes.com/web/centosmysqlconfig.html" title="查看原文">《CentOS系统MySQL的配置文件my.cnf》</a>文中整理的my.cnf文件覆盖服务器上的<code>/etc/my.cnf</code>即可。</p>
-<div class="highlight"><pre>[root@typecodes mysql]# mv /etc/my.cnf /etc/my.cnfbak
+<div class="highlight"><pre><span></span>[root@typecodes mysql]# mv /etc/my.cnf /etc/my.cnfbak
 [root@typecodes mysql]# mv  ~/my.cnf  /etc/my.cnf
 </pre></div>
 
 
 <h5>8 添加mysql的环境变量</h5>
 <p>同MySQL5.7.7rc，添加MySQL的bin目录到Linux环境变量中：</p>
-<div class="highlight"><pre><span class="x">[root@typecodes mysql]</span><span class="err">#</span><span class="x"> echo -e &#39;\n\nexport PATH=/usr/local/mysql/bin:</span><span class="p">$</span><span class="nv">PATH</span><span class="x">\n&#39; &gt;&gt; /etc/profile &amp;&amp; source /etc/profile</span>
+<div class="highlight"><pre><span></span>[root@typecodes mysql]# echo -e &#39;\n\nexport PATH=/usr/local/mysql/bin:$PATH\n&#39; &gt;&gt; /etc/profile &amp;&amp; source /etc/profile
 </pre></div>
 
 
 <h5>9 创建MySQL数据库文件的存放路径以及相关安全配置</h5>
 <p>同MySQL5.7.7rc，创建<code>/mydata/mysql/data</code>作为MySQL的数据库目录。</p>
-<div class="highlight"><pre>[root@typecodes ~]# mkdir -p /mydata/mysql/data &amp;&amp; chown -R root:mysql /usr/local/mysql
+<div class="highlight"><pre><span></span>[root@typecodes ~]# mkdir -p /mydata/mysql/data &amp;&amp; chown -R root:mysql /usr/local/mysql
 [root@typecodes mysql]# chown -R mysql:mysql /mydata/mysql/data
 [root@typecodes mysql]# chmod -R go-rwx /mydata/mysql/data
 </pre></div>
@@ -178,16 +178,16 @@ libmysqlclient_r.a  libmysqlclient_r.so.18  libmysqlclient.so           libmysql
 
 <h5>10 初始化MySQL自身的数据库</h5>
 <p>同MySQL5.7.7rc，初始化MySQL自身的数据库。</p>
-<div class="highlight"><pre>######参数user表示用户，basedir表示mysql的安装路径，datadir表示数据库文件存放路径
+<div class="highlight"><pre><span></span>######参数user表示用户，basedir表示mysql的安装路径，datadir表示数据库文件存放路径
 [root@typecodes bin]# mysqld --initialize-insecure --user=mysql --basedir=/usr/local/mysql --datadir=/mydata/mysql/data
 </pre></div>
 
 
 <p>执行完后，可以通过<code>[root@typecodes mysql]# ls -lrt /mydata/mysql/data/</code>命令查看是否生成了MySQL自身的数据库文件。</p>
-<p><img alt="初始化MySQL自身的数据库" src="https://o3cex9zsl.qnssl.com/2015/06/mysql_ini_dir.png" title="初始化MySQL自身的数据库" /></p>
+<p><img alt="初始化MySQL自身的数据库" src="https://o3cex9zsl.qnssl.com/2015/06/mysql_ini_dir.png" title="初始化MySQL自身的数据库"></p>
 <h5>11 创建MySQL日志存放目录以及设置开机启动</h5>
 <p>同MySQL5.7.7rc，将启动MySQL服务进程的脚本添加到开机启动项中。</p>
-<div class="highlight"><pre>[root@typecodes ~]# mkdir -p /var/run/mysql &amp;&amp; mkdir -p /var/log/mysql
+<div class="highlight"><pre><span></span>[root@typecodes ~]# mkdir -p /var/run/mysql &amp;&amp; mkdir -p /var/log/mysql
 [root@typecodes ~]# chown -R mysql:mysql /var/log/mysql &amp;&amp; chown -R mysql:mysql /var/run/mysql
 ######配置开机自启动
 [root@typecodes mysql]# cp /usr/local/mysql/support-files/mysql.server  /etc/init.d/mysqld
@@ -199,7 +199,7 @@ libmysqlclient_r.a  libmysqlclient_r.so.18  libmysqlclient.so           libmysql
 
 <h5>12 启动MySQL服务</h5>
 <p>同MySQL5.7.7rc，启动MySQL服务进程：</p>
-<div class="highlight"><pre>[root@typecodes mysql]# mysqld_safe --user=mysql --datadir=/mydata/mysql/data --log-error=/var/log/mysql/error.log &amp;
+<div class="highlight"><pre><span></span>[root@typecodes mysql]# mysqld_safe --user=mysql --datadir=/mydata/mysql/data --log-error=/var/log/mysql/error.log &amp;
 [1] 10274
 [root@typecodes mysql]# 150513 21:28:16 mysqld_safe Logging to &#39;/var/log/mysql/error.log&#39;.
 150513 21:28:16 mysqld_safe Starting mysqld daemon with databases from /mydata/mysql/data
@@ -211,13 +211,13 @@ Starting MySQL.[  OK  ]                 [启动成功]
 
 
 <p>然后使用下面这命令<code>ps -ef | grep mysql</code>和<code>netstat -tunpl | grep 3306</code>查看MySQL服务进程和端口监听情况：</p>
-<p><img alt="查看MySQL服务进程和端口监听情况" src="https://o3cex9zsl.qnssl.com/2015/06/mysql_process_litsen_port.png" title="查看MySQL服务进程和端口监听情况" /></p>
+<p><img alt="查看MySQL服务进程和端口监听情况" src="https://o3cex9zsl.qnssl.com/2015/06/mysql_process_litsen_port.png" title="查看MySQL服务进程和端口监听情况"></p>
 <h5>13 初始化MySQL数据库的root用户密码</h5>
 <p>MySQL5.6.24和MySQL5.7.7rc的用户密码策略是不同的，MySQL5.6.24没有提示用户密码的强度等级，所以也就不会去校验。因此，我们只需要一路输入<code>y</code>和自己喜欢的密码即可。</p>
-<p><img alt="MySQL5.6.24设置密码" src="https://o3cex9zsl.qnssl.com/2015/06/mysql_set_password.png" title="MySQL5.6.24设置密码" /></p>
+<p><img alt="MySQL5.6.24设置密码" src="https://o3cex9zsl.qnssl.com/2015/06/mysql_set_password.png" title="MySQL5.6.24设置密码"></p>
 <h5>14 将MySQL数据库的动态链接库共享至系统链接库</h5>
 <p>同MySQL5.7.7rc，将MySQL5.6.24的lib库文件添加到当前Linux主机链接库<code>/etc/ld.so.conf.d/</code>下，方便其它程序安装调用。</p>
-<div class="highlight"><pre>[root@typecodes lib]# echo &quot;/usr/local/mysql/lib&quot; &gt; /etc/ld.so.conf.d/mysql.conf
+<div class="highlight"><pre><span></span>[root@typecodes lib]# echo &quot;/usr/local/mysql/lib&quot; &gt; /etc/ld.so.conf.d/mysql.conf
 [root@typecodes lib]# ldconfig          [使生效]
 [root@typecodes lib]# ldconfig -v |grep mysql       [查看效果]
 ldconfig: Can&#39;t stat /libx32: No such file or directory
@@ -234,7 +234,7 @@ ldconfig: Can&#39;t stat /usr/libx32: No such file or directory
 
 <h5>15 创建其它MySQL数据库用户</h5>
 <p>操作同MySQL5.7.7rc，这里就不再演示了。</p>
-		    	<div class="donate_div_container">
+</div>		    	<div class="donate_div_container">
 					<div class="donate_div">
 						<p><a href="javascript:void(0)" onclick="donateToggle()" class="donate_word" title="打赏，支持一下">打赏</a></p>
 						<div class="hide_box"></div>
@@ -264,7 +264,7 @@ ldconfig: Can&#39;t stat /usr/libx32: No such file or directory
 					</div>
 				</div>
 		    	<div class="tags">
-					<div class="post_tags">
+					<div class="post_tags" itemprop="keywords">
 						Tags: <a href="https://typecodes.com/tag/bo-ke-cheng-chang-lu.html">博客成长录</a>,<a href="https://typecodes.com/tag/mysql.html">mysql</a>					</div>
 					<div class="post-share">
 						<ul class="post-shareul clearfix">
@@ -356,7 +356,6 @@ ldconfig: Can&#39;t stat /usr/libx32: No such file or directory
 		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
 	</section>
 </div>
-				</div>
 			</div>
 		</div>
 		<!--4. bottom begin-->

@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html dir="ltr" lang="zh-CN" class="no-js">
+<html class="no-js">
 	<head>
-		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
   		<meta name="renderer" content="webkit">
 		<title>理解有符号和无符号的字符数和整数的转换 &mdash; TypeCodes</title>
 		<meta name="description" content="理解有符号和无符号的字符数和整数的转换 &mdash; TypeCodes" />
@@ -34,8 +35,7 @@
 			</div>
 		</div>
 		<div class="container">
-			<div class="row">
-		<!--2. left sider begin-->
+			<div class="row">		<!--2. left sider begin-->
 		<div class="col-md-9" id="blog-main" role="main">
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/cseries/signedunsignedcharconvint.html">理解有符号和无符号的字符数和整数的转换</a></h2>
@@ -46,7 +46,7 @@
 	<p>网上关于有符号、无符号字符转换成有符号、无符号整形数据的问题，自己写了一个测试程序，分析了下，挺有意思的。</p>
 <h5>1 测试说明</h5>
 <p>用的是自己的win7 64位系统，处理器当然是Intel的，因此是前文提到的<code>小端模式</code>。默认按32位（总线）处理，即一个整型4个字节，长度共 2^32 = 4294967296 字节；有符号字符char类型数据的范围是 -128~127 （对应二进制 11111111~01111111），无符号字符 unsinged char 类型数据范围是 0~255（对应二进制 00000000~11111111）。</p>
-<p><img alt="C语言有符号和无符号数" src="https://o3cex9zsl.qnssl.com/2014/11/clangsignedandunsigned.png" title="C语言有符号和无符号数" /></p>
+<p><img alt="C语言有符号和无符号数" src="https://o3cex9zsl.qnssl.com/2014/11/clangsignedandunsigned.png" title="C语言有符号和无符号数"></p>
 
 
 <h5>2 测试程序</h5>
@@ -79,12 +79,12 @@
 27
 28
 29
-30</pre></div></td><td class="code"><div class="highlight"><pre><span class="cm">/**</span>
+30</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="cm">/**</span>
 <span class="cm"> * @FileName :  signedandunsigned.c</span>
 <span class="cm"> * @Author   :  vfhky 2014.10.21 https://typecodes.com/cseries/signedunsignedcharconvint.html</span>
 <span class="cm"> * @Function :  对有符号和无符号数的测试</span>
 <span class="cm"> */</span>
-<span class="cp">#include &lt;stdio.h&gt;</span>
+<span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
 
 <span class="kt">int</span> <span class="nf">main</span><span class="p">(</span> <span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span> <span class="n">argv</span><span class="p">[]</span> <span class="p">)</span>
 <span class="p">{</span>
@@ -112,7 +112,7 @@
 </pre></div>
 </td></tr></table>
 
-<p><img alt="对有符号signed和无符号unsigned数的测试" src="https://o3cex9zsl.qnssl.com/2014/11/signedandunsigned.png" title="对有符号signed和无符号unsigned数的测试" /></p>
+<p><img alt="对有符号signed和无符号unsigned数的测试" src="https://o3cex9zsl.qnssl.com/2014/11/signedandunsigned.png" title="对有符号signed和无符号unsigned数的测试"></p>
 <h5>3 三种情形所得结果的分析</h5>
 <h6>3.1 情形1：b = -2</h6>
 <p>执行<code>b = -2;</code>后，整型变量b的值 -2 在内存单元中的形式是<code>1111 1111 1111 1111 1111 1111 1111 1110</code>（共4字节，十六进制<code>0xfffffffe</code>）。而当执行<code>a = (char *)&amp;b;</code>后，由于CPU是<code>小端模式</code>，所以指针变量a指向b的首地址（低地址/低字节1111 1110所在的地址）。由于有符号字符型数据占一个字节(范围<code>-128~127</code>)，所以刚好是变量b的第一个字节<code>1111 1110（十六进制的fe）</code>。它对应有符号字符型数据<code>-2</code>，即<code>*a</code>的值为<code>-2</code>。然后在打印<code>printf( "*a=[%d]\n", *a );</code>时，也就是将有符号整型-2以有符号整型数据输出，也就是<code>-2</code>。</p>
@@ -123,7 +123,7 @@
 <h6>3.3 情形3：b = 129</h6>
 <p>执行<code>b = 129;</code>后，整型变量 b 的值 129 在内存中的形式是<code>0000 0000 0000 0000 0000 0000 1000 0001</code>（共4字节，十六进制<code>0x00000081</code>）。此时指针变量a仍旧指向b的首地址（低地址/低字节1000 0001所在的地址）。由于有符号字符型数据占一个字节(范围<code>-128~127</code>)，所以刚好是变量b的第一个字节<code>1000 0001（十六进制的a1）</code>。它对应有符号字符型数据<code>-0x7f（即十进制的-127）</code>，所以<code>*a</code>的值为<code>-127</code>。然后在打印<code>printf( "*a=[%d]\n", *a );</code>时，也就是将有符号整型-127以有符号整型数据输出，也就是<code>-127</code>。</p>
 <p>而打印<code>printf( "*a=[%u]\n", *a );</code>时，是将有符号整型-127以无符号整型数据输出，即求-127的补码形式：-127的绝对值127的内存单元为<code>0000 0000 0000 0000 0000 0000 0111 1111</code>（4字节），然后取反得到<code>1111 1111 1111 1111 1111 1111 1000 0000</code>（共4字节），然后加1得到<code>1111 1111 1111 1111 1111 1111 1000 0001</code>（共4字节），由于此时是无符号，即最高位1不是符号位，所以共 (2^32 - 1) - （255 - 128 - 1） = 4294967296 -1 - 126 = 4294967169。</p>
-		    	<div class="donate_div_container">
+</div>		    	<div class="donate_div_container">
 					<div class="donate_div">
 						<p><a href="javascript:void(0)" onclick="donateToggle()" class="donate_word" title="打赏，支持一下">打赏</a></p>
 						<div class="hide_box"></div>
@@ -153,7 +153,7 @@
 					</div>
 				</div>
 		    	<div class="tags">
-					<div class="post_tags">
+					<div class="post_tags" itemprop="keywords">
 						Tags: <a href="https://typecodes.com/tag/you-fu-hao-zi-fu-signed.html">有符号字符signed</a>,<a href="https://typecodes.com/tag/wu-fu-hao-zi-fu-unsigned.html">无符号字符unsigned</a>					</div>
 					<div class="post-share">
 						<ul class="post-shareul clearfix">
@@ -245,7 +245,6 @@
 		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
 	</section>
 </div>
-				</div>
 			</div>
 		</div>
 		<!--4. bottom begin-->

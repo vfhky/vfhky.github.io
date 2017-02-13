@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html dir="ltr" lang="zh-CN" class="no-js">
+<html class="no-js">
 	<head>
-		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
   		<meta name="renderer" content="webkit">
 		<title>MSSQL还原数据库时出现错误:sql Sys &mdash; TypeCodes</title>
 		<meta name="description" content="MSSQL还原数据库时出现错误:sql Sys &mdash; TypeCodes" />
@@ -34,8 +35,7 @@
 			</div>
 		</div>
 		<div class="container">
-			<div class="row">
-		<!--2. left sider begin-->
+			<div class="row">		<!--2. left sider begin-->
 		<div class="col-md-9" id="blog-main" role="main">
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/database/mssqlcannotrestore.html">MSSQL还原数据库时出现错误:sql Sys</a></h2>
@@ -44,14 +44,14 @@
 </ul>
 <div class="post-content fmt">
 	<p>先前博主在本地备份了一个数据库文件dy11.bk，然后在MSSQL2008上新建了一个名为first的数据库，打算把dy11.bk还原到这个first数据库上。结果，MSSQL还原时出现错误:sql System.Data.SqlClient.SqlError: 无法覆盖文件'C:\Program Files\Microsoft SQL Server\MSSQL\data\dy11.mdf'。数据库'dy11'正在使用该文件。</p>
-<p><img alt="MSSQL还原数据库时出现错误-1" src="https://o3cex9zsl.qnssl.com/2012/08/1.png" title="MSSQL还原数据库时出现错误-1" /></p>
+<p><img alt="MSSQL还原数据库时出现错误-1" src="https://o3cex9zsl.qnssl.com/2012/08/1.png" title="MSSQL还原数据库时出现错误-1"></p>
 
 
 <p>原因是：在还原数据库时，在选择“将数据库文件还原为”的mdf（SQL Server数据库文件，光盘镜像文件的一种）和ldf（SQL的日志文件）还原路径时，没有修改成当前数据库的路径（比如：当前first数据库的路径）。而是保持默认的路径（C:\Program Files\Microsoft SQL Server\MSSQL10.MSSQLSERVER\MSSQL\DATA\dy11.mdf）造成的。</p>
 <p>解决方法（按图片提示步骤即可）：</p>
-<p><img alt="MSSQL还原数据库时出现错误-2" src="https://o3cex9zsl.qnssl.com/2012/08/2.jpg" title="MSSQL还原数据库时出现错误-2" /></p>
-<p><img alt="MSSQL还原数据库时出现错误-3" src="https://o3cex9zsl.qnssl.com/2012/08/3.png" title="MSSQL还原数据库时出现错误-3" /></p>
-		    	<div class="donate_div_container">
+<p><img alt="MSSQL还原数据库时出现错误-2" src="https://o3cex9zsl.qnssl.com/2012/08/2.jpg" title="MSSQL还原数据库时出现错误-2"></p>
+<p><img alt="MSSQL还原数据库时出现错误-3" src="https://o3cex9zsl.qnssl.com/2012/08/3.png" title="MSSQL还原数据库时出现错误-3"></p>
+</div>		    	<div class="donate_div_container">
 					<div class="donate_div">
 						<p><a href="javascript:void(0)" onclick="donateToggle()" class="donate_word" title="打赏，支持一下">打赏</a></p>
 						<div class="hide_box"></div>
@@ -81,7 +81,7 @@
 					</div>
 				</div>
 		    	<div class="tags">
-					<div class="post_tags">
+					<div class="post_tags" itemprop="keywords">
 						Tags: <a href="https://typecodes.com/tag/systemdatasqlclient.html">system.data.sqlclient</a>,<a href="https://typecodes.com/tag/mssqlhuan-yuan.html">mssql还原</a>					</div>
 					<div class="post-share">
 						<ul class="post-shareul clearfix">
@@ -173,7 +173,6 @@
 		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
 	</section>
 </div>
-				</div>
 			</div>
 		</div>
 		<!--4. bottom begin-->

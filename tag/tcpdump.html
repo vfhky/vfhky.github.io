@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html dir="ltr" lang="zh-CN" class="no-js">
+<html class="no-js">
 	<head>
-		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
   		<meta name="renderer" content="webkit">
 		<title>标签 tcpdump 下的文章 - TypeCodes</title>
 		<meta name="description" content="标签 tcpdump 下的文章 - TypeCodes" />
@@ -34,8 +35,7 @@
 			</div>
 		</div>
 		<div class="container">
-			<div class="row">
-		<!--2. left sider begin-->
+			<div class="row">		<!--2. left sider begin-->
 		<div class="col-md-9" id="blog-main" role="main">
 		  	<!--article recycle-->
 			<article class="post">
@@ -45,10 +45,10 @@
 </ul>
 <div class="post-content fmt">
 	<p>在<a href="https://typecodes.com/cseries/tcpdumpwiresharkclosewait2.html" title="《使用TCPDUMP和Wireshark排查服务端CLOSE_WAIT（二）》">前文</a>中讲述了Linux服务端TCP通信出现<code>CLOSE_WAIT</code>状态的原因，这篇文章主要通过一个实例演示它个一个“恶劣”影响：直接使服务端进程Down掉。</p>
-<p><img alt="CentOS服务端建立监听端口" src="https://o3cex9zsl.qnssl.com/2016/02/tcp_socket_server1.png" title="CentOS服务端建立监听端口" /></p>
+<p><img alt="CentOS服务端建立监听端口" src="https://o3cex9zsl.qnssl.com/2016/02/tcp_socket_server1.png" title="CentOS服务端建立监听端口"></p>
 
 	<p class="more"><a href="https://typecodes.com/cseries/tcpclosewaitsigpipe.html" title="Linux TCP通信出现CLOSE_WAIT后导致服务端进程挂掉">- 阅读剩余部分 -</a></p>
-			</article>
+</div>			</article>
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/cseries/tcpdumpwiresharkclosewait2.html">使用TCPDUMP和Wireshark排查服务端CLOSE_WAIT（二）</a></h2>
 <ul class="post-meta">
@@ -56,10 +56,10 @@
 </ul>
 <div class="post-content fmt">
 	<p>前文<a href="https://typecodes.com/cseries/tcpdumpwiresharkclosewait1.html" title="查看原文">《使用TCPDUMP和Wireshark排查服务端CLOSE_WAIT（一）》</a>通过TCPDUMP和Wireshark在利用CentOS7作为服务端、Windows10作为客户端，模拟演示了一个TCP通信的CLOSE_WAIT状态，这篇文章主要利用前文的数据尝试解释Linux服务端产生CLOSE_WAIT状态的原因。</p>
-<p><img alt="客户端和服务端的TCP通信流程" src="https://o3cex9zsl.qnssl.com/2016/02/socket_tcpflow.png" title="客户端和服务端的TCP通信流程" /></p>
+<p><img alt="客户端和服务端的TCP通信流程" src="https://o3cex9zsl.qnssl.com/2016/02/socket_tcpflow.png" title="客户端和服务端的TCP通信流程"></p>
 
 	<p class="more"><a href="https://typecodes.com/cseries/tcpdumpwiresharkclosewait2.html" title="使用TCPDUMP和Wireshark排查服务端CLOSE_WAIT（二）">- 阅读剩余部分 -</a></p>
-			</article>
+</div>			</article>
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/cseries/tcpdumpwiresharkclosewait1.html">使用TCPDUMP和Wireshark排查服务端CLOSE_WAIT（一）</a></h2>
 <ul class="post-meta">
@@ -67,10 +67,10 @@
 </ul>
 <div class="post-content fmt">
 	<p>在Linux后端服务网络通信开发中，可能会遇到CLOSE_WAIT的状况。引起TCP CLOSE_WAIT状态的情况很多，归根结底还是由于被动关闭的一方没有关闭socket链路导致的。这篇文章主要是通过用一个简单的例子通过TCPDUMP和Wireshark这两个工具来模拟产生CLOSE_WAIT的情况，<a href="https://typecodes.com/cseries/tcpdumpwiresharkclosewait2.html" title="《使用TCPDUMP和Wireshark排查服务端CLOSE_WAIT（二）》">下一篇</a>主要是对这个问题的原理解释。</p>
-<p><img alt="CentOS服务端建立监听端口" src="https://o3cex9zsl.qnssl.com/2016/02/server_socket_8000.png" title="CentOS服务端建立监听端口" /></p>
+<p><img alt="CentOS服务端建立监听端口" src="https://o3cex9zsl.qnssl.com/2016/02/server_socket_8000.png" title="CentOS服务端建立监听端口"></p>
 
 	<p class="more"><a href="https://typecodes.com/cseries/tcpdumpwiresharkclosewait1.html" title="使用TCPDUMP和Wireshark排查服务端CLOSE_WAIT（一）">- 阅读剩余部分 -</a></p>
-			</article>
+</div>			</article>
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/linux/simpletcpdumpapply.html">Linux中使用TCPDUMP进行简单的TCP抓包</a></h2>
 <ul class="post-meta">
@@ -78,10 +78,10 @@
 </ul>
 <div class="post-content fmt">
 	<p>在Linux TCP通信的调试中，tcpdump应该算是很好的一个工具。这篇文章主要使用Windows作为客户端，向作为服务端的Linux中的一个socket监听端口发送报文信息，然后在Linux中用TCPDUMP工具进行抓包。通过这个实例，可以较为完整的了解TCP通信中的“三次握手”等过程。</p>
-<p><img alt="Linux中使用TCPDUMP进行简单的TCP抓包" src="https://o3cex9zsl.qnssl.com/2016/02/linuxtcpdump.png" title="Linux中使用TCPDUMP进行简单的TCP抓包" /></p>
+<p><img alt="Linux中使用TCPDUMP进行简单的TCP抓包" src="https://o3cex9zsl.qnssl.com/2016/02/linuxtcpdump.png" title="Linux中使用TCPDUMP进行简单的TCP抓包"></p>
 
 	<p class="more"><a href="https://typecodes.com/linux/simpletcpdumpapply.html" title="Linux中使用TCPDUMP进行简单的TCP抓包">- 阅读剩余部分 -</a></p>
-			</article>
+</div>			</article>
 		  	<!--page navigation-->
 <ol class="page-navigator">
 </ol>		</div>
@@ -141,7 +141,6 @@
 		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
 	</section>
 </div>
-				</div>
 			</div>
 		</div>
 		<!--4. bottom begin-->

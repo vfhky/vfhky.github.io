@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html dir="ltr" lang="zh-CN" class="no-js">
+<html class="no-js">
 	<head>
-		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
   		<meta name="renderer" content="webkit">
 		<title>2015博客升级记(五)：CentOS 7.1编译安装PHP7 &mdash; TypeCodes</title>
 		<meta name="description" content="2015博客升级记(五)：CentOS 7.1编译安装PHP7 &mdash; TypeCodes" />
@@ -34,8 +35,7 @@
 			</div>
 		</div>
 		<div class="container">
-			<div class="row">
-		<!--2. left sider begin-->
+			<div class="row">		<!--2. left sider begin-->
 		<div class="col-md-9" id="blog-main" role="main">
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/web/centos7compilephp7.html">2015博客升级记(五)：CentOS 7.1编译安装PHP7</a></h2>
@@ -46,7 +46,7 @@
 	<p>这是<a href="https://typecodes.com/mix/2015updateblog.html" title="查看原文">《2015年博客升级记》</a>系列文章的第五篇，主要记录在Linux系统中如何编译安装PHP7。</p>
 <h5>1 创建php用户和用户组，并在github下载php7源码</h5>
 <p>首先创建一个名为php且<code>没有登录权限</code>的用户和一个名为php的用户组，然后去GitHub下载php7源码包。</p>
-<div class="highlight"><pre>#######新建php用户和php组
+<div class="highlight"><pre><span></span>#######新建php用户和php组
 [root@typecodes ~]# groupadd -r php &amp;&amp; useradd -r -g php -s /bin/false -d /usr/local/php7 -M php
 ######从GitHub下载php7安装包
 [root@typecodes ~]# wget -c --no-check-certificate -O php7-src-master.zip https://github.com/php/php-src/archive/master.zip
@@ -61,7 +61,7 @@
 
 <h5>2 PHP7编译参数的配置</h5>
 <p>准备工作做好后，就开始正式配置php7的安装明细了。注意，操作时一定要先把下面反斜杠“\”后面添加的注释文字去掉！！！</p>
-<div class="highlight"><pre>######开始生成配置文件
+<div class="highlight"><pre><span></span>######开始生成配置文件
 [root@typecodes php-src-master]# ./buildconf
 buildconf: checking installation...
 buildconf: autoconf version 2.69 (ok)
@@ -122,28 +122,28 @@ rebuilding main/php_config.h.in
 
 
 <p>执行上面的配置命令的结果如下图所示：</p>
-<p><img alt="PHP7编译参数的配置" src="https://o3cex9zsl.qnssl.com/2015/06/compile_php7_config.png" title="PHP7编译参数的配置" /></p>
+<p><img alt="PHP7编译参数的配置" src="https://o3cex9zsl.qnssl.com/2015/06/compile_php7_config.png" title="PHP7编译参数的配置"></p>
 <h5>3 开始编译和安装PHP7</h5>
 <p>相对编译安装MySQL的大量CPU和内存消耗，PHP7的编译安装轻松多了，整个过程大约1个小时左右。</p>
-<div class="highlight"><pre>[root@typecodes php-src-master]# make clean &amp;&amp; make &amp;&amp; make install
+<div class="highlight"><pre><span></span>[root@typecodes php-src-master]# make clean &amp;&amp; make &amp;&amp; make install
 </pre></div>
 
 
 <p>看到下图就代表已经编译安装好了PHP7！</p>
-<p><img alt="安装php5.7.7rc的make install命令执行结果" src="https://o3cex9zsl.qnssl.com/2015/06/compile_php7_sucess.png" title="安装php5.7.7rc的make install命令执行结果" /></p>
+<p><img alt="安装php5.7.7rc的make install命令执行结果" src="https://o3cex9zsl.qnssl.com/2015/06/compile_php7_sucess.png" title="安装php5.7.7rc的make install命令执行结果"></p>
 <h5>4 选做步骤：执行make test命令进行测试</h5>
 <p>这是一个非必需的操作步骤，执行<code>make test</code>命令。</p>
-<p><img alt="开始执行make test命令进行测试" src="https://o3cex9zsl.qnssl.com/2015/06/php7_make_test.png" title="开始执行make test命令进行测试" /></p>
+<p><img alt="开始执行make test命令进行测试" src="https://o3cex9zsl.qnssl.com/2015/06/php7_make_test.png" title="开始执行make test命令进行测试"></p>
 <p>有趣的一件事就是：在test期间，会和一个IP地址72.52.91.14建立tcp连接，它对应着php官网http://www.php.net。</p>
-<p><img alt="和PHP官网交互" src="https://o3cex9zsl.qnssl.com/2015/06/php7_make_test_tcp.png" title="和PHP官网交互" /></p>
+<p><img alt="和PHP官网交互" src="https://o3cex9zsl.qnssl.com/2015/06/php7_make_test_tcp.png" title="和PHP官网交互"></p>
 <p>执行完<code>make test</code>命令后，最终的结果如下：</p>
-<p><img alt="make test结果" src="https://o3cex9zsl.qnssl.com/2015/06/php7_make_test_result.png" title="make test结果" /></p>
+<p><img alt="make test结果" src="https://o3cex9zsl.qnssl.com/2015/06/php7_make_test_result.png" title="make test结果"></p>
 <h5>5  查看编译成功后的PHP7安装目录</h5>
 <p>由于需要和MySQL进行通信，所以需要特别查看PHP7安装后的lib扩展库目录（/usr/local/php7/lib/php/extensions/no-debug-non-zts-20141001/）。需要确保至少存在<code>mysqli.so</code>、<code>pdo_mysql.so</code>这两个动态库文件，如下图所示。</p>
-<p><img alt="PHP7的lib扩展库" src="https://o3cex9zsl.qnssl.com/2015/06/php7_mysql_lib.png" title="PHP7的lib扩展库" /></p>
+<p><img alt="PHP7的lib扩展库" src="https://o3cex9zsl.qnssl.com/2015/06/php7_mysql_lib.png" title="PHP7的lib扩展库"></p>
 <h5>6 开始设置PHP7的配置文件php.ini、php-fpm.conf、www.conf和php-fpm脚本</h5>
 <p>可以用编译后的配置文件复制到PHP7的配置目录（/usr/local/php7/etc/），推荐使用<a href="https://typecodes.com/web/php7configure.html" title="查看原文">《PHP7中php.ini、php-fpm和www.conf的配置》</a>文中整理的3个PHP7配置文件和php-fpm服务控制脚本。</p>
-<div class="highlight"><pre>#######方法一：直接使用编译后未经优化处理的配置
+<div class="highlight"><pre><span></span>#######方法一：直接使用编译后未经优化处理的配置
 [root@typecodes php-src-master]# cp php.ini-production /usr/local/php7/etc/php.ini
 [root@typecodes php-src-master]# cp /root/php-src-master/sapi/fpm/init.d.php-fpm /etc/init.d/php-fpm
 [root@typecodes php-src-master]# cp /usr/local/php7/etc/php-fpm.conf.default /usr/local/php7/etc/php-fpm.conf
@@ -156,13 +156,13 @@ rebuilding main/php_config.h.in
 
 <h5>7 添加php的环境变量</h5>
 <p>将php编译生成的bin目录添加到当前Linux系统的环境变量中</p>
-<div class="highlight"><pre><span class="x">[root@typecodes ~]</span><span class="err">#</span><span class="x"> echo -e &#39;\nexport PATH=/usr/local/php7/bin:/usr/local/php7/sbin:</span><span class="p">$</span><span class="nv">PATH</span><span class="x">\n&#39; &gt;&gt; /etc/profile &amp;&amp; source /etc/profile</span>
+<div class="highlight"><pre><span></span>[root@typecodes ~]# echo -e &#39;\nexport PATH=/usr/local/php7/bin:/usr/local/php7/sbin:$PATH\n&#39; &gt;&gt; /etc/profile &amp;&amp; source /etc/profile
 </pre></div>
 
 
 <h5>8 设置PHP日志目录和php-fpm进程文件（php-fpm.sock）目录</h5>
 <p>其中，设置php-fpm进程目录的用户和用户组为<code>nginx</code>，并创建php会话session目录。</p>
-<div class="highlight"><pre>#######设置PHP日志目录和php-fpm的运行进程ID文件（php-fpm.sock）目录
+<div class="highlight"><pre><span></span>#######设置PHP日志目录和php-fpm的运行进程ID文件（php-fpm.sock）目录
 [root@typecodes ~]# mkdir -p /var/log/php-fpm/ &amp;&amp; mkdir -p /var/run/php-fpm &amp;&amp; cd /var/run/ &amp;&amp; chown -R nginx:nginx php-fpm
 #######修改session的目录配置
 [root@typecodes etc]# mkdir -p /var/lib/php/session
@@ -171,7 +171,7 @@ rebuilding main/php_config.h.in
 
 
 <h5>9 设置PHP开机启动以及测试配置文件是否正确</h5>
-<div class="highlight"><pre>######配置开机自启动，增加到主机sysV服务
+<div class="highlight"><pre><span></span>######配置开机自启动，增加到主机sysV服务
 [root@typecodes php-src-master]# chmod +x /etc/init.d/php-fpm
 [root@typecodes php-src-master]# chkconfig --add php-fpm
 [root@typecodes php-src-master]# chkconfig php-fpm on
@@ -183,17 +183,17 @@ rebuilding main/php_config.h.in
 
 <h5>10 启动php服务</h5>
 <p>在完成上面的操作后，就可以正式使用php服务了。启动php进程服务的命令如下：</p>
-<div class="highlight"><pre>[root@typecodes sbin]# service php-fpm start
+<div class="highlight"><pre><span></span>[root@typecodes sbin]# service php-fpm start
 Starting php-fpm  done
 </pre></div>
 
 
 <p>然后可以通过命令<code>ps -aux|grep php</code>查看是否成功（图中的php-fpm进程数和进程用户nginx都是由www.conf中pm.start_servers和user的值分别决定的）：</p>
-<p><img alt="查看php服务进程" src="https://o3cex9zsl.qnssl.com/2015/06/php_process.png" title="查看php服务进程" /></p>
+<p><img alt="查看php服务进程" src="https://o3cex9zsl.qnssl.com/2015/06/php_process.png" title="查看php服务进程"></p>
 <h5>11 查看PHP7版本信息</h5>
 <p>最后，可以通过命令<code>php -v</code>查看当前PHP版本信息，图中可以看到当前PHP7还使用了Zend OPcache缓存，是因为在php.ini文件中添加了<code>zend_extension=opcache.so</code>配置。</p>
-<p><img alt="查看PHP7版本信息" src="https://o3cex9zsl.qnssl.com/2015/06/php7_version_info.png" title="查看PHP7版本信息" /></p>
-		    	<div class="donate_div_container">
+<p><img alt="查看PHP7版本信息" src="https://o3cex9zsl.qnssl.com/2015/06/php7_version_info.png" title="查看PHP7版本信息"></p>
+</div>		    	<div class="donate_div_container">
 					<div class="donate_div">
 						<p><a href="javascript:void(0)" onclick="donateToggle()" class="donate_word" title="打赏，支持一下">打赏</a></p>
 						<div class="hide_box"></div>
@@ -223,7 +223,7 @@ Starting php-fpm  done
 					</div>
 				</div>
 		    	<div class="tags">
-					<div class="post_tags">
+					<div class="post_tags" itemprop="keywords">
 						Tags: <a href="https://typecodes.com/tag/bo-ke-cheng-chang-lu.html">博客成长录</a>,<a href="https://typecodes.com/tag/php7.html">php7</a>					</div>
 					<div class="post-share">
 						<ul class="post-shareul clearfix">
@@ -315,7 +315,6 @@ Starting php-fpm  done
 		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
 	</section>
 </div>
-				</div>
 			</div>
 		</div>
 		<!--4. bottom begin-->

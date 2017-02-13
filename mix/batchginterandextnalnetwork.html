@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html dir="ltr" lang="zh-CN" class="no-js">
+<html class="no-js">
 	<head>
-		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
   		<meta name="renderer" content="webkit">
 		<title>使用.bat批处理文件实现内外网多IP地址的切换 &mdash; TypeCodes</title>
 		<meta name="description" content="使用.bat批处理文件实现内外网多IP地址的切换 &mdash; TypeCodes" />
@@ -34,8 +35,7 @@
 			</div>
 		</div>
 		<div class="container">
-			<div class="row">
-		<!--2. left sider begin-->
+			<div class="row">		<!--2. left sider begin-->
 		<div class="col-md-9" id="blog-main" role="main">
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/mix/batchginterandextnalnetwork.html">使用.bat批处理文件实现内外网多IP地址的切换</a></h2>
@@ -44,7 +44,7 @@
 </ul>
 <div class="post-content fmt">
 	<p>从上一篇文章<a href="https://typecodes.com/mix/dosbatmethod.html" title="批处理文件（.bat）的写法——DOS命令大全">《批处理文件（.bat）的写法——DOS命令大全》</a>，大致了解了DOS命令以及.bat文件的基本写法，那么这篇文章就是一个实战实例。同时，也能更好地理解文章<a href="https://typecodes.com/mix/win7wifi.html" title="如何用笔记本Win7系统建立Wifi">《如何用笔记本Win7系统建立Wifi》</a>中.bat文件中的dos命令。最终效果如下图所示：</p>
-<p><img alt="使用.bat批处理文件实现内外网多IP地址的切换" src="https://o3cex9zsl.qnssl.com/2013/12/IPchange.jpg" title="使用.bat批处理文件实现内外网多IP地址的切换" /></p>
+<p><img alt="使用.bat批处理文件实现内外网多IP地址的切换" src="https://o3cex9zsl.qnssl.com/2013/12/IPchange.jpg" title="使用.bat批处理文件实现内外网多IP地址的切换"></p>
 
 
 <table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
@@ -95,58 +95,58 @@
 46
 47
 48
-49</pre></div></td><td class="code"><div class="highlight"><pre><span class="c">:: 使用.bat批处理文件实现内外网多IP地址的切换演示文件：IPchange.bat</span>
-<span class="c">:: 还可以增加3,4,5等多个IP地址，只要增加相应的if语句和label跳转标签即可</span>
-<span class="c">:: 首选DNS为谷歌的8.8.8.8，备用DNS为8.8.4.4</span>
+49</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="p">:</span><span class="c1">: 使用.bat批处理文件实现内外网多IP地址的切换演示文件：IPchange.bat</span>
+<span class="p">:</span><span class="c1">: 还可以增加3,4,5等多个IP地址，只要增加相应的if语句和label跳转标签即可</span>
+<span class="p">:</span><span class="c1">: 首选DNS为谷歌的8.8.8.8，备用DNS为8.8.4.4</span>
 
-<span class="p">@</span><span class="k">Echo</span> <span class="k">Off</span>
-TITLE  IP设置
+<span class="p">@</span><span class="k">Echo</span> Off
+<span class="k">TITLE</span>  IP设置
 
-<span class="nl">:start</span>
+<span class="p">:</span><span class="nl">start</span>
 <span class="k">cls</span>
-color <span class="m">3</span>f
-<span class="c">:: 使用COLOR命令对控制台输出颜色进行更改</span>
-mode con cols<span class="o">=</span><span class="m">56</span> lines<span class="o">=</span><span class="m">20</span>
-<span class="c">:: MODE语句为设定窗体的宽和高</span>
+<span class="k">color</span> 3f
+<span class="p">:</span><span class="c1">: 使用COLOR命令对控制台输出颜色进行更改</span>
+mode con cols=56 lines=20
+<span class="p">:</span><span class="c1">: MODE语句为设定窗体的宽和高</span>
 
-<span class="nl">:sc_main</span>
+<span class="p">:</span><span class="nl">sc_main</span>
 <span class="k">echo</span>       -------------------------------------------
-<span class="k">echo</span>.&amp;<span class="k">echo</span>.
-<span class="k">echo</span>             <span class="m">0</span>.<span class="m">192</span>.<span class="m">168</span>.<span class="m">154</span>.<span class="m">29</span> &amp; <span class="k">echo</span>.
-<span class="k">echo</span>             <span class="m">1</span>.<span class="m">132</span>.<span class="m">114</span>.<span class="m">154</span>.<span class="m">29</span> &amp; <span class="k">echo</span>.
-<span class="k">echo</span>             q.退出 &amp; <span class="k">echo</span>.&amp;<span class="k">echo</span>.&amp;<span class="k">echo</span>.&amp;<span class="k">echo</span>.&amp;<span class="k">echo</span>.&amp;<span class="k">echo</span>.
+<span class="k">echo</span>.<span class="p">&amp;</span><span class="k">echo</span>.
+<span class="k">echo</span>             0.192.168.154.29 <span class="p">&amp;</span> <span class="k">echo</span>.
+<span class="k">echo</span>             1.132.114.154.29 <span class="p">&amp;</span> <span class="k">echo</span>.
+<span class="k">echo</span>             q.退出 <span class="p">&amp;</span> <span class="k">echo</span>.<span class="p">&amp;</span><span class="k">echo</span>.<span class="p">&amp;</span><span class="k">echo</span>.<span class="p">&amp;</span><span class="k">echo</span>.<span class="p">&amp;</span><span class="k">echo</span>.<span class="p">&amp;</span><span class="k">echo</span>.
 <span class="k">set</span> <span class="s2">&quot;select=&quot;</span>
-<span class="k">set</span> <span class="n">/p</span> select<span class="o">=</span>              输入数字，按回车继续 :
-<span class="k">if</span> <span class="s2">&quot;%select%&quot;</span><span class="o">==</span><span class="s2">&quot;0&quot;</span> (<span class="k">goto</span> <span class="nl">sc_ip0</span>) 
-<span class="k">if</span> <span class="s2">&quot;%select%&quot;</span><span class="o">==</span><span class="s2">&quot;1&quot;</span> (<span class="k">goto</span> <span class="nl">sc_ip1</span>) 
-<span class="k">if</span> <span class="s2">&quot;%select%&quot;</span><span class="o">==</span><span class="s2">&quot;Q&quot;</span> (<span class="k">goto</span> <span class="nl">sc_exit</span>)
+<span class="k">set</span> <span class="k">/p</span> <span class="nv">select</span><span class="p">=</span>              输入数字，按回车继续 :
+<span class="k">if</span> <span class="s2">&quot;</span><span class="nv">%select%</span><span class="s2">&quot;</span><span class="o">==</span><span class="s2">&quot;0&quot;</span> <span class="p">(</span><span class="k">goto</span> <span class="nl">sc_ip0</span><span class="p">)</span> 
+<span class="k">if</span> <span class="s2">&quot;</span><span class="nv">%select%</span><span class="s2">&quot;</span><span class="o">==</span><span class="s2">&quot;1&quot;</span> <span class="p">(</span><span class="k">goto</span> <span class="nl">sc_ip1</span><span class="p">)</span> 
+<span class="k">if</span> <span class="s2">&quot;</span><span class="nv">%select%</span><span class="s2">&quot;</span><span class="o">==</span><span class="s2">&quot;Q&quot;</span> <span class="p">(</span><span class="k">goto</span> <span class="nl">sc_exit</span><span class="p">)</span>
 
-<span class="nl">:sc_exit</span>
-exit
-<span class="k">goto</span> <span class="nl">:eof</span>
+<span class="p">:</span><span class="nl">sc_exit</span>
+<span class="k">exit</span>
+<span class="k">goto</span> <span class="p">:</span><span class="nl">eof</span>
 
-<span class="nl">:sc_ip0</span>
+<span class="p">:</span><span class="nl">sc_ip0</span>
 <span class="k">cls</span>
 <span class="k">echo</span> 正在设置中，请稍候
-Netsh interface IP <span class="k">Set</span> <span class="nv">Address</span> <span class="s2">&quot;本地连接&quot;</span> Static <span class="m">192</span>.<span class="m">168</span>.<span class="m">154</span>.<span class="m">29</span> <span class="m">255</span>.<span class="m">255</span>.<span class="m">255</span>.<span class="m">0</span> <span class="m">192</span>.<span class="m">168</span>.<span class="m">154</span>.<span class="m">250</span> <span class="m">1</span> 
-netsh interface ip <span class="k">set</span> <span class="nv">dns</span> <span class="s2">&quot;本地连接&quot;</span> static <span class="m">8</span>.<span class="m">8</span>.<span class="m">8</span>.<span class="m">8</span>
-netsh interface ip add dns <span class="s2">&quot;本地连接&quot;</span> <span class="m">8</span>.<span class="m">8</span>.<span class="m">4</span>.<span class="m">4</span>
-<span class="k">echo</span> 成功设置外网<span class="m">192</span>.<span class="m">168</span>.<span class="m">154</span>.<span class="m">29</span>
-<span class="k">PAUSE</span> <span class="p">&gt;</span><span class="n">nul</span>
+Netsh interface IP Set Address <span class="s2">&quot;本地连接&quot;</span> Static 192.168.154.29 255.255.255.0 192.168.154.250 1 
+netsh interface ip set dns <span class="s2">&quot;本地连接&quot;</span> static 8.8.8.8
+netsh interface ip add dns <span class="s2">&quot;本地连接&quot;</span> 8.8.4.4
+<span class="k">echo</span> 成功设置外网192.168.154.29
+<span class="k">PAUSE</span> <span class="p">&gt;</span>nul
 <span class="k">Goto</span> <span class="nl">sc_main</span>
 
-<span class="nl">:sc_ip1</span>
+<span class="p">:</span><span class="nl">sc_ip1</span>
 <span class="k">cls</span>
 <span class="k">echo</span> 正在设置中，请稍候
-netsh interface IP <span class="k">Set</span> <span class="nv">Address</span> <span class="s2">&quot;本地连接&quot;</span> Static <span class="m">132</span>.<span class="m">114</span>.<span class="m">154</span>.<span class="m">29</span> <span class="m">255</span>.<span class="m">255</span>.<span class="m">255</span>.<span class="m">0</span> <span class="m">132</span>.<span class="m">114</span>.<span class="m">154</span>.<span class="m">250</span> <span class="m">1</span> 
-netsh interface ip <span class="k">set</span> <span class="nv">dns</span> <span class="s2">&quot;本地连接&quot;</span> static <span class="m">8</span>.<span class="m">8</span>.<span class="m">8</span>.<span class="m">8</span>
-netsh interface ip add dns <span class="s2">&quot;本地连接&quot;</span> <span class="m">8</span>.<span class="m">8</span>.<span class="m">4</span>.<span class="m">4</span>
-<span class="k">echo</span> 成功设置内网 <span class="m">132</span>.<span class="m">114</span>.<span class="m">154</span>.<span class="m">29</span>
-<span class="k">PAUSE</span> <span class="p">&gt;</span><span class="n">nul</span>
+netsh interface IP Set Address <span class="s2">&quot;本地连接&quot;</span> Static 132.114.154.29 255.255.255.0 132.114.154.250 1 
+netsh interface ip set dns <span class="s2">&quot;本地连接&quot;</span> static 8.8.8.8
+netsh interface ip add dns <span class="s2">&quot;本地连接&quot;</span> 8.8.4.4
+<span class="k">echo</span> 成功设置内网 132.114.154.29
+<span class="k">PAUSE</span> <span class="p">&gt;</span>nul
 <span class="k">Goto</span> <span class="nl">sc_main</span>
 </pre></div>
 </td></tr></table>
-		    	<div class="donate_div_container">
+</div>		    	<div class="donate_div_container">
 					<div class="donate_div">
 						<p><a href="javascript:void(0)" onclick="donateToggle()" class="donate_word" title="打赏，支持一下">打赏</a></p>
 						<div class="hide_box"></div>
@@ -176,7 +176,7 @@ netsh interface ip add dns <span class="s2">&quot;本地连接&quot;</span> <spa
 					</div>
 				</div>
 		    	<div class="tags">
-					<div class="post_tags">
+					<div class="post_tags" itemprop="keywords">
 						Tags: <a href="https://typecodes.com/tag/cmd.html">cmd</a>,<a href="https://typecodes.com/tag/pi-chu-li.html">批处理</a>,<a href="https://typecodes.com/tag/nei-wai-wang-ipqie-huan.html">内外网ip切换</a>					</div>
 					<div class="post-share">
 						<ul class="post-shareul clearfix">
@@ -268,7 +268,6 @@ netsh interface ip add dns <span class="s2">&quot;本地连接&quot;</span> <spa
 		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
 	</section>
 </div>
-				</div>
 			</div>
 		</div>
 		<!--4. bottom begin-->

@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html dir="ltr" lang="zh-CN" class="no-js">
+<html class="no-js">
 	<head>
-		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
   		<meta name="renderer" content="webkit">
 		<title>Linux下Nginx、MySQL和PHP等应用的日志切割脚本 &mdash; TypeCodes</title>
 		<meta name="description" content="Linux下Nginx、MySQL和PHP等应用的日志切割脚本 &mdash; TypeCodes" />
@@ -34,8 +35,7 @@
 			</div>
 		</div>
 		<div class="container">
-			<div class="row">
-		<!--2. left sider begin-->
+			<div class="row">		<!--2. left sider begin-->
 		<div class="col-md-9" id="blog-main" role="main">
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/linux/applogsbackup.html">Linux下Nginx、MySQL和PHP等应用的日志切割脚本</a></h2>
@@ -44,11 +44,11 @@
 </ul>
 <div class="post-content fmt">
 	<p>在Linux中如果应用程序会产生日志，那么就需要考虑日志切割，例如按照固定的大小切割、按照日期进行切割等等。同样，在编译<a href="https://typecodes.com/web/centos7compilenginx.html" title="《2015博客升级记(三)：CentOS 7.1编译安装Nginx1.9.0》">Nginx1.9.0</a>、<a href="https://typecodes.com/web/centos7compilemysql.html" title="《2015博客升级记(四)：CentOS 7.1编译安装MySQL5.7.7rc》">MySQL5.7.7rc</a>和<a href="https://typecodes.com/web/centos7compilephp7.html" title="《2015博客升级记(五)：CentOS 7.1编译安装PHP7》">PHP7</a>后，这三个应用服务都会产生日志，尤其是Nginx进程根据配置文件ngnix.conf记录每条访问记录到access.log中。如果所有的日志都打印到同一个文件中的话，那么时间长了的话就会影响效率。</p>
-<p><img alt="Nginx日志切割实例" src="https://o3cex9zsl.qnssl.com/2015/12/nginx_logs_backup.png" title="Nginx日志切割实例" /></p>
+<p><img alt="Nginx日志切割实例" src="https://o3cex9zsl.qnssl.com/2015/12/nginx_logs_backup.png" title="Nginx日志切割实例"></p>
 
 
 <p>这篇文章就是针对Linux下应用使用shell脚本进行分割的描述，该脚本特点是：按天切割、自定义切割出来的日志保留的天数以及记录脚本执行过程和耗时。在使用时需要配置好对应应用的日志目录（<code>Source_Log_Dir</code>变量）、日志备份目录（<code>Backup_Dirs</code>变量），然后使用Crontab定时任务执行该脚本即可。</p>
-<p><img alt="Nginx日志切割时shell脚本执行过程" src="https://o3cex9zsl.qnssl.com/2015/12/nginx_logs_backup_process.png" title="Nginx日志切割时shell脚本执行过程" /></p>
+<p><img alt="Nginx日志切割时shell脚本执行过程" src="https://o3cex9zsl.qnssl.com/2015/12/nginx_logs_backup_process.png" title="Nginx日志切割时shell脚本执行过程"></p>
 <p>下面是脚本nginx_log_backup.sh的具体内容，这里备份的是Nginx日志，其它诸如MySQL、php等Linux应用只要修改脚本对应的日志路径即可。目前该脚本已经同步到博客在GitHub上创建的关于LNMP配置的工程上了，地址是：<a href="https://github.com/vfhky/mylnmp" title="点击查看">https://github.com/vfhky/mylnmp</a>。</p>
 <table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>  1
   2
@@ -150,38 +150,38 @@
  98
  99
 100
-101</pre></div></td><td class="code"><div class="highlight"><pre><span class="c">#!/bin/bash</span>
-<span class="c"># Backup Log Files for linux applications such as nginx, php, mysql and so on.</span>
-<span class="c"># Crontab Usage: 00 01 * * * /mydata/backups/bak_list/nginx_log_backup.sh &gt;/dev/null 2&gt;&amp;1</span>
-<span class="c"># (c) 2015 vfhky https://typecodes.com/linux/applogsbackup.html</span>
-<span class="c"># https://github.com/vfhky/mylnmp/blob/master/nginx_log_backup.sh</span>
+101</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="ch">#!/bin/bash</span>
+<span class="c1"># Backup Log Files for linux applications such as nginx, php, mysql and so on.</span>
+<span class="c1"># Crontab Usage: 00 01 * * * /mydata/backups/bak_list/nginx_log_backup.sh &gt;/dev/null 2&gt;&amp;1</span>
+<span class="c1"># (c) 2015 vfhky https://typecodes.com/linux/applogsbackup.html</span>
+<span class="c1"># https://github.com/vfhky/mylnmp/blob/master/nginx_log_backup.sh</span>
 
-<span class="c"># Basic command.</span>
+<span class="c1"># Basic command.</span>
 <span class="nv">TARCMD</span><span class="o">=</span><span class="s2">&quot;tar -zcf&quot;</span>
 <span class="nv">MVCMD</span><span class="o">=</span><span class="s2">&quot;\mv -f&quot;</span>
 <span class="nv">FINDCMD</span><span class="o">=</span><span class="s2">&quot;find&quot;</span>
 
-<span class="c"># Number of days to keep.</span>
-<span class="nv">NUMDAYS</span><span class="o">=</span>40
+<span class="c1"># Number of days to keep.</span>
+<span class="nv">NUMDAYS</span><span class="o">=</span><span class="m">40</span>
 
-<span class="c"># Path of the logs you want backup.You can set it as the nginx log path or the mysql log path and so on.</span>
+<span class="c1"># Path of the logs you want backup.You can set it as the nginx log path or the mysql log path and so on.</span>
 <span class="nv">Source_Log_Dir</span><span class="o">=</span>/var/log/nginx
-<span class="c"># Set the file types you want backup accoding to the suffix of log files.</span>
+<span class="c1"># Set the file types you want backup accoding to the suffix of log files.</span>
 <span class="nv">Source_Log_Files</span><span class="o">=</span><span class="sb">`</span>ls <span class="si">${</span><span class="nv">Source_Log_Dir</span><span class="si">}</span>/*.log<span class="sb">`</span>
-<span class="c"># Set the backup path.</span>
+<span class="c1"># Set the backup path.</span>
 <span class="nv">Backup_Dirs</span><span class="o">=</span><span class="si">${</span><span class="nv">Source_Log_Dir</span><span class="si">}</span>
-<span class="c"># Previous date format: e.g 20150505</span>
+<span class="c1"># Previous date format: e.g 20150505</span>
 <span class="nv">Previous_Date</span><span class="o">=</span><span class="sb">`</span>date -d <span class="s2">&quot;-1 days&quot;</span> +%Y%m%d<span class="sb">`</span>
-<span class="c"># The target backup dir.</span>
+<span class="c1"># The target backup dir.</span>
 <span class="nv">Backup_Dir</span><span class="o">=</span><span class="si">${</span><span class="nv">Backup_Dirs</span><span class="si">}</span>/<span class="si">${</span><span class="nv">Previous_Date</span><span class="si">}</span>
-<span class="c"># Path of the log generated by this shell script automatically.</span>
+<span class="c1"># Path of the log generated by this shell script automatically.</span>
 <span class="nv">Shell_Log</span><span class="o">=</span><span class="si">${</span><span class="nv">Backup_Dir</span><span class="si">}</span>/process.log
 
 
-<span class="c"># Run command functions.</span>
+<span class="c1"># Run command functions.</span>
 <span class="k">function</span> ERROR<span class="o">()</span> <span class="o">{</span>
   <span class="nb">echo</span> &gt;/dev/null <span class="o">&amp;&amp;</span> <span class="nb">echo</span> <span class="s2">&quot;[`date +%H:%M:%S:%N`][error] </span><span class="nv">$@</span><span class="s2">&quot;</span> &gt;&gt; <span class="si">${</span><span class="nv">Shell_Log</span><span class="si">}</span>
-  <span class="nb">exit </span>1
+  <span class="nb">exit</span> <span class="m">1</span>
 <span class="o">}</span>
 
 <span class="k">function</span> NOTICE<span class="o">()</span> <span class="o">{</span>
@@ -194,18 +194,18 @@
 <span class="o">}</span>
 
 
-<span class="c"># Check the days user input.You can delete the codes below generally.</span>
-<span class="k">if</span> <span class="o">[[</span> ! <span class="nv">$NUMDAYS</span> <span class="o">=</span>~ ^<span class="o">[</span>0-9<span class="o">]</span>+<span class="nv">$ </span><span class="o">]]</span><span class="p">;</span> <span class="k">then</span>
+<span class="c1"># Check the days user input.You can delete the codes below generally.</span>
+<span class="k">if</span> <span class="o">[[</span> ! <span class="nv">$NUMDAYS</span> <span class="o">=</span>~ ^<span class="o">[</span><span class="m">0</span>-9<span class="o">]</span>+$ <span class="o">]]</span><span class="p">;</span> <span class="k">then</span>
   ERROR <span class="s2">&quot;Invalid number of days[</span><span class="nv">$NUMDAYS</span><span class="s2">]!&quot;</span>
 <span class="k">elif</span> <span class="o">[</span> <span class="s2">&quot;</span><span class="nv">$NUMDAYS</span><span class="s2">&quot;</span> -eq <span class="s2">&quot;0&quot;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
   ERROR <span class="s2">&quot;Number of days must be greater than zero!&quot;</span>
 <span class="k">fi</span>
 
 
-<span class="c"># Lock down permissions.</span>
-<span class="nb">umask </span>077
+<span class="c1"># Lock down permissions.</span>
+<span class="nb">umask</span> <span class="m">077</span>
 
-<span class="c"># Create the backup log dir and a shell log.</span>
+<span class="c1"># Create the backup log dir and a shell log.</span>
 mkdir -p <span class="nv">$Backup_Dir</span>
 touch <span class="nv">$Shell_Log</span>
 
@@ -244,16 +244,16 @@ NOTICE <span class="s2">&quot;[4]Start empty every log file.&quot;</span>
 
 
 NOTICE <span class="s2">&quot;[5]Removing older folders than </span><span class="nv">$NUMDAYS</span><span class="s2"> days.&quot;</span>
-<span class="c"># ls ${Source_Log_Dir} | grep &#39;^[0-9]\{8\}$&#39; | xargs rm -rf</span>
+<span class="c1"># ls ${Source_Log_Dir} | grep &#39;^[0-9]\{8\}$&#39; | xargs rm -rf</span>
 RUNCMD <span class="s2">&quot;</span><span class="nv">$FINDCMD</span><span class="s2"> </span><span class="si">${</span><span class="nv">Source_Log_Dir</span><span class="si">}</span><span class="s2"> -type d -name [0-9]*\[0-9] -mtime +</span><span class="nv">$NUMDAYS</span><span class="s2"> | xargs rm -rf&quot;</span>
 
 
 NOTICE <span class="s2">&quot;[6]End backup.&quot;</span>
 
-<span class="nb">exit </span>0
+<span class="nb">exit</span> <span class="m">0</span>
 </pre></div>
 </td></tr></table>
-		    	<div class="donate_div_container">
+</div>		    	<div class="donate_div_container">
 					<div class="donate_div">
 						<p><a href="javascript:void(0)" onclick="donateToggle()" class="donate_word" title="打赏，支持一下">打赏</a></p>
 						<div class="hide_box"></div>
@@ -283,7 +283,7 @@ NOTICE <span class="s2">&quot;[6]End backup.&quot;</span>
 					</div>
 				</div>
 		    	<div class="tags">
-					<div class="post_tags">
+					<div class="post_tags" itemprop="keywords">
 						Tags: <a href="https://typecodes.com/tag/bo-ke-cheng-chang-lu.html">博客成长录</a>,<a href="https://typecodes.com/tag/shell.html">shell</a>,<a href="https://typecodes.com/tag/nginx.html">nginx</a>,<a href="https://typecodes.com/tag/mysql.html">mysql</a>,<a href="https://typecodes.com/tag/php.html">php</a>					</div>
 					<div class="post-share">
 						<ul class="post-shareul clearfix">
@@ -375,7 +375,6 @@ NOTICE <span class="s2">&quot;[6]End backup.&quot;</span>
 		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
 	</section>
 </div>
-				</div>
 			</div>
 		</div>
 		<!--4. bottom begin-->

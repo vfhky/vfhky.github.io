@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html dir="ltr" lang="zh-CN" class="no-js">
+<html class="no-js">
 	<head>
-		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
   		<meta name="renderer" content="webkit">
 		<title>阿里云CentOS 6.5搭建LNMP环境（非一键脚本） &mdash; TypeCodes</title>
 		<meta name="description" content="阿里云CentOS 6.5搭建LNMP环境（非一键脚本） &mdash; TypeCodes" />
@@ -34,8 +35,7 @@
 			</div>
 		</div>
 		<div class="container">
-			<div class="row">
-		<!--2. left sider begin-->
+			<div class="row">		<!--2. left sider begin-->
 		<div class="col-md-9" id="blog-main" role="main">
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/web/aliyuncentos6creatlnmp.html">阿里云CentOS 6.5搭建LNMP环境（非一键脚本）</a></h2>
@@ -45,7 +45,7 @@
 <div class="post-content fmt">
 	<p>个人不太喜欢网上的“一键脚本”，原因很简单：我的地盘我做主。下面是自己在5月初购买aliyun初级ECS后，8月初在CentOS 6.5上搭建 LNMP 环境的心得。大鸟请自动飘过，如若错误，请大家指正！</p>
 <h5>1 先脑补下Linux系统</h5>
-<div class="highlight"><pre>Linux系统分支众多，其发行版本可以根据打包方式分为两类：一类是基于Dpkg的Debian系，一类是基于RPM的Red Hat系。前者由社区组织维护发行，包括Debian、Ubuntu等；后者一般是商业公司维护发布，包括CentOS、Fedora、RHEL等。在稳定性方面，红帽RHEL和CentOS性能相对较好。
+<div class="highlight"><pre><span></span>Linux系统分支众多，其发行版本可以根据打包方式分为两类：一类是基于Dpkg的Debian系，一类是基于RPM的Red Hat系。前者由社区组织维护发行，包括Debian、Ubuntu等；后者一般是商业公司维护发布，包括CentOS、Fedora、RHEL等。在稳定性方面，红帽RHEL和CentOS性能相对较好。
 </pre></div>
 
 
@@ -53,7 +53,7 @@
 
 
 <h5>查看系统使用的Linux内核版本</h5>
-<div class="highlight"><pre># cat /proc/version
+<div class="highlight"><pre><span></span># cat /proc/version
 Linux version 2.6.32-358.6.2.el6.x86_64 (mockbuild@c6b8.bsys.dev.centos.org) (gcc version 4.4.7 20120313 (Red Hat 4.4.7-3) (GCC) ) #1 SMP Thu May 16 20:59:36 UTC 2013
 ##### 查看系统所属的Linux发行版本
 # cat /etc/redhat-release
@@ -63,7 +63,7 @@ CentOS release 6.5 (Final)
 
 <h5>2 更新基于Shell前端的RPM包管理器：yum源</h5>
 <p>相对于用RPM包安装软件，yum能更方便快捷，还能自动安装所需依赖包。因此，我们需要根据自己的主机类型找到对应的yum源进行更新。考虑到和谐，推荐使用国内的开源镜像源，例如 <a href="http://mirrors.163.com/">网易</a>、<a href="http://mirrors.hust.edu.cn/">华科</a>、<a href="http://mirrors.sohu.com/">搜狐</a> 等。这里以163镜像为例：</p>
-<div class="highlight"><pre>##### 先备份原有的yum源文件
+<div class="highlight"><pre><span></span>##### 先备份原有的yum源文件
 # mv /etc/yum.repos.d/CentOS-Base.repo /etc/yum.repos.d/CentOS-Base.repo.backup;
 ##### 切换到yum源文件根目录
 # cd /etc/yum.repos.d/
@@ -80,14 +80,14 @@ CentOS release 6.5 (Final)
 
 <h5>3 进入正题：搭建LNMP环境</h5>
 <p>直接使用下面这条命令即可搭建LNM环境，这其中除了php-fpm外还包括了其它几个常用的php扩展，例如php-dev、php-mysql等。</p>
-<div class="highlight"><pre># yum -y  install nginx mysql mysql-server php-fpm php-devel php-cli php-mysql
+<div class="highlight"><pre><span></span># yum -y  install nginx mysql mysql-server php-fpm php-devel php-cli php-mysql
 php-gd php-imap php-ldap php-odbc php-pear php-xml php-xmlrpc php-mbstring php-mcrypt php-mssql php-snmp php-soap php-tidy
 </pre></div>
 
 
 <h5>4 查看LNMP是否搭建成功：</h5>
 <p>可以通过以下命令分别检测 Nginx、Mysql、Php 的版本。为了站点安全，大家不要把这些信息透露出来，包括在以后自己站点的 http 头等位置（方法会在接下来的文章中说明）。</p>
-<div class="highlight"><pre>##### Nginx版本，已 * 号代替
+<div class="highlight"><pre><span></span>##### Nginx版本，已 * 号代替
 # nginx -v
 nginx version: nginx/1.*.*
 ##### Mysql版本，已 * 号代替
@@ -101,7 +101,7 @@ Copyright (c) 1997-2012 The PHP Group
 
 
 <h5>5 （开机）启动 LNMP 环境</h5>
-<div class="highlight"><pre>##### 重启 LNMP
+<div class="highlight"><pre><span></span>##### 重启 LNMP
 # service nginx restart;    service php-fpm restart;    service mysqld restart;
 ##### 设置 LNMP 开机启动
 # chkconfig nginx on;    chkconfig php-fpm on;    chkconfig mysqld on;
@@ -110,7 +110,7 @@ Copyright (c) 1997-2012 The PHP Group
 
 <h5>6 其它 LNMP 事项</h5>
 <p>这个时候，打开自己的域名（假设已绑定好了主机IP），可以看到nginx的welcome页面（其实就是/usr/share/nginx/html/index.html）！如果稍微调整下 nginx 的配置文件 default.conf 就可以浏览 php 页面了（会另文说明）。下面是 LNMP 环境默认的一些配置和日志信息。</p>
-<div class="highlight"><pre>##### 默认Nginx配置文件
+<div class="highlight"><pre><span></span>##### 默认Nginx配置文件
 /etc/nginx/nginx.conf  #具体配置在 /etc/nginx/conf.d/default.conf 中
 ##### 默认Nginx配置文件设置的web根路径
 /usr/share/nginx/html/
@@ -134,7 +134,7 @@ Copyright (c) 1997-2012 The PHP Group
 ##### 默认mysql端口
 3306
 </pre></div>
-		    	<div class="donate_div_container">
+</div>		    	<div class="donate_div_container">
 					<div class="donate_div">
 						<p><a href="javascript:void(0)" onclick="donateToggle()" class="donate_word" title="打赏，支持一下">打赏</a></p>
 						<div class="hide_box"></div>
@@ -164,7 +164,7 @@ Copyright (c) 1997-2012 The PHP Group
 					</div>
 				</div>
 		    	<div class="tags">
-					<div class="post_tags">
+					<div class="post_tags" itemprop="keywords">
 						Tags: <a href="https://typecodes.com/tag/a-li-yun.html">阿里云</a>,<a href="https://typecodes.com/tag/centosda-jian-lnmphuan-jing.html">centos搭建lnmp环境</a>					</div>
 					<div class="post-share">
 						<ul class="post-shareul clearfix">
@@ -256,7 +256,6 @@ Copyright (c) 1997-2012 The PHP Group
 		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
 	</section>
 </div>
-				</div>
 			</div>
 		</div>
 		<!--4. bottom begin-->

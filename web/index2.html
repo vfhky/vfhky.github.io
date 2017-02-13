@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html dir="ltr" lang="zh-CN" class="no-js">
+<html class="no-js">
 	<head>
-		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
   		<meta name="renderer" content="webkit">
 		<title>分类 web 下的文章 - TypeCodes</title>
 		<meta name="description" content="分类 web 下的文章 - TypeCodes" />
@@ -34,8 +35,7 @@
 			</div>
 		</div>
 		<div class="container">
-			<div class="row">
-		<!--2. left sider begin-->
+			<div class="row">		<!--2. left sider begin-->
 		<div class="col-md-9" id="blog-main" role="main">
 		  	<!--article recycle-->
 			<article class="post">
@@ -47,7 +47,7 @@
 	<p>这是<a href="https://typecodes.com/mix/2015updateblog.html" title="查看原文">《2015年博客升级记》</a>系列文章的第四篇，主要记录在Linux系统中如何编译安装MySql数据库。</p>
 <h5>1 创建mysql用户和用户组，并下载MySQL5.7.7 Release Candidate版本</h5>
 <p>首先创建一个名为mysql且<code>没有登录权限</code>的用户和一个名为mysql的用户组，然后去mysql官网下载MySQL5.7.7rc版本。</p>
-<div class="highlight"><pre>#######新建mysql用户和mysql组
+<div class="highlight"><pre><span></span>#######新建mysql用户和mysql组
 [root@typecodes ~]# groupadd -r mysql &amp;&amp; useradd -r -g mysql -s /bin/false -M mysql
 
 ######从官网或者博客备份地址下载MySQL5.7.7 Release Candidate版本
@@ -66,7 +66,7 @@
 
 
 	<p class="more"><a href="https://typecodes.com/web/centos7compilemysql.html" title="2015博客升级记(四)：CentOS 7.1编译安装MySQL5.7.7rc">- 阅读剩余部分 -</a></p>
-			</article>
+</div>			</article>
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/web/nginxserviceoptshell.html">Nginx服务启动、停止和重启等操作的SHELL脚本</a></h2>
 <ul class="post-meta">
@@ -77,7 +77,7 @@
 <p>下面的shell脚本内容，需要根据Nginx实际编译安装的配置，修改<code>NGINX_CONF_FILE="/etc/nginx/nginx.conf"</code>和<code>lockfile=/var/lock/nginx.lock</code>这两个参数（即前文<a href="https://typecodes.com/web/centos7compilenginx.html" title="查看原文">《2015博客升级记(三)：CentOS 7.1编译安装Nginx1.9.0》</a>中的configure配置）。</p>
 
 	<p class="more"><a href="https://typecodes.com/web/nginxserviceoptshell.html" title="Nginx服务启动、停止和重启等操作的SHELL脚本">- 阅读剩余部分 -</a></p>
-			</article>
+</div>			</article>
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/web/centos7compilenginx.html">2015博客升级记(三)：CentOS 7.1编译安装Nginx1.9.0</a></h2>
 <ul class="post-meta">
@@ -85,10 +85,10 @@
 </ul>
 <div class="post-content fmt">
 	<p>这是<a href="https://typecodes.com/mix/2015updateblog.html" title="查看原文">《2015年博客升级记》</a>系列文章的第三篇，主要记录如何在CentOS 7.1中编译安装Nginx官方最新的1.9.0版本。由于像Nginx、Mysql和PHP7的的源码都是用C/C++写的，所以自己的CentOS 7.1服务器上必须要安装gcc和g++软件（CentOS 7系列会自带这两个编译软件）。</p>
-<p><img alt="CentOS 7.1编译安装Nginx1.9.0" src="https://o3cex9zsl.qnssl.com/2015/05/nginxlogo.png" title="CentOS 7.1编译安装Nginx1.9.0" /></p>
+<p><img alt="CentOS 7.1编译安装Nginx1.9.0" src="https://o3cex9zsl.qnssl.com/2015/05/nginxlogo.png" title="CentOS 7.1编译安装Nginx1.9.0"></p>
 
 	<p class="more"><a href="https://typecodes.com/web/centos7compilenginx.html" title="2015博客升级记(三)：CentOS 7.1编译安装Nginx1.9.0">- 阅读剩余部分 -</a></p>
-			</article>
+</div>			</article>
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/web/shutdownblogssl.html">决定关闭博客使用SSL证书访问</a></h2>
 <ul class="post-meta">
@@ -96,12 +96,12 @@
 </ul>
 <div class="post-content fmt">
 	<p>前几天博客使用了NameCheap的证书，将原来的http访问改成了https访问（详戳<a href="https://typecodes.com/web/lnmppositivessl.html" title="阿里云CentOS 6.5系统LNMP环境安装SSL证书">这里</a>）。由于下面的原因，现决定不再使用SSL证书，恢复http访问。</p>
-<p><img alt="使用SSL证书访问博客" src="https://o3cex9zsl.qnssl.com/2014/10/blogbeginusessl.png" title="使用SSL证书访问博客" /></p>
+<p><img alt="使用SSL证书访问博客" src="https://o3cex9zsl.qnssl.com/2014/10/blogbeginusessl.png" title="使用SSL证书访问博客"></p>
 <h5>1 无法通过https加载站外静态资源文件</h5>
 <p>主要是因为目前博客所有的静态资源文件，如css样式文件、js脚本文件、图片文件等，都使用了新浪SCS云存储。最初，博客程序中还存在类似于<code>https://o3cex9zsl.qnssl.com/libs/img/typecodes.png</code>这种http请求，所以浏览器地址栏会出现黄色警告图标。后来将所有的http请求全部改成https，结果浏览器地址栏图标变成正常的绿色图标了。</p>
 
 	<p class="more"><a href="https://typecodes.com/web/shutdownblogssl.html" title="决定关闭博客使用SSL证书访问">- 阅读剩余部分 -</a></p>
-			</article>
+</div>			</article>
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/web/lnmppositivessl.html">阿里云CentOS 6.5系统LNMP环境安装SSL证书</a></h2>
 <ul class="post-meta">
@@ -109,7 +109,7 @@
 </ul>
 <div class="post-content fmt">
 	<p>近期参加了github的一项<a href="https://education.github.com/pack" title="GitHub Education Student pack">优惠活动</a>，获得了一年免费的SSL证书。下面是具体的安装过程，当然SSL证书的安装跟博客程序（不管是wordpress或者typecho等等）无关，只是跟服务器的类型（比如Nginx、Apache或者IIS等）有关。</p>
-<div class="highlight"><pre>----------操作说明----------               
+<div class="highlight"><pre><span></span>----------操作说明----------               
 系统：            阿里云CentOS 6.5
 环境：            LNMP（只需配置Nginx服务器就行）
 操作工具：        SecureCRT 7.0
@@ -120,7 +120,7 @@ SSL证书提供商：    PositiveSSL from Namecheap
 
 
 	<p class="more"><a href="https://typecodes.com/web/lnmppositivessl.html" title="阿里云CentOS 6.5系统LNMP环境安装SSL证书">- 阅读剩余部分 -</a></p>
-			</article>
+</div>			</article>
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/web/scsfortypechov111.html">更新新浪云存储(SCS) for Typecho 插件版本V1.1.1</a></h2>
 <ul class="post-meta">
@@ -129,7 +129,7 @@ SSL证书提供商：    PositiveSSL from Namecheap
 <div class="post-content fmt">
 	<h5>1 更新说明</h5>
 <p>感谢 @奇趣铺 的使用反馈，插件版本更新至最新的V1.1.1。更新内容如下：</p>
-<div class="highlight"><pre>1、更新官方SDK文件；
+<div class="highlight"><pre><span></span>1、更新官方SDK文件；
 2、增加SCS存储路径参数配置，用户能更自由定义SCS存储路径；
 3、取消SCS附件前缀用Unix time stamp格式命名，保持原附件名称不变。
 </pre></div>
@@ -139,7 +139,7 @@ SSL证书提供商：    PositiveSSL from Namecheap
 <p>下面对于 Linux主机 和 Windows主机 的升级方法同样适用于之前没有安装该插件的童鞋，步骤完全一样。</p>
 
 	<p class="more"><a href="https://typecodes.com/web/scsfortypechov111.html" title="更新新浪云存储(SCS) for Typecho 插件版本V1.1.1">- 阅读剩余部分 -</a></p>
-			</article>
+</div>			</article>
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/web/scsfortypechov110.html">更新新浪云存储(SCS) for Typecho 插件版本V1.1.0</a></h2>
 <ul class="post-meta">
@@ -149,7 +149,7 @@ SSL证书提供商：    PositiveSSL from Namecheap
 	<h5>1 更新说明</h5>
 <p>根据新浪云存储(SCS)官方计划，相比之前新增<a href="https://open.sinastorage.com/?c=doc&amp;a=guide&amp;section=domain" title="官方详细说明">域名绑定功能</a>。于是博主调整了SCS插件，同样更新的源代码已经托管在 <a href="https://github.com/vfhky/SCS/" title="新浪云存储(SCS) for Typecho 插件">github</a> 上了。</p>
 <h5>2 本次版本V1.1.0更新的主要内容：</h5>
-<div class="highlight"><pre>1、更新SDK文件至官方最新；
+<div class="highlight"><pre><span></span>1、更新SDK文件至官方最新；
 2、优化自定义路径方式，用户能更自由定义SCS存储路径；
 3、新增SCS域名绑定功能，用户可以自由选择是否启用该功能；
 4、优化文章上传后附件显示的路径，更为简洁。
@@ -158,7 +158,7 @@ SSL证书提供商：    PositiveSSL from Namecheap
 
 
 	<p class="more"><a href="https://typecodes.com/web/scsfortypechov110.html" title="更新新浪云存储(SCS) for Typecho 插件版本V1.1.0">- 阅读剩余部分 -</a></p>
-			</article>
+</div>			</article>
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/web/scsfortypecho.html">新浪云存储(SCS) for Typecho 插件</a></h2>
 <ul class="post-meta">
@@ -170,18 +170,28 @@ SSL证书提供商：    PositiveSSL from Namecheap
 <p>因此，写了一个Typecho博客的插件——SCS，它能自动将文章上传的附件转存至新浪云储存SCS中。</p>
 
 	<p class="more"><a href="https://typecodes.com/web/scsfortypecho.html" title="新浪云存储(SCS) for Typecho 插件">- 阅读剩余部分 -</a></p>
-			</article>
+</div>			</article>
 		  	<!--page navigation-->
 <ol class="page-navigator">
-<li class="prev"><a href="https://typecodes.com/web/index.html">&laquo; 前一页</a></li><li><a href="https://typecodes.com/web/index.html">1</a>
-       <li class="current"><a href="https://typecodes.com/web/index2.html">2</a>
-       		</li><li><a href="https://typecodes.com/web/index3.html">3</a>
-       		</li><li><a href="https://typecodes.com/web/index4.html">4</a>
-       		</li><li><a href="https://typecodes.com/web/index5.html">5</a>
-       		</li><li><a href="https://typecodes.com/web/index6.html">6</a>
-       		</li><li><a href="https://typecodes.com/web/index7.html">7</a>
-       		</li><li><span>...</span></li><li><a href="https://typecodes.com/web/index10.html">10</a>
-       		</li><li><a href="https://typecodes.com/web/index11.html">11</a>
+<li class="prev"><a href="https://typecodes.com/web/index.html">&laquo; 前一页</a></li><li>
+       			<a href="https://typecodes.com/web/index1.html">1</a>
+       		</li>
+       <li class="current">
+       			<a href="https://typecodes.com/web/index.html">2</a>
+       		</li><li>
+       			<a href="https://typecodes.com/web/index3.html">3</a>
+       		</li><li>
+       			<a href="https://typecodes.com/web/index4.html">4</a>
+       		</li><li>
+       			<a href="https://typecodes.com/web/index5.html">5</a>
+       		</li><li>
+       			<a href="https://typecodes.com/web/index6.html">6</a>
+       		</li><li>
+       			<a href="https://typecodes.com/web/index7.html">7</a>
+       		</li><li><span>...</span></li><li>
+       			<a href="https://typecodes.com/web/index10.html">10</a>
+       		</li><li>
+       			<a href="https://typecodes.com/web/index11.html">11</a>
        		</li><li class="next">
        		<a href="https://typecodes.com/web/index3.html">后一页 &raquo;</a>
        </li></ol>		</div>
@@ -250,7 +260,6 @@ SSL证书提供商：    PositiveSSL from Namecheap
 		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
 	</section>
 </div>
-				</div>
 			</div>
 		</div>
 		<!--4. bottom begin-->

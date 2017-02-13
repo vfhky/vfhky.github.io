@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html dir="ltr" lang="zh-CN" class="no-js">
+<html class="no-js">
 	<head>
-		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
   		<meta name="renderer" content="webkit">
 		<title>Linux TCP通信出现CLOSE_WAIT后导致服务端进程挂掉 &mdash; TypeCodes</title>
 		<meta name="description" content="Linux TCP通信出现CLOSE_WAIT后导致服务端进程挂掉 &mdash; TypeCodes" />
@@ -34,8 +35,7 @@
 			</div>
 		</div>
 		<div class="container">
-			<div class="row">
-		<!--2. left sider begin-->
+			<div class="row">		<!--2. left sider begin-->
 		<div class="col-md-9" id="blog-main" role="main">
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/cseries/tcpclosewaitsigpipe.html">Linux TCP通信出现CLOSE_WAIT后导致服务端进程挂掉</a></h2>
@@ -44,7 +44,7 @@
 </ul>
 <div class="post-content fmt">
 	<p>在<a href="https://typecodes.com/cseries/tcpdumpwiresharkclosewait2.html" title="《使用TCPDUMP和Wireshark排查服务端CLOSE_WAIT（二）》">前文</a>中讲述了Linux服务端TCP通信出现<code>CLOSE_WAIT</code>状态的原因，这篇文章主要通过一个实例演示它个一个“恶劣”影响：直接使服务端进程Down掉。</p>
-<p><img alt="CentOS服务端建立监听端口" src="https://o3cex9zsl.qnssl.com/2016/02/tcp_socket_server1.png" title="CentOS服务端建立监听端口" /></p>
+<p><img alt="CentOS服务端建立监听端口" src="https://o3cex9zsl.qnssl.com/2016/02/tcp_socket_server1.png" title="CentOS服务端建立监听端口"></p>
 
 
 <h4>1 CentOS服务端建立监听端口</h4>
@@ -142,20 +142,20 @@
 91
 92
 93
-94</pre></div></td><td class="code"><div class="highlight"><pre><span class="cm">/** </span>
+94</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="cm">/** </span>
 <span class="cm"> * @FileName    server_socket.c</span>
 <span class="cm"> * @Describe    A simple example for creating a listen as a server and simulate generate a sigpipe signal in linux.</span>
 <span class="cm"> * @Author      vfhky 2016-02-29 08:01 https://typecodes.com/cseries/tcpclosewaitsigpipe.html</span>
 <span class="cm"> * @Compile     gcc server_socket.c -o server_socket</span>
 <span class="cm"> */</span>
-<span class="cp">#include &lt;stdio.h&gt;</span>
-<span class="cp">#include &lt;string.h&gt;</span>
-<span class="cp">#include &lt;sys/types.h&gt;</span>
-<span class="cp">#include &lt;sys/socket.h&gt;</span>
-<span class="cp">#include &lt;netinet/in.h&gt;</span>
-<span class="cp">#include &lt;arpa/inet.h&gt;</span>
-<span class="cp">#include &lt;errno.h&gt;</span>
-<span class="cp">#include &lt;signal.h&gt;</span>
+<span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;string.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;sys/types.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;sys/socket.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;netinet/in.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;arpa/inet.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;errno.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;signal.h&gt;</span><span class="cp"></span>
 
 <span class="c1">//Whether add a signal handle.</span>
 <span class="cp">#define SIGNAL_HANDLE 0</span>
@@ -242,41 +242,41 @@
 <h4>2 在Linux中利用telnet命令创建一个客户端</h4>
 <p>新建一个shell脚本netstat_nap.sh，里面只包含一条有效命令<code>netstat -nap|head -n 2;netstat -nap|grep 8000</code>。</p>
 <p>再打开一个Linux终端界面，然后输入命令<code>telnet 192.168.1.177 8000</code>作为客户端建立与服务端的TCP连接。这时执行脚本<code>./netstat_nap.sh</code>可以看到Linux客户端（PID:13045）和服务端（PID:13035）的TCP通信已经变成<code>ESTABLISHED</code>状态，效果如下图所示：</p>
-<p><img alt="Linux中利用netstat和lsof命令查看TCP服务状态" src="https://o3cex9zsl.qnssl.com/2016/02/tcp_linux_client_established.png" title="Linux中利用netstat和lsof命令查看TCP服务状态" /></p>
+<p><img alt="Linux中利用netstat和lsof命令查看TCP服务状态" src="https://o3cex9zsl.qnssl.com/2016/02/tcp_linux_client_established.png" title="Linux中利用netstat和lsof命令查看TCP服务状态"></p>
 <h4>3 在Windows中利用telnet命令创建一个客户端</h4>
 <p>在Windows主机（192.168.1.110）中打开一个PowerShell终端界面，然后输入命令<code>telnet 192.168.1.177 8000</code>作为客户端建立与Linux服务端的TCP连接。</p>
 <p>这时执行脚本<code>./netstat_nap.sh</code>，可以看到Windows客户端（端口:64012）和服务端（PID:13035）的TCP通信已经变成<code>ESTABLISHED</code>状态。同时使用命令<code>lsof -i:8000</code>，可以看到进程打开的文件。</p>
-<p><img alt="Linux中利用netstat和lsof命令查看TCP服务状态" src="https://o3cex9zsl.qnssl.com/2016/02/win_client_netstat_lsof.png" title="Linux中利用netstat和lsof命令查看TCP服务状态" /></p>
+<p><img alt="Linux中利用netstat和lsof命令查看TCP服务状态" src="https://o3cex9zsl.qnssl.com/2016/02/win_client_netstat_lsof.png" title="Linux中利用netstat和lsof命令查看TCP服务状态"></p>
 <h4>4 直接关闭Windows telnet客户端界面并使用Wireshark抓包</h4>
 <p>在直接关闭telnet界面后，继续使用netstat_nap.sh脚本和lsof命令发现刚才建立的TCP通信出现了<code>CLOSE_WAIT</code>的状态。</p>
-<p><img alt="Linux中利用netstat和lsof命令查看TCP服务状态" src="https://o3cex9zsl.qnssl.com/2016/02/win_client_close_netstat_lsof1.png" title="Linux中利用netstat和lsof命令查看TCP服务状态" /></p>
+<p><img alt="Linux中利用netstat和lsof命令查看TCP服务状态" src="https://o3cex9zsl.qnssl.com/2016/02/win_client_close_netstat_lsof1.png" title="Linux中利用netstat和lsof命令查看TCP服务状态"></p>
 <p>在等待2分钟后，在Windows中使用Wireshark抓包发现由于客户端发送了<code>RST+ACK</code>报文给Linux服务端，所以二者的TCP链路已经被复位了：</p>
-<p><img alt="在Windows中使用Wireshark抓包" src="https://o3cex9zsl.qnssl.com/2016/02/win_client_wireshark1.png" title="在Windows中使用Wireshark抓包" /></p>
+<p><img alt="在Windows中使用Wireshark抓包" src="https://o3cex9zsl.qnssl.com/2016/02/win_client_wireshark1.png" title="在Windows中使用Wireshark抓包"></p>
 <p>这时在Linux中再次使用netstat_nap.sh脚本和lsof命令发现<code>CLOSE_WAIT</code>的状态已经不存在了。</p>
-<p><img alt="Linux中利用netstat和lsof命令查看TCP服务状态" src="https://o3cex9zsl.qnssl.com/2016/02/win_client_close_netstat_lsof2.png" title="Linux中利用netstat和lsof命令查看TCP服务状态" /></p>
+<p><img alt="Linux中利用netstat和lsof命令查看TCP服务状态" src="https://o3cex9zsl.qnssl.com/2016/02/win_client_close_netstat_lsof2.png" title="Linux中利用netstat和lsof命令查看TCP服务状态"></p>
 <h4>5 关闭Linux telnet客户端</h4>
 <p>在Windows关闭telnet客户端界面并发送<code>RST+ACK</code>报文后，关闭小节2中在Linux中打开的telnet客户端。这时Linux服务端进程会执行第90行处的close()函数，也即执行正常<code>四次挥手</code>关闭TCP连接。</p>
 <p>接着Linux服务端进程继续从内核中已完成连接队列中取出已完成连接，这样之前小节3中Windows telnet建立的客户端连接被读取。如下图所示，服务端进程打印了第80行出的数据（Accept client[192.168.1.110:64012].），但是服务端进程却挂掉了。</p>
-<p><img alt="CentOS服务端建立监听端口" src="https://o3cex9zsl.qnssl.com/2016/02/tcp_socket_server2.png" title="CentOS服务端建立监听端口" /></p>
+<p><img alt="CentOS服务端建立监听端口" src="https://o3cex9zsl.qnssl.com/2016/02/tcp_socket_server2.png" title="CentOS服务端建立监听端口"></p>
 <p>这时在Linux中再次使用netstat_nap.sh脚本和lsof命令：</p>
-<p><img alt="Linux中利用netstat和lsof命令查看TCP服务状态" src="https://o3cex9zsl.qnssl.com/2016/02/win_client_close_netstat_lsof3.png" title="Linux中利用netstat和lsof命令查看TCP服务状态" />    </p>
+<p><img alt="Linux中利用netstat和lsof命令查看TCP服务状态" src="https://o3cex9zsl.qnssl.com/2016/02/win_client_close_netstat_lsof3.png" title="Linux中利用netstat和lsof命令查看TCP服务状态">    </p>
 <h4>6 原因分析</h4>
 <p>由于Windows客户端的TCP链路在小节4中由于<code>RST</code>的缘故而关闭了，没有读端。那么当Linux服务端执行82行的send()函数时，向之前的socket描述符发送26字节的报文数据时，会收到内核发送过来的<code>SIGPIPE信号</code>，导致服务端进程默认关闭。</p>
 <p>因此，如果想捕捉到这个SIGPIPE信号的话，可以将程序17行的SIGNAL_HANDLE宏定义值改成1，那么就会得到如下图所示的情况（进程能正常运行了）。</p>
-<p><img alt="Linux TCP通信出现CLOSE_WAIT后导致服务端进程挂掉" src="https://o3cex9zsl.qnssl.com/2016/02/close_wait_sigepipe.png" title="Linux TCP通信出现CLOSE_WAIT后导致服务端进程挂掉" />   </p>
+<p><img alt="Linux TCP通信出现CLOSE_WAIT后导致服务端进程挂掉" src="https://o3cex9zsl.qnssl.com/2016/02/close_wait_sigepipe.png" title="Linux TCP通信出现CLOSE_WAIT后导致服务端进程挂掉">   </p>
 <h4>7 问题延伸</h4>
 <p>如果在第4小节中关闭Windows客户端界面后，又直接如第5小节所示关闭Linux telnet客户端界面，那么又会出现什么情况呢？于是又重新做了一遍测试，流程同上，下面是测试结果以及分析。</p>
 <p>先用netstat和lsof命令查看TCP服务状态，发现监听服务正常：</p>
-<p><img alt="Linux中利用netstat和lsof命令查看TCP服务状态" src="https://o3cex9zsl.qnssl.com/2016/02/extend_netstat_lsof.png" title="Linux中利用netstat和lsof命令查看TCP服务状态" /></p>
+<p><img alt="Linux中利用netstat和lsof命令查看TCP服务状态" src="https://o3cex9zsl.qnssl.com/2016/02/extend_netstat_lsof.png" title="Linux中利用netstat和lsof命令查看TCP服务状态"></p>
 <p>然后分别用TCPDUMP和Wireshark抓取TCP通信包，截取如下所示。可以发现在Linux telnet客户端完成<code>四次挥手</code>后，服务端进程继续向之前Windows telnet客户端建立的socket描述符发送26字节的报文数据。</p>
 <p>因为Windows客户端此时处于<code>FIN_WAIT2</code>状态（Linux服务端处于<code>CLOSE_WAIT</code>状态），所以服务端能继续发其发送数据（即图中的PUSH+ACK报文），接着Windows客户端回应<code>RST+ACK</code>报文，从而两者的TCP链路复位。</p>
-<p><img alt="在Linux中使用TCPDUMP抓包" src="https://o3cex9zsl.qnssl.com/2016/02/extend_tcpdump.png" title="在Linux中使用TCPDUMP抓包" /></p>
-<p><img alt="在Windows中使用Wireshark抓包" src="https://o3cex9zsl.qnssl.com/2016/02/win_client_wireshark2.png" title="在Windows中使用Wireshark抓包" /></p>
+<p><img alt="在Linux中使用TCPDUMP抓包" src="https://o3cex9zsl.qnssl.com/2016/02/extend_tcpdump.png" title="在Linux中使用TCPDUMP抓包"></p>
+<p><img alt="在Windows中使用Wireshark抓包" src="https://o3cex9zsl.qnssl.com/2016/02/win_client_wireshark2.png" title="在Windows中使用Wireshark抓包"></p>
 <p>这样Linux服务端进程还是能够正常执行监听任务：</p>
-<p><img alt="服务端进程正常执行监听" src="https://o3cex9zsl.qnssl.com/2016/02/tcp_socket_server3.png" title="服务端进程正常执行监听" /></p>
+<p><img alt="服务端进程正常执行监听" src="https://o3cex9zsl.qnssl.com/2016/02/tcp_socket_server3.png" title="服务端进程正常执行监听"></p>
 <h4>8 其它</h4>
 <p>网上有人把这种客户端或者服务端异常关闭的连接叫做TCP半关闭（Half-Close），例如网线拔掉、突然断电等，此时对端连接仍认为双方连接处于打开中。</p>
-		    	<div class="donate_div_container">
+</div>		    	<div class="donate_div_container">
 					<div class="donate_div">
 						<p><a href="javascript:void(0)" onclick="donateToggle()" class="donate_word" title="打赏，支持一下">打赏</a></p>
 						<div class="hide_box"></div>
@@ -306,7 +306,7 @@
 					</div>
 				</div>
 		    	<div class="tags">
-					<div class="post_tags">
+					<div class="post_tags" itemprop="keywords">
 						Tags: <a href="https://typecodes.com/tag/tcpdump.html">tcpdump</a>,<a href="https://typecodes.com/tag/wireshark.html">wireshark</a>,<a href="https://typecodes.com/tag/tcp.html">tcp</a>,<a href="https://typecodes.com/tag/close_wait.html">close_wait</a>,<a href="https://typecodes.com/tag/sigpipe.html">sigpipe</a>					</div>
 					<div class="post-share">
 						<ul class="post-shareul clearfix">
@@ -398,7 +398,6 @@
 		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
 	</section>
 </div>
-				</div>
 			</div>
 		</div>
 		<!--4. bottom begin-->

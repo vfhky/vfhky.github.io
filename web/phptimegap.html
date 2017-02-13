@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html dir="ltr" lang="zh-CN" class="no-js">
+<html class="no-js">
 	<head>
-		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
   		<meta name="renderer" content="webkit">
 		<title>PHP获取两个时间相差的年数、月数和天数 &mdash; TypeCodes</title>
 		<meta name="description" content="PHP获取两个时间相差的年数、月数和天数 &mdash; TypeCodes" />
@@ -34,8 +35,7 @@
 			</div>
 		</div>
 		<div class="container">
-			<div class="row">
-		<!--2. left sider begin-->
+			<div class="row">		<!--2. left sider begin-->
 		<div class="col-md-9" id="blog-main" role="main">
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/web/phptimegap.html">PHP获取两个时间相差的年数、月数和天数</a></h2>
@@ -45,7 +45,7 @@
 <div class="post-content fmt">
 	<p>今天在查看博客的统计栏时，发现那个“安全运行”的时间只显示了当前时间距离博客的建立时间相差的天数。这样看起来不怎么舒服：要是再过几年后，运行了七八百天，那是不是用户还得估算一下是几年了啊。因此，vfhky觉得还是把具体相差的年月日都写出来，这样才符合用户体验。</p>
 <p>那么，如何获取两个不同时间相差几年几月几日呢？比如当前时间距离2008年08月08日的北京奥运会有几年几月几日了？晚上琢磨了下，实现效果如下图所示（也可以点击右侧栏的“博客统计”栏目查看效果）。</p>
-<p><img alt="PHP获取两个时间相差的年数、月数和天数" src="https://o3cex9zsl.qnssl.com/2013/07/Time_gap.gif" title="PHP获取两个时间相差的年数、月数和天数" /></p>
+<p><img alt="PHP获取两个时间相差的年数、月数和天数" src="https://o3cex9zsl.qnssl.com/2013/07/Time_gap.gif" title="PHP获取两个时间相差的年数、月数和天数"></p>
 
 
 <p>代码如下，需要说明的是：1、定义一年为360天，一个月为30天；2、代码中86400=24*60*60，代表一天中共有多少秒；3、这两个时间都要规范的写成类似2013-07-28的形式；4、推广到所有的PHP程序，可以把Get_option('swt_builddate')这个wordpress获取后台数据的参数改成需要比较的时间参数。</p>
@@ -57,7 +57,7 @@
 6
 7
 8
-9</pre></div></td><td class="code"><div class="highlight"><pre><span class="cp">&lt;?php</span>
+9</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
   <span class="c1">//Get detail gap of year,month and days between two different time by vfhky 20130728</span>
   <span class="nv">$common</span> <span class="o">=</span> <span class="p">(</span><span class="nb">time</span><span class="p">()</span><span class="o">-</span><span class="nb">strtotime</span><span class="p">(</span><span class="nx">get_option</span><span class="p">(</span><span class="s1">&#39;swt_builddate&#39;</span><span class="p">)));</span>
   <span class="nv">$a</span> <span class="o">=</span> <span class="nb">floor</span><span class="p">(</span><span class="nv">$common</span><span class="o">/</span><span class="mi">86400</span><span class="o">/</span><span class="mi">360</span><span class="p">);</span>    <span class="c1">//整数年</span>
@@ -68,7 +68,7 @@
 <span class="cp">?&gt;</span><span class="x"></span>
 </pre></div>
 </td></tr></table>
-		    	<div class="donate_div_container">
+</div>		    	<div class="donate_div_container">
 					<div class="donate_div">
 						<p><a href="javascript:void(0)" onclick="donateToggle()" class="donate_word" title="打赏，支持一下">打赏</a></p>
 						<div class="hide_box"></div>
@@ -98,7 +98,7 @@
 					</div>
 				</div>
 		    	<div class="tags">
-					<div class="post_tags">
+					<div class="post_tags" itemprop="keywords">
 						Tags: <a href="https://typecodes.com/tag/phpshi-jian-xiang-chai.html">php时间相差</a>					</div>
 					<div class="post-share">
 						<ul class="post-shareul clearfix">
@@ -190,7 +190,6 @@
 		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
 	</section>
 </div>
-				</div>
 			</div>
 		</div>
 		<!--4. bottom begin-->

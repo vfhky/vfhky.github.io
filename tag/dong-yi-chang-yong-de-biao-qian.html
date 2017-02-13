@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html dir="ltr" lang="zh-CN" class="no-js">
+<html class="no-js">
 	<head>
-		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
   		<meta name="renderer" content="webkit">
 		<title>标签 动易常用的标签 下的文章 - TypeCodes</title>
 		<meta name="description" content="标签 动易常用的标签 下的文章 - TypeCodes" />
@@ -34,8 +35,7 @@
 			</div>
 		</div>
 		<div class="container">
-			<div class="row">
-		<!--2. left sider begin-->
+			<div class="row">		<!--2. left sider begin-->
 		<div class="col-md-9" id="blog-main" role="main">
 		  	<!--article recycle-->
 			<article class="post">
@@ -45,19 +45,19 @@
 </ul>
 <div class="post-content fmt">
 	<p>1.显示某个栏目的标题及链接：</p>
-<div class="highlight"><pre><span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&#39;{PE.Label id=&quot;取得节点链接路径&quot; nodeid=&quot;1&quot;/}&#39;</span> <span class="nt">&gt;</span>{PE.Label id=&quot;取得节点名称&quot; nodeid=&quot;1&quot;/}<span class="nt">&lt;/a&gt;</span>
+<div class="highlight"><pre><span></span><span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&#39;{PE.Label id=&quot;取得节点链接路径&quot; nodeid=&quot;1&quot;/}&#39;</span> <span class="nt">&gt;</span>{PE.Label id=&quot;取得节点名称&quot; nodeid=&quot;1&quot;/}<span class="nt">&lt;/a&gt;</span>
 显示“文章中心”及链接。也可以用nodes=&quot;@RequestInt_Id&quot;自动取值。
 </pre></div>
 
 
 <p>2.显示图片带标题（左边图片，右边文章标题）：</p>
-<div class="highlight"><pre>{PE.Label id=&quot;通用带图片的信息列表&quot; outputQty=&quot;1&quot; titleLength=&quot;30&quot; contentLength=&quot;80&quot; models=&quot;1&quot; titleClass=&quot;tv_u_thumb_title&quot; imageClass=&quot;tv_u_thumb&quot; imageWidth=&quot;160&quot; imageHeight=&quot;120&quot; picExist=&quot;true&quot;/}
+<div class="highlight"><pre><span></span>{PE.Label id=&quot;通用带图片的信息列表&quot; outputQty=&quot;1&quot; titleLength=&quot;30&quot; contentLength=&quot;80&quot; models=&quot;1&quot; titleClass=&quot;tv_u_thumb_title&quot; imageClass=&quot;tv_u_thumb&quot; imageWidth=&quot;160&quot; imageHeight=&quot;120&quot; picExist=&quot;true&quot;/}
 </pre></div>
 
 
 
 	<p class="more"><a href="https://typecodes.com/web/sfcommontag.html" title="动易SiteFactory系列教程二:动易常用的标签">- 阅读剩余部分 -</a></p>
-			</article>
+</div>			</article>
 		  	<!--page navigation-->
 <ol class="page-navigator">
 </ol>		</div>
@@ -108,7 +108,6 @@
 		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
 	</section>
 </div>
-				</div>
 			</div>
 		</div>
 		<!--4. bottom begin-->

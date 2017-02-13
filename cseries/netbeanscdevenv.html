@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html dir="ltr" lang="zh-CN" class="no-js">
+<html class="no-js">
 	<head>
-		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
   		<meta name="renderer" content="webkit">
 		<title>完美配置NetBeans IDE中的C/C++开发环境 &mdash; TypeCodes</title>
 		<meta name="description" content="完美配置NetBeans IDE中的C/C++开发环境 &mdash; TypeCodes" />
@@ -34,8 +35,7 @@
 			</div>
 		</div>
 		<div class="container">
-			<div class="row">
-		<!--2. left sider begin-->
+			<div class="row">		<!--2. left sider begin-->
 		<div class="col-md-9" id="blog-main" role="main">
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/cseries/netbeanscdevenv.html">完美配置NetBeans IDE中的C/C++开发环境</a></h2>
@@ -52,7 +52,7 @@
 <h6>问题2、目前，NetBeans的C/C++模块可以和Cygwin编译器或者MinGW编译器配合使用（当然二者也可以同时安装使用）。</h6>
 <p>因此，我们可以选择下载<a href="http://www.cygwin.com/" title="下载Cygwin编译器">Cygwin编译器</a>或者<a href="http://sourceforge.net/projects/mingw/files/latest/download?source=files" title="下载MinGW编译器">MinGW编译器</a>。这里以Cygwin编译器为例子，也有很多人用Netbeans+MinGW+MSYS搭建的，就不举例了。</p>
 <h6>问题3、Cygwin编译器主要元素如下（这几个在安装Cygwin的时候一定要选上）：</h6>
-<div class="highlight"><pre>Cygwin gcc-core ( C 编译器) 3.4.4
+<div class="highlight"><pre><span></span>Cygwin gcc-core ( C 编译器) 3.4.4
 Cygwin gcc-c++ ( C++ 编译器) 3.4.4
 Cygwin gdb ( GNU 调试器) 7.5.50
 Cygwin make 3.82.90
@@ -63,25 +63,25 @@ Cygwin make 3.82.90
 <p>接下来是配置NetBeans IDE中的C/C++开发环境的具体操作步骤：</p>
 <h5>（一）下载Cygwin：</h5>
 <p>进入<a href="http://cygwin.com/install.html" title="Cygwin下载">Cygwin官网</a>，下载setup.exe后点击运行。然后一直选择默认和NEXT，在“Choose A Download Site”选项中，我们可以选择任意的网站地址进行下载。例如，选择国内的http://mirrors.163.com，国外的http://cygwin.mirrors.pair.com等等。</p>
-<p><img alt="下载Cygwin" src="https://o3cex9zsl.qnssl.com/2012/12/22.png" title="下载Cygwin" /></p>
+<p><img alt="下载Cygwin" src="https://o3cex9zsl.qnssl.com/2012/12/22.png" title="下载Cygwin"></p>
 <h5>（二）在线安装所需要的Cygwin元素：</h5>
 <p>在“Select Packages”中，我们需要选择Cygwin的主要元素。正如前面第三个问题中提到的，在点击“Devel”左边的加号后，我们必须选上gcc-core: C compiler、gcc-g++: C++ compiler、gdb: The GNU Debugger 和 make: the GNU version of the 'make' utility，博主还选上了binutils、cmake、gcc以及gcc-mingw-**备用。</p>
-<p><img alt="安装所需要的Cygwin元素" src="https://o3cex9zsl.qnssl.com/2012/12/32.png" title="安装所需要的Cygwin元素" /></p>
+<p><img alt="安装所需要的Cygwin元素" src="https://o3cex9zsl.qnssl.com/2012/12/32.png" title="安装所需要的Cygwin元素"></p>
 <h5>（三）将使Cygwin编译器整合到NetBeans IDE中，使之能够找到该工具集：</h5>
 <p>途径一：设置计算机系统的环境变量，将Cygwin编译器目录添加到 Path 变量中。XP系统通过依次点击“控制面板 &gt; 系统 &gt; 高级 &gt; 环境变量 &gt; 系统变量 &gt; Path &gt; 编辑 &gt; ”
 ，而在WIN7、WIN8中依次点击“控制面板 &gt; 系统和安全 &gt; 系统 &gt; 高级系统设置 &gt; 环境变量 &gt; 系统变量 &gt; Path &gt; 编辑 &gt; ”，在“变量值”的最后面最后输入Cygwin的安装目录，例如博主的是“;D:\cygwin\bin”，千万不能把“;”漏掉了！！！</p>
-<p><img alt="设置系统的环境变量" src="https://o3cex9zsl.qnssl.com/2012/12/41.png" title="设置系统的环境变量" /></p>
-<p><img alt="编辑PATH的变量值" src="https://o3cex9zsl.qnssl.com/2012/12/51.png" title="编辑PATH的变量值" /></p>
+<p><img alt="设置系统的环境变量" src="https://o3cex9zsl.qnssl.com/2012/12/41.png" title="设置系统的环境变量"></p>
+<p><img alt="编辑PATH的变量值" src="https://o3cex9zsl.qnssl.com/2012/12/51.png" title="编辑PATH的变量值"></p>
 <p>途径二：进入NetBeans，依次点击“工具 &gt; 选项 &gt; C/C++ &gt; 添加 &gt; 浏览选择Cygwin的安装目录”。最终显示如下图所示的界面，则表示已经在NetBeans7.2中的完美配置好了C/C++的开发环境。</p>
-<p><img alt="C/C++配置界面" src="https://o3cex9zsl.qnssl.com/2012/12/11.jpg" title="C/C++配置界面" /></p>
+<p><img alt="C/C++配置界面" src="https://o3cex9zsl.qnssl.com/2012/12/11.jpg" title="C/C++配置界面"></p>
 <h5>（四）另外也可以通过点击Cygwin的快捷方式“Cygwin Terminal”，输入如下命令查看Cygwin编译器是否完整安装好了。</h5>
-<div class="highlight"><pre>cygcheck -c cygwin
+<div class="highlight"><pre><span></span>cygcheck -c cygwin
 gcc --version
 g++ --version
 make --version
 gdb --version
 </pre></div>
-		    	<div class="donate_div_container">
+</div>		    	<div class="donate_div_container">
 					<div class="donate_div">
 						<p><a href="javascript:void(0)" onclick="donateToggle()" class="donate_word" title="打赏，支持一下">打赏</a></p>
 						<div class="hide_box"></div>
@@ -111,7 +111,7 @@ gdb --version
 					</div>
 				</div>
 		    	<div class="tags">
-					<div class="post_tags">
+					<div class="post_tags" itemprop="keywords">
 						Tags: <a href="https://typecodes.com/tag/netbeans.html">netbeans</a>,<a href="https://typecodes.com/tag/cc.html">c/c++</a>					</div>
 					<div class="post-share">
 						<ul class="post-shareul clearfix">
@@ -203,7 +203,6 @@ gdb --version
 		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
 	</section>
 </div>
-				</div>
 			</div>
 		</div>
 		<!--4. bottom begin-->

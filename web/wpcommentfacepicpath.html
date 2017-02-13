@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html dir="ltr" lang="zh-CN" class="no-js">
+<html class="no-js">
 	<head>
-		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
   		<meta name="renderer" content="webkit">
 		<title>博客优化第二波(二)：wordpress评论表情图片路径修改的两种方法 &mdash; TypeCodes</title>
 		<meta name="description" content="博客优化第二波(二)：wordpress评论表情图片路径修改的两种方法 &mdash; TypeCodes" />
@@ -34,8 +35,7 @@
 			</div>
 		</div>
 		<div class="container">
-			<div class="row">
-		<!--2. left sider begin-->
+			<div class="row">		<!--2. left sider begin-->
 		<div class="col-md-9" id="blog-main" role="main">
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/web/wpcommentfacepicpath.html">博客优化第二波(二)：wordpress评论表情图片路径修改的两种方法</a></h2>
@@ -48,13 +48,13 @@
 
 
 <p>以我使用的威少的主题为例，这22个表情是通过comments.php调用主题目录中includes文件夹下的smiley.php显示的。如果你的博客没有评论表情的话，可以下载威少主题中的<a href="http://pan.baidu.com/share/link?shareid=78704&amp;uk=1879910561" title="smiley.php">smiley.php</a>放在自己主题目录下的includes文件夹中(当然也可以自定义路径，只要把comments.php中的引用路径写对就行)，然后在comments.php的合适位置添加调用即可。</p>
-<div class="highlight"><pre><span class="cp">&lt;?php</span> <span class="k">include</span><span class="p">(</span><span class="nx">TEMPLATEPATH</span> <span class="o">.</span> <span class="s1">&#39;/includes/smiley.php&#39;</span><span class="p">);</span> <span class="cp">?&gt;</span>
+<div class="highlight"><pre><span></span><span class="cp">&lt;?php</span> <span class="k">include</span><span class="p">(</span><span class="nx">TEMPLATEPATH</span> <span class="o">.</span> <span class="s1">&#39;/includes/smiley.php&#39;</span><span class="p">);</span> <span class="cp">?&gt;</span>
 </pre></div>
 
 
 <h5>（二）修改smiley.php文件</h5>
 <p>但威少的这份smiley.php文件没给每个表情图标上添加title和alt信息（这样不利于SEO，并且鼠标移上去也没相应提示文字），所以你还得给它加上这些信息;另外，大家还可以可以把这些表情定义到一个div层中，然后设置与主题相吻合的样式(相应修改style.css)。</p>
-<div class="highlight"><pre><span class="nf">#smilelink</span><span class="p">{</span><span class="k">cursor</span><span class="o">:</span><span class="k">pointer</span><span class="p">;</span> <span class="k">width</span><span class="o">:</span><span class="m">540px</span><span class="p">;}</span>
+<div class="highlight"><pre><span></span><span class="p">#</span><span class="nn">smilelink</span><span class="p">{</span><span class="k">cursor</span><span class="p">:</span><span class="kc">pointer</span><span class="p">;</span> <span class="k">width</span><span class="p">:</span><span class="mi">540</span><span class="kt">px</span><span class="p">;}</span>
 </pre></div>
 
 
@@ -62,7 +62,7 @@
 <p>威少主题smiley.php中表情图片路径都类似于 &lt;img src="/wp-includes/images/smilies/icon_question.gif" title="汗" alt="汗" /&gt; 所以我们只要把/wp-includes/images/smilies/改成自己主题下面的表情路径就行了。但这只能在评论框上显示你自定义的表情图片，当留言者点击这些表情图标然后连同评论内容一起显示在你的留言板上的时候，你看到的还是/wp-includes/images/smilies/中的表情图标！</p>
 <h5>（三）推荐方法:</h5>
 <p>如果不想用上面推荐的修改路径的方法，那么我们可以在functions.php中添加如下代码，调用自己主题下面的表情图标。</p>
-<div class="highlight"><pre><span class="c1">//评论框的表情包调用</span>
+<div class="highlight"><pre><span></span><span class="c1">//评论框的表情包调用</span>
 <span class="nx">add_filter</span><span class="p">(</span><span class="s1">&#39;smilies_src&#39;</span><span class="p">,</span><span class="s1">&#39;custom_smilies_src&#39;</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">10</span><span class="p">);</span>
 <span class="kd">function</span> <span class="nx">custom_smilies_src</span> <span class="p">(</span><span class="nx">$img_src</span><span class="p">,</span> <span class="nx">$img</span><span class="p">,</span> <span class="nx">$siteurl</span><span class="p">){</span>
     <span class="k">return</span> <span class="nx">get_bloginfo</span><span class="p">(</span><span class="s1">&#39;template_directory&#39;</span><span class="p">).</span><span class="s1">&#39;/images/smilies/&#39;</span><span class="p">.</span><span class="nx">$img</span><span class="p">;</span>
@@ -71,8 +71,8 @@
 
 
 <h5>（四）完结，以后博客再怎么升级都不怕了！</h5>
-<p><img alt="评论表情" src="https://o3cex9zsl.qnssl.com/2012/12/biaoqing.png" title="评论表情" /></p>
-		    	<div class="donate_div_container">
+<p><img alt="评论表情" src="https://o3cex9zsl.qnssl.com/2012/12/biaoqing.png" title="评论表情"></p>
+</div>		    	<div class="donate_div_container">
 					<div class="donate_div">
 						<p><a href="javascript:void(0)" onclick="donateToggle()" class="donate_word" title="打赏，支持一下">打赏</a></p>
 						<div class="hide_box"></div>
@@ -102,7 +102,7 @@
 					</div>
 				</div>
 		    	<div class="tags">
-					<div class="post_tags">
+					<div class="post_tags" itemprop="keywords">
 						Tags: <a href="https://typecodes.com/tag/wordpress.html">wordpress</a>,<a href="https://typecodes.com/tag/wordpressping-lun-biao-qing.html">wordpress评论表情</a>					</div>
 					<div class="post-share">
 						<ul class="post-shareul clearfix">
@@ -194,7 +194,6 @@
 		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
 	</section>
 </div>
-				</div>
 			</div>
 		</div>
 		<!--4. bottom begin-->

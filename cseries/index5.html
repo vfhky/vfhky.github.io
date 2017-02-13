@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html dir="ltr" lang="zh-CN" class="no-js">
+<html class="no-js">
 	<head>
-		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
   		<meta name="renderer" content="webkit">
 		<title>分类 cseries 下的文章 - TypeCodes</title>
 		<meta name="description" content="分类 cseries 下的文章 - TypeCodes" />
@@ -34,8 +35,7 @@
 			</div>
 		</div>
 		<div class="container">
-			<div class="row">
-		<!--2. left sider begin-->
+			<div class="row">		<!--2. left sider begin-->
 		<div class="col-md-9" id="blog-main" role="main">
 		  	<!--article recycle-->
 			<article class="post">
@@ -49,7 +49,7 @@
 <h5>1 测试程序：“异常: 0xC0000005: 写入位置 0xxxxxxxxx 时发生访问冲突”</h5>
 
 	<p class="more"><a href="https://typecodes.com/cseries/pointermemaccess0xC0000005.html" title="再谈“0xC0000005读取写入位置冲突”——正确使用指针访问内存">- 阅读剩余部分 -</a></p>
-			</article>
+</div>			</article>
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/cseries/trimspace0xC0000005.html">未经处理的异常:0xC0000005:读取/写入位置冲突——从去掉字符串所有空格说起</a></h2>
 <ul class="post-meta">
@@ -60,7 +60,7 @@
 <p>该错误是由于内存访问出错引起的，最常见于指针的错误使用和数组越界等。下面是博主之前的一个经历——去掉一个字符串前后的所有空格。</p>
 
 	<p class="more"><a href="https://typecodes.com/cseries/trimspace0xC0000005.html" title="未经处理的异常:0xC0000005:读取/写入位置冲突——从去掉字符串所有空格说起">- 阅读剩余部分 -</a></p>
-			</article>
+</div>			</article>
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/cseries/cfree5ldexedwarferr.html">解决C-FREE 5编译出现“ld.exe: Dwarf Error: found dwarf version '0'”的问题</a></h2>
 <ul class="post-meta">
@@ -69,10 +69,10 @@
 <div class="post-content fmt">
 	<h5>1问题描述</h5>
 <p>之前自己在win7 64bit的机器上，安装了MinGW编译器，GCC版本是4.8.1，安装目录是 C:\MinGW ，同时安装了C-FREE 5这款C/C++集成开发环境到 D:\C-Free 5\ 目录。用c-free编译程序的时候总是报：C-FREE~1\mingw\bin\ld.exe: Dwarf Error: found dwarf version '0', this reader only handles version 2 and 3 information。如下图所示：</p>
-<p><img alt="C-FREE 5编译出现“ld.exe: Dwarf Error: found dwarf version '0'”" src="https://o3cex9zsl.qnssl.com/2014/08/cfree5ldexedwarferr.png" title="C-FREE 5编译出现“ld.exe: Dwarf Error: found dwarf version '0'”" /></p>
+<p><img alt="C-FREE 5编译出现“ld.exe: Dwarf Error: found dwarf version '0'”" src="https://o3cex9zsl.qnssl.com/2014/08/cfree5ldexedwarferr.png" title="C-FREE 5编译出现“ld.exe: Dwarf Error: found dwarf version '0'”"></p>
 
 	<p class="more"><a href="https://typecodes.com/cseries/cfree5ldexedwarferr.html" title="解决C-FREE 5编译出现“ld.exe: Dwarf Error: found dwarf version '0'”的问题">- 阅读剩余部分 -</a></p>
-			</article>
+</div>			</article>
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/cseries/vsbugonvariable.html">小心visual studio的“BUG”：变量的声明和使用</a></h2>
 <ul class="post-meta">
@@ -109,7 +109,7 @@
 27
 28
 29
-30</pre></div></td><td class="code"><div class="highlight"><pre><span class="cp">#include &lt;stdio.h&gt;</span>
+30</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
 <span class="kt">void</span> <span class="nf">fun</span><span class="p">(</span><span class="kt">int</span> <span class="o">*</span><span class="n">a</span><span class="p">,</span> <span class="kt">int</span> <span class="o">*</span><span class="n">n</span><span class="p">)</span>
 <span class="p">{</span>
    <span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">2000</span><span class="p">,</span> <span class="n">sum</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
@@ -145,7 +145,7 @@
 <p>然后ctrl+F5执行，结果很意外的报错了：</p>
 
 	<p class="more"><a href="https://typecodes.com/cseries/vsbugonvariable.html" title="小心visual studio的“BUG”：变量的声明和使用">- 阅读剩余部分 -</a></p>
-			</article>
+</div>			</article>
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/cseries/windowsinstallmingwgcc.html">Windows平台如何安装最新的MinGW GCC编译器</a></h2>
 <ul class="post-meta">
@@ -157,7 +157,7 @@
 <p>MinGW官网地址是：http://www.mingw.org/，目前它已经把MinGW源码托管在了sourceforge上了，因此下载地址是：<a href="http://sourceforge.net/projects/mingw/" title="进入官方下载地址">点击进入</a>。把那个mingw-get-setup.exe下载至本地电脑上即可。</p>
 
 	<p class="more"><a href="https://typecodes.com/cseries/windowsinstallmingwgcc.html" title="Windows平台如何安装最新的MinGW GCC编译器">- 阅读剩余部分 -</a></p>
-			</article>
+</div>			</article>
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/cseries/netbeanscdevenv.html">完美配置NetBeans IDE中的C/C++开发环境</a></h2>
 <ul class="post-meta">
@@ -168,7 +168,7 @@
 <p>而相对于Eclipse，博主还是比较中意NetBeans。所以在本文中，博主用的是NetBeans7.2.1作为实例演示。在配置C/C++之前，博主也在网上查了很多资料，基本上写得比较乱，所以自己整理了一份完整的NetBeans中配置C/C++开发环境的方案。在具体的演示之前，大家需要明白的几个问题。</p>
 
 	<p class="more"><a href="https://typecodes.com/cseries/netbeanscdevenv.html" title="完美配置NetBeans IDE中的C/C++开发环境">- 阅读剩余部分 -</a></p>
-			</article>
+</div>			</article>
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/cseries/datastructsortingcollect.html">C/C++数据结构与算法之排序法汇总</a></h2>
 <ul class="post-meta">
@@ -178,13 +178,19 @@
 	<p>数据结构与算法之各种排序法汇总——数据结构与算法是软件工程必修课程，也是找软件方面工作必先学习的知识。几乎每次笔试一些软件公司都会碰到关于算法方面的题目。</p>
 
 	<p class="more"><a href="https://typecodes.com/cseries/datastructsortingcollect.html" title="C/C++数据结构与算法之排序法汇总">- 阅读剩余部分 -</a></p>
-			</article>
+</div>			</article>
 		  	<!--page navigation-->
 <ol class="page-navigator">
-<li class="prev"><a href="https://typecodes.com/cseries/index4.html">&laquo; 前一页</a></li><li><a href="https://typecodes.com/cseries/index.html">1</a><li><a href="https://typecodes.com/cseries/index2.html">2</a>
-       		</li><li><a href="https://typecodes.com/cseries/index3.html">3</a>
-       		</li><li><a href="https://typecodes.com/cseries/index4.html">4</a>
-       		</li><li class="current"><a href="https://typecodes.com/cseries/index5.html">5</a>
+<li class="prev"><a href="https://typecodes.com/cseries/index4.html">&laquo; 前一页</a></li><li>
+       			<a href="https://typecodes.com/cseries/index1.html">1</a>
+       		</li><li>
+       			<a href="https://typecodes.com/cseries/index2.html">2</a>
+       		</li><li>
+       			<a href="https://typecodes.com/cseries/index3.html">3</a>
+       		</li><li>
+       			<a href="https://typecodes.com/cseries/index4.html">4</a>
+       		</li><li class="current">
+       			<a href="https://typecodes.com/cseries/index.html">5</a>
        		</li></ol>		</div>
 		<!--3. right sider begin-->
 <div class="col-md-3" id="blog-secondary" role="complementary">
@@ -251,7 +257,6 @@
 		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
 	</section>
 </div>
-				</div>
 			</div>
 		</div>
 		<!--4. bottom begin-->

@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html dir="ltr" lang="zh-CN" class="no-js">
+<html class="no-js">
 	<head>
-		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
   		<meta name="renderer" content="webkit">
 		<title>2015博客升级记(一)：安装CentOS7后需要的操作 &mdash; TypeCodes</title>
 		<meta name="description" content="2015博客升级记(一)：安装CentOS7后需要的操作 &mdash; TypeCodes" />
@@ -34,8 +35,7 @@
 			</div>
 		</div>
 		<div class="container">
-			<div class="row">
-		<!--2. left sider begin-->
+			<div class="row">		<!--2. left sider begin-->
 		<div class="col-md-9" id="blog-main" role="main">
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/linux/centos7afteroperate.html">2015博客升级记(一)：安装CentOS7后需要的操作</a></h2>
@@ -44,29 +44,29 @@
 </ul>
 <div class="post-content fmt">
 	<p>这是<a href="https://typecodes.com/mix/2015updateblog.html" title="查看原文">《2015年博客升级记》</a>系列文章的第一篇，主要记录安装完CentOS7后的一些优化操作，包括更换yum源并升级系统到CentOS7.1、使用sshd登录、修改机器名、vi映射为vim、vimrc的配置。</p>
-<p><img alt="安装CentOS7后需要的操作" src="https://o3cex9zsl.qnssl.com/2015/05/centos7update.png" title="安装CentOS7后需要的操作" /></p>
+<p><img alt="安装CentOS7后需要的操作" src="https://o3cex9zsl.qnssl.com/2015/05/centos7update.png" title="安装CentOS7后需要的操作"></p>
 
 
 <h5>1 安装EPEL源</h5>
 <p>EPEL即Extra Packages for Enterprise Linux，是基于Fedora的一个项目，为<code>红帽系</code>的操作系统提供额外的软件包，适用于RHEL、CentOS和Scientific Linux。EPEL为CentOS提供了<code>额外的</code>10000多个软件包，而且都不会更新或者替换系统本身组件。执行下面这条安装命令后，会在<code>/etc/yum.repos.d</code>目录下生成一个epel.repo文件。</p>
-<div class="highlight"><pre>[root@typecodes ~]# yum -y install epel-release
+<div class="highlight"><pre><span></span>[root@typecodes ~]# yum -y install epel-release
 </pre></div>
 
 
 <h5>2 安装yum-axelget插件</h5>
 <p>yum-axelget是EPEL提供的一个yum插件。默认的yum是单线程下载的，使用该插件后用yum安装软件时可以并行下载。yum-axelget插件原理是调用系统中的axel下载软件，然后根据软件包的大小自动设定线程数。在多线程操作时，还能避免因为线程数过多而导致服务器拒绝下载的问题，大大提高了软件的下载速度，减少了下载的等待时间。注意：通过下面这条安装命令，会同时安装axel下载软件。</p>
-<div class="highlight"><pre>[root@typecodes ~]# yum -y install yum-axelget
+<div class="highlight"><pre><span></span>[root@typecodes ~]# yum -y install yum-axelget
 </pre></div>
 
 
 <h5>3 更新CentOS源</h5>
 <p>在安装完EPEL源和yum-axelget插件后，我们就可以利用它们升级当前的CentOS7到CentOS7.1了（耗时大概10分钟）。</p>
-<div class="highlight"><pre>[root@typecodes ~]# yum clean all &amp;&amp; yum makecache &amp;&amp; yum -y update
+<div class="highlight"><pre><span></span>[root@typecodes ~]# yum clean all &amp;&amp; yum makecache &amp;&amp; yum -y update
 </pre></div>
 
 
 <p>然后可以使用下面两条命令查看当前CentOS的内核版本和发行版本信息。</p>
-<div class="highlight"><pre>##########内核版本
+<div class="highlight"><pre><span></span>##########内核版本
 root@typecodes ~]# cat /proc/version
 Linux version 3.10.0-123.9.3.el7.x86_64 (builder@kbuilder.dev.centos.org) (gcc version 4.8.2 20140120 (Red Hat 4.8.2-16) (GCC) ) #1 SMP Thu Nov 6 15:06:03 UTC 2014
 ##########发行版本
@@ -82,7 +82,7 @@ Codename:       Core
 <h5>4 使用sshd登录</h5>
 <p>在前文<a href="https://typecodes.com/web/aliyuncentoslnmphostssh.html" title="查看原文">《阿里云CentOS主机 LNMP 环境之主机安全篇一》</a>中，已经讲述了禁止任何用户使用密码登录，而只允许root用户使用sshd方式登录的方法。其中的公、私密钥是通过SecureCRT生成的，这里我们直接使用Linux命令生成公私钥，方法更为简单快捷。将生成的私钥vfhky20150505保存到本地供SecureCRT等工具使用即可（记得删除服务器上的私钥哦）。</p>
 <h6>4.1 使用Linux命令生成公私钥文件</h6>
-<div class="highlight"><pre>#######创建公钥存放目录：~/.ssh
+<div class="highlight"><pre><span></span>#######创建公钥存放目录：~/.ssh
 [root@typecodes ~]# mkdir .ssh &amp;&amp; cd .ssh
 #######生成1024字节的rsa加密的公私钥
 [root@typecodes .ssh]# ssh-keygen -b 1024 -t rsa -f vfhky20150505
@@ -139,25 +139,25 @@ vfhky20150505  vfhky20150505.pub
 18
 19
 20
-21</pre></div></td><td class="code"><div class="highlight"><pre><span class="c">#!/bin/bash</span>
-<span class="c"># sshd service configure script</span>
-<span class="c"># @author vfhky 2015.05.05 https://typecodes.com/linux/centos7afteroperate.html</span>
+21</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="ch">#!/bin/bash</span>
+<span class="c1"># sshd service configure script</span>
+<span class="c1"># @author vfhky 2015.05.05 https://typecodes.com/linux/centos7afteroperate.html</span>
 
-<span class="c"># set the sshd login port you want which should be more than 1024 </span>
+<span class="c1"># set the sshd login port you want which should be more than 1024 </span>
 sed -i -e <span class="s2">&quot;s@^#Port 22@Port 8866@g&quot;</span>  -e <span class="s2">&quot;s@^#Protocol 2@Protocol 2@g&quot;</span> /etc/ssh/sshd_config
 
-<span class="c"># set the secret key bits</span>
+<span class="c1"># set the secret key bits</span>
 sed -i -e <span class="s2">&quot;s@^#ServerKeyBits 1024@ServerKeyBits 1024@g&quot;</span>  -e <span class="s2">&quot;s@^#RSAAuthentication yes@RSAAuthentication yes@g&quot;</span> /etc/ssh/sshd_config
 
-<span class="c"># limit the login-way of user within Authentication-key</span>
+<span class="c1"># limit the login-way of user within Authentication-key</span>
 sed -i -e <span class="s2">&quot;s@^#PubkeyAuthentication yes@PubkeyAuthentication yes@g&quot;</span>  -e <span class="s2">&quot;s@^#PermitEmptyPasswords no@PermitEmptyPasswords no@g&quot;</span> /etc/ssh/sshd_config
 
 sed -i -e <span class="s2">&quot;s@^GSSAPIAuthentication yes@#GSSAPIAuthentication yes@g&quot;</span>  -e <span class="s2">&quot;s@^GSSAPICleanupCredentials yes@#GSSAPICleanupCredentials yes@g&quot;</span> /etc/ssh/sshd_config
 
-<span class="c"># forbid login with password</span>
+<span class="c1"># forbid login with password</span>
 sed -i -e <span class="s2">&quot;s@^PasswordAuthentication yes@PasswordAuthentication no@g&quot;</span>  -e <span class="s2">&quot;s@^PermitRootLogin yes@PermitRootLogin without-password@g&quot;</span> /etc/ssh/sshd_config
 
-<span class="c"># start the sshd service</span>
+<span class="c1"># start the sshd service</span>
 systemctl restart sshd.service
 service sshd start
 </pre></div>
@@ -165,19 +165,19 @@ service sshd start
 
 <h5>6 修改主机名</h5>
 <p>在前文<a href="https://typecodes.com/linux/centos7chghostname.html" title="查看原文">《CentOS7系统如何修改主机名》</a>中已经提到了修改CentOS7系统的主机名方法，这里再重复下。</p>
-<div class="highlight"><pre>[root@typecodes ~]# hostnamectl set-hostname typecodes
+<div class="highlight"><pre><span></span>[root@typecodes ~]# hostnamectl set-hostname typecodes
 </pre></div>
 
 
 <h5>7 将vi映射为vim命令、高亮grep词语</h5>
 <p>如何在编辑文件时，直接使用vi命令达到vim命令的效果，设置grep词语高亮</p>
-<div class="highlight"><pre>[root@typecodes ~]# echo -e &quot;\nalias vi=vim\nalias grep=&#39;grep --color&#39;\n&quot; &gt;&gt;~/.bashrc &amp;&amp; source ~/.bashrc
+<div class="highlight"><pre><span></span>[root@typecodes ~]# echo -e &quot;\nalias vi=vim\nalias grep=&#39;grep --color&#39;\n&quot; &gt;&gt;~/.bashrc &amp;&amp; source ~/.bashrc
 </pre></div>
 
 
 <h5>8 配置vimrc文件</h5>
 <p>下面这条vim配置命令是我经常使用的，包括行号、自动缩进、高亮、文件编码和粘贴时不变形的快捷键F9等等，直接使用root用户执行即可。</p>
-<div class="highlight"><pre>[root@typecodes ~]# echo -e &quot;\n\nset nobomb
+<div class="highlight"><pre><span></span>[root@typecodes ~]# echo -e &quot;\n\nset nobomb
 set number
 set showmode
 set autoindent
@@ -193,7 +193,7 @@ set noignorecase
 set fileformats=unix
 set pastetoggle=&lt;F9&gt;\n&quot; &gt;&gt; /etc/vimrc
 </pre></div>
-		    	<div class="donate_div_container">
+</div>		    	<div class="donate_div_container">
 					<div class="donate_div">
 						<p><a href="javascript:void(0)" onclick="donateToggle()" class="donate_word" title="打赏，支持一下">打赏</a></p>
 						<div class="hide_box"></div>
@@ -223,7 +223,7 @@ set pastetoggle=&lt;F9&gt;\n&quot; &gt;&gt; /etc/vimrc
 					</div>
 				</div>
 		    	<div class="tags">
-					<div class="post_tags">
+					<div class="post_tags" itemprop="keywords">
 						Tags: <a href="https://typecodes.com/tag/bo-ke-cheng-chang-lu.html">博客成长录</a>,<a href="https://typecodes.com/tag/centos7.html">centos7</a>					</div>
 					<div class="post-share">
 						<ul class="post-shareul clearfix">
@@ -315,7 +315,6 @@ set pastetoggle=&lt;F9&gt;\n&quot; &gt;&gt; /etc/vimrc
 		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
 	</section>
 </div>
-				</div>
 			</div>
 		</div>
 		<!--4. bottom begin-->

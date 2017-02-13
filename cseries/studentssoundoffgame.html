@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html dir="ltr" lang="zh-CN" class="no-js">
+<html class="no-js">
 	<head>
-		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
   		<meta name="renderer" content="webkit">
 		<title>由学生按某规则依次报数的游戏引发的问题 &mdash; TypeCodes</title>
 		<meta name="description" content="由学生按某规则依次报数的游戏引发的问题 &mdash; TypeCodes" />
@@ -34,8 +35,7 @@
 			</div>
 		</div>
 		<div class="container">
-			<div class="row">
-		<!--2. left sider begin-->
+			<div class="row">		<!--2. left sider begin-->
 		<div class="col-md-9" id="blog-main" role="main">
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/cseries/studentssoundoffgame.html">由学生按某规则依次报数的游戏引发的问题</a></h2>
@@ -44,9 +44,9 @@
 </ul>
 <div class="post-content fmt">
 	<p>前段时间Q群里有提问如下，编写程序解决一个学生按规则依次报数的体育游戏问题。编程语言不限，Java, C#, Ruby, C++, Js, Python, Scala, objective-C统统可以，小语种也没问题。</p>
-<p><img alt="学生按某规则依次报数的游戏" src="https://o3cex9zsl.qnssl.com/2014/11/sportsgamepushpop.png" title="学生按某规则依次报数的游戏" /></p>
+<p><img alt="学生按某规则依次报数的游戏" src="https://o3cex9zsl.qnssl.com/2014/11/sportsgamepushpop.png" title="学生按某规则依次报数的游戏"></p>
 <h5>1 问题描述：</h5>
-<div class="highlight"><pre>你是一名体育老师，在某次课距离下课还有五分钟时，你决定搞一个游戏。此时有100名学生在上课。游戏的规则是：
+<div class="highlight"><pre><span></span>你是一名体育老师，在某次课距离下课还有五分钟时，你决定搞一个游戏。此时有100名学生在上课。游戏的规则是：
 1. 你首先说出三个不同的特殊数，要求必须是个位数，比如3、5、7。
 2. 让所有学生拍成一队，然后按顺序报数。
 3. 学生报数时，如果所报数字是第一个特殊数（3）的倍数，那么不能说该数字，而要说Fizz；如果所报数字是第二个特殊数（5）的倍数，那么要说Buzz；如果所报数字是第三个特殊数（7）的倍数，那么要说Whizz。
@@ -241,14 +241,14 @@ Buzz
 151
 152
 153
-154</pre></div></td><td class="code"><div class="highlight"><pre><span class="cm">/**</span>
+154</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="cm">/**</span>
 <span class="cm"> * 游戏体育老师写3个个位数，100名同学按一定规则报数的问题</span>
 <span class="cm"> * @filename： game.c</span>
 <span class="cm"> * @author  ： vfhky  2014.10.25  https://typecodes.com</span>
 <span class="cm"> */</span>
 
-<span class="cp">#include &quot;stdio.h&quot;</span>
-<span class="cp">#include &quot;string.h&quot;</span>
+<span class="cp">#include</span> <span class="cpf">&quot;stdio.h&quot;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&quot;string.h&quot;</span><span class="cp"></span>
 <span class="cp">#define TotalNum 100</span>
 
 <span class="cm">/**</span>
@@ -400,8 +400,8 @@ Buzz
 
 <h5>3 测试结果</h5>
 <p>GCC编译后执行，结果如下图所示。但发现没有任何一位学生在报数时，需要报包含<code>Fizz</code>、<code>Buzz</code>、<code>Whizz</code>全部这三个单词的组合，例如不会出现题目规则4中所述的<code>FizzBuzzWhizz</code>。原因可以直接从前面的几条规则中推导出来。</p>
-<p><img alt="测试结果" src="https://o3cex9zsl.qnssl.com/2014/11/clangsportsgame.png" title="测试结果" /></p>
-		    	<div class="donate_div_container">
+<p><img alt="测试结果" src="https://o3cex9zsl.qnssl.com/2014/11/clangsportsgame.png" title="测试结果"></p>
+</div>		    	<div class="donate_div_container">
 					<div class="donate_div">
 						<p><a href="javascript:void(0)" onclick="donateToggle()" class="donate_word" title="打赏，支持一下">打赏</a></p>
 						<div class="hide_box"></div>
@@ -431,7 +431,7 @@ Buzz
 					</div>
 				</div>
 		    	<div class="tags">
-					<div class="post_tags">
+					<div class="post_tags" itemprop="keywords">
 						Tags: <a href="https://typecodes.com/tag/xue-sheng-bao-shu.html">学生报数</a>					</div>
 					<div class="post-share">
 						<ul class="post-shareul clearfix">
@@ -523,7 +523,6 @@ Buzz
 		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
 	</section>
 </div>
-				</div>
 			</div>
 		</div>
 		<!--4. bottom begin-->

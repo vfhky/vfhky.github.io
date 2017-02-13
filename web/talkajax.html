@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html dir="ltr" lang="zh-CN" class="no-js">
+<html class="no-js">
 	<head>
-		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
   		<meta name="renderer" content="webkit">
 		<title>浅谈初步应用Ajax技术 &mdash; TypeCodes</title>
 		<meta name="description" content="浅谈初步应用Ajax技术 &mdash; TypeCodes" />
@@ -34,8 +35,7 @@
 			</div>
 		</div>
 		<div class="container">
-			<div class="row">
-		<!--2. left sider begin-->
+			<div class="row">		<!--2. left sider begin-->
 		<div class="col-md-9" id="blog-main" role="main">
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/web/talkajax.html">浅谈初步应用Ajax技术</a></h2>
@@ -49,7 +49,7 @@
 
 <h5>1 新建register.asp文件</h5>
 <p>要点提示：在“用户名”的右边我添加了一个名叫“检测是否可用”的按钮，只要单击它就可以激活调用chkname.js文件中的chkname()函数，它的功能是检查用户要注册的用户名是否与数据库中的用户名相同。</p>
-<div class="highlight"><pre><span class="o">&lt;%</span><span class="p">@</span><span class="n">LANGUAGE</span><span class="o">=</span><span class="s">&quot;VBSCRIPT&quot;</span> <span class="n">CODEPAGE</span><span class="o">=</span><span class="s">&quot;936&quot;</span><span class="o">%&gt;&lt;!</span><span class="n">DOCTYPE</span> <span class="n">html</span> <span class="n">PUBLIC</span> <span class="s">&quot;-//W3C//DTD XHTML 1.0 Transitional//EN&quot;</span> <span class="s">&quot;http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd&quot;</span><span class="o">&gt;</span>
+<div class="highlight"><pre><span></span><span class="o">&lt;%</span><span class="p">@</span><span class="n">LANGUAGE</span><span class="o">=</span><span class="s">&quot;VBSCRIPT&quot;</span> <span class="n">CODEPAGE</span><span class="o">=</span><span class="s">&quot;936&quot;</span><span class="o">%&gt;&lt;!</span><span class="n">DOCTYPE</span> <span class="n">html</span> <span class="n">PUBLIC</span> <span class="s">&quot;-//W3C//DTD XHTML 1.0 Transitional//EN&quot;</span> <span class="s">&quot;http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd&quot;</span><span class="o">&gt;</span>
 <span class="o">&lt;</span><span class="n">html</span> <span class="n">xmlns</span><span class="o">=</span><span class="s">&quot;http://www.w3.org/1999/xhtml&quot;</span><span class="o">&gt;</span>
     <span class="o">&lt;!--</span><span class="err">#</span><span class="n">include</span> <span class="n">file</span><span class="o">=</span><span class="s">&quot;Connection/conn.asp&quot;</span><span class="o">--&gt;</span>
     <span class="o">&lt;</span><span class="n">head</span><span class="o">&gt;</span>
@@ -153,7 +153,7 @@
 37
 38
 39
-40</pre></div></td><td class="code"><div class="highlight"><pre><span class="cm">/**</span>
+40</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="cm">/**</span>
 <span class="cm"> * 根据客服端浏览器类型（IE和非IE）以你IE中安装的JavaScript技术版本的不同创建不同的XMLHttpRequest对象</span>
 <span class="cm"> */</span>
 <span class="kd">var</span> <span class="nx">xmlHttpObject</span><span class="p">;</span>
@@ -216,7 +216,7 @@
 16
 17
 18
-19</pre></div></td><td class="code"><div class="highlight"><pre><span class="c">&lt;!--#include file=&quot;Connection/conn.asp&quot;--&gt;</span>
+19</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="c">&lt;!--#include file=&quot;Connection/conn.asp&quot;--&gt;</span>
 <span class="cp">&lt;%</span> 
     <span class="no">Response</span><span class="o">.</span><span class="n">ContentType</span><span class="o">=</span><span class="s2">&quot;text/xml&quot;</span><span class="s1">&#39;确定此ASP文件是XML格式的 </span>
 <span class="s1">    Dim name1</span>
@@ -239,9 +239,9 @@
 </td></tr></table>
 
 <h5>4 相关截图</h5>
-<p><img alt="浅谈初步应用Ajax技术-1" src="https://o3cex9zsl.qnssl.com/2012/06/4.jpg" title="浅谈初步应用Ajax技术-1" /></p>
-<p><img alt="浅谈初步应用Ajax技术-2" src="https://o3cex9zsl.qnssl.com/2012/06/5.jpg" title="浅谈初步应用Ajax技术-2" /></p>
-		    	<div class="donate_div_container">
+<p><img alt="浅谈初步应用Ajax技术-1" src="https://o3cex9zsl.qnssl.com/2012/06/4.jpg" title="浅谈初步应用Ajax技术-1"></p>
+<p><img alt="浅谈初步应用Ajax技术-2" src="https://o3cex9zsl.qnssl.com/2012/06/5.jpg" title="浅谈初步应用Ajax技术-2"></p>
+</div>		    	<div class="donate_div_container">
 					<div class="donate_div">
 						<p><a href="javascript:void(0)" onclick="donateToggle()" class="donate_word" title="打赏，支持一下">打赏</a></p>
 						<div class="hide_box"></div>
@@ -271,7 +271,7 @@
 					</div>
 				</div>
 		    	<div class="tags">
-					<div class="post_tags">
+					<div class="post_tags" itemprop="keywords">
 						Tags: <a href="https://typecodes.com/tag/ajax.html">ajax</a>					</div>
 					<div class="post-share">
 						<ul class="post-shareul clearfix">
@@ -363,7 +363,6 @@
 		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
 	</section>
 </div>
-				</div>
 			</div>
 		</div>
 		<!--4. bottom begin-->

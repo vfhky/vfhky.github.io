@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html dir="ltr" lang="zh-CN" class="no-js">
+<html class="no-js">
 	<head>
-		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
   		<meta name="renderer" content="webkit">
 		<title>集齐腾讯开放平台的所有API接口权限 &mdash; TypeCodes</title>
 		<meta name="description" content="集齐腾讯开放平台的所有API接口权限 &mdash; TypeCodes" />
@@ -34,8 +35,7 @@
 			</div>
 		</div>
 		<div class="container">
-			<div class="row">
-		<!--2. left sider begin-->
+			<div class="row">		<!--2. left sider begin-->
 		<div class="col-md-9" id="blog-main" role="main">
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/mix/collectallqqapi.html">集齐腾讯开放平台的所有API接口权限</a></h2>
@@ -49,13 +49,13 @@
 <p>记得第一次腾讯把申请上线的应用给退了回来，原因大致是“QQ登录不规范”。应该是因为我就在wordpress后台的登录页面添加了一个QQ登录的图标，然后腾讯不同意。于是又找到官方文档（http://wiki.connect.qq.com/网站前端页面规范），细细看了一遍，最后改用了腾讯官方提供的JS SDK开发包方式放置登录按钮。只需简单两步就可以实现常见的QQ登录方式，这也是JS SDK开发包的优势所在。</p>
 
 
-<div class="highlight"><pre>//在HTML适当位置放置引用腾讯JS SDK的JavaScript脚本文件
+<div class="highlight"><pre><span></span>//在HTML适当位置放置引用腾讯JS SDK的JavaScript脚本文件
 <span class="nt">&lt;script</span> <span class="na">type=</span><span class="s">&quot;text/javascript&quot;</span> <span class="na">src=</span><span class="s">&quot;http://qzonestyle.gtimg.cn/qzone/openapi/qc_loader.js&quot;</span> <span class="na">data-appid=</span><span class="s">&quot;APPID&quot;</span> <span class="na">data-redirecturi=</span><span class="s">&quot;REDIRECTURI&quot;</span> <span class="na">charset=</span><span class="s">&quot;utf-8&quot;</span><span class="nt">&gt;&lt;/script&gt;</span>
 </pre></div>
 
 
 <p>然后，在你想要放置QQ登录按钮的HTML的任何位置加入下面的代码：</p>
-<div class="highlight"><pre><span class="nt">&lt;span</span> <span class="na">id=</span><span class="s">&quot;qqLoginBtn&quot;</span><span class="nt">&gt;&lt;/span&gt;</span>
+<div class="highlight"><pre><span></span><span class="nt">&lt;span</span> <span class="na">id=</span><span class="s">&quot;qqLoginBtn&quot;</span><span class="nt">&gt;&lt;/span&gt;</span>
 <span class="nt">&lt;script</span> <span class="na">type=</span><span class="s">&quot;text/javascript&quot;</span><span class="nt">&gt;</span>
  QC.Login({
    btnId:&quot;qqLoginBtn&quot;    //插入按钮的节点id
@@ -68,12 +68,12 @@
 <p>本以为这样放置后会顺利通过审核，结果没过一天又被腾讯告知“登录放置不符合要求”。想了想，好吧，可能是放在wordpress后台登陆的位置可能不太明显。于是，我又把上面的代码放到博客的首页底部的版权位置，测试也能正常登陆和退出。但是，一天后又被退了回来，还是提示“登陆防止不符合要求”。尼玛，这也不行？果断“大刑”问候腾讯工作人员，结果人家说最好把图标放在首页顶部的显眼位置。无语，一个完全没开发的应用让你放首页顶部……没办法，改吧，这是企鹅的地盘！改在首页后过了不久，就给审核通过了。效率还是挺高的！</p>
 <h5>4 集齐腾讯开放平台的所有API接口权限</h5>
 <p>应用审核后就是查看自己获得了那些权限，结果发现“腾讯财付通支付接口get_tenpay_addr”、“”、“用户发表分享到QQ空间接口add_share”、“用户的空间相册接口upload_pic”等是未授权的。于是，博主“慷慨激昂”、“义正言辞”地在“申请缘由”栏目中写上一句“由于博客的迅速壮大，原有的接口已经满足不了需求；”；然后在“日访问量”一栏中填写“1-2万PV数”。结果，3天后毫无音讯。博主忍不住了，有在QQ上“问候”一下那位腾讯GG/MM。结果被告知最长可能一个月。好吧，咱也不多说了，瞅瞅人家新浪娃子多爽快，各种接口权限！不过，在上周五也就是9月6日，博主终于集齐了腾讯开放平台的所有API接口权限。总共算起来也就10天的样子，还算比较快。</p>
-<p><img alt="集齐腾讯开放平台的所有API接口权限" src="https://o3cex9zsl.qnssl.com/2013/09/qq_auth_all.png" title="集齐腾讯开放平台的所有API接口权限" /></p>
+<p><img alt="集齐腾讯开放平台的所有API接口权限" src="https://o3cex9zsl.qnssl.com/2013/09/qq_auth_all.png" title="集齐腾讯开放平台的所有API接口权限"></p>
 <h5>5 API接口权限申请心得</h5>
 <p>所以，博主总结一个规律。要想把事情做好，首先自己要“态度诚恳”。比如在申请更高的接口权限时，在框框里多写几句话。将心比心，你自己都随意无所谓写那么一两句话，人家凭什么那么认真对待呢？其次，在自己的工作做得差不多的时候，一定要去“问候”一下官方人员，去催一下，稍微抱怨一下（注意把握尺度喔）会很有用！</p>
 <h5>6 如何将API接口和wordpress整合</h5>
 <p>总算集齐了所有API接口权限，而且vfhky在上周末也完成了对所有接口的类的调用和测试工作。但是，在如何把这些API接口和wordpress整合起来仍然没有头绪。例如，博主考虑过可以让QQ登陆用户在文章评论上发言，使用腾讯微博或者Q-Zone的头像，然后把评论内容自动同步到腾讯微博和Q-Zone。但是后面考虑到一些安全和用户体验等问题，还是理不出一个合理的思路。大家有什么建议呢？</p>
-		    	<div class="donate_div_container">
+</div>		    	<div class="donate_div_container">
 					<div class="donate_div">
 						<p><a href="javascript:void(0)" onclick="donateToggle()" class="donate_word" title="打赏，支持一下">打赏</a></p>
 						<div class="hide_box"></div>
@@ -103,7 +103,7 @@
 					</div>
 				</div>
 		    	<div class="tags">
-					<div class="post_tags">
+					<div class="post_tags" itemprop="keywords">
 						Tags: <a href="https://typecodes.com/tag/teng-xun-kai-fang-ping-tai-api.html">腾讯开放平台api</a>					</div>
 					<div class="post-share">
 						<ul class="post-shareul clearfix">
@@ -195,7 +195,6 @@
 		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
 	</section>
 </div>
-				</div>
 			</div>
 		</div>
 		<!--4. bottom begin-->

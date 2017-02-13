@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html dir="ltr" lang="zh-CN" class="no-js">
+<html class="no-js">
 	<head>
-		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
   		<meta name="renderer" content="webkit">
 		<title>上线第一个腾讯开放平台的API应用：收听微博用户（Beta版） &mdash; TypeCodes</title>
 		<meta name="description" content="上线第一个腾讯开放平台的API应用：收听微博用户（Beta版） &mdash; TypeCodes" />
@@ -34,8 +35,7 @@
 			</div>
 		</div>
 		<div class="container">
-			<div class="row">
-		<!--2. left sider begin-->
+			<div class="row">		<!--2. left sider begin-->
 		<div class="col-md-9" id="blog-main" role="main">
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/web/qqapifollowweibo.html">上线第一个腾讯开放平台的API应用：收听微博用户（Beta版）</a></h2>
@@ -46,22 +46,22 @@
 	<p>经过近段时间的努力，博主研究的腾讯开放平台API接口终于有所“突破”了。今天正式上线第一个测试版的接口应用：收听腾讯微博用户。先上效果图（也是add_idol接口调用的整个流程），希望大家提提意见。</p>
 <h5>1 add_idol接口调用流程</h5>
 <p>（1）点击博客右侧栏的“腾讯微博”图标，准备接口调用。</p>
-<p><img alt="腾讯API调用接口" src="https://o3cex9zsl.qnssl.com/2013/09/qq_weibo_idol.png" /></p>
+<p><img alt="腾讯API调用接口" src="https://o3cex9zsl.qnssl.com/2013/09/qq_weibo_idol.png"></p>
 
 
 <p>（2）接着会在当前页面弹出腾讯开放平台的授权页面，用户需要对博客进行授权。</p>
-<p><img alt="用户授权" src="https://o3cex9zsl.qnssl.com/2013/09/qq_api.png" /></p>
+<p><img alt="用户授权" src="https://o3cex9zsl.qnssl.com/2013/09/qq_api.png"></p>
 <p>（3）获取到了用户的授权信息后，调用add_idol接口并返回结果：成功OR失败。</p>
-<p><img alt="关注微博成功" src="https://o3cex9zsl.qnssl.com/2013/09/qq_auth_success.png" /></p>
+<p><img alt="关注微博成功" src="https://o3cex9zsl.qnssl.com/2013/09/qq_auth_success.png"></p>
 <h5>2 add_idol接口说明</h5>
 <p>大家可以先看看add_idol接口的官网说明文档，地址是<a href="http://wiki.connect.qq.com/add_idol" title="add_idol接口的官网说明文档">http://wiki.connect.qq.com/add_idol</a>。从文档中我们可以看到，在add_idol接口的请求报文中，我们需要传入“name”或者“fopenids”这两个字段的值。“name”字段是微博用户的账户，“fopendis”是在用户授权后获取到唯一标识符号。其实，腾讯发布了开放平台的JS SDK开发包，可以使用js实现“傻瓜式”的调用各个接口。考虑到js的响应速度以及博客未来的功能整合拓展，所以vfhky选择了PHP个性开发。</p>
-<p><img alt="add_idol接口文档" src="https://o3cex9zsl.qnssl.com/2013/09/add_idol.png" /></p>
+<p><img alt="add_idol接口文档" src="https://o3cex9zsl.qnssl.com/2013/09/add_idol.png"></p>
 <h5>3 add_idol接口的期待</h5>
 <p>目前，由于该接口应用还处于测试阶段，还有不完善的地方。首先是授权界面UI设计还是一块空白区域；其次是和博客的整合度不高，现在还只能收听博主的腾讯微博，计划是在博客的评论列表中所有评论者都能被授权用户收听；最后，该接口还没有和vfhky正在内测的其它接口实现交互，从而完成整个博客的一站式服务。</p>
 <h5>4 生日快乐，vfhky</h5>
 <p>没想到写完文章生日就到了，哈哈，祝自己“！！！生日快乐！！！”咯</p>
 <p>[smusic]http://storage.live.com/items/4054252DDEB2E987!285?a.mp3[/smusic]</p>
-		    	<div class="donate_div_container">
+</div>		    	<div class="donate_div_container">
 					<div class="donate_div">
 						<p><a href="javascript:void(0)" onclick="donateToggle()" class="donate_word" title="打赏，支持一下">打赏</a></p>
 						<div class="hide_box"></div>
@@ -91,7 +91,7 @@
 					</div>
 				</div>
 		    	<div class="tags">
-					<div class="post_tags">
+					<div class="post_tags" itemprop="keywords">
 						Tags: <a href="https://typecodes.com/tag/teng-xun-wei-bo-api.html">腾讯微博api</a>,<a href="https://typecodes.com/tag/teng-xun-kai-fang-ping-tai-api.html">腾讯开放平台api</a>					</div>
 					<div class="post-share">
 						<ul class="post-shareul clearfix">
@@ -183,7 +183,6 @@
 		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
 	</section>
 </div>
-				</div>
 			</div>
 		</div>
 		<!--4. bottom begin-->

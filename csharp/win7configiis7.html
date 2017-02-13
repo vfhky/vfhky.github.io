@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html dir="ltr" lang="zh-CN" class="no-js">
+<html class="no-js">
 	<head>
-		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
   		<meta name="renderer" content="webkit">
 		<title>Win7安装及配置IIS7教程（ASP+ASP.NET,包括动易SF的IIS配置） &mdash; TypeCodes</title>
 		<meta name="description" content="Win7安装及配置IIS7教程（ASP+ASP.NET,包括动易SF的IIS配置） &mdash; TypeCodes" />
@@ -34,8 +35,7 @@
 			</div>
 		</div>
 		<div class="container">
-			<div class="row">
-		<!--2. left sider begin-->
+			<div class="row">		<!--2. left sider begin-->
 		<div class="col-md-9" id="blog-main" role="main">
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/csharp/win7configiis7.html">Win7安装及配置IIS7教程（ASP+ASP.NET,包括动易SF的IIS配置）</a></h2>
@@ -45,23 +45,23 @@
 <div class="post-content fmt">
 	<h5>1 安装IIS7</h5>
 <p>依次点击“开始 --&gt; 控制面板 --&gt; 程序 --&gt; 打开或关闭 Windows 功能”，然后按下图操作：（注意：图中红色部分都要选中）</p>
-<p><img alt="安装IIS7" src="https://o3cex9zsl.qnssl.com/2012/08/1.jpeg" title="安装IIS7" /></p>
+<p><img alt="安装IIS7" src="https://o3cex9zsl.qnssl.com/2012/08/1.jpeg" title="安装IIS7"></p>
 
 
 <h5>2 配置IIS7</h5>
 <h6>2.1 身份验证的设置</h6>
 <p>依次点击：控制面板 --&gt; 程序安全 --&gt; 管理工具 --&gt;Internet 信息服务(IIS)管理器，点击“Default Web Site”选择“身份验证”，然后按下图操作：</p>
-<p><img alt="身份验证——配置IIS7" src="https://o3cex9zsl.qnssl.com/2012/08/2.jpeg" title="身份验证——配置IIS7" /></p>
+<p><img alt="身份验证——配置IIS7" src="https://o3cex9zsl.qnssl.com/2012/08/2.jpeg" title="身份验证——配置IIS7"></p>
 <h6>2.2 IIS7 应用程序池的设置</h6>
 <p>点击“Default Web Site”，在右边选择“高级设置”，在“应用程序池”选“Classic.NET AppPool”，如图所示：</p>
-<p><img alt="IIS7 应用程序池的设置" src="https://o3cex9zsl.qnssl.com/2012/08/3.jpeg" title="IIS7 应用程序池的设置" /></p>
+<p><img alt="IIS7 应用程序池的设置" src="https://o3cex9zsl.qnssl.com/2012/08/3.jpeg" title="IIS7 应用程序池的设置"></p>
 <h5>3 其它配置</h5>
 <p>在应用程序池中设置defaultapppool和classic.netapp为已启动，并且托管管道模式都为经典。</p>
 <p>在“身份验证”中“Forms身份验证”的状态应设置为“已禁用”。至少要启用“Windows身份验证”、“基本身份验证”和“匿名身份验证”。</p>
 <p>由于动易SitsFactory也使用.NET2.0的平台，因此也需要配置IIS。比如常见的错误：安装时出现<code>/服务程序错误</code>，解决办法就是在网站的虚拟目录上点击右键选择“添加应用池”，再选择Classic.NET AppPool不要选择DefaultAppPool那个(除非在开始的IIS配置过程中，你已经把这两个应用池的”管道模式“都设置成了”经典“)。或者直接右键选择“转换为应用程序”。</p>
 <h5>4 同时配置Apache</h5>
 <p>如果需要同时配置IIS的ASP/ASP.NET和支持PHP的Apache环境，建议的安装顺序是<code>IIS、Phpnow、Sql Server、Visual Studio</code>。首先，虽然在安装IIS的时候会默认使用80端口，但是IIS的端口修改还是比较容易的。而要是先安装PHPNOW（也是默认占用80端口）在安装IIS，会出现一些问题；其次，PHPNOW要安装在SQL SERVER的前面，否则会出现端口的占用的情况（一般会是pid为4的SQL REPORT SERVICE占用了80端口，改起来比较麻烦）；而SQL SERVER也一定要安装在Visual Studio的前面，以前有过深刻教训。</p>
-		    	<div class="donate_div_container">
+</div>		    	<div class="donate_div_container">
 					<div class="donate_div">
 						<p><a href="javascript:void(0)" onclick="donateToggle()" class="donate_word" title="打赏，支持一下">打赏</a></p>
 						<div class="hide_box"></div>
@@ -91,7 +91,7 @@
 					</div>
 				</div>
 		    	<div class="tags">
-					<div class="post_tags">
+					<div class="post_tags" itemprop="keywords">
 						Tags: <a href="https://typecodes.com/tag/iis.html">iis</a>,<a href="https://typecodes.com/tag/dong-yi-sitefactory.html">动易sitefactory</a>					</div>
 					<div class="post-share">
 						<ul class="post-shareul clearfix">
@@ -183,7 +183,6 @@
 		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
 	</section>
 </div>
-				</div>
 			</div>
 		</div>
 		<!--4. bottom begin-->

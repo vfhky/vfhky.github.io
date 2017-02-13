@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html dir="ltr" lang="zh-CN" class="no-js">
+<html class="no-js">
 	<head>
-		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
   		<meta name="renderer" content="webkit">
 		<title>标签 lnmp 安全配置 下的文章 - TypeCodes</title>
 		<meta name="description" content="标签 lnmp 安全配置 下的文章 - TypeCodes" />
@@ -34,8 +35,7 @@
 			</div>
 		</div>
 		<div class="container">
-			<div class="row">
-		<!--2. left sider begin-->
+			<div class="row">		<!--2. left sider begin-->
 		<div class="col-md-9" id="blog-main" role="main">
 		  	<!--article recycle-->
 			<article class="post">
@@ -47,7 +47,7 @@
 	<p>前面几篇文章介绍了阿里云的CentOS 6.5系统中如何搭建和配置 LNMP 环境，这篇文章主要说说 web 站点的安全配置。</p>
 <h5>1 修改 CentOS 系统的主机名(关系不大, 看个人喜好)</h5>
 <p>默认同开通的阿里云 Linux 主机都是以 AY+随机数 命名的，修改方法如下：</p>
-<div class="highlight"><pre>[root@typecodes ~]# vi /etc/sysconfig/network
+<div class="highlight"><pre><span></span>[root@typecodes ~]# vi /etc/sysconfig/network
 ###### 修改主机名HOSTNAME, 例如 HOSTNAME=typecodes , 然后:wq保存退出
 HOSTNAME=typecodes
 ###### 接着执行 hostname 命令
@@ -58,7 +58,7 @@ HOSTNAME=typecodes
 
 
 	<p class="more"><a href="https://typecodes.com/web/aliyuncentoslnmpwebsafeconf.html" title="阿里云CentOS主机 LNMP 环境之web安全篇">- 阅读剩余部分 -</a></p>
-			</article>
+</div>			</article>
 		  	<!--page navigation-->
 <ol class="page-navigator">
 </ol>		</div>
@@ -109,7 +109,6 @@ HOSTNAME=typecodes
 		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
 	</section>
 </div>
-				</div>
 			</div>
 		</div>
 		<!--4. bottom begin-->

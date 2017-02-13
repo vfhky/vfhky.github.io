@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html dir="ltr" lang="zh-CN" class="no-js">
+<html class="no-js">
 	<head>
-		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
   		<meta name="renderer" content="webkit">
 		<title>2015博客升级记(三)：CentOS 7.1编译安装Nginx1.9.0 &mdash; TypeCodes</title>
 		<meta name="description" content="2015博客升级记(三)：CentOS 7.1编译安装Nginx1.9.0 &mdash; TypeCodes" />
@@ -34,8 +35,7 @@
 			</div>
 		</div>
 		<div class="container">
-			<div class="row">
-		<!--2. left sider begin-->
+			<div class="row">		<!--2. left sider begin-->
 		<div class="col-md-9" id="blog-main" role="main">
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/web/centos7compilenginx.html">2015博客升级记(三)：CentOS 7.1编译安装Nginx1.9.0</a></h2>
@@ -44,12 +44,12 @@
 </ul>
 <div class="post-content fmt">
 	<p>这是<a href="https://typecodes.com/mix/2015updateblog.html" title="查看原文">《2015年博客升级记》</a>系列文章的第三篇，主要记录如何在CentOS 7.1中编译安装Nginx官方最新的1.9.0版本。由于像Nginx、Mysql和PHP7的的源码都是用C/C++写的，所以自己的CentOS 7.1服务器上必须要安装gcc和g++软件（CentOS 7系列会自带这两个编译软件）。</p>
-<p><img alt="CentOS 7.1编译安装Nginx1.9.0" src="https://o3cex9zsl.qnssl.com/2015/05/nginxlogo.png" title="CentOS 7.1编译安装Nginx1.9.0" /></p>
+<p><img alt="CentOS 7.1编译安装Nginx1.9.0" src="https://o3cex9zsl.qnssl.com/2015/05/nginxlogo.png" title="CentOS 7.1编译安装Nginx1.9.0"></p>
 
 
 <h5>1 依赖库配置，编译和安装Nginx1.9.0</h5>
 <p>先创建一个名为nginx且<code>没有登录权限</code>的用户和一个名为nginx的用户组，然后安装nginx所需的依赖库和依赖包，最后通过<code>.configure</code>进行安装的详细配置。另外，补录一个pcre的tar包备份地址：https://o3cex9zsl.qnssl.com/libs/nginx/pcre-8.36.tar.gz，以及一个zlib的tar包备份地址：https://o3cex9zsl.qnssl.com/libs/nginx/zlib-1.2.8.tar.gz。</p>
-<div class="highlight"><pre>#######新建nginx用户和nginx组
+<div class="highlight"><pre><span></span>#######新建nginx用户和nginx组
 [root@typecodes ~]# groupadd -r nginx &amp;&amp; useradd -r -g nginx -s /bin/false -M nginx
 #######yum安装nginx必须的依赖库
 [root@typecodes ~]# yum -y install openssl openssl-devel libxml2-devel libxslt-devel perl-devel perl-ExtUtils-Embed
@@ -71,7 +71,7 @@
 
 
 <p>准备工作做好后，就开始正式配置Nginx-1.9.0的安装明细了。注意，在使用下面这条<code>configure</code>参数配置时，一定要先把反斜杠“\”后面添加的注释文字去掉！！！</p>
-<div class="highlight"><pre>[root@typecodes nginx-1.9.0]# ./configure \
+<div class="highlight"><pre><span></span>[root@typecodes nginx-1.9.0]# ./configure \
 --prefix=/usr/share/nginx \                     [Nginx安装目录]
 --sbin-path=/usr/sbin/nginx \                   [Nginx的sbin目录]
 --conf-path=/etc/nginx/nginx.conf \             [Nginx的配置文件]
@@ -112,14 +112,14 @@
 
 
 <p>配置过程大概需要5分钟左右，部分截图如下：</p>
-<p><img alt="nginx的configure过程" src="https://o3cex9zsl.qnssl.com/2015/05/nginxconfigureresult.png" title="nginx的configure过程" /></p>
+<p><img alt="nginx的configure过程" src="https://o3cex9zsl.qnssl.com/2015/05/nginxconfigureresult.png" title="nginx的configure过程"></p>
 <h5>2 配置完后，就可以直接编译和安装了</h5>
 <p>最后，直接使用执行这条命令<code>[root@typecodes nginx-1.9.0]# make &amp;&amp; make install</code>进行安装即可。其中，make命令和make install命令的执行结果附图如下：</p>
-<p><img alt="Nginx编译时make执行结果" src="https://o3cex9zsl.qnssl.com/2015/05/nginxinstallresult1.png" title="Nginx编译时make执行结果" /></p>
-<p><img alt="Nginx编译时make install执行结果" src="https://o3cex9zsl.qnssl.com/2015/05/nginxinstallresult2.png" title="Nginx编译时make install执行结果" /></p>
+<p><img alt="Nginx编译时make执行结果" src="https://o3cex9zsl.qnssl.com/2015/05/nginxinstallresult1.png" title="Nginx编译时make执行结果"></p>
+<p><img alt="Nginx编译时make install执行结果" src="https://o3cex9zsl.qnssl.com/2015/05/nginxinstallresult2.png" title="Nginx编译时make install执行结果"></p>
 <h5>3 配置Nginx1.9.0，使之正常工作</h5>
 <p>成功安装Nginx1.9.0后，我们需要进行一些配置，包括开机启动、SSL/HTTPS服务等。其中，Nginx服务控制脚本<code>nginx</code>见文章<a href="https://typecodes.com/web/nginxserviceoptshell.html" title="查看原文">《Nginx服务启动、停止和重启等操作的SHELL脚本》</a>。</p>
-<div class="highlight"><pre>#######上传Nginx服务控制脚本nginx，并赋予执行权限，删除安装包，添加Nginx服务到开机启动
+<div class="highlight"><pre><span></span>#######上传Nginx服务控制脚本nginx，并赋予执行权限，删除安装包，添加Nginx服务到开机启动
 [root@typecodes ~]# mv ~/nginx /etc/init.d/nginx &amp;&amp; chmod +x /etc/init.d/nginx
 [root@typecodes ~]# rm -rf nginx-1.9.0*
 [root@typecodes ~]# chkconfig --add nginx
@@ -128,7 +128,7 @@
 
 
 <p>由于博客准备全站启用https服务，所以直接将前文<a href="https://typecodes.com/web/lnmppositivessl.html" title="查看原文">《阿里云CentOS 6.5系统LNMP环境安装SSL证书》</a>中产生的私钥typecodes.key和证书文件typecodes_last.crt打包的ssl.tar.gz上传到服务器使用。而Nginx配置文件nginx.conf见文章<a href="https://typecodes.com/web/centos7nginxhttpsspdy.html" title="查看原文">《2015博客升级记(六)：Nginx配置HTTPS和SPDY实战》</a>。</p>
-<div class="highlight"><pre>#######上传ssl文件和Nginx配置文件nginx.conf
+<div class="highlight"><pre><span></span>#######上传ssl文件和Nginx配置文件nginx.conf
 [root@typecodes ~]# mkdir -p /etc/nginx/ssl &amp;&amp; tar -zxf ~/ssl.tar.gz -C /etc/nginx/ssl
 [root@typecodes ~]# cd /etc/nginx/ &amp;&amp; tar -zcf etc.nginx.tar.gz ./
 [root@typecodes ~]# rm -rf ~/ssl.tar.gz 
@@ -148,10 +148,10 @@ Restarting nginx (via systemctl):  [  OK  ]
 
 
 <p>最后使用命令<code>[root@typecodes nginx]# nginx -V</code>查看Nginx1.9.0的详细信息。</p>
-<p><img alt="查看Nginx1.9.0的详细信息" src="https://o3cex9zsl.qnssl.com/2015/05/nginxversioninfo.png" title="查看Nginx1.9.0的详细信息" /></p>
+<p><img alt="查看Nginx1.9.0的详细信息" src="https://o3cex9zsl.qnssl.com/2015/05/nginxversioninfo.png" title="查看Nginx1.9.0的详细信息"></p>
 <h5>4 错误分析</h5>
 <p>这里特意分析了一些Nginx安装过程中可能出现的错误情况，详见文章<a href="https://typecodes.com/web/solvenginxcompileerror.html" title="查看原文">《Nginx编译安装时常见错误分析》</a>。</p>
-		    	<div class="donate_div_container">
+</div>		    	<div class="donate_div_container">
 					<div class="donate_div">
 						<p><a href="javascript:void(0)" onclick="donateToggle()" class="donate_word" title="打赏，支持一下">打赏</a></p>
 						<div class="hide_box"></div>
@@ -181,7 +181,7 @@ Restarting nginx (via systemctl):  [  OK  ]
 					</div>
 				</div>
 		    	<div class="tags">
-					<div class="post_tags">
+					<div class="post_tags" itemprop="keywords">
 						Tags: <a href="https://typecodes.com/tag/bo-ke-cheng-chang-lu.html">博客成长录</a>,<a href="https://typecodes.com/tag/nginx.html">nginx</a>					</div>
 					<div class="post-share">
 						<ul class="post-shareul clearfix">
@@ -273,7 +273,6 @@ Restarting nginx (via systemctl):  [  OK  ]
 		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
 	</section>
 </div>
-				</div>
 			</div>
 		</div>
 		<!--4. bottom begin-->

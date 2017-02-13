@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html dir="ltr" lang="zh-CN" class="no-js">
+<html class="no-js">
 	<head>
-		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
   		<meta name="renderer" content="webkit">
 		<title>动易SiteFactory系列教程四:如何添加一个分页标签 &mdash; TypeCodes</title>
 		<meta name="description" content="动易SiteFactory系列教程四:如何添加一个分页标签 &mdash; TypeCodes" />
@@ -34,8 +35,7 @@
 			</div>
 		</div>
 		<div class="container">
-			<div class="row">
-		<!--2. left sider begin-->
+			<div class="row">		<!--2. left sider begin-->
 		<div class="col-md-9" id="blog-main" role="main">
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/web/sfaddpagenavtag.html">动易SiteFactory系列教程四:如何添加一个分页标签</a></h2>
@@ -47,13 +47,13 @@
 
 
 <h5>（一）这里我只列出图片和相应标签内容设置的代码，按要求制作如下图的一个分页标签。</h5>
-<p><img alt="分页标签显示效果" src="https://o3cex9zsl.qnssl.com/2012/08/16.png" title="分页标签显示效果" /></p>
-<p><img alt="添加分页标签-1" src="https://o3cex9zsl.qnssl.com/2012/08/24.png" title="添加分页标签-1" /></p>
-<p><img alt="添加分页标签-2" src="https://o3cex9zsl.qnssl.com/2012/08/35.png" title="添加分页标签-2" /></p>
-<p><img alt="添加分页标签-3" src="https://o3cex9zsl.qnssl.com/2012/08/44.png" title="添加分页标签-3" /></p>
-<p><img alt="添加分页标签-4" src="https://o3cex9zsl.qnssl.com/2012/08/53.png" title="添加分页标签-4" /></p>
+<p><img alt="分页标签显示效果" src="https://o3cex9zsl.qnssl.com/2012/08/16.png" title="分页标签显示效果"></p>
+<p><img alt="添加分页标签-1" src="https://o3cex9zsl.qnssl.com/2012/08/24.png" title="添加分页标签-1"></p>
+<p><img alt="添加分页标签-2" src="https://o3cex9zsl.qnssl.com/2012/08/35.png" title="添加分页标签-2"></p>
+<p><img alt="添加分页标签-3" src="https://o3cex9zsl.qnssl.com/2012/08/44.png" title="添加分页标签-3"></p>
+<p><img alt="添加分页标签-4" src="https://o3cex9zsl.qnssl.com/2012/08/53.png" title="添加分页标签-4"></p>
 <h5>（二）标签内容设置</h5>
-<div class="highlight"><pre><span class="cp">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;</span>
+<div class="highlight"><pre><span></span><span class="cp">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;</span>
     <span class="k">&lt;xsl:transform</span> <span class="na">version=</span><span class="s">&quot;1.0&quot;</span> <span class="na">xmlns:xsl=</span><span class="s">&quot;http://www.w3.org/1999/XSL/Transform&quot;</span> <span class="na">xmlns:pe=</span><span class="s">&quot;labelproc&quot;</span> <span class="na">exclude-result-prefixes=</span><span class="s">&quot;pe&quot;</span><span class="nt">&gt;</span>
     <span class="k">&lt;xsl:output</span> <span class="na">method=</span><span class="s">&quot;xml&quot;</span> <span class="nt">/&gt;</span>
     <span class="k">&lt;xsl:template</span> <span class="na">match=</span><span class="s">&quot;/&quot;</span><span class="nt">&gt;</span>
@@ -90,7 +90,7 @@
 
 
 <h5>（三）代码解说</h5>
-<div class="highlight"><pre><span class="nt">&lt;RegionID&gt;</span>
+<div class="highlight"><pre><span></span><span class="nt">&lt;RegionID&gt;</span>
     <span class="k">&lt;xsl:value-of</span> <span class="na">select=</span><span class="s">&quot;RegionID&quot;</span><span class="nt">/&gt;</span>
 <span class="nt">&lt;/RegionID&gt;</span>
 </pre></div>
@@ -98,7 +98,7 @@
 
 <h5>（四）标签调用</h5>
 <p>在模板页相应位置插入下面的代码。其中，fieldname是取出我们前面分页标签里面设置的节点内容；两个id=”fenye“需要一致；datasource是我们添加的标签名,id作为数据源的ID（可以自定义，它是这个标签的标识，下面要调用数据源节点下的数据指向ID；最后一行是引用不同的分页样式，由id指定，datasource填写开始定义的标签id值。</p>
-<div class="highlight"><pre>{PE.DataSource datasource=&quot;地区列表_分页3&quot; id=&quot;fenye&quot; nodeid=&quot;1&quot; page=&quot;true&quot; pagesize=&quot;10&quot; urlpage=&quot;true&quot; span=&quot;div&quot; class=&quot;&quot; /}
+<div class="highlight"><pre><span></span>{PE.DataSource datasource=&quot;地区列表_分页3&quot; id=&quot;fenye&quot; nodeid=&quot;1&quot; page=&quot;true&quot; pagesize=&quot;10&quot; urlpage=&quot;true&quot; span=&quot;div&quot; class=&quot;&quot; /}
  <span class="nt">&lt;table&gt;</span>
    {PE.Repeat id=&quot;fenye&quot; loop=&quot;10&quot;}
      <span class="nt">&lt;tr&gt;</span>
@@ -110,7 +110,7 @@
 <span class="nt">&lt;/table&gt;</span>
 {PE.Page id=&quot;url_动易后台风格&quot; datasource=&quot;fenye&quot; span=&quot;&quot;/}
 </pre></div>
-		    	<div class="donate_div_container">
+</div>		    	<div class="donate_div_container">
 					<div class="donate_div">
 						<p><a href="javascript:void(0)" onclick="donateToggle()" class="donate_word" title="打赏，支持一下">打赏</a></p>
 						<div class="hide_box"></div>
@@ -140,7 +140,7 @@
 					</div>
 				</div>
 		    	<div class="tags">
-					<div class="post_tags">
+					<div class="post_tags" itemprop="keywords">
 						Tags: <a href="https://typecodes.com/tag/dong-yi-cms.html">动易cms</a>,<a href="https://typecodes.com/tag/dong-yi-fen-ye-biao-qian.html">动易分页标签</a>					</div>
 					<div class="post-share">
 						<ul class="post-shareul clearfix">
@@ -232,7 +232,6 @@
 		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
 	</section>
 </div>
-				</div>
 			</div>
 		</div>
 		<!--4. bottom begin-->

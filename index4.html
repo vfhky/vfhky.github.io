@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html dir="ltr" lang="zh-CN" class="no-js">
+<html class="no-js">
 	<head>
-		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
   		<meta name="renderer" content="webkit">
 		<title>TypeCodes</title>
 		<meta name="description" content="TypeCodes" />
@@ -34,8 +35,7 @@
 			</div>
 		</div>
 		<div class="container">
-			<div class="row">
-		<!--2. left sider begin-->
+			<div class="row">		<!--2. left sider begin-->
 		<div class="col-md-9" id="blog-main" role="main">
 		  	<!--article recycle-->
 			<article class="post">
@@ -45,10 +45,10 @@
 </ul>
 <div class="post-content fmt">
 	<p>作为一个微博控，为了把博客的文章同步到新浪微博上，BZ在<a href="http://open.weibo.com" title="点击查看">新浪微博开放平台</a>申请了一个应用。然后在自己的CentOS服务器上，利用<a href="http://open.weibo.com/wiki/SDK#PHP_SDK" title="点击查看">官方PHP SDK</a>搭了个服务端应用。这样通过博客插件作为请求客户端，调用相关API接口把文章同步到微博上。微博发布后，会显示来源，也即应用名称（如下图BZ的是<code>TypeCodes</code>）。</p>
-<p><img alt="博客文章同步到新浪微博的效果" src="https://o3cex9zsl.qnssl.com/2015/08/blog_synchronize_weibo.png" title="博客文章同步到新浪微博的效果" /></p>
+<p><img alt="博客文章同步到新浪微博的效果" src="https://o3cex9zsl.qnssl.com/2015/08/blog_synchronize_weibo.png" title="博客文章同步到新浪微博的效果"></p>
 
 	<p class="more"><a href="https://typecodes.com/mix/synweibophpmarkdownimgurl.html" title="升级博客文章同步微博的插件：PHP正则提取Markdown的图片地址">- 阅读剩余部分 -</a></p>
-			</article>
+</div>			</article>
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/cseries/cppgeneralmakefile.html">Linux C/C++工程中可生成ELF、动/静态库文件的通用Makefile</a></h2>
 <ul class="post-meta">
@@ -56,10 +56,10 @@
 </ul>
 <div class="post-content fmt">
 	<p>最近写了一个*nix环境下的Makefile文件，支持编译C/C++，同时能够通过参数配置生成ELF目标文件、动态链接库(.so)和静态链接库(.a)文件。</p>
-<p><img alt="Linux C/C++工程中可生成ELF、动/静态库文件的通用Makefile" src="https://o3cex9zsl.qnssl.com/2015/08/linux_general_makefile.png" title="Linux C/C++工程中可生成ELF、动/静态库文件的通用Makefile" /></p>
+<p><img alt="Linux C/C++工程中可生成ELF、动/静态库文件的通用Makefile" src="https://o3cex9zsl.qnssl.com/2015/08/linux_general_makefile.png" title="Linux C/C++工程中可生成ELF、动/静态库文件的通用Makefile"></p>
 
 	<p class="more"><a href="https://typecodes.com/cseries/cppgeneralmakefile.html" title="Linux C/C++工程中可生成ELF、动/静态库文件的通用Makefile">- 阅读剩余部分 -</a></p>
-			</article>
+</div>			</article>
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/cseries/libraryundefinedref.html">解决make编译链接动态库错误：libxx.so: undefined reference to xx</a></h2>
 <ul class="post-meta">
@@ -70,7 +70,7 @@
 <p>由于链接生成libsrcpbl.so动态库的.o文件比较多，无法定位具体的错误程序文件和位置，所以折腾了较长时间。</p>
 
 	<p class="more"><a href="https://typecodes.com/cseries/libraryundefinedref.html" title="解决make编译链接动态库错误：libxx.so: undefined reference to xx">- 阅读剩余部分 -</a></p>
-			</article>
+</div>			</article>
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/cseries/nmobjectfilesymbol.html">Unix系统中nm命令展示目标文件符号的方法</a></h2>
 <ul class="post-meta">
@@ -78,7 +78,7 @@
 </ul>
 <div class="post-content fmt">
 	<p>在*nix系统中，通过gnu开源gcc或者g++工具生成的目标文件（object file），可以用<code>nm</code>、<code>objdump</code>和<code>readelf</code>这三个命令来查看。</p>
-<div class="highlight"><pre>nm：显示目标文件中的符号；
+<div class="highlight"><pre><span></span>nm：显示目标文件中的符号；
 objdump：打印目标文件中的详细信息；
 readelf：显示关于 ELF 目标文件的信息。
 </pre></div>
@@ -87,7 +87,7 @@ readelf：显示关于 ELF 目标文件的信息。
 <p>之前在调试makefile文件的时候，链接动态库出错：<code>libsrcpbl.so: undefined reference to 'gcProgramName'</code>。也就是变量gcProgramName没定义，后来通过<code>nm -u libsrcpbl.so</code>命令辅助排查解决了。</p>
 
 	<p class="more"><a href="https://typecodes.com/cseries/nmobjectfilesymbol.html" title="Unix系统中nm命令展示目标文件符号的方法">- 阅读剩余部分 -</a></p>
-			</article>
+</div>			</article>
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/mix/vpsshadowsockswitchyomegaspeeder.html">搭了个Shadowsocks+Proxy SwitchyOmega+net-speeder梯子</a></h2>
 <ul class="post-meta">
@@ -97,7 +97,7 @@ readelf：显示关于 ELF 目标文件的信息。
 	<p>前段时间以来，自己的GoAgent完全无法使用，估计是墙得厉害。后面用GitHub上的这个<a href="https://github.com/XX-net/XX-Net" title="GitHub查看该项目">XX-Net</a>，采用的依然是GoAgent+Proxy SwitchySharp。这个梯子效果不错，就是有时上谷歌会比较慢。</p>
 
 	<p class="more"><a href="https://typecodes.com/mix/vpsshadowsockswitchyomegaspeeder.html" title="搭了个Shadowsocks+Proxy SwitchyOmega+net-speeder梯子">- 阅读剩余部分 -</a></p>
-			</article>
+</div>			</article>
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/cseries/gcclderrlibrarypath.html">Linux gcc链接动态库出错：LIBRARY_PATH和LD_LIBRARY_PATH的区别</a></h2>
 <ul class="post-meta">
@@ -105,16 +105,16 @@ readelf：显示关于 ELF 目标文件的信息。
 </ul>
 <div class="post-content fmt">
 	<p>昨天在自己的CentOs7.1上写makefile的时候，发现在一个C程序在编译并链接一个已生成好的lib动态库的时候出错。链接命令大概是这样的：</p>
-<div class="highlight"><pre>[root@typecodes tcpmsg]# gcc -o hello main.c -lmyhello
+<div class="highlight"><pre><span></span>[root@typecodes tcpmsg]# gcc -o hello main.c -lmyhello
 /usr/bin/ld: cannot find -lmyhello
 collect2: error: ld returned 1 exit status
 </pre></div>
 
 
-<p><img alt="Linux gcc链接动态库出错" src="https://o3cex9zsl.qnssl.com/2015/08/gcc_linux.png" title="Linux gcc链接动态库出错" /></p>
+<p><img alt="Linux gcc链接动态库出错" src="https://o3cex9zsl.qnssl.com/2015/08/gcc_linux.png" title="Linux gcc链接动态库出错"></p>
 
 	<p class="more"><a href="https://typecodes.com/cseries/gcclderrlibrarypath.html" title="Linux gcc链接动态库出错：LIBRARY_PATH和LD_LIBRARY_PATH的区别">- 阅读剩余部分 -</a></p>
-			</article>
+</div>			</article>
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/cseries/unixsigtermkill.html">Unix系统进程对SIGTERM、SIGUSR1和SIGUSR2信号处理</a></h2>
 <ul class="post-meta">
@@ -123,7 +123,7 @@ collect2: error: ld returned 1 exit status
 <div class="post-content fmt">
 	<p>好久没更新博客了，写篇文章除除草。这篇文章主要通过简单的例子说明一下Unix/Linux进程中如果捕捉和处理<code>SIGTERM</code>、<code>SIGUSR1</code>和<code>SIGUSR2</code>信号。</p>
 <p>先说明一下这三个信号：</p>
-<div class="highlight"><pre>信号(signal)是*nix系统中进程之间通信(IPC)的一种常见方式。
+<div class="highlight"><pre><span></span>信号(signal)是*nix系统中进程之间通信(IPC)的一种常见方式。
 SIGTERM：进程终止信号，效果等同于*nix shell中不带-9的kill命令；
 SIGUSR1：保留给用户使用的信号；
 SIGUSR2：同SIGUSR1，保留给用户使用的信号。
@@ -132,7 +132,7 @@ SIGUSR2：同SIGUSR1，保留给用户使用的信号。
 
 
 	<p class="more"><a href="https://typecodes.com/cseries/unixsigtermkill.html" title="Unix系统进程对SIGTERM、SIGUSR1和SIGUSR2信号处理">- 阅读剩余部分 -</a></p>
-			</article>
+</div>			</article>
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/linux/gitsynbackupshell.html">CentOS中将备份文件同步到BitBucket、GitHub和Coding的shell脚本</a></h2>
 <ul class="post-meta">
@@ -140,21 +140,31 @@ SIGUSR2：同SIGUSR1，保留给用户使用的信号。
 </ul>
 <div class="post-content fmt">
 	<p>在<a href="https://typecodes.com/linux/gitaccountconfig.html" title="《CentOS系统BitBucket、GitHub和Coding等多git账户的配置》">上一篇文章</a>讲述了如何在Linux系统中配置BitBucket、GitHub和Coding这三个平台的git账户，这篇文章就分享如何通过shell脚本定时获取自己的CentOS7.1服务器上的备份文件，然后使用git命令同步到这三个平台仓库上。</p>
-<p><img alt="CentOS中git同步的shell脚本" src="https://o3cex9zsl.qnssl.com/2015/07/linux_git.png" title="CentOS中git同步的shell脚本" /></p>
+<p><img alt="CentOS中git同步的shell脚本" src="https://o3cex9zsl.qnssl.com/2015/07/linux_git.png" title="CentOS中git同步的shell脚本"></p>
 
 	<p class="more"><a href="https://typecodes.com/linux/gitsynbackupshell.html" title="CentOS中将备份文件同步到BitBucket、GitHub和Coding的shell脚本">- 阅读剩余部分 -</a></p>
-			</article>
+</div>			</article>
 		  	<!--page navigation-->
 <ol class="page-navigator">
-<li class="prev"><a href="https://typecodes.com/index3.html">&laquo; 前一页</a></li><li><a href="https://typecodes.com/index.html">1</a>
-       <li><a href="https://typecodes.com/index2.html">2</a>
-       		</li><li><a href="https://typecodes.com/index3.html">3</a>
-       		</li><li class="current"><a href="https://typecodes.com/index4.html">4</a>
-       		</li><li><a href="https://typecodes.com/index5.html">5</a>
-       		</li><li><a href="https://typecodes.com/index6.html">6</a>
-       		</li><li><a href="https://typecodes.com/index7.html">7</a>
-       		</li><li><span>...</span></li><li><a href="https://typecodes.com/index27.html">27</a>
-       		</li><li><a href="https://typecodes.com/index28.html">28</a>
+<li class="prev"><a href="https://typecodes.com/index3.html">&laquo; 前一页</a></li><li>
+       			<a href="https://typecodes.com/index1.html">1</a>
+       		</li>
+       <li>
+       			<a href="https://typecodes.com/index2.html">2</a>
+       		</li><li>
+       			<a href="https://typecodes.com/index3.html">3</a>
+       		</li><li class="current">
+       			<a href="https://typecodes.com/index.html">4</a>
+       		</li><li>
+       			<a href="https://typecodes.com/index5.html">5</a>
+       		</li><li>
+       			<a href="https://typecodes.com/index6.html">6</a>
+       		</li><li>
+       			<a href="https://typecodes.com/index7.html">7</a>
+       		</li><li><span>...</span></li><li>
+       			<a href="https://typecodes.com/index27.html">27</a>
+       		</li><li>
+       			<a href="https://typecodes.com/index28.html">28</a>
        		</li><li class="next">
        		<a href="https://typecodes.com/index5.html">后一页 &raquo;</a>
        </li></ol>		</div>
@@ -223,7 +233,6 @@ SIGUSR2：同SIGUSR1，保留给用户使用的信号。
 		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
 	</section>
 </div>
-				</div>
 			</div>
 		</div>
 		<!--4. bottom begin-->

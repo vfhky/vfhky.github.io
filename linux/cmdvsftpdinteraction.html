@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html dir="ltr" lang="zh-CN" class="no-js">
+<html class="no-js">
 	<head>
-		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
   		<meta name="renderer" content="webkit">
 		<title>Redhat/CentOS通过yum安装与配置vsFTPd的详细步骤 &mdash; TypeCodes</title>
 		<meta name="description" content="Redhat/CentOS通过yum安装与配置vsFTPd的详细步骤 &mdash; TypeCodes" />
@@ -34,8 +35,7 @@
 			</div>
 		</div>
 		<div class="container">
-			<div class="row">
-		<!--2. left sider begin-->
+			<div class="row">		<!--2. left sider begin-->
 		<div class="col-md-9" id="blog-main" role="main">
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/linux/cmdvsftpdinteraction.html">Redhat/CentOS通过yum安装与配置vsFTPd的详细步骤</a></h2>
@@ -48,9 +48,9 @@
 
 
 <h5>1 在windows中通过CMD命令测试能否连接上远端ftp主机服务</h5>
-<p><img alt="cmd命令ping主机" src="https://o3cex9zsl.qnssl.com/2013/03/7.png" /></p>
+<p><img alt="cmd命令ping主机" src="https://o3cex9zsl.qnssl.com/2013/03/7.png"></p>
 <h5>2 在windows中通过CMD命令登录远端服务器</h5>
-<div class="highlight"><pre>C:\Users\vfhky&gt;ftp 192.168.198.128
+<div class="highlight"><pre><span></span>C:\Users\vfhky&gt;ftp 192.168.198.128
 连接到 192.168.198.128。
 220 (vsFTPd 2.0.5)
 用户(192.168.198.128:(none)): oracle  （测试的RHEL本地账户为oracle）
@@ -63,7 +63,7 @@ ftp&gt; pwd
 
 
 <h5>3 实现文件的下载</h5>
-<div class="highlight"><pre>ftp&gt; ls  （列出/home/oracle文件夹下面的目录）
+<div class="highlight"><pre><span></span>ftp&gt; ls  （列出/home/oracle文件夹下面的目录）
 200 PORT command successful. Consider using PASV.
 150 Here comes the directory listing.
 Desktop
@@ -87,7 +87,7 @@ ftp: 收到 354 字节，用时 0.01秒 44.25千字节/秒。
 
 <p>这个时候我们已经把LOG_cat_owb.TXT下载到了C:\Users\vfhky（这个是当前cmd终端的所在位置）中了。</p>
 <h5>4 单个文件的上传（put）</h5>
-<div class="highlight"><pre>ftp&gt; put c:/users/vfhky/desktop/1.jpg
+<div class="highlight"><pre><span></span>ftp&gt; put c:/users/vfhky/desktop/1.jpg
 200 PORT command successful. Consider using PASV.
 150 Ok to send data.
 226 File receive OK.
@@ -96,7 +96,7 @@ ftp: 发送 42814 字节，用时 0.02秒 2038.76千字节/秒。
 
 
 <h5>5 多个文件的上传（mput）</h5>
-<div class="highlight"><pre>ftp&gt; mput c:/users/vfhky/desktop/*.rpm （把所有以.rpm结尾的软件包上传）
+<div class="highlight"><pre><span></span>ftp&gt; mput c:/users/vfhky/desktop/*.rpm （把所有以.rpm结尾的软件包上传）
 mput c:/users/vfhky/desktop/gcc-4.1.2-44.el5.i386.rpm?
 200 PORT command successful. Consider using PASV.
 150 Ok to send data.
@@ -111,7 +111,7 @@ ftp: 发送 3593724 字节，用时 0.04秒 89843.10千字节/秒。
 
 
 <p>或者</p>
-<div class="highlight"><pre>ftp&gt; mput c:/users/vfhky/desktop/gcc-4.1.2-44.el5.i386.rpm c:/users/vfhky/deskto
+<div class="highlight"><pre><span></span>ftp&gt; mput c:/users/vfhky/desktop/gcc-4.1.2-44.el5.i386.rpm c:/users/vfhky/deskto
 p/gcc-c++-4.1.2-44.el5.i386.rpm
 mput c:/users/vfhky/desktop/gcc-4.1.2-44.el5.i386.rpm?
 200 PORT command successful. Consider using PASV.
@@ -130,14 +130,14 @@ ftp: 发送 3593724 字节，用时 0.05秒 73341.31千字节/秒。
 <h6>6.1 在windows中能够ping通主机，但是无法连接远端ftp。</h6>
 <p>这个可能是linux中防火墙的缘故，可以通过[root@localhost ~]# service iptables stop关闭redhat中的防火墙。</p>
 <h6>6.2 出现类似以下的错误提示</h6>
-<div class="highlight"><pre>ftp&gt; put c:/users/vfhky/desktop/1.jpg /
+<div class="highlight"><pre><span></span>ftp&gt; put c:/users/vfhky/desktop/1.jpg /
 200 PORT command successful. Consider using PASV.
 553 Could not create file.
 </pre></div>
 
 
 <p>原因：SELinux对vsftpd服务的限制，SELinux ftp daemon policy is customizable based on least access required. So by default SElinux does not allow users to login and read their home directories. If you are setting up this machine as a ftpd server and wish to allow users to access their home directorories, you need to set the ftp_home_dir boolean（SELinux的ftp守护进程的策略是基于最少访问需求权限定制的。因此，通过默认的SELinux不允许用户登录并读取它们的主目录。如果你设置这台机器作为一个ftpd服务器，并希望允许用户访问他们的home目录，你需要设置ftp_home_dir为布尔值。）所以要关闭SELinux对vsftpd的保护，以root用户在终端输入指令：</p>
-<div class="highlight"><pre>[root@localhost ~]# setsebool -P ftpd_disable_trans 1
+<div class="highlight"><pre><span></span>[root@localhost ~]# setsebool -P ftpd_disable_trans 1
 或者[root@localhost ~]# setsebool -P ftp_home_dir=1
 或者[root@localhost ~]# setsebool -P ftpd_disable_trans on
 或者[root@localhost ~]# setsebool -P ftp_home_dir on
@@ -146,17 +146,17 @@ ftp: 发送 3593724 字节，用时 0.05秒 73341.31千字节/秒。
 
 
 <h6>6.3 出现类似的错误提示</h6>
-<div class="highlight"><pre>500 OOPS: cannot change directory:/root
+<div class="highlight"><pre><span></span>500 OOPS: cannot change directory:/root
 500 OOPS: child died
 Connection closed
 </pre></div>
 
 
 <p>这类的500 OOPS错误的解决方法同2，或者最终极的方法是关闭selinux：</p>
-<div class="highlight"><pre>[root@localhost ~]# vi /etc/selinux/config
+<div class="highlight"><pre><span></span>[root@localhost ~]# vi /etc/selinux/config
 SELINUX=disabled
 </pre></div>
-		    	<div class="donate_div_container">
+</div>		    	<div class="donate_div_container">
 					<div class="donate_div">
 						<p><a href="javascript:void(0)" onclick="donateToggle()" class="donate_word" title="打赏，支持一下">打赏</a></p>
 						<div class="hide_box"></div>
@@ -186,7 +186,7 @@ SELINUX=disabled
 					</div>
 				</div>
 		    	<div class="tags">
-					<div class="post_tags">
+					<div class="post_tags" itemprop="keywords">
 						Tags: <a href="https://typecodes.com/tag/linux-vsftpd.html">linux vsftpd</a>					</div>
 					<div class="post-share">
 						<ul class="post-shareul clearfix">
@@ -278,7 +278,6 @@ SELINUX=disabled
 		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
 	</section>
 </div>
-				</div>
 			</div>
 		</div>
 		<!--4. bottom begin-->

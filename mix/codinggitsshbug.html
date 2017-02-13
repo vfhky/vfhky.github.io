@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html dir="ltr" lang="zh-CN" class="no-js">
+<html class="no-js">
 	<head>
-		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
   		<meta name="renderer" content="webkit">
 		<title>Coding.net上git仓库ssh地址的"bug" &mdash; TypeCodes</title>
 		<meta name="description" content="Coding.net上git仓库ssh地址的"bug" &mdash; TypeCodes" />
@@ -34,8 +35,7 @@
 			</div>
 		</div>
 		<div class="container">
-			<div class="row">
-		<!--2. left sider begin-->
+			<div class="row">		<!--2. left sider begin-->
 		<div class="col-md-9" id="blog-main" role="main">
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/mix/codinggitsshbug.html">Coding.net上git仓库ssh地址的"bug"</a></h2>
@@ -44,21 +44,21 @@
 </ul>
 <div class="post-content fmt">
 	<p>前段时间在用Coding.net同步git仓库时，能正常使用非https的ssh协议，但是这两天在自己的Windows机器上push内容时，报如下图中的错误<code>Permission denied (publickey).</code>：</p>
-<p><img alt="Coding.net报错Permission denied (publickey)" src="https://o3cex9zsl.qnssl.com/2015/06/git_push_error.png" title="Coding.net报错Permission denied (publickey)" /></p>
+<p><img alt="Coding.net报错Permission denied (publickey)" src="https://o3cex9zsl.qnssl.com/2015/06/git_push_error.png" title="Coding.net报错Permission denied (publickey)"></p>
 
 
 <h5>1 查找原因</h5>
 <p>查了下Coding.net上这个项目的ssh地址如图所示：</p>
-<p><img alt="Coding.net上这个项目的ssh地址" src="https://o3cex9zsl.qnssl.com/2015/06/coding_net_ssh_bug.png" title="Coding.net上这个项目的ssh地址" /></p>
+<p><img alt="Coding.net上这个项目的ssh地址" src="https://o3cex9zsl.qnssl.com/2015/06/coding_net_ssh_bug.png" title="Coding.net上这个项目的ssh地址"></p>
 <p>它和我的Windows机器上该项目的<code>G:\php\htdocs\CodingNet\mylnmp\.git\config</code>文件中的配置是一样的（<code>url = git@git.coding.net:vfhky/mylnmp.git</code>），如下图所示：</p>
-<p><img alt="本地git项目的ssh地址" src="https://o3cex9zsl.qnssl.com/2015/06/git_client_config.png" title="本地git项目的ssh地址" /></p>
+<p><img alt="本地git项目的ssh地址" src="https://o3cex9zsl.qnssl.com/2015/06/git_client_config.png" title="本地git项目的ssh地址"></p>
 <p>对于<code>Permission denied</code>错误，按理说git项目地址没问题，那只能是ssh公私钥不对了。于是又用Git Bash重新生成了一对SSH公私钥，并把公钥放到Coding.net上。结果执行<code>git push origin master</code>推送命令时，还是报一样的错误。</p>
 <p>在Google上找了好久都没找到原因所在，没办法就只能将仓库切换到https协议。这样每次push或者pull的时候，都需要输入用户名和密码，比较麻烦。</p>
 <h5>2 对比GitHub的ssh地址发现Coding.net的“bug”    【！！！经指正，其实是我自己弄错了！！！】</h5>
 <p>下午无意之间看到了自己GitHub上一个仓库的ssh命名<code>git@github.com:vfhky/mylnmp.git</code>，它和上面Coding.net的ssh地址是有区别的。Github的ssh地址中是直接<code>@域名</code>的，而Coding.net的ssh地址是<code>@git.域名</code>。</p>
 <h5>3 解决方法 【！！！经指正，该方法是错误的！！！】</h5>
 <p>于是，立马尝试把本地Coding.net项目中的ssh地址改成类似于GitHub的ssh地址：</p>
-<div class="highlight"><pre>######Coding.net上git仓库ssh地址的bug
+<div class="highlight"><pre><span></span>######Coding.net上git仓库ssh地址的bug
 url = git@git.coding.net:vfhky/mylnmp.git
 改成正确的ssh地址
 url = git@coding.net:vfhky/mylnmp.git
@@ -67,7 +67,7 @@ url = git@coding.net:vfhky/mylnmp.git
 
 <h5>4 结束</h5>
 <p>改完之后，重新执行git push命令，就正常了。在遇到到如下错误时，基本可以从git地址和ssh公私钥是否都正确这两方面来解决。</p>
-<div class="highlight"><pre>vfhky@VFHKY-PC /g/php/htdocs/CodingNet/mylnmp (master)
+<div class="highlight"><pre><span></span>vfhky@VFHKY-PC /g/php/htdocs/CodingNet/mylnmp (master)
 $ git push origin master
 Permission denied (publickey).
 fatal: Could not read from remote repository.
@@ -83,8 +83,8 @@ $
 <h5>4 update 2015.07.01 15:12    【正确的解决方法】</h5>
 <p>经过 @yucong sun 的指正，之前是由于本地Win机上的~/.ssh/config文件配置的主机名是<code>Host coding.net</code>而不是<code>Host git.coding.net</code>，所以git项目中配置的<code>url = git@git.coding.net:vfhky/mylnmp.git</code>，无法匹配到这个主机名Host。</p>
 <p>因此，只要把<code>~/.ssh/config</code>的<code>Host coding.net</code>改成<code>Host git.coding.net</code>就行了，如下图所示。这里由于自己的考虑不周，误会“小猴子”了，抱歉抱歉！</p>
-<p><img alt="Win机上的~/.ssh/config文件配置" src="https://o3cex9zsl.qnssl.com/2015/06/coding_net_git_config.png" title="Win机上的~/.ssh/config文件配置" /></p>
-		    	<div class="donate_div_container">
+<p><img alt="Win机上的~/.ssh/config文件配置" src="https://o3cex9zsl.qnssl.com/2015/06/coding_net_git_config.png" title="Win机上的~/.ssh/config文件配置"></p>
+</div>		    	<div class="donate_div_container">
 					<div class="donate_div">
 						<p><a href="javascript:void(0)" onclick="donateToggle()" class="donate_word" title="打赏，支持一下">打赏</a></p>
 						<div class="hide_box"></div>
@@ -114,7 +114,7 @@ $
 					</div>
 				</div>
 		    	<div class="tags">
-					<div class="post_tags">
+					<div class="post_tags" itemprop="keywords">
 						Tags: <a href="https://typecodes.com/tag/git.html">git</a>,<a href="https://typecodes.com/tag/coding.html">coding</a>					</div>
 					<div class="post-share">
 						<ul class="post-shareul clearfix">
@@ -206,7 +206,6 @@ $
 		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
 	</section>
 </div>
-				</div>
 			</div>
 		</div>
 		<!--4. bottom begin-->

@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html dir="ltr" lang="zh-CN" class="no-js">
+<html class="no-js">
 	<head>
-		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
   		<meta name="renderer" content="webkit">
 		<title>Linux使用KILL 0检测进程是否存在 &mdash; TypeCodes</title>
 		<meta name="description" content="Linux使用KILL 0检测进程是否存在 &mdash; TypeCodes" />
@@ -34,8 +35,7 @@
 			</div>
 		</div>
 		<div class="container">
-			<div class="row">
-		<!--2. left sider begin-->
+			<div class="row">		<!--2. left sider begin-->
 		<div class="col-md-9" id="blog-main" role="main">
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/cseries/kill0checkprocessifexist.html">Linux使用KILL 0检测进程是否存在</a></h2>
@@ -44,12 +44,12 @@
 </ul>
 <div class="post-content fmt">
 	<p>之前遇到过<code>kill( pid, 0 )</code>的情况，由于平常没注意到kill函数的形参为0的情况，不知道它的作用。后面用<code>man 2 kill</code>命令查看了下kill函数的说明，发现可以用来检测进程的存在情况。</p>
-<p><img alt="man 2 kill查看关于形参0的说明" src="https://o3cex9zsl.qnssl.com/2016/03/man2kill0.png" title="man 2 kill查看关于形参0的说明" /></p>
+<p><img alt="man 2 kill查看关于形参0的说明" src="https://o3cex9zsl.qnssl.com/2016/03/man2kill0.png" title="man 2 kill查看关于形参0的说明"></p>
 
 
 <h4>1 关于kill 0的说明1</h4>
 <p>从上图DESCRIPTION区域的文字可以看出，kill函数中的形参sig是0的话，那么不会向pid进程发送任何信号，但是仍然会继续检测错误（进程ID或者进程组ID是否存在）。kill函数的返回值和具体的错误信息如下：</p>
-<div class="highlight"><pre>RETURN VALUE
+<div class="highlight"><pre><span></span>RETURN VALUE
        On  success  (at least one signal was sent), zero is returned.  On error, -1
        is returned, and errno is set appropriately.
 
@@ -108,18 +108,18 @@ ERRORS
 40
 41
 42
-43</pre></div></td><td class="code"><div class="highlight"><pre><span class="cm">/**</span>
+43</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="cm">/**</span>
 <span class="cm"> * @FileName    chk_signal_exist.c</span>
 <span class="cm"> * @Describe    A simple example for checking if a proccess is existing in linux.</span>
 <span class="cm"> * @Author      vfhky 2016-03-14 11:48 https://typecodes.com/cseries/kill0checkprocessifexist.html</span>
 <span class="cm"> * @Compile     gcc chk_signal_exist.c -o chk_signal_exist</span>
 <span class="cm"> */</span>
 
-<span class="cp">#include &lt;stdio.h&gt;</span>
-<span class="cp">#include &lt;signal.h&gt;</span>
-<span class="cp">#include &lt;malloc.h&gt;</span>
-<span class="cp">#include &lt;stdlib.h&gt;</span>
-<span class="cp">#include &lt;string.h&gt;</span>
+<span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;signal.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;malloc.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;stdlib.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;string.h&gt;</span><span class="cp"></span>
 
 <span class="cp">#define GO_FREE(p) \</span>
 <span class="cp">    free(p);    \</span>
@@ -157,13 +157,13 @@ ERRORS
 <h4>3 测试执行</h4>
 <p>使用<a href="https://typecodes.com/cseries/cppgeneralmakefile.html" title="查看原文">《Linux C/C++工程中可生成ELF、动/静态库文件的通用Makefile》</a>一文中的Makefile文件进行程序编译，当然也可以使用命令进行编译<code>gcc chk_signal_exist.c -o chk_signal_exist</code>。</p>
 <p>先测试进程不存在的情况：随便输入一个进程ID(23232)作为参数1</p>
-<p><img alt="使用kill 0测试进程不存在的情况" src="https://o3cex9zsl.qnssl.com/2016/03/chk_signal_exist1.png" title="使用kill 0测试进程不存在的情况" /></p>
+<p><img alt="使用kill 0测试进程不存在的情况" src="https://o3cex9zsl.qnssl.com/2016/03/chk_signal_exist1.png" title="使用kill 0测试进程不存在的情况"></p>
 <p>然后测试进程存在的情况：先使用ps命令查看已存在的进程daemon_sleep1(20608)，然后把作为参数1传入</p>
-<p><img alt="使用kill 0测试进程存在的情况" src="https://o3cex9zsl.qnssl.com/2016/03/chk_signal_exist2.png" title="使用kill 0测试进程存在的情况" /></p>
+<p><img alt="使用kill 0测试进程存在的情况" src="https://o3cex9zsl.qnssl.com/2016/03/chk_signal_exist2.png" title="使用kill 0测试进程存在的情况"></p>
 <h4>4 其它说明</h4>
 <p>网上有资料说0代表的是<code>信号0</code>，但是使用命令<code>kill -l</code>却没有显示，所以这里个人觉得不应该叫<code>信号0</code>。它只是kill函数中的一个普通形参而已，大于0的时候发送对应信号给某个进程，等于0的时候表示检测某个进程是否存在。</p>
-<p><img alt="kill -l命令查看所有支持的信号" src="https://o3cex9zsl.qnssl.com/2016/03/killlshowsignals.png" title="kill -l命令查看所有支持的信号" /></p>
-		    	<div class="donate_div_container">
+<p><img alt="kill -l命令查看所有支持的信号" src="https://o3cex9zsl.qnssl.com/2016/03/killlshowsignals.png" title="kill -l命令查看所有支持的信号"></p>
+</div>		    	<div class="donate_div_container">
 					<div class="donate_div">
 						<p><a href="javascript:void(0)" onclick="donateToggle()" class="donate_word" title="打赏，支持一下">打赏</a></p>
 						<div class="hide_box"></div>
@@ -193,7 +193,7 @@ ERRORS
 					</div>
 				</div>
 		    	<div class="tags">
-					<div class="post_tags">
+					<div class="post_tags" itemprop="keywords">
 						Tags: <a href="https://typecodes.com/tag/kill.html">kill</a>,<a href="https://typecodes.com/tag/xin-hao.html">信号</a>					</div>
 					<div class="post-share">
 						<ul class="post-shareul clearfix">
@@ -285,7 +285,6 @@ ERRORS
 		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
 	</section>
 </div>
-				</div>
 			</div>
 		</div>
 		<!--4. bottom begin-->

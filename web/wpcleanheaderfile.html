@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html dir="ltr" lang="zh-CN" class="no-js">
+<html class="no-js">
 	<head>
-		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
   		<meta name="renderer" content="webkit">
 		<title>博客优化第二波(四)：wordpress头部文件的清理 &mdash; TypeCodes</title>
 		<meta name="description" content="博客优化第二波(四)：wordpress头部文件的清理 &mdash; TypeCodes" />
@@ -34,8 +35,7 @@
 			</div>
 		</div>
 		<div class="container">
-			<div class="row">
-		<!--2. left sider begin-->
+			<div class="row">		<!--2. left sider begin-->
 		<div class="col-md-9" id="blog-main" role="main">
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/web/wpcleanheaderfile.html">博客优化第二波(四)：wordpress头部文件的清理</a></h2>
@@ -51,43 +51,43 @@
 <p>2、合并<a href="https://typecodes.com/web/wpquotecomments.html" title="如何给wordpress的回复添加引用功能">评论引用</a>quote.js和<a href="https://typecodes.com/web/wpatcommentauthor.html" title="如何在wordpress回复内容前面添加@方式">评论前面加@</a>的reply.js为quote_reply.js，减少请求次数；合并<a href="https://typecodes.com/web/wpaddrollnotice.html" title="wordpress添加滚动（单条或多条）公告">滚动公告notice.js</a>到主题weisay.js。然后根据页面的需要，通过is_singular函数判断是否加载quote_reply.js（因为它们只会在博客需要评论的地方出现），而整合notice.js的weisay.js需要在任何页面都加载，因为每个页面都会用到右侧栏的公告栏。</p>
 <h5>（二）重点：整理header.php，去掉多余的信息</h5>
 <p>经过sparrowwei的提醒，看下自己的<code>&lt;head&gt;</code>之间的信息，确实存在问题：</p>
-<div class="highlight"><pre><span class="o">&lt;</span><span class="nx">link</span> <span class="nx">rel</span><span class="o">=</span><span class="s2">&quot;alternate&quot;</span> <span class="nx">type</span><span class="o">=</span><span class="s2">&quot;application/rss+xml&quot;</span> <span class="nx">title</span><span class="o">=</span><span class="s2">&quot;TypeCodes RSS Feed&quot;</span> <span class="nx">href</span><span class="o">=</span><span class="s2">&quot;https://typecodes.com/?feed=rss2&quot;</span> <span class="o">/&gt;</span>
-<span class="o">&lt;</span><span class="nx">link</span> <span class="nx">rel</span><span class="o">=</span><span class="s2">&quot;alternate&quot;</span> <span class="nx">type</span><span class="o">=</span><span class="s2">&quot;application/atom+xml&quot;</span> <span class="nx">title</span><span class="o">=</span><span class="s2">&quot;TypeCodes Atom Feed&quot;</span> <span class="nx">href</span><span class="o">=</span><span class="s2">&quot;https://typecodes.com/?feed=atom&quot;</span> <span class="o">/&gt;</span>
-<span class="o">&lt;</span><span class="nx">link</span> <span class="nx">rel</span><span class="o">=</span><span class="s2">&quot;pingback&quot;</span> <span class="nx">href</span><span class="o">=</span><span class="s2">&quot;https://typecodes.com/xmlrpc.php&quot;</span> <span class="o">/&gt;</span>
-<span class="o">&lt;</span><span class="nx">link</span> <span class="nx">rel</span><span class="o">=</span><span class="s2">&quot;EditURI&quot;</span> <span class="nx">type</span><span class="o">=</span><span class="s2">&quot;application/rsd+xml&quot;</span> <span class="nx">title</span><span class="o">=</span><span class="s2">&quot;RSD&quot;</span> <span class="nx">href</span><span class="o">=</span><span class="s2">&quot;https://typecodes.com/xmlrpc.php?rsd&quot;</span> <span class="o">/&gt;</span>
-<span class="o">&lt;</span><span class="nx">link</span> <span class="nx">rel</span><span class="o">=</span><span class="s2">&quot;wlwmanifest&quot;</span> <span class="nx">type</span><span class="o">=</span><span class="s2">&quot;application/wlwmanifest+xml&quot;</span> <span class="nx">href</span><span class="o">=</span><span class="s2">&quot;https://typecodes.com/wp-includes/wlwmanifest.xml&quot;</span> <span class="o">/&gt;</span> 
-<span class="o">&lt;</span><span class="nx">meta</span> <span class="nx">name</span><span class="o">=</span><span class="s2">&quot;generator&quot;</span> <span class="nx">content</span><span class="o">=</span><span class="s2">&quot;WordPress 3.4.0&quot;</span> <span class="o">/&gt;</span>
+<div class="highlight"><pre><span></span>&lt;link rel=&quot;alternate&quot; type=&quot;application/rss+xml&quot; title=&quot;TypeCodes RSS Feed&quot; href=&quot;https://typecodes.com/?feed=rss2&quot; /&gt;
+&lt;link rel=&quot;alternate&quot; type=&quot;application/atom+xml&quot; title=&quot;TypeCodes Atom Feed&quot; href=&quot;https://typecodes.com/?feed=atom&quot; /&gt;
+&lt;link rel=&quot;pingback&quot; href=&quot;https://typecodes.com/xmlrpc.php&quot; /&gt;
+&lt;link rel=&quot;EditURI&quot; type=&quot;application/rsd+xml&quot; title=&quot;RSD&quot; href=&quot;https://typecodes.com/xmlrpc.php?rsd&quot; /&gt;
+&lt;link rel=&quot;wlwmanifest&quot; type=&quot;application/wlwmanifest+xml&quot; href=&quot;https://typecodes.com/wp-includes/wlwmanifest.xml&quot; /&gt; 
+&lt;meta name=&quot;generator&quot; content=&quot;WordPress 3.4.0&quot; /&gt;
 
-<span class="cp">[</span><span class="nx">WP</span><span class="err">官方解决代码</span><span class="cp">]</span><span class="p">(</span><span class="nx">http</span><span class="o">:</span><span class="c1">//wordpress.org/support/topic/remove-feed-from-wp_head)如下：在functions.php中添加如下代码</span>
+[WP官方解决代码](http://wordpress.org/support/topic/remove-feed-from-wp_head)如下：在functions.php中添加如下代码
 
-<span class="c1">//sorted by vfhky</span>
-<span class="nx">remove_action</span><span class="p">(</span> <span class="s1">&#39;wp_head&#39;</span><span class="p">,</span> <span class="s1">&#39;feed_links_extra&#39;</span><span class="p">,</span> <span class="mi">3</span> <span class="p">);</span> <span class="c1">//去除评论feed</span>
-<span class="nx">remove_action</span><span class="p">(</span> <span class="s1">&#39;wp_head&#39;</span><span class="p">,</span> <span class="s1">&#39;feed_links&#39;</span><span class="p">,</span> <span class="mi">2</span> <span class="p">);</span> <span class="c1">//去除文章feed</span>
-<span class="nx">remove_action</span><span class="p">(</span> <span class="s1">&#39;wp_head&#39;</span><span class="p">,</span> <span class="s1">&#39;rsd_link&#39;</span> <span class="p">);</span> <span class="c1">//针对Blog的远程离线编辑器接口</span>
-<span class="nx">remove_action</span><span class="p">(</span> <span class="s1">&#39;wp_head&#39;</span><span class="p">,</span> <span class="s1">&#39;wlwmanifest_link&#39;</span> <span class="p">);</span> <span class="c1">//Windows Live Writer接口</span>
-<span class="nx">remove_action</span><span class="p">(</span> <span class="s1">&#39;wp_head&#39;</span><span class="p">,</span> <span class="s1">&#39;index_rel_link&#39;</span> <span class="p">);</span> <span class="c1">//移除当前页面的索引</span>
-<span class="nx">remove_action</span><span class="p">(</span> <span class="s1">&#39;wp_head&#39;</span><span class="p">,</span> <span class="s1">&#39;parent_post_rel_link&#39;</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">0</span> <span class="p">);</span> <span class="c1">//移除后面文章的url</span>
-<span class="nx">remove_action</span><span class="p">(</span> <span class="s1">&#39;wp_head&#39;</span><span class="p">,</span> <span class="s1">&#39;start_post_rel_link&#39;</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">0</span> <span class="p">);</span> <span class="c1">//移除最开始文章的url</span>
-<span class="nx">remove_action</span><span class="p">(</span> <span class="s1">&#39;wp_head&#39;</span><span class="p">,</span> <span class="s1">&#39;wp_shortlink_wp_head&#39;</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">0</span> <span class="p">);</span><span class="c1">//自动生成的短链接</span>
-<span class="nx">remove_action</span><span class="p">(</span> <span class="s1">&#39;wp_head&#39;</span><span class="p">,</span> <span class="s1">&#39;adjacent_posts_rel_link&#39;</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">0</span> <span class="p">);</span> <span class="c1">///移除相邻文章的url</span>
-<span class="nx">remove_action</span><span class="p">(</span> <span class="s1">&#39;wp_head&#39;</span><span class="p">,</span> <span class="s1">&#39;wp_generator&#39;</span> <span class="p">);</span> <span class="c1">// 移除版本号</span>
+//sorted by vfhky
+remove_action( &#39;wp_head&#39;, &#39;feed_links_extra&#39;, 3 ); //去除评论feed
+remove_action( &#39;wp_head&#39;, &#39;feed_links&#39;, 2 ); //去除文章feed
+remove_action( &#39;wp_head&#39;, &#39;rsd_link&#39; ); //针对Blog的远程离线编辑器接口
+remove_action( &#39;wp_head&#39;, &#39;wlwmanifest_link&#39; ); //Windows Live Writer接口
+remove_action( &#39;wp_head&#39;, &#39;index_rel_link&#39; ); //移除当前页面的索引
+remove_action( &#39;wp_head&#39;, &#39;parent_post_rel_link&#39;, 10, 0 ); //移除后面文章的url
+remove_action( &#39;wp_head&#39;, &#39;start_post_rel_link&#39;, 10, 0 ); //移除最开始文章的url
+remove_action( &#39;wp_head&#39;, &#39;wp_shortlink_wp_head&#39;, 10, 0 );//自动生成的短链接
+remove_action( &#39;wp_head&#39;, &#39;adjacent_posts_rel_link&#39;, 10, 0 ); ///移除相邻文章的url
+remove_action( &#39;wp_head&#39;, &#39;wp_generator&#39; ); // 移除版本号
 </pre></div>
 
 
 <p>函数说明：</p>
-<div class="highlight"><pre><span class="nx">remove_action</span><span class="p">(</span><span class="nx">$tag</span><span class="p">,</span> <span class="nx">$function_to_remove</span><span class="p">,</span> <span class="nx">$priority</span><span class="p">,</span> <span class="nx">$accepted_args</span><span class="p">);</span>
-<span class="nx">tag变量表示将要被删除的函数所连接到的动作hook</span><span class="err">；</span>
-<span class="nx">function_to_remove变量表示将要被删除函数的名称</span><span class="err">；</span>
-<span class="nx">priority变量表示函数优先级</span><span class="err">（</span><span class="nx">在函数最初连接时定义</span><span class="err">，</span><span class="nx">默认为10</span><span class="err">；</span>
-<span class="nx">accepted_args变量表示函数所接受参数的数量</span><span class="err">，</span><span class="nx">默认为1</span><span class="err">。</span>
+<div class="highlight"><pre><span></span>remove_action($tag, $function_to_remove, $priority, $accepted_args);
+tag变量表示将要被删除的函数所连接到的动作hook；
+function_to_remove变量表示将要被删除函数的名称；
+priority变量表示函数优先级（在函数最初连接时定义，默认为10；
+accepted_args变量表示函数所接受参数的数量，默认为1。
 </pre></div>
 
 
 <h5>（三）严重失误：</h5>
 <p>把博客的ping功能去掉了，直接导致博客发布文章后没及时通知百度搜索……于是，重新在header.php中添加上代码</p>
-<div class="highlight"><pre><span class="o">&lt;</span><span class="nx">link</span> <span class="nx">rel</span><span class="o">=</span><span class="s2">&quot;pingback&quot;</span> <span class="nx">href</span><span class="o">=</span><span class="err">&quot;</span><span class="cp">&lt;?php</span> <span class="nx">bloginfo</span><span class="p">(</span><span class="s1">&#39;pingback_url&#39;</span><span class="p">);</span> <span class="o">?/&gt;</span><span class="s2">&quot; /&gt;</span>
+<div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="nx">link</span> <span class="nx">rel</span><span class="o">=</span><span class="s2">&quot;pingback&quot;</span> <span class="nx">href</span><span class="o">=</span><span class="err">&quot;</span><span class="cp">&lt;?php</span> <span class="nx">bloginfo</span><span class="p">(</span><span class="s1">&#39;pingback_url&#39;</span><span class="p">);</span> <span class="o">?/&gt;</span><span class="s2">&quot; /&gt;</span>
 </pre></div>
-		    	<div class="donate_div_container">
+</div>		    	<div class="donate_div_container">
 					<div class="donate_div">
 						<p><a href="javascript:void(0)" onclick="donateToggle()" class="donate_word" title="打赏，支持一下">打赏</a></p>
 						<div class="hide_box"></div>
@@ -117,7 +117,7 @@
 					</div>
 				</div>
 		    	<div class="tags">
-					<div class="post_tags">
+					<div class="post_tags" itemprop="keywords">
 						Tags: <a href="https://typecodes.com/tag/wordpress.html">wordpress</a>,<a href="https://typecodes.com/tag/wordpresstou-bu-wen-jian.html">wordpress头部文件</a>					</div>
 					<div class="post-share">
 						<ul class="post-shareul clearfix">
@@ -209,7 +209,6 @@
 		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
 	</section>
 </div>
-				</div>
 			</div>
 		</div>
 		<!--4. bottom begin-->

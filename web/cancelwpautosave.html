@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html dir="ltr" lang="zh-CN" class="no-js">
+<html class="no-js">
 	<head>
-		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
   		<meta name="renderer" content="webkit">
 		<title>取消WordPress的日志自动保存、修订版本、历史版本和文章不连续 &mdash; TypeCodes</title>
 		<meta name="description" content="取消WordPress的日志自动保存、修订版本、历史版本和文章不连续 &mdash; TypeCodes" />
@@ -34,8 +35,7 @@
 			</div>
 		</div>
 		<div class="container">
-			<div class="row">
-		<!--2. left sider begin-->
+			<div class="row">		<!--2. left sider begin-->
 		<div class="col-md-9" id="blog-main" role="main">
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/web/cancelwpautosave.html">取消WordPress的日志自动保存、修订版本、历史版本和文章不连续</a></h2>
@@ -48,7 +48,7 @@
 
 <h5>1 配置wp-config.php</h5>
 <p>打开Wordpress根目录下面的wp-config.php文件，在代码中添加下面代码：</p>
-<div class="highlight"><pre>//取消Wordpress自动修订
+<div class="highlight"><pre><span></span>//取消Wordpress自动修订
 define(&#39;WP_POST_REVISIONS&#39;,false);
 //取消Wordpress自动保存
 define(&#39;AUTOSAVE_INTERVAL&#39;, false);
@@ -57,24 +57,24 @@ define(&#39;AUTOSAVE_INTERVAL&#39;, false);
 
 <h5>2 修改post.php和post-new.php文件</h5>
 <p>打开wp-admin目录下的post.php和post-new.php，然后注释掉wp_enqueue_script( 'autosave' );</p>
-<div class="highlight"><pre><span class="x">//wp_enqueue_script( &#39;autosave&#39; );在post-new.php的第49行</span>
-<span class="x">//if ( &#39;attachment&#39; !== </span><span class="p">$</span><span class="nv">post_type</span><span class="x"> )在post.php的第173行</span>
-<span class="x">//wp_enqueue_script(&#39;autosave&#39;);在post.php的第174行</span>
-<span class="x">//网上写的只注释掉174行而不注释掉173行就会造成文章发布时的Bug，楼主亲测，版本是3.5.1！！！</span>
+<div class="highlight"><pre><span></span>//wp_enqueue_script( &#39;autosave&#39; );在post-new.php的第49行
+//if ( &#39;attachment&#39; !== $post_type )在post.php的第173行
+//wp_enqueue_script(&#39;autosave&#39;);在post.php的第174行
+//网上写的只注释掉174行而不注释掉173行就会造成文章发布时的Bug，楼主亲测，版本是3.5.1！！！
 </pre></div>
 
 
 <h5>3 修改default-filters.php</h5>
 <p>打开wp-includes目录下的default-filters.php，注释掉第252行：</p>
-<div class="highlight"><pre>//add_action( &#39;pre_post_update&#39;, &#39;wp_save_post_revision&#39;);
+<div class="highlight"><pre><span></span>//add_action( &#39;pre_post_update&#39;, &#39;wp_save_post_revision&#39;);
 </pre></div>
 
 
 <h5>4 【选做】来源于天朝外的代码</h5>
 <p>测试的Wp版本是3.3.2，改代码声称支持所有3.0+的版本。做法如下：在主题中的 functions.php 文件加入如下代码。</p>
-<div class="highlight"><pre><span class="nx">remove_action</span><span class="p">(</span><span class="s1">&#39;pre_post_update&#39;</span><span class="p">,</span> <span class="s1">&#39;wp_save_post_revision&#39;</span><span class="p">);</span>
+<div class="highlight"><pre><span></span><span class="nx">remove_action</span><span class="p">(</span><span class="s1">&#39;pre_post_update&#39;</span><span class="p">,</span> <span class="s1">&#39;wp_save_post_revision&#39;</span><span class="p">);</span>
 <span class="nx">add_action</span><span class="p">(</span><span class="s1">&#39;wp_print_scripts&#39;</span><span class="p">,</span> <span class="s1">&#39;disable_autosave&#39;</span><span class="p">);</span>
-<span class="kd">function</span> <span class="nx">disable_autosave</span><span class="p">()</span> <span class="p">{</span>
+<span class="kd">function</span> <span class="nx">disable_autosave() {</span>
     <span class="nx">wp_deregister_script</span><span class="p">(</span><span class="s1">&#39;autosave&#39;</span><span class="p">);</span> 
 <span class="p">}</span>
 </pre></div>
@@ -83,9 +83,9 @@ define(&#39;AUTOSAVE_INTERVAL&#39;, false);
 <p>但是这个方法会产生一个小小的不便——后台编辑文章或者附件时，预览功能是不能用的，必须保存为草稿才能预览 。不过我经常都是用“文本”模式编辑，基本没用预览。</p>
 <h5>5 后记+文章不连续的问题</h5>
 <p>其实前面三个步骤完成再在后台装个“WP Cleaner”插件（用于删除已经存在的历史版本）就已经比较完美的解决WordPress的日志自动保存、修订版本和历史版本的问题了。另外，网上有用delete-revision插件的，经博主测试效果还是不如WP Cleaner。至于如果不想用插件删除历史版本的话，可以看看这篇文章 <a href="https://typecodes.com/web/phpsolvewparticleid.html" title="PHP程序解决WordPress重新排列不连续的文章ID">《PHP程序解决WordPress重新排列不连续的文章ID》</a> 。这个既可以删除历史版本，还可以解决文章ID不连续的问题，并且效果要比网络上的类似于以下的“粗暴”删除代码好，能做到安全不会误删wordpress有用的信息。</p>
-<div class="highlight"><pre>DELETE a,b,c FROM wp_posts a LEFT JOIN wp_term_relationships b ON (a.ID = b.object_id) LEFT JOIN wp_postmeta c ON (a.ID = c.post_id) WHERE a.post_type = &#39;revision&#39;;
+<div class="highlight"><pre><span></span>DELETE a,b,c FROM wp_posts a LEFT JOIN wp_term_relationships b ON (a.ID = b.object_id) LEFT JOIN wp_postmeta c ON (a.ID = c.post_id) WHERE a.post_type = &#39;revision&#39;;
 </pre></div>
-		    	<div class="donate_div_container">
+</div>		    	<div class="donate_div_container">
 					<div class="donate_div">
 						<p><a href="javascript:void(0)" onclick="donateToggle()" class="donate_word" title="打赏，支持一下">打赏</a></p>
 						<div class="hide_box"></div>
@@ -115,7 +115,7 @@ define(&#39;AUTOSAVE_INTERVAL&#39;, false);
 					</div>
 				</div>
 		    	<div class="tags">
-					<div class="post_tags">
+					<div class="post_tags" itemprop="keywords">
 						Tags: <a href="https://typecodes.com/tag/wordpresszi-dong-bao-cun.html">wordpress自动保存</a>					</div>
 					<div class="post-share">
 						<ul class="post-shareul clearfix">
@@ -207,7 +207,6 @@ define(&#39;AUTOSAVE_INTERVAL&#39;, false);
 		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
 	</section>
 </div>
-				</div>
 			</div>
 		</div>
 		<!--4. bottom begin-->

@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html dir="ltr" lang="zh-CN" class="no-js">
+<html class="no-js">
 	<head>
-		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
   		<meta name="renderer" content="webkit">
 		<title>终于从WordPress转向Typecho了 &mdash; TypeCodes</title>
 		<meta name="description" content="终于从WordPress转向Typecho了 &mdash; TypeCodes" />
@@ -34,8 +35,7 @@
 			</div>
 		</div>
 		<div class="container">
-			<div class="row">
-		<!--2. left sider begin-->
+			<div class="row">		<!--2. left sider begin-->
 		<div class="col-md-9" id="blog-main" role="main">
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/mix/eventualwptotypecho.html">终于从WordPress转向Typecho了</a></h2>
@@ -45,14 +45,14 @@
 <div class="post-content fmt">
 	<p>4月底，博客的虚拟主机到期。因为不想再用绑定几百个站点的虚拟主机了，所以决定买个vps或者云主机。在比较了几个vps和云主机后，发现阿里的ECS相对来说价格还比较合适，稳定性不错。于是选了个最低配置的CentOS主机，期限为一年。</p>
 <p>买完后，由于没时间去备案，所以5，6，7月份博客都处于无法访问状态。7月底下决心准备把博客重新捡起来，顺带完成去年年底就准备的工作——<a href="https://typecodes.com/mix/wptoconcisetypecho.html" title="简洁的哲学：从华丽的WordPress转Typecho">从wordpress转向typecho</a>。</p>
-<p><img alt="终于从WordPress转向Typecho了" src="https://o3cex9zsl.qnssl.com/2013/10/typecho.png" title="终于从WordPress转向Typecho了" /></p>
+<p><img alt="终于从WordPress转向Typecho了" src="https://o3cex9zsl.qnssl.com/2013/10/typecho.png" title="终于从WordPress转向Typecho了"></p>
 
 
 <p>在本地测试完几个typecho主题后，提交到BAE2.0的空间上（http://huangkeye.duapp.com/）进行测试。结果尼玛被BAE管理平台诱导升级到3.0，立马提醒欠费20多了。坑爹的，这才明白，虽然bae2.0也会提示欠费，但是不会停掉空间服务，用svn还是可以提交代码。但是一升级到3.0，欠费立马就down掉空间服务。悲了个催的，BAE是不能用了。幸好去年还申请了新浪SAE帐号，立马用起来！</p>
 <p>先在SAE进行了实名认证，这样就得到了1000云豆。立马搭了个typecho的测试环境 <a href="http://1.vfhky.sinaapp.com/">http://1.vfhky.sinaapp.com</a> ，同样用SVN提交了个初始版本1。由于去年的时候已经准备了一些typecho的通用模块程序，另外原来用着的wp主题的代码还可以利用，所以没多久就完成了新的typecho主题的初始版本。</p>
 <p>在修改完成typecodes的主题后，决定把博客域名也一并更换了。于是在万网上淘了N久，终于找到一个比较满意的，那就是现在在用的这个域名 typecodes.com。然后花费了较大功夫，把原来wordpress博客的数据中的文章和评论这两个模块剥离出来，再重新导入到typecho数据库中。接着又在SAE创建了版本号2，用于演示之前的wordpress博客，大家可以通过 <a href="http://vfhky.sinaapp.com">http://vfhky.sinaapp.com</a> 访问。</p>
 <p>最后，对之前没来得及通知博客暂时关闭的小伙伴们说声抱歉！</p>
-		    	<div class="donate_div_container">
+</div>		    	<div class="donate_div_container">
 					<div class="donate_div">
 						<p><a href="javascript:void(0)" onclick="donateToggle()" class="donate_word" title="打赏，支持一下">打赏</a></p>
 						<div class="hide_box"></div>
@@ -82,7 +82,7 @@
 					</div>
 				</div>
 		    	<div class="tags">
-					<div class="post_tags">
+					<div class="post_tags" itemprop="keywords">
 						Tags: <a href="https://typecodes.com/tag/bo-ke-cheng-chang-lu.html">博客成长录</a>					</div>
 					<div class="post-share">
 						<ul class="post-shareul clearfix">
@@ -174,7 +174,6 @@
 		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
 	</section>
 </div>
-				</div>
 			</div>
 		</div>
 		<!--4. bottom begin-->

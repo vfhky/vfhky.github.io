@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html dir="ltr" lang="zh-CN" class="no-js">
+<html class="no-js">
 	<head>
-		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
   		<meta name="renderer" content="webkit">
 		<title>分类 web 下的文章 - TypeCodes</title>
 		<meta name="description" content="分类 web 下的文章 - TypeCodes" />
@@ -34,8 +35,7 @@
 			</div>
 		</div>
 		<div class="container">
-			<div class="row">
-		<!--2. left sider begin-->
+			<div class="row">		<!--2. left sider begin-->
 		<div class="col-md-9" id="blog-main" role="main">
 		  	<!--article recycle-->
 			<article class="post">
@@ -48,7 +48,7 @@
 <p>前天写了一篇文章<a href="https://typecodes.com/web/wpantispamblacklist.html" title="wordpress关键词黑名单：反垃圾评论再升级">《wordpress关键词黑名单：反垃圾评论再升级》</a>。文章内容是关于如何通过在Willin Kan大神写的comments-ajax.php文件中添加关键词黑名单，实现对评论者的昵称和评论内容进行检测，最终判定是否为垃圾评论。在程序中，博主使用了strpos函数，其功能是：查找字符串首次出现的位置。由于对该函数了解不全，上午 @坏坏博客 童鞋一个邪恶测试，发现了上篇文章代码的BUG。晚上下班回来，仔细看了下代码，发现是自己对strpos函数的片面认识，因此做个笔记Mark一下。</p>
 
 	<p class="more"><a href="https://typecodes.com/web/wpantispamstrpoerror.html" title="再议wordpress反垃圾评论：都是strpos函数惹的祸">- 阅读剩余部分 -</a></p>
-			</article>
+</div>			</article>
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/web/wpantispamblacklist.html">wordpress关键词黑名单：反垃圾评论再升级（非插件）</a></h2>
 <ul class="post-meta">
@@ -59,7 +59,7 @@
 <p>wordpress垃圾评论由来已久，在各位博主的有力反抗下，垃圾评论完成了一次又一次的升级。对wp新手来说，肯定不会想到自己的博客会被spam盯上。甚至还可能真认为是某老外关顾了自己的文章（博主曾经就二逼的用英文回复过）。等垃圾评论越来越多时，才仿然大悟。对于一些用wp时间也比较长的博主来说，一些与文章话题无关的评论也是很烦人。为了增强wordpress免疫力，尽量从根源上解决wordpress博客中的垃圾评论，博主也不能闲着，下面就贡献小小的一份力量。</p>
 
 	<p class="more"><a href="https://typecodes.com/web/wpantispamblacklist.html" title="wordpress关键词黑名单：反垃圾评论再升级（非插件）">- 阅读剩余部分 -</a></p>
-			</article>
+</div>			</article>
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/web/phpjquerywponlinenum.html">PHP+jQuery实现wordpress当前在线人数统计</a></h2>
 <ul class="post-meta">
@@ -72,7 +72,7 @@
 <p>网上搜了下相关的教程，代码基本类似，都是直接通过PHP读写txt文件实现的。博主起初采用这种方法，发现页面加载较之前明显变慢。考虑到不断读写文件对页面速度的影响，博主于是改用jQuery加载的方式实现当前在线人数统计。具体方法如下：</p>
 
 	<p class="more"><a href="https://typecodes.com/web/phpjquerywponlinenum.html" title="PHP+jQuery实现wordpress当前在线人数统计">- 阅读剩余部分 -</a></p>
-			</article>
+</div>			</article>
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/web/wplimitnogravatar.html">wordpress中限制没有Gravatar头像的访客提交评论</a></h2>
 <ul class="post-meta">
@@ -85,7 +85,7 @@
 <p>2、屏蔽广告。很多spamer都是没有gravatar头像的，限制没有gravatar头像的访客就等于过滤掉了相当一部分的垃圾广告。扯远一点，多说插件为众多广告商做出了巨大贡献。</p>
 
 	<p class="more"><a href="https://typecodes.com/web/wplimitnogravatar.html" title="wordpress中限制没有Gravatar头像的访客提交评论">- 阅读剩余部分 -</a></p>
-			</article>
+</div>			</article>
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/web/wpcommentajaxbug.html">折腾comment-ajax造成wordpress后台页面空白的BUG</a></h2>
 <ul class="post-meta">
@@ -94,16 +94,16 @@
 <div class="post-content fmt">
 	<h5>1 折腾Willin Kan评论代码的一个“BUG”</h5>
 <p>前几天折腾了下Willin Kan的comment-ajax.php文件，改动了一些代码，结果博客好几天都没收到评论了。昨晚上还在纳闷，会不会是文章写得太烂了又或者是360的节点挂了？反正是百思不得其解。随便翻看着之前写的文章，突然想到了自己前几天修改了comment-ajax.php文件。会不会跟这个有关？赶紧UE打开看看！比较了下之前备份的comment_parentnt-ajax.php文件，发现最新的这份PHP文件中多出了下面几行代码。这个和前几天发现的一个BUG有关：查看了大多数有用Willin Kan大神的评论代码（comment-ajax.php、comment-ajax.js）的博客，只要在文章地址后面添加类似“?replytocom=1123'”的语句就会出现“BUG”（还在研究解决中，不多说了……）。</p>
-<div class="highlight"><pre><span class="x">//父评论不存在时，恶意提交评论</span>
-<span class="x">if(</span><span class="p">$</span><span class="nv">post</span><span class="x">-&gt;comment_parent == &quot;&quot;)</span><span class="err">{</span><span class="x"></span>
-<span class="x"> exit;  //直接退出，不给出提示</span>
-<span class="x">}</span>
+<div class="highlight"><pre><span></span>//父评论不存在时，恶意提交评论
+if($post-&gt;comment_parent == &quot;&quot;){
+ exit;  //直接退出，不给出提示
+}
 </pre></div>
 
 
 
 	<p class="more"><a href="https://typecodes.com/web/wpcommentajaxbug.html" title="折腾comment-ajax造成wordpress后台页面空白的BUG">- 阅读剩余部分 -</a></p>
-			</article>
+</div>			</article>
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/web/qqapifollowweibo.html">上线第一个腾讯开放平台的API应用：收听微博用户（Beta版）</a></h2>
 <ul class="post-meta">
@@ -113,10 +113,10 @@
 	<p>经过近段时间的努力，博主研究的腾讯开放平台API接口终于有所“突破”了。今天正式上线第一个测试版的接口应用：收听腾讯微博用户。先上效果图（也是add_idol接口调用的整个流程），希望大家提提意见。</p>
 <h5>1 add_idol接口调用流程</h5>
 <p>（1）点击博客右侧栏的“腾讯微博”图标，准备接口调用。</p>
-<p><img alt="腾讯API调用接口" src="https://o3cex9zsl.qnssl.com/2013/09/qq_weibo_idol.png" /></p>
+<p><img alt="腾讯API调用接口" src="https://o3cex9zsl.qnssl.com/2013/09/qq_weibo_idol.png"></p>
 
 	<p class="more"><a href="https://typecodes.com/web/qqapifollowweibo.html" title="上线第一个腾讯开放平台的API应用：收听微博用户（Beta版）">- 阅读剩余部分 -</a></p>
-			</article>
+</div>			</article>
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/web/phpcurlrequestsample.html">PHP中的cURL请求及示例</a></h2>
 <ul class="post-meta">
@@ -128,7 +128,7 @@
 <p>cURL允许数据传输跨广泛的协议,是一个非常强大的系统。它广泛用于跨网站发送数据，包括诸如API交互和oAuth。cURL是在它的应用范围内几乎是无所不能的，从基本的HTTP请求，到更为复杂的FTP上传或封闭式HTTPS网站的交互验证。让我们一起来看看发送一个GET和POST请求和处理返回的响应的简单区别，以及一些重要的参数说明。</p>
 
 	<p class="more"><a href="https://typecodes.com/web/phpcurlrequestsample.html" title="PHP中的cURL请求及示例">- 阅读剩余部分 -</a></p>
-			</article>
+</div>			</article>
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/web/wptaoiplibapithree.html">WordPress使用淘宝IP地址库的API显示评论者的位置信息（三）</a></h2>
 <ul class="post-meta">
@@ -139,18 +139,28 @@
 <p>在上一篇文章<a href="https://typecodes.com/web/wptaoiplibapitwo.html" title="《WordPress使用淘宝IP地址库的API显示评论者的位置信息（二）》">《WordPress使用淘宝IP地址库的API显示评论者的位置信息（二）》</a>中，vfhky使用了jQuery来获取淘宝的API接口返回的数据。那么这篇文章就接着写如何直接使用PHP实现WordPress调用淘宝IP地址库的API显示评论者的位置信息。相比上一个jQuery的版本，这个PHP版本的代码就简单得多了用。只需两步就可以实现。</p>
 
 	<p class="more"><a href="https://typecodes.com/web/wptaoiplibapithree.html" title="WordPress使用淘宝IP地址库的API显示评论者的位置信息（三）">- 阅读剩余部分 -</a></p>
-			</article>
+</div>			</article>
 		  	<!--page navigation-->
 <ol class="page-navigator">
-<li class="prev"><a href="https://typecodes.com/web/index4.html">&laquo; 前一页</a></li><li><a href="https://typecodes.com/web/index.html">1</a>
-       <li><a href="https://typecodes.com/web/index2.html">2</a>
-       		</li><li><a href="https://typecodes.com/web/index3.html">3</a>
-       		</li><li><a href="https://typecodes.com/web/index4.html">4</a>
-       		</li><li class="current"><a href="https://typecodes.com/web/index5.html">5</a>
-       		</li><li><a href="https://typecodes.com/web/index6.html">6</a>
-       		</li><li><a href="https://typecodes.com/web/index7.html">7</a>
-       		</li><li><span>...</span></li><li><a href="https://typecodes.com/web/index10.html">10</a>
-       		</li><li><a href="https://typecodes.com/web/index11.html">11</a>
+<li class="prev"><a href="https://typecodes.com/web/index4.html">&laquo; 前一页</a></li><li>
+       			<a href="https://typecodes.com/web/index1.html">1</a>
+       		</li>
+       <li>
+       			<a href="https://typecodes.com/web/index2.html">2</a>
+       		</li><li>
+       			<a href="https://typecodes.com/web/index3.html">3</a>
+       		</li><li>
+       			<a href="https://typecodes.com/web/index4.html">4</a>
+       		</li><li class="current">
+       			<a href="https://typecodes.com/web/index.html">5</a>
+       		</li><li>
+       			<a href="https://typecodes.com/web/index6.html">6</a>
+       		</li><li>
+       			<a href="https://typecodes.com/web/index7.html">7</a>
+       		</li><li><span>...</span></li><li>
+       			<a href="https://typecodes.com/web/index10.html">10</a>
+       		</li><li>
+       			<a href="https://typecodes.com/web/index11.html">11</a>
        		</li><li class="next">
        		<a href="https://typecodes.com/web/index6.html">后一页 &raquo;</a>
        </li></ol>		</div>
@@ -219,7 +229,6 @@
 		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
 	</section>
 </div>
-				</div>
 			</div>
 		</div>
 		<!--4. bottom begin-->

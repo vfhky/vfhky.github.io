@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html dir="ltr" lang="zh-CN" class="no-js">
+<html class="no-js">
 	<head>
-		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
   		<meta name="renderer" content="webkit">
 		<title>宏碁笔记本恢复出厂系统记（二） &mdash; TypeCodes</title>
 		<meta name="description" content="宏碁笔记本恢复出厂系统记（二） &mdash; TypeCodes" />
@@ -34,8 +35,7 @@
 			</div>
 		</div>
 		<div class="container">
-			<div class="row">
-		<!--2. left sider begin-->
+			<div class="row">		<!--2. left sider begin-->
 		<div class="col-md-9" id="blog-main" role="main">
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/mix/acerrestorefactorysystwo.html">宏碁笔记本恢复出厂系统记（二）</a></h2>
@@ -44,7 +44,7 @@
 </ul>
 <div class="post-content fmt">
 	<p>在<a href="https://typecodes.com/mix/acerrestorefactorysysone.html" title="查看原文">《宏碁笔记本恢复出厂系统记（一）》</a>一文中，记述了我的宏碁Aspire 4752G在用“ALT+F10”恢复出厂系统无效（因为该出厂系统被我损坏了）的情况下自己用宏碁官方的原镜像文件自己制作一个恢复系统，那么这篇文章就是具体的方法，需要准备的工具有：</p>
-<div class="highlight"><pre>AcronisDiskDirector或者DiskGenius分区工具
+<div class="highlight"><pre><span></span>AcronisDiskDirector或者DiskGenius分区工具
 Acer官方系统镜像（recovery1.iso，recovery2.iso，recovery3.iso，recovery4.iso。下载完后要用MD5校验软件进行校验，以确定镜像的完整性）
 Bootice启动制作工具
 ACER.rar宏碁的系统的启动文件
@@ -55,29 +55,29 @@ ACER.rar宏碁的系统的启动文件
 
 <h5>下面是具体步骤：</h5>
 <p>1、用AcronisDiskDirector或者DiskGenius在 硬盘的第一个分区的开头部分 建立一个14G的分区，设置为活动分区，命名卷标为PQSERVICE，然后将recovery1.iso的所有文件解压到该目录下，然后提取提取recovery2.iso，recovery3.iso，recovery4.iso里面的PATCH文件夹合并到PQSERVICE下的PATCH文件夹中(开始会遇到合并的情况，点击确定合并，当要替换的时候就选择替换，其实要替换的文件是一样的)。</p>
-<p><img alt="DiskGenius建立分区" src="https://o3cex9zsl.qnssl.com/2012/12/1.png" title="DiskGenius建立分区" /></p>
+<p><img alt="DiskGenius建立分区" src="https://o3cex9zsl.qnssl.com/2012/12/1.png" title="DiskGenius建立分区"></p>
 <p>如图，最左边的14G是PQSERVICE活动分区，此时处于未激活状态，C盘也是主分区，处于活动状态( 一个正常运行的系统只能有一个活动分区 )。扩展分区下面本来没有划分出如图中的5个逻辑分区的，这5个分区是恢复系统以后划分出来的。</p>
 <p>2、删除PQSERVICE中的Restore.dat，下载ACER.rar并解压到PQSERVICE中。</p>
 <p>3、在PQSERVICE中新建D2D，AcerBoot，WimTemp，logs文件夹。</p>
 <p>4、从PQSERVICE中将下面图片中的所有文件复制到AcerBoot文件夹中。</p>
-<p><img alt="复制到AcerBoot文件夹中" src="https://o3cex9zsl.qnssl.com/2012/12/2.png" title="复制到AcerBoot文件夹中" /></p>
+<p><img alt="复制到AcerBoot文件夹中" src="https://o3cex9zsl.qnssl.com/2012/12/2.png" title="复制到AcerBoot文件夹中"></p>
 <p>5、将PQSERVICE中的PATCH和IMAGES文件夹剪切到D2D下，同时将RCD.DAT，SWBOMPN.ini，SystemCD.dat复制到D2D中。</p>
-<p><img alt="剪切到D2D下" src="https://o3cex9zsl.qnssl.com/2012/12/3.png" title="剪切到D2D下" /></p>
+<p><img alt="剪切到D2D下" src="https://o3cex9zsl.qnssl.com/2012/12/3.png" title="剪切到D2D下"></p>
 <p>6、最后将NAPPUTL里面的所有文件(夹)复制到PQSERVICE中。</p>
 <p>7、按照下图删掉多余的文件或者文件夹，从而使最后PQSERVICE中的内容如下图所示</p>
-<p><img alt="删掉多余的文件" src="https://o3cex9zsl.qnssl.com/2012/12/4.png" title="删掉多余的文件" /></p>
+<p><img alt="删掉多余的文件" src="https://o3cex9zsl.qnssl.com/2012/12/4.png" title="删掉多余的文件"></p>
 <p>8、写入bootmgr引导，具体如下：打开bootice软件，出现</p>
-<p><img alt="写入bootmgr引导" src="https://o3cex9zsl.qnssl.com/2012/12/5.png" title="写入bootmgr引导" /></p>
+<p><img alt="写入bootmgr引导" src="https://o3cex9zsl.qnssl.com/2012/12/5.png" title="写入bootmgr引导"></p>
 <p>其中目标磁盘要<font color="#ff0000">选择自己电脑上的硬盘</font>，如图中是我的电脑的硬盘情况。</p>
 <p>然后点击“主引导记录M”会出现</p>
-<p><img alt="点击“主引导记录M”" src="https://o3cex9zsl.qnssl.com/2012/12/6.png" title="点击“主引导记录M”" /></p>
+<p><img alt="点击“主引导记录M”" src="https://o3cex9zsl.qnssl.com/2012/12/6.png" title="点击“主引导记录M”"></p>
 <p>再点击”安装/配置(s)”即可，接着点击“分区记录引导P”，会出现</p>
-<p><img alt="点击“分区记录引导P”" src="https://o3cex9zsl.qnssl.com/2012/12/7.png" title="点击“分区记录引导P”" /></p>
+<p><img alt="点击“分区记录引导P”" src="https://o3cex9zsl.qnssl.com/2012/12/7.png" title="点击“分区记录引导P”"></p>
 <p>其中目标分区要<font color="#ff0000">选择自己建的PQSERVICE</font>，如图PQSERVICE在分区0，接着点击点击“安装/配置(s)”即可。</p>
 <p>9、接着打开CMD运行命令工具，输入如下命令，其中 setid=27 override 表示设置PQSERVICE分区ID=27（要想创建恢复盘就要是27）。命令输完后会出现成功的提示，如果这一步错了的话，后面的步骤就都无效了。</p>
-<p><img alt="打开CMD运行命令工具" src="https://o3cex9zsl.qnssl.com/2012/12/8.png" title="打开CMD运行命令工具" /></p>
+<p><img alt="打开CMD运行命令工具" src="https://o3cex9zsl.qnssl.com/2012/12/8.png" title="打开CMD运行命令工具"></p>
 <p>10、再一次运行CMD，输入如下命令，其中active表示激活PQSERVICE分区。</p>
-<p><img alt="再一次运行CMD" src="https://o3cex9zsl.qnssl.com/2012/12/9.png" title="再一次运行CMD" /></p>
+<p><img alt="再一次运行CMD" src="https://o3cex9zsl.qnssl.com/2012/12/9.png" title="再一次运行CMD"></p>
 <p>11、关闭CMD命令，重启电脑，over（后面会自行恢复出厂的系统，具体情形参见<a href="https://typecodes.com/mix/acerrestorefactorysysone.html" title="宏碁笔记本恢复出厂系统记（一）">宏碁笔记本恢复出厂系统记（一）</a>）。</p>
 <p>12、成功制作了自己的恢复系统，而且也能使用ALT+F10来重装系统了^^</p>
 <p><code>温馨提示：</code>大家可以用这四个镜像文件刻成四个光盘（每个光盘容量不低于4G，买的时候要注意），以后遇到恢复系统给K了的时候就用系统盘来恢复而不用下载这四个镜像文件了。</p>
@@ -86,7 +86,7 @@ ACER.rar宏碁的系统的启动文件
 http://pan.baidu.com/share/link?shareid=78704&amp;uk=1879910561</p>
 <h5>Update 2013.10.16 23:46</h5>
 <p>根据网友反应这两篇宏碁笔记本系统恢复文章的图片不够清晰，现把博主之前操作的清晰图片共享到了《百度黄克业的博客资源共享区》，下载地址同上。</p>
-		    	<div class="donate_div_container">
+</div>		    	<div class="donate_div_container">
 					<div class="donate_div">
 						<p><a href="javascript:void(0)" onclick="donateToggle()" class="donate_word" title="打赏，支持一下">打赏</a></p>
 						<div class="hide_box"></div>
@@ -116,7 +116,7 @@ http://pan.baidu.com/share/link?shareid=78704&amp;uk=1879910561</p>
 					</div>
 				</div>
 		    	<div class="tags">
-					<div class="post_tags">
+					<div class="post_tags" itemprop="keywords">
 						Tags: <a href="https://typecodes.com/tag/hong-qi-xi-tong.html">宏碁系统</a>,<a href="https://typecodes.com/tag/hui-fu-chu-han-xi-tong.html">恢复出厂系统</a>					</div>
 					<div class="post-share">
 						<ul class="post-shareul clearfix">
@@ -208,7 +208,6 @@ http://pan.baidu.com/share/link?shareid=78704&amp;uk=1879910561</p>
 		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
 	</section>
 </div>
-				</div>
 			</div>
 		</div>
 		<!--4. bottom begin-->

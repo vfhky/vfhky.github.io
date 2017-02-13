@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html dir="ltr" lang="zh-CN" class="no-js">
+<html class="no-js">
 	<head>
-		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
   		<meta name="renderer" content="webkit">
 		<title>标签 gcc 下的文章 - TypeCodes</title>
 		<meta name="description" content="标签 gcc 下的文章 - TypeCodes" />
@@ -34,8 +35,7 @@
 			</div>
 		</div>
 		<div class="container">
-			<div class="row">
-		<!--2. left sider begin-->
+			<div class="row">		<!--2. left sider begin-->
 		<div class="col-md-9" id="blog-main" role="main">
 		  	<!--article recycle-->
 			<article class="post">
@@ -47,7 +47,7 @@
 	<p>工作上自己在Linux C/C++开发时，用的都是Oracle数据库，毕竟企业级应用追求稳定性好、安全可靠。业余时间做了一些WEB开发，接触到MySQL数据库比较多，也比较喜欢开源的MySQL。之前都是用PHP连接MySQL数据库，这里自己用C语言连接MySQL，执行一些简单的连接、查询操作、异常处理等操作。</p>
 
 	<p class="more"><a href="https://typecodes.com/cseries/linuxgccgconnectmysql.html" title="Linux c语言连接MySQL数据库实例">- 阅读剩余部分 -</a></p>
-			</article>
+</div>			</article>
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/cseries/gccgensharedlib.html">Linux gcc编译生成静态库及使用方法</a></h2>
 <ul class="post-meta">
@@ -57,7 +57,7 @@
 	<p>这篇文章主要通过实例演示在Linux下如何使用gcc编译生成动态库文件以及其它程序如何使用该动态库。</p>
 
 	<p class="more"><a href="https://typecodes.com/cseries/gccgensharedlib.html" title="Linux gcc编译生成静态库及使用方法">- 阅读剩余部分 -</a></p>
-			</article>
+</div>			</article>
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/cseries/gcclderrlibrarypath.html">Linux gcc链接动态库出错：LIBRARY_PATH和LD_LIBRARY_PATH的区别</a></h2>
 <ul class="post-meta">
@@ -65,16 +65,16 @@
 </ul>
 <div class="post-content fmt">
 	<p>昨天在自己的CentOs7.1上写makefile的时候，发现在一个C程序在编译并链接一个已生成好的lib动态库的时候出错。链接命令大概是这样的：</p>
-<div class="highlight"><pre>[root@typecodes tcpmsg]# gcc -o hello main.c -lmyhello
+<div class="highlight"><pre><span></span>[root@typecodes tcpmsg]# gcc -o hello main.c -lmyhello
 /usr/bin/ld: cannot find -lmyhello
 collect2: error: ld returned 1 exit status
 </pre></div>
 
 
-<p><img alt="Linux gcc链接动态库出错" src="https://o3cex9zsl.qnssl.com/2015/08/gcc_linux.png" title="Linux gcc链接动态库出错" /></p>
+<p><img alt="Linux gcc链接动态库出错" src="https://o3cex9zsl.qnssl.com/2015/08/gcc_linux.png" title="Linux gcc链接动态库出错"></p>
 
 	<p class="more"><a href="https://typecodes.com/cseries/gcclderrlibrarypath.html" title="Linux gcc链接动态库出错：LIBRARY_PATH和LD_LIBRARY_PATH的区别">- 阅读剩余部分 -</a></p>
-			</article>
+</div>			</article>
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/cseries/windowsinstallmingwgcc.html">Windows平台如何安装最新的MinGW GCC编译器</a></h2>
 <ul class="post-meta">
@@ -86,7 +86,7 @@ collect2: error: ld returned 1 exit status
 <p>MinGW官网地址是：http://www.mingw.org/，目前它已经把MinGW源码托管在了sourceforge上了，因此下载地址是：<a href="http://sourceforge.net/projects/mingw/" title="进入官方下载地址">点击进入</a>。把那个mingw-get-setup.exe下载至本地电脑上即可。</p>
 
 	<p class="more"><a href="https://typecodes.com/cseries/windowsinstallmingwgcc.html" title="Windows平台如何安装最新的MinGW GCC编译器">- 阅读剩余部分 -</a></p>
-			</article>
+</div>			</article>
 		  	<!--page navigation-->
 <ol class="page-navigator">
 </ol>		</div>
@@ -146,7 +146,6 @@ collect2: error: ld returned 1 exit status
 		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
 	</section>
 </div>
-				</div>
 			</div>
 		</div>
 		<!--4. bottom begin-->

@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html dir="ltr" lang="zh-CN" class="no-js">
+<html class="no-js">
 	<head>
-		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
   		<meta name="renderer" content="webkit">
 		<title>图文实例说MFC制作工具的心得（一） &mdash; TypeCodes</title>
 		<meta name="description" content="图文实例说MFC制作工具的心得（一） &mdash; TypeCodes" />
@@ -34,8 +35,7 @@
 			</div>
 		</div>
 		<div class="container">
-			<div class="row">
-		<!--2. left sider begin-->
+			<div class="row">		<!--2. left sider begin-->
 		<div class="col-md-9" id="blog-main" role="main">
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/cseries/studymfchexstrxortool1.html">图文实例说MFC制作工具的心得（一）</a></h2>
@@ -44,7 +44,7 @@
 </ul>
 <div class="post-content fmt">
 	<p><a href="https://typecodes.com/cseries/mfchexstrxortool.html" title="《MFC写了一个十六进制异或的工具》">上篇文章</a>说了用MFC制作一个十六进制字符串异或的工具，这篇文章就以这个工具为演示总结一下自己的学习心得。</p>
-<p><img alt="MFC十六进制异或工具" src="https://o3cex9zsl.qnssl.com/2014/11/mfchexstrxortool.png" title="MFC十六进制异或工具" /></p>
+<p><img alt="MFC十六进制异或工具" src="https://o3cex9zsl.qnssl.com/2014/11/mfchexstrxortool.png" title="MFC十六进制异或工具"></p>
 
 
 <h5>1 控制用户输入数据的长度</h5>
@@ -61,7 +61,7 @@
 10
 11
 12
-13</pre></div></td><td class="code"><div class="highlight"><pre><span class="kt">void</span> <span class="n">CHexStrXorDlg</span><span class="o">::</span><span class="n">DoDataExchange</span><span class="p">(</span><span class="n">CDataExchange</span><span class="o">*</span> <span class="n">pDX</span><span class="p">)</span>
+13</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="kt">void</span> <span class="n">CHexStrXorDlg</span><span class="o">::</span><span class="n">DoDataExchange</span><span class="p">(</span><span class="n">CDataExchange</span><span class="o">*</span> <span class="n">pDX</span><span class="p">)</span>
 <span class="p">{</span>
     <span class="n">CDialogEx</span><span class="o">::</span><span class="n">DoDataExchange</span><span class="p">(</span><span class="n">pDX</span><span class="p">);</span>
     <span class="c1">//用于控件1和第一个十六进制字符串变量交互</span>
@@ -129,7 +129,7 @@
 48
 49
 50
-51</pre></div></td><td class="code"><div class="highlight"><pre><span class="c1">//检查输入的十六进制字符串是否合法</span>
+51</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="c1">//检查输入的十六进制字符串是否合法</span>
 <span class="kt">int</span> <span class="nf">CheckInputHex</span><span class="p">(</span><span class="n">CEdit</span><span class="o">*</span> <span class="n">pEdit</span><span class="p">,</span> <span class="n">CString</span> <span class="n">HexInput</span><span class="p">)</span>
 <span class="p">{</span>
     <span class="c1">//获取字符串的长度</span>
@@ -185,7 +185,7 @@
 
 <h5>2 检测用户输入数据是否合法</h5>
 <p>因为用户输入的数据并不一定是你设想的，可能还是<code>有害</code>的，所以在使用前必须予以检查。由于我的这个工具要求用户输入的必须是十六进制字符串，所以必须要检查每个字符是否合法。检查方法已经包含在上面<code>CheckInputHex</code>方法了，如果用户输入了非法字符，例如'G'、'h'等非十六进制字符，那么就会弹出错误框如下</p>
-<p><img alt="检测用户输入数据是否合法的十六进制字符串" src="https://o3cex9zsl.qnssl.com/2014/11/mfchexstrxorerrornotify.png" title="检测用户输入数据是否合法的十六进制字符串" /></p>
+<p><img alt="检测用户输入数据是否合法的十六进制字符串" src="https://o3cex9zsl.qnssl.com/2014/11/mfchexstrxorerrornotify.png" title="检测用户输入数据是否合法的十六进制字符串"></p>
 <h5>3 统计用户输入字符串的长度</h5>
 <p>如果用户输入了一个合法的字符串，然后离开了输入框，这时应该自动在输入框的右侧统计出用户输入的字符串的长度。方法依然是在控件对应的<code>EN_KILLFOCUS</code>事件处理方法<code>OnEnKillfocusEdit1</code>中实现：</p>
 <table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
@@ -199,32 +199,32 @@
  9
 10
 11
-12</pre></div></td><td class="code"><div class="highlight"><pre><span class="kt">void</span> <span class="n">CHexStrXorDlg</span><span class="o">::</span><span class="n">OnEnKillfocusEdit1</span><span class="p">()</span>
+12</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="kt">void</span> <span class="n">CHexStrXorDlg</span><span class="o">::</span><span class="n">OnEnKillfocusEdit1</span><span class="p">()</span>
 <span class="p">{</span>
-    <span class="o">/**</span>
-     <span class="o">*</span> <span class="err">省略小节</span><span class="mi">1</span><span class="err">中的</span><span class="n">OnEnKillfocusEdit1</span><span class="p">()</span><span class="err">已有的代码</span>
-     <span class="o">*</span> <span class="o">/</span>
+    <span class="cm">/**</span>
+<span class="cm">     * 省略小节1中的OnEnKillfocusEdit1()已有的代码</span>
+<span class="cm">     * /</span>
 
-    <span class="c1">//更新长度</span>
-    <span class="n">CString</span> <span class="n">UpdateHexStr1Len</span><span class="p">;</span>
-    <span class="n">UpdateHexStr1Len</span><span class="p">.</span><span class="n">Format</span><span class="p">(</span><span class="s">&quot;%s%d%s&quot;</span><span class="p">,</span> <span class="s">&quot;字节=[&quot;</span><span class="p">,</span> <span class="n">HexStr1</span><span class="p">.</span><span class="n">GetLength</span><span class="p">(),</span> <span class="s">&quot;]&quot;</span><span class="p">);</span>
-    <span class="c1">//SetDlgItemText(IDC_STATIC_STR1, UpdateHexStr1Len );</span>
-    <span class="n">GetDlgItem</span><span class="p">(</span><span class="n">IDC_STATIC_STR1</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">SetWindowTextA</span><span class="p">(</span><span class="n">UpdateHexStr1Len</span><span class="p">);</span>
-<span class="p">}</span>
+<span class="cm">    //更新长度</span>
+<span class="cm">    CString UpdateHexStr1Len;</span>
+<span class="cm">    UpdateHexStr1Len.Format(&quot;%s%d%s&quot;, &quot;字节=[&quot;, HexStr1.GetLength(), &quot;]&quot;);</span>
+<span class="cm">    //SetDlgItemText(IDC_STATIC_STR1, UpdateHexStr1Len );</span>
+<span class="cm">    GetDlgItem(IDC_STATIC_STR1)-&gt;SetWindowTextA(UpdateHexStr1Len);</span>
+<span class="cm">}</span>
 </pre></div>
 </td></tr></table>
 
 <h5>4 设置TAB键切换连续输入</h5>
 <p>如何让用户在输入完第一个字符串后，按TAB键直接跳到第二个十六进制字符串输入框中？这个就涉及到对话框中所有空间的排序了。在visual studio 2013中按“Ctrl+D”就会显示对话框所有空间的序号了，分别点击两个不同的控件，就能交换二者的序号。</p>
 <p>如图所示，只要将第一个字符串输入框控件和第二个字符串输入框控件的序号设置为1、2这两个连续的序号即可实现TAB键连续输入，而不用使用鼠标了。</p>
-<p><img alt="mfc设置控件序号实现TAB键切换连续输入" src="https://o3cex9zsl.qnssl.com/2014/11/mfchexstrxordesign.png" title="mfc设置控件序号实现TAB键切换连续输入" /></p>
+<p><img alt="mfc设置控件序号实现TAB键切换连续输入" src="https://o3cex9zsl.qnssl.com/2014/11/mfchexstrxordesign.png" title="mfc设置控件序号实现TAB键切换连续输入"></p>
 <h5>5 避免回车键直接关闭工具（对话框）</h5>
 <p>直接将“进行异或”这个按钮属性中的<code>Default Button</code>设置为"TRUE"，这样如果用户直接回车就不会关闭工具（对话框）了。</p>
 <p>同时，用户的回车会直接触发这个按钮对应的事件<code>OnBnClickedButton1</code>，也就相当于用户点击了这个按钮，直接对这两个字符串进行异或处理。</p>
-<p><img alt="设置按钮属性中的Default Button为TRUE" src="https://o3cex9zsl.qnssl.com/2014/11/mfchexstrxordefaultbutton.png" title="设置按钮属性中的Default Button为TRUE" /></p>
+<p><img alt="设置按钮属性中的Default Button为TRUE" src="https://o3cex9zsl.qnssl.com/2014/11/mfchexstrxordefaultbutton.png" title="设置按钮属性中的Default Button为TRUE"></p>
 <h5>6 结语</h5>
 <p>由于篇幅较长，所以把剩余内容放在了<a href="https://typecodes.com/cseries/studymfchexstrxortool2.html" title="《图文实例说MFC制作工具的心得（二）》">第二部分</a>。</p>
-		    	<div class="donate_div_container">
+</div>		    	<div class="donate_div_container">
 					<div class="donate_div">
 						<p><a href="javascript:void(0)" onclick="donateToggle()" class="donate_word" title="打赏，支持一下">打赏</a></p>
 						<div class="hide_box"></div>
@@ -254,7 +254,7 @@
 					</div>
 				</div>
 		    	<div class="tags">
-					<div class="post_tags">
+					<div class="post_tags" itemprop="keywords">
 						Tags: <a href="https://typecodes.com/tag/shi-liu-jin-zhi-zi-fu-chuan.html">十六进制字符串</a>,<a href="https://typecodes.com/tag/zi-fu-chuan-yi-huo.html">字符串异或</a>,<a href="https://typecodes.com/tag/mfc.html">mfc</a>					</div>
 					<div class="post-share">
 						<ul class="post-shareul clearfix">
@@ -346,7 +346,6 @@
 		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
 	</section>
 </div>
-				</div>
 			</div>
 		</div>
 		<!--4. bottom begin-->

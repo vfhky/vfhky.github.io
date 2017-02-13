@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html dir="ltr" lang="zh-CN" class="no-js">
+<html class="no-js">
 	<head>
-		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
   		<meta name="renderer" content="webkit">
 		<title>PHP模拟登录WordPress后台一：使用Chrome浏览器网络抓包 &mdash; TypeCodes</title>
 		<meta name="description" content="PHP模拟登录WordPress后台一：使用Chrome浏览器网络抓包 &mdash; TypeCodes" />
@@ -34,8 +35,7 @@
 			</div>
 		</div>
 		<div class="container">
-			<div class="row">
-		<!--2. left sider begin-->
+			<div class="row">		<!--2. left sider begin-->
 		<div class="col-md-9" id="blog-main" role="main">
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/web/chromephpsimulatelogwpone.html">PHP模拟登录WordPress后台一：使用Chrome浏览器网络抓包</a></h2>
@@ -46,35 +46,35 @@
 	<p>使用PHP的curl函数，可以模拟登录各种类型的网站后台，例如Discuz、QQ邮箱、WordPress、DeDeCMS等等。模拟登录需要两个步骤，第一个是了解目标网站后台登录时所需要提交的数据字段，第二个才是用curl函数模拟向网站后台提交数据。那么这篇文章先通过讲解使用Chrome浏览器进行网络抓包，获取目标网站后台登录时所需要的数据。下一篇文章才是PHP模拟登录演示。</p>
 <h5>1 以本地登录WordPress后台为例</h5>
 <p>在本地搭建一个wordpress博客程序，那么默认的后台登录地址就类似于：http://127.0.0.1/wpupdate/wp-admin。于是，先打开Chrome浏览器，然后按下F12键打开“审查元素”的界面，接着点击“Network”选项。可以看到这时没发生任何网络信息交互，抓包为空。</p>
-<p><img alt="chrome抓包" src="https://o3cex9zsl.qnssl.com/2014/03/chrome_crab8.png" title="chrome抓包" /></p>
+<p><img alt="chrome抓包" src="https://o3cex9zsl.qnssl.com/2014/03/chrome_crab8.png" title="chrome抓包"></p>
 
 
 <h5>2 访问wordpress后台</h5>
 <p>在浏览器地址栏中输入http://127.0.0.1/wpupdate/wp-admin，然后Chrome浏览器会自动进行抓包得到如下图所示数据。这时可以看到浏览器地址栏已经变成了：http://127.0.0.1/wpupdate/wp-login.php?redirect_to=http%3A%2F%2F127.0.0.1%2Fwpupdate%2Fwp-admin%2F&amp;reauth=1。</p>
 <p>那么下面这张图就描述了变化的详细过程。图中请求方式“Method”都是“Get”，当然还得知道图中的HTTP状态码“Status”值的含义是什么（1xx：临时响应；2xx表示响应成功；3xx：已重定向；4xx：请求错误；5xx：服务器错误）。</p>
-<p><img alt="访问wordpress后台" src="https://o3cex9zsl.qnssl.com/2014/03/chrome_crab1.png" title="访问wordpress后台" /></p>
+<p><img alt="访问wordpress后台" src="https://o3cex9zsl.qnssl.com/2014/03/chrome_crab1.png" title="访问wordpress后台"></p>
 <h5>3 点击“Name”选项下抓取的wp-admin的内容</h5>
 <p>先点击“wp-admin”，显示如下图所抓包的数据。Request Headers是我们发送的请求报文头，Response Headers是WordPress后台响应的头部信息。之前输入的http://127.0.0.1/wpupdate/wp-admin代表发送的请求URL，得到的HTTP响应码是301（永久跳转），于是后台响应跳转到http://127.0.0.1/wpupdate/wp-admin/（即图中Response Headers下的“Location”）。</p>
-<p><img alt="点击“Name”选项下抓取的wp-admin的内容" src="https://o3cex9zsl.qnssl.com/2014/03/chrome_crab2.png" title="点击“Name”选项下抓取的wp-admin的内容" /></p>
+<p><img alt="点击“Name”选项下抓取的wp-admin的内容" src="https://o3cex9zsl.qnssl.com/2014/03/chrome_crab2.png" title="点击“Name”选项下抓取的wp-admin的内容"></p>
 <h5>4 点击“Name”选项下抓取的wp-admin/的内容</h5>
 <p>先点击“wp-admin/”，显示如下图所抓包的数据。这时，http://127.0.0.1/wpupdate/wp-admin/变成了发送的请求URL，得到的HTTP响应码是302（临时跳转），于是后台响应跳转到http://127.0.0.1/wpupdate/wp-login.php?redirect_to=http%3A%2F%2F127.0.0.1%2Fwpupdate%2Fwp-admin%2F&amp;reauth=1（即图中Response Headers下的“Location”）。</p>
-<p><img alt="点击“Name”选项下抓取的wp-admin/的内容" src="https://o3cex9zsl.qnssl.com/2014/03/chrome_crab3.png" title="点击“Name”选项下抓取的wp-admin/的内容" /></p>
+<p><img alt="点击“Name”选项下抓取的wp-admin/的内容" src="https://o3cex9zsl.qnssl.com/2014/03/chrome_crab3.png" title="点击“Name”选项下抓取的wp-admin/的内容"></p>
 <h5>5 点击“Name”选项下抓取的wp-login.php?redirect_to=h的内容</h5>
 <p>先点击“wp-admin/”下面的“wp-login.php?redirect_to=h……”，显示如下图所抓包的数据。这时，http://127.0.0.1/wpupdate/wp-login.php?redirect_to=http%3A%2F%2F127.0.0.1%2Fwpupdate%2Fwp-admin%2F&amp;reauth=1变成了发送的请求URL。这时图中Response Headers下没有“Location”，即不会再跳转到其它地址。出现了Set-Cookie，即服务器在在浏览器中生成了以wordpress_为前缀的cookie。</p>
-<p><img alt="点击“Name”选项下抓取的wp-login.php?redirect_to=h的内容" src="https://o3cex9zsl.qnssl.com/2014/03/chrome_crab9.png" title="点击“Name”选项下抓取的wp-login.php?redirect_to=h的内容" /></p>
+<p><img alt="点击“Name”选项下抓取的wp-login.php?redirect_to=h的内容" src="https://o3cex9zsl.qnssl.com/2014/03/chrome_crab9.png" title="点击“Name”选项下抓取的wp-login.php?redirect_to=h的内容"></p>
 <h5>6 输入帐号和密码登录wordpress后台</h5>
 <p>在输入帐号和密码后，Chrome抓包如下图所示。
-<img alt="输入帐号和密码登录wordpress后台" src="https://o3cex9zsl.qnssl.com/2014/03/chrome_crab4.png" title="输入帐号和密码登录wordpress后台" />
+<img alt="输入帐号和密码登录wordpress后台" src="https://o3cex9zsl.qnssl.com/2014/03/chrome_crab4.png" title="输入帐号和密码登录wordpress后台">
 然后点击“wp-login.php”的抓包数据。可以看到请求URL是http://127.0.0.1/wpupdate/wp-login.php，但是请求方式“Method”变成了“POST”。</p>
 <p>“Referer”是之前步骤5中地址栏中的地址。Request Headers请求包中可以看到刚才输入的帐号(log)对应的值：vfhky；密码(pwd)对应的明文是刚才输入的密码；wp-submit对应的值“登录”；“redirect_to”表示发送上面数据的目标地址。而对应的Response Headers中的“Location”也跳转到“redirect_to”对应的地址http://127.0.0.1/wpupdate/wp-admin/。同时通过Set-Cookie也生成了四个cookie。</p>
-<p><img alt="点击“wp-login.php”的抓包数据" src="https://o3cex9zsl.qnssl.com/2014/03/chrome_crab5.png" title="点击“wp-login.php”的抓包数据" />
-<img alt="Set-Cookie生成四个cookie" src="https://o3cex9zsl.qnssl.com/2014/03/chrome_crab6.png" title="Set-Cookie生成四个cookie" /></p>
+<p><img alt="点击“wp-login.php”的抓包数据" src="https://o3cex9zsl.qnssl.com/2014/03/chrome_crab5.png" title="点击“wp-login.php”的抓包数据">
+<img alt="Set-Cookie生成四个cookie" src="https://o3cex9zsl.qnssl.com/2014/03/chrome_crab6.png" title="Set-Cookie生成四个cookie"></p>
 <h5>7 点击“Name”选项下抓取的wp-admin/的内容</h5>
 <p>先点击“wp-admin/”，显示如下图所抓包的数据。图中Request Headers信息中，发送了第6个步骤生成了4个cookie。这时图中Response Headers下也没有“Location”，即不会再跳转到其它地址。因此，此时浏览器中的地址应该是：http://127.0.0.1/wpupdate/wp-admin/。</p>
-<p><img alt="点击“Name”选项下抓取的wp-admin/的内容" src="https://o3cex9zsl.qnssl.com/2014/03/chrome_crab7.png" title="点击“Name”选项下抓取的wp-admin/的内容" /></p>
+<p><img alt="点击“Name”选项下抓取的wp-admin/的内容" src="https://o3cex9zsl.qnssl.com/2014/03/chrome_crab7.png" title="点击“Name”选项下抓取的wp-admin/的内容"></p>
 <h5>8 Chrome抓包总结</h5>
 <p>通过wordpress后台登录，我们用chrome实现网络抓包，完整的知道了后台登录的整个流程。当然，对于其它后台网站的登录，抓包过程也是一样的。在<a href="https://typecodes.com/mix/chromephpsimulatelogwptwo.html" title="《PHP模拟登录WordPress后台二：使用curl函数》">下一篇文章</a>中，就直接通过PHP程序模拟wordpress后台登录。</p>
-		    	<div class="donate_div_container">
+</div>		    	<div class="donate_div_container">
 					<div class="donate_div">
 						<p><a href="javascript:void(0)" onclick="donateToggle()" class="donate_word" title="打赏，支持一下">打赏</a></p>
 						<div class="hide_box"></div>
@@ -104,7 +104,7 @@
 					</div>
 				</div>
 		    	<div class="tags">
-					<div class="post_tags">
+					<div class="post_tags" itemprop="keywords">
 						Tags: <a href="https://typecodes.com/tag/chromewang-luo-zhua-bao.html">chrome网络抓包</a>,<a href="https://typecodes.com/tag/phpmo-ni-deng-lu-wordpress.html">php模拟登录wordpress</a>					</div>
 					<div class="post-share">
 						<ul class="post-shareul clearfix">
@@ -196,7 +196,6 @@
 		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
 	</section>
 </div>
-				</div>
 			</div>
 		</div>
 		<!--4. bottom begin-->

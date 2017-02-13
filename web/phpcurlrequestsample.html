@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html dir="ltr" lang="zh-CN" class="no-js">
+<html class="no-js">
 	<head>
-		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
   		<meta name="renderer" content="webkit">
 		<title>PHP中的cURL请求及示例 &mdash; TypeCodes</title>
 		<meta name="description" content="PHP中的cURL请求及示例 &mdash; TypeCodes" />
@@ -34,8 +35,7 @@
 			</div>
 		</div>
 		<div class="container">
-			<div class="row">
-		<!--2. left sider begin-->
+			<div class="row">		<!--2. left sider begin-->
 		<div class="col-md-9" id="blog-main" role="main">
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/web/phpcurlrequestsample.html">PHP中的cURL请求及示例</a></h2>
@@ -51,7 +51,7 @@
 <p>在我们通过一个cURL请求做任何事之前，我们首先需要初始化一个cURL的实例。我们可以通过调用函数curl_init()函数实现，它会返回一个cURL资源。该函数接收你想要发送的请求URL作为它的一个参数。在本文中，我们先不做这一步，可以在接下来的过程中用另一种方式来实现它。</p>
 <h5>2 须知：一些核心设置</h5>
 <p>一旦我们得到了一个cURL资源，我们可以开始进行一些配置，下面列出我总结的一些核心设置。</p>
-<div class="highlight"><pre>CURLOPT_RETURNTRANSFER - 返回响应作为一个字符串，而不是输出到屏幕
+<div class="highlight"><pre><span></span>CURLOPT_RETURNTRANSFER - 返回响应作为一个字符串，而不是输出到屏幕
 CURLOPT_CONNECTTIMEOUT - 连接超时的时间
 CURLOPT_TIMEOUT - cURL执行的超时时间
 CURLOPT_USERAGENT - 用于请求的Useragent字符串
@@ -63,35 +63,35 @@ CURLOPT_POSTFIELDS - 在POST提交的请求中的数组数据
 
 <h5>3 创建一个配置</h5>
 <p>我们可以通过使用curl_setopt()方式创建一个配置，这个方式接受3个参数：cURL资源、设置以及设置对应的值。因此，我们可以如下所示设置我们正在发送的请求URL。</p>
-<div class="highlight"><pre><span class="o">$</span><span class="nt">curl</span> <span class="o">=</span> <span class="nt">curl_init</span><span class="o">();</span>
+<div class="highlight"><pre><span></span><span class="o">$</span><span class="nt">curl</span> <span class="o">=</span> <span class="nt">curl_init</span><span class="o">();</span>
 <span class="nt">curl_setopt</span><span class="o">($</span><span class="nt">curl</span><span class="o">,</span> <span class="nt">CURLOPT_URL</span><span class="o">,</span> <span class="s1">&#39;http://testcURL.com&#39;</span><span class="o">);</span>
 </pre></div>
 
 
 <p>如上所示，当获取cURL资源时，我们可以通过传送一个参数来设置URL。</p>
-<div class="highlight"><pre><span class="o">$</span><span class="nt">curl</span> <span class="o">=</span> <span class="nt">curl_init</span><span class="o">(</span><span class="s1">&#39;http://testcURL.com&#39;</span><span class="o">);</span>
+<div class="highlight"><pre><span></span><span class="o">$</span><span class="nt">curl</span> <span class="o">=</span> <span class="nt">curl_init</span><span class="o">(</span><span class="s1">&#39;http://testcURL.com&#39;</span><span class="o">);</span>
 </pre></div>
 
 
 <p>当然我们也可以通过给curl_setopt_array()函数传递一个包含变量名和变量值的数组一次性地创建多重配置。</p>
-<div class="highlight"><pre><span class="p">$</span><span class="nv">curl</span><span class="x"> = curl_init();</span>
-<span class="x">curl_setopt_array(</span><span class="p">$</span><span class="nv">curl</span><span class="x">, array(</span>
-<span class="x">    CURLOPT_RETURNTRANSFER =&gt; 1,</span>
-<span class="x">    CURLOPT_URL =&gt; &#39;http://testcURL.com&#39;</span>
-<span class="x">));</span>
+<div class="highlight"><pre><span></span>$curl = curl_init();
+curl_setopt_array($curl, array(
+    CURLOPT_RETURNTRANSFER =&gt; 1,
+    CURLOPT_URL =&gt; &#39;http://testcURL.com&#39;
+));
 </pre></div>
 
 
 <h5>4 执行请求：curl_exec()</h5>
 <p>当所有选项都配置好后，准备发送请求时，我们可以通过调用curl_exec()方式来执行这个cURL请求。这个函数将会返回三种不同的情形：</p>
-<div class="highlight"><pre>false - 如果执行这个请求时发生错误
+<div class="highlight"><pre><span></span>false - 如果执行这个请求时发生错误
 true - 如果该请求成功执行并且CURLOPT_RETURNTRANSFER被设置为false
 The result - 如果该请求成功执行并且CURLOPT_RETURNTRANSFER被设置为true
 </pre></div>
 
 
 <p>如果我们想要从上面的例子获得返回结果,我们可以用以下方法：</p>
-<div class="highlight"><pre><span class="p">$</span><span class="nv">result</span><span class="x"> = curl_exec(</span><span class="p">$</span><span class="nv">curl</span><span class="x">);</span>
+<div class="highlight"><pre><span></span>$result = curl_exec($curl);
 </pre></div>
 
 
@@ -112,7 +112,7 @@ The result - 如果该请求成功执行并且CURLOPT_RETURNTRANSFER被设置为
  9
 10
 11
-12</pre></div></td><td class="code"><div class="highlight"><pre><span class="x">// Get cURL resource</span>
+12</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="x">// Get cURL resource</span>
 <span class="x">$curl = curl_init();</span>
 <span class="x">// Set some options - we are passing in a useragent too here</span>
 <span class="x">curl_setopt_array($curl, array(</span>
@@ -146,7 +146,7 @@ The result - 如果该请求成功执行并且CURLOPT_RETURNTRANSFER被设置为
 14
 15
 16
-17</pre></div></td><td class="code"><div class="highlight"><pre><span class="x">// Get cURL resource</span>
+17</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="x">// Get cURL resource</span>
 <span class="x">$curl = curl_init();</span>
 <span class="x">// Set some options - we are passing in a useragent too here</span>
 <span class="x">curl_setopt_array($curl, array(</span>
@@ -170,46 +170,46 @@ The result - 如果该请求成功执行并且CURLOPT_RETURNTRANSFER被设置为
 <h5>8 错误</h5>
 <p>尽管我们讨厌错误，但是你还是得注意使用cURL时可能出现的情形。因为你最终无法控制你所发送请求的网站，也无法保证该站点的响应结果将会是你预想的那种方式以及这个站点一直都会是正常状态。</p>
 <p>这里提供了两个可以用来处理错误的函数：</p>
-<div class="highlight"><pre>curl_error() - 返回一个字符串错误信息（当请求正常返回时，其值为空）
+<div class="highlight"><pre><span></span>curl_error() - 返回一个字符串错误信息（当请求正常返回时，其值为空）
 curl_errno() - 返回cURL的错误数目，然后你可以查看这个包含错误代码的页面。
 </pre></div>
 
 
 <p>例如，你可以如下示例使用：</p>
-<div class="highlight"><pre><span class="nt">if</span><span class="o">(!</span><span class="nt">curl_exec</span><span class="o">($</span><span class="nt">curl</span><span class="o">))</span><span class="p">{</span>
-    <span class="n">die</span><span class="p">(</span><span class="s1">&#39;Error: &quot;&#39;</span> <span class="o">.</span> <span class="n">curl_error</span><span class="p">(</span><span class="err">$</span><span class="n">curl</span><span class="p">)</span> <span class="o">.</span> <span class="s1">&#39;&quot; - Code: &#39;</span> <span class="o">.</span> <span class="n">curl_errno</span><span class="p">(</span><span class="err">$</span><span class="n">curl</span><span class="p">));</span>
+<div class="highlight"><pre><span></span><span class="nt">if</span><span class="o">(!</span><span class="nt">curl_exec</span><span class="o">($</span><span class="nt">curl</span><span class="o">))</span><span class="p">{</span>
+    <span class="err">die(&#39;</span><span class="n">Error</span><span class="p">:</span> <span class="s2">&quot;&#39; . curl_error($curl) . &#39;&quot;</span> <span class="o">-</span> <span class="n">Code</span><span class="o">:</span> <span class="err">&#39;</span> <span class="o">.</span> <span class="nf">curl_errno</span><span class="p">(</span><span class="err">$</span><span class="n">curl</span><span class="p">));</span>
 <span class="p">}</span>
 </pre></div>
 
 
 <p>如果你想要任何HTTP响应代码都大于400来产生一个错误，而不是返回整个HTML页面，那么你可以把CURLOPT_FAILONERROR设置为true。cURL是一个“庞然大物”，并且还有很多很多的可能。有些网站可能为一些用户代理提供服务页面，当使用API接口时，它们可能会要求你传送一个特别的用户代理，这些都是我们需要注意的。如果你还想了解一些cURL请求，为何不尝试去oAuth with Instagram看看呢？</p>
 <h5>9 附录：PHP中的CURL函数库</h5>
-<div class="highlight"><pre><span class="x">curl_close — 关闭一个curl会话</span>
-<span class="x">curl_copy_handle — 拷贝一个curl连接资源的所有内容和参数</span>
-<span class="x">curl_errno — 返回一个包含当前会话错误信息的数字编号</span>
-<span class="x">curl_error — 返回一个包含当前会话错误信息的字符串</span>
-<span class="x">curl_exec — 执行一个curl会话</span>
-<span class="x">curl_getinfo — 获取一个curl连接资源句柄的信息</span>
-<span class="x">curl_setopt — 为一个curl设置会话参数</span>
-<span class="x">CURLOPT_HEADER — 如果你想把一个头包含在输出中，设置这个选项为一个非零值(curl_setopt(</span><span class="p">$</span><span class="nv">ch</span><span class="x">, CURLOPT_HEADER, false))</span>
-<span class="x">CURLOPT_REFERER — 在HTTP请求中包含一个”referer”头的字符串</span>
-<span class="x">curl_init — 初始化一个curl会话</span>
-<span class="x">curl_multi_add_handle — 向curl批处理会话中添加单独的curl句柄资源</span>
-<span class="x">curl_multi_close — 关闭一个批处理句柄资源</span>
-<span class="x">curl_multi_exec — 解析一个curl批处理句柄</span>
-<span class="x">curl_multi_getcontent — 返回获取的输出的文本流</span>
-<span class="x">curl_multi_info_read — 获取当前解析的curl的相关传输信息</span>
-<span class="x">curl_multi_init — 初始化一个curl批处理句柄资源</span>
-<span class="x">curl_multi_remove_handle — 移除curl批处理句柄资源中的某个句柄资源</span>
-<span class="x">curl_multi_select — Get all the sockets associated with the cURL extension, which can then be &quot;selected&quot;</span>
-<span class="x">curl_setopt_array — 以数组的形式为一个curl设置会话参数</span>
-<span class="x">curl_version — 获取curl相关的版本信息</span>
+<div class="highlight"><pre><span></span>curl_close — 关闭一个curl会话
+curl_copy_handle — 拷贝一个curl连接资源的所有内容和参数
+curl_errno — 返回一个包含当前会话错误信息的数字编号
+curl_error — 返回一个包含当前会话错误信息的字符串
+curl_exec — 执行一个curl会话
+curl_getinfo — 获取一个curl连接资源句柄的信息
+curl_setopt — 为一个curl设置会话参数
+CURLOPT_HEADER — 如果你想把一个头包含在输出中，设置这个选项为一个非零值(curl_setopt($ch, CURLOPT_HEADER, false))
+CURLOPT_REFERER — 在HTTP请求中包含一个”referer”头的字符串
+curl_init — 初始化一个curl会话
+curl_multi_add_handle — 向curl批处理会话中添加单独的curl句柄资源
+curl_multi_close — 关闭一个批处理句柄资源
+curl_multi_exec — 解析一个curl批处理句柄
+curl_multi_getcontent — 返回获取的输出的文本流
+curl_multi_info_read — 获取当前解析的curl的相关传输信息
+curl_multi_init — 初始化一个curl批处理句柄资源
+curl_multi_remove_handle — 移除curl批处理句柄资源中的某个句柄资源
+curl_multi_select — Get all the sockets associated with the cURL extension, which can then be &quot;selected&quot;
+curl_setopt_array — 以数组的形式为一个curl设置会话参数
+curl_version — 获取curl相关的版本信息
 
-<span class="x">curl_init()函数的作用初始化一个curl会话，curl_init()函数唯一的一个参数是可选的，表示一个url地址。</span>
-<span class="x">curl_exec()函数的作用是执行一个curl会话，唯一的参数是curl_init()函数返回的句柄。</span>
-<span class="x">curl_close()函数的作用是关闭一个curl会话，唯一的参数是curl_init()函数返回的句柄。</span>
+curl_init()函数的作用初始化一个curl会话，curl_init()函数唯一的一个参数是可选的，表示一个url地址。
+curl_exec()函数的作用是执行一个curl会话，唯一的参数是curl_init()函数返回的句柄。
+curl_close()函数的作用是关闭一个curl会话，唯一的参数是curl_init()函数返回的句柄。
 </pre></div>
-		    	<div class="donate_div_container">
+</div>		    	<div class="donate_div_container">
 					<div class="donate_div">
 						<p><a href="javascript:void(0)" onclick="donateToggle()" class="donate_word" title="打赏，支持一下">打赏</a></p>
 						<div class="hide_box"></div>
@@ -239,7 +239,7 @@ curl_errno() - 返回cURL的错误数目，然后你可以查看这个包含错�
 					</div>
 				</div>
 		    	<div class="tags">
-					<div class="post_tags">
+					<div class="post_tags" itemprop="keywords">
 						Tags: <a href="https://typecodes.com/tag/php-curl.html">php curl</a>					</div>
 					<div class="post-share">
 						<ul class="post-shareul clearfix">
@@ -331,7 +331,6 @@ curl_errno() - 返回cURL的错误数目，然后你可以查看这个包含错�
 		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
 	</section>
 </div>
-				</div>
 			</div>
 		</div>
 		<!--4. bottom begin-->

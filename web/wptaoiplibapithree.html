@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html dir="ltr" lang="zh-CN" class="no-js">
+<html class="no-js">
 	<head>
-		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
   		<meta name="renderer" content="webkit">
 		<title>WordPress使用淘宝IP地址库的API显示评论者的位置信息（三） &mdash; TypeCodes</title>
 		<meta name="description" content="WordPress使用淘宝IP地址库的API显示评论者的位置信息（三） &mdash; TypeCodes" />
@@ -34,8 +35,7 @@
 			</div>
 		</div>
 		<div class="container">
-			<div class="row">
-		<!--2. left sider begin-->
+			<div class="row">		<!--2. left sider begin-->
 		<div class="col-md-9" id="blog-main" role="main">
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/web/wptaoiplibapithree.html">WordPress使用淘宝IP地址库的API显示评论者的位置信息（三）</a></h2>
@@ -70,7 +70,7 @@
 19
 20
 21
-22</pre></div></td><td class="code"><div class="highlight"><pre><span class="x">/************</span>
+22</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="x">/************</span>
 <span class="x"> *** @Function：PHP获取淘宝IP地址库API返回的信息</span>
 <span class="x"> *** @Author：vfhky http://vfhky.sinaapp.com 20130825</span>
 <span class="x"> *** @param string $ip   IP地址     </span>
@@ -97,14 +97,14 @@
 
 <h5>2.2 在WP主题评论者信息的相应位置调用函数</h5>
 <p>在WordPress主题的评论者信息的相应位置调用上面的函数即可显示由淘宝IP地址库返回来的API数据。简单示例：</p>
-<div class="highlight"><pre><span class="x">//</span><span class="p">$</span><span class="nv">ipaddress</span><span class="x">是从数据库中查找出评论者的IP地址</span>
-<span class="x">echo ipdata(</span><span class="p">$</span><span class="nv">ipaddress</span><span class="x">);</span>
+<div class="highlight"><pre><span></span>//$ipaddress是从数据库中查找出评论者的IP地址
+echo ipdata($ipaddress);
 </pre></div>
 
 
 <h5>3 后记</h5>
 <p>两步就搞定了，而且代码简单得很！所以，PHP版本的《WordPress使用淘宝IP地址库的API显示评论者的位置信息（三）》很适合PV量不是很大的blog使用，响应速度估计可能比jQuery版本的还要快一些。不过，淘宝的这个API是有请求频率限制的：为了保障服务正常运行，每个用户的访问频率需小于10qps。什么是QPS？博主网上查找了一些资料，整理如下，算是给自己的一个科普。</p>
-<div class="highlight"><pre>QPS每秒查询率(Query Per Second)
+<div class="highlight"><pre><span></span>QPS每秒查询率(Query Per Second)
 每秒查询率QPS是对一个特定的查询服务器在规定时间内所处理流量多少的衡量标准，在因特网上，作为域名系统服务器的机器的性能经常用每秒查询率来衡量。
 
 术语说明：
@@ -135,7 +135,7 @@ QPS: 单个进程每秒请求服务器的成功次数
 问：如果一台机器的QPS是58，需要几台机器来支持？
 答：139 / 58 = 3
 </pre></div>
-		    	<div class="donate_div_container">
+</div>		    	<div class="donate_div_container">
 					<div class="donate_div">
 						<p><a href="javascript:void(0)" onclick="donateToggle()" class="donate_word" title="打赏，支持一下">打赏</a></p>
 						<div class="hide_box"></div>
@@ -165,7 +165,7 @@ QPS: 单个进程每秒请求服务器的成功次数
 					</div>
 				</div>
 		    	<div class="tags">
-					<div class="post_tags">
+					<div class="post_tags" itemprop="keywords">
 						Tags: <a href="https://typecodes.com/tag/wordpresstao-bao-ipku.html">wordpress淘宝ip库</a>					</div>
 					<div class="post-share">
 						<ul class="post-shareul clearfix">
@@ -257,7 +257,6 @@ QPS: 单个进程每秒请求服务器的成功次数
 		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
 	</section>
 </div>
-				</div>
 			</div>
 		</div>
 		<!--4. bottom begin-->

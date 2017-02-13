@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html dir="ltr" lang="zh-CN" class="no-js">
+<html class="no-js">
 	<head>
-		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
   		<meta name="renderer" content="webkit">
 		<title>Linux多进程和多线程的一次gdb调试实例 &mdash; TypeCodes</title>
 		<meta name="description" content="Linux多进程和多线程的一次gdb调试实例 &mdash; TypeCodes" />
@@ -34,8 +35,7 @@
 			</div>
 		</div>
 		<div class="container">
-			<div class="row">
-		<!--2. left sider begin-->
+			<div class="row">		<!--2. left sider begin-->
 		<div class="col-md-9" id="blog-main" role="main">
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/cseries/multilprocessthreadgdb.html">Linux多进程和多线程的一次gdb调试实例</a></h2>
@@ -49,7 +49,7 @@
 <h4>1 原文整理</h4>
 <p>默认设置下，在调试多进程程序时gdb只会调试主进程。gdb7以上的版本(gdb --version)支持多进程调试，只需要设置好<code>follow-fork-mode</code>（fork追踪模式）以及<code>detach-on-fork</code>（指示GDB在fork之后是否断开某个进程的调试）即可。</p>
 <p>这两个参数的设置命令分别是：set follow-fork-mode [parent|child]，set detach-on-fork [on|off]。两者结合起来构成了GDB的调试模式：</p>
-<div class="highlight"><pre>follow-fork-mode  detach-on-fork    说明
+<div class="highlight"><pre><span></span>follow-fork-mode  detach-on-fork    说明
     parent              on          GDB默认的调试模式：只调试主进程
     child               on          只调试子进程
     parent              off         同时调试两个进程，gdb跟主进程，子进程block在fork位置
@@ -58,7 +58,7 @@
 
 
 <p>查看gdb默认的参数设置：</p>
-<div class="highlight"><pre>(gdb) show follow-fork-mode
+<div class="highlight"><pre><span></span>(gdb) show follow-fork-mode
 Debugger response to a program call of fork or vfork is &quot;parent&quot;.
 (gdb) show detach-on-fork
 Whether gdb will detach the child of a fork is on.
@@ -136,17 +136,17 @@ Whether gdb will detach the child of a fork is on.
 66
 67
 68
-69</pre></div></td><td class="code"><div class="highlight"><pre><span class="cm">/** </span>
+69</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="cm">/** </span>
 <span class="cm"> * @FileName    gdb_pthread.c</span>
 <span class="cm"> * @Describe    A simple example for the debug of multiprocess and multithreading using gdb in linux system.</span>
 <span class="cm"> * @Author      vfhky 2016-02-25 22:48 https://typecodes.com/cseries/multilprocessthreadgdb.html</span>
 <span class="cm"> * @Compile     gcc gdb_pthread.c -g -o gdb_pthread</span>
 <span class="cm"> * @Reference   http://blog.csdn.net/pbymw8iwm/article/details/7876797</span>
 <span class="cm"> */</span>
-<span class="cp">#include &lt;stdio.h&gt;</span>
-<span class="cp">#include &lt;pthread.h&gt;</span>
-<span class="cp">#include &lt;sys/types.h&gt;</span>
-<span class="cp">#include &lt;unistd.h&gt;</span>
+<span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;pthread.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;sys/types.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;unistd.h&gt;</span><span class="cp"></span>
 
 
 <span class="c1">//Parent process handle.</span>
@@ -173,7 +173,7 @@ Whether gdb will detach the child of a fork is on.
     <span class="kt">pid_t</span> <span class="n">pid</span> <span class="o">=</span> <span class="n">getpid</span><span class="p">();</span>
     <span class="kt">char</span> <span class="n">cParent</span><span class="p">[]</span> <span class="o">=</span> <span class="s">&quot;Parent&quot;</span><span class="p">;</span>
     <span class="kt">char</span> <span class="n">cThread</span><span class="p">[]</span> <span class="o">=</span> <span class="s">&quot;Thread&quot;</span><span class="p">;</span>
-    <span class="kt">pthread_t</span> <span class="n">pt</span><span class="p">;</span>
+    <span class="n">pthread_t</span> <span class="n">pt</span><span class="p">;</span>
 
     <span class="n">printf</span><span class="p">(</span> <span class="s">&quot;[%s]: [%d] [%s]</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">cParent</span><span class="p">,</span> <span class="n">pid</span><span class="p">,</span> <span class="s">&quot;step1&quot;</span> <span class="p">);</span>
 
@@ -189,7 +189,7 @@ Whether gdb will detach the child of a fork is on.
 <span class="kt">void</span> <span class="o">*</span> <span class="nf">ParentDo</span><span class="p">(</span> <span class="kt">char</span> <span class="o">*</span><span class="n">argv</span> <span class="p">)</span>
 <span class="p">{</span>
     <span class="kt">pid_t</span> <span class="n">pid</span> <span class="o">=</span> <span class="n">getpid</span><span class="p">();</span>
-    <span class="kt">pthread_t</span> <span class="n">tid</span> <span class="o">=</span> <span class="n">pthread_self</span><span class="p">();</span>     <span class="c1">//Get the thread-id selfly.</span>
+    <span class="n">pthread_t</span> <span class="n">tid</span> <span class="o">=</span> <span class="n">pthread_self</span><span class="p">();</span>     <span class="c1">//Get the thread-id selfly.</span>
     <span class="kt">char</span> <span class="n">tprefix</span><span class="p">[]</span> <span class="o">=</span> <span class="s">&quot;thread&quot;</span><span class="p">;</span>
 
     <span class="n">printf</span><span class="p">(</span> <span class="s">&quot;[%s]: [%d] [%s] [%lu] [%s]</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">argv</span><span class="p">,</span> <span class="n">pid</span><span class="p">,</span> <span class="n">tprefix</span><span class="p">,</span> <span class="n">tid</span><span class="p">,</span> <span class="s">&quot;step2&quot;</span> <span class="p">);</span>         <span class="c1">//add the second breakpoint.</span>
@@ -209,7 +209,7 @@ Whether gdb will detach the child of a fork is on.
 </td></tr></table>
 
 <p>已知如果直接运行程序，那么输出的内容如下：</p>
-<div class="highlight"><pre>[vfhky@typecodes pthread_key]$ gdb_pthread
+<div class="highlight"><pre><span></span>[vfhky@typecodes pthread_key]$ gdb_pthread
 [Parent]: [22648] [step1]
 [Parent]: [22648] [thread] [139722467432256] [step2]
 [Parent]: [22648] [thread] [139722467432256] [step3]
@@ -223,7 +223,7 @@ Whether gdb will detach the child of a fork is on.
 <h4>3 gdb调试</h4>
 <h5>3.1 设置调试模式和Catchpoint</h5>
 <p>设置调试父子进程，gdb跟主进程，子进程block在fork位置。</p>
-<div class="highlight"><pre>[vfhky@typecodes pthread_key]$ gdb gdb_pthread
+<div class="highlight"><pre><span></span>[vfhky@typecodes pthread_key]$ gdb gdb_pthread
 GNU gdb (GDB) Red Hat Enterprise Linux 7.6.1-80.el7
 Copyright (C) 2013 Free Software Foundation, Inc.
 License GPLv3+: GNU GPL version 3 or later &lt;http://gnu.org/licenses/gpl.html&gt;
@@ -246,9 +246,9 @@ Num     Type           Disp Enb Address            What
 
 
 <p>如下图所示：</p>
-<p><img alt="开启gdb调试" src="https://o3cex9zsl.qnssl.com/2016/02/start_gdb_debug.png" title="开启gdb调试" /></p>
+<p><img alt="开启gdb调试" src="https://o3cex9zsl.qnssl.com/2016/02/start_gdb_debug.png" title="开启gdb调试"></p>
 <h5>3.2 开始gdb调试</h5>
-<div class="highlight"><pre>(gdb) r                         ####运行到断点/捕捉点（第17行处的fork函数，23873是子进程PID）
+<div class="highlight"><pre><span></span>(gdb) r                         ####运行到断点/捕捉点（第17行处的fork函数，23873是子进程PID）
 Starting program: /home/vfhky/bin/gdb_pthread 
 [Thread debugging using libthread_db enabled]
 Using host libthread_db library &quot;/lib64/libthread_db.so.1&quot;.
@@ -273,16 +273,16 @@ Num     Type           Disp Enb Address            What
 
 
 <p>这时使用如下命令查看当前CentOS系统所有进程的状态：发现父进程PID为23869，通过fork产生的子进程为23873：</p>
-<div class="highlight"><pre>[vfhky@typecodes ~]$ pstree -pul
+<div class="highlight"><pre><span></span>[vfhky@typecodes ~]$ pstree -pul
 </pre></div>
 
 
-<p><img alt="pstree -pul查看CentOS系统所有进程信息" src="https://o3cex9zsl.qnssl.com/2016/02/pstree_pul_process.png" title="pstree -pul查看CentOS系统所有进程信息" /></p>
+<p><img alt="pstree -pul查看CentOS系统所有进程信息" src="https://o3cex9zsl.qnssl.com/2016/02/pstree_pul_process.png" title="pstree -pul查看CentOS系统所有进程信息"></p>
 <p>同时，使用命令<code>cat /proc/23869/status</code>查看当前进程的详细信息：进程PID为23869，它的父进程（即GDB进程）为23859，同时这也是追踪进程ID，线程数Threads为1（共享使用该信号描述符的线程数，在POSIX多线程序应用程序中，线程组中的所有线程使用同一个信号描述符）。</p>
-<p><img alt="proc查看进程的状态信息" src="https://o3cex9zsl.qnssl.com/2016/02/proc_23869_1.png" title="proc查看进程的状态信息" /></p>
+<p><img alt="proc查看进程的状态信息" src="https://o3cex9zsl.qnssl.com/2016/02/proc_23869_1.png" title="proc查看进程的状态信息"></p>
 <h5>3.3 设置第一个断点</h5>
 <p>在程序的第18行设置断点：</p>
-<div class="highlight"><pre>(gdb) b gdb_pthread.c:18
+<div class="highlight"><pre><span></span>(gdb) b gdb_pthread.c:18
 Breakpoint 2 at 0x4007b7: file gdb_pthread.c, line 18.
 (gdb) info b                        ######列出所有断点和捕捉点
 Num     Type           Disp Enb Address            What
@@ -294,7 +294,7 @@ Num     Type           Disp Enb Address            What
 
 
 <h5>3.4 执行到第一个断点</h5>
-<div class="highlight"><pre>(gdb) c                #####执行到第18行处的断点
+<div class="highlight"><pre><span></span>(gdb) c                #####执行到第18行处的断点
 Continuing.
 [New process 23873]                     #####父进程23869执行完第1个捕捉点的程序，产生子进程23873
 [Thread debugging using libthread_db enabled]
@@ -323,15 +323,15 @@ Num     Type           Disp Enb Address            What
 
 
 <p>截图如下：</p>
-<p><img alt="执行到第1个断点处查看线程和进程状况" src="https://o3cex9zsl.qnssl.com/2016/02/break_1_info.png" title="执行到第1个断点处查看线程和进程状况" /></p>
+<p><img alt="执行到第1个断点处查看线程和进程状况" src="https://o3cex9zsl.qnssl.com/2016/02/break_1_info.png" title="执行到第1个断点处查看线程和进程状况"></p>
 <p>这时使用命令查看当前系统进程的状态：发现此时仍然只有父进程23869和子进程23873。</p>
-<div class="highlight"><pre>[vfhky@typecodes ~]$ pstree -pul
+<div class="highlight"><pre><span></span>[vfhky@typecodes ~]$ pstree -pul
 </pre></div>
 
 
-<p><img alt="pstree -pul查看CentOS系统所有进程信息" src="https://o3cex9zsl.qnssl.com/2016/02/pstree_pul_process.png" title="pstree -pul查看CentOS系统所有进程信息" /></p>
+<p><img alt="pstree -pul查看CentOS系统所有进程信息" src="https://o3cex9zsl.qnssl.com/2016/02/pstree_pul_process.png" title="pstree -pul查看CentOS系统所有进程信息"></p>
 <h5>3.5 执行到第一个断点此时如果切换到子进程23873</h5>
-<div class="highlight"><pre>(gdb) inferior 2
+<div class="highlight"><pre><span></span>(gdb) inferior 2
 [Switching to inferior 2 [process 23873] (/home/vfhky/bin/gdb_pthread)]
 [Switching to thread 2 (Thread 0x7ffff7fe1740 (LWP 23873))] 
 #0  0x00007ffff709b50c in __libc_fork () at ../nptl/sysdeps/unix/sysv/linux/fork.c:130
@@ -345,7 +345,7 @@ Num     Type           Disp Enb Address            What
 
 
 <h5>3.6 重新切换到父进程23869</h5>
-<div class="highlight"><pre>(gdb) inferior 1
+<div class="highlight"><pre><span></span>(gdb) inferior 1
 [Switching to inferior 1 [process 23869] (/home/vfhky/bin/gdb_pthread)]
 [Switching to thread 1 (Thread 0x7ffff7fe1740 (LWP 23869))] 
 #0  main (argc=1, argv=0x7fffffffe4c8) at gdb_pthread.c:18
@@ -360,7 +360,7 @@ Num     Type           Disp Enb Address            What
 
 <h5>3.7 设置第二个断点并调试</h5>
 <p>在第50行设置断点继续调试主进程（使父进程产生线程），其中父进程和线程到底是谁先执行是由内核调度控制的。</p>
-<div class="highlight"><pre>(gdb) b gdb_pthread.c:50
+<div class="highlight"><pre><span></span>(gdb) b gdb_pthread.c:50
 Breakpoint 3 at 0x4008a7: gdb_pthread.c:50. (2 locations)
 (gdb) c                    ######继续执行代码到第50行处的断点
 Continuing.
@@ -375,15 +375,15 @@ Breakpoint 3, ParentDo (argv=0x7fffffffe390 &quot;Thread&quot;) at gdb_pthread.c
 
 
 <p>这时使用命令查看当前系统进程的状态：存在父进程23869和子进程23873以及父进程创建的一个线程24024（线程用大括号{}表示）。</p>
-<div class="highlight"><pre>[vfhky@typecodes ~]$ pstree -pul
+<div class="highlight"><pre><span></span>[vfhky@typecodes ~]$ pstree -pul
 </pre></div>
 
 
-<p><img alt="pstree -pul查看CentOS系统所有进程信息" src="https://o3cex9zsl.qnssl.com/2016/02/pstree_pul_process_2.png" title="pstree -pul查看CentOS系统所有进程信息" />  </p>
+<p><img alt="pstree -pul查看CentOS系统所有进程信息" src="https://o3cex9zsl.qnssl.com/2016/02/pstree_pul_process_2.png" title="pstree -pul查看CentOS系统所有进程信息">  </p>
 <p>同时，使用命令<code>cat /proc/23869/status</code>查看当前进程的详细信息：进程PID为23869，它的父进程（即GDB进程）为23859，同时这也是追踪进程ID，线程数Threads为2（当前父进程23869+线程24024）。</p>
-<p><img alt="proc查看进程的状态信息" src="https://o3cex9zsl.qnssl.com/2016/02/proc_23869_2.png" title="proc查看进程的状态信息" /></p>
+<p><img alt="proc查看进程的状态信息" src="https://o3cex9zsl.qnssl.com/2016/02/proc_23869_2.png" title="proc查看进程的状态信息"></p>
 <h5>3.8 查看第二个断点处的调试信息</h5>
-<div class="highlight"><pre>(gdb) info inferiors                 #####显示正在调试的进程 
+<div class="highlight"><pre><span></span>(gdb) info inferiors                 #####显示正在调试的进程 
   Num  Description       Executable        
   2    process 23873     /home/vfhky/bin/gdb_pthread                     ###子进程
 * 1    process 23869     /home/vfhky/bin/gdb_pthread                     ###父进程 
@@ -409,7 +409,7 @@ Num     Type           Disp Enb Address            What
 
 
 <h5>3.9 如果手动切换到线程24024</h5>
-<div class="highlight"><pre>(gdb) thread 3
+<div class="highlight"><pre><span></span>(gdb) thread 3
 [Switching to thread 3 (Thread 0x7ffff6fdd700 (LWP 24024))]
 #0  ParentDo (argv=0x7fffffffe390 &quot;Thread&quot;) at gdb_pthread.c:50
 50              printf( &quot;[%s]: [%d] [%s] [%lu] [%s]\n&quot;, argv, pid, tprefix, tid, &quot;step2&quot; );
@@ -427,7 +427,7 @@ Num     Type           Disp Enb Address            What
 
 
 <h5>3.10 开始执行第二个断点处的代码</h5>
-<div class="highlight"><pre>(gdb) c
+<div class="highlight"><pre><span></span>(gdb) c
 Continuing.
 [Thread]: [23869] [thread] [140737337218816] [step2]            #####线程24024执行第50行处，打印数据
 [Thread]: [23869] [thread] [140737337218816] [step3]            #####线程24024执行第51行处，打印数据
@@ -449,14 +449,14 @@ Breakpoint 3, ParentDo (argv=0x7fffffffe3a0 &quot;Parent&quot;) at gdb_pthread.c
 
 
 <p>这时使用命令查看当前系统进程的状态：存在父进程23869和子进程23873，其中线程24024已经结束了。</p>
-<div class="highlight"><pre>[vfhky@typecodes ~]$ pstree -pul
+<div class="highlight"><pre><span></span>[vfhky@typecodes ~]$ pstree -pul
 </pre></div>
 
 
-<p><img alt="pstree -pul查看CentOS系统所有进程信息" src="https://o3cex9zsl.qnssl.com/2016/02/pstree_pul_process.png" title="pstree -pul查看CentOS系统所有进程信息" />    </p>
+<p><img alt="pstree -pul查看CentOS系统所有进程信息" src="https://o3cex9zsl.qnssl.com/2016/02/pstree_pul_process.png" title="pstree -pul查看CentOS系统所有进程信息">    </p>
 <h5>3.11 继续调试父进程</h5>
 <p>此时，由于线程的退出，父进程作为自动选择的要调试的线程。</p>
-<div class="highlight"><pre>(gdb) c
+<div class="highlight"><pre><span></span>(gdb) c
 Continuing.
 [Parent]: [23869] [thread] [140737354012480] [step2]        #####父进程23869执行第50行
 [Parent]: [23869] [thread] [140737354012480] [step3]        #####父进程23869执行第51行
@@ -487,22 +487,22 @@ Num     Type           Disp Enb Address            What
 
 
 <p>这时使用命令查看当前系统进程的状态：只有子进程23873（由内核init进程接管这个孤儿进程），父进程23869也已经结束了。</p>
-<div class="highlight"><pre>[vfhky@typecodes ~]$ pstree -pul
+<div class="highlight"><pre><span></span>[vfhky@typecodes ~]$ pstree -pul
 </pre></div>
 
 
-<p><img alt="pstree -pul查看CentOS系统所有进程信息" src="https://o3cex9zsl.qnssl.com/2016/02/pstree_pul_process_3.png" title="pstree -pul查看CentOS系统所有进程信息" />  </p>
+<p><img alt="pstree -pul查看CentOS系统所有进程信息" src="https://o3cex9zsl.qnssl.com/2016/02/pstree_pul_process_3.png" title="pstree -pul查看CentOS系统所有进程信息">  </p>
 <p>再用<code>ps ux</code>命令查看子进程23873：</p>
-<p><img alt="ps ux命令查看子进程信息" src="https://o3cex9zsl.qnssl.com/2016/02/ps_ux_child_process.png" title="ps ux命令查看子进程信息" /> </p>
+<p><img alt="ps ux命令查看子进程信息" src="https://o3cex9zsl.qnssl.com/2016/02/ps_ux_child_process.png" title="ps ux命令查看子进程信息"> </p>
 <h4>4 附录</h4>
 <p>在gdb中，经常用到的恢复程序运行和单步调试的命令有：</p>
-<div class="highlight"><pre>continue        继续运行程序直到下一个断点（类似于VS里的F5）
+<div class="highlight"><pre><span></span>continue        继续运行程序直到下一个断点（类似于VS里的F5）
 next            逐过程步进，不会进入子函数（类似VS里的F10）
 setp            逐语句步进，会进入子函数（类似VS里的F11）
 until           运行至当前语句块结束
 finish          运行至函数结束并跳出，并打印函数的返回值（类似VS的Shift+F11）
 </pre></div>
-		    	<div class="donate_div_container">
+</div>		    	<div class="donate_div_container">
 					<div class="donate_div">
 						<p><a href="javascript:void(0)" onclick="donateToggle()" class="donate_word" title="打赏，支持一下">打赏</a></p>
 						<div class="hide_box"></div>
@@ -532,7 +532,7 @@ finish          运行至函数结束并跳出，并打印函数的返回值（�
 					</div>
 				</div>
 		    	<div class="tags">
-					<div class="post_tags">
+					<div class="post_tags" itemprop="keywords">
 						Tags: <a href="https://typecodes.com/tag/gdb.html">gdb</a>,<a href="https://typecodes.com/tag/fork.html">fork</a>,<a href="https://typecodes.com/tag/jin-cheng.html">进程</a>,<a href="https://typecodes.com/tag/xian-cheng.html">线程</a>					</div>
 					<div class="post-share">
 						<ul class="post-shareul clearfix">
@@ -624,7 +624,6 @@ finish          运行至函数结束并跳出，并打印函数的返回值（�
 		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
 	</section>
 </div>
-				</div>
 			</div>
 		</div>
 		<!--4. bottom begin-->

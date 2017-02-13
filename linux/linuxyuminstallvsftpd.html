@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html dir="ltr" lang="zh-CN" class="no-js">
+<html class="no-js">
 	<head>
-		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
   		<meta name="renderer" content="webkit">
 		<title>Redhat/CentOS通过yum安装与配置vsFTPd的详细步骤 &mdash; TypeCodes</title>
 		<meta name="description" content="Redhat/CentOS通过yum安装与配置vsFTPd的详细步骤 &mdash; TypeCodes" />
@@ -34,8 +35,7 @@
 			</div>
 		</div>
 		<div class="container">
-			<div class="row">
-		<!--2. left sider begin-->
+			<div class="row">		<!--2. left sider begin-->
 		<div class="col-md-9" id="blog-main" role="main">
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/linux/linuxyuminstallvsftpd.html">Redhat/CentOS通过yum安装与配置vsFTPd的详细步骤</a></h2>
@@ -49,20 +49,20 @@
 
 <p>如果在使用yum安装时出现“Redhat Linux5 yum出现This system is not registered with RHN”错误提示的话，请移步至博客上一篇文章 <a href="https://typecodes.com/linux/linuxnotregisteredrhn.html" title="解决Redhat Linux5 yum出现This system is not registered with RHN">《解决Redhat Linux5 yum出现This system is not registered with RHN》</a>。</p>
 <h5>1 检查当前Linux系统是否安装了vsftp</h5>
-<div class="highlight"><pre>[root@localhost ~]#rpm -qa|grep vsftpd
+<div class="highlight"><pre><span></span>[root@localhost ~]#rpm -qa|grep vsftpd
 //若没有任何输出内容，则表示当前linux系统未安装vsftp。
 </pre></div>
 
 
 <h5>2 安装vsftpd服务器</h5>
 <p>从redhat或者centos的安装镜像包的server/文件夹中提取出rpm包。（RHEL5.3中的是vsftpd-2.0.5-12.el5.i386.rpm，通过vmtools把它复制到root's home中去，然后执行如下命令：</p>
-<div class="highlight"><pre>[root@localhost ~]#rpm -ivh vsftpd-2.0.5-10.el5.i386.rpm
+<div class="highlight"><pre><span></span>[root@localhost ~]#rpm -ivh vsftpd-2.0.5-10.el5.i386.rpm
 </pre></div>
 
 
 <h5>3 配置vsftpd服务器</h5>
 <p>vsftp相关的配置文件都在/etc/vsftpd目录中，如何查看它的默认文件：</p>
-<div class="highlight"><pre>[root@localhost ~]# ll /etc/vsftpd
+<div class="highlight"><pre><span></span>[root@localhost ~]# ll /etc/vsftpd
 total 40
 -rw-r--r-- 1 root root 6 Mar 14 01:28 chroot_list
 -rw------- 1 root root 125 Dec 13 2007 ftpusers
@@ -74,7 +74,7 @@ total 40
 
 
 <p>其中，vsftpd.conf是vsftp的核心配置文件，user.list是允许的用户列表，而ftpusers是禁止的用户列表（如root账户），这个大家有个大概了解就行，下面是配置vsftpd服务器的具体步骤。</p>
-<div class="highlight"><pre>[root@localhost ~]# vi /etc/vsftpd/vsftpd.conf
+<div class="highlight"><pre><span></span>[root@localhost ~]# vi /etc/vsftpd/vsftpd.conf
 //里面有很多配置点，我们只需检查
 anonymous_enable=YES（是否允许匿名用户anonymous在不用输密码的情况下登录FTP）
 local_enable=YES（是否允许本地用户登录。什么是本地用户？例如在安装linux的时候会让你填写一个账号，博主的是vfhky）
@@ -88,7 +88,7 @@ chroot_list_file=/etc/vsftpd/chroot_list
 
 <h5>4 添加ftp账户test1</h5>
 <p>使其指向目录/home/wwwroot/ftpuser1，并且禁止登录SSH权限：在/home/中新建wwwroot/ftpuser1的文件夹，然后</p>
-<div class="highlight"><pre>[root@localhost ~]# userdel -r test1
+<div class="highlight"><pre><span></span>[root@localhost ~]# userdel -r test1
 [root@localhost ~]# useradd -d /home/wwwroot/ftpuser1 -g ftp -s /sbin/nologin test1 （表示限制test1只能在/home/wwwroot/ftpuser1中）
 [root@localhost ~]# passwd test1 （设置密码）
 Changing password for user test1.
@@ -100,7 +100,7 @@ passwd: all authentication tokens updated successfully.
 
 
 <h5>5 配置防火墙</h5>
-<div class="highlight"><pre>[root@localhost ~]# vi /etc/sysconfig/iptables
+<div class="highlight"><pre><span></span>[root@localhost ~]# vi /etc/sysconfig/iptables
 //在REJECT行之前添加如下代码：
 -A RH-Firewall-1-INPUT -m state –state NEW -m tcp -p tcp –dport 21 -j ACCEPT //（因为FTP的默认端口是21）
 //保存和关闭文件，重启防火墙
@@ -109,7 +109,7 @@ passwd: all authentication tokens updated successfully.
 
 
 <h5>6 管理vsftpd服务的相关命令</h5>
-<div class="highlight"><pre>查看vsftpd状态：[root@localhost ~]# service vsftpd stauts
+<div class="highlight"><pre><span></span>查看vsftpd状态：[root@localhost ~]# service vsftpd stauts
 停止vsftpd服务：[root@localhost ~]# service vsftpd stop
 重启vsftpd服务：[root@localhost ~]# service vsftpd restart
 设置vsftpd开机启动：[root@localhost ~]# ntsysv 或者
@@ -118,7 +118,7 @@ passwd: all authentication tokens updated successfully.
 
 
 <h5>7 在当前Linux系统测试vsftpd：</h5>
-<div class="highlight"><pre>[root@localhost ~]# cd /etc/vsftpd
+<div class="highlight"><pre><span></span>[root@localhost ~]# cd /etc/vsftpd
 [root@localhost ~]# cd /etc/vsftpd
 [root@localhost vsftpd]# ftp 192.168.198.128 （填写FTP主机地址，可以通过[root@localhost ~]# ifconfig 获知）
 Connected to 192.168.198.128.
@@ -175,7 +175,7 @@ ftp&gt; by
 
 <h5>8 在windows系统测试vsftpd：</h5>
 <p>Win+R打开cmd命令，然后输入</p>
-<div class="highlight"><pre>C:\Users\vfhky&gt;ftp 192.168.198.128
+<div class="highlight"><pre><span></span>C:\Users\vfhky&gt;ftp 192.168.198.128
 连接到 192.168.198.128。
 220 (vsFTPd 2.0.5)
 用户(192.168.198.128:(none)): test1
@@ -197,12 +197,12 @@ ftp: 收到 23 字节，用时 0.00秒 23000.00千字节/秒。
 
 <h5>9 如果出现500 OOPS的错误提示</h5>
 <p>若出现500 OOPS:cannot change directory:/home/wwwroot/ftpuser1的错误提示，可以通过以下命令关闭SELinux的保护设置即可解决。</p>
-<div class="highlight"><pre>[root@localhost ~]# setsebool -P ftpd_disable_trans 1
+<div class="highlight"><pre><span></span>[root@localhost ~]# setsebool -P ftpd_disable_trans 1
 </pre></div>
 
 
 <p>完成上面的工作后说明已经成功了，那么具体如何使用ftp命令进行上传或者下载请参照下一篇文章<a href="https://typecodes.com/linux/cmdvsftpdinteraction.html" title="在windows系统中通过CMD命令实现VSFTPD的上传下载">《windows系统中通过CMD命令实现VSFTPD的上传下载》</a>。</p>
-		    	<div class="donate_div_container">
+</div>		    	<div class="donate_div_container">
 					<div class="donate_div">
 						<p><a href="javascript:void(0)" onclick="donateToggle()" class="donate_word" title="打赏，支持一下">打赏</a></p>
 						<div class="hide_box"></div>
@@ -232,7 +232,7 @@ ftp: 收到 23 字节，用时 0.00秒 23000.00千字节/秒。
 					</div>
 				</div>
 		    	<div class="tags">
-					<div class="post_tags">
+					<div class="post_tags" itemprop="keywords">
 						Tags: <a href="https://typecodes.com/tag/linux-vsftpd.html">linux vsftpd</a>					</div>
 					<div class="post-share">
 						<ul class="post-shareul clearfix">
@@ -324,7 +324,6 @@ ftp: 收到 23 字节，用时 0.00秒 23000.00千字节/秒。
 		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
 	</section>
 </div>
-				</div>
 			</div>
 		</div>
 		<!--4. bottom begin-->

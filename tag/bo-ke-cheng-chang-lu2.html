@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html dir="ltr" lang="zh-CN" class="no-js">
+<html class="no-js">
 	<head>
-		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
   		<meta name="renderer" content="webkit">
 		<title>标签 博客成长录 下的文章 - TypeCodes</title>
 		<meta name="description" content="标签 博客成长录 下的文章 - TypeCodes" />
@@ -34,8 +35,7 @@
 			</div>
 		</div>
 		<div class="container">
-			<div class="row">
-		<!--2. left sider begin-->
+			<div class="row">		<!--2. left sider begin-->
 		<div class="col-md-9" id="blog-main" role="main">
 		  	<!--article recycle-->
 			<article class="post">
@@ -48,7 +48,7 @@
 <p>鉴于官方MySql5.6.24相对是一个比较稳定的版本，所以博主之前也在自己的另一台CentOS7.1主机上安装了一遍。不过最后还是图新鲜，选择了MySQL5.7.7rc版本。下面是具体的安装过程，由于和MySQL5.7.7rc的编译安装过程很类似，所以这里尽可能精简文字：</p>
 
 	<p class="more"><a href="https://typecodes.com/web/centos7compilemysql5.html" title="阿里云CentOS 7.1编译安装MySql5.6.24">- 阅读剩余部分 -</a></p>
-			</article>
+</div>			</article>
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/web/centos7nginxhttpsspdy.html">2015博客升级记(六)：Nginx配置HTTPS和SPDY实战</a></h2>
 <ul class="post-meta">
@@ -58,7 +58,7 @@
 	<p>这是<a href="https://typecodes.com/mix/2015updateblog.html" title="查看原文">《2015年博客升级记》</a>系列文章的第六篇，主要记录如何在CentOS 7.1中Nginx如何配置HTTPS和SPDY。关于具体如何编译安装Nginx，可以查看文章<a href="https://typecodes.com/web/centos7compilenginx.html" title="查看原文">《2015博客升级记(三)：CentOS 7.1编译安装Nginx1.9.0》</a>。</p>
 
 	<p class="more"><a href="https://typecodes.com/web/centos7nginxhttpsspdy.html" title="2015博客升级记(六)：Nginx配置HTTPS和SPDY实战">- 阅读剩余部分 -</a></p>
-			</article>
+</div>			</article>
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/web/centos7compilemysql.html">2015博客升级记(四)：CentOS 7.1编译安装MySQL5.7.7rc</a></h2>
 <ul class="post-meta">
@@ -68,7 +68,7 @@
 	<p>这是<a href="https://typecodes.com/mix/2015updateblog.html" title="查看原文">《2015年博客升级记》</a>系列文章的第四篇，主要记录在Linux系统中如何编译安装MySql数据库。</p>
 <h5>1 创建mysql用户和用户组，并下载MySQL5.7.7 Release Candidate版本</h5>
 <p>首先创建一个名为mysql且<code>没有登录权限</code>的用户和一个名为mysql的用户组，然后去mysql官网下载MySQL5.7.7rc版本。</p>
-<div class="highlight"><pre>#######新建mysql用户和mysql组
+<div class="highlight"><pre><span></span>#######新建mysql用户和mysql组
 [root@typecodes ~]# groupadd -r mysql &amp;&amp; useradd -r -g mysql -s /bin/false -M mysql
 
 ######从官网或者博客备份地址下载MySQL5.7.7 Release Candidate版本
@@ -87,7 +87,7 @@
 
 
 	<p class="more"><a href="https://typecodes.com/web/centos7compilemysql.html" title="2015博客升级记(四)：CentOS 7.1编译安装MySQL5.7.7rc">- 阅读剩余部分 -</a></p>
-			</article>
+</div>			</article>
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/web/centos7compilenginx.html">2015博客升级记(三)：CentOS 7.1编译安装Nginx1.9.0</a></h2>
 <ul class="post-meta">
@@ -95,10 +95,10 @@
 </ul>
 <div class="post-content fmt">
 	<p>这是<a href="https://typecodes.com/mix/2015updateblog.html" title="查看原文">《2015年博客升级记》</a>系列文章的第三篇，主要记录如何在CentOS 7.1中编译安装Nginx官方最新的1.9.0版本。由于像Nginx、Mysql和PHP7的的源码都是用C/C++写的，所以自己的CentOS 7.1服务器上必须要安装gcc和g++软件（CentOS 7系列会自带这两个编译软件）。</p>
-<p><img alt="CentOS 7.1编译安装Nginx1.9.0" src="https://o3cex9zsl.qnssl.com/2015/05/nginxlogo.png" title="CentOS 7.1编译安装Nginx1.9.0" /></p>
+<p><img alt="CentOS 7.1编译安装Nginx1.9.0" src="https://o3cex9zsl.qnssl.com/2015/05/nginxlogo.png" title="CentOS 7.1编译安装Nginx1.9.0"></p>
 
 	<p class="more"><a href="https://typecodes.com/web/centos7compilenginx.html" title="2015博客升级记(三)：CentOS 7.1编译安装Nginx1.9.0">- 阅读剩余部分 -</a></p>
-			</article>
+</div>			</article>
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/linux/centos7fdiskmountswap.html">2015博客升级记(二)：Linux系统磁盘分区挂载和交换空间</a></h2>
 <ul class="post-meta">
@@ -106,7 +106,7 @@
 </ul>
 <div class="post-content fmt">
 	<p>这是<a href="https://typecodes.com/mix/2015updateblog.html" title="查看原文">《2015年博客升级记》</a>系列文章的第二篇，主要记录在Linux系统中如何将磁盘进行分区和挂载。</p>
-<div class="highlight"><pre>------------操作说明------------               
+<div class="highlight"><pre><span></span>------------操作说明------------               
 Linux系统：       阿里云CentOS 7.1（20G）
 操作工具：        SecureCRT 7.0
 待挂载的数据盘：   24G
@@ -116,7 +116,7 @@ Linux系统：       阿里云CentOS 7.1（20G）
 
 
 	<p class="more"><a href="https://typecodes.com/linux/centos7fdiskmountswap.html" title="2015博客升级记(二)：Linux系统磁盘分区挂载和交换空间">- 阅读剩余部分 -</a></p>
-			</article>
+</div>			</article>
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/linux/centos7afteroperate.html">2015博客升级记(一)：安装CentOS7后需要的操作</a></h2>
 <ul class="post-meta">
@@ -124,10 +124,10 @@ Linux系统：       阿里云CentOS 7.1（20G）
 </ul>
 <div class="post-content fmt">
 	<p>这是<a href="https://typecodes.com/mix/2015updateblog.html" title="查看原文">《2015年博客升级记》</a>系列文章的第一篇，主要记录安装完CentOS7后的一些优化操作，包括更换yum源并升级系统到CentOS7.1、使用sshd登录、修改机器名、vi映射为vim、vimrc的配置。</p>
-<p><img alt="安装CentOS7后需要的操作" src="https://o3cex9zsl.qnssl.com/2015/05/centos7update.png" title="安装CentOS7后需要的操作" /></p>
+<p><img alt="安装CentOS7后需要的操作" src="https://o3cex9zsl.qnssl.com/2015/05/centos7update.png" title="安装CentOS7后需要的操作"></p>
 
 	<p class="more"><a href="https://typecodes.com/linux/centos7afteroperate.html" title="2015博客升级记(一)：安装CentOS7后需要的操作">- 阅读剩余部分 -</a></p>
-			</article>
+</div>			</article>
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/mix/2015updateblog.html">2015年博客升级记</a></h2>
 <ul class="post-meta">
@@ -135,10 +135,10 @@ Linux系统：       阿里云CentOS 7.1（20G）
 </ul>
 <div class="post-content fmt">
 	<p>这段时间对博客进行了一次升级，主要是从博客程序所在的系统服务器（CentOS）和WEB环境（LNMP）入手。目前自己的Linux服务器已经升级到CentOS7.1，同时LNMP环境也升级到了最新的版本。下面是整个升级过程的详细整理，记录一下方便以后查看。</p>
-<p><img alt="2015博客升级记" src="https://o3cex9zsl.qnssl.com/2015/05/updatemyblog.png" title="2015博客升级记" /></p>
+<p><img alt="2015博客升级记" src="https://o3cex9zsl.qnssl.com/2015/05/updatemyblog.png" title="2015博客升级记"></p>
 
 	<p class="more"><a href="https://typecodes.com/mix/2015updateblog.html" title="2015年博客升级记">- 阅读剩余部分 -</a></p>
-			</article>
+</div>			</article>
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/mix/eventualwptotypecho.html">终于从WordPress转向Typecho了</a></h2>
 <ul class="post-meta">
@@ -147,14 +147,18 @@ Linux系统：       阿里云CentOS 7.1（20G）
 <div class="post-content fmt">
 	<p>4月底，博客的虚拟主机到期。因为不想再用绑定几百个站点的虚拟主机了，所以决定买个vps或者云主机。在比较了几个vps和云主机后，发现阿里的ECS相对来说价格还比较合适，稳定性不错。于是选了个最低配置的CentOS主机，期限为一年。</p>
 <p>买完后，由于没时间去备案，所以5，6，7月份博客都处于无法访问状态。7月底下决心准备把博客重新捡起来，顺带完成去年年底就准备的工作——<a href="https://typecodes.com/mix/wptoconcisetypecho.html" title="简洁的哲学：从华丽的WordPress转Typecho">从wordpress转向typecho</a>。</p>
-<p><img alt="终于从WordPress转向Typecho了" src="https://o3cex9zsl.qnssl.com/2013/10/typecho.png" title="终于从WordPress转向Typecho了" /></p>
+<p><img alt="终于从WordPress转向Typecho了" src="https://o3cex9zsl.qnssl.com/2013/10/typecho.png" title="终于从WordPress转向Typecho了"></p>
 
 	<p class="more"><a href="https://typecodes.com/mix/eventualwptotypecho.html" title="终于从WordPress转向Typecho了">- 阅读剩余部分 -</a></p>
-			</article>
+</div>			</article>
 		  	<!--page navigation-->
 <ol class="page-navigator">
-<li class="prev"><a href="https://typecodes.com/tag/bo-ke-cheng-chang-lu.html">&laquo; 前一页</a></li><li><a href="https://typecodes.com/tag/bo-ke-cheng-chang-lu.html">1</a><li class="current"><a href="https://typecodes.com/tag/bo-ke-cheng-chang-lu2.html">2</a>
-       		</li><li><a href="https://typecodes.com/tag/bo-ke-cheng-chang-lu3.html">3</a>
+<li class="prev"><a href="https://typecodes.com/tag/bo-ke-cheng-chang-lu.html">&laquo; 前一页</a></li><li>
+       			<a href="https://typecodes.com/tag/bo-ke-cheng-chang-lu1.html">1</a>
+       		</li><li class="current">
+       			<a href="https://typecodes.com/tag/bo-ke-cheng-chang-lu.html">2</a>
+       		</li><li>
+       			<a href="https://typecodes.com/tag/bo-ke-cheng-chang-lu3.html">3</a>
        		</li><li class="next">
        		<a href="https://typecodes.com/tag/bo-ke-cheng-chang-lu3.html">后一页 &raquo;</a>
        </li></ol>		</div>
@@ -223,7 +227,6 @@ Linux系统：       阿里云CentOS 7.1（20G）
 		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
 	</section>
 </div>
-				</div>
 			</div>
 		</div>
 		<!--4. bottom begin-->

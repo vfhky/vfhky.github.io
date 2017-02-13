@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html dir="ltr" lang="zh-CN" class="no-js">
+<html class="no-js">
 	<head>
-		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
   		<meta name="renderer" content="webkit">
 		<title>标签 php7 下的文章 - TypeCodes</title>
 		<meta name="description" content="标签 php7 下的文章 - TypeCodes" />
@@ -34,8 +35,7 @@
 			</div>
 		</div>
 		<div class="container">
-			<div class="row">
-		<!--2. left sider begin-->
+			<div class="row">		<!--2. left sider begin-->
 		<div class="col-md-9" id="blog-main" role="main">
 		  	<!--article recycle-->
 			<article class="post">
@@ -48,7 +48,7 @@
 <p>因此，这篇文章主要对这三个PHP配置文件的进行简单说明，具体的配置过程见本文末尾的<code>附录</code>部分。</p>
 
 	<p class="more"><a href="https://typecodes.com/web/php7configure.html" title="PHP7中php.ini、php-fpm和www.conf的配置">- 阅读剩余部分 -</a></p>
-			</article>
+</div>			</article>
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/web/centos7compilephp7.html">2015博客升级记(五)：CentOS 7.1编译安装PHP7</a></h2>
 <ul class="post-meta">
@@ -58,7 +58,7 @@
 	<p>这是<a href="https://typecodes.com/mix/2015updateblog.html" title="查看原文">《2015年博客升级记》</a>系列文章的第五篇，主要记录在Linux系统中如何编译安装PHP7。</p>
 <h5>1 创建php用户和用户组，并在github下载php7源码</h5>
 <p>首先创建一个名为php且<code>没有登录权限</code>的用户和一个名为php的用户组，然后去GitHub下载php7源码包。</p>
-<div class="highlight"><pre>#######新建php用户和php组
+<div class="highlight"><pre><span></span>#######新建php用户和php组
 [root@typecodes ~]# groupadd -r php &amp;&amp; useradd -r -g php -s /bin/false -d /usr/local/php7 -M php
 ######从GitHub下载php7安装包
 [root@typecodes ~]# wget -c --no-check-certificate -O php7-src-master.zip https://github.com/php/php-src/archive/master.zip
@@ -71,7 +71,7 @@
 
 
 	<p class="more"><a href="https://typecodes.com/web/centos7compilephp7.html" title="2015博客升级记(五)：CentOS 7.1编译安装PHP7">- 阅读剩余部分 -</a></p>
-			</article>
+</div>			</article>
 		  	<!--page navigation-->
 <ol class="page-navigator">
 </ol>		</div>
@@ -125,7 +125,6 @@
 		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
 	</section>
 </div>
-				</div>
 			</div>
 		</div>
 		<!--4. bottom begin-->

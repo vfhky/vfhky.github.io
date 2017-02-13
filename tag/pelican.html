@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html dir="ltr" lang="zh-CN" class="no-js">
+<html class="no-js">
 	<head>
-		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
   		<meta name="renderer" content="webkit">
 		<title>标签 pelican 下的文章 - TypeCodes</title>
 		<meta name="description" content="标签 pelican 下的文章 - TypeCodes" />
@@ -34,8 +35,7 @@
 			</div>
 		</div>
 		<div class="container">
-			<div class="row">
-		<!--2. left sider begin-->
+			<div class="row">		<!--2. left sider begin-->
 		<div class="col-md-9" id="blog-main" role="main">
 		  	<!--article recycle-->
 			<article class="post">
@@ -45,10 +45,10 @@
 </ul>
 <div class="post-content fmt">
 	<p>由于Disqus不支持Markdown的原因，所以在评论中使用HTML标签和代码高亮就不像Markdown那样方便了。在查看了<a href="https://help.disqus.com/customer/portal/articles/466253-what-html-tags-are-allowed-within-comments" title="点击查看">Disqus官方</a>关于HTML标签和代码高亮的说明后，发现Disqus只支持原生的HTML标签和代码高亮方式。</p>
-<p><img alt="Disqus中HTML标签和代码高亮的效果" src="https://o3cex9zsl.qnssl.com/2016/03/disqus_htmltag_highlight_result.png" title="Disqus中HTML标签和代码高亮的效果" /></p>
+<p><img alt="Disqus中HTML标签和代码高亮的效果" src="https://o3cex9zsl.qnssl.com/2016/03/disqus_htmltag_highlight_result.png" title="Disqus中HTML标签和代码高亮的效果"></p>
 
 	<p class="more"><a href="https://typecodes.com/mix/disqushtmltaghighlight.html" title="Disqus支持的HTML标签和代码高亮方法">- 阅读剩余部分 -</a></p>
-			</article>
+</div>			</article>
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/linux/updatesyngithubpelicanshell.html">更新博客生成发布及同步GitHub的Shell脚本：解决文件名空格问题</a></h2>
 <ul class="post-meta">
@@ -57,10 +57,10 @@
 <div class="post-content fmt">
 	<p><a href="https://typecodes.com/linux/syngithubmarkdownpelican.html" title="《同步GitHub Markdown文章到Linux服务器后更新Pelican博客的脚本》">前面一篇文章</a>通过Linux Shell脚本的方式，实现博客生成发布及同步GitHub的的功能：先同步GitHub个人仓库中的Markdown文章到本地，然后通过Pelican编译生成静态HTML文件，最后发布到Nginx的web目录下面，同时更新到GitHub个人主页（vfhky.github.io）。</p>
 <p>由于没仔细考虑到Markdown文件名中可能包含空格的问题，所以在Shell脚本的文件名遍历时（代码第108行）出现了BUG：Linux Shell默认把空格空格做为值与值之间的分隔符，所以原本一个带空格的文件名就被拆分成了几个文件名。</p>
-<p><img alt="CentOS7.2服务器默认的IFS为空值" src="https://o3cex9zsl.qnssl.com/2016/03/centos_ifs_default.png" title="CentOS7.2服务器默认的IFS为空值" /></p>
+<p><img alt="CentOS7.2服务器默认的IFS为空值" src="https://o3cex9zsl.qnssl.com/2016/03/centos_ifs_default.png" title="CentOS7.2服务器默认的IFS为空值"></p>
 
 	<p class="more"><a href="https://typecodes.com/linux/updatesyngithubpelicanshell.html" title="更新博客生成发布及同步GitHub的Shell脚本：解决文件名空格问题">- 阅读剩余部分 -</a></p>
-			</article>
+</div>			</article>
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/linux/syngithubmarkdownpelican.html">同步GitHub Markdown文章到Linux服务器后更新Pelican博客的脚本</a></h2>
 <ul class="post-meta">
@@ -68,10 +68,10 @@
 </ul>
 <div class="post-content fmt">
 	<p>使用了Pelican后，最多的操作就是编译Markdown文章生成HTML文件，然后发布到Nginx的博客目录下。</p>
-<p><img alt="我的Pelican博客管理和发布流程" src="https://o3cex9zsl.qnssl.com/2016/01/github_pelican_nginx.png" title="我的Pelican博客管理和发布流程" /></p>
+<p><img alt="我的Pelican博客管理和发布流程" src="https://o3cex9zsl.qnssl.com/2016/01/github_pelican_nginx.png" title="我的Pelican博客管理和发布流程"></p>
 
 	<p class="more"><a href="https://typecodes.com/linux/syngithubmarkdownpelican.html" title="同步GitHub Markdown文章到Linux服务器后更新Pelican博客的脚本">- 阅读剩余部分 -</a></p>
-			</article>
+</div>			</article>
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/mix/sucesstypechotopelican.html">成功将博客从Typecho迁移到Pelican</a></h2>
 <ul class="post-meta">
@@ -81,7 +81,7 @@
 	<p>根据<a href="https://typecodes.com/mix/begintypechotopelican.html" title="《准备将博客从Typecho迁移到Pelican》">前文</a>的上线步骤，目前已经成功的将博客从Typecho迁移到了Pelican。中间上线发布的时候，遇到了好几个问题，不过由于上线步骤中有失败的处理方案（保留Typecho程序），所以在Typecho到Pelican之间来来回回切换了好几次。</p>
 
 	<p class="more"><a href="https://typecodes.com/mix/sucesstypechotopelican.html" title="成功将博客从Typecho迁移到Pelican">- 阅读剩余部分 -</a></p>
-			</article>
+</div>			</article>
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/mix/begintypechotopelican.html">准备将博客从Typecho迁移到Pelican</a></h2>
 <ul class="post-meta">
@@ -91,10 +91,10 @@
 	<p>8月份的时候，终于从庞大的WordPress转到了轻量级的<a href="https://typecodes.com/mix/eventualwptotypecho.html" title="《终于从WordPress转向Typecho了》">博客程序Typecho</a>。简洁的设计和比较出色的Markdown支持，整个Typecho体验还是挺不错的。到10月份的时候，自己了解了一些静态博客程序，包括nodejs的Ghost、Hexo等，ruby写的jekyll以及Python写的<a href="http://docs.getpelican.com/en/3.6.3/" title="Pelican最新3.6.3官方文档">Pelican</a>等。</p>
 <p>由于当时正好接触到了大蟒蛇，而且对js不熟（ruby都没用过），所以就在本地尝试了一下Pelican。之间折腾了一个从Octopress移植过来的主题Pelican-Octopress未果，后面忙着就没怎么弄了。</p>
 <p>前段时间辞职后，闲着就打算把博客“简洁到底”：抛弃MySQL数据库和PHP执行解释，完全采用Python生成静态HTML文件。这样以后就只需要在本地通过Markdown写好文章，然后通过pelican生成html文件即可。</p>
-<p><img alt="准备将博客从Typecho迁移到Pelican" src="https://o3cex9zsl.qnssl.com/2015/12/10/begintypechotopelican.png" title="准备将博客从Typecho迁移到Pelican" /></p>
+<p><img alt="准备将博客从Typecho迁移到Pelican" src="https://o3cex9zsl.qnssl.com/2015/12/10/begintypechotopelican.png" title="准备将博客从Typecho迁移到Pelican"></p>
 
 	<p class="more"><a href="https://typecodes.com/mix/begintypechotopelican.html" title="准备将博客从Typecho迁移到Pelican">- 阅读剩余部分 -</a></p>
-			</article>
+</div>			</article>
 		  	<!--page navigation-->
 <ol class="page-navigator">
 </ol>		</div>
@@ -157,7 +157,6 @@
 		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
 	</section>
 </div>
-				</div>
 			</div>
 		</div>
 		<!--4. bottom begin-->

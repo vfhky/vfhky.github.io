@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html dir="ltr" lang="zh-CN" class="no-js">
+<html class="no-js">
 	<head>
-		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
   		<meta name="renderer" content="webkit">
 		<title>2015博客升级记(六)：Nginx配置HTTPS和SPDY实战 &mdash; TypeCodes</title>
 		<meta name="description" content="2015博客升级记(六)：Nginx配置HTTPS和SPDY实战 &mdash; TypeCodes" />
@@ -34,8 +35,7 @@
 			</div>
 		</div>
 		<div class="container">
-			<div class="row">
-		<!--2. left sider begin-->
+			<div class="row">		<!--2. left sider begin-->
 		<div class="col-md-9" id="blog-main" role="main">
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/web/centos7nginxhttpsspdy.html">2015博客升级记(六)：Nginx配置HTTPS和SPDY实战</a></h2>
@@ -263,7 +263,7 @@
 214
 215
 216
-217</pre></div></td><td class="code"><div class="highlight"><pre>######
+217</pre></div></td><td class="code"><div class="highlight"><pre><span></span>######
 ###  Description: The config file of Nginx with ssl, spdy, no-www redircting, gzip functions
 ###  Author:  vfhky  2015.05.05  https://typecodes.com/web/centos7nginxhttpsspdy.html
 ######
@@ -485,14 +485,14 @@ http {
 
 <h5>2 Nginx开启spdy功能</h5>
 <p>如下图所示，在chrome浏览器的地址栏中输入<code>chrome://net-internals/#spdy</code>抓取访问事件，然后新建一个页面打开自己的博客，这样就会被第一个页面抓取到了。</p>
-<p><img alt="Nginx开启Google Chrome的SPDY功能" src="https://o3cex9zsl.qnssl.com/2015/06/google_chrome_spdy.png" title="Nginx开启Google Chrome的SPDY功能" /></p>
+<p><img alt="Nginx开启Google Chrome的SPDY功能" src="https://o3cex9zsl.qnssl.com/2015/06/google_chrome_spdy.png" title="Nginx开启Google Chrome的SPDY功能"></p>
 <h5>3 Nginx中url地址中，将带www的二级域名跳转到不带www顶级域名</h5>
 <p>博客目前将http访问全部定向到https，同时将https://www.typecodes.com重定向到https://typecodes.com上。前文<a href="https://typecodes.com/web/lnmppositivessl.html" title="查看原文">《阿里云CentOS 6.5系统LNMP环境安装SSL证书》</a>中，只做了http跳转到https。需要注意的是，在Nginx配置中最好不要包含过多的<code>if</code>判断语句；另外，处理不同的server_name时，官方建议<code>写在多个server块</code>中，就像小节1中的那样。</p>
 <h5>4 其他说明</h5>
 <p>由于LNMP配置比较繁琐，所以我建了一个关于Nginx、MySQL和PHP配置的git工程，方便查询。目前这个工程托管在GitHub和coding.net上，地址如下：</p>
 <p>GitHub地址：<a href="https://github.com/vfhky/mylnmp" title="点击进入">https://github.com/vfhky/mylnmp</a> ；</p>
 <p>Coding地址：<a href="https://coding.net/u/vfhky/p/mylnmp/git" title="点击进入">https://coding.net/u/vfhky/p/mylnmp/git</a> 。</p>
-		    	<div class="donate_div_container">
+</div>		    	<div class="donate_div_container">
 					<div class="donate_div">
 						<p><a href="javascript:void(0)" onclick="donateToggle()" class="donate_word" title="打赏，支持一下">打赏</a></p>
 						<div class="hide_box"></div>
@@ -522,7 +522,7 @@ http {
 					</div>
 				</div>
 		    	<div class="tags">
-					<div class="post_tags">
+					<div class="post_tags" itemprop="keywords">
 						Tags: <a href="https://typecodes.com/tag/bo-ke-cheng-chang-lu.html">博客成长录</a>,<a href="https://typecodes.com/tag/nginx.html">nginx</a>					</div>
 					<div class="post-share">
 						<ul class="post-shareul clearfix">
@@ -614,7 +614,6 @@ http {
 		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
 	</section>
 </div>
-				</div>
 			</div>
 		</div>
 		<!--4. bottom begin-->

@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html dir="ltr" lang="zh-CN" class="no-js">
+<html class="no-js">
 	<head>
-		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
   		<meta name="renderer" content="webkit">
 		<title>分类 web 下的文章 - TypeCodes</title>
 		<meta name="description" content="分类 web 下的文章 - TypeCodes" />
@@ -34,8 +35,7 @@
 			</div>
 		</div>
 		<div class="container">
-			<div class="row">
-		<!--2. left sider begin-->
+			<div class="row">		<!--2. left sider begin-->
 		<div class="col-md-9" id="blog-main" role="main">
 		  	<!--article recycle-->
 			<article class="post">
@@ -48,7 +48,7 @@
 <p>在上一篇文章<a href="https://typecodes.com/web/wptaoiplibapione.html" title="查看详情">《WordPress使用淘宝IP地址库的API显示评论者的位置信息（一）》</a>中，vfhky使用了新浪工具提供的这个IP接口显示博客评论者的位置信息。那么这篇文章就接着写在WordPress中使用淘宝IP地址库的API显示评论者的位置信息。这个功能的实现需要储备一些jQuery、json等基础知识，所以如果说上一篇是jQuery版本的新浪IP地址库的API应用，那么这篇文章就是jQuery版本的淘宝IP地址库的API应用。淘宝IP地址库的接口说明文档地址是：<a href="http://ip.taobao.com/instructions.php" title="淘宝IP地址库的接口说明文档地址">http://ip.taobao.com/instructions.php</a>，大家可以去参考下。下面是在WP博客中如何利用淘宝IP地址库实现评论者位置详情的显示。</p>
 
 	<p class="more"><a href="https://typecodes.com/web/wptaoiplibapitwo.html" title="WordPress使用淘宝IP地址库的API显示评论者的位置信息（二）">- 阅读剩余部分 -</a></p>
-			</article>
+</div>			</article>
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/web/testapiedgetoolreturnmessage.html">调试API接口的利器——获取返回数据中的信息提示字段</a></h2>
 <ul class="post-meta">
@@ -57,10 +57,10 @@
 <div class="post-content fmt">
 	<h5>1 调试腾讯开放平台QQ登录API</h5>
 <p>最近博主在测试腾讯开放平台的QQ登录API时，遇到了一个棘手问题。根据腾讯官方API文档，vfhky写了一个调用 <a href="http://wiki.connect.qq.com/get_info" title="查看腾讯官方关于get_info的API文档">get_info</a> 接口的程序。该接口能够获取QQ登录用户的微博信息，例如用户的出身日期、教育信息、FANS数目、微博内容等。具体大家也可以看看官方给出的API接口信息，地址是 http://wiki.connect.qq.com/get_info。</p>
-<p><img alt="腾讯后台API管理" src="https://o3cex9zsl.qnssl.com/2013/08/QQAPI_Oauth.png" title="腾讯后台API管理" /></p>
+<p><img alt="腾讯后台API管理" src="https://o3cex9zsl.qnssl.com/2013/08/QQAPI_Oauth.png" title="腾讯后台API管理"></p>
 
 	<p class="more"><a href="https://typecodes.com/web/testapiedgetoolreturnmessage.html" title="调试API接口的利器——获取返回数据中的信息提示字段">- 阅读剩余部分 -</a></p>
-			</article>
+</div>			</article>
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/web/wptaoiplibapione.html">Wordpress使用淘宝IP地址库的API显示评论者的位置信息（一）</a></h2>
 <ul class="post-meta">
@@ -71,7 +71,7 @@
 <p>最近各种云平台很是火爆，博主也跟了一把风。之前博客主题的评论列表信息栏处，调用的是<a href="http://int.dpool.sina.com.cn/iplookup/iplookup.php" title="查看详情">新浪IP地址查询接口</a>。新浪的这个IP接口早在2009年就开放了，不过貌似查询的结果准确性不是很高，不像纯真的IP库更新得那么及时。所以，vfhky寻思换个其它的IP查询接口提高博客的评论信息准确度。</p>
 
 	<p class="more"><a href="https://typecodes.com/web/wptaoiplibapione.html" title="Wordpress使用淘宝IP地址库的API显示评论者的位置信息（一）">- 阅读剩余部分 -</a></p>
-			</article>
+</div>			</article>
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/web/wpjquerycommentbug.html">jQuery引起Wordpress评论快捷提交时的一个BUG</a></h2>
 <ul class="post-meta">
@@ -82,7 +82,7 @@
 <p>上周六博主一直在纠结是否设置没有Gravatar头像的用户不能在博客发表评论，权衡利弊后，最终还是决定实施这个想法。主要考虑两个因素：最大可能避免那些发广告的人、提升博客评论的整体质量。因为一般的广告Spamer都不会有Gravatar头像，所以禁止掉这个用户群体后能尽量避免博客的垃圾评论；其次，博客之前会为无头像用户默认随机生成一张NBA球队的图片作为头像（方法见<a href="https://typecodes.com/web/againwpgravatarcache.html" title="再议Gravatar头像缓存至本地服务器">《再议Gravatar头像缓存至本地服务器》</a>），但这类用户的评论大多“含金量”不高。综上两方面，博主毅然选择了禁止。虽然这样可能会损失部分用户，例如纵多无觅的使用者等。</p>
 
 	<p class="more"><a href="https://typecodes.com/web/wpjquerycommentbug.html" title="jQuery引起Wordpress评论快捷提交时的一个BUG">- 阅读剩余部分 -</a></p>
-			</article>
+</div>			</article>
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/web/phptimegap.html">PHP获取两个时间相差的年数、月数和天数</a></h2>
 <ul class="post-meta">
@@ -91,10 +91,10 @@
 <div class="post-content fmt">
 	<p>今天在查看博客的统计栏时，发现那个“安全运行”的时间只显示了当前时间距离博客的建立时间相差的天数。这样看起来不怎么舒服：要是再过几年后，运行了七八百天，那是不是用户还得估算一下是几年了啊。因此，vfhky觉得还是把具体相差的年月日都写出来，这样才符合用户体验。</p>
 <p>那么，如何获取两个不同时间相差几年几月几日呢？比如当前时间距离2008年08月08日的北京奥运会有几年几月几日了？晚上琢磨了下，实现效果如下图所示（也可以点击右侧栏的“博客统计”栏目查看效果）。</p>
-<p><img alt="PHP获取两个时间相差的年数、月数和天数" src="https://o3cex9zsl.qnssl.com/2013/07/Time_gap.gif" title="PHP获取两个时间相差的年数、月数和天数" /></p>
+<p><img alt="PHP获取两个时间相差的年数、月数和天数" src="https://o3cex9zsl.qnssl.com/2013/07/Time_gap.gif" title="PHP获取两个时间相差的年数、月数和天数"></p>
 
 	<p class="more"><a href="https://typecodes.com/web/phptimegap.html" title="PHP获取两个时间相差的年数、月数和天数">- 阅读剩余部分 -</a></p>
-			</article>
+</div>			</article>
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/web/phpwpmusicplayer.html">PHP版网页随机音乐自动播放器（Wordpress通用）</a></h2>
 <ul class="post-meta">
@@ -102,10 +102,10 @@
 </ul>
 <div class="post-content fmt">
 	<p>最近想在博客的NBA专栏添加一个功能，那就是背景音乐。如果每次进入页面的时候都播放相同的音乐，次数多了就腻了，所以就想整个随机播放的。网上看了下相关的教程，都是用JS写的。由于JS的加载进度会影响整个网页的加载速度，所以放弃了JS，那就用PHP来解决吧。另外，所用到的music.swf文件已经放到博客的百度网盘里面了，大家可以下载来试试看。</p>
-<p><img alt="PHP版网页随机音乐自动播放器" src="https://o3cex9zsl.qnssl.com/2013/07/random_player.png" title="PHP版网页随机音乐自动播放器" /></p>
+<p><img alt="PHP版网页随机音乐自动播放器" src="https://o3cex9zsl.qnssl.com/2013/07/random_player.png" title="PHP版网页随机音乐自动播放器"></p>
 
 	<p class="more"><a href="https://typecodes.com/web/phpwpmusicplayer.html" title="PHP版网页随机音乐自动播放器（Wordpress通用）">- 阅读剩余部分 -</a></p>
-			</article>
+</div>			</article>
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/web/wpcopywithbloglink.html">Wordpress文章复制自动添加博客链接的JS脚本（兼容IE、Firefox和Chrome）</a></h2>
 <ul class="post-meta">
@@ -115,7 +115,7 @@
 	<p>这次博客在改用新主题的时候，曾经尝试过给博客的文章页面添加一个小功能：在复制文字时自动在文字后面加入文章的链接地址。当然保护文章版权的方法也有很多，例如给博文中的图片添加水印，在文章中多次增加内链，也有通过禁用右键复制功能来实现等等。但是还是vfhky觉得添加水印有碍图片的阅览，可以增加文字内链也麻烦，而禁止右键的复制又显得小气，所以试了试采用自动在复制的文字后面添加文章出处的链接。后来又觉得比较无聊，于是又删掉了，还是自然的好！下面给出兼容IE、Firefox和Chrome的javascript脚本代码，仅供参考。</p>
 
 	<p class="more"><a href="https://typecodes.com/web/wpcopywithbloglink.html" title="Wordpress文章复制自动添加博客链接的JS脚本（兼容IE、Firefox和Chrome）">- 阅读剩余部分 -</a></p>
-			</article>
+</div>			</article>
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/web/cancelwpautosave.html">取消WordPress的日志自动保存、修订版本、历史版本和文章不连续</a></h2>
 <ul class="post-meta">
@@ -125,17 +125,26 @@
 	<p>首先声明，这篇文章来源于我大百度，博主只是整理了一下，另外测试了一些bug，所以不负也付不起版权责任^^。开个玩笑，相信很多Wordpress用户在后台写文章的时候都会被文本框下面的自动保存当前文章为草稿的提示所困扰。另外，文章不多，但是文章链接地址中的ID却真的是“围起来可以绕地球一圈”了。再者，臃肿的数据库、后台修改文章的时候会让你从好几个历史版本中选择一个，等等这些真的很让人蛋疼。好吧，不罗嗦了，相信看这篇文章的都懂的，直接来过程。</p>
 
 	<p class="more"><a href="https://typecodes.com/web/cancelwpautosave.html" title="取消WordPress的日志自动保存、修订版本、历史版本和文章不连续">- 阅读剩余部分 -</a></p>
-			</article>
+</div>			</article>
 		  	<!--page navigation-->
 <ol class="page-navigator">
-<li class="prev"><a href="https://typecodes.com/web/index5.html">&laquo; 前一页</a></li><li><a href="https://typecodes.com/web/index.html">1</a>
-       <li><a href="https://typecodes.com/web/index2.html">2</a>
-       		</li><li><span>...</span></li><li><a href="https://typecodes.com/web/index4.html">4</a>
-       		</li><li><a href="https://typecodes.com/web/index5.html">5</a>
-       		</li><li class="current"><a href="https://typecodes.com/web/index6.html">6</a>
-       		</li><li><a href="https://typecodes.com/web/index7.html">7</a>
-       		</li><li><span>...</span></li><li><a href="https://typecodes.com/web/index10.html">10</a>
-       		</li><li><a href="https://typecodes.com/web/index11.html">11</a>
+<li class="prev"><a href="https://typecodes.com/web/index5.html">&laquo; 前一页</a></li><li>
+       			<a href="https://typecodes.com/web/index1.html">1</a>
+       		</li>
+       <li>
+       			<a href="https://typecodes.com/web/index2.html">2</a>
+       		</li><li><span>...</span></li><li>
+       			<a href="https://typecodes.com/web/index4.html">4</a>
+       		</li><li>
+       			<a href="https://typecodes.com/web/index5.html">5</a>
+       		</li><li class="current">
+       			<a href="https://typecodes.com/web/index.html">6</a>
+       		</li><li>
+       			<a href="https://typecodes.com/web/index7.html">7</a>
+       		</li><li><span>...</span></li><li>
+       			<a href="https://typecodes.com/web/index10.html">10</a>
+       		</li><li>
+       			<a href="https://typecodes.com/web/index11.html">11</a>
        		</li><li class="next">
        		<a href="https://typecodes.com/web/index7.html">后一页 &raquo;</a>
        </li></ol>		</div>
@@ -204,7 +213,6 @@
 		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
 	</section>
 </div>
-				</div>
 			</div>
 		</div>
 		<!--4. bottom begin-->

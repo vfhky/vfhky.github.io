@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html dir="ltr" lang="zh-CN" class="no-js">
+<html class="no-js">
 	<head>
-		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
   		<meta name="renderer" content="webkit">
 		<title>决定关闭博客使用SSL证书访问 &mdash; TypeCodes</title>
 		<meta name="description" content="决定关闭博客使用SSL证书访问 &mdash; TypeCodes" />
@@ -34,8 +35,7 @@
 			</div>
 		</div>
 		<div class="container">
-			<div class="row">
-		<!--2. left sider begin-->
+			<div class="row">		<!--2. left sider begin-->
 		<div class="col-md-9" id="blog-main" role="main">
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/web/shutdownblogssl.html">决定关闭博客使用SSL证书访问</a></h2>
@@ -44,20 +44,20 @@
 </ul>
 <div class="post-content fmt">
 	<p>前几天博客使用了NameCheap的证书，将原来的http访问改成了https访问（详戳<a href="https://typecodes.com/web/lnmppositivessl.html" title="阿里云CentOS 6.5系统LNMP环境安装SSL证书">这里</a>）。由于下面的原因，现决定不再使用SSL证书，恢复http访问。</p>
-<p><img alt="使用SSL证书访问博客" src="https://o3cex9zsl.qnssl.com/2014/10/blogbeginusessl.png" title="使用SSL证书访问博客" /></p>
+<p><img alt="使用SSL证书访问博客" src="https://o3cex9zsl.qnssl.com/2014/10/blogbeginusessl.png" title="使用SSL证书访问博客"></p>
 <h5>1 无法通过https加载站外静态资源文件</h5>
 <p>主要是因为目前博客所有的静态资源文件，如css样式文件、js脚本文件、图片文件等，都使用了新浪SCS云存储。最初，博客程序中还存在类似于<code>https://o3cex9zsl.qnssl.com/libs/img/typecodes.png</code>这种http请求，所以浏览器地址栏会出现黄色警告图标。后来将所有的http请求全部改成https，结果浏览器地址栏图标变成正常的绿色图标了。</p>
 
 
 <p>但是如果在博客typecho程序中引入<code>https://o3cex9zsl.qnssl.com/libs/css/style.css</code>等静态资源文件时，这些文件都不能正常加载。于是就出现了页面变形、图片无法显示等问题。</p>
-<p><img alt="博客https静态资源无法加载" src="https://o3cex9zsl.qnssl.com/2014/10/blogsslunload.png" title="博客https静态资源无法加载" /></p>
+<p><img alt="博客https静态资源无法加载" src="https://o3cex9zsl.qnssl.com/2014/10/blogsslunload.png" title="博客https静态资源无法加载"></p>
 <h5>2 关于SSL证书问题的猜想</h5>
 <p>虽然新浪SCS也支持https访问，但一直认为是因为新浪SCS域名<code>sinastorage.cn</code>证书有问题（目前已正常），所以在浏览器客户端访问博客时，会被拒绝而无法正常加载。</p>
-<p><img alt="&quot;新浪SCS域名sinastorage.cn证书问题&quot;" src="https://o3cex9zsl.qnssl.com/2014/10/sinastoragesslerror.jpg" title="新浪SCS域名sinastorage.cn证书问题" /></p>
+<p><img alt="&quot;新浪SCS域名sinastorage.cn证书问题&quot;" src="https://o3cex9zsl.qnssl.com/2014/10/sinastoragesslerror.jpg" title="新浪SCS域名sinastorage.cn证书问题"></p>
 <p>后来试着换用阿里的oss存储，结果也是无法正常加载。想到可能因为博客的服务器没有新浪SCS和阿里OSS证书的缘故，在访问博客时，会拒绝新浪SCS和阿里OSS等站外资源的请求，从而博客页面无法正常显示。</p>
 <h5>3 无奈放弃</h5>
 <p>因此，只能决定放弃从github pack获得的免费一年的SSL证书了。So，再见了<code>https://typecodes.com</code>！</p>
-		    	<div class="donate_div_container">
+</div>		    	<div class="donate_div_container">
 					<div class="donate_div">
 						<p><a href="javascript:void(0)" onclick="donateToggle()" class="donate_word" title="打赏，支持一下">打赏</a></p>
 						<div class="hide_box"></div>
@@ -87,7 +87,7 @@
 					</div>
 				</div>
 		    	<div class="tags">
-					<div class="post_tags">
+					<div class="post_tags" itemprop="keywords">
 						Tags: <a href="https://typecodes.com/tag/sslzheng-shu.html">ssl证书</a>,<a href="https://typecodes.com/tag/github-pack.html">github pack</a>,<a href="https://typecodes.com/tag/positivessl.html">positivessl</a>					</div>
 					<div class="post-share">
 						<ul class="post-shareul clearfix">
@@ -179,7 +179,6 @@
 		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
 	</section>
 </div>
-				</div>
 			</div>
 		</div>
 		<!--4. bottom begin-->

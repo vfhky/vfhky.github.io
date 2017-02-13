@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html dir="ltr" lang="zh-CN" class="no-js">
+<html class="no-js">
 	<head>
-		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
   		<meta name="renderer" content="webkit">
 		<title>视角：C语言将十六进制字符串转成十进制整数 &mdash; TypeCodes</title>
 		<meta name="description" content="视角：C语言将十六进制字符串转成十进制整数 &mdash; TypeCodes" />
@@ -34,8 +35,7 @@
 			</div>
 		</div>
 		<div class="container">
-			<div class="row">
-		<!--2. left sider begin-->
+			<div class="row">		<!--2. left sider begin-->
 		<div class="col-md-9" id="blog-main" role="main">
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/cseries/simplifychexstrtoint.html">视角：C语言将十六进制字符串转成十进制整数</a></h2>
@@ -112,8 +112,8 @@
 62
 63
 64
-65</pre></div></td><td class="code"><div class="highlight"><pre><span class="cp">#include &lt;stdio.h&gt;</span>
-<span class="cp">#include &lt;string.h&gt;</span>
+65</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;string.h&gt;</span><span class="cp"></span>
 
 <span class="cm">/**</span>
 <span class="cm"> * @FileName  HexStr2Integer.c</span>
@@ -181,7 +181,7 @@
 </td></tr></table>
 
 <p>同样使用GCC编译命令<code>gcc HexStr2Integer.c -o HexStr2Integer</code>，然后输入测试用的十六进制的字符串"eE2"、"Fa1"、"2011"、"-eE2"、"+eE2"分别转换成了对应的十进制整数：3810、4001、8209、-3810、3810。</p>
-<p><img alt="十六进制字符串转成十进制整数" src="https://o3cex9zsl.qnssl.com/2015/05/simplifychexstrtoint.png" title="十六进制字符串转成十进制整数" /></p>
+<p><img alt="十六进制字符串转成十进制整数" src="https://o3cex9zsl.qnssl.com/2015/05/simplifychexstrtoint.png" title="十六进制字符串转成十进制整数"></p>
 <h5>2 从低位到高位单个字符转换</h5>
 <p>逆向转换时，需要注意<code>while</code>循环中通过对<code>+</code>、<code>-</code>、<code>0x</code>、<code>0X</code>这四个特殊字符(串)的判断出非法字符。</p>
 <table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
@@ -239,8 +239,8 @@
 53
 54
 55
-56</pre></div></td><td class="code"><div class="highlight"><pre><span class="cp">#include &lt;stdio.h&gt;</span>
-<span class="cp">#include &lt;string.h&gt;</span>
+56</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;string.h&gt;</span><span class="cp"></span>
 
 <span class="cm">/**</span>
 <span class="cm"> * @FileName  HexStr2Integer2.c</span>
@@ -299,8 +299,8 @@
 </td></tr></table>
 
 <p>同样，使用GCC编译后，输入十六进制字符串数据进行测试，结果如下图所示：</p>
-<p><img alt="十六进制字符串转成十进制整数" src="https://o3cex9zsl.qnssl.com/2015/05/simplifychexstrtoint2.png" title="十六进制字符串转成十进制整数" /></p>
-		    	<div class="donate_div_container">
+<p><img alt="十六进制字符串转成十进制整数" src="https://o3cex9zsl.qnssl.com/2015/05/simplifychexstrtoint2.png" title="十六进制字符串转成十进制整数"></p>
+</div>		    	<div class="donate_div_container">
 					<div class="donate_div">
 						<p><a href="javascript:void(0)" onclick="donateToggle()" class="donate_word" title="打赏，支持一下">打赏</a></p>
 						<div class="hide_box"></div>
@@ -330,7 +330,7 @@
 					</div>
 				</div>
 		    	<div class="tags">
-					<div class="post_tags">
+					<div class="post_tags" itemprop="keywords">
 						Tags: <a href="https://typecodes.com/tag/shi-liu-jin-zhi-zi-fu-chuan.html">十六进制字符串</a>,<a href="https://typecodes.com/tag/shi-liu-jin-zhi-zhuan-shi-jin-zhi.html">十六进制转十进制</a>,<a href="https://typecodes.com/tag/zi-fu-chuan-zhuan-huan.html">字符串转换</a>					</div>
 					<div class="post-share">
 						<ul class="post-shareul clearfix">
@@ -422,7 +422,6 @@
 		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
 	</section>
 </div>
-				</div>
 			</div>
 		</div>
 		<!--4. bottom begin-->

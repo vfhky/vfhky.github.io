@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html dir="ltr" lang="zh-CN" class="no-js">
+<html class="no-js">
 	<head>
-		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
   		<meta name="renderer" content="webkit">
 		<title>如何给wordpress的回复添加引用功能 &mdash; TypeCodes</title>
 		<meta name="description" content="如何给wordpress的回复添加引用功能 &mdash; TypeCodes" />
@@ -34,8 +35,7 @@
 			</div>
 		</div>
 		<div class="container">
-			<div class="row">
-		<!--2. left sider begin-->
+			<div class="row">		<!--2. left sider begin-->
 		<div class="col-md-9" id="blog-main" role="main">
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/web/wpquotecomments.html">如何给wordpress的回复添加引用功能</a></h2>
@@ -47,10 +47,10 @@
 <p>从那篇关于@功能的文章就知道，只要我们点击那个@某某的链接，我们就可以找到原来的评论。而引用要起的作用也差不多，类似于@，只不过相对于@有更为直观。要使用引用功能，所用原理也是类似@的（温馨提示：大家还是看一下，不然这篇文章可能有些云里雾里了^^）。即要用到jQuery，并且涉及到自己主题评论页面的web结构。不罗嗦了，最终效果如下：</p>
 
 
-<p><img alt="如何给wordpress的回复添加引用功能" src="https://o3cex9zsl.qnssl.com/2012/09/11.jpg" title="如何给wordpress的回复添加引用功能" /></p>
+<p><img alt="如何给wordpress的回复添加引用功能" src="https://o3cex9zsl.qnssl.com/2012/09/11.jpg" title="如何给wordpress的回复添加引用功能"></p>
 <p>1、确保主题评论的web结构比较标准，和wp官方主题默认的评论结构相差不大（一般的主题都符合，只要不是那些特别风骚的主题都ok）。</p>
 <p>2、根据评论结构(主要是用jQuery获取原作者的姓名和被引用的内容)，写出如下jQuery代码并命名为quote.js 文件，保存到主题所在的js目录下（大家可以参考我的主题评论的web结构，修改author和content的值）。</p>
-<div class="highlight"><pre>/* @quoter js by vfhky */
+<div class="highlight"><pre><span></span>/* @quoter js by vfhky */
 jQuery(document).ready(function($){ //Begin jQuery
     $(&quot;a.quote&quot;).click(function(){
         if($(&quot;#comment&quot;).length &gt; 0){
@@ -75,7 +75,7 @@ jQuery(document).ready(function($){ //Begin jQuery
 
 <p>3、由于在添加@功能的时候，我已经上传了jquery.min.js（见文章 <a href="https://typecodes.com/web/wpatcommentauthor.html" title="wordpress回复内容前面添加@作者样式">wordpress回复内容前面添加@作者样式</a> ），所以这个步骤我就不用做了。</p>
 <p>4、加载jQuery库：依然在主题目录中找到header.php，再找到找到&lt;?php wp_head()； ?&gt;，然后在它前面添加如下代码</p>
-<div class="highlight"><pre><span class="c">&lt;!--Google CDN提供的jQuery库的地址采用了协议相对路径，它可以很好的解决https引起的一些问题--&gt;</span>
+<div class="highlight"><pre><span></span><span class="c">&lt;!--Google CDN提供的jQuery库的地址采用了协议相对路径，它可以很好的解决https引起的一些问题--&gt;</span>
 <span class="nt">&lt;script</span> <span class="na">type=</span><span class="s">&quot;text/javascript&quot;</span> <span class="na">src=</span><span class="s">&quot;//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js&quot;</span><span class="nt">&gt;&lt;/script&gt;</span>
 
 <span class="c">&lt;!--SAE开发者中心提供的jQuery库的地址，我们也可以采用了协议相对路径--&gt;</span>
@@ -95,18 +95,18 @@ jQuery(document).ready(function($){ //Begin jQuery
 
 <p><code>注意：</code>如果使用了@功能（即已经添加了jQuery库）的话，直接写最后那句代码，即加载quote.js。（PS：由于一些因素，Google服务在中国还是不怎么稳定，所以比较推荐新浪SAE提供的jQuery库）</p>
 <p>5、在合适的位置（一般是functions.php，和那个@功能是一样的文件）添加引用的按钮。例如我的就是</p>
-<div class="highlight"><pre><span class="nt">&lt;a</span> <span class="na">class=</span><span class="s">&quot;quote&quot;</span> <span class="na">href=</span><span class="s">&quot;#comment-</span><span class="cp">&lt;?php</span> <span class="nx">comment_ID</span><span class="p">()</span> <span class="cp">?&gt;</span><span class="s">&quot;</span><span class="nt">&gt;</span>[引用]<span class="nt">&lt;/a&gt;</span>
+<div class="highlight"><pre><span></span><span class="nt">&lt;a</span> <span class="na">class=</span><span class="s">&quot;quote&quot;</span> <span class="na">href=</span><span class="s">&quot;#comment-</span><span class="cp">&lt;?php</span> <span class="nx">comment_ID</span><span class="p">()</span> <span class="cp">?&gt;</span><span class="s">&quot;</span><span class="nt">&gt;</span>[引用]<span class="nt">&lt;/a&gt;</span>
 </pre></div>
 
 
 <p>6、因为引用到原作者，所以把functions.php中的 &lt;?php comment_author_link() ?&gt; 
 改成（同@） ，以便使用jQuery。</p>
-<div class="highlight"><pre><span class="nt">&lt;strong&gt;</span><span class="cp">&lt;?php</span> <span class="nx">comment_author_link</span><span class="p">()</span> <span class="cp">?&gt;</span><span class="nt">&lt;/strong&gt;</span>
+<div class="highlight"><pre><span></span><span class="nt">&lt;strong&gt;</span><span class="cp">&lt;?php</span> <span class="nx">comment_author_link</span><span class="p">()</span> <span class="cp">?&gt;</span><span class="nt">&lt;/strong&gt;</span>
 </pre></div>
 
 
 <p>7、把functions.php中的调用评论内容的标签 &lt;?php comment_text() ?&gt; 改成如下代码（同@），以便使用jQuery。</p>
-<div class="highlight"><pre><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;vfhky_quote&quot;</span><span class="nt">&gt;</span><span class="cp">&lt;?php</span> <span class="nx">comment_text</span><span class="p">()</span> <span class="cp">?&gt;</span><span class="nt">&lt;/div&gt;</span>
+<div class="highlight"><pre><span></span><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;vfhky_quote&quot;</span><span class="nt">&gt;</span><span class="cp">&lt;?php</span> <span class="nx">comment_text</span><span class="p">()</span> <span class="cp">?&gt;</span><span class="nt">&lt;/div&gt;</span>
 </pre></div>
 
 
@@ -115,7 +115,7 @@ jQuery(document).ready(function($){ //Begin jQuery
 <p>1、对于WP-UserAgent的博客，如果你选择的“Display location”不是“Custom （Advanced）”的话，很可能在引用的时候把这些信息加入到了被引用的内容中去。所以建议选择“Custom （Advanced）”，然后单独使用<code>&lt;? php useragent_output_custom(); ?&gt;</code>。</p>
 <p>这样就不会在引用内容中加入多余信息。我之前也是由于这个原因调试了N久，最后才找出这个原因。</p>
 <p>2、这个引用功能和@功能能够兼容额，不用担心用了这个就不能用那个了。另外它也兼容IE系列浏览器。所以推荐大家一试！！！</p>
-		    	<div class="donate_div_container">
+</div>		    	<div class="donate_div_container">
 					<div class="donate_div">
 						<p><a href="javascript:void(0)" onclick="donateToggle()" class="donate_word" title="打赏，支持一下">打赏</a></p>
 						<div class="hide_box"></div>
@@ -145,7 +145,7 @@ jQuery(document).ready(function($){ //Begin jQuery
 					</div>
 				</div>
 		    	<div class="tags">
-					<div class="post_tags">
+					<div class="post_tags" itemprop="keywords">
 						Tags: <a href="https://typecodes.com/tag/wordpress.html">wordpress</a>,<a href="https://typecodes.com/tag/wordpressyin-yong-hui-fu.html">wordpress引用回复</a>					</div>
 					<div class="post-share">
 						<ul class="post-shareul clearfix">
@@ -237,7 +237,6 @@ jQuery(document).ready(function($){ //Begin jQuery
 		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
 	</section>
 </div>
-				</div>
 			</div>
 		</div>
 		<!--4. bottom begin-->

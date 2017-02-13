@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html dir="ltr" lang="zh-CN" class="no-js">
+<html class="no-js">
 	<head>
-		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
   		<meta name="renderer" content="webkit">
 		<title>分类 linux 下的文章 - TypeCodes</title>
 		<meta name="description" content="分类 linux 下的文章 - TypeCodes" />
@@ -34,8 +35,7 @@
 			</div>
 		</div>
 		<div class="container">
-			<div class="row">
-		<!--2. left sider begin-->
+			<div class="row">		<!--2. left sider begin-->
 		<div class="col-md-9" id="blog-main" role="main">
 		  	<!--article recycle-->
 			<article class="post">
@@ -46,7 +46,7 @@
 <div class="post-content fmt">
 	<p>最近在学习Linux系统编程遇到了一个很有意思的函数：alarm()，它是一个用来设置信号传送的闹钟函数。网上找了一些资料，结合自己的学习体会，现在Mark一下。</p>
 <h5>1 alarm()函数说明</h5>
-<div class="highlight"><pre>[1] 引用头文件：#include &lt;unistd.h&gt;;
+<div class="highlight"><pre><span></span>[1] 引用头文件：#include &lt;unistd.h&gt;;
 
 [2] 函数标准式：unsigned int alarm(unsigned int seconds);
 
@@ -58,7 +58,7 @@
 
 
 	<p class="more"><a href="https://typecodes.com/linux/linuxalarmknockfunc.html" title="Linux进程之alarm()信号传送闹钟函数">- 阅读剩余部分 -</a></p>
-			</article>
+</div>			</article>
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/linux/linuxbridgepingnot.html">Linux问题两连击：桥接模式无法上网、ping域名失败</a></h2>
 <ul class="post-meta">
@@ -70,7 +70,7 @@
 <p>上面两个问题都是由Linux中的DNS配置不正确导致的，因为DNS的作用就是将某个域名解析到相对应的IP上。当DNS无法正常把IP和域名相对应起来的时候就出现了上面两种常见的情况。所以，当虚拟机中的Linux系统能够正常和宿主通信，且能ping通外部IP地址，却无法ping通域名。</p>
 
 	<p class="more"><a href="https://typecodes.com/linux/linuxbridgepingnot.html" title="Linux问题两连击：桥接模式无法上网、ping域名失败">- 阅读剩余部分 -</a></p>
-			</article>
+</div>			</article>
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/linux/vmwarelinuxbrigedmode.html">虚拟机VMWare中Linux用桥接方式连接实例</a></h2>
 <ul class="post-meta">
@@ -79,7 +79,7 @@
 <div class="post-content fmt">
 	<h5>1 虚拟机网络模式介绍与说明</h5>
 <p>我们在安装完虚拟机VMWare后，会发现在我们的宿主机Windows系统中多出了两个虚拟网卡：VMware Network Adapter VMnet1 和 VMware Network Adapter VMnet8 。因此，我们在使用虚拟机VMWare时，会利用这两个网卡中的一个来进行网络通信服务。具体可以分为如下三种网络工作模式： bridged(桥接模式)、NAT(网络地址转换模式 )和host-only(主机模式)。在VMware的网络模型中，VMware有如下几个虚拟设备：</p>
-<div class="highlight"><pre>VMnet0：这是VMware用于虚拟桥接网络下的虚拟交换机；
+<div class="highlight"><pre><span></span>VMnet0：这是VMware用于虚拟桥接网络下的虚拟交换机；
 VMnet1：这是VMware用于虚拟Host-Only网络下的虚拟交换机；
 VMnet8：这是VMware用于虚拟NAT网络下的虚拟交换机；
 VMware Network Adapter VMnet1：这是Host用于与Host-Only虚拟网络进行通信的虚拟网卡；
@@ -89,7 +89,7 @@ VMware Network Adapter VMnet8：这是Host用于与NAT虚拟网络进行通信�
 
 
 	<p class="more"><a href="https://typecodes.com/linux/vmwarelinuxbrigedmode.html" title="虚拟机VMWare中Linux用桥接方式连接实例">- 阅读剩余部分 -</a></p>
-			</article>
+</div>			</article>
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/linux/cmdvsftpdinteraction.html">Redhat/CentOS通过yum安装与配置vsFTPd的详细步骤</a></h2>
 <ul class="post-meta">
@@ -100,7 +100,7 @@ VMware Network Adapter VMnet8：这是Host用于与NAT虚拟网络进行通信�
 <p>测试环境是在windows中用cmd连接虚拟机中的linux主机服务器，当然更简单的方式是直接在windows中用常见的ftp客户端软件进行文件的上传与下载。只是BZ觉得既然学习了linux，就要把shell命令学好，所以总结了下面这篇教程。</p>
 
 	<p class="more"><a href="https://typecodes.com/linux/cmdvsftpdinteraction.html" title="Redhat/CentOS通过yum安装与配置vsFTPd的详细步骤">- 阅读剩余部分 -</a></p>
-			</article>
+</div>			</article>
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/linux/linuxyuminstallvsftpd.html">Redhat/CentOS通过yum安装与配置vsFTPd的详细步骤</a></h2>
 <ul class="post-meta">
@@ -111,7 +111,7 @@ VMware Network Adapter VMnet8：这是Host用于与NAT虚拟网络进行通信�
 <p>但是对于一些类似于oracle这种大文件的话，直接从桌面或者其它硬盘拖动到linux中去的话是非常慢的。因此，我们一款轻巧快捷，安全易用的软件把它实现，这就是vsFTPd。下面就介绍下如何在linux系统Redhat/CentOS下简单安装和配置vsFTPd这个服务软件。</p>
 
 	<p class="more"><a href="https://typecodes.com/linux/linuxyuminstallvsftpd.html" title="Redhat/CentOS通过yum安装与配置vsFTPd的详细步骤">- 阅读剩余部分 -</a></p>
-			</article>
+</div>			</article>
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/linux/linuxnotregisteredrhn.html">解决Redhat Linux5 yum出现This system is not registered with RHN</a></h2>
 <ul class="post-meta">
@@ -122,11 +122,15 @@ VMware Network Adapter VMnet8：这是Host用于与NAT虚拟网络进行通信�
 <p>出现这个错误的原因是你的Linux木有花钱在红帽网络上注册^^，所以无法下载谷歌Chrome的软件包，解决方案可以使用从Redhat演化而来的免费Linux版本CentOS，通过CentOS的yum更新源来实现RHEL5的YUM功能。下面博主结合GG到的国外文章谈谈How to Install CentOS YUM on Redhat Linux RHEL5，以此来解决This system is not registered with RHN的问题。</p>
 
 	<p class="more"><a href="https://typecodes.com/linux/linuxnotregisteredrhn.html" title="解决Redhat Linux5 yum出现This system is not registered with RHN">- 阅读剩余部分 -</a></p>
-			</article>
+</div>			</article>
 		  	<!--page navigation-->
 <ol class="page-navigator">
-<li class="prev"><a href="https://typecodes.com/linux/index2.html">&laquo; 前一页</a></li><li><a href="https://typecodes.com/linux/index.html">1</a><li><a href="https://typecodes.com/linux/index2.html">2</a>
-       		</li><li class="current"><a href="https://typecodes.com/linux/index3.html">3</a>
+<li class="prev"><a href="https://typecodes.com/linux/index2.html">&laquo; 前一页</a></li><li>
+       			<a href="https://typecodes.com/linux/index1.html">1</a>
+       		</li><li>
+       			<a href="https://typecodes.com/linux/index2.html">2</a>
+       		</li><li class="current">
+       			<a href="https://typecodes.com/linux/index.html">3</a>
        		</li></ol>		</div>
 		<!--3. right sider begin-->
 <div class="col-md-3" id="blog-secondary" role="complementary">
@@ -193,7 +197,6 @@ VMware Network Adapter VMnet8：这是Host用于与NAT虚拟网络进行通信�
 		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
 	</section>
 </div>
-				</div>
 			</div>
 		</div>
 		<!--4. bottom begin-->

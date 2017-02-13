@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html dir="ltr" lang="zh-CN" class="no-js">
+<html class="no-js">
 	<head>
-		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
   		<meta name="renderer" content="webkit">
 		<title>分类 cseries 下的文章 - TypeCodes</title>
 		<meta name="description" content="分类 cseries 下的文章 - TypeCodes" />
@@ -34,8 +35,7 @@
 			</div>
 		</div>
 		<div class="container">
-			<div class="row">
-		<!--2. left sider begin-->
+			<div class="row">		<!--2. left sider begin-->
 		<div class="col-md-9" id="blog-main" role="main">
 		  	<!--article recycle-->
 			<article class="post">
@@ -45,10 +45,10 @@
 </ul>
 <div class="post-content fmt">
 	<p>前文<a href="https://typecodes.com/cseries/tcpdumpwiresharkclosewait1.html" title="查看原文">《使用TCPDUMP和Wireshark排查服务端CLOSE_WAIT（一）》</a>通过TCPDUMP和Wireshark在利用CentOS7作为服务端、Windows10作为客户端，模拟演示了一个TCP通信的CLOSE_WAIT状态，这篇文章主要利用前文的数据尝试解释Linux服务端产生CLOSE_WAIT状态的原因。</p>
-<p><img alt="客户端和服务端的TCP通信流程" src="https://o3cex9zsl.qnssl.com/2016/02/socket_tcpflow.png" title="客户端和服务端的TCP通信流程" /></p>
+<p><img alt="客户端和服务端的TCP通信流程" src="https://o3cex9zsl.qnssl.com/2016/02/socket_tcpflow.png" title="客户端和服务端的TCP通信流程"></p>
 
 	<p class="more"><a href="https://typecodes.com/cseries/tcpdumpwiresharkclosewait2.html" title="使用TCPDUMP和Wireshark排查服务端CLOSE_WAIT（二）">- 阅读剩余部分 -</a></p>
-			</article>
+</div>			</article>
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/cseries/tcpdumpwiresharkclosewait1.html">使用TCPDUMP和Wireshark排查服务端CLOSE_WAIT（一）</a></h2>
 <ul class="post-meta">
@@ -56,10 +56,10 @@
 </ul>
 <div class="post-content fmt">
 	<p>在Linux后端服务网络通信开发中，可能会遇到CLOSE_WAIT的状况。引起TCP CLOSE_WAIT状态的情况很多，归根结底还是由于被动关闭的一方没有关闭socket链路导致的。这篇文章主要是通过用一个简单的例子通过TCPDUMP和Wireshark这两个工具来模拟产生CLOSE_WAIT的情况，<a href="https://typecodes.com/cseries/tcpdumpwiresharkclosewait2.html" title="《使用TCPDUMP和Wireshark排查服务端CLOSE_WAIT（二）》">下一篇</a>主要是对这个问题的原理解释。</p>
-<p><img alt="CentOS服务端建立监听端口" src="https://o3cex9zsl.qnssl.com/2016/02/server_socket_8000.png" title="CentOS服务端建立监听端口" /></p>
+<p><img alt="CentOS服务端建立监听端口" src="https://o3cex9zsl.qnssl.com/2016/02/server_socket_8000.png" title="CentOS服务端建立监听端口"></p>
 
 	<p class="more"><a href="https://typecodes.com/cseries/tcpdumpwiresharkclosewait1.html" title="使用TCPDUMP和Wireshark排查服务端CLOSE_WAIT（一）">- 阅读剩余部分 -</a></p>
-			</article>
+</div>			</article>
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/cseries/multilprocessthreadgdb.html">Linux多进程和多线程的一次gdb调试实例</a></h2>
 <ul class="post-meta">
@@ -69,7 +69,7 @@
 	<p>Linux C/C++开发中gdb进行多进程和多线程的调试一直比较麻烦，在CSDN上看到高科的一篇文章<a href="http://blog.csdn.net/pbymw8iwm/article/details/7876797" title="查看原文">《gdb调试多进程和多线程命令》</a>比较有启发，这里就自己重新整理并做了一个GDB多进程/线程的调试实践。</p>
 
 	<p class="more"><a href="https://typecodes.com/cseries/multilprocessthreadgdb.html" title="Linux多进程和多线程的一次gdb调试实例">- 阅读剩余部分 -</a></p>
-			</article>
+</div>			</article>
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/cseries/linuxgccgconnectmysql.html">Linux c语言连接MySQL数据库实例</a></h2>
 <ul class="post-meta">
@@ -79,7 +79,7 @@
 	<p>工作上自己在Linux C/C++开发时，用的都是Oracle数据库，毕竟企业级应用追求稳定性好、安全可靠。业余时间做了一些WEB开发，接触到MySQL数据库比较多，也比较喜欢开源的MySQL。之前都是用PHP连接MySQL数据库，这里自己用C语言连接MySQL，执行一些简单的连接、查询操作、异常处理等操作。</p>
 
 	<p class="more"><a href="https://typecodes.com/cseries/linuxgccgconnectmysql.html" title="Linux c语言连接MySQL数据库实例">- 阅读剩余部分 -</a></p>
-			</article>
+</div>			</article>
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/cseries/gccgensharedlib.html">Linux gcc编译生成静态库及使用方法</a></h2>
 <ul class="post-meta">
@@ -89,7 +89,7 @@
 	<p>这篇文章主要通过实例演示在Linux下如何使用gcc编译生成动态库文件以及其它程序如何使用该动态库。</p>
 
 	<p class="more"><a href="https://typecodes.com/cseries/gccgensharedlib.html" title="Linux gcc编译生成静态库及使用方法">- 阅读剩余部分 -</a></p>
-			</article>
+</div>			</article>
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/cseries/cppgeneralmakefile.html">Linux C/C++工程中可生成ELF、动/静态库文件的通用Makefile</a></h2>
 <ul class="post-meta">
@@ -97,10 +97,10 @@
 </ul>
 <div class="post-content fmt">
 	<p>最近写了一个*nix环境下的Makefile文件，支持编译C/C++，同时能够通过参数配置生成ELF目标文件、动态链接库(.so)和静态链接库(.a)文件。</p>
-<p><img alt="Linux C/C++工程中可生成ELF、动/静态库文件的通用Makefile" src="https://o3cex9zsl.qnssl.com/2015/08/linux_general_makefile.png" title="Linux C/C++工程中可生成ELF、动/静态库文件的通用Makefile" /></p>
+<p><img alt="Linux C/C++工程中可生成ELF、动/静态库文件的通用Makefile" src="https://o3cex9zsl.qnssl.com/2015/08/linux_general_makefile.png" title="Linux C/C++工程中可生成ELF、动/静态库文件的通用Makefile"></p>
 
 	<p class="more"><a href="https://typecodes.com/cseries/cppgeneralmakefile.html" title="Linux C/C++工程中可生成ELF、动/静态库文件的通用Makefile">- 阅读剩余部分 -</a></p>
-			</article>
+</div>			</article>
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/cseries/libraryundefinedref.html">解决make编译链接动态库错误：libxx.so: undefined reference to xx</a></h2>
 <ul class="post-meta">
@@ -111,7 +111,7 @@
 <p>由于链接生成libsrcpbl.so动态库的.o文件比较多，无法定位具体的错误程序文件和位置，所以折腾了较长时间。</p>
 
 	<p class="more"><a href="https://typecodes.com/cseries/libraryundefinedref.html" title="解决make编译链接动态库错误：libxx.so: undefined reference to xx">- 阅读剩余部分 -</a></p>
-			</article>
+</div>			</article>
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/cseries/nmobjectfilesymbol.html">Unix系统中nm命令展示目标文件符号的方法</a></h2>
 <ul class="post-meta">
@@ -119,7 +119,7 @@
 </ul>
 <div class="post-content fmt">
 	<p>在*nix系统中，通过gnu开源gcc或者g++工具生成的目标文件（object file），可以用<code>nm</code>、<code>objdump</code>和<code>readelf</code>这三个命令来查看。</p>
-<div class="highlight"><pre>nm：显示目标文件中的符号；
+<div class="highlight"><pre><span></span>nm：显示目标文件中的符号；
 objdump：打印目标文件中的详细信息；
 readelf：显示关于 ELF 目标文件的信息。
 </pre></div>
@@ -128,13 +128,19 @@ readelf：显示关于 ELF 目标文件的信息。
 <p>之前在调试makefile文件的时候，链接动态库出错：<code>libsrcpbl.so: undefined reference to 'gcProgramName'</code>。也就是变量gcProgramName没定义，后来通过<code>nm -u libsrcpbl.so</code>命令辅助排查解决了。</p>
 
 	<p class="more"><a href="https://typecodes.com/cseries/nmobjectfilesymbol.html" title="Unix系统中nm命令展示目标文件符号的方法">- 阅读剩余部分 -</a></p>
-			</article>
+</div>			</article>
 		  	<!--page navigation-->
 <ol class="page-navigator">
-<li class="prev"><a href="https://typecodes.com/cseries/index.html">&laquo; 前一页</a></li><li><a href="https://typecodes.com/cseries/index.html">1</a><li class="current"><a href="https://typecodes.com/cseries/index2.html">2</a>
-       		</li><li><a href="https://typecodes.com/cseries/index3.html">3</a>
-       		</li><li><a href="https://typecodes.com/cseries/index4.html">4</a>
-       		</li><li><a href="https://typecodes.com/cseries/index5.html">5</a>
+<li class="prev"><a href="https://typecodes.com/cseries/index.html">&laquo; 前一页</a></li><li>
+       			<a href="https://typecodes.com/cseries/index1.html">1</a>
+       		</li><li class="current">
+       			<a href="https://typecodes.com/cseries/index.html">2</a>
+       		</li><li>
+       			<a href="https://typecodes.com/cseries/index3.html">3</a>
+       		</li><li>
+       			<a href="https://typecodes.com/cseries/index4.html">4</a>
+       		</li><li>
+       			<a href="https://typecodes.com/cseries/index5.html">5</a>
        		</li><li class="next">
        		<a href="https://typecodes.com/cseries/index3.html">后一页 &raquo;</a>
        </li></ol>		</div>
@@ -203,7 +209,6 @@ readelf：显示关于 ELF 目标文件的信息。
 		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
 	</section>
 </div>
-				</div>
 			</div>
 		</div>
 		<!--4. bottom begin-->

@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html dir="ltr" lang="zh-CN" class="no-js">
+<html class="no-js">
 	<head>
-		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
   		<meta name="renderer" content="webkit">
 		<title>翻越那道墙，用谷歌Goagent打造自己的chrome利器 &mdash; TypeCodes</title>
 		<meta name="description" content="翻越那道墙，用谷歌Goagent打造自己的chrome利器 &mdash; TypeCodes" />
@@ -34,8 +35,7 @@
 			</div>
 		</div>
 		<div class="container">
-			<div class="row">
-		<!--2. left sider begin-->
+			<div class="row">		<!--2. left sider begin-->
 		<div class="col-md-9" id="blog-main" role="main">
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/mix/chromegoagent.html">翻越那道墙，用谷歌Goagent打造自己的chrome利器</a></h2>
@@ -51,7 +51,7 @@
 <h5>2 在谷歌GAE里创建APP应用</h5>
 <p>废话：Google App Engine（简称GAE）是一个开发、托管网络应用程序的平台，使用 Google 管理的数据中心。它使用了云计算技术。它跨越多个服务器和数据中心来虚拟化应用程序。其他基于云的平台还有 Amazon Web Services 和微软的 Azure 服务平台等。而且在用户使用一定的资源时是免费的。支付额外的费用可以获得应用程序所需的更多的存储空间、带宽或是CPU负载。GAE当前支持的编程语言是 Python 和 Java。</p>
 <p>重点：登录并创建APP应用：<a href="https://appengine.google.com/start/createapp" title="登录并创建谷歌APP应用">https://appengine.google.com/start/createapp</a>，第一次创建需要手机验证，填写+86 12345678912即可。手机验证后会出现一个应用填表，主要填写Application Identifier（APP应用标识号）和Application Title（APP应用名称），其余选项保持默认。</p>
-<p><img alt="翻越那道墙，用谷歌Goagent打造自己的chrome利器-1" src="https://o3cex9zsl.qnssl.com/2012/07/11.jpg" title="翻越那道墙，用谷歌Goagent打造自己的chrome利器-1" /></p>
+<p><img alt="翻越那道墙，用谷歌Goagent打造自己的chrome利器-1" src="https://o3cex9zsl.qnssl.com/2012/07/11.jpg" title="翻越那道墙，用谷歌Goagent打造自己的chrome利器-1"></p>
 <h5>3 下载谷歌Goagent代理工具</h5>
 <p>废话：goagent是一个使用Python和Google Appengine SDK编写的代理软件。
 重点：下载谷歌Goagent：<a href="https://code.google.com/p/goagent/" title="下载谷歌Goagent">https://code.google.com/p/goagent/</a>。解压后会得到两个文件夹：“local”（用来配置本地客户端）和“server”（用来配置服务端）。</p>
@@ -63,11 +63,11 @@
 <h5>5 配置浏览器</h5>
 <p>在自己的chrome浏览器中下载Proxy SwitchySharp插件：<a href="https://chrome.google.com/webstore/detail/dpplabbmogkhghncfbfdeeokoefdjegm" title="下载谷歌Proxy SwitchySharp插件">https://chrome.google.com/webstore/detail/dpplabbmogkhghncfbfdeeokoefdjegm</a>
 安装后打开Proxy SwitchySharp插件的选项：在“导入/导出”栏目的最下行，“在线恢复备份”栏输入：https://raw.github.com/phus/phus-config/master/SwitchyOptions.bak或者https://goagent.googlecode.com/files/SwitchyOptions.bak，最后点击“在线恢复备份” 。</p>
-<p><img alt="翻越那道墙，用谷歌Goagent打造自己的chrome利器-2" src="https://o3cex9zsl.qnssl.com/2012/07/2.jpg" title="翻越那道墙，用谷歌Goagent打造自己的chrome利器-2" /></p>
+<p><img alt="翻越那道墙，用谷歌Goagent打造自己的chrome利器-2" src="https://o3cex9zsl.qnssl.com/2012/07/2.jpg" title="翻越那道墙，用谷歌Goagent打造自己的chrome利器-2"></p>
 <h5>6 开始翻越（启动goagent.exe）</h5>
 <p>1、点击“local”文件夹下的goagent.exe（第一次运行可能需要管理员权限）。ps：如果觉得每次都要点击这个文件麻烦的话，可以设置goagent程序开机自启动，运行“local”文件夹下的“addto-startup.vbs”文件即可。</p>
 <p>2、正式翻越，一般是在chrome浏览器的地址输入栏或者插件栏可以看到Proxy SwitchySharp插件上点击选择GoAgent，然后就可以看youtube.com，facebook.com，twitter.com以及真正的谷歌大神google.com等等。</p>
-<p><img alt="翻越那道墙，用谷歌Goagent打造自己的chrome利器-3" src="https://o3cex9zsl.qnssl.com/2012/07/3.jpg" title="翻越那道墙，用谷歌Goagent打造自己的chrome利器-3" /></p>
+<p><img alt="翻越那道墙，用谷歌Goagent打造自己的chrome利器-3" src="https://o3cex9zsl.qnssl.com/2012/07/3.jpg" title="翻越那道墙，用谷歌Goagent打造自己的chrome利器-3"></p>
 <h5>7 说明</h5>
 <p>Google App Engine提供给免费用户的流量是每天1GB，而且每天的流量重新清零的时间好像是北京时间下午16点整（不是24点额）。</p>
 <h5>8 UPDATE 2012.10.08</h5>
@@ -75,7 +75,7 @@
 <p>百度云盘：http://pan.baidu.com/share/link?shareid=78704&amp;uk=1879910561</p>
 <h5>9 UPDATE 2013.10.17 21:14</h5>
 <p>如果goagent软件、Proxy SwitchySharp插件和.bak文件被墙无法下载，请移步到上面网盘地址下载。</p>
-		    	<div class="donate_div_container">
+</div>		    	<div class="donate_div_container">
 					<div class="donate_div">
 						<p><a href="javascript:void(0)" onclick="donateToggle()" class="donate_word" title="打赏，支持一下">打赏</a></p>
 						<div class="hide_box"></div>
@@ -105,7 +105,7 @@
 					</div>
 				</div>
 		    	<div class="tags">
-					<div class="post_tags">
+					<div class="post_tags" itemprop="keywords">
 						Tags: <a href="https://typecodes.com/tag/goagent.html">goagent</a>,<a href="https://typecodes.com/tag/ti-zi.html">梯子</a>					</div>
 					<div class="post-share">
 						<ul class="post-shareul clearfix">
@@ -197,7 +197,6 @@
 		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
 	</section>
 </div>
-				</div>
 			</div>
 		</div>
 		<!--4. bottom begin-->

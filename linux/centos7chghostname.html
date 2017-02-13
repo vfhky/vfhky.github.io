@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html dir="ltr" lang="zh-CN" class="no-js">
+<html class="no-js">
 	<head>
-		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
   		<meta name="renderer" content="webkit">
 		<title>CentOS7系统如何修改主机名 &mdash; TypeCodes</title>
 		<meta name="description" content="CentOS7系统如何修改主机名 &mdash; TypeCodes" />
@@ -34,8 +35,7 @@
 			</div>
 		</div>
 		<div class="container">
-			<div class="row">
-		<!--2. left sider begin-->
+			<div class="row">		<!--2. left sider begin-->
 		<div class="col-md-9" id="blog-main" role="main">
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/linux/centos7chghostname.html">CentOS7系统如何修改主机名</a></h2>
@@ -44,12 +44,12 @@
 </ul>
 <div class="post-content fmt">
 	<p>前段时间博客一直处于关闭状态，主要是做了一些升级。之前博主用的是CentOS6.5系统，然后升级到了如今的CentOS7版本。另外Nginx、Mysql和PHP都做了相应的版本升级，后续文章会给大家分享下。这篇文章主要讲讲CentOS7系统如何修改主机名。</p>
-<p><img alt="CentOS7系统如何修改主机名" src="https://o3cex9zsl.qnssl.com/2015/04/centos7chghostname.png" title="CentOS7系统如何修改主机名" /></p>
+<p><img alt="CentOS7系统如何修改主机名" src="https://o3cex9zsl.qnssl.com/2015/04/centos7chghostname.png" title="CentOS7系统如何修改主机名"></p>
 
 
 <h5>1 CentOS7以下的版本修改主机名的方法</h5>
 <p>CentOS7以下的系统（包括CentOS6~CentOS6.5），我们通过修改HOSTNAME的方式即可得到想要的效果。如下所示，<code>AY140418191438674cce</code>是博主的阿里云主机实例名（也即主机名），将其修改成了<code>typecodes</code>。</p>
-<div class="highlight"><pre>[root@AY140418191438674cce ~]# vim /etc/sysconfig/network
+<div class="highlight"><pre><span></span>[root@AY140418191438674cce ~]# vim /etc/sysconfig/network
   1 # Created by anaconda
   2 NETWORKING_IPV6=no
   3 PEERNTP=no
@@ -62,10 +62,10 @@
 
 <h5>2 CentOS7以及CentOS7.1版本修改主机名的方法</h5>
 <p>目前CentOS的最高版本是CentOS7.1，有较多CentOS6系列能使用的命令都不能使用或者做了有些改动。例如，在CentOS7或者CentOS7.1系统中，直接使用上面的方法修改主机名，最后都是没有效果的。它已经被简化为下面这条命令：</p>
-<div class="highlight"><pre>[root@AY140418191438674cce ~]# hostnamectl set-hostname typecodes
+<div class="highlight"><pre><span></span>[root@AY140418191438674cce ~]# hostnamectl set-hostname typecodes
 [root@typecodes ~]#
 </pre></div>
-		    	<div class="donate_div_container">
+</div>		    	<div class="donate_div_container">
 					<div class="donate_div">
 						<p><a href="javascript:void(0)" onclick="donateToggle()" class="donate_word" title="打赏，支持一下">打赏</a></p>
 						<div class="hide_box"></div>
@@ -95,7 +95,7 @@
 					</div>
 				</div>
 		    	<div class="tags">
-					<div class="post_tags">
+					<div class="post_tags" itemprop="keywords">
 						Tags: <a href="https://typecodes.com/tag/centos7.html">centos7</a>,<a href="https://typecodes.com/tag/centoszhu-ji-ming.html">centos主机名</a>					</div>
 					<div class="post-share">
 						<ul class="post-shareul clearfix">
@@ -187,7 +187,6 @@
 		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
 	</section>
 </div>
-				</div>
 			</div>
 		</div>
 		<!--4. bottom begin-->

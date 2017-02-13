@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html dir="ltr" lang="zh-CN" class="no-js">
+<html class="no-js">
 	<head>
-		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
   		<meta name="renderer" content="webkit">
 		<title>TypeCodes</title>
 		<meta name="description" content="TypeCodes" />
@@ -34,8 +35,7 @@
 			</div>
 		</div>
 		<div class="container">
-			<div class="row">
-		<!--2. left sider begin-->
+			<div class="row">		<!--2. left sider begin-->
 		<div class="col-md-9" id="blog-main" role="main">
 		  	<!--article recycle-->
 			<article class="post">
@@ -46,9 +46,9 @@
 <div class="post-content fmt">
 	<p>在点击用C#命令提示工具生成.exe文件时，很可能会出现“一闪而过”的问题。</p>
 <p>方法1：这个方法是通用的：在.CS代码的最后加上这句 Console.ReadLine(); ，它的作用是“等待用户输入”，这样DOS窗口直到你敲击回车键才会关闭；或者在程序最后加上一句 Console.ReadKey(); ，这样DOS窗口接收一个字符才会退出。</p>
-<p>方法2 ...</p>
+<p>方法2 …</p>
 	<p class="more"><a href="https://typecodes.com/csharp/exeflashacross.html" title="解决C#生成的.exe文件“一闪而过”的问题">- 阅读剩余部分 -</a></p>
-			</article>
+</div>			</article>
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/mix/delwin7surpic.html">如何删除Win7任务栏上通知区域中的多余图标</a></h2>
 <ul class="post-meta">
@@ -59,7 +59,7 @@
 <p>步骤1 按住 "win+R" 打开"运行"窗口，然后输入 “regedit” 打开注册表编辑器。</p>
 
 	<p class="more"><a href="https://typecodes.com/mix/delwin7surpic.html" title="如何删除Win7任务栏上通知区域中的多余图标">- 阅读剩余部分 -</a></p>
-			</article>
+</div>			</article>
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/web/configiiserr.html">配置IIS出现错误的解决方法</a></h2>
 <ul class="post-meta">
@@ -71,7 +71,7 @@
 <p>解决：原来的网站是在32位的windows环境中生成的导致在win764位中出现错误（IIS7应用程序池默认没有启用32位程序，也就是说如果使用的是64位操作系统，而没有64位的Jet 4.0驱动程序，那么就要在IIS7中启用32位程序）。此时点击IIS管理器左边的“应用程序池”在“启用32位应用程序”选择“True”。</p>
 
 	<p class="more"><a href="https://typecodes.com/web/configiiserr.html" title="配置IIS出现错误的解决方法">- 阅读剩余部分 -</a></p>
-			</article>
+</div>			</article>
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/database/phpaspconndb.html">PHP和ASP的数据库连接代码</a></h2>
 <ul class="post-meta">
@@ -86,7 +86,7 @@
 5
 6
 7
-8</pre></div></td><td class="code"><div class="highlight"><pre><span class="cp">&lt;?php</span>
+8</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
     <span class="nv">$hostname</span><span class="o">=</span><span class="s2">&quot;hostname&quot;</span><span class="p">;</span><span class="c1">//MySQL主机/服务器名</span>
     <span class="nv">$dbname</span><span class="o">=</span><span class="s2">&quot;dbname&quot;</span><span class="p">;</span><span class="c1">//MySQL数据库名</span>
     <span class="nv">$username</span><span class="o">=</span><span class="s2">&quot;username&quot;</span><span class="p">;</span><span class="c1">//MySQL用户名</span>
@@ -100,7 +100,7 @@
 <p>将上述代码另存为conn.php，就可以通过在页面加入 require("conn.php"); 调用了。</p>
 
 	<p class="more"><a href="https://typecodes.com/database/phpaspconndb.html" title="PHP和ASP的数据库连接代码">- 阅读剩余部分 -</a></p>
-			</article>
+</div>			</article>
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/csharp/langannotation.html">几种编程语言的注释方法</a></h2>
 <ul class="post-meta">
@@ -117,22 +117,22 @@
  7
  8
  9
-10</pre></div></td><td class="code"><div class="highlight"><pre><span class="cp">&lt;!doctype html&gt;</span>
-<span class="nt">&lt;html</span> <span class="na">lang=</span><span class="s">&quot;en&quot;</span><span class="nt">&gt;</span>
-    <span class="nt">&lt;head&gt;</span>
-        <span class="nt">&lt;meta</span> <span class="na">charset=</span><span class="s">&quot;UTF-8&quot;</span><span class="nt">&gt;</span>
-        <span class="nt">&lt;title&gt;</span>Document<span class="nt">&lt;/title&gt;</span>
-    <span class="nt">&lt;/head&gt;</span>
-    <span class="nt">&lt;body&gt;</span>
-        <span class="nt">&lt;p&gt;</span>HTML语言如何注释&gt;/p&gt;<span class="c">&lt;!--HTML注释文字--&gt;</span>
-    <span class="nt">&lt;/body&gt;</span>
-<span class="nt">&lt;/html&gt;</span>
+10</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="cp">&lt;!doctype html&gt;</span>
+<span class="p">&lt;</span><span class="nt">html</span> <span class="na">lang</span><span class="o">=</span><span class="s">&quot;en&quot;</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">head</span><span class="p">&gt;</span>
+        <span class="p">&lt;</span><span class="nt">meta</span> <span class="na">charset</span><span class="o">=</span><span class="s">&quot;UTF-8&quot;</span><span class="p">&gt;</span>
+        <span class="p">&lt;</span><span class="nt">title</span><span class="p">&gt;</span>Document<span class="p">&lt;/</span><span class="nt">title</span><span class="p">&gt;</span>
+    <span class="p">&lt;/</span><span class="nt">head</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">body</span><span class="p">&gt;</span>
+        <span class="p">&lt;</span><span class="nt">p</span><span class="p">&gt;</span>HTML语言如何注释&gt;/p&gt;<span class="c">&lt;!--HTML注释文字--&gt;</span>
+    <span class="p">&lt;/</span><span class="nt">body</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">html</span><span class="p">&gt;</span>
 </pre></div>
 </td></tr></table>
 
 
 	<p class="more"><a href="https://typecodes.com/csharp/langannotation.html" title="几种编程语言的注释方法">- 阅读剩余部分 -</a></p>
-			</article>
+</div>			</article>
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/web/asimpajax.html">一个简单的Ajax应用</a></h2>
 <ul class="post-meta">
@@ -143,7 +143,7 @@
 <p>首先需要三个文件，simpleAjax.hml(用来看效果)，simpleAjax.js(用JavaScript中的XMLHttpRequest对象来直接与服务器进行通信)，simpleAjax.txt(可以自定义异步通信输出内容的文件)。</p>
 
 	<p class="more"><a href="https://typecodes.com/web/asimpajax.html" title="一个简单的Ajax应用">- 阅读剩余部分 -</a></p>
-			</article>
+</div>			</article>
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/web/talkajax.html">浅谈初步应用Ajax技术</a></h2>
 <ul class="post-meta">
@@ -154,7 +154,7 @@
 <p>由于Ajax在客服端的浏览器与Web服务器端之间使用异步数据传输（HTTP 请求），这样就可使网页从服务器请求少量的信息，而不是整个页面，从而降低了负载。下面通过我自己建的一个ASP网站中的注册页面register.asp来说明：</p>
 
 	<p class="more"><a href="https://typecodes.com/web/talkajax.html" title="浅谈初步应用Ajax技术">- 阅读剩余部分 -</a></p>
-			</article>
+</div>			</article>
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/web/aspanalyzetwo.html">从一段ASP代码分析HTML、CSS、ASP、SQL（二）</a></h2>
 <ul class="post-meta">
@@ -166,18 +166,28 @@
 <p>中部又由左边(第21行)和右边(第23行)构成，即 left.html 和 div id="right" 。中部的右边又由位于上面部分的1个flash层和2个content1层、下面部分的2个content层和1个留言板content2层。所以整个CSS布局框架就是这样的。值得注意的是中间部分嵌套了2个层(即左右两层)，右边的层又嵌套了6个层（1个flash层,2个content1层,2个content层,1个content2层）。</p>
 
 	<p class="more"><a href="https://typecodes.com/web/aspanalyzetwo.html" title="从一段ASP代码分析HTML、CSS、ASP、SQL（二）">- 阅读剩余部分 -</a></p>
-			</article>
+</div>			</article>
 		  	<!--page navigation-->
 <ol class="page-navigator">
-<li class="prev"><a href="https://typecodes.com/index26.html">&laquo; 前一页</a></li><li><a href="https://typecodes.com/index.html">1</a>
-       <li><a href="https://typecodes.com/index2.html">2</a>
-       		</li><li><span>...</span></li><li><a href="https://typecodes.com/index22.html">22</a>
-       		</li><li><a href="https://typecodes.com/index23.html">23</a>
-       		</li><li><a href="https://typecodes.com/index24.html">24</a>
-       		</li><li><a href="https://typecodes.com/index25.html">25</a>
-       		</li><li><a href="https://typecodes.com/index26.html">26</a>
-       		</li><li class="current"><a href="https://typecodes.com/index27.html">27</a>
-       		</li><li><a href="https://typecodes.com/index28.html">28</a>
+<li class="prev"><a href="https://typecodes.com/index26.html">&laquo; 前一页</a></li><li>
+       			<a href="https://typecodes.com/index1.html">1</a>
+       		</li>
+       <li>
+       			<a href="https://typecodes.com/index2.html">2</a>
+       		</li><li><span>...</span></li><li>
+       			<a href="https://typecodes.com/index22.html">22</a>
+       		</li><li>
+       			<a href="https://typecodes.com/index23.html">23</a>
+       		</li><li>
+       			<a href="https://typecodes.com/index24.html">24</a>
+       		</li><li>
+       			<a href="https://typecodes.com/index25.html">25</a>
+       		</li><li>
+       			<a href="https://typecodes.com/index26.html">26</a>
+       		</li><li class="current">
+       			<a href="https://typecodes.com/index.html">27</a>
+       		</li><li>
+       			<a href="https://typecodes.com/index28.html">28</a>
        		</li><li class="next">
        		<a href="https://typecodes.com/index28.html">后一页 &raquo;</a>
        </li></ol>		</div>
@@ -246,7 +256,6 @@
 		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
 	</section>
 </div>
-				</div>
 			</div>
 		</div>
 		<!--4. bottom begin-->

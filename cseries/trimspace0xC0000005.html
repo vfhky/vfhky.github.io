@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html dir="ltr" lang="zh-CN" class="no-js">
+<html class="no-js">
 	<head>
-		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
   		<meta name="renderer" content="webkit">
 		<title>未经处理的异常:0xC0000005:读取/写入位置冲突——从去掉字符串所有空格说起 &mdash; TypeCodes</title>
 		<meta name="description" content="未经处理的异常:0xC0000005:读取/写入位置冲突——从去掉字符串所有空格说起 &mdash; TypeCodes" />
@@ -34,8 +35,7 @@
 			</div>
 		</div>
 		<div class="container">
-			<div class="row">
-		<!--2. left sider begin-->
+			<div class="row">		<!--2. left sider begin-->
 		<div class="col-md-9" id="blog-main" role="main">
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/cseries/trimspace0xC0000005.html">未经处理的异常:0xC0000005:读取/写入位置冲突——从去掉字符串所有空格说起</a></h2>
@@ -57,7 +57,7 @@
  8
  9
 10
-11</pre></div></td><td class="code"><div class="highlight"><pre><span class="kt">char</span> <span class="o">*</span> <span class="n">pcontent</span> <span class="o">=</span> <span class="s">&quot;  abcdef  &quot;</span><span class="p">;</span> <span class="c1">//待去掉前后空格的字符串(共10字节)</span>
+11</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="kt">char</span> <span class="o">*</span> <span class="n">pcontent</span> <span class="o">=</span> <span class="s">&quot;  abcdef  &quot;</span><span class="p">;</span> <span class="c1">//待去掉前后空格的字符串(共10字节)</span>
 <span class="kt">char</span> <span class="o">*</span> <span class="n">p</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>
 
 <span class="cm">/* 1去除后面的空格 */</span>
@@ -72,9 +72,9 @@
 </td></tr></table>
 
 <p>咋一看，思路挺对的，遍历字符串后面的所有空格，然后只要将字符串中‘f’后面的一位空格改成字符串结束符即可。遗憾的是出现了<code>Segmentation fault(coredump)</code>，用Vs调试，程序执行到断点 <code>*(p+1) = 0x00;</code> 时，出现未经处理的异常: 0xC0000005 写入冲突。</p>
-<p><img alt="未经处理的异常: 0xC0000005 写入冲突" src="https://o3cex9zsl.qnssl.com/2014/08/error0xC0000005.png" title="未经处理的异常: 0xC0000005 写入冲突" /></p>
+<p><img alt="未经处理的异常: 0xC0000005 写入冲突" src="https://o3cex9zsl.qnssl.com/2014/08/error0xC0000005.png" title="未经处理的异常: 0xC0000005 写入冲突"></p>
 <p>调用内存和堆栈可以看到字符串的地址是<code>0x001b575c - 0x001b5765</code>，其中 0x001b5764 里面的元素是 0x20，表示空格。</p>
-<p><img alt="vs调用堆栈查看未经处理的异常: 0xC0000005 写入冲突" src="https://o3cex9zsl.qnssl.com/2014/08/vsdebug0xC0000005.png" title="vs调用堆栈查看未经处理的异常: 0xC0000005 写入冲突" /></p>
+<p><img alt="vs调用堆栈查看未经处理的异常: 0xC0000005 写入冲突" src="https://o3cex9zsl.qnssl.com/2014/08/vsdebug0xC0000005.png" title="vs调用堆栈查看未经处理的异常: 0xC0000005 写入冲突"></p>
 <p>为什么把字符串结束符号'\0'写入到地址 0x001b5764 中就出错呢？原因是：定义指针pcontent的时候，语句<code>char * pcontent = "  abcdef  "</code>中的字符串是一个常量<code>abcdef</code>。常量在内存中是不可以被改写的，所以执行<code>*(p+1) = 0x00;</code>就会出现<code>未经处理的异常: 0xC0000005: 写入位置冲突</code>。</p>
 <p>另外，对于内存中的 0x00000000 地址，不能执行读取和写入操作。例如前面的<code>char * p = NULL;</code>这种指针初始化（避免成为野指针）操作，在后面不能直接来一个<code>printf("%c", *p)</code>，否则就会出现错误<code>未经处理的异常:0xC0000005:读取位置0x00000000时发生冲突</code>。</p>
 <p>知道原理后，改成正确的去掉一个字符串前后的所有空格的程序：</p>
@@ -108,13 +108,13 @@
 28
 29
 30
-31</pre></div></td><td class="code"><div class="highlight"><pre><span class="cm">/**</span>
+31</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="cm">/**</span>
 <span class="cm"> * @FileName :  trimallspace.c</span>
 <span class="cm"> * @Author   :  vfhky https://typecodes.com 20140725</span>
 <span class="cm"> * @Functions:  去掉字符串前后所有的空格</span>
 <span class="cm">*/</span>
-<span class="cp">#include &lt;string.h&gt;</span>
-<span class="cp">#include &lt;stdio.h&gt;</span>
+<span class="cp">#include</span> <span class="cpf">&lt;string.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
 <span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>
 <span class="p">{</span>
     <span class="kt">char</span> <span class="o">*</span> <span class="n">p</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>
@@ -141,7 +141,7 @@
 <span class="p">}</span>
 </pre></div>
 </td></tr></table>
-		    	<div class="donate_div_container">
+</div>		    	<div class="donate_div_container">
 					<div class="donate_div">
 						<p><a href="javascript:void(0)" onclick="donateToggle()" class="donate_word" title="打赏，支持一下">打赏</a></p>
 						<div class="hide_box"></div>
@@ -171,7 +171,7 @@
 					</div>
 				</div>
 		    	<div class="tags">
-					<div class="post_tags">
+					<div class="post_tags" itemprop="keywords">
 						Tags: <a href="https://typecodes.com/tag/0xc0000005.html">0xc0000005</a>,<a href="https://typecodes.com/tag/du-qu-xie-ru-wei-zhi-chong-tu.html">读取/写入位置冲突</a>,<a href="https://typecodes.com/tag/qu-diao-zi-fu-chuan-suo-you-kong-ge.html">去掉字符串所有空格</a>					</div>
 					<div class="post-share">
 						<ul class="post-shareul clearfix">
@@ -263,7 +263,6 @@
 		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
 	</section>
 </div>
-				</div>
 			</div>
 		</div>
 		<!--4. bottom begin-->

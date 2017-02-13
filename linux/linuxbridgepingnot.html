@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html dir="ltr" lang="zh-CN" class="no-js">
+<html class="no-js">
 	<head>
-		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
   		<meta name="renderer" content="webkit">
 		<title>Linux问题两连击：桥接模式无法上网、ping域名失败 &mdash; TypeCodes</title>
 		<meta name="description" content="Linux问题两连击：桥接模式无法上网、ping域名失败 &mdash; TypeCodes" />
@@ -34,8 +35,7 @@
 			</div>
 		</div>
 		<div class="container">
-			<div class="row">
-		<!--2. left sider begin-->
+			<div class="row">		<!--2. left sider begin-->
 		<div class="col-md-9" id="blog-main" role="main">
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/linux/linuxbridgepingnot.html">Linux问题两连击：桥接模式无法上网、ping域名失败</a></h2>
@@ -49,7 +49,7 @@
 
 
 <p>那么我们就需要配置Linux的DNS，登录root用户，然后找到/etc/目录下的resolv.conf文件，然后修改DNS。这样就解决了Linux系统中桥接模式无法上网、能ping通ip但不能ping通域名的问题。</p>
-<div class="highlight"><pre>[root@localhost ~]# ping baidu.com
+<div class="highlight"><pre><span></span>[root@localhost ~]# ping baidu.com
 ping: unknown host baidu.com
 
 [root@localhost ~]# vi /etc/resolv.conf
@@ -69,7 +69,7 @@ PING baidu.com (123.125.114.144) 56(84) bytes of data.
 ……
 [root@localhost ~]# firefox typecodes.com
 </pre></div>
-		    	<div class="donate_div_container">
+</div>		    	<div class="donate_div_container">
 					<div class="donate_div">
 						<p><a href="javascript:void(0)" onclick="donateToggle()" class="donate_word" title="打赏，支持一下">打赏</a></p>
 						<div class="hide_box"></div>
@@ -99,7 +99,7 @@ PING baidu.com (123.125.114.144) 56(84) bytes of data.
 					</div>
 				</div>
 		    	<div class="tags">
-					<div class="post_tags">
+					<div class="post_tags" itemprop="keywords">
 						Tags: <a href="https://typecodes.com/tag/linuxqiao-jie-mo-shi.html">linux桥接模式</a>					</div>
 					<div class="post-share">
 						<ul class="post-shareul clearfix">
@@ -191,7 +191,6 @@ PING baidu.com (123.125.114.144) 56(84) bytes of data.
 		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
 	</section>
 </div>
-				</div>
 			</div>
 		</div>
 		<!--4. bottom begin-->

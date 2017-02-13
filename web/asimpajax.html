@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html dir="ltr" lang="zh-CN" class="no-js">
+<html class="no-js">
 	<head>
-		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
   		<meta name="renderer" content="webkit">
 		<title>一个简单的Ajax应用 &mdash; TypeCodes</title>
 		<meta name="description" content="一个简单的Ajax应用 &mdash; TypeCodes" />
@@ -34,8 +35,7 @@
 			</div>
 		</div>
 		<div class="container">
-			<div class="row">
-		<!--2. left sider begin-->
+			<div class="row">		<!--2. left sider begin-->
 		<div class="col-md-9" id="blog-main" role="main">
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/web/asimpajax.html">一个简单的Ajax应用</a></h2>
@@ -57,16 +57,16 @@
  7
  8
  9
-10</pre></div></td><td class="code"><div class="highlight"><pre><span class="nt">&lt;html&gt;</span>
-    <span class="nt">&lt;head&gt;</span>
-        <span class="nt">&lt;title&gt;</span>一个简单的Ajax应用<span class="nt">&lt;/title&gt;</span>
-        <span class="nt">&lt;script </span><span class="na">type=</span><span class="s">&quot;text/javascript&quot;</span> <span class="na">src=</span><span class="s">&quot;simpleAjax.js&quot;</span><span class="nt">&gt;&lt;/script&gt;</span>
-    <span class="nt">&lt;/head&gt;</span>
-    <span class="nt">&lt;body&gt;</span>
-        <span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">&quot;button&quot;</span> <span class="na">value=</span><span class="s">&quot;Ajax请求&quot;</span> <span class="na">onclick=</span><span class="s">&quot;startrequest()&quot;</span><span class="nt">/&gt;</span>
-        <span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">&quot;responseResult&quot;</span><span class="nt">&gt;&lt;/div&gt;</span>  <span class="c">&lt;!--节点responseResult将在simpleAjax.js中被使用，最后输出simplAjax.txt中的文字--&gt;</span>
-    <span class="nt">&lt;/body&gt;</span>
-<span class="nt">&lt;/html&gt;</span>
+10</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="p">&lt;</span><span class="nt">html</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">head</span><span class="p">&gt;</span>
+        <span class="p">&lt;</span><span class="nt">title</span><span class="p">&gt;</span>一个简单的Ajax应用<span class="p">&lt;/</span><span class="nt">title</span><span class="p">&gt;</span>
+        <span class="p">&lt;</span><span class="nt">script</span> <span class="na">type</span><span class="o">=</span><span class="s">&quot;text/javascript&quot;</span> <span class="na">src</span><span class="o">=</span><span class="s">&quot;simpleAjax.js&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+    <span class="p">&lt;/</span><span class="nt">head</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">body</span><span class="p">&gt;</span>
+        <span class="p">&lt;</span><span class="nt">input</span> <span class="na">type</span><span class="o">=</span><span class="s">&quot;button&quot;</span> <span class="na">value</span><span class="o">=</span><span class="s">&quot;Ajax请求&quot;</span> <span class="na">onclick</span><span class="o">=</span><span class="s">&quot;startrequest()&quot;</span><span class="p">/&gt;</span>
+        <span class="p">&lt;</span><span class="nt">div</span> <span class="na">id</span><span class="o">=</span><span class="s">&quot;responseResult&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>  <span class="c">&lt;!--节点responseResult将在simpleAjax.js中被使用，最后输出simplAjax.txt中的文字--&gt;</span>
+    <span class="p">&lt;/</span><span class="nt">body</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">html</span><span class="p">&gt;</span>
 </pre></div>
 </td></tr></table>
 
@@ -93,7 +93,7 @@
 20
 21
 22
-23</pre></div></td><td class="code"><div class="highlight"><pre><span class="kd">var</span> <span class="nx">xmlhttp</span><span class="o">=</span><span class="kc">null</span><span class="p">;</span><span class="c1">//首先创建一个作为 XMLHttpRequest 对象使用的 xmlhttp 变量,值设为 null</span>
+23</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="kd">var</span> <span class="nx">xmlhttp</span><span class="o">=</span><span class="kc">null</span><span class="p">;</span><span class="c1">//首先创建一个作为 XMLHttpRequest 对象使用的 xmlhttp 变量,值设为 null</span>
 <span class="kd">function</span> <span class="nx">createXMLHttpRequest</span><span class="p">(){</span>
     <span class="k">if</span> <span class="p">(</span><span class="nb">window</span><span class="p">.</span><span class="nx">XMLHttpRequest</span><span class="p">){</span>
         <span class="nx">xmlhttp</span><span class="o">=</span><span class="k">new</span> <span class="nx">XMLHttpRequest</span><span class="p">();</span><span class="c1">//针对 IE7+, Firefox, Chrome, Opera, Safari</span>
@@ -126,7 +126,7 @@
 4
 5
 6
-7</pre></div></td><td class="code"><div class="highlight"><pre>第一个函数 createXMLHttp() 的作用是根据客服端浏览器类型（IE和非IE）以及IE中安装的JavaScript技术版本的不同创建不同的XMLHttpRequest对象。XMLHttpRequest对象用于在后台与服务器交换数据。它能够：在不重新加载页面的情况下更新网页、在页面已加载后从服务器请求数据、在页面已加载后从服务器接收数据、在后台向服务器发送数据。
+7</pre></div></td><td class="code"><div class="highlight"><pre><span></span>第一个函数 createXMLHttp() 的作用是根据客服端浏览器类型（IE和非IE）以及IE中安装的JavaScript技术版本的不同创建不同的XMLHttpRequest对象。XMLHttpRequest对象用于在后台与服务器交换数据。它能够：在不重新加载页面的情况下更新网页、在页面已加载后从服务器请求数据、在页面已加载后从服务器接收数据、在后台向服务器发送数据。
 
 其中 xmlhttp.onreadystatechange 表示每当存有xmlhttprequest的状态信息的readyState改变时，就会触发 这个onreadystatechange 事件。当 readyState 等于 4 且状态为 200 时，表示响应已就绪。
 
@@ -154,7 +154,7 @@
 13
 14
 15
-16</pre></div></td><td class="code"><div class="highlight"><pre><span class="kd">var</span> <span class="nx">xmlhttp</span><span class="o">=</span><span class="kc">null</span><span class="p">;</span><span class="c1">//首先创建一个作为 XMLHttpRequest 对象使用的 XMLHttp 变量,值设为 null</span>
+16</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="kd">var</span> <span class="nx">xmlhttp</span><span class="o">=</span><span class="kc">null</span><span class="p">;</span><span class="c1">//首先创建一个作为 XMLHttpRequest 对象使用的 XMLHttp 变量,值设为 null</span>
 <span class="kd">function</span> <span class="nx">startrequest</span><span class="p">(){</span>
     <span class="k">if</span> <span class="p">(</span><span class="nb">window</span><span class="p">.</span><span class="nx">XMLHttpRequest</span><span class="p">){</span><span class="c1">//针对 IE7+, Firefox, Chrome, Opera, Safari</span>
         <span class="nx">xmlhttp</span><span class="o">=</span><span class="k">new</span> <span class="nx">XMLHttpRequest</span><span class="p">();</span>
@@ -174,9 +174,9 @@
 </td></tr></table>
 
 <h5>5 相关截图</h5>
-<p><img alt="一个简单的Ajaxing用-1" src="https://o3cex9zsl.qnssl.com/2012/06/6.jpg" title="一个简单的Ajaxing用-1" /></p>
-<p><img alt="一个简单的Ajax应用-2" src="https://o3cex9zsl.qnssl.com/2012/06/7.jpg" title="一个简单的Ajax应用-2" /></p>
-		    	<div class="donate_div_container">
+<p><img alt="一个简单的Ajaxing用-1" src="https://o3cex9zsl.qnssl.com/2012/06/6.jpg" title="一个简单的Ajaxing用-1"></p>
+<p><img alt="一个简单的Ajax应用-2" src="https://o3cex9zsl.qnssl.com/2012/06/7.jpg" title="一个简单的Ajax应用-2"></p>
+</div>		    	<div class="donate_div_container">
 					<div class="donate_div">
 						<p><a href="javascript:void(0)" onclick="donateToggle()" class="donate_word" title="打赏，支持一下">打赏</a></p>
 						<div class="hide_box"></div>
@@ -206,7 +206,7 @@
 					</div>
 				</div>
 		    	<div class="tags">
-					<div class="post_tags">
+					<div class="post_tags" itemprop="keywords">
 						Tags: <a href="https://typecodes.com/tag/ajax.html">ajax</a>					</div>
 					<div class="post-share">
 						<ul class="post-shareul clearfix">
@@ -298,7 +298,6 @@
 		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
 	</section>
 </div>
-				</div>
 			</div>
 		</div>
 		<!--4. bottom begin-->

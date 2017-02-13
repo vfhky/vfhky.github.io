@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html dir="ltr" lang="zh-CN" class="no-js">
+<html class="no-js">
 	<head>
-		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
   		<meta name="renderer" content="webkit">
 		<title>标签 oracle 下的文章 - TypeCodes</title>
 		<meta name="description" content="标签 oracle 下的文章 - TypeCodes" />
@@ -34,8 +35,7 @@
 			</div>
 		</div>
 		<div class="container">
-			<div class="row">
-		<!--2. left sider begin-->
+			<div class="row">		<!--2. left sider begin-->
 		<div class="col-md-9" id="blog-main" role="main">
 		  	<!--article recycle-->
 			<article class="post">
@@ -48,7 +48,7 @@
 <p>这两份脚本代码比较简单，主要是利用了sqlplus命令将包含多条sql语句用于初始化Oracle数据库的sql文件执行。其中，<code>suntsm/suntsm@127.0.0.1/orcl</code>是<code>数据库用户名/用户密码@数据库IP：1521/实例名</code>的组合，当然Oracle默认的端口<code>1521</code>可以省略。另外，<code>tsmstuct.sql</code>和<code>tsmdata.sql</code>文件分别用于初始化表结构等数据和表数据。大家可以根据实际情况修改。</p>
 
 	<p class="more"><a href="https://typecodes.com/database/initoraclebatandshell.html" title="初始化Oracle数据库的bat批处理脚本和shell脚本">- 阅读剩余部分 -</a></p>
-			</article>
+</div>			</article>
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/database/oraclesqlerror.html">Oracle数据库SQL操作语句报错的解决</a></h2>
 <ul class="post-meta">
@@ -57,20 +57,20 @@
 <div class="post-content fmt">
 	<p>最近在小红帽里面用GCCC编译含Oracle数据库SQL操作语句的C程序时候遇到了下面的7个报错信息，现整理出来Mark一下。</p>
 <h5>1 错误信息</h5>
-<div class="highlight"><pre><span class="k">[-1400][ORA-01400: cannot insert NULL into (&quot;CARDMAIN&quot;.&quot;CLR_SFTC000BLOCK0&quot;.&quot;SE]</span>
-<span class="err">&lt;!--</span>
-<span class="err">描述：CARDMAIN数据库用户，CLR_SFTC000BLOCK0数据表，SE表字段</span>
+<div class="highlight"><pre><span></span><span class="k">[-1400][ORA-01400: cannot insert NULL into (&quot;CARDMAIN&quot;.&quot;CLR_SFTC000BLOCK0&quot;.&quot;SE]</span>
+<span class="na">&lt;!--</span>
+<span class="na">描述：CARDMAIN数据库用户，CLR_SFTC000BLOCK0数据表，SE表字段</span>
 
-<span class="err">原因：Oracle数据库对于特定类型的非空字段无法区分空值和空字符串</span>
+<span class="na">原因：Oracle数据库对于特定类型的非空字段无法区分空值和空字符串</span>
 
-<span class="err">解决：明确数据源中的空值类型，并且在INSERT和UPDATE中必须插入一个值，不能将某个值修改为NULL。</span>
-<span class="err">--&gt;</span>
+<span class="na">解决：明确数据源中的空值类型，并且在INSERT和UPDATE中必须插入一个值，不能将某个值修改为NULL。</span>
+<span class="na">--&gt;</span>
 </pre></div>
 
 
 
 	<p class="more"><a href="https://typecodes.com/database/oraclesqlerror.html" title="Oracle数据库SQL操作语句报错的解决">- 阅读剩余部分 -</a></p>
-			</article>
+</div>			</article>
 		  	<!--page navigation-->
 <ol class="page-navigator">
 </ol>		</div>
@@ -124,7 +124,6 @@
 		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
 	</section>
 </div>
-				</div>
 			</div>
 		</div>
 		<!--4. bottom begin-->

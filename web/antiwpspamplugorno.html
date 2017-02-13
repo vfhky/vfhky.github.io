@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html dir="ltr" lang="zh-CN" class="no-js">
+<html class="no-js">
 	<head>
-		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
   		<meta name="renderer" content="webkit">
 		<title>屏蔽wordpress垃圾评论的方法（插件和非插件） &mdash; TypeCodes</title>
 		<meta name="description" content="屏蔽wordpress垃圾评论的方法（插件和非插件） &mdash; TypeCodes" />
@@ -34,8 +35,7 @@
 			</div>
 		</div>
 		<div class="container">
-			<div class="row">
-		<!--2. left sider begin-->
+			<div class="row">		<!--2. left sider begin-->
 		<div class="col-md-9" id="blog-main" role="main">
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/web/antiwpspamplugorno.html">屏蔽wordpress垃圾评论的方法（插件和非插件）</a></h2>
@@ -50,7 +50,7 @@
 <p>WordPress自带的spam过滤插件Akismet，非常强大，可以过滤掉大部分垃圾评论。Akismet会对评论者、评论内容的关键字、评论者邮箱、链接地址做判断，从而确定是否要将评论列为待审批对象。虽然功能强大，但是也存在误判的情况，但是它最大的优点是“智能学习”。也就是当出现误判的时候，只要博主在后台将这条评论回复成正常即可，那么Akismet下次就不会过滤了。</p>
 <h5>（二）采用非插件方法：Anti-Spam</h5>
 <p>这个是由Willin Kan写的小墙工具，理论上可以100% 屏蔽机器人发出的spam；而如果是自然人提交评论，小墙会在评论提交表单中加一个hidden变量， 如果后台检测不到这个变量，则认定为spam，可以选择需要审核， 也可以直接过滤掉。在你的主题下面的functions.php里面添加如下代码即可</p>
-<p><img alt="后台查看垃圾评论" src="https://o3cex9zsl.qnssl.com/2012/09/11.png" title="后台查看垃圾评论" /></p>
+<p><img alt="后台查看垃圾评论" src="https://o3cex9zsl.qnssl.com/2012/09/11.png" title="后台查看垃圾评论"></p>
 <table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
  2
  3
@@ -131,7 +131,7 @@
 78
 79
 80
-81</pre></div></td><td class="code"><div class="highlight"><pre><span class="x">// 单独使用禁止全英文评论代码</span>
+81</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="x">// 单独使用禁止全英文评论代码</span>
 <span class="x">function scp_comment_post( $incoming_comment ) {</span>
 <span class="x">    $pattern = &#39;/[一-龥]/u&#39;;   //验证是否为中文</span>
 
@@ -216,7 +216,7 @@
 </td></tr></table>
 
 <p>最后记得把代码$2w$3$4中间的w和$w = 'w'的w改成其它英文字母(但是二者要一致)，比如$2wc$3和$w = 'wc'等等，千万不要让spam发现额^^</p>
-		    	<div class="donate_div_container">
+</div>		    	<div class="donate_div_container">
 					<div class="donate_div">
 						<p><a href="javascript:void(0)" onclick="donateToggle()" class="donate_word" title="打赏，支持一下">打赏</a></p>
 						<div class="hide_box"></div>
@@ -246,7 +246,7 @@
 					</div>
 				</div>
 		    	<div class="tags">
-					<div class="post_tags">
+					<div class="post_tags" itemprop="keywords">
 						Tags: <a href="https://typecodes.com/tag/wordpressla-ji-ping-lun.html">wordpress垃圾评论</a>					</div>
 					<div class="post-share">
 						<ul class="post-shareul clearfix">
@@ -338,7 +338,6 @@
 		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
 	</section>
 </div>
-				</div>
 			</div>
 		</div>
 		<!--4. bottom begin-->

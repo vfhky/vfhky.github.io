@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html dir="ltr" lang="zh-CN" class="no-js">
+<html class="no-js">
 	<head>
-		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
   		<meta name="renderer" content="webkit">
 		<title>C语言删除无序整型数组中的重复元素及时间复杂度 &mdash; TypeCodes</title>
 		<meta name="description" content="C语言删除无序整型数组中的重复元素及时间复杂度 &mdash; TypeCodes" />
@@ -34,8 +35,7 @@
 			</div>
 		</div>
 		<div class="container">
-			<div class="row">
-		<!--2. left sider begin-->
+			<div class="row">		<!--2. left sider begin-->
 		<div class="col-md-9" id="blog-main" role="main">
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/cseries/deldisorderintarrrepeatele.html">C语言删除无序整型数组中的重复元素及时间复杂度</a></h2>
@@ -167,16 +167,16 @@
 114
 115
 116
-117</pre></div></td><td class="code"><div class="highlight"><pre><span class="cm">/**</span>
+117</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="cm">/**</span>
 <span class="cm"> * @FileName    int_del_repeat.c</span>
 <span class="cm"> * @Describe    A simple example for deleting the repeated elements in a deldisor interger array.</span>
 <span class="cm"> * @Author      vfhky 2016-03-23 22:44 https://typecodes.com/cseries/deldisorderintarrrepeatele.html</span>
 <span class="cm"> * @Compile     gcc int_del_repeat.c -o int_del_repeat</span>
 <span class="cm"> */</span>
-<span class="cp">#include &lt;stdio.h&gt;</span>
-<span class="cp">#include &lt;string.h&gt;</span>
-<span class="cp">#include &lt;malloc.h&gt;</span>
-<span class="cp">#include &quot;print.h&quot;</span>
+<span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;string.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;malloc.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&quot;print.h&quot;</span><span class="cp"></span>
 
 <span class="kt">int</span> <span class="nf">f_del1</span><span class="p">(</span> <span class="kt">int</span> <span class="o">*</span><span class="n">i</span><span class="p">,</span> <span class="kt">int</span> <span class="n">iLen</span> <span class="p">);</span>
 <span class="kt">int</span> <span class="nf">f_del2</span><span class="p">(</span> <span class="kt">int</span> <span class="o">*</span><span class="n">i_f_del2</span><span class="p">,</span> <span class="kt">int</span> <span class="n">len</span> <span class="p">);</span>
@@ -289,10 +289,10 @@
 
 <h4>3 测试执行</h4>
 <p>使用<a href="https://typecodes.com/cseries/cppgeneralmakefile.html" title="查看原文">《Linux C/C++工程中可生成ELF、动/静态库文件的通用Makefile》</a>一文中的Makefile文件进行程序编译，当然也可以使用命令进行编译<code>gcc int_del_repeat.c -o int_del_repeat</code>。</p>
-<p><img alt="C语言删除无序整型数组中的重复元素" src="https://o3cex9zsl.qnssl.com/2016/03/int_del_repeat_disorder_array.png" title="C语言删除无序整型数组中的重复元素" /></p>
+<p><img alt="C语言删除无序整型数组中的重复元素" src="https://o3cex9zsl.qnssl.com/2016/03/int_del_repeat_disorder_array.png" title="C语言删除无序整型数组中的重复元素"></p>
 <h4>4 时间复杂度</h4>
 <p>Method 2中的时间复杂度为O(N＾2)，Method 2中的时间复杂度为O(N＾3)。</p>
-		    	<div class="donate_div_container">
+</div>		    	<div class="donate_div_container">
 					<div class="donate_div">
 						<p><a href="javascript:void(0)" onclick="donateToggle()" class="donate_word" title="打赏，支持一下">打赏</a></p>
 						<div class="hide_box"></div>
@@ -322,7 +322,7 @@
 					</div>
 				</div>
 		    	<div class="tags">
-					<div class="post_tags">
+					<div class="post_tags" itemprop="keywords">
 						Tags: <a href="https://typecodes.com/tag/shu-zu.html">数组</a>,<a href="https://typecodes.com/tag/shi-jian-fu-za-du.html">时间复杂度</a>					</div>
 					<div class="post-share">
 						<ul class="post-shareul clearfix">
@@ -414,7 +414,6 @@
 		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
 	</section>
 </div>
-				</div>
 			</div>
 		</div>
 		<!--4. bottom begin-->

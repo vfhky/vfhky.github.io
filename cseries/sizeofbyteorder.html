@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html dir="ltr" lang="zh-CN" class="no-js">
+<html class="no-js">
 	<head>
-		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
   		<meta name="renderer" content="webkit">
 		<title>C语言字节序的大小端模式 &mdash; TypeCodes</title>
 		<meta name="description" content="C语言字节序的大小端模式 &mdash; TypeCodes" />
@@ -34,8 +35,7 @@
 			</div>
 		</div>
 		<div class="container">
-			<div class="row">
-		<!--2. left sider begin-->
+			<div class="row">		<!--2. left sider begin-->
 		<div class="col-md-9" id="blog-main" role="main">
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/cseries/sizeofbyteorder.html">C语言字节序的大小端模式</a></h2>
@@ -44,9 +44,9 @@
 </ul>
 <div class="post-content fmt">
 	<p>关于字节序的大小端模式，个人认为CSDN上Hackbuteer1作者的这篇文章<a href="http://blog.csdn.net/hackbuteer1/article/details/7722667" title="大端模式和小端模式">《大端模式和小端模式》</a>讲解的很清晰。这里MARK一下自己的学习心得：</p>
-<p><img alt="C程序内存映射模式" src="https://o3cex9zsl.qnssl.com/2014/11/memorymapping.png" title="C程序内存映射模式" /></p>
+<p><img alt="C程序内存映射模式" src="https://o3cex9zsl.qnssl.com/2014/11/memorymapping.png" title="C程序内存映射模式"></p>
 <h5>1 原文精华</h5>
-<div class="highlight"><pre>小端模式[Little-Endian]：内存块低地址存放元素的低位(字节)，内存块高地址存放元素的高位(字节)；
+<div class="highlight"><pre><span></span>小端模式[Little-Endian]：内存块低地址存放元素的低位(字节)，内存块高地址存放元素的高位(字节)；
 大端模式[Big-Endian]：内存块低地址存放元素的高位(字节)，内存块高地址存放元素的低位(字节)。
 </pre></div>
 
@@ -104,7 +104,7 @@
 43
 44
 45
-46</pre></div></td><td class="code"><div class="highlight"><pre><span class="cp">#include &lt;stdio.h&gt;</span>
+46</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
 
 <span class="c1">//通过共用体检测CPU的大小端模式</span>
 <span class="kt">int</span> <span class="nf">checkCPU</span><span class="p">()</span>
@@ -154,7 +154,7 @@
 </td></tr></table>
 
 <p>由于自己用的是win7系统，处理器当然是Intel的CPU，所以作为小端模式输出结果如下图所示：</p>
-<p><img alt="C语言win7系统CPU大小端模式" src="https://o3cex9zsl.qnssl.com/2014/11/clangjudgecpumodel.png" title="C语言win7系统CPU大小端模式" /></p>
+<p><img alt="C语言win7系统CPU大小端模式" src="https://o3cex9zsl.qnssl.com/2014/11/clangjudgecpumodel.png" title="C语言win7系统CPU大小端模式"></p>
 <h5>4 通过上面代码总结分析大、小端模式</h5>
 <h6>4.1 关于栈“先进后出，后进先出”的原理：</h6>
 <p>C/C++程序在内存中的映射，<code>栈是向下增长的</code>，即栈底在上（高地址），栈顶在下（低地址）；而堆是向上增长的。<code>“入栈”</code>时：元素从栈顶压入，压入后，该元素变成高字节（高位），然后栈顶向低地址下降（即向下增长），然后继续从栈顶压入第二个元素，同时第一个压入的元素变成<code>栈底</code>依次重复；<code>“出栈”</code>时：元素从栈顶弹出，弹出后，栈顶的地址也随之改变，指向下一个元素的位置，依次重复，直到到达<code>栈底</code>。</p>
@@ -162,7 +162,7 @@
 <p>短整型数据<code>a = 0x1234;</code>，它的高字节（高位）是<code>0x12</code>，低字节（低位）是<code>0x34</code>。因为栈是从高地址向低地址增长的，即栈底对应于高地址，栈顶对应于低地址，对应x[0]是低地址，x[1]是高地址。所以如果是小端模式，即低地址放低字节（低位），高地址放高字节（高位），那么低地址x[0]应该等于 0x34（为ASCII中字符'4'），高地址x[1]等于0x12（为ASCII中不可打印的字符<code>DC2</code>）。</p>
 <h6>4.3 分析代码中用字符数组判断大小端模式：</h6>
 <p>对于字符串常量<code>abc</code>，其字节（位）从左往右按顺序由低到高，即字符'a'是低字节（位），字符'c'是高字节（位），<code>这点和前面的短整型高低位从左到右是依次降低的不同</code>。因此，对于小端模式，入栈的时候，字符'c'先入栈，然后是字符'b'，最后是字符'a'。这样字符'c'位置成为<code>栈底</code>，字符'a'的位置成为<code>栈顶</code>。即x[0]存放低字节（位）'a'，低地址x[1]存放低字节（位）'b'，高地址x[2]存放高字节（位）'c'。</p>
-		    	<div class="donate_div_container">
+</div>		    	<div class="donate_div_container">
 					<div class="donate_div">
 						<p><a href="javascript:void(0)" onclick="donateToggle()" class="donate_word" title="打赏，支持一下">打赏</a></p>
 						<div class="hide_box"></div>
@@ -192,7 +192,7 @@
 					</div>
 				</div>
 		    	<div class="tags">
-					<div class="post_tags">
+					<div class="post_tags" itemprop="keywords">
 						Tags: <a href="https://typecodes.com/tag/zi-jie-xu.html">字节序</a>,<a href="https://typecodes.com/tag/da-xiao-duan-mo-shi.html">大小端模式</a>,<a href="https://typecodes.com/tag/shu-zu-yuan-su-cun-fang-shun-xu.html">数组元素存放顺序</a>					</div>
 					<div class="post-share">
 						<ul class="post-shareul clearfix">
@@ -284,7 +284,6 @@
 		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
 	</section>
 </div>
-				</div>
 			</div>
 		</div>
 		<!--4. bottom begin-->

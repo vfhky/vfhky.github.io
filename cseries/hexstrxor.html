@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html dir="ltr" lang="zh-CN" class="no-js">
+<html class="no-js">
 	<head>
-		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
   		<meta name="renderer" content="webkit">
 		<title>十六进制字符串异或 &mdash; TypeCodes</title>
 		<meta name="description" content="十六进制字符串异或 &mdash; TypeCodes" />
@@ -34,8 +35,7 @@
 			</div>
 		</div>
 		<div class="container">
-			<div class="row">
-		<!--2. left sider begin-->
+			<div class="row">		<!--2. left sider begin-->
 		<div class="col-md-9" id="blog-main" role="main">
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/cseries/hexstrxor.html">十六进制字符串异或</a></h2>
@@ -120,14 +120,14 @@
 63
 64
 65
-66</pre></div></td><td class="code"><div class="highlight"><pre><span class="cm">/**</span>
+66</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="cm">/**</span>
 <span class="cm"> * C/C++两个十六进制字符串异或</span>
 <span class="cm"> * @Filename:  hexstrxor.c</span>
 <span class="cm"> * @author  :  vfhky  2014.11.09  https://typecodes.com/cseries/hexstrxor.html</span>
 <span class="cm"> */</span>
-<span class="cp">#include &lt;stdio.h&gt;</span>
-<span class="cp">#include &lt;string.h&gt;</span>
-<span class="cp">#include &lt;math.h&gt;</span>
+<span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;string.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;math.h&gt;</span><span class="cp"></span>
 
 <span class="c1">//ASCII码中将字符转换成对应的十进制数</span>
 <span class="kt">int</span> <span class="nf">char2int</span><span class="p">(</span> <span class="kt">char</span> <span class="n">input</span> <span class="p">)</span>
@@ -191,10 +191,10 @@
 
 <h5>4 GCC编译执行</h5>
 <p>用gcc命令编译<code>gcc hexstrxor.c -o hexstrxor</code>后执行，得到如图结果：</p>
-<p><img alt="十六进制字符串异或" src="https://o3cex9zsl.qnssl.com/2014/11/clanghexstrxor.png" title="十六进制字符串异或" /></p>
+<p><img alt="十六进制字符串异或" src="https://o3cex9zsl.qnssl.com/2014/11/clanghexstrxor.png" title="十六进制字符串异或"></p>
 <h5>5 用MFC写了一个异或工具</h5>
 <p>为了更方便的得到两个十六进制字符串异或的结果，我用MFC写了一个小工具，详见文章<a href="https://typecodes.com/cseries/mfchexstrxortool.html" title="查看原文">《MFC写了一个十六进制字符串异或的工具》</a>。</p>
-		    	<div class="donate_div_container">
+</div>		    	<div class="donate_div_container">
 					<div class="donate_div">
 						<p><a href="javascript:void(0)" onclick="donateToggle()" class="donate_word" title="打赏，支持一下">打赏</a></p>
 						<div class="hide_box"></div>
@@ -224,7 +224,7 @@
 					</div>
 				</div>
 		    	<div class="tags">
-					<div class="post_tags">
+					<div class="post_tags" itemprop="keywords">
 						Tags: <a href="https://typecodes.com/tag/shi-liu-jin-zhi-zi-fu-chuan.html">十六进制字符串</a>,<a href="https://typecodes.com/tag/zi-fu-chuan-yi-huo.html">字符串异或</a>					</div>
 					<div class="post-share">
 						<ul class="post-shareul clearfix">
@@ -316,7 +316,6 @@
 		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
 	</section>
 </div>
-				</div>
 			</div>
 		</div>
 		<!--4. bottom begin-->

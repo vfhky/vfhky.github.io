@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html dir="ltr" lang="zh-CN" class="no-js">
+<html class="no-js">
 	<head>
-		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
   		<meta name="renderer" content="webkit">
 		<title>分类 linux 下的文章 - TypeCodes</title>
 		<meta name="description" content="分类 linux 下的文章 - TypeCodes" />
@@ -34,8 +35,7 @@
 			</div>
 		</div>
 		<div class="container">
-			<div class="row">
-		<!--2. left sider begin-->
+			<div class="row">		<!--2. left sider begin-->
 		<div class="col-md-9" id="blog-main" role="main">
 		  	<!--article recycle-->
 			<article class="post">
@@ -45,10 +45,10 @@
 </ul>
 <div class="post-content fmt">
 	<p>前面写了一篇文章<a href="https://typecodes.com/cseries/cppgeneralmakefile.html" title="查看原文">《Linux C/C++工程中可生成ELF、动/静态库文件的通用Makefile》</a>，里面的Makefile代码有个不好的地方需要修改。当编译.cpp文件时，使用的<code>STD_OPT</code>变量仍然是编译.c文件时的参数<code>-std=c99</code>，这个在C++中是不支持的。</p>
-<p><img alt="使用sed命令批量处理Makefile文件的脚本" src="https://o3cex9zsl.qnssl.com/2016/06/handle_makefile.png" title="使用sed命令批量处理Makefile文件的脚本" /></p>
+<p><img alt="使用sed命令批量处理Makefile文件的脚本" src="https://o3cex9zsl.qnssl.com/2016/06/handle_makefile.png" title="使用sed命令批量处理Makefile文件的脚本"></p>
 
 	<p class="more"><a href="https://typecodes.com/linux/handlemakefilebysed.html" title="使用sed命令批量处理Makefile文件的脚本">- 阅读剩余部分 -</a></p>
-			</article>
+</div>			</article>
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/linux/updatesyngithubpelicanshell.html">更新博客生成发布及同步GitHub的Shell脚本：解决文件名空格问题</a></h2>
 <ul class="post-meta">
@@ -57,10 +57,10 @@
 <div class="post-content fmt">
 	<p><a href="https://typecodes.com/linux/syngithubmarkdownpelican.html" title="《同步GitHub Markdown文章到Linux服务器后更新Pelican博客的脚本》">前面一篇文章</a>通过Linux Shell脚本的方式，实现博客生成发布及同步GitHub的的功能：先同步GitHub个人仓库中的Markdown文章到本地，然后通过Pelican编译生成静态HTML文件，最后发布到Nginx的web目录下面，同时更新到GitHub个人主页（vfhky.github.io）。</p>
 <p>由于没仔细考虑到Markdown文件名中可能包含空格的问题，所以在Shell脚本的文件名遍历时（代码第108行）出现了BUG：Linux Shell默认把空格空格做为值与值之间的分隔符，所以原本一个带空格的文件名就被拆分成了几个文件名。</p>
-<p><img alt="CentOS7.2服务器默认的IFS为空值" src="https://o3cex9zsl.qnssl.com/2016/03/centos_ifs_default.png" title="CentOS7.2服务器默认的IFS为空值" /></p>
+<p><img alt="CentOS7.2服务器默认的IFS为空值" src="https://o3cex9zsl.qnssl.com/2016/03/centos_ifs_default.png" title="CentOS7.2服务器默认的IFS为空值"></p>
 
 	<p class="more"><a href="https://typecodes.com/linux/updatesyngithubpelicanshell.html" title="更新博客生成发布及同步GitHub的Shell脚本：解决文件名空格问题">- 阅读剩余部分 -</a></p>
-			</article>
+</div>			</article>
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/linux/simpletcpdumpapply.html">Linux中使用TCPDUMP进行简单的TCP抓包</a></h2>
 <ul class="post-meta">
@@ -68,19 +68,19 @@
 </ul>
 <div class="post-content fmt">
 	<p>在Linux TCP通信的调试中，tcpdump应该算是很好的一个工具。这篇文章主要使用Windows作为客户端，向作为服务端的Linux中的一个socket监听端口发送报文信息，然后在Linux中用TCPDUMP工具进行抓包。通过这个实例，可以较为完整的了解TCP通信中的“三次握手”等过程。</p>
-<p><img alt="Linux中使用TCPDUMP进行简单的TCP抓包" src="https://o3cex9zsl.qnssl.com/2016/02/linuxtcpdump.png" title="Linux中使用TCPDUMP进行简单的TCP抓包" /></p>
+<p><img alt="Linux中使用TCPDUMP进行简单的TCP抓包" src="https://o3cex9zsl.qnssl.com/2016/02/linuxtcpdump.png" title="Linux中使用TCPDUMP进行简单的TCP抓包"></p>
 
 	<p class="more"><a href="https://typecodes.com/linux/simpletcpdumpapply.html" title="Linux中使用TCPDUMP进行简单的TCP抓包">- 阅读剩余部分 -</a></p>
-			</article>
+</div>			</article>
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/linux/yuminstallmysql5710.html">CentOS 7.2使用yum安装MYSQL 5.7.10</a></h2>
 <ul class="post-meta">
 	<li>作者：vfhky | 时间：2016-02-26 14:55 | 分类：<a href="https://typecodes.com/linux/index.html">linux</a></li>
 </ul>
 <div class="post-content fmt">
-	<p>前面两篇文章<a href="https://typecodes.com/web/centos7compilemysql.html" title="查看原文">《2015博客升级记(四)：CentOS 7.1编译安装MySQL5.7.7rc》</a>、<a href="https://typecodes.com/web/centos7yuminstallmysql5.html" title="查看原文">《阿里云CentOS 7.1使用yum安装MySql5.6.24》</a>分别使用源码编译和YUM方法安装MySQL数据库，这篇文章同样是使用YUM方法在CentOS7.2(64bits)的机器上安装最新的MySQL5.7.10数据库 ...</p>
+	<p>前面两篇文章<a href="https://typecodes.com/web/centos7compilemysql.html" title="查看原文">《2015博客升级记(四)：CentOS 7.1编译安装MySQL5.7.7rc》</a>、<a href="https://typecodes.com/web/centos7yuminstallmysql5.html" title="查看原文">《阿里云CentOS 7.1使用yum安装MySql5.6.24》</a>分别使用源码编译和YUM方法安装MySQL数据库，这篇文章同样是使用YUM方法在CentOS7.2(64bits)的机器上安装最新的MySQL5.7.10数据库 …</p>
 	<p class="more"><a href="https://typecodes.com/linux/yuminstallmysql5710.html" title="CentOS 7.2使用yum安装MYSQL 5.7.10">- 阅读剩余部分 -</a></p>
-			</article>
+</div>			</article>
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/linux/syngithubmarkdownpelican.html">同步GitHub Markdown文章到Linux服务器后更新Pelican博客的脚本</a></h2>
 <ul class="post-meta">
@@ -88,10 +88,10 @@
 </ul>
 <div class="post-content fmt">
 	<p>使用了Pelican后，最多的操作就是编译Markdown文章生成HTML文件，然后发布到Nginx的博客目录下。</p>
-<p><img alt="我的Pelican博客管理和发布流程" src="https://o3cex9zsl.qnssl.com/2016/01/github_pelican_nginx.png" title="我的Pelican博客管理和发布流程" /></p>
+<p><img alt="我的Pelican博客管理和发布流程" src="https://o3cex9zsl.qnssl.com/2016/01/github_pelican_nginx.png" title="我的Pelican博客管理和发布流程"></p>
 
 	<p class="more"><a href="https://typecodes.com/linux/syngithubmarkdownpelican.html" title="同步GitHub Markdown文章到Linux服务器后更新Pelican博客的脚本">- 阅读剩余部分 -</a></p>
-			</article>
+</div>			</article>
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/linux/applogsbackup.html">Linux下Nginx、MySQL和PHP等应用的日志切割脚本</a></h2>
 <ul class="post-meta">
@@ -99,10 +99,10 @@
 </ul>
 <div class="post-content fmt">
 	<p>在Linux中如果应用程序会产生日志，那么就需要考虑日志切割，例如按照固定的大小切割、按照日期进行切割等等。同样，在编译<a href="https://typecodes.com/web/centos7compilenginx.html" title="《2015博客升级记(三)：CentOS 7.1编译安装Nginx1.9.0》">Nginx1.9.0</a>、<a href="https://typecodes.com/web/centos7compilemysql.html" title="《2015博客升级记(四)：CentOS 7.1编译安装MySQL5.7.7rc》">MySQL5.7.7rc</a>和<a href="https://typecodes.com/web/centos7compilephp7.html" title="《2015博客升级记(五)：CentOS 7.1编译安装PHP7》">PHP7</a>后，这三个应用服务都会产生日志，尤其是Nginx进程根据配置文件ngnix.conf记录每条访问记录到access.log中。如果所有的日志都打印到同一个文件中的话，那么时间长了的话就会影响效率。</p>
-<p><img alt="Nginx日志切割实例" src="https://o3cex9zsl.qnssl.com/2015/12/nginx_logs_backup.png" title="Nginx日志切割实例" /></p>
+<p><img alt="Nginx日志切割实例" src="https://o3cex9zsl.qnssl.com/2015/12/nginx_logs_backup.png" title="Nginx日志切割实例"></p>
 
 	<p class="more"><a href="https://typecodes.com/linux/applogsbackup.html" title="Linux下Nginx、MySQL和PHP等应用的日志切割脚本">- 阅读剩余部分 -</a></p>
-			</article>
+</div>			</article>
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/linux/tcpconnectiontimedout.html">Linux TCP连接Connection Refused和Connection timed out的问题</a></h2>
 <ul class="post-meta">
@@ -111,10 +111,10 @@
 <div class="post-content fmt">
 	<p>前段时间和其它系统做联调测试，对方系统采用的是负载均衡模式。调试时采用的是多台手机作为客户端发送到对方负载均衡服务器，然后再把报文转发送到我这边的服务端。在测试的时候，对方测试人员说有的手机客户端会偶尔出现报文发不过来的情况。</p>
 <p>故事有点长，先发一张tcp三次握手的过程图镇楼~</p>
-<p><img alt="Linux tcp三次握手" src="https://o3cex9zsl.qnssl.com/2015/09/tcp_handshake.png" title="Linux tcp三次握手" /></p>
+<p><img alt="Linux tcp三次握手" src="https://o3cex9zsl.qnssl.com/2015/09/tcp_handshake.png" title="Linux tcp三次握手"></p>
 
 	<p class="more"><a href="https://typecodes.com/linux/tcpconnectiontimedout.html" title="Linux TCP连接Connection Refused和Connection timed out的问题">- 阅读剩余部分 -</a></p>
-			</article>
+</div>			</article>
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/linux/mysqlerrornospace.html">博客MySQL服务惊魂记：Linux磁盘空间不足(Core Dump文件引爆)</a></h2>
 <ul class="post-meta">
@@ -122,14 +122,18 @@
 </ul>
 <div class="post-content fmt">
 	<p>昨天在更新完文章<a href="https://typecodes.com/mix/synweibophpmarkdownimgurl.html">《升级博客文章同步微博的插件：PHP正则提取Markdown的图片地址》</a>后，博客突然无法访问了。</p>
-<p><img alt="MySQL的错误日志" src="https://o3cex9zsl.qnssl.com/2015/08/mysql_space_error.png" title="MySQL的错误日志" /></p>
+<p><img alt="MySQL的错误日志" src="https://o3cex9zsl.qnssl.com/2015/08/mysql_space_error.png" title="MySQL的错误日志"></p>
 
 	<p class="more"><a href="https://typecodes.com/linux/mysqlerrornospace.html" title="博客MySQL服务惊魂记：Linux磁盘空间不足(Core Dump文件引爆)">- 阅读剩余部分 -</a></p>
-			</article>
+</div>			</article>
 		  	<!--page navigation-->
 <ol class="page-navigator">
-<li class="current"><a href="https://typecodes.com/linux/index.html">1</a><li><a href="https://typecodes.com/linux/index2.html">2</a>
-       		</li><li><a href="https://typecodes.com/linux/index3.html">3</a>
+<li class="current">
+       			<a href="https://typecodes.com/linux/index.html">1</a>
+       		</li><li>
+       			<a href="https://typecodes.com/linux/index2.html">2</a>
+       		</li><li>
+       			<a href="https://typecodes.com/linux/index3.html">3</a>
        		</li><li class="next">
        		<a href="https://typecodes.com/linux/index2.html">后一页 &raquo;</a>
        </li></ol>		</div>
@@ -198,7 +202,6 @@
 		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
 	</section>
 </div>
-				</div>
 			</div>
 		</div>
 		<!--4. bottom begin-->

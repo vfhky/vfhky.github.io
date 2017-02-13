@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html dir="ltr" lang="zh-CN" class="no-js">
+<html class="no-js">
 	<head>
-		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
   		<meta name="renderer" content="webkit">
 		<title>2015博客升级记(四)：CentOS 7.1编译安装MySQL5.7.7rc &mdash; TypeCodes</title>
 		<meta name="description" content="2015博客升级记(四)：CentOS 7.1编译安装MySQL5.7.7rc &mdash; TypeCodes" />
@@ -34,8 +35,7 @@
 			</div>
 		</div>
 		<div class="container">
-			<div class="row">
-		<!--2. left sider begin-->
+			<div class="row">		<!--2. left sider begin-->
 		<div class="col-md-9" id="blog-main" role="main">
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/web/centos7compilemysql.html">2015博客升级记(四)：CentOS 7.1编译安装MySQL5.7.7rc</a></h2>
@@ -46,7 +46,7 @@
 	<p>这是<a href="https://typecodes.com/mix/2015updateblog.html" title="查看原文">《2015年博客升级记》</a>系列文章的第四篇，主要记录在Linux系统中如何编译安装MySql数据库。</p>
 <h5>1 创建mysql用户和用户组，并下载MySQL5.7.7 Release Candidate版本</h5>
 <p>首先创建一个名为mysql且<code>没有登录权限</code>的用户和一个名为mysql的用户组，然后去mysql官网下载MySQL5.7.7rc版本。</p>
-<div class="highlight"><pre>#######新建mysql用户和mysql组
+<div class="highlight"><pre><span></span>#######新建mysql用户和mysql组
 [root@typecodes ~]# groupadd -r mysql &amp;&amp; useradd -r -g mysql -s /bin/false -M mysql
 
 ######从官网或者博客备份地址下载MySQL5.7.7 Release Candidate版本
@@ -67,7 +67,7 @@
 
 <h5>2 下载编译MySQL5.7.7rc时需要的工具</h5>
 <p>由于从MySQL5.5版本开始弃用了常规的configure编译方法，所以需要下载CMake编译器、Boost库、ncurses库和GNU分析器生成器bison这4种工具。经过自己的测试发现，MySQL5.7.7rc编译时所需要的Boost库只能是<code>boost 1.57.0版本</code>，低于或者高于这个版本的都会编译失败！</p>
-<div class="highlight"><pre>#######CMake编译工具
+<div class="highlight"><pre><span></span>#######CMake编译工具
 [root@typecodes ~]# wget -c http://git.typecodes.com/libs/ccpp/cmake-3.2.1.tar.gz
 [root@typecodes ~]# tar -zxf cmake-3.2.1.tar.gz &amp;&amp; cd cmake-3.2.1
 [root@typecodes cmake-3.2.1]# ./configure 
@@ -101,7 +101,7 @@ CMake suite maintained and supported by Kitware (kitware.com/cmake).
 
 <h5>3 开始进行MySQL5.7.7rc编译前的配置</h5>
 <p>准备工作做好后，就开始正式配置MySQL5.7.7rc的安装明细了。注意，操作时一定要先把下面反斜杠“\”后面添加的注释文字去掉！！！</p>
-<div class="highlight"><pre>######使用cmake命令，开始编译MySQL5.7.7rc
+<div class="highlight"><pre><span></span>######使用cmake命令，开始编译MySQL5.7.7rc
 [root@typecodes mysql-5.7.7-rc]# cmake \
 -DCMAKE_INSTALL_PREFIX=/usr/local/mysql  \              [MySQL安装的根目录]
 -DMYSQL_DATADIR=/mydata/mysql/data  \                   [MySQL数据库文件存放目录]
@@ -128,40 +128,40 @@ CMake suite maintained and supported by Kitware (kitware.com/cmake).
 
 
 <p>执行上面的配置命令的结果如下图所示：</p>
-<p><img alt="MySQL5.7.7rc编译前的配置" src="https://o3cex9zsl.qnssl.com/2015/06/mysql_cmake.png" title="MySQL5.7.7rc编译前的配置" /></p>
+<p><img alt="MySQL5.7.7rc编译前的配置" src="https://o3cex9zsl.qnssl.com/2015/06/mysql_cmake.png" title="MySQL5.7.7rc编译前的配置"></p>
 <h5>4 开始编译和安装MySQL5.7.7rc</h5>
 <p>使用make命令编译时，会比较吃CPU。博主当时购买的阿里主机是单核1G内存，编译到55%左右时直接卡住，同时无法新建一个终端连接，内存或者CPU已经严重耗尽。在重新购买了一个物理数据盘并划分出一个swap交换空间后，最终还是编译成功了，耗时约4个小时。所以，如果主机内存在1G一下并且没有设置Linux交换空间的，<code>不建议</code>直接编译MySQL5.7.7rc！</p>
-<div class="highlight"><pre>[root@typecodes mysql-5.7.7-rc]# make &amp;&amp; make install
+<div class="highlight"><pre><span></span>[root@typecodes mysql-5.7.7-rc]# make &amp;&amp; make install
 </pre></div>
 
 
 <p>下图展示的是<code>make</code>命令执行完毕的情况：</p>
-<p><img alt="编译MySQL5.7.7rc的make命令执行结果" src="https://o3cex9zsl.qnssl.com/2015/06/mysql_make.png" title="编译MySQL5.7.7rc的make命令执行结果" /></p>
-<p><img alt="编译MySQL5.7.7rc的make命令执行结果" src="https://o3cex9zsl.qnssl.com/2015/06/mysql_make_process.png" title="编译MySQL5.7.7rc的make命令执行结果" /></p>
+<p><img alt="编译MySQL5.7.7rc的make命令执行结果" src="https://o3cex9zsl.qnssl.com/2015/06/mysql_make.png" title="编译MySQL5.7.7rc的make命令执行结果"></p>
+<p><img alt="编译MySQL5.7.7rc的make命令执行结果" src="https://o3cex9zsl.qnssl.com/2015/06/mysql_make_process.png" title="编译MySQL5.7.7rc的make命令执行结果"></p>
 <p>编译MySQL5.7.7rc对CPU和内存消耗比较大，这里截取了两张使用top命令的图片：</p>
-<p><img alt="编译MySQL5.7.7rc的make命令执行结果" src="https://o3cex9zsl.qnssl.com/2015/06/compile_mysql_require_memory.png" title="编译MySQL5.7.7rc的make命令执行结果" /></p>
-<p><img alt="编译MySQL5.7.7rc的make命令执行结果" src="https://o3cex9zsl.qnssl.com/2015/06/compile_mysql_require_cpu.png" title="编译MySQL5.7.7rc的make命令执行结果" /></p>
+<p><img alt="编译MySQL5.7.7rc的make命令执行结果" src="https://o3cex9zsl.qnssl.com/2015/06/compile_mysql_require_memory.png" title="编译MySQL5.7.7rc的make命令执行结果"></p>
+<p><img alt="编译MySQL5.7.7rc的make命令执行结果" src="https://o3cex9zsl.qnssl.com/2015/06/compile_mysql_require_cpu.png" title="编译MySQL5.7.7rc的make命令执行结果"></p>
 <p>最后，激动人心的时刻，看到下图就代表已经编译安装好了MySQL5.7.7rc！</p>
-<p><img alt="安装MySQL5.7.7rc的make install命令执行结果" src="https://o3cex9zsl.qnssl.com/2015/06/mysql_make_install.png" title="安装MySQL5.7.7rc的make install命令执行结果" /></p>
+<p><img alt="安装MySQL5.7.7rc的make install命令执行结果" src="https://o3cex9zsl.qnssl.com/2015/06/mysql_make_install.png" title="安装MySQL5.7.7rc的make install命令执行结果"></p>
 <h5>5 查看编译成功后的MySQL安装目录</h5>
 <p>使用命令查看MySQL的安装目录<code>/usr/local/mysql/</code>下面是否生成了相关目录文件（最重要的当然是bin、sbin和lib目录）。如果lib目录下面没有生成如图所示的.so动态库文件和.a静态库文件，那么说明安装不成功（即使成功了也可能会导致php进程无法找到mysql的相关库文件）。</p>
-<p><img alt="初始化MySQL自身的数据库" src="https://o3cex9zsl.qnssl.com/2015/06/mysql_success_path.png" title="初始化MySQL自身的数据库" /></p>
+<p><img alt="初始化MySQL自身的数据库" src="https://o3cex9zsl.qnssl.com/2015/06/mysql_success_path.png" title="初始化MySQL自身的数据库"></p>
 <h5>6 开始设置MySQL的配置文件my.cnf</h5>
 <p>先把编译生成的my.cnf文件备份，然后把<a href="https://typecodes.com/web/centosmysqlconfig.html" title="查看原文">《CentOS系统MySQL的配置文件my.cnf》</a>文中整理的MySQL的配置文件my.cnf上传到服务器的<code>/etc/</code>目录下即可。</p>
-<div class="highlight"><pre>[root@typecodes mysql]# mv /etc/my.cnf /etc/my.cnfbak
+<div class="highlight"><pre><span></span>[root@typecodes mysql]# mv /etc/my.cnf /etc/my.cnfbak
 [root@typecodes mysql]# mv  ~/my.cnf  /etc/my.cnf
 </pre></div>
 
 
 <h5>7 添加mysql的环境变量</h5>
 <p>将MySQL编译生成的bin目录添加到当前Linux系统的环境变量中</p>
-<div class="highlight"><pre><span class="x">[root@typecodes mysql]</span><span class="err">#</span><span class="x"> echo -e &#39;\n\nexport PATH=/usr/local/mysql/bin:</span><span class="p">$</span><span class="nv">PATH</span><span class="x">\n&#39; &gt;&gt; /etc/profile &amp;&amp; source /etc/profile</span>
+<div class="highlight"><pre><span></span>[root@typecodes mysql]# echo -e &#39;\n\nexport PATH=/usr/local/mysql/bin:$PATH\n&#39; &gt;&gt; /etc/profile &amp;&amp; source /etc/profile
 </pre></div>
 
 
 <h5>8 创建MySQL数据库文件的存放路径以及相关安全配置</h5>
 <p>在Linux主机上创建一个目录<code>/mydata/mysql/data</code>，用于存放MySQL的数据库文件。同时设置其用户和用户组为之前创建的<code>mysql</code>，权限为777。这样其它用户是无法进行读写的，尽量保证数据库的安全。</p>
-<div class="highlight"><pre>[root@typecodes ~]# mkdir -p /mydata/mysql/data &amp;&amp; chown -R root:mysql /usr/local/mysql
+<div class="highlight"><pre><span></span>[root@typecodes ~]# mkdir -p /mydata/mysql/data &amp;&amp; chown -R root:mysql /usr/local/mysql
 [root@typecodes mysql]# chown -R mysql:mysql /mydata/mysql/data
 [root@typecodes mysql]# chmod -R go-rwx /mydata/mysql/data
 </pre></div>
@@ -169,16 +169,16 @@ CMake suite maintained and supported by Kitware (kitware.com/cmake).
 
 <h5>9 初始化MySQL自身的数据库</h5>
 <p>在MySQL安装目录的<code>\bin\</code>路径下，执行mysqld命令，初始化MySQL自身的数据库。</p>
-<div class="highlight"><pre>######参数user表示用户，basedir表示mysql的安装路径，datadir表示数据库文件存放路径
+<div class="highlight"><pre><span></span>######参数user表示用户，basedir表示mysql的安装路径，datadir表示数据库文件存放路径
 [root@typecodes bin]# mysqld --initialize-insecure --user=mysql --basedir=/usr/local/mysql --datadir=/mydata/mysql/data
 </pre></div>
 
 
 <p>执行完后，可以通过<code>[root@typecodes mysql]# ls -lrt /mydata/mysql/data/</code>命令查看是否生成了MySQL自身的数据库文件。</p>
-<p><img alt="初始化MySQL自身的数据库" src="https://o3cex9zsl.qnssl.com/2015/06/mysql_ini_dir.png" title="初始化MySQL自身的数据库" /></p>
+<p><img alt="初始化MySQL自身的数据库" src="https://o3cex9zsl.qnssl.com/2015/06/mysql_ini_dir.png" title="初始化MySQL自身的数据库"></p>
 <h5>10 创建MySQL日志存放目录以及设置开机启动</h5>
 <p>下面配置的MySQL日志存放目录以及权限都是根据前面my.cnf文件写的，也就是两者需要保持一致。</p>
-<div class="highlight"><pre>[root@typecodes ~]# mkdir -p /var/run/mysql &amp;&amp; mkdir -p /var/log/mysql
+<div class="highlight"><pre><span></span>[root@typecodes ~]# mkdir -p /var/run/mysql &amp;&amp; mkdir -p /var/log/mysql
 [root@typecodes ~]# chown -R mysql:mysql /var/log/mysql &amp;&amp; chown -R mysql:mysql /var/run/mysql
 ######配置开机自启动
 [root@typecodes mysql]# cp /usr/local/mysql/support-files/mysql.server  /etc/init.d/mysqld
@@ -190,23 +190,23 @@ CMake suite maintained and supported by Kitware (kitware.com/cmake).
 
 <h5>11 启动MySQL服务</h5>
 <p>在完成上面的操作后，就可以正式使用MySQL服务了。启动MySQL进程服务的命令如下：</p>
-<div class="highlight"><pre><span class="k">[root@typecodes mysql]# mysqld_safe --user=mysql --datadir=/mydata/mysql/data --log-error=/var/log/mysql/error.log &amp;        [直接回车]</span>
-<span class="err">[1]</span> <span class="err">10274</span>
-<span class="err">150513</span> <span class="err">21:28:16</span> <span class="err">mysqld_safe</span> <span class="err">Logging</span> <span class="err">to</span> <span class="err">&#39;/var/log/mysql/error.log&#39;.</span>
-<span class="err">150513</span> <span class="err">21:28:16</span> <span class="err">mysqld_safe</span> <span class="err">Starting</span> <span class="err">mysqld</span> <span class="err">daemon</span> <span class="err">with</span> <span class="err">databases</span> <span class="err">from</span> <span class="err">/mydata/mysql/data</span>
+<div class="highlight"><pre><span></span><span class="k">[root@typecodes mysql]# mysqld_safe --user=mysql --datadir=/mydata/mysql/data --log-error=/var/log/mysql/error.log &amp;        [直接回车]</span>
+<span class="na">[1] 10274</span>
+<span class="na">150513 21:28:16 mysqld_safe Logging to &#39;/var/log/mysql/error.log&#39;.</span>
+<span class="na">150513 21:28:16 mysqld_safe Starting mysqld daemon with databases from /mydata/mysql/data</span>
 
 <span class="c1">######上面这条命令会在后台继续执行，所以直接回车并执行下面这条命令</span>
-<span class="err">[root@typecodes</span> <span class="err">mysql]</span><span class="c1"># service mysqld start</span>
-<span class="err">Starting</span> <span class="err">MySQL.</span><span class="k">[  OK  ]                 [启动成功]</span>
-<span class="err">[root@typecodes</span> <span class="err">mysql]</span><span class="c1">#</span>
+<span class="na">[root@typecodes mysql]# service mysqld start</span>
+<span class="na">Starting MySQL.[  OK  ]                 [启动成功]</span>
+<span class="na">[root@typecodes mysql]#</span>
 </pre></div>
 
 
 <p>然后使用下面这命令<code>ps -ef | grep mysql</code>和<code>netstat -tunpl | grep 3306</code>查看MySQL服务进程和端口监听情况：</p>
-<p><img alt="查看MySQL服务进程和端口监听情况" src="https://o3cex9zsl.qnssl.com/2015/06/mysql_process_litsen_port.png" title="查看MySQL服务进程和端口监听情况" /></p>
+<p><img alt="查看MySQL服务进程和端口监听情况" src="https://o3cex9zsl.qnssl.com/2015/06/mysql_process_litsen_port.png" title="查看MySQL服务进程和端口监听情况"></p>
 <h5>12 初始化MySQL数据库的root用户密码</h5>
 <p>和Oracle数据库一样，MySQL数据库也默认自带了一个<code>root</code>用户（这个和当前Linux主机上的root用户是完全不搭边的），我们在设置好MySQL数据库的安全配置后初始化root用户的密码。配置过程中，一路输入<code>y</code>就行了。这里只说明下MySQL5.7.7rc版本中，用户密码策略分成低级<code>LOW</code>、中等<code>MEDIUM</code>和超强<code>STRONG</code>三种，推荐使用中等<code>MEDIUM</code>级别！</p>
-<div class="highlight"><pre>[root@typecodes mysql]# mysql_secure_installation
+<div class="highlight"><pre><span></span>[root@typecodes mysql]# mysql_secure_installation
 ............省略前面的过程............
 Press y|Y for Yes, any other key for No: y   【需要修改密码，所以输入y】
 
@@ -221,7 +221,7 @@ STRONG Length &gt;= 8, numeric, mixed case, special characters and dictionary   
 
 <h5>13 将MySQL数据库的动态链接库共享至系统链接库</h5>
 <p>一般MySQL数据库还会被类似于PHP等服务调用，所以我们需要将MySQL编译后的lib库文件添加至当前Linux主机链接库<code>/etc/ld.so.conf.d/</code>下，这样MySQL服务就可以被其它服务调用了。</p>
-<div class="highlight"><pre>[root@typecodes lib]# echo &quot;/usr/local/mysql/lib&quot; &gt; /etc/ld.so.conf.d/mysql.conf
+<div class="highlight"><pre><span></span>[root@typecodes lib]# echo &quot;/usr/local/mysql/lib&quot; &gt; /etc/ld.so.conf.d/mysql.conf
 [root@typecodes lib]# ldconfig          [使生效]
 [root@typecodes lib]# ldconfig -v |grep mysql       [查看效果]
 ldconfig: Can&#39;t stat /libx32: No such file or directory
@@ -237,7 +237,7 @@ ldconfig: Can&#39;t stat /usr/libx32: No such file or directory
 
 <h5>14 创建其它MySQL数据库用户</h5>
 <p>使用MySQL数据库root管理员用户登录MySQL数据库后，可以管理数据库和其他用户了。这里演示创建一个名为typecodes的MySQL用户（密码为@typecodes2014.com）和一个名为typecodes的数据库。</p>
-<div class="highlight"><pre>[root@typecodes mysql]# mysql -uroot -p密码
+<div class="highlight"><pre><span></span>[root@typecodes mysql]# mysql -uroot -p密码
 
 ######登录成功后，创建typecodes数据库，并设置字符集和字符校
 mysql&gt; CREATE DATABASE `typecodes` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
@@ -256,7 +256,7 @@ mysql&gt; exit;            [创建完毕，root用户退出]
 
 <h5>15 错误分析</h5>
 <p>这里特意分析了一些MySQL安装过程中可能出现的错误情况，详见文章<a href="https://typecodes.com/web/solvemysqlcompileerror.html" title="查看原文">《MySQL编译安装时常见错误分析》</a>。</p>
-		    	<div class="donate_div_container">
+</div>		    	<div class="donate_div_container">
 					<div class="donate_div">
 						<p><a href="javascript:void(0)" onclick="donateToggle()" class="donate_word" title="打赏，支持一下">打赏</a></p>
 						<div class="hide_box"></div>
@@ -286,7 +286,7 @@ mysql&gt; exit;            [创建完毕，root用户退出]
 					</div>
 				</div>
 		    	<div class="tags">
-					<div class="post_tags">
+					<div class="post_tags" itemprop="keywords">
 						Tags: <a href="https://typecodes.com/tag/bo-ke-cheng-chang-lu.html">博客成长录</a>,<a href="https://typecodes.com/tag/mysql.html">mysql</a>					</div>
 					<div class="post-share">
 						<ul class="post-shareul clearfix">
@@ -378,7 +378,6 @@ mysql&gt; exit;            [创建完毕，root用户退出]
 		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
 	</section>
 </div>
-				</div>
 			</div>
 		</div>
 		<!--4. bottom begin-->

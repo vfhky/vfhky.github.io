@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html dir="ltr" lang="zh-CN" class="no-js">
+<html class="no-js">
 	<head>
-		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
   		<meta name="renderer" content="webkit">
 		<title>Sybase客户端打开SQL Advantage 12.5.1报错：Internal failure while initializing SQL Advantage(一) &mdash; TypeCodes</title>
 		<meta name="description" content="Sybase客户端打开SQL Advantage 12.5.1报错：Internal failure while initializing SQL Advantage(一) &mdash; TypeCodes" />
@@ -34,8 +35,7 @@
 			</div>
 		</div>
 		<div class="container">
-			<div class="row">
-		<!--2. left sider begin-->
+			<div class="row">		<!--2. left sider begin-->
 		<div class="col-md-9" id="blog-main" role="main">
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/database/sqladvatage12internalfailureone.html">Sybase客户端打开SQL Advantage 12.5.1报错：Internal failure while initializing SQL Advantage(一)</a></h2>
@@ -45,31 +45,31 @@
 <div class="post-content fmt">
 	<h5>1 打开SQL Advantage报错：Internal failure while initializing SQL Advantage</h5>
 <p>前几天在用sybase win客户端（OC 12.5.1）的时候，遇到了一个问题。每次打开SQL Advantage 12.5.1后，如果强制关闭窗口（例如有时界面卡死强退），那么再次打开就会报错：</p>
-<div class="highlight"><pre>Internal failure while initializing SQL Advantage. 
+<div class="highlight"><pre><span></span>Internal failure while initializing SQL Advantage. 
 Please check that Open Client is configured correctly.
 </pre></div>
 
 
 <p>正如下图所示，奇怪的是如果这时候重启电脑的话，那么打开SQL Advantage就正常。</p>
-<p><img alt="sybase客户端打开SQL Advantage 12.5.1报错" src="https://o3cex9zsl.qnssl.com/2013/11/sybase.jpg" title="sybase客户端打开SQL Advantage 12.5.1报错" /></p>
+<p><img alt="sybase客户端打开SQL Advantage 12.5.1报错" src="https://o3cex9zsl.qnssl.com/2013/11/sybase.jpg" title="sybase客户端打开SQL Advantage 12.5.1报错"></p>
 
 
 <h5>2 查看报错信息：sybinit.err文件</h5>
 <p>正如下图所示，每次初始化SQL Advantage失败后，都会在这个文件中显示：</p>
-<div class="highlight"><pre>The context allocation routine failed when it tried to load localization files!!
+<div class="highlight"><pre><span></span>The context allocation routine failed when it tried to load localization files!!
 One or more following problems may caused the failure。按照文件中的提示，检查了SYBASE的环境变量值确实是D:\sybase，同时在D:\sybase\locales\locales.dat文件中LANG的值也为zh_CN。
 </pre></div>
 
 
-<p><img alt="报错信息sybinit.err文件" src="https://o3cex9zsl.qnssl.com/2013/11/sybinit.err_.png" title="报错信息sybinit.err文件" /></p>
+<p><img alt="报错信息sybinit.err文件" src="https://o3cex9zsl.qnssl.com/2013/11/sybinit.err_.png" title="报错信息sybinit.err文件"></p>
 <h5>3 猜想：OC客户端产生系统临时文件</h5>
 <p>在GG和BD无果后，寻思为什么SQL Advantage在电脑重启后又能够正常工作？当时“最可能”的猜想就是：在强制关闭前，OC端会产生一些临时文件，保存一些配置信息，电脑关闭后会自动清除这些文件。于是做了一个测试，在报错之后，立马使用CCleaner清理系统文件。然后再次打开SQL Advantage，结果还是报错。猜想失败！！！</p>
 <h5>4 系统环境变量：windows中“/”和“\”</h5>
 <p>折腾了几次，还是没找到方法。大致看了下GG的搜索结果，提到了PATH环境变量。于是查看了下自己的。结果发现关于SYBASE需要的几个配置全部都有而且也都对。认真比较了几次，还是没发现异常。突然发现在PATH配置内容的末尾竟然出现了不和谐因素：“/”。如图所示，这是之前在安装jdk时，配置的环境变量。平常没注意在windows中设置目录要使用“\”，而不是“/”，不然会导致出现找不到路径的错误。于是把PATH变量中的两个“/”改成“\”，然后打开SQL Advantage，竟然正常了！</p>
-<p><img alt="系统环境变量PATH" src="https://o3cex9zsl.qnssl.com/2013/11/environment.png" title="系统环境变量PATH" /></p>
+<p><img alt="系统环境变量PATH" src="https://o3cex9zsl.qnssl.com/2013/11/environment.png" title="系统环境变量PATH"></p>
 <h5>5 延伸：其它不当配置也会报同样的错误</h5>
 <p>在搞定后，特地上GG搜索了下。其中，sybase官方论坛上的两个提问比较有代表性。限于篇幅，大家可以移步到下一篇文章一起探讨一下：<a href="https://typecodes.com/database/sqladvatage12internalfailuretwo.html" title="《Sybase客户端打开SQL Advantage 12.5.1报错：Internal failure while initializing SQL Advantage(二)》">《Sybase客户端打开SQL Advantage 12.5.1报错：Internal failure while initializing SQL Advantage(二)》</a>。</p>
-		    	<div class="donate_div_container">
+</div>		    	<div class="donate_div_container">
 					<div class="donate_div">
 						<p><a href="javascript:void(0)" onclick="donateToggle()" class="donate_word" title="打赏，支持一下">打赏</a></p>
 						<div class="hide_box"></div>
@@ -99,7 +99,7 @@ One or more following problems may caused the failure。按照文件中的提示
 					</div>
 				</div>
 		    	<div class="tags">
-					<div class="post_tags">
+					<div class="post_tags" itemprop="keywords">
 						Tags: <a href="https://typecodes.com/tag/sqladvatage.html">sqladvatage</a>,<a href="https://typecodes.com/tag/sybase-internal-failure.html">sybase internal failure</a>					</div>
 					<div class="post-share">
 						<ul class="post-shareul clearfix">
@@ -191,7 +191,6 @@ One or more following problems may caused the failure。按照文件中的提示
 		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
 	</section>
 </div>
-				</div>
 			</div>
 		</div>
 		<!--4. bottom begin-->

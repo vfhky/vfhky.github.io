@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html dir="ltr" lang="zh-CN" class="no-js">
+<html class="no-js">
 	<head>
-		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
   		<meta name="renderer" content="webkit">
 		<title>动易SiteFactory系列教程二:动易常用的标签 &mdash; TypeCodes</title>
 		<meta name="description" content="动易SiteFactory系列教程二:动易常用的标签 &mdash; TypeCodes" />
@@ -34,8 +35,7 @@
 			</div>
 		</div>
 		<div class="container">
-			<div class="row">
-		<!--2. left sider begin-->
+			<div class="row">		<!--2. left sider begin-->
 		<div class="col-md-9" id="blog-main" role="main">
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/web/sfcommontag.html">动易SiteFactory系列教程二:动易常用的标签</a></h2>
@@ -44,25 +44,25 @@
 </ul>
 <div class="post-content fmt">
 	<p>1.显示某个栏目的标题及链接：</p>
-<div class="highlight"><pre><span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&#39;{PE.Label id=&quot;取得节点链接路径&quot; nodeid=&quot;1&quot;/}&#39;</span> <span class="nt">&gt;</span>{PE.Label id=&quot;取得节点名称&quot; nodeid=&quot;1&quot;/}<span class="nt">&lt;/a&gt;</span>
+<div class="highlight"><pre><span></span><span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&#39;{PE.Label id=&quot;取得节点链接路径&quot; nodeid=&quot;1&quot;/}&#39;</span> <span class="nt">&gt;</span>{PE.Label id=&quot;取得节点名称&quot; nodeid=&quot;1&quot;/}<span class="nt">&lt;/a&gt;</span>
 显示“文章中心”及链接。也可以用nodes=&quot;@RequestInt_Id&quot;自动取值。
 </pre></div>
 
 
 <p>2.显示图片带标题（左边图片，右边文章标题）：</p>
-<div class="highlight"><pre>{PE.Label id=&quot;通用带图片的信息列表&quot; outputQty=&quot;1&quot; titleLength=&quot;30&quot; contentLength=&quot;80&quot; models=&quot;1&quot; titleClass=&quot;tv_u_thumb_title&quot; imageClass=&quot;tv_u_thumb&quot; imageWidth=&quot;160&quot; imageHeight=&quot;120&quot; picExist=&quot;true&quot;/}
+<div class="highlight"><pre><span></span>{PE.Label id=&quot;通用带图片的信息列表&quot; outputQty=&quot;1&quot; titleLength=&quot;30&quot; contentLength=&quot;80&quot; models=&quot;1&quot; titleClass=&quot;tv_u_thumb_title&quot; imageClass=&quot;tv_u_thumb&quot; imageWidth=&quot;160&quot; imageHeight=&quot;120&quot; picExist=&quot;true&quot;/}
 </pre></div>
 
 
 
 
 <p>3.显示文章中心下面的8个文章标题列表，前面带有时间，然后是显示[图文]或者[推荐]等图标，标题后面带有红色“hot”的图标。</p>
-<div class="highlight"><pre>{PE.Label id=&quot;通用信息列表&quot; bindStyle=&quot;普通式&quot; outputQty=&quot;8&quot; nodes=&quot;1&quot; titleLength=&quot;46&quot; displayDateTime=&quot;mm-dd&quot;  displayHotSign=&quot;img&quot;  displayTitlePrefix = &quot;true&quot; /}
+<div class="highlight"><pre><span></span>{PE.Label id=&quot;通用信息列表&quot; bindStyle=&quot;普通式&quot; outputQty=&quot;8&quot; nodes=&quot;1&quot; titleLength=&quot;46&quot; displayDateTime=&quot;mm-dd&quot;  displayHotSign=&quot;img&quot;  displayTitlePrefix = &quot;true&quot; /}
 </pre></div>
 
 
 <p>4.XML语句：</p>
-<div class="highlight"><pre><span class="k">&lt;xsl:when</span> <span class="na">test=</span><span class="s">&quot;TitleFontColor != &#39;&#39; or TitleFontType != &#39;字形&#39;&quot;</span><span class="nt">&gt;</span>
+<div class="highlight"><pre><span></span><span class="k">&lt;xsl:when</span> <span class="na">test=</span><span class="s">&quot;TitleFontColor != &#39;&#39; or TitleFontType != &#39;字形&#39;&quot;</span><span class="nt">&gt;</span>
 <span class="c">&lt;!---其中TitleFontcolor和TitleFontType是在后台设置的，它不是变量。但是---&gt;</span>
 <span class="k">&lt;xsl:if</span> <span class="na">test=</span><span class="s">&quot;$displayTips = &#39;true&#39;&quot;</span><span class="nt">&gt;</span>
 <span class="c">&lt;!---里面的$displayTips是需要在模板代码中修改的--&gt;</span>
@@ -72,7 +72,7 @@
 
 
 <p>5.首页调用显示二级子栏目的标题及连接：</p>
-<div class="highlight"><pre>{PE.Label id=&quot;子栏目导航_首页左边&quot; nodeId=&quot;9&quot; currentId=&quot;0&quot; class_on=&quot;-2&quot; /}
+<div class="highlight"><pre><span></span>{PE.Label id=&quot;子栏目导航_首页左边&quot; nodeId=&quot;9&quot; currentId=&quot;0&quot; class_on=&quot;-2&quot; /}
 &lt;!---
 将显示招聘信息这个顶级栏目下面的所有子栏目：国内招聘、国外招聘、不限招聘等等。
 样式通过自定义的标签子栏目导航_首页左边来修改。
@@ -81,12 +81,12 @@
 
 
 <p>6.显示某一栏目下面的所有底层文章/下载列表，并且不显示“Hot”图标和“new”图标：</p>
-<div class="highlight"><pre>{PE.Label id=&quot;通用信息列表&quot; bindStyle=&quot;普通式_首页底部&quot; outputQty=&quot;8&quot; nodes=&quot;11&quot; titleLength=&quot;46&quot; displayDateTime=&quot;yyyy/mm/dd&quot;  displayHotSign=&quot;0&quot; displayNewSign=&quot;&quot; /}
+<div class="highlight"><pre><span></span>{PE.Label id=&quot;通用信息列表&quot; bindStyle=&quot;普通式_首页底部&quot; outputQty=&quot;8&quot; nodes=&quot;11&quot; titleLength=&quot;46&quot; displayDateTime=&quot;yyyy/mm/dd&quot;  displayHotSign=&quot;0&quot; displayNewSign=&quot;&quot; /}
 </pre></div>
 
 
 <p>7.首页显示最新文章(内容模型为文章类型的信息，图片类型不行)的图片+标题的滚动形式：</p>
-<div class="highlight"><pre>{PE.Label id=&quot;内容带图片的信息列表&quot; bindStyle=&quot;普通式_首页底部&quot; usePage=&quot;false&quot; outputQty=&quot;10&quot; titleLength=&quot;50&quot; contentLength=&quot;0&quot; nodes=&quot;1&quot; imageWidth=&quot;160&quot; imageHeight=&quot;107&quot; /}
+<div class="highlight"><pre><span></span>{PE.Label id=&quot;内容带图片的信息列表&quot; bindStyle=&quot;普通式_首页底部&quot; usePage=&quot;false&quot; outputQty=&quot;10&quot; titleLength=&quot;50&quot; contentLength=&quot;0&quot; nodes=&quot;1&quot; imageWidth=&quot;160&quot; imageHeight=&quot;107&quot; /}
 &lt;!---
 则显示栏目ID为1的公司新闻的列表。因为默认的bindModel默认为1，即文章类型，所以图片类型不显示
 ---&gt;
@@ -94,7 +94,7 @@
 
 
 <p>8.首页显示最新图片(内容模型为图片类型的信息，文章类型不行)的图片+标题的滚动形式：</p>
-<div class="highlight"><pre>{PE.Label id=&quot;内容带图片的信息列表&quot; bindStyle=&quot;普通式_首页底部&quot; usePage=&quot;false&quot; outputQty=&quot;10&quot; titleLength=&quot;50&quot; nodes=&quot;2&quot; includeChildNodes=&quot;true&quot; models=&quot;0&quot; bindModel=&quot;2&quot; specials=&quot;0&quot; items=&quot;0&quot; itemListOrderType=&quot;1&quot; imageWidth=&quot;160&quot; imageHeight=&quot;107&quot; /}
+<div class="highlight"><pre><span></span>{PE.Label id=&quot;内容带图片的信息列表&quot; bindStyle=&quot;普通式_首页底部&quot; usePage=&quot;false&quot; outputQty=&quot;10&quot; titleLength=&quot;50&quot; nodes=&quot;2&quot; includeChildNodes=&quot;true&quot; models=&quot;0&quot; bindModel=&quot;2&quot; specials=&quot;0&quot; items=&quot;0&quot; itemListOrderType=&quot;1&quot; imageWidth=&quot;160&quot; imageHeight=&quot;107&quot; /}
 &lt;!---
 因为bindModel=&quot;2&quot;，所以显示图片类型，不显示文章类型。
 注意includeChildNodes=&quot;true&quot;这个表示包含子栏目发表的图片。
@@ -103,7 +103,7 @@
 
 
 <p>9.SQL使用举例：</p>
-<div class="highlight"><pre>select name from table where id in(2,3,4)
+<div class="highlight"><pre><span></span>select name from table where id in(2,3,4)
 &lt;!---表示寻找id=2或者3或者4的name列。所以，
 SELECT NodeID,arrChildID,ItemListOrderType,ItemPageSize FROM PE_Nodes WHERE NodeID IN (@nodes)
 &lt;!---表示从PE_Nodes表中选取NodeID等于nodes传递过来的nodes值的一些内容---&gt;
@@ -111,20 +111,20 @@ SELECT NodeID,arrChildID,ItemListOrderType,ItemPageSize FROM PE_Nodes WHERE Node
 
 
 <p>10.首页的幻灯片：</p>
-<div class="highlight"><pre>{PE.Label id=&quot;通用信息焦点图&quot; bindStyle=&quot;普通式&quot; titleLength=&quot;20&quot; outputQty=&quot;4&quot; width=&quot;230&quot; height=&quot;170&quot;/}
+<div class="highlight"><pre><span></span>{PE.Label id=&quot;通用信息焦点图&quot; bindStyle=&quot;普通式&quot; titleLength=&quot;20&quot; outputQty=&quot;4&quot; width=&quot;230&quot; height=&quot;170&quot;/}
 图片中心的幻灯片：{PE.Label id=&quot;通用信息焦点图&quot; nodes=&quot;@RequestInt_Id&quot; width=&quot;226&quot; height=&quot;185&quot; /}
 </pre></div>
 
 
 <p>11.添加分页标签（例如在产品中心首页模板中）：</p>
-<div class="highlight"><pre>{PE.Label id=&quot;内容带图片的信息列表&quot; bindStyle=&quot;普通式_图中首页底部&quot; usePage=&quot;true&quot; outputQty=&quot;4&quot; titleLength=&quot;50&quot; nodes=&quot;@RequestInt_Id&quot; includeChildNodes=&quot;true&quot; models=&quot;0&quot; bindModel=&quot;2&quot; imageWidth=&quot;160&quot; imageHeight=&quot;107&quot; /}
+<div class="highlight"><pre><span></span>{PE.Label id=&quot;内容带图片的信息列表&quot; bindStyle=&quot;普通式_图中首页底部&quot; usePage=&quot;true&quot; outputQty=&quot;4&quot; titleLength=&quot;50&quot; nodes=&quot;@RequestInt_Id&quot; includeChildNodes=&quot;true&quot; models=&quot;0&quot; bindModel=&quot;2&quot; imageWidth=&quot;160&quot; imageHeight=&quot;107&quot; /}
 &lt;!---其中outputQty=4是每页显示的数量。那么分页标签---&gt;
 {PE.Page id=&quot;url_基本风格_图中首右下&quot; datasource=&quot;内容带图片的信息列表_普通式_图中首页底部&quot; /}
 </pre></div>
 
 
 <p>12.示例：</p>
-<div class="highlight"><pre><span class="k">&lt;xsl:when</span> <span class="na">test=</span><span class="s">&quot;NewDataSet/Table/ItemPageSize &gt; 0&quot;</span><span class="nt">&gt;</span>
+<div class="highlight"><pre><span></span><span class="k">&lt;xsl:when</span> <span class="na">test=</span><span class="s">&quot;NewDataSet/Table/ItemPageSize &gt; 0&quot;</span><span class="nt">&gt;</span>
 <span class="nt">&lt;xsl:value</span> <span class="err">-of</span> <span class="na">select=</span><span class="s">&quot;NewDataSet/Table/ItemPageSize&quot;</span><span class="nt">/&gt;</span>
 <span class="k">&lt;/xsl:when&gt;</span>
 <span class="c">&lt;!---其中ItemPageSize是数据表里面的一个字段---&gt;</span>
@@ -132,18 +132,18 @@ SELECT NodeID,arrChildID,ItemListOrderType,ItemPageSize FROM PE_Nodes WHERE Node
 
 
 <p>13.XSTL标签中如何写图片的相对地址：</p>
-<div class="highlight"><pre>&lt;img src=&quot;{pe:InstallDir()}images/4.gif&quot; /&gt;
+<div class="highlight"><pre><span></span>&lt;img src=&quot;{pe:InstallDir()}images/4.gif&quot; /&gt;
 </pre></div>
 
 
 <p>14.显示首页LOGO及其链接：</p>
-<div class="highlight"><pre><span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;{PE.SiteConfig.ApplicationPath/}&quot;</span><span class="nt">&gt;&lt;img</span> <span class="na">src=</span><span class="s">&quot;{PE.SiteConfig.logo/}&quot;</span> <span class="na">alt=</span><span class="s">&quot;{PE.SiteConfig.SiteName/}&quot;</span> <span class="nt">/&gt;&lt;/a&gt;</span>
+<div class="highlight"><pre><span></span><span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;{PE.SiteConfig.ApplicationPath/}&quot;</span><span class="nt">&gt;&lt;img</span> <span class="na">src=</span><span class="s">&quot;{PE.SiteConfig.logo/}&quot;</span> <span class="na">alt=</span><span class="s">&quot;{PE.SiteConfig.SiteName/}&quot;</span> <span class="nt">/&gt;&lt;/a&gt;</span>
 </pre></div>
 
 
 <p><strong>另附：动易常用的模板函数</strong></p>
-<p><img alt="动易常用的模板函数" src="https://o3cex9zsl.qnssl.com/2012/08/14.png" title="动易常用的模板函数" /></p>
-		    	<div class="donate_div_container">
+<p><img alt="动易常用的模板函数" src="https://o3cex9zsl.qnssl.com/2012/08/14.png" title="动易常用的模板函数"></p>
+</div>		    	<div class="donate_div_container">
 					<div class="donate_div">
 						<p><a href="javascript:void(0)" onclick="donateToggle()" class="donate_word" title="打赏，支持一下">打赏</a></p>
 						<div class="hide_box"></div>
@@ -173,7 +173,7 @@ SELECT NodeID,arrChildID,ItemListOrderType,ItemPageSize FROM PE_Nodes WHERE Node
 					</div>
 				</div>
 		    	<div class="tags">
-					<div class="post_tags">
+					<div class="post_tags" itemprop="keywords">
 						Tags: <a href="https://typecodes.com/tag/dong-yi-cms.html">动易cms</a>,<a href="https://typecodes.com/tag/dong-yi-chang-yong-de-biao-qian.html">动易常用的标签</a>					</div>
 					<div class="post-share">
 						<ul class="post-shareul clearfix">
@@ -265,7 +265,6 @@ SELECT NodeID,arrChildID,ItemListOrderType,ItemPageSize FROM PE_Nodes WHERE Node
 		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
 	</section>
 </div>
-				</div>
 			</div>
 		</div>
 		<!--4. bottom begin-->

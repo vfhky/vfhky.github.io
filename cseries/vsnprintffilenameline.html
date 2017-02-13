@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html dir="ltr" lang="zh-CN" class="no-js">
+<html class="no-js">
 	<head>
-		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
   		<meta name="renderer" content="webkit">
 		<title>vsnprintf字符串格式化输出实例：日志中打印程序名和行号 &mdash; TypeCodes</title>
 		<meta name="description" content="vsnprintf字符串格式化输出实例：日志中打印程序名和行号 &mdash; TypeCodes" />
@@ -34,8 +35,7 @@
 			</div>
 		</div>
 		<div class="container">
-			<div class="row">
-		<!--2. left sider begin-->
+			<div class="row">		<!--2. left sider begin-->
 		<div class="col-md-9" id="blog-main" role="main">
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/cseries/vsnprintffilenameline.html">vsnprintf字符串格式化输出实例：日志中打印程序名和行号</a></h2>
@@ -50,7 +50,7 @@
 <p>代码比较简单，如果需要把内容打印在日志文件中的话，还需要调用文件处理函数。为了便于理解，这里直接把内容输出到控制台上了。需要说明的三个地方：</p>
 <table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
 2
-3</pre></div></td><td class="code"><div class="highlight"><pre>静态全局变量 c_FileName 和 i_FileLineNum 分别用于存储源程序文件名和打印函数所在的行号；
+3</pre></div></td><td class="code"><div class="highlight"><pre><span></span>静态全局变量 c_FileName 和 i_FileLineNum 分别用于存储源程序文件名和打印函数所在的行号；
 自定义标识符 PRINT 先调用源程序文件名和行号的赋值函数 Get_File_Line ，然后调用个数未知的参数的处理函数 F_vsnprintf；
 类似于sprintf和snprintf这两个函数，相比vsprintf函数，vsnprintf加了最大字节( MAXBYTES )的限制，防止内存溢出。
 </pre></div>
@@ -115,15 +115,15 @@
 56
 57
 58
-59</pre></div></td><td class="code"><div class="highlight"><pre><span class="cm">/**</span>
+59</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="cm">/**</span>
 <span class="cm"> * @FileName    vsnprintf_name_line.c</span>
 <span class="cm"> * @Describe    A simple example for using vsnprintf to print the name and line-num of source file in linux.</span>
 <span class="cm"> * @Author      vfhky 2016-03-13 23:28 https://typecodes.com/cseries/vsnprintffilenameline.html</span>
 <span class="cm"> * @Compile     gcc vsnprintf_name_line.c -o vsnprintf_name_line</span>
 <span class="cm"> */</span>
-<span class="cp">#include &lt;stdio.h&gt;</span>
-<span class="cp">#include &lt;string.h&gt;</span>
-<span class="cp">#include &lt;stdarg.h&gt;</span>
+<span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;string.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;stdarg.h&gt;</span><span class="cp"></span>
 
 <span class="cp">#define FILENAME_LEN 100</span>
 <span class="cp">#define MAXLINE 1024</span>
@@ -179,8 +179,8 @@
 
 <h4>2 编译执行</h4>
 <p>使用<a href="https://typecodes.com/cseries/cppgeneralmakefile.html" title="查看原文">《Linux C/C++工程中可生成ELF、动/静态库文件的通用Makefile》</a>一文中的Makefile文件进行程序编译（当然也可以使用命令进行编译<code>gcc vsnprintf_name_line.c -o vsnprintf_name_line</code>），接着执行该程序，得到如下图所示的结果：</p>
-<p><img alt="vsnprintf字符串格式化输出实例" src="https://o3cex9zsl.qnssl.com/2016/03/vsnprintf_name_line.png" title="vsnprintf字符串格式化输出实例" /></p>
-		    	<div class="donate_div_container">
+<p><img alt="vsnprintf字符串格式化输出实例" src="https://o3cex9zsl.qnssl.com/2016/03/vsnprintf_name_line.png" title="vsnprintf字符串格式化输出实例"></p>
+</div>		    	<div class="donate_div_container">
 					<div class="donate_div">
 						<p><a href="javascript:void(0)" onclick="donateToggle()" class="donate_word" title="打赏，支持一下">打赏</a></p>
 						<div class="hide_box"></div>
@@ -210,7 +210,7 @@
 					</div>
 				</div>
 		    	<div class="tags">
-					<div class="post_tags">
+					<div class="post_tags" itemprop="keywords">
 						Tags: <a href="https://typecodes.com/tag/vsnprintf.html">vsnprintf</a>,<a href="https://typecodes.com/tag/zi-fu-chuan-ge-shi-hua.html">字符串格式化</a>					</div>
 					<div class="post-share">
 						<ul class="post-shareul clearfix">
@@ -302,7 +302,6 @@
 		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
 	</section>
 </div>
-				</div>
 			</div>
 		</div>
 		<!--4. bottom begin-->

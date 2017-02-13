@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html dir="ltr" lang="zh-CN" class="no-js">
+<html class="no-js">
 	<head>
-		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
   		<meta name="renderer" content="webkit">
 		<title>2015博客升级记(七)：CentOS7定时备份MySql的shell脚本 &mdash; TypeCodes</title>
 		<meta name="description" content="2015博客升级记(七)：CentOS7定时备份MySql的shell脚本 &mdash; TypeCodes" />
@@ -34,8 +35,7 @@
 			</div>
 		</div>
 		<div class="container">
-			<div class="row">
-		<!--2. left sider begin-->
+			<div class="row">		<!--2. left sider begin-->
 		<div class="col-md-9" id="blog-main" role="main">
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/linux/centos7mysqlregularbackup.html">2015博客升级记(七)：CentOS7定时备份MySql的shell脚本</a></h2>
@@ -44,13 +44,13 @@
 </ul>
 <div class="post-content fmt">
 	<p>这是<a href="https://typecodes.com/mix/2015updateblog.html" title="查看原文">《2015年博客升级记》</a>系列文章的第七篇，主要记录在Linux系统中如何使用shell脚本备份服务器上的mysql数据库。</p>
-<p><img alt="CentOS7定时备份MySql的shell脚本" src="https://o3cex9zsl.qnssl.com/2015/06/centos_mysql_backup.png" title="CentOS7定时备份MySql的shell脚本" /></p>
+<p><img alt="CentOS7定时备份MySql的shell脚本" src="https://o3cex9zsl.qnssl.com/2015/06/centos_mysql_backup.png" title="CentOS7定时备份MySql的shell脚本"></p>
 
 
 <h5>1 使用说明</h5>
 <p>下面是MySql数据库的shell备份脚本，其中参数<code>DBLIST</code>表示要备份的mysql数据库名称、<code>NUMDAYS</code>表示保留多少天以内的备份文件、<code>MyUSER</code>和<code>MyPASS</code>表示mysql数据库的用户名和密码。最终，每次执行这个脚本生成的备份文件名类似于<code>系统日期时间+.sql.gz</code>，例如20150606.sql.gz。</p>
 <p>使用时通过<code>chmod +x mysql_backup.sh</code>命令添加执行权限，然后可以利用Linux系统的crontab定时任务工具执行该脚本。例如下面这个配置就是每天凌晨1点的时候执行该shell脚本，生成mysql数据库的备份文件。</p>
-<div class="highlight"><pre>[root@typecodes bak_list]# crontab -e
+<div class="highlight"><pre><span></span>[root@typecodes bak_list]# crontab -e
 0 1 * * * /mydata/backups/bak_list/mysql_backup.sh
 </pre></div>
 
@@ -193,32 +193,32 @@
 134
 135
 136
-137</pre></div></td><td class="code"><div class="highlight"><pre><span class="c">#!/bin/bash</span>
-<span class="c"># MySQL Backup Script v1.0.0</span>
-<span class="c"># (c) 2015 vfhky https://typecodes.com/linux/centos7mysqlregularbackup.html</span>
-<span class="c"># Reference: https://github.com/chekolyn/bash-scripts/blob/master/mysql-dbs-backup.sh</span>
-<span class="c"># https://github.com/vfhky/shell-tools/blob/master/backup/mysql_backup.sh</span>
-<span class="c"># https://coding.net/u/vfhky/p/shell-tools/git/blob/master/backup/mysql_backup.sh</span>
+137</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="ch">#!/bin/bash</span>
+<span class="c1"># MySQL Backup Script v1.0.0</span>
+<span class="c1"># (c) 2015 vfhky https://typecodes.com/linux/centos7mysqlregularbackup.html</span>
+<span class="c1"># Reference: https://github.com/chekolyn/bash-scripts/blob/master/mysql-dbs-backup.sh</span>
+<span class="c1"># https://github.com/vfhky/shell-tools/blob/master/backup/mysql_backup.sh</span>
+<span class="c1"># https://coding.net/u/vfhky/p/shell-tools/git/blob/master/backup/mysql_backup.sh</span>
 
-<span class="c"># Space separated list of databases</span>
+<span class="c1"># Space separated list of databases</span>
 <span class="nv">DBLIST</span><span class="o">=</span><span class="s2">&quot;your mysql database name witch you want to backup&quot;</span>
 
-<span class="c"># Backup to this directory</span>
+<span class="c1"># Backup to this directory</span>
 <span class="nv">BACKUPDIR</span><span class="o">=</span>/mydata/backups/data/mysql
 
-<span class="c"># Number of days to keep</span>
-<span class="nv">NUMDAYS</span><span class="o">=</span>60
+<span class="c1"># Number of days to keep</span>
+<span class="nv">NUMDAYS</span><span class="o">=</span><span class="m">60</span>
 
-<span class="c"># Some linux command and your mysql configure</span>
+<span class="c1"># Some linux command and your mysql configure</span>
 <span class="nv">FINDCMD</span><span class="o">=</span><span class="s2">&quot;find&quot;</span>
 <span class="nv">MYSQLCMD</span><span class="o">=</span><span class="s2">&quot;mysql&quot;</span>
-<span class="nv">MyUSER</span><span class="o">=</span><span class="s2">&quot;your mysql user name&quot;</span>                   <span class="c"># USERNAME</span>
-<span class="nv">MyPASS</span><span class="o">=</span><span class="s2">&quot;your mysql password&quot;</span>                   <span class="c"># PASSWORD </span>
-<span class="nv">MyHOST</span><span class="o">=</span><span class="s2">&quot;localhost&quot;</span>          <span class="c"># Hostname</span>
+<span class="nv">MyUSER</span><span class="o">=</span><span class="s2">&quot;your mysql user name&quot;</span>                   <span class="c1"># USERNAME</span>
+<span class="nv">MyPASS</span><span class="o">=</span><span class="s2">&quot;your mysql password&quot;</span>                   <span class="c1"># PASSWORD </span>
+<span class="nv">MyHOST</span><span class="o">=</span><span class="s2">&quot;localhost&quot;</span>          <span class="c1"># Hostname</span>
 <span class="nv">DUMPCMD</span><span class="o">=</span><span class="s2">&quot;mysqldump -u</span><span class="nv">$MyUSER</span><span class="s2"> -h </span><span class="nv">$MyHOST</span><span class="s2"> -p</span><span class="nv">$MyPASS</span><span class="s2"> --lock-tables --databases &quot;</span>
 <span class="nv">GZIPCMD</span><span class="o">=</span><span class="s2">&quot;gzip&quot;</span>
 
-<span class="c"># Backup date format,e.g 20150505_2010</span>
+<span class="c1"># Backup date format,e.g 20150505_2010</span>
 <span class="nv">BACKUPDATE</span><span class="o">=</span><span class="sb">`</span>date +%Y%m%d_%H%M<span class="sb">`</span>
 
 <span class="k">function</span> USAGE<span class="o">()</span> <span class="o">{</span>
@@ -242,7 +242,7 @@ cat <span class="s">&lt;&lt; EOF</span>
       <span class="p">;;</span>
     h<span class="o">)</span>
       USAGE
-      <span class="nb">exit </span>1
+      <span class="nb">exit</span> <span class="m">1</span>
       <span class="p">;;</span>
     l<span class="o">)</span>
       <span class="nv">DBLIST</span><span class="o">=</span><span class="s2">&quot;</span><span class="nv">$OPTARG</span><span class="s2">&quot;</span>
@@ -255,15 +255,15 @@ cat <span class="s">&lt;&lt; EOF</span>
       <span class="nb">exit</span>
       <span class="p">;;</span>
     :<span class="o">)</span>
-      <span class="nb">echo</span> <span class="s2">&quot;Option -</span><span class="nv">$OPTARG</span><span class="s2"> requires an argument.&quot;</span> &gt;<span class="p">&amp;</span>2
-      <span class="nb">exit </span>1
+      <span class="nb">echo</span> <span class="s2">&quot;Option -</span><span class="nv">$OPTARG</span><span class="s2"> requires an argument.&quot;</span> &gt;<span class="p">&amp;</span><span class="m">2</span>
+      <span class="nb">exit</span> <span class="m">1</span>
       <span class="p">;;</span>
   <span class="k">esac</span>
 <span class="k">done</span>
 
 <span class="k">function</span> ERROR<span class="o">()</span> <span class="o">{</span>
   <span class="nb">echo</span> <span class="o">&amp;&amp;</span> <span class="nb">echo</span> <span class="s2">&quot;[error] </span><span class="nv">$@</span><span class="s2">&quot;</span>
-  <span class="nb">exit </span>1
+  <span class="nb">exit</span> <span class="m">1</span>
 <span class="o">}</span>
 
 <span class="k">function</span> NOTICE<span class="o">()</span> <span class="o">{</span>
@@ -275,7 +275,7 @@ cat <span class="s">&lt;&lt; EOF</span>
   <span class="nb">eval</span> <span class="nv">$@</span>
 <span class="o">}</span>
 
-<span class="c"># Sanity checks</span>
+<span class="c1"># Sanity checks</span>
 <span class="k">if</span> <span class="o">[</span> ! -n <span class="s2">&quot;</span><span class="nv">$DBLIST</span><span class="s2">&quot;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
   <span class="nv">DBLIST</span><span class="o">=</span><span class="sb">`</span><span class="nv">$MYSQLCMD</span> -N -s -e <span class="s2">&quot;show databases&quot;</span> <span class="p">|</span> grep -viE <span class="s1">&#39;(information_schema|performance_schema|mysql|test)&#39;</span><span class="sb">`</span>
 
@@ -288,16 +288,16 @@ cat <span class="s">&lt;&lt; EOF</span>
   ERROR <span class="s2">&quot;Invalid backup directory&quot;</span>
 <span class="k">fi</span>
 
-<span class="k">if</span> <span class="o">[[</span> ! <span class="nv">$NUMDAYS</span> <span class="o">=</span>~ ^<span class="o">[</span>0-9<span class="o">]</span>+<span class="nv">$ </span><span class="o">]]</span><span class="p">;</span> <span class="k">then</span>
+<span class="k">if</span> <span class="o">[[</span> ! <span class="nv">$NUMDAYS</span> <span class="o">=</span>~ ^<span class="o">[</span><span class="m">0</span>-9<span class="o">]</span>+$ <span class="o">]]</span><span class="p">;</span> <span class="k">then</span>
   ERROR <span class="s2">&quot;Invalid number of days: </span><span class="nv">$NUMDAYS</span><span class="s2">&quot;</span>
 <span class="k">elif</span> <span class="o">[</span> <span class="s2">&quot;</span><span class="nv">$NUMDAYS</span><span class="s2">&quot;</span> -eq <span class="s2">&quot;0&quot;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
   ERROR <span class="s2">&quot;Number of days must be greater than zero&quot;</span>
 <span class="k">fi</span>
 
-<span class="c"># Lock down permissions</span>
-<span class="nb">umask </span>077
+<span class="c1"># Lock down permissions</span>
+<span class="nb">umask</span> <span class="m">077</span>
 
-<span class="c"># Create directory if needed</span>
+<span class="c1"># Create directory if needed</span>
 RUNCMD mkdir -p -v <span class="nv">$BACKUPDIR</span>
 
 <span class="k">if</span> <span class="o">[</span> ! -d <span class="nv">$BACKUPDIR</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
@@ -305,7 +305,7 @@ RUNCMD mkdir -p -v <span class="nv">$BACKUPDIR</span>
 <span class="k">fi</span>
 
 NOTICE <span class="s2">&quot;Dumping MySQL databases...&quot;</span>
-<span class="nv">RC</span><span class="o">=</span>0
+<span class="nv">RC</span><span class="o">=</span><span class="m">0</span>
 
 <span class="k">for</span> database in <span class="nv">$DBLIST</span><span class="p">;</span> <span class="k">do</span>
   NOTICE <span class="s2">&quot;Dumping </span><span class="nv">$database</span><span class="s2">...&quot;</span>
@@ -329,7 +329,7 @@ NOTICE <span class="s2">&quot;Dumping MySQL databases...&quot;</span>
   NOTICE <span class="s2">&quot;MySQLDump is complete!&quot;</span>
 <span class="k">fi</span>
 
-<span class="c"># exit 0</span>
+<span class="c1"># exit 0</span>
 </pre></div>
 </td></tr></table>
 
@@ -337,7 +337,7 @@ NOTICE <span class="s2">&quot;Dumping MySQL databases...&quot;</span>
 <p>目前把这个脚本托管在自己的Coding.net和GitHub的上一个shell script工具集合，地址如下：</p>
 <p>Coding.net地址：<a href="https://coding.net/u/vfhky/p/shell-tools/git" title="点击查看">https://coding.net/u/vfhky/p/shell-tools/git</a>。</p>
 <p>GitHub地址：<a href="https://github.com/vfhky/shell-tools/" title="点击查看">https://github.com/vfhky/shell-tools/</a>。</p>
-		    	<div class="donate_div_container">
+</div>		    	<div class="donate_div_container">
 					<div class="donate_div">
 						<p><a href="javascript:void(0)" onclick="donateToggle()" class="donate_word" title="打赏，支持一下">打赏</a></p>
 						<div class="hide_box"></div>
@@ -367,7 +367,7 @@ NOTICE <span class="s2">&quot;Dumping MySQL databases...&quot;</span>
 					</div>
 				</div>
 		    	<div class="tags">
-					<div class="post_tags">
+					<div class="post_tags" itemprop="keywords">
 						Tags: <a href="https://typecodes.com/tag/bo-ke-cheng-chang-lu.html">博客成长录</a>,<a href="https://typecodes.com/tag/mysql.html">mysql</a>,<a href="https://typecodes.com/tag/shell.html">shell</a>					</div>
 					<div class="post-share">
 						<ul class="post-shareul clearfix">
@@ -459,7 +459,6 @@ NOTICE <span class="s2">&quot;Dumping MySQL databases...&quot;</span>
 		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
 	</section>
 </div>
-				</div>
 			</div>
 		</div>
 		<!--4. bottom begin-->

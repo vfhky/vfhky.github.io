@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html dir="ltr" lang="zh-CN" class="no-js">
+<html class="no-js">
 	<head>
-		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
   		<meta name="renderer" content="webkit">
 		<title>更新GitHub for Windows出错：git command could not be found &mdash; TypeCodes</title>
 		<meta name="description" content="更新GitHub for Windows出错：git command could not be found &mdash; TypeCodes" />
@@ -34,8 +35,7 @@
 			</div>
 		</div>
 		<div class="container">
-			<div class="row">
-		<!--2. left sider begin-->
+			<div class="row">		<!--2. left sider begin-->
 		<div class="col-md-9" id="blog-main" role="main">
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/mix/updategithubclienterr.html">更新GitHub for Windows出错：git command could not be found</a></h2>
@@ -45,7 +45,7 @@
 <div class="post-content fmt">
 	<h5>1 更新Github for Windows</h5>
 <p>前天在用git shell时，发现有新版本。作为“版本控”的我，自然是不会放过了。在升级后，重新打开git shell，竟然显示两个warning：</p>
-<div class="highlight"><pre>警告: git command could not be found. Please create an alias or add it to yourPATH.
+<div class="highlight"><pre><span></span>警告: git command could not be found. Please create an alias or add it to yourPATH.
 警告: Could not find ssh-agent.
 </pre></div>
 
@@ -54,16 +54,16 @@
 
 <h5>2 解决方法</h5>
 <p>当时心里就在嘀咕，windows不至于这么弱吧。反复打开和关闭git shell，还是会出现这个问题。输入任何命令都报错“not recognized as the name of a cmdlet”。网上gg了一下，在Stack Overflow找到了答案。解决方法如下三个步骤：</p>
-<div class="highlight"><pre>在更新完Git Shell后，关闭该窗口；
+<div class="highlight"><pre><span></span>在更新完Git Shell后，关闭该窗口；
 打开GitHub for Windows客户端，然后等待其Extracting更新的文件并进行一些后期安装（如下图所示）；
 等待GitHub for Windows后期安装完后，重新打开Git Shell即可。
 </pre></div>
 
 
-<p><img alt="GitHub for Windows客户端安装更新" src="https://o3cex9zsl.qnssl.com/2013/11/GitHub-for-Windows-extracting.jpg" title="GitHub for Windows客户端安装更新" /></p>
+<p><img alt="GitHub for Windows客户端安装更新" src="https://o3cex9zsl.qnssl.com/2013/11/GitHub-for-Windows-extracting.jpg" title="GitHub for Windows客户端安装更新"></p>
 <h5>3 扯点题外话</h5>
 <p>前段时间都没什么业余时间弄ty的主题，改了m4html几个小地方：站内搜索、评论框、侧栏和文章归档等。另有几个蛋疼的地方：界面调整（css和js的增改）、二级目录（ty遗憾不支持）、router设置、wp数据移植（貌似测试发现有点问题）。目前这个主题弄在bae上，大家可以上去看看提个建议神马的。好吧，估计主题要慢慢整了；另计划近期把之前这两个wp主题整理到github上。唉，先写到这里了。</p>
-		    	<div class="donate_div_container">
+</div>		    	<div class="donate_div_container">
 					<div class="donate_div">
 						<p><a href="javascript:void(0)" onclick="donateToggle()" class="donate_word" title="打赏，支持一下">打赏</a></p>
 						<div class="hide_box"></div>
@@ -93,7 +93,7 @@
 					</div>
 				</div>
 		    	<div class="tags">
-					<div class="post_tags">
+					<div class="post_tags" itemprop="keywords">
 						Tags: <a href="https://typecodes.com/tag/github.html">github</a>					</div>
 					<div class="post-share">
 						<ul class="post-shareul clearfix">
@@ -185,7 +185,6 @@
 		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
 	</section>
 </div>
-				</div>
 			</div>
 		</div>
 		<!--4. bottom begin-->

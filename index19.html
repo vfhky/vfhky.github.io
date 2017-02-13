@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html dir="ltr" lang="zh-CN" class="no-js">
+<html class="no-js">
 	<head>
-		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
   		<meta name="renderer" content="webkit">
 		<title>TypeCodes</title>
 		<meta name="description" content="TypeCodes" />
@@ -34,8 +35,7 @@
 			</div>
 		</div>
 		<div class="container">
-			<div class="row">
-		<!--2. left sider begin-->
+			<div class="row">		<!--2. left sider begin-->
 		<div class="col-md-9" id="blog-main" role="main">
 		  	<!--article recycle-->
 			<article class="post">
@@ -48,7 +48,7 @@
 <p>其实在上一份威少的主题中，vfhky对博客评论广告链接的“封杀”想了很多。所以，在这次博客的新主题中集成了 “访问安全提示” 和 “网站安全认证” 的功能。</p>
 
 	<p class="more"><a href="https://typecodes.com/mix/commentlinksitecertification.html" title="关于博客评论的链接审查、网站认证的声明">- 阅读剩余部分 -</a></p>
-			</article>
+</div>			</article>
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/database/oracleora0103427101.html">Oracle数据库出现ORA-01034、ORA-27101错误解决</a></h2>
 <ul class="post-meta">
@@ -58,7 +58,7 @@
 	<p>最近在虚拟机中操作Oracle数据库SQL语句时，出现了以下两种报错：</p>
 <h5>1 ORA-27101: shared memory realm does not exist</h5>
 <p>具体的错误信息如下：</p>
-<div class="highlight"><pre>ORA-01034: ORACLE not available
+<div class="highlight"><pre><span></span>ORA-01034: ORACLE not available
 ORA-27101: shared memory realm does not exist
 Linux Error: 2: No such file or directory
 </pre></div>
@@ -66,7 +66,7 @@ Linux Error: 2: No such file or directory
 
 
 	<p class="more"><a href="https://typecodes.com/database/oracleora0103427101.html" title="Oracle数据库出现ORA-01034、ORA-27101错误解决">- 阅读剩余部分 -</a></p>
-			</article>
+</div>			</article>
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/web/wpcopywithbloglink.html">Wordpress文章复制自动添加博客链接的JS脚本（兼容IE、Firefox和Chrome）</a></h2>
 <ul class="post-meta">
@@ -76,7 +76,7 @@ Linux Error: 2: No such file or directory
 	<p>这次博客在改用新主题的时候，曾经尝试过给博客的文章页面添加一个小功能：在复制文字时自动在文字后面加入文章的链接地址。当然保护文章版权的方法也有很多，例如给博文中的图片添加水印，在文章中多次增加内链，也有通过禁用右键复制功能来实现等等。但是还是vfhky觉得添加水印有碍图片的阅览，可以增加文字内链也麻烦，而禁止右键的复制又显得小气，所以试了试采用自动在复制的文字后面添加文章出处的链接。后来又觉得比较无聊，于是又删掉了，还是自然的好！下面给出兼容IE、Firefox和Chrome的javascript脚本代码，仅供参考。</p>
 
 	<p class="more"><a href="https://typecodes.com/web/wpcopywithbloglink.html" title="Wordpress文章复制自动添加博客链接的JS脚本（兼容IE、Firefox和Chrome）">- 阅读剩余部分 -</a></p>
-			</article>
+</div>			</article>
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/mix/cmsblogwithvfhkyreturn.html">启用CMS类型的博客主题，vfhky再次回归</a></h2>
 <ul class="post-meta">
@@ -86,7 +86,7 @@ Linux Error: 2: No such file or directory
 	<p>由于种种原因，原定于5月底更换的主题未能正常上线。本以为最迟应该可以在6月份完成的，但是毕业设计、毕业旅行、回家……种种的种种，让我不得不停下来；本以为毕业后时间还很长，就像刚进大学时候觉得大学四年会很漫长，结果就是后知后觉了。好吧，不罗嗦了，直接进入主题：</p>
 
 	<p class="more"><a href="https://typecodes.com/mix/cmsblogwithvfhkyreturn.html" title="启用CMS类型的博客主题，vfhky再次回归">- 阅读剩余部分 -</a></p>
-			</article>
+</div>			</article>
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/database/plsqlconnvmwareoracleslow.html">解决Windows中PLSQL连接虚拟机中Oracle缓慢的问题</a></h2>
 <ul class="post-meta">
@@ -94,10 +94,10 @@ Linux Error: 2: No such file or directory
 </ul>
 <div class="post-content fmt">
 	<p>博主上周末在自己的Windows宿主机中，用PL/SQL连接虚拟机中的oracle数据库时，出现了大概需要等待10多秒的时间才能登录成功的问题。很奇怪的现象，因为我在Windows中ping虚拟机中的oracle服务器IP地址，响应时间都在1ms内。在网上GG了下，没找到答案。后经我搭档指点，原来是Linux系统中的DNS解析在寻址的时候出现“错误”。这个跟我在用桥接模式连接网络的时候，错误配置了“Network Configuration”中的DNS有关（在用Bridged模式联网时，可以不用配置DNS）。</p>
-<p><img alt="桥接模式错误配置DNS" src="https://o3cex9zsl.qnssl.com/2013/04/error-dns.png" title="桥接模式错误配置DNS" /></p>
+<p><img alt="桥接模式错误配置DNS" src="https://o3cex9zsl.qnssl.com/2013/04/error-dns.png" title="桥接模式错误配置DNS"></p>
 
 	<p class="more"><a href="https://typecodes.com/database/plsqlconnvmwareoracleslow.html" title="解决Windows中PLSQL连接虚拟机中Oracle缓慢的问题">- 阅读剩余部分 -</a></p>
-			</article>
+</div>			</article>
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/web/cancelwpautosave.html">取消WordPress的日志自动保存、修订版本、历史版本和文章不连续</a></h2>
 <ul class="post-meta">
@@ -107,7 +107,7 @@ Linux Error: 2: No such file or directory
 	<p>首先声明，这篇文章来源于我大百度，博主只是整理了一下，另外测试了一些bug，所以不负也付不起版权责任^^。开个玩笑，相信很多Wordpress用户在后台写文章的时候都会被文本框下面的自动保存当前文章为草稿的提示所困扰。另外，文章不多，但是文章链接地址中的ID却真的是“围起来可以绕地球一圈”了。再者，臃肿的数据库、后台修改文章的时候会让你从好几个历史版本中选择一个，等等这些真的很让人蛋疼。好吧，不罗嗦了，相信看这篇文章的都懂的，直接来过程。</p>
 
 	<p class="more"><a href="https://typecodes.com/web/cancelwpautosave.html" title="取消WordPress的日志自动保存、修订版本、历史版本和文章不连续">- 阅读剩余部分 -</a></p>
-			</article>
+</div>			</article>
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/linux/vmwarelinuxbrigedmode.html">虚拟机VMWare中Linux用桥接方式连接实例</a></h2>
 <ul class="post-meta">
@@ -116,7 +116,7 @@ Linux Error: 2: No such file or directory
 <div class="post-content fmt">
 	<h5>1 虚拟机网络模式介绍与说明</h5>
 <p>我们在安装完虚拟机VMWare后，会发现在我们的宿主机Windows系统中多出了两个虚拟网卡：VMware Network Adapter VMnet1 和 VMware Network Adapter VMnet8 。因此，我们在使用虚拟机VMWare时，会利用这两个网卡中的一个来进行网络通信服务。具体可以分为如下三种网络工作模式： bridged(桥接模式)、NAT(网络地址转换模式 )和host-only(主机模式)。在VMware的网络模型中，VMware有如下几个虚拟设备：</p>
-<div class="highlight"><pre>VMnet0：这是VMware用于虚拟桥接网络下的虚拟交换机；
+<div class="highlight"><pre><span></span>VMnet0：这是VMware用于虚拟桥接网络下的虚拟交换机；
 VMnet1：这是VMware用于虚拟Host-Only网络下的虚拟交换机；
 VMnet8：这是VMware用于虚拟NAT网络下的虚拟交换机；
 VMware Network Adapter VMnet1：这是Host用于与Host-Only虚拟网络进行通信的虚拟网卡；
@@ -126,7 +126,7 @@ VMware Network Adapter VMnet8：这是Host用于与NAT虚拟网络进行通信�
 
 
 	<p class="more"><a href="https://typecodes.com/linux/vmwarelinuxbrigedmode.html" title="虚拟机VMWare中Linux用桥接方式连接实例">- 阅读剩余部分 -</a></p>
-			</article>
+</div>			</article>
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/database/windowsplsqlmanageoracle.html">如何在Windows宿主机中安装PL/SQL管理虚拟机中的Oracle</a></h2>
 <ul class="post-meta">
@@ -137,17 +137,26 @@ VMware Network Adapter VMnet8：这是Host用于与NAT虚拟网络进行通信�
 <p>这是常规的做法，但是oracle出产的软件一向遵守庞大臃肿的传统，Oracle11.2.0.2.0的Windows版本竟然和SQL server一样有2G多了。作为一个远程管理工具，我们没有必要在windows中安装一个完整的Oracle。类似于SQL server的Express版本，甲骨文也考虑到了这点，所以精简版的instantclient就应运而生了。下面就是具体的如何在Windows宿主机中安装PL/SQL管理虚拟机中的Oracle数据库步骤：</p>
 
 	<p class="more"><a href="https://typecodes.com/database/windowsplsqlmanageoracle.html" title="如何在Windows宿主机中安装PL/SQL管理虚拟机中的Oracle">- 阅读剩余部分 -</a></p>
-			</article>
+</div>			</article>
 		  	<!--page navigation-->
 <ol class="page-navigator">
-<li class="prev"><a href="https://typecodes.com/index18.html">&laquo; 前一页</a></li><li><a href="https://typecodes.com/index.html">1</a>
-       <li><a href="https://typecodes.com/index2.html">2</a>
-       		</li><li><span>...</span></li><li><a href="https://typecodes.com/index17.html">17</a>
-       		</li><li><a href="https://typecodes.com/index18.html">18</a>
-       		</li><li class="current"><a href="https://typecodes.com/index19.html">19</a>
-       		</li><li><a href="https://typecodes.com/index20.html">20</a>
-       		</li><li><span>...</span></li><li><a href="https://typecodes.com/index27.html">27</a>
-       		</li><li><a href="https://typecodes.com/index28.html">28</a>
+<li class="prev"><a href="https://typecodes.com/index18.html">&laquo; 前一页</a></li><li>
+       			<a href="https://typecodes.com/index1.html">1</a>
+       		</li>
+       <li>
+       			<a href="https://typecodes.com/index2.html">2</a>
+       		</li><li><span>...</span></li><li>
+       			<a href="https://typecodes.com/index17.html">17</a>
+       		</li><li>
+       			<a href="https://typecodes.com/index18.html">18</a>
+       		</li><li class="current">
+       			<a href="https://typecodes.com/index.html">19</a>
+       		</li><li>
+       			<a href="https://typecodes.com/index20.html">20</a>
+       		</li><li><span>...</span></li><li>
+       			<a href="https://typecodes.com/index27.html">27</a>
+       		</li><li>
+       			<a href="https://typecodes.com/index28.html">28</a>
        		</li><li class="next">
        		<a href="https://typecodes.com/index20.html">后一页 &raquo;</a>
        </li></ol>		</div>
@@ -216,7 +225,6 @@ VMware Network Adapter VMnet8：这是Host用于与NAT虚拟网络进行通信�
 		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
 	</section>
 </div>
-				</div>
 			</div>
 		</div>
 		<!--4. bottom begin-->

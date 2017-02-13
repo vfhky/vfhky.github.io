@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html dir="ltr" lang="zh-CN" class="no-js">
+<html class="no-js">
 	<head>
-		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
   		<meta name="renderer" content="webkit">
 		<title>再谈wordpress评论验证码——Willin Kan大神开的一个“玩笑” &mdash; TypeCodes</title>
 		<meta name="description" content="再谈wordpress评论验证码——Willin Kan大神开的一个“玩笑” &mdash; TypeCodes" />
@@ -34,8 +35,7 @@
 			</div>
 		</div>
 		<div class="container">
-			<div class="row">
-		<!--2. left sider begin-->
+			<div class="row">		<!--2. left sider begin-->
 		<div class="col-md-9" id="blog-main" role="main">
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/web/againwpmathverifycode.html">再谈wordpress评论验证码——Willin Kan大神开的一个“玩笑”</a></h2>
@@ -48,14 +48,14 @@
 
 
 <p>网上查找了资料，大多说是因为在提交评论的时候，由于调用ajax评论JS代码导致在输出错误提示的时候评论页面变形（一般的wp主题评论都回调用的Willin Kan编写的jQuery-Ajax-Comments v1.3），这该不会是Willin大神故意开玩笑吧？？？</p>
-<p><img alt="wordpress评论框变形" src="https://o3cex9zsl.qnssl.com/2013/04/change-shape.png" title="wordpress评论框变形" /></p>
+<p><img alt="wordpress评论框变形" src="https://o3cex9zsl.qnssl.com/2013/04/change-shape.png" title="wordpress评论框变形"></p>
 <h5>（二）网络解决方法</h5>
 <p>那么，我们找到 comments-ajax.js 中的第43-47行：</p>
 <table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
 2
 3
 4
-5</pre></div></td><td class="code"><div class="highlight"><pre><span class="nx">error</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">request</span><span class="p">)</span> <span class="p">{</span>
+5</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="nx">error</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">request</span><span class="p">)</span> <span class="p">{</span>
   <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#loading&#39;</span><span class="p">).</span><span class="nx">slideUp</span><span class="p">();</span>
   <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#error&#39;</span><span class="p">).</span><span class="nx">slideDown</span><span class="p">().</span><span class="nx">html</span><span class="p">(</span><span class="s1">&#39;&lt;img src=&quot;&#39;</span> <span class="o">+</span> <span class="nx">pic_no</span> <span class="o">+</span> <span class="s1">&#39;&quot; style=&quot;vertical-align:middle;&quot; alt=&quot;&quot;/&gt; &#39;</span> <span class="o">+</span> <span class="nx">request</span><span class="p">.</span><span class="nx">responseText</span><span class="p">);</span>
   <span class="nx">setTimeout</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span><span class="nx">$submit</span><span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s1">&#39;disabled&#39;</span><span class="p">,</span> <span class="kc">false</span><span class="p">).</span><span class="nx">fadeTo</span><span class="p">(</span><span class="s1">&#39;slow&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span> <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#error&#39;</span><span class="p">).</span><span class="nx">slideUp</span><span class="p">();},</span> <span class="mi">3000</span><span class="p">);</span>
@@ -64,20 +64,20 @@
 </td></tr></table>
 
 <p>这段代码也就是在出现error的时候执行的语句，也就是wordpress评论框变形的“罪魁祸首”！网上的解决方法是：在第45行的代码后面添加正则表达式，过滤掉上面代码产生的常见的html标签代码，具体如下</p>
-<div class="highlight"><pre><span class="o">$(</span><span class="s1">&#39;#error&#39;</span><span class="o">)</span><span class="nc">.slideDown</span><span class="o">()</span><span class="nc">.html</span><span class="o">(</span><span class="s1">&#39;&lt;img src=&quot;&#39;</span> <span class="o">+</span> <span class="nt">pic_no</span> <span class="o">+</span> <span class="s1">&#39;&quot; style=&quot;vertical-align:middle;&quot; alt=&quot;&quot;/&gt; &#39;</span> <span class="o">+</span> <span class="nt">request</span><span class="nc">.responseText.replace</span><span class="o">(/&lt;</span> <span class="o">(?!</span><span class="nt">p</span><span class="o">).*?&gt;(?:.*?&lt;</span> <span class="err">\</span><span class="o">/.*?&gt;)?/</span><span class="nt">gi</span><span class="o">,</span><span class="s1">&#39;&#39;</span><span class="o">));</span>
+<div class="highlight"><pre><span></span><span class="o">$(</span><span class="s1">&#39;#error&#39;</span><span class="o">)</span><span class="p">.</span><span class="nc">slideDown</span><span class="o">()</span><span class="p">.</span><span class="nc">html</span><span class="o">(</span><span class="s1">&#39;&lt;img src=&quot;&#39;</span> <span class="o">+</span> <span class="nt">pic_no</span> <span class="o">+</span> <span class="s1">&#39;&quot; style=&quot;vertical-align:middle;&quot; alt=&quot;&quot;/&gt; &#39;</span> <span class="o">+</span> <span class="nt">request</span><span class="p">.</span><span class="nc">responseText</span><span class="p">.</span><span class="nc">replace</span><span class="o">(/&lt;</span> <span class="o">(?!</span><span class="nt">p</span><span class="o">).*?&gt;(?:.*?&lt;</span> <span class="err">\</span><span class="o">/.*?&gt;)?/</span><span class="nt">gi</span><span class="o">,</span><span class="s1">&#39;&#39;</span><span class="o">));</span>
 </pre></div>
 
 
 <h5>（三）遗留问题</h5>
 <p>但是经过vfhky的测试，改进后的代码虽然避免了wordpress评论页面的变形，但是会输出很多浏览器无法解析的源代码，图就不贴出来了，大家可以自己测试一下。没办法，博主就小小研究了下comments-ajax.php，发现里面的出错提示语句用的是</p>
-<div class="highlight"><pre>err(__(&#39;Sorry, comments are closed for this item.&#39;));
+<div class="highlight"><pre><span></span>err(__(&#39;Sorry, comments are closed for this item.&#39;));
 </pre></div>
 
 
 <p>而不是用常规的echo函数输出，所以我把spam_provent_pre($spam_result)函数中的 两个we_die函数全都替换成err 。修改后，vfhky进行了测试，结果显示即使用户错误的输入验证码也不会使评论框页面变形了，它会像用户没有输入邮箱号码而直接提交评论那样在评论框的底部以温馨的小字提示用户应该输入正确的验证码！</p>
 <h5>（四）结语</h5>
 <p>看来bug只能是偶们这小菜鸟产生的，膜拜Willin Kan大神啦！</p>
-		    	<div class="donate_div_container">
+</div>		    	<div class="donate_div_container">
 					<div class="donate_div">
 						<p><a href="javascript:void(0)" onclick="donateToggle()" class="donate_word" title="打赏，支持一下">打赏</a></p>
 						<div class="hide_box"></div>
@@ -107,7 +107,7 @@
 					</div>
 				</div>
 		    	<div class="tags">
-					<div class="post_tags">
+					<div class="post_tags" itemprop="keywords">
 						Tags: <a href="https://typecodes.com/tag/wordpressyan-zheng-ma.html">wordpress验证码</a>					</div>
 					<div class="post-share">
 						<ul class="post-shareul clearfix">
@@ -199,7 +199,6 @@
 		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
 	</section>
 </div>
-				</div>
 			</div>
 		</div>
 		<!--4. bottom begin-->

@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html dir="ltr" lang="zh-CN" class="no-js">
+<html class="no-js">
 	<head>
-		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
   		<meta name="renderer" content="webkit">
 		<title>批处理文件（.bat）的写法——DOS命令大全 &mdash; TypeCodes</title>
 		<meta name="description" content="批处理文件（.bat）的写法——DOS命令大全 &mdash; TypeCodes" />
@@ -34,8 +35,7 @@
 			</div>
 		</div>
 		<div class="container">
-			<div class="row">
-		<!--2. left sider begin-->
+			<div class="row">		<!--2. left sider begin-->
 		<div class="col-md-9" id="blog-main" role="main">
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/mix/dosbatmethod.html">批处理文件（.bat）的写法——DOS命令大全</a></h2>
@@ -47,7 +47,7 @@
 
 
 <h5>1 先来看看.cmd，.bat是什么：</h5>
-<div class="highlight"><pre><span class="na">.bat</span><span class="err">是</span><span class="no">dos</span><span class="err">下的批处理文件；</span>
+<div class="highlight"><pre><span></span><span class="na">.bat</span><span class="err">是</span><span class="no">dos</span><span class="err">下的批处理文件；</span>
 <span class="na">.cmd</span><span class="err">是</span><span class="no">nt</span><span class="err">内核命令行环境的另一种批处理文件；</span>
 
 <span class="err">因此，二者是没有本质区别。从更广义的角度来看，</span><span class="nf">unix</span><span class="err">的</span><span class="no">shell</span><span class="err">脚本以及其它操作系统甚至应用程序中由外壳进行解释执行的文本，都具有与批处理文件十分相似的作用，而且同样是由专用解释器以行为单位解释执行，这种文本形式更通用的称谓是脚本语言。</span>
@@ -58,7 +58,7 @@
 
 <p>接下来就是vfhky整理的DOS命令了。第一部分比较常用，第二部分用的不多。有了这些基本的DOS命令，那么写简单的.bat批处理文件也就不难了（实例见下篇文章用.bat批处理文件实现内外网多IP切换）。</p>
 <h5>2 第一部分：常用的DOS命令</h5>
-<div class="highlight"><pre><span class="err">@，屏幕不显示当前行的</span><span class="n">DOS</span><span class="err">命令</span>
+<div class="highlight"><pre><span></span><span class="err">@，屏幕不显示当前行的</span><span class="n">DOS</span><span class="err">命令</span>
 
 <span class="n">echo</span> <span class="n">off</span><span class="err">，屏幕不显示</span><span class="n">bat</span><span class="err">文件中所有的命令行</span>
 
@@ -107,7 +107,7 @@
 
 
 <h5>3 第二部分：相对用的少的DOS命令</h5>
-<div class="highlight"><pre>start，调用外部程序。例如start &quot;&quot; &quot;d:\gvim.exe&quot;
+<div class="highlight"><pre><span></span>start，调用外部程序。例如start &quot;&quot; &quot;d:\gvim.exe&quot;
 
 format，磁盘格式化命令。[格式] [C:][path]format drive:[/S]
 
@@ -120,28 +120,28 @@ mem，英文memory的缩写，用来查看计算机内存大小以及内存的�
 chkdsk，英文check disk的缩写，用来检查你的磁盘的使用情况。[格式] chkdsk　磁盘名
 
 find，搜索命令。用于在文件中搜索特定字符串。例如：
-type a.txt | find &quot;黄克业的博客&quot; <span class="err">&amp;&amp;</span> echo &quot;麻辣的视界&quot; 。
+type a.txt | find &quot;黄克业的博客&quot; &amp;&amp; echo &quot;麻辣的视界&quot; 。
 该命令会在a.txt中搜索“黄克业的博客”，如果存在该内容，就会输出“麻辣的视界”。
 
 &gt;、&gt;&gt;
 二者都是输出重定向命令，即把前面命令的流文字重定向写入到一个文件中。二者的唯一区别是，&gt;命令在清除掉原有文件中的内容后才把新的内容写入原文件，而&gt;&gt;命令会另起一行把新的内容追加到原文件中。
 
-<span class="err">&lt;</span>、&gt;<span class="err">&amp;</span>、<span class="err">&lt;&amp;</span> ：三个管道命令（不常用）
-<span class="err">&lt;</span>，输入重定向命令。即从文件中读入命令输入，而不是从键盘中读入。  
-&gt;<span class="err">&amp;</span>，将一个句柄的输出写入到另一个句柄的输入中。
-<span class="err">&lt;&amp;</span>，刚好和&gt;<span class="err">&amp;</span>相反，从一个句柄读取输入并将其写入到另一个句柄输出中。
+&lt;、&gt;&amp;、&lt;&amp; ：三个管道命令（不常用）
+&lt;，输入重定向命令。即从文件中读入命令输入，而不是从键盘中读入。  
+&gt;&amp;，将一个句柄的输出写入到另一个句柄的输入中。
+&lt;&amp;，刚好和&gt;&amp;相反，从一个句柄读取输入并将其写入到另一个句柄输出中。
 
-<span class="err">&amp;</span>，组合连接命令。即它可以连接n个DOS命令，然后按顺序执行，并且会忽略执行失败的命令。
+&amp;，组合连接命令。即它可以连接n个DOS命令，然后按顺序执行，并且会忽略执行失败的命令。
 
-<span class="err">&amp;&amp;</span> ，组合连接命令。它可以把它前后两个命令组合起来当一个命令来用。但是和<span class="err">&amp;</span>命令不同的是，<span class="err">&amp;&amp;</span>会检测是否有执行出错的命令，一旦发现出错后将不继续执行剩下的命令。
+&amp;&amp; ，组合连接命令。它可以把它前后两个命令组合起来当一个命令来用。但是和&amp;命令不同的是，&amp;&amp;会检测是否有执行出错的命令，一旦发现出错后将不继续执行剩下的命令。
 
 |，作用是让前一命令的输出当做后一命令的输入。
 
-|| ，用法和<span class="err">&amp;&amp;</span>几乎一样，但作用恰恰相反：当遇到一个执行正确的命令时，就退出此命令组合，不再继续执行下面的命令。
+|| ，用法和&amp;&amp;几乎一样，但作用恰恰相反：当遇到一个执行正确的命令时，就退出此命令组合，不再继续执行下面的命令。
 
 at，列出在指定的时间和日期在计算机上运行的已计划命令或计划命令和程序，例如at 12:00 “d:\abc.bat”。
 </pre></div>
-		    	<div class="donate_div_container">
+</div>		    	<div class="donate_div_container">
 					<div class="donate_div">
 						<p><a href="javascript:void(0)" onclick="donateToggle()" class="donate_word" title="打赏，支持一下">打赏</a></p>
 						<div class="hide_box"></div>
@@ -171,7 +171,7 @@ at，列出在指定的时间和日期在计算机上运行的已计划命令或
 					</div>
 				</div>
 		    	<div class="tags">
-					<div class="post_tags">
+					<div class="post_tags" itemprop="keywords">
 						Tags: <a href="https://typecodes.com/tag/cmd.html">cmd</a>,<a href="https://typecodes.com/tag/pi-chu-li.html">批处理</a>					</div>
 					<div class="post-share">
 						<ul class="post-shareul clearfix">
@@ -263,7 +263,6 @@ at，列出在指定的时间和日期在计算机上运行的已计划命令或
 		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
 	</section>
 </div>
-				</div>
 			</div>
 		</div>
 		<!--4. bottom begin-->

@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html dir="ltr" lang="zh-CN" class="no-js">
+<html class="no-js">
 	<head>
-		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
   		<meta name="renderer" content="webkit">
 		<title>博客优化第二波(三)：wordpress评论添加算术验证码 &mdash; TypeCodes</title>
 		<meta name="description" content="博客优化第二波(三)：wordpress评论添加算术验证码 &mdash; TypeCodes" />
@@ -34,8 +35,7 @@
 			</div>
 		</div>
 		<div class="container">
-			<div class="row">
-		<!--2. left sider begin-->
+			<div class="row">		<!--2. left sider begin-->
 		<div class="col-md-9" id="blog-main" role="main">
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/web/wpmathverifycode.html">博客优化第二波(三)：wordpress评论添加算术验证码</a></h2>
@@ -48,7 +48,7 @@
 
 <p>于是博主做了一个艰难的决定，那就是填写验证码后才能发表评论，幸苦发表评论的筒子们了。之前写过一篇关于PHP验证码的文章——<a href="https://typecodes.com/web/phpverificationcode.html" title="PHP中验证码的设计">《PHP中验证码的设计》</a>，主要是JS弹窗进行验证。这样的好处是整个过程在客户端进行，不用提交到服务器，减轻了服务器的负担；缺点是安全性不佳，要是用户禁用了浏览器的javascript，那么弹窗是不起作用的。那么除了图片验证码之外，我们也可以使用简单的数字验证码，即简单的算术运算来完成验证工作。</p>
 <p>效果如下图示:</p>
-<p><img alt="wordpress算术验证码验证码" src="https://o3cex9zsl.qnssl.com/2012/12/yzm.png" title="wordpress算术验证码验证码" /></p>
+<p><img alt="wordpress算术验证码验证码" src="https://o3cex9zsl.qnssl.com/2012/12/yzm.png" title="wordpress算术验证码验证码"></p>
 <p>不罗嗦了，直接贴出代码：</p>
 <h5>（一）在主题目录的functions.php添加如下代码：</h5>
 <table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
@@ -69,7 +69,7 @@
 16
 17
 18
-19</pre></div></td><td class="code"><div class="highlight"><pre><span class="x">//算术验证码by vfhky</span>
+19</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="x">//算术验证码by vfhky</span>
 <span class="x">function spam_provent_math(){</span>
 <span class="x">  $a=rand(5,15);</span>
 <span class="x">  $b=rand(5,15);</span>
@@ -92,7 +92,7 @@
 </td></tr></table>
 
 <h5>（二）在主题目录下的comments.php(不同的主题可能评论框的位置不同，有的主题可能在functions.php里面)中调用上述代码：</h5>
-<div class="highlight"><pre>//根据是否是管理员来决定是否显示验证码
+<div class="highlight"><pre><span></span>//根据是否是管理员来决定是否显示验证码
 &lt;php if(!is_user_logged_in())spam_provent_math();?&gt;
 </pre></div>
 
@@ -102,25 +102,25 @@
 <p>在wp官方论坛也有人遇到了类似问题：<a href="http://wordpress.org/support/topic/is_user_logged_in-not-working-as-expected" title="查看 wordpress论坛中的类似问题 ">is_user_logged_in not working as expected</a>。其中，有两位大牛的回答我觉得还是有见地的。</p>
 <h6>Asbj?rn Ulsberg的解释是：</h6>
 <p>他在查看了is_user_logged_in()的底层函数之后发觉内部调用wp_parse_auth_cookie()会返回false。因为根据var_dump($_COOKIE)打印输出的变量$_COOKIE的值可以揭示wp_parse_auth_cookie()正在查找的cookies是完全不存在的。</p>
-<div class="highlight"><pre><span class="x">I&#39;ve dug into the underlying code of is_user_logged_in() and found that the inner call to wp_parse_auth_cookie() returns false. A var_dump(</span><span class="p">$</span><span class="nv">_COOKIE</span><span class="x">) reveals that there&#39;s actually no cookies named anything like what wp_parse_auth_cookie() is looking for.</span>
+<div class="highlight"><pre><span></span>I&#39;ve dug into the underlying code of is_user_logged_in() and found that the inner call to wp_parse_auth_cookie() returns false. A var_dump($_COOKIE) reveals that there&#39;s actually no cookies named anything like what wp_parse_auth_cookie() is looking for.
 </pre></div>
 
 
 <h6>rhysgoodwin的个人博客解释是：</h6>
 <p>wp_signon()函数可能出于某些原因使得$current_user之类的全局变量在页面刷新前是无法存储的,而且调用get_currentuserinfo()也无法产生。而is_user_logged_in()也是返回false，因此认为是cookie的认证过程出了什么问题引起的。</p>
-<div class="highlight"><pre><span class="nx">The</span> <span class="nx">wp_signon</span><span class="p">()</span> <span class="kd">function</span> <span class="nx">logs</span> <span class="nx">a</span> <span class="nx">user</span> <span class="k">in</span> <span class="nx">but</span> <span class="k">for</span> <span class="nx">some</span> <span class="nx">reason</span> <span class="nx">after</span> <span class="nx">doing</span> <span class="nx">so</span> <span class="nx">the</span> <span class="nx">global</span> <span class="nx">user</span> <span class="nx">variables</span> <span class="nx">such</span> <span class="nx">as</span> <span class="nx">$current_user</span> <span class="nx">and</span> <span class="nx">$user_ID</span> <span class="nx">are</span> <span class="nx">not</span> <span class="nx">populated</span> <span class="nx">until</span> <span class="nx">the</span> <span class="nx">page</span> <span class="nx">is</span> <span class="nx">refreshed</span> <span class="nx">and</span> <span class="nx">calling</span> <span class="nx">get_currentuserinfo</span><span class="p">()</span> <span class="nx">doesn</span><span class="err">’</span><span class="nx">t</span> <span class="nx">populate</span> <span class="nx">them</span><span class="p">.</span> <span class="nx">The</span> <span class="nx">is_user_logged_in</span><span class="p">()</span> <span class="kd">function</span> <span class="nx">also</span> <span class="nx">returns</span> <span class="kc">false</span><span class="p">.</span>  <span class="nx">I</span> <span class="nx">think</span> <span class="nx">the</span> <span class="nx">problem</span> <span class="nx">has</span> <span class="nx">something</span> <span class="nx">to</span> <span class="k">do</span> <span class="kd">with</span> <span class="nx">the</span> <span class="nx">cookie</span> <span class="nx">authentication</span> <span class="nx">process</span><span class="p">.</span>
+<div class="highlight"><pre><span></span>The wp_signon() function logs a user in but for some reason after doing so the global user variables such as $current_user and $user_ID are not populated until the page is refreshed and calling get_currentuserinfo() doesn’t populate them. The is_user_logged_in() function also returns false.  I think the problem has something to do with the cookie authentication process.
 </pre></div>
 
 
 <h6>（三）我们也不去深入考究上面两位大牛的具体，结合博客先前评论遇到的实际BUG，有一点是可以确定的：is_user_logged_in()只能“一次性”使用，一旦页面刷新就无法起作用了。所以我把步骤(二)中的调用代码改成</h6>
-<div class="highlight"><pre><span class="cp">&lt;?php</span> <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="nb">isset</span><span class="p">(</span><span class="nv">$_COOKIE</span><span class="p">[</span><span class="s1">&#39;comment_author_email_&#39;</span><span class="o">.</span><span class="nx">COOKIEHASH</span><span class="p">]))</span><span class="nx">spam_provent_math</span><span class="p">();</span><span class="cp">?&gt;</span>
+<div class="highlight"><pre><span></span><span class="cp">&lt;?php</span> <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="nb">isset</span><span class="p">(</span><span class="nv">$_COOKIE</span><span class="p">[</span><span class="s1">&#39;comment_author_email_&#39;</span><span class="o">.</span><span class="nx">COOKIEHASH</span><span class="p">]))</span><span class="nx">spam_provent_math</span><span class="p">();</span><span class="cp">?&gt;</span>
 </pre></div>
 
 
 <p>经博主的验证测试木有出现上面的BUG了，问题解决！！！</p>
 <h5>Update 2013.04.12 22:10</h5>
 <p>感谢 @来哥 指出本代码的BUG——用户在错误输入验证码结果后会导致博客布局错乱、页面变形。解决方案见<a href="https://typecodes.com/web/againwpmathverifycode.html" title="再谈wordpress评论验证码——Willin Kan大神开的一个“玩笑”">《再谈wordpress评论验证码——Willin Kan大神开的一个“玩笑”》</a>。</p>
-		    	<div class="donate_div_container">
+</div>		    	<div class="donate_div_container">
 					<div class="donate_div">
 						<p><a href="javascript:void(0)" onclick="donateToggle()" class="donate_word" title="打赏，支持一下">打赏</a></p>
 						<div class="hide_box"></div>
@@ -150,7 +150,7 @@
 					</div>
 				</div>
 		    	<div class="tags">
-					<div class="post_tags">
+					<div class="post_tags" itemprop="keywords">
 						Tags: <a href="https://typecodes.com/tag/wordpress.html">wordpress</a>,<a href="https://typecodes.com/tag/wordpressyan-zheng-ma.html">wordpress验证码</a>					</div>
 					<div class="post-share">
 						<ul class="post-shareul clearfix">
@@ -242,7 +242,6 @@
 		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
 	</section>
 </div>
-				</div>
 			</div>
 		</div>
 		<!--4. bottom begin-->

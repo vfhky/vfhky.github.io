@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html dir="ltr" lang="zh-CN" class="no-js">
+<html class="no-js">
 	<head>
-		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
   		<meta name="renderer" content="webkit">
 		<title>UNIX环境高级编程（APUE）之单实例守护进程 &mdash; TypeCodes</title>
 		<meta name="description" content="UNIX环境高级编程（APUE）之单实例守护进程 &mdash; TypeCodes" />
@@ -34,8 +35,7 @@
 			</div>
 		</div>
 		<div class="container">
-			<div class="row">
-		<!--2. left sider begin-->
+			<div class="row">		<!--2. left sider begin-->
 		<div class="col-md-9" id="blog-main" role="main">
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/cseries/apuesingledaemonprocess.html">UNIX环境高级编程（APUE）之单实例守护进程</a></h2>
@@ -44,7 +44,7 @@
 </ul>
 <div class="post-content fmt">
 	<p>在UNIX环境高级编程（APUE）中提到了守护进程的创建方法，思路很清晰，所以这里通过代码具体研究下。</p>
-<p><img alt="UNIX环境高级编程（APUE）之单实例守护进程" src="https://o3cex9zsl.qnssl.com/2016/03/apue.png" title="UNIX环境高级编程（APUE）之单实例守护进程" /></p>
+<p><img alt="UNIX环境高级编程（APUE）之单实例守护进程" src="https://o3cex9zsl.qnssl.com/2016/03/apue.png" title="UNIX环境高级编程（APUE）之单实例守护进程"></p>
 
 
 <h4>1 完整程序：单实例守护进程</h4>
@@ -224,25 +224,25 @@
 173
 174
 175
-176</pre></div></td><td class="code"><div class="highlight"><pre><span class="cm">/**</span>
+176</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="cm">/**</span>
 <span class="cm"> * @FileName    daemon_process.c</span>
 <span class="cm"> * @Describe    A simple example for creating a single object of daemon process in linux.</span>
 <span class="cm"> * @Author      vfhky 2016-03-14 17:52 https://typecodes.com/cseries/apuesingledaemonprocess.html</span>
 <span class="cm"> * @Compile     gcc daemon_process.c -o daemon_process</span>
 <span class="cm"> * @Reference   program list 13-1 in APUE.</span>
 <span class="cm"> */</span>
-<span class="cp">#include &lt;stdio.h&gt;</span>
-<span class="cp">#include &lt;unistd.h&gt;</span>
-<span class="cp">#include &lt;stdarg.h&gt;</span>
-<span class="cp">#include &lt;string.h&gt;</span>
-<span class="cp">#include &lt;stdlib.h&gt;</span>
-<span class="cp">#include &lt;signal.h&gt;</span>
-<span class="cp">#include &lt;syslog.h&gt;</span>
-<span class="cp">#include &lt;fcntl.h&gt;</span>
-<span class="cp">#include &lt;sys/types.h&gt;</span>
-<span class="cp">#include &lt;sys/stat.h&gt;</span>
-<span class="cp">#include &lt;sys/resource.h&gt;</span>
-<span class="cp">#include &lt;errno.h&gt;</span>
+<span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;unistd.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;stdarg.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;string.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;stdlib.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;signal.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;syslog.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;fcntl.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;sys/types.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;sys/stat.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;sys/resource.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;errno.h&gt;</span><span class="cp"></span>
 
 <span class="cp">#define PRINT_PID() printf( &quot;Row[%d]: getpid=[%d].\n&quot;, __LINE__, getpid() )</span>
 <span class="c1">//守护进程对应的用户必须对该文件具有访问权限</span>
@@ -407,27 +407,27 @@
 <p>使用<a href="https://typecodes.com/cseries/cppgeneralmakefile.html" title="查看原文">《Linux C/C++工程中可生成ELF、动/静态库文件的通用Makefile》</a>一文中的Makefile文件进行程序编译，当然也可以使用命令进行编译<code>gcc daemon_process.c -o daemon_process</code>。</p>
 <h4>3 创建第一个守护进程</h4>
 <p>如下图所示，程序先执行第178行main函数中的打印语句，输出当前第一个进程的PID值为25872；然后由于在daemonize函数中第一个进程(PID:25872)退出，所以它的子进程(PID:25873)执行第101行的打印语句；接着由于第二个进程(PID:25873)退出，那么它的子进程(PID:25874)执行第121行的打印语句；在关闭了所有文件描述符后，该子进程(PID:25874)打开标准输入/输出/错误流，最后该子进程成为由Linux系统init进程托管的<code>孤儿进程</code>，没有终端terminal，这也就是守护进程。</p>
-<p><img alt="创建第一个守护进程" src="https://o3cex9zsl.qnssl.com/2016/03/daemon_process1.png" title="创建第一个守护进程" /></p>
+<p><img alt="创建第一个守护进程" src="https://o3cex9zsl.qnssl.com/2016/03/daemon_process1.png" title="创建第一个守护进程"></p>
 <p>其中使用<code>ps -axj|head -n 1; ps -axj|grep daemon_process</code>命令发现子进程(PID:25874)的父进程为1进程(init进程)，终端TTY为空。</p>
 <p>接着使用命令<code>pstree -pul</code>查看当前用户的所有进程情况，如下图所示，再次说明守护进程(PID:25874)创建成功了。</p>
-<p><img alt="使用命令pstree -pul查看用户进程" src="https://o3cex9zsl.qnssl.com/2016/03/daemon_process_pstree_pul.png" title="使用命令pstree -pul查看用户进程" /></p>
+<p><img alt="使用命令pstree -pul查看用户进程" src="https://o3cex9zsl.qnssl.com/2016/03/daemon_process_pstree_pul.png" title="使用命令pstree -pul查看用户进程"></p>
 <h4>4 创建第二个守护进程</h4>
 <p>如果尝试再次创建一个同样的守护进程，如下图所示。执行命令<code>ps -axj|head -n 1; ps -axj|grep daemon_process</code>，发现仍然只有一个守护进程(PID:25874)，也就是创建第二个守护进程失败。</p>
-<p><img alt="创建第二个守护进程失败" src="https://o3cex9zsl.qnssl.com/2016/03/daemon_process2.png" title="创建第二个守护进程失败" /></p>
+<p><img alt="创建第二个守护进程失败" src="https://o3cex9zsl.qnssl.com/2016/03/daemon_process2.png" title="创建第二个守护进程失败"></p>
 <p>这时使用<code>cat /var/log/message</code>命令查看进程在Linux系统日志文件中打印的内容，如下图所示：</p>
-<p><img alt="查看/var/log/message日志内容" src="https://o3cex9zsl.qnssl.com/2016/03/var_log_message_err.png" title="查看/var/log/message日志内容" /></p>
+<p><img alt="查看/var/log/message日志内容" src="https://o3cex9zsl.qnssl.com/2016/03/var_log_message_err.png" title="查看/var/log/message日志内容"></p>
 <p>很显然程序执行到第160行，由于第一个守护进程对LOCK_FILE文件加锁的缘故而无法获取该文件的访问权限最终导致子进程(PID:25909)终止。于是，第二次创建守护进程失败了。</p>
 <h4>5 附录</h4>
 <p>关于<code>openlog</code>和<code>syslog</code>函数的使用方法，可以通过命令<code>man 3 syslog</code>查看，大概就是根据日志标识符（ident）和日志level（LOG_EMERG、LOG_ERR、LOG_WARNING等）和日志文件类型facility（LOG_CRON、LOG_MAIL、LOG_SYSLOG和默认的LOG_USER等）把进程的内容输出到Linux系统某一类型的日志文件中。</p>
-<div class="highlight"><pre><span class="n">SYNOPSIS</span>
-    <span class="cp">#include &lt;syslog.h&gt;</span>
+<div class="highlight"><pre><span></span><span class="n">SYNOPSIS</span>
+    <span class="cp">#include</span> <span class="cpf">&lt;syslog.h&gt;</span><span class="cp"></span>
 
     <span class="kt">void</span> <span class="n">openlog</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">ident</span><span class="p">,</span> <span class="kt">int</span> <span class="n">option</span><span class="p">,</span> <span class="kt">int</span> <span class="n">facility</span><span class="p">);</span>
     <span class="kt">void</span> <span class="nf">syslog</span><span class="p">(</span><span class="kt">int</span> <span class="n">priority</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">format</span><span class="p">,</span> <span class="p">...);</span>
     <span class="kt">void</span> <span class="nf">closelog</span><span class="p">(</span><span class="kt">void</span><span class="p">);</span>
 
 <span class="n">DESCRIPTION</span>
-    <span class="n">closelog</span><span class="p">()</span>  <span class="n">closes</span>  <span class="n">the</span> <span class="n">descriptor</span> <span class="n">being</span> <span class="n">used</span> <span class="n">to</span> <span class="n">write</span> <span class="n">to</span> <span class="n">the</span> <span class="n">system</span> <span class="n">logger</span><span class="p">.</span>
+    <span class="nf">closelog</span><span class="p">()</span>  <span class="n">closes</span>  <span class="n">the</span> <span class="n">descriptor</span> <span class="n">being</span> <span class="n">used</span> <span class="n">to</span> <span class="n">write</span> <span class="n">to</span> <span class="n">the</span> <span class="n">system</span> <span class="n">logger</span><span class="p">.</span>
     <span class="n">The</span> <span class="n">use</span> <span class="n">of</span> <span class="n">closelog</span><span class="p">()</span> <span class="n">is</span> <span class="n">optional</span><span class="p">.</span>
 
     <span class="n">openlog</span><span class="p">()</span> <span class="n">opens</span> <span class="n">a</span> <span class="n">connection</span> <span class="n">to</span> <span class="n">the</span> <span class="n">system</span> <span class="n">logger</span> <span class="k">for</span> <span class="n">a</span> <span class="n">program</span><span class="p">.</span>  <span class="n">The</span> <span class="n">string</span>
@@ -449,7 +449,7 @@
     <span class="n">sequence</span> <span class="o">%</span><span class="n">m</span> <span class="n">will</span> <span class="n">be</span> <span class="n">replaced</span> <span class="n">by</span> <span class="n">the</span> <span class="n">error</span> <span class="n">message</span> <span class="n">string</span> <span class="n">strerror</span><span class="p">(</span><span class="n">errno</span><span class="p">).</span>  <span class="n">A</span>
     <span class="n">trailing</span> <span class="n">newline</span> <span class="n">may</span> <span class="n">be</span> <span class="n">added</span> <span class="k">if</span> <span class="n">needed</span><span class="p">.</span>
 </pre></div>
-		    	<div class="donate_div_container">
+</div>		    	<div class="donate_div_container">
 					<div class="donate_div">
 						<p><a href="javascript:void(0)" onclick="donateToggle()" class="donate_word" title="打赏，支持一下">打赏</a></p>
 						<div class="hide_box"></div>
@@ -479,7 +479,7 @@
 					</div>
 				</div>
 		    	<div class="tags">
-					<div class="post_tags">
+					<div class="post_tags" itemprop="keywords">
 						Tags: <a href="https://typecodes.com/tag/apue.html">apue</a>,<a href="https://typecodes.com/tag/shou-hu-jin-cheng.html">守护进程</a>					</div>
 					<div class="post-share">
 						<ul class="post-shareul clearfix">
@@ -571,7 +571,6 @@
 		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
 	</section>
 </div>
-				</div>
 			</div>
 		</div>
 		<!--4. bottom begin-->

@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html dir="ltr" lang="zh-CN" class="no-js">
+<html class="no-js">
 	<head>
-		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
   		<meta name="renderer" content="webkit">
 		<title>XAMPP+XDebug完美配置NetBeans IDE中的PHP开发环境 &mdash; TypeCodes</title>
 		<meta name="description" content="XAMPP+XDebug完美配置NetBeans IDE中的PHP开发环境 &mdash; TypeCodes" />
@@ -34,8 +35,7 @@
 			</div>
 		</div>
 		<div class="container">
-			<div class="row">
-		<!--2. left sider begin-->
+			<div class="row">		<!--2. left sider begin-->
 		<div class="col-md-9" id="blog-main" role="main">
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/web/netbeansphpdevenv.html">XAMPP+XDebug完美配置NetBeans IDE中的PHP开发环境</a></h2>
@@ -54,7 +54,7 @@
 <p>如果下载的是XAMPP 1.7.1 (PHP 5.2) 而不是XAMPP 1.7.2 (PHP 5.3)以上的版本，那么我们就需要下载XDebug调试器。然后我们要根据计算机操作系统的位数（32bit OR 64bit?）、WAMP中的PHP版本来决定下载具体的XDebug版本，。博主的64位系统、XAMPP1.81附带的PHP版本是PHP 5.4.7，所以博主下载Xdebug 2.2.1中的<a href="http://www.xdebug.org/files/php_xdebug-2.2.1-5.4-vc9-nts-x86_64.dll" title="下载php_xdebug-2.2.1-5.4-vc9-nts-x86_64.dll">PHP 5.4 VC9 (64 bit) (MD5: 5ef86c46d386c50079c721c0e336e303)</a>。</p>
 <h5>（二）配置php.ini信息：</h5>
 <h6>2.1 由于XAMPP1.8.1捆绑了相应的Xdebug.dll文件，只需配置php.ini即可使用该文件：</h6>
-<div class="highlight"><pre><span class="k">[XDebug]</span>
+<div class="highlight"><pre><span></span><span class="k">[XDebug]</span>
 <span class="na">zend_extension</span> <span class="o">=</span> <span class="s">&quot;\xampp\php\ext\php_xdebug.dll&quot;</span>
 <span class="c1">;xdebug.profiler_append = 0</span>
 <span class="c1">;xdebug.profiler_enable = 1  ;打开效能监测器</span>
@@ -75,8 +75,8 @@
 <p>运行 XAMPP Control Panel Application（XAMPP 控制面板应用程序）并重新启动 Apache 服务器。打开127.0.0.1然后选择phpinfo()可以看到关于xdebug的详细信息。</p>
 <h5>（三）配置完成，新建一个PHP工程吧……</h5>
 <p>如果在php调试的时候，出现如图错误提示，请再次检查步骤（二）中的操作是否正确。</p>
-<p><img alt="XDebug配置错误" src="https://o3cex9zsl.qnssl.com/2013/01/error.png" title="XDebug配置错误" /></p>
-		    	<div class="donate_div_container">
+<p><img alt="XDebug配置错误" src="https://o3cex9zsl.qnssl.com/2013/01/error.png" title="XDebug配置错误"></p>
+</div>		    	<div class="donate_div_container">
 					<div class="donate_div">
 						<p><a href="javascript:void(0)" onclick="donateToggle()" class="donate_word" title="打赏，支持一下">打赏</a></p>
 						<div class="hide_box"></div>
@@ -106,7 +106,7 @@
 					</div>
 				</div>
 		    	<div class="tags">
-					<div class="post_tags">
+					<div class="post_tags" itemprop="keywords">
 						Tags: <a href="https://typecodes.com/tag/netbeans.html">netbeans</a>					</div>
 					<div class="post-share">
 						<ul class="post-shareul clearfix">
@@ -198,7 +198,6 @@
 		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
 	</section>
 </div>
-				</div>
 			</div>
 		</div>
 		<!--4. bottom begin-->

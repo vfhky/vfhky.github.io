@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html dir="ltr" lang="zh-CN" class="no-js">
+<html class="no-js">
 	<head>
-		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
   		<meta name="renderer" content="webkit">
 		<title>动易SiteFactory系列教程六:数据源标签的讲解 &mdash; TypeCodes</title>
 		<meta name="description" content="动易SiteFactory系列教程六:数据源标签的讲解 &mdash; TypeCodes" />
@@ -34,8 +35,7 @@
 			</div>
 		</div>
 		<div class="container">
-			<div class="row">
-		<!--2. left sider begin-->
+			<div class="row">		<!--2. left sider begin-->
 		<div class="col-md-9" id="blog-main" role="main">
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/web/sfdatasourcetag.html">动易SiteFactory系列教程六:数据源标签的讲解</a></h2>
@@ -44,12 +44,12 @@
 </ul>
 <div class="post-content fmt">
 	<p>本篇文章主要为大家讲解动易SiteFactory中的数据源标签，同时也算是动易SiteFactory系列教程的结束篇章了。因为任何一种CMS，只要你弄清它的标签了，你就算是一个二次开发者的入门者了。好了，不多说，我用“文章_内容页”标签作为例子来解说一下动易主要的两大类标签（普通标签和数据源标签）中的数据源标签。</p>
-<p><img alt="文章_内容页 标签" src="https://o3cex9zsl.qnssl.com/2012/08/25.png" title="文章_内容页 标签" /></p>
+<p><img alt="文章_内容页 标签" src="https://o3cex9zsl.qnssl.com/2012/08/25.png" title="文章_内容页 标签"></p>
 
 
 <h5>（一）标签内容：</h5>
 <p>数据源标签从数据源里调用了数据后，然后把数据保存在生成的XML文件中，最后从中读取相应的节点数据。下面先贴出相应的标签</p>
-<div class="highlight"><pre><span class="cp">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;</span>
+<div class="highlight"><pre><span></span><span class="cp">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;</span>
 <span class="k">&lt;xsl:transform</span> <span class="na">version=</span><span class="s">&quot;1.0&quot;</span> <span class="na">xmlns:xsl=</span><span class="s">&quot;http://www.w3.org/1999/XSL/Transform&quot;</span> <span class="na">xmlns:pe=</span><span class="s">&quot;labelproc&quot;</span> <span class="na">exclude-result-prefixes=</span><span class="s">&quot;pe&quot;</span><span class="nt">&gt;</span>
  <span class="k">&lt;xsl:output</span> <span class="na">method=</span><span class="s">&quot;xml&quot;</span> <span class="nt">/&gt;</span>
  <span class="k">&lt;xsl:param</span> <span class="na">name=</span><span class="s">&quot;itemId&quot;</span><span class="nt">/&gt;</span>
@@ -82,12 +82,12 @@
 <h5>（二）调用方法：</h5>
 <h6>2.1 调用“文章_内容页”数据源标签。</h6>
 <p>其中：DataSource表示该标签是数据源标签（Label表示为普通标签）；id是做为数据源的ID（可以自定义），第二步要调用数据源节点下的数据指向ID；itemid="520"表示文章的ID是传过来的；xslt表示是否解析，true表示解析，默认为false（直接调用数据库的数据，不经过数据源标签的解析）。</p>
-<div class="highlight"><pre>{PE.DataSource datasource=&quot;文章_内容页&quot; id=&quot;cone&quot;  itemid=&quot;520&quot; xslt=&quot;true&quot; /}
+<div class="highlight"><pre><span></span>{PE.DataSource datasource=&quot;文章_内容页&quot; id=&quot;cone&quot;  itemid=&quot;520&quot; xslt=&quot;true&quot; /}
 </pre></div>
 
 
 <h6>2.2 调用相应字段节点的数据。</h6>
-<div class="highlight"><pre>{PE.Field id=&quot;cone&quot; fieldname=&quot;Title&quot; /}
+<div class="highlight"><pre><span></span>{PE.Field id=&quot;cone&quot; fieldname=&quot;Title&quot; /}
 <span class="c">&lt;!---</span>
 <span class="c">id要指向第一步调用数据源标签的ID。fieldname表示的是数据源标签里面字段，这里写Title表示的是数据源标</span>
 <span class="c">----&gt;</span>
@@ -100,7 +100,7 @@
 <p>你可以按照第二步的方法调用（一）中的数据存在的任意节点。</p>
 <h5>（三）结语：</h5>
 <p>通过这8篇系列教程文章，相信你对动易SiteFactory的标签有了一定的了解。制作一个标签的大体步骤都是一样的——选择标签类型的“数据设置”，然后根据需要决定要填写的自定义参数，再后用SQL语句调用数据库的内容，接着运用XSTL语言格式生成具体的内容，最后在模板文件中的相关位置调用标签即可。当然，要想更快速的学习动易SiteFactory标签的制作，可以直接对照标签库里面的标签进行学习。</p>
-		    	<div class="donate_div_container">
+</div>		    	<div class="donate_div_container">
 					<div class="donate_div">
 						<p><a href="javascript:void(0)" onclick="donateToggle()" class="donate_word" title="打赏，支持一下">打赏</a></p>
 						<div class="hide_box"></div>
@@ -130,7 +130,7 @@
 					</div>
 				</div>
 		    	<div class="tags">
-					<div class="post_tags">
+					<div class="post_tags" itemprop="keywords">
 						Tags: <a href="https://typecodes.com/tag/dong-yi-cms.html">动易cms</a>,<a href="https://typecodes.com/tag/dong-yi-shu-ju-yuan-biao-qian.html">动易数据源标签</a>					</div>
 					<div class="post-share">
 						<ul class="post-shareul clearfix">
@@ -222,7 +222,6 @@
 		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
 	</section>
 </div>
-				</div>
 			</div>
 		</div>
 		<!--4. bottom begin-->

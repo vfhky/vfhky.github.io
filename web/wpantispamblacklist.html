@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html dir="ltr" lang="zh-CN" class="no-js">
+<html class="no-js">
 	<head>
-		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
   		<meta name="renderer" content="webkit">
 		<title>wordpress关键词黑名单：反垃圾评论再升级（非插件） &mdash; TypeCodes</title>
 		<meta name="description" content="wordpress关键词黑名单：反垃圾评论再升级（非插件） &mdash; TypeCodes" />
@@ -34,8 +35,7 @@
 			</div>
 		</div>
 		<div class="container">
-			<div class="row">
-		<!--2. left sider begin-->
+			<div class="row">		<!--2. left sider begin-->
 		<div class="col-md-9" id="blog-main" role="main">
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/web/wpantispamblacklist.html">wordpress关键词黑名单：反垃圾评论再升级（非插件）</a></h2>
@@ -70,7 +70,7 @@
 12
 13
 14
-15</pre></div></td><td class="code"><div class="highlight"><pre><span class="x">/*</span>
+15</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="x">/*</span>
 <span class="x"> * @Author：  vfhky 2013年09月21日22:13</span>
 <span class="x"> * @Variable string $word:  黑名单中的关键词，用户可自行按规律进行增加或减少</span>
 <span class="x"> * @Variable string $comment_author:  用户提交的$_POST[&#39;author&#39;]字段值，表示昵称</span>
@@ -90,10 +90,10 @@
 
 <h5>4 后记</h5>
 <p>通过上面这段简单代码，我们就实现了提交对评论输入的用户昵称、评论内容进行了黑名单中的关键词的校验。一旦匹配到了上面的任何一个词语，例如出现了www，那么就提示用户“广告必删，多谢理解!”，效果如下图所示。这样算是又给博客上了一道保险，增强了wordpress反垃圾评论的免疫力，而且还是非插件的方法实现的哟！</p>
-<p><img alt="wordpress关键词黑名单：反垃圾评论再升级（非插件）" src="https://o3cex9zsl.qnssl.com/2013/09/badwords_comment.png" title="wordpress关键词黑名单：反垃圾评论再升级（非插件）" /></p>
+<p><img alt="wordpress关键词黑名单：反垃圾评论再升级（非插件）" src="https://o3cex9zsl.qnssl.com/2013/09/badwords_comment.png" title="wordpress关键词黑名单：反垃圾评论再升级（非插件）"></p>
 <h5>5 BUG修复：Update 2013.09.24 20:20</h5>
 <p>经过 @坏坏博客 童鞋的邪恶回复测试，发现上面代码有未考虑周全之处。正在修改中，具体见下一篇文章<a href="https://typecodes.com/web/wpantispamstrpoerror.html" title="再议wordpress反垃圾评论：都是strpos函数惹的祸">《再议wordpress反垃圾评论：都是strpos函数惹的祸》</a>。最后向 @坏坏博客 童鞋致敬！</p>
-		    	<div class="donate_div_container">
+</div>		    	<div class="donate_div_container">
 					<div class="donate_div">
 						<p><a href="javascript:void(0)" onclick="donateToggle()" class="donate_word" title="打赏，支持一下">打赏</a></p>
 						<div class="hide_box"></div>
@@ -123,7 +123,7 @@
 					</div>
 				</div>
 		    	<div class="tags">
-					<div class="post_tags">
+					<div class="post_tags" itemprop="keywords">
 						Tags: <a href="https://typecodes.com/tag/wordpressla-ji-ping-lun.html">wordpress垃圾评论</a>					</div>
 					<div class="post-share">
 						<ul class="post-shareul clearfix">
@@ -215,7 +215,6 @@
 		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
 	</section>
 </div>
-				</div>
 			</div>
 		</div>
 		<!--4. bottom begin-->

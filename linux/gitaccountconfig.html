@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html dir="ltr" lang="zh-CN" class="no-js">
+<html class="no-js">
 	<head>
-		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
   		<meta name="renderer" content="webkit">
 		<title>CentOS系统BitBucket、GitHub和Coding等多git账户的配置 &mdash; TypeCodes</title>
 		<meta name="description" content="CentOS系统BitBucket、GitHub和Coding等多git账户的配置 &mdash; TypeCodes" />
@@ -34,8 +35,7 @@
 			</div>
 		</div>
 		<div class="container">
-			<div class="row">
-		<!--2. left sider begin-->
+			<div class="row">		<!--2. left sider begin-->
 		<div class="col-md-9" id="blog-main" role="main">
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/linux/gitaccountconfig.html">CentOS系统BitBucket、GitHub和Coding等多git账户的配置</a></h2>
@@ -45,12 +45,12 @@
 <div class="post-content fmt">
 	<p>目前自己主要在BitBucket、GitHub和Coding这三个Git平台创建了一些项目，所以这篇文章以自己的CentOS7.1服务器作为示例，说说如何在Linux系统中配置不同平台的Git仓库，也即多git账户的配置。</p>
 <p>类似于Windows机器上的git配置方法，在CentOS上也是一样的。通过设置Git全部变量的配置文件<code>~/.ssh/config</code>和当前工作仓库的配置文件<code>your_git_project_root/.git/config</code>即可。</p>
-<p><img alt="当前git工作仓库的.git目录" src="https://o3cex9zsl.qnssl.com/2015/07/project_git_config_dir.png" title="当前git工作仓库的.git目录" /></p>
+<p><img alt="当前git工作仓库的.git目录" src="https://o3cex9zsl.qnssl.com/2015/07/project_git_config_dir.png" title="当前git工作仓库的.git目录"></p>
 
 
 <h5>1 Git全部变量的配置文件：~/.ssh/config</h5>
 <p>如上图所示，git全部变量的配置文件<code>~/.ssh/config</code>在当前用户的.ssh目录下面，通过配置这个文件可以实现对多个不同平台的Git账户进行整体控制。例如，使用ssh身份认证的RSA密钥对的存放位置；使用<code>git push</code>的时候，到底是推送到BitBucket还是GitHub活着Coding呢？这些都是由这个文件控制的。</p>
-<div class="highlight"><pre>[root@typecodes .ssh]# vim config 
+<div class="highlight"><pre><span></span>[root@typecodes .ssh]# vim config 
 Host github.com
     HostName        github.com
     User            vfhky
@@ -76,18 +76,18 @@ Host typecodes.com
 
 <p>配置要点：
 1、<code>Host</code>表示主机名，当在每个具体的git项目中执行了git操作，那么会先在这个文件里面所有的HOST名字中进行查找匹配出对应的SSH或者HTTPS地址。通过Host别名和<code>User</code>的配置，可以将不同的Git账户（即使是同一平台的）的区分开来；2、<code>IdentityFile</code>表示使用SSH登录认证时的私钥路径（一般在.ssh目录下面），对应的公钥复制到对应的Git平台上。</p>
-<p><img alt="Git的ssh身份认证的RSA密钥对" src="https://o3cex9zsl.qnssl.com/2015/07/git_ssh_rsa_key.png" title="Git的ssh身份认证的RSA密钥对" /></p>
+<p><img alt="Git的ssh身份认证的RSA密钥对" src="https://o3cex9zsl.qnssl.com/2015/07/git_ssh_rsa_key.png" title="Git的ssh身份认证的RSA密钥对"></p>
 <p>注意：如前文<a href="https://typecodes.com/mix/codinggitsshbug.html" title="查看原文">《Coding.net上git仓库ssh地址的"bug"》</a>所述，如果错误的配置了Host，那么会造成<code>Permission denied</code>的错误。</p>
 <h5>2 当前Git项目的配置文件：your_git_project_root/.git/config</h5>
 <p>小节1中是全部变量的配置，那么在对应每个具体的Git项目中，还需要做一些配置。</p>
 <p>vim编辑当前Git项目的隐藏目录<code>.git</code>下面的config文件（以bitbucket为例），这里很容易猜到<code>git push origin master</code>命令的含义和来源。我们在末尾添加<code>[user]</code>信息，包括name和email。当然，也可以直接通过命令<code>git config --global user.name "your git-account-name"</code>和<code>git config --global user.email "your git-account-email"</code>配置。</p>
-<p><img alt="当前Git项目的配置文件" src="https://o3cex9zsl.qnssl.com/2015/07/project_git_config_file.png" title="当前Git项目的配置文件" /></p>
+<p><img alt="当前Git项目的配置文件" src="https://o3cex9zsl.qnssl.com/2015/07/project_git_config_file.png" title="当前Git项目的配置文件"></p>
 <p>如果<code>[user]</code>信息未配置，很可能在执行git命令时报错：</p>
-<p><img alt="[user]信息未配置时报错" src="https://o3cex9zsl.qnssl.com/2015/07/git_commit_error.png" title="[user]信息未配置时报错" /></p>
+<p><img alt="[user]信息未配置时报错" src="https://o3cex9zsl.qnssl.com/2015/07/git_commit_error.png" title="[user]信息未配置时报错"></p>
 <h5>3 结束：关于SSH登录认证的RSA公私钥的权限设置</h5>
 <p>小节1中已经说了，git的SSH登录认证的RSA私钥存放在当前用的<code>.ssh</code>目录下面。我们需要尽量降低该私钥文件的权限，否则会报<code>Permissions 0644 for '~/.ssh/bitbucket_rsa' are too open.</code>的错误。</p>
-<p><img alt="设置git的SSH登录认证的RSA私钥权限为0600" src="https://o3cex9zsl.qnssl.com/2015/07/git_permissions_0644_too_open.png" title="设置git的SSH登录认证的RSA私钥权限为0600" /></p>
-		    	<div class="donate_div_container">
+<p><img alt="设置git的SSH登录认证的RSA私钥权限为0600" src="https://o3cex9zsl.qnssl.com/2015/07/git_permissions_0644_too_open.png" title="设置git的SSH登录认证的RSA私钥权限为0600"></p>
+</div>		    	<div class="donate_div_container">
 					<div class="donate_div">
 						<p><a href="javascript:void(0)" onclick="donateToggle()" class="donate_word" title="打赏，支持一下">打赏</a></p>
 						<div class="hide_box"></div>
@@ -117,7 +117,7 @@ Host typecodes.com
 					</div>
 				</div>
 		    	<div class="tags">
-					<div class="post_tags">
+					<div class="post_tags" itemprop="keywords">
 						Tags: <a href="https://typecodes.com/tag/git.html">git</a>					</div>
 					<div class="post-share">
 						<ul class="post-shareul clearfix">
@@ -209,7 +209,6 @@ Host typecodes.com
 		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
 	</section>
 </div>
-				</div>
 			</div>
 		</div>
 		<!--4. bottom begin-->

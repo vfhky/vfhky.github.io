@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html dir="ltr" lang="zh-CN" class="no-js">
+<html class="no-js">
 	<head>
-		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
   		<meta name="renderer" content="webkit">
 		<title>TypeCodes</title>
 		<meta name="description" content="TypeCodes" />
@@ -34,8 +35,7 @@
 			</div>
 		</div>
 		<div class="container">
-			<div class="row">
-		<!--2. left sider begin-->
+			<div class="row">		<!--2. left sider begin-->
 		<div class="col-md-9" id="blog-main" role="main">
 		  	<!--article recycle-->
 			<article class="post">
@@ -46,7 +46,7 @@
 <div class="post-content fmt">
 	<p>最近在学习Linux系统编程遇到了一个很有意思的函数：alarm()，它是一个用来设置信号传送的闹钟函数。网上找了一些资料，结合自己的学习体会，现在Mark一下。</p>
 <h5>1 alarm()函数说明</h5>
-<div class="highlight"><pre>[1] 引用头文件：#include &lt;unistd.h&gt;;
+<div class="highlight"><pre><span></span>[1] 引用头文件：#include &lt;unistd.h&gt;;
 
 [2] 函数标准式：unsigned int alarm(unsigned int seconds);
 
@@ -58,7 +58,7 @@
 
 
 	<p class="more"><a href="https://typecodes.com/linux/linuxalarmknockfunc.html" title="Linux进程之alarm()信号传送闹钟函数">- 阅读剩余部分 -</a></p>
-			</article>
+</div>			</article>
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/mix/blogdatabackup.html">博客必须养成的良好习惯：数据库备份</a></h2>
 <ul class="post-meta">
@@ -69,7 +69,7 @@
 <p>WP3.6应该是在前一周就发布出来了，由于工作的原因，vfhky没及时更新。因为每次升级WP程序之前，我都会把整个主题程序、数据库以及其它几个重要文件备份一遍，这些都需要时间。所以只好等到周末才升级，顺便惯例性的写两篇文章。于是，昨天中午把主题、数据库等都备份好后，博主就迫不及待的把WP3.5升级到了最新的3.6版本。升级完后，发现themes文件夹下多了一个thirteen的主题文件夹。尼玛，不带这样的吧？升个级还要装个主题……记得以前wordpress升级不会安装官方自带的主题的吧，果断删之！</p>
 
 	<p class="more"><a href="https://typecodes.com/mix/blogdatabackup.html" title="博客必须养成的良好习惯：数据库备份">- 阅读剩余部分 -</a></p>
-			</article>
+</div>			</article>
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/linux/linuxbridgepingnot.html">Linux问题两连击：桥接模式无法上网、ping域名失败</a></h2>
 <ul class="post-meta">
@@ -81,7 +81,7 @@
 <p>上面两个问题都是由Linux中的DNS配置不正确导致的，因为DNS的作用就是将某个域名解析到相对应的IP上。当DNS无法正常把IP和域名相对应起来的时候就出现了上面两种常见的情况。所以，当虚拟机中的Linux系统能够正常和宿主通信，且能ping通外部IP地址，却无法ping通域名。</p>
 
 	<p class="more"><a href="https://typecodes.com/linux/linuxbridgepingnot.html" title="Linux问题两连击：桥接模式无法上网、ping域名失败">- 阅读剩余部分 -</a></p>
-			</article>
+</div>			</article>
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/database/oraclesqlerror.html">Oracle数据库SQL操作语句报错的解决</a></h2>
 <ul class="post-meta">
@@ -90,20 +90,20 @@
 <div class="post-content fmt">
 	<p>最近在小红帽里面用GCCC编译含Oracle数据库SQL操作语句的C程序时候遇到了下面的7个报错信息，现整理出来Mark一下。</p>
 <h5>1 错误信息</h5>
-<div class="highlight"><pre><span class="k">[-1400][ORA-01400: cannot insert NULL into (&quot;CARDMAIN&quot;.&quot;CLR_SFTC000BLOCK0&quot;.&quot;SE]</span>
-<span class="err">&lt;!--</span>
-<span class="err">描述：CARDMAIN数据库用户，CLR_SFTC000BLOCK0数据表，SE表字段</span>
+<div class="highlight"><pre><span></span><span class="k">[-1400][ORA-01400: cannot insert NULL into (&quot;CARDMAIN&quot;.&quot;CLR_SFTC000BLOCK0&quot;.&quot;SE]</span>
+<span class="na">&lt;!--</span>
+<span class="na">描述：CARDMAIN数据库用户，CLR_SFTC000BLOCK0数据表，SE表字段</span>
 
-<span class="err">原因：Oracle数据库对于特定类型的非空字段无法区分空值和空字符串</span>
+<span class="na">原因：Oracle数据库对于特定类型的非空字段无法区分空值和空字符串</span>
 
-<span class="err">解决：明确数据源中的空值类型，并且在INSERT和UPDATE中必须插入一个值，不能将某个值修改为NULL。</span>
-<span class="err">--&gt;</span>
+<span class="na">解决：明确数据源中的空值类型，并且在INSERT和UPDATE中必须插入一个值，不能将某个值修改为NULL。</span>
+<span class="na">--&gt;</span>
 </pre></div>
 
 
 
 	<p class="more"><a href="https://typecodes.com/database/oraclesqlerror.html" title="Oracle数据库SQL操作语句报错的解决">- 阅读剩余部分 -</a></p>
-			</article>
+</div>			</article>
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/web/phptimegap.html">PHP获取两个时间相差的年数、月数和天数</a></h2>
 <ul class="post-meta">
@@ -112,10 +112,10 @@
 <div class="post-content fmt">
 	<p>今天在查看博客的统计栏时，发现那个“安全运行”的时间只显示了当前时间距离博客的建立时间相差的天数。这样看起来不怎么舒服：要是再过几年后，运行了七八百天，那是不是用户还得估算一下是几年了啊。因此，vfhky觉得还是把具体相差的年月日都写出来，这样才符合用户体验。</p>
 <p>那么，如何获取两个不同时间相差几年几月几日呢？比如当前时间距离2008年08月08日的北京奥运会有几年几月几日了？晚上琢磨了下，实现效果如下图所示（也可以点击右侧栏的“博客统计”栏目查看效果）。</p>
-<p><img alt="PHP获取两个时间相差的年数、月数和天数" src="https://o3cex9zsl.qnssl.com/2013/07/Time_gap.gif" title="PHP获取两个时间相差的年数、月数和天数" /></p>
+<p><img alt="PHP获取两个时间相差的年数、月数和天数" src="https://o3cex9zsl.qnssl.com/2013/07/Time_gap.gif" title="PHP获取两个时间相差的年数、月数和天数"></p>
 
 	<p class="more"><a href="https://typecodes.com/web/phptimegap.html" title="PHP获取两个时间相差的年数、月数和天数">- 阅读剩余部分 -</a></p>
-			</article>
+</div>			</article>
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/web/phpwpmusicplayer.html">PHP版网页随机音乐自动播放器（Wordpress通用）</a></h2>
 <ul class="post-meta">
@@ -123,10 +123,10 @@
 </ul>
 <div class="post-content fmt">
 	<p>最近想在博客的NBA专栏添加一个功能，那就是背景音乐。如果每次进入页面的时候都播放相同的音乐，次数多了就腻了，所以就想整个随机播放的。网上看了下相关的教程，都是用JS写的。由于JS的加载进度会影响整个网页的加载速度，所以放弃了JS，那就用PHP来解决吧。另外，所用到的music.swf文件已经放到博客的百度网盘里面了，大家可以下载来试试看。</p>
-<p><img alt="PHP版网页随机音乐自动播放器" src="https://o3cex9zsl.qnssl.com/2013/07/random_player.png" title="PHP版网页随机音乐自动播放器" /></p>
+<p><img alt="PHP版网页随机音乐自动播放器" src="https://o3cex9zsl.qnssl.com/2013/07/random_player.png" title="PHP版网页随机音乐自动播放器"></p>
 
 	<p class="more"><a href="https://typecodes.com/web/phpwpmusicplayer.html" title="PHP版网页随机音乐自动播放器（Wordpress通用）">- 阅读剩余部分 -</a></p>
-			</article>
+</div>			</article>
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/mix/blogsufferattack.html">近期博客遭受后台攻击</a></h2>
 <ul class="post-meta">
@@ -134,10 +134,10 @@
 </ul>
 <div class="post-content fmt">
 	<p>和很多wordpress博主一样，vfhky也遭遇了博客后台的攻击。先不多说了，直接上图：</p>
-<p><img alt="不止160多次的轰炸" src="https://o3cex9zsl.qnssl.com/2013/07/1.jpg" /></p>
+<p><img alt="不止160多次的轰炸" src="https://o3cex9zsl.qnssl.com/2013/07/1.jpg"></p>
 
 	<p class="more"><a href="https://typecodes.com/mix/blogsufferattack.html" title="近期博客遭受后台攻击">- 阅读剩余部分 -</a></p>
-			</article>
+</div>			</article>
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/mix/lotsofblogattack.html">虚惊一场，一大波攻击来袭</a></h2>
 <ul class="post-meta">
@@ -149,17 +149,26 @@
 <p>安全老大360的检测结果老是有点恐吓的意思，比如你在博客贴个代码什么的，如果没贴好给浏览器解析了，那么就会误报为源码泄露。至于这个安全联盟，网上传说一旦你的网站给它列入黑名单之后，那就需要money来解封了。国外像<a href="http://www.siteadvisor.com/sites/typecodes.com">迈克菲</a>、<a href="http://safeweb.norton.com/report/show?url=http%3A%2F%2Ftypecodes.com">诺顿</a> 只会提供最终的检测结果，不会有具体的检测报告。所以即使检测出为不安全，但是也无法知晓是那种漏洞造成的。</p>
 
 	<p class="more"><a href="https://typecodes.com/mix/lotsofblogattack.html" title="虚惊一场，一大波攻击来袭">- 阅读剩余部分 -</a></p>
-			</article>
+</div>			</article>
 		  	<!--page navigation-->
 <ol class="page-navigator">
-<li class="prev"><a href="https://typecodes.com/index17.html">&laquo; 前一页</a></li><li><a href="https://typecodes.com/index.html">1</a>
-       <li><a href="https://typecodes.com/index2.html">2</a>
-       		</li><li><span>...</span></li><li><a href="https://typecodes.com/index16.html">16</a>
-       		</li><li><a href="https://typecodes.com/index17.html">17</a>
-       		</li><li class="current"><a href="https://typecodes.com/index18.html">18</a>
-       		</li><li><a href="https://typecodes.com/index19.html">19</a>
-       		</li><li><span>...</span></li><li><a href="https://typecodes.com/index27.html">27</a>
-       		</li><li><a href="https://typecodes.com/index28.html">28</a>
+<li class="prev"><a href="https://typecodes.com/index17.html">&laquo; 前一页</a></li><li>
+       			<a href="https://typecodes.com/index1.html">1</a>
+       		</li>
+       <li>
+       			<a href="https://typecodes.com/index2.html">2</a>
+       		</li><li><span>...</span></li><li>
+       			<a href="https://typecodes.com/index16.html">16</a>
+       		</li><li>
+       			<a href="https://typecodes.com/index17.html">17</a>
+       		</li><li class="current">
+       			<a href="https://typecodes.com/index.html">18</a>
+       		</li><li>
+       			<a href="https://typecodes.com/index19.html">19</a>
+       		</li><li><span>...</span></li><li>
+       			<a href="https://typecodes.com/index27.html">27</a>
+       		</li><li>
+       			<a href="https://typecodes.com/index28.html">28</a>
        		</li><li class="next">
        		<a href="https://typecodes.com/index19.html">后一页 &raquo;</a>
        </li></ol>		</div>
@@ -228,7 +237,6 @@
 		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
 	</section>
 </div>
-				</div>
 			</div>
 		</div>
 		<!--4. bottom begin-->

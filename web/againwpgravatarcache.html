@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html dir="ltr" lang="zh-CN" class="no-js">
+<html class="no-js">
 	<head>
-		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
   		<meta name="renderer" content="webkit">
 		<title>再议Gravatar头像缓存至本地服务器 &mdash; TypeCodes</title>
 		<meta name="description" content="再议Gravatar头像缓存至本地服务器 &mdash; TypeCodes" />
@@ -34,8 +35,7 @@
 			</div>
 		</div>
 		<div class="container">
-			<div class="row">
-		<!--2. left sider begin-->
+			<div class="row">		<!--2. left sider begin-->
 		<div class="col-md-9" id="blog-main" role="main">
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/web/againwpgravatarcache.html">再议Gravatar头像缓存至本地服务器</a></h2>
@@ -47,17 +47,17 @@
 
 
 <p>但是gravatar用户的头像在更新时，由于$default的值是空的，那么更新时$g的值就是类似于</p>
-<div class="highlight"><pre>http://www.gravatar.com/avatar/eefdd735a45efc514936a0d0ca7e2511?s=40?d=?r=G
+<div class="highlight"><pre><span></span>http://www.gravatar.com/avatar/eefdd735a45efc514936a0d0ca7e2511?s=40?d=?r=G
 </pre></div>
 
 
 <p>然而没有gravatar头像的“default用户”，他们的头像更新的时候，$g的值就是类似于</p>
-<div class="highlight"><pre>http://www.gravatar.com/avatar/eefdd735a45efc514936a0d0ca7e2511?s=30&amp;d=/home4/jinrongi/public_html/hky/wp-content/themes/weisaysimple/avatar/default/default10.jpg&amp;r=G
+<div class="highlight"><pre><span></span>http://www.gravatar.com/avatar/eefdd735a45efc514936a0d0ca7e2511?s=30&amp;d=/home4/jinrongi/public_html/hky/wp-content/themes/weisaysimple/avatar/default/default10.jpg&amp;r=G
 </pre></div>
 
 
 <p>这个是无法访问的，从而造成了应该显示头像的地方无法正常显示。</p>
-<p><img alt="gravatar头像缓存错误" src="https://o3cex9zsl.qnssl.com/2012/12/gravatar_error.png" /></p>
+<p><img alt="gravatar头像缓存错误" src="https://o3cex9zsl.qnssl.com/2012/12/gravatar_error.png"></p>
 <h5>—————————————解决方案—————————————</h5>
 <p>把原文中的代码改成下面的代码。需要说明的是<code>filesize($e) == 2637</code>是通过  http://www.gravatar.com/avatar/  访问得到的头像的size值，用它来判断是否是gravatar用户。</p>
 <table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
@@ -88,7 +88,7 @@
 26
 27
 28
-29</pre></div></td><td class="code"><div class="highlight"><pre><span class="x">//gravatar cache by vfhky 1</span>
+29</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="x">//gravatar cache by vfhky 1</span>
 <span class="x">function vfhky_avatar( $email, $size, $default , $alt) {</span>
 <span class="x">  // $alt = (false === $alt) ? &#39;&#39; : esc_attr( $alt );</span>
 <span class="x">  $alt = (&#39;&#39; == $alt) ? &#39;&#39; :  $alt ;//用于设置当鼠标移到头像上显示提示文字</span>
@@ -119,7 +119,7 @@
 <span class="x">}</span>
 </pre></div>
 </td></tr></table>
-		    	<div class="donate_div_container">
+</div>		    	<div class="donate_div_container">
 					<div class="donate_div">
 						<p><a href="javascript:void(0)" onclick="donateToggle()" class="donate_word" title="打赏，支持一下">打赏</a></p>
 						<div class="hide_box"></div>
@@ -149,7 +149,7 @@
 					</div>
 				</div>
 		    	<div class="tags">
-					<div class="post_tags">
+					<div class="post_tags" itemprop="keywords">
 						Tags: <a href="https://typecodes.com/tag/wordpress.html">wordpress</a>,<a href="https://typecodes.com/tag/gravatartou-xiang-huan-cun.html">gravatar头像缓存</a>					</div>
 					<div class="post-share">
 						<ul class="post-shareul clearfix">
@@ -241,7 +241,6 @@
 		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
 	</section>
 </div>
-				</div>
 			</div>
 		</div>
 		<!--4. bottom begin-->

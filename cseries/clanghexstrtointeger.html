@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html dir="ltr" lang="zh-CN" class="no-js">
+<html class="no-js">
 	<head>
-		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
   		<meta name="renderer" content="webkit">
 		<title>C语言将十六进制字符串转成十进制整数 &mdash; TypeCodes</title>
 		<meta name="description" content="C语言将十六进制字符串转成十进制整数 &mdash; TypeCodes" />
@@ -34,8 +35,7 @@
 			</div>
 		</div>
 		<div class="container">
-			<div class="row">
-		<!--2. left sider begin-->
+			<div class="row">		<!--2. left sider begin-->
 		<div class="col-md-9" id="blog-main" role="main">
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/cseries/clanghexstrtointeger.html">C语言将十六进制字符串转成十进制整数</a></h2>
@@ -102,7 +102,7 @@
 53
 54
 55
-56</pre></div></td><td class="code"><div class="highlight"><pre><span class="cm">/** </span>
+56</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="cm">/** </span>
 <span class="cm"> * 将十六进制字符串转十进制数函数[从低位到高位单个字符转换]</span>
 <span class="cm"> * @author  vfhky 2014.10.24 https://typecodes.com</span>
 <span class="cm"> * @param   [in]    HexStr 十六进制字符串（例如&quot;eE2&quot;、&quot;Fa1&quot;、&quot;2011&quot;、&quot;-eE2&quot;、&quot;+eE2&quot;等） </span>
@@ -162,7 +162,7 @@
 </td></tr></table>
 
 <p>如下图所示，用GCC编译(<code>gcc hextointeger.c -o hextointeger</code>)测试程序并执行，结果将三个测试用的十六进制的字符串"eE2"、"Fa1"、"2011"、"-eE2"、"+eE2"分别转换成了对应的十进制整数：3810、4001、8209、-3810、3810。</p>
-<p><img alt="十六进制字符串转成十进制整数" src="https://o3cex9zsl.qnssl.com/2014/11/clanghexstrtointeger.png" title="十六进制字符串转成十进制整数" /></p>
+<p><img alt="十六进制字符串转成十进制整数" src="https://o3cex9zsl.qnssl.com/2014/11/clanghexstrtointeger.png" title="十六进制字符串转成十进制整数"></p>
 <p>用下面逆向从字符串高位到低位依次转换的方法结果也是一样的：</p>
 <table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
  2
@@ -218,7 +218,7 @@
 52
 53
 54
-55</pre></div></td><td class="code"><div class="highlight"><pre><span class="cm">/** </span>
+55</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="cm">/** </span>
 <span class="cm"> * 将十六进制字符串转十进制数函数[从高位到低位单个字符转换]</span>
 <span class="cm"> * @author  vfhky 2014.10.24 https://typecodes.com</span>
 <span class="cm"> * @param   [in]    HexStr 十六进制字符串（例如&quot;eE2&quot;、&quot;Fa1&quot;、&quot;2011&quot;、&quot;-eE2&quot;、&quot;+eE2&quot;等） </span>
@@ -275,7 +275,7 @@
 <span class="p">}</span>
 </pre></div>
 </td></tr></table>
-		    	<div class="donate_div_container">
+</div>		    	<div class="donate_div_container">
 					<div class="donate_div">
 						<p><a href="javascript:void(0)" onclick="donateToggle()" class="donate_word" title="打赏，支持一下">打赏</a></p>
 						<div class="hide_box"></div>
@@ -305,7 +305,7 @@
 					</div>
 				</div>
 		    	<div class="tags">
-					<div class="post_tags">
+					<div class="post_tags" itemprop="keywords">
 						Tags: <a href="https://typecodes.com/tag/shi-liu-jin-zhi-zi-fu-chuan.html">十六进制字符串</a>,<a href="https://typecodes.com/tag/shi-liu-jin-zhi-zhuan-shi-jin-zhi.html">十六进制转十进制</a>,<a href="https://typecodes.com/tag/zi-fu-chuan-zhuan-huan.html">字符串转换</a>					</div>
 					<div class="post-share">
 						<ul class="post-shareul clearfix">
@@ -397,7 +397,6 @@
 		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
 	</section>
 </div>
-				</div>
 			</div>
 		</div>
 		<!--4. bottom begin-->

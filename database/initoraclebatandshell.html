@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html dir="ltr" lang="zh-CN" class="no-js">
+<html class="no-js">
 	<head>
-		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
   		<meta name="renderer" content="webkit">
 		<title>初始化Oracle数据库的bat批处理脚本和shell脚本 &mdash; TypeCodes</title>
 		<meta name="description" content="初始化Oracle数据库的bat批处理脚本和shell脚本 &mdash; TypeCodes" />
@@ -34,8 +35,7 @@
 			</div>
 		</div>
 		<div class="container">
-			<div class="row">
-		<!--2. left sider begin-->
+			<div class="row">		<!--2. left sider begin-->
 		<div class="col-md-9" id="blog-main" role="main">
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/database/initoraclebatandshell.html">初始化Oracle数据库的bat批处理脚本和shell脚本</a></h2>
@@ -71,39 +71,39 @@
 20
 21
 22
-23</pre></div></td><td class="code"><div class="highlight"><pre><span class="c">:: 初始化Oracle数据库的bat批处理脚本（适用于Windows系统）</span>
-<span class="c">:: @FileName:  IniOracle.bat</span>
-<span class="c">:: @Author  :  vfhky  2014.12.20  https://typecodes.com</span>
-<span class="c">:: @param   :  tsmstuct.sql     包含表结构等数据的文件</span>
-<span class="c">:: @param   :  tsmdata.sql    包含表数据的文件</span>
+23</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="p">:</span><span class="c1">: 初始化Oracle数据库的bat批处理脚本（适用于Windows系统）</span>
+<span class="p">:</span><span class="c1">: @FileName:  IniOracle.bat</span>
+<span class="p">:</span><span class="c1">: @Author  :  vfhky  2014.12.20  https://typecodes.com</span>
+<span class="p">:</span><span class="c1">: @param   :  tsmstuct.sql     包含表结构等数据的文件</span>
+<span class="p">:</span><span class="c1">: @param   :  tsmdata.sql    包含表数据的文件</span>
 
-<span class="p">@</span><span class="k">echo</span> <span class="k">off</span>
+<span class="p">@</span><span class="k">echo</span> off
 <span class="k">cls</span>
-title Init Oracle database
+<span class="k">title</span> Init Oracle database
 <span class="k">echo</span> ---------------------------------Start Excute--------------------------------
-<span class="k">echo</span> ^|                                                                           ^<span class="p">|</span>
-<span class="n">echo</span> ^|    ---<span class="m">-1</span> Start Excute----                                                 ^<span class="p">|</span>
-<span class="n">echo</span> ^<span class="p">|</span>      <span class="n">suntsm/suntsm@127.0.0.1/orcl</span> @tsmstuct.sql ^<span class="p">&gt;</span><span class="n">d</span>:\tsmstuct.log          ^<span class="p">|</span>
-<span class="n">sqlplus</span> suntsm<span class="n">/suntsm@127.0.0.1/orcl</span> @tsmstuct.sql <span class="p">&gt;</span><span class="n">d</span>:\tsmstuct.log
-<span class="k">echo</span> ^|    ----End----                                                            ^<span class="p">|</span>
-<span class="n">echo</span> ^|                                                                           ^<span class="p">|</span>
-<span class="n">echo</span> ^|    ---<span class="m">-2</span> Start Excute----                                                 ^<span class="p">|</span>
-<span class="n">echo</span> ^<span class="p">|</span>      <span class="n">sqlplus</span> suntsm<span class="n">/suntsm@127.0.0.1/orcl</span> @tsmdata.sql ^<span class="p">&gt;</span><span class="n">d</span>:\tsmdata.log    ^<span class="p">|</span>
-<span class="n">sqlplus</span> suntsm<span class="n">/suntsm@127.0.0.1/orcl</span> @tsmdata.sql <span class="p">&gt;</span><span class="n">d</span>:\tsmdata.log
-<span class="k">echo</span> ^|    ----End----                                                            ^<span class="p">|</span>
-<span class="n">echo</span> ^|                                                                           ^<span class="p">|</span>
-<span class="n">echo</span> ---------------------------------End Excute----------------------------------
+<span class="k">echo</span> <span class="se">^|</span>                                                                           <span class="se">^|</span>
+<span class="k">echo</span> <span class="se">^|</span>    ----1 Start Excute----                                                 <span class="se">^|</span>
+<span class="k">echo</span> <span class="se">^|</span>      suntsm/suntsm@127.0.0.1/orcl @tsmstuct.sql <span class="se">^&gt;</span>d:\tsmstuct.log          <span class="se">^|</span>
+sqlplus suntsm/suntsm@127.0.0.1/orcl @tsmstuct.sql <span class="p">&gt;</span>d:\tsmstuct.log
+<span class="k">echo</span> <span class="se">^|</span>    ----End----                                                            <span class="se">^|</span>
+<span class="k">echo</span> <span class="se">^|</span>                                                                           <span class="se">^|</span>
+<span class="k">echo</span> <span class="se">^|</span>    ----2 Start Excute----                                                 <span class="se">^|</span>
+<span class="k">echo</span> <span class="se">^|</span>      sqlplus suntsm/suntsm@127.0.0.1/orcl @tsmdata.sql <span class="se">^&gt;</span>d:\tsmdata.log    <span class="se">^|</span>
+sqlplus suntsm/suntsm@127.0.0.1/orcl @tsmdata.sql <span class="p">&gt;</span>d:\tsmdata.log
+<span class="k">echo</span> <span class="se">^|</span>    ----End----                                                            <span class="se">^|</span>
+<span class="k">echo</span> <span class="se">^|</span>                                                                           <span class="se">^|</span>
+<span class="k">echo</span> ---------------------------------End Excute----------------------------------
 <span class="k">pause</span>
 </pre></div>
 </td></tr></table>
 
 <h5>1.1 初始化Oracle数据库的bat批处理脚本的执行过程演示</h5>
 <p>1、点击IniOracle.bat文件后，先执行<code>sqlplus suntsm/suntsm@127.0.0.1/orcl @tsmstuct.sql &gt;d:\tsmstuct.log</code>命令，生成的追踪日志文件是D盘下的tsmstuct.log。</p>
-<p><img alt="Windows中开始初始化Oracle表结构等" src="https://o3cex9zsl.qnssl.com/2015/01/initoraclestructbat.png" title="Windows中开始初始化Oracle表结构等" /></p>
+<p><img alt="Windows中开始初始化Oracle表结构等" src="https://o3cex9zsl.qnssl.com/2015/01/initoraclestructbat.png" title="Windows中开始初始化Oracle表结构等"></p>
 <p>2、执行成功后继续执行第二条命令：<code>sqlplus suntsm/suntsm@127.0.0.1/orcl @tsmdata.sql &gt;d:\tsmdata.log</code>命令，生成的追踪日志文件是D盘下的tsmdata.log。</p>
-<p><img alt="Windows中开始初始化Oracle表数据" src="https://o3cex9zsl.qnssl.com/2015/01/initoracledatabat.png" title="Windows中开始初始化Oracle表数据" /></p>
+<p><img alt="Windows中开始初始化Oracle表数据" src="https://o3cex9zsl.qnssl.com/2015/01/initoracledatabat.png" title="Windows中开始初始化Oracle表数据"></p>
 <p>3、初始化Oracl数据库完成，可以通过tsmstuct.log和tsmdata.log文件查看执行情况。</p>
-<p><img alt="Windows中整个初始化过程完成" src="https://o3cex9zsl.qnssl.com/2015/01/initoraclebatover.png" title="Windows中整个初始化过程完成" /></p>
+<p><img alt="Windows中整个初始化过程完成" src="https://o3cex9zsl.qnssl.com/2015/01/initoraclebatover.png" title="Windows中整个初始化过程完成"></p>
 <h5>2 初始化Oracle数据库的Shell批处理脚本</h5>
 <p>和bat批处理脚本一样，这里的shell脚本也是利用了sqlplus命令。唯一不同的是，由于Linux权限的问题，这个IniOracle.sh脚本代码会先判断是否已经存在了<code>tsmstuct.log</code>和<code>tsmdata.log</code>文件，并为它们赋予666可读、写的权限。</p>
 <table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
@@ -154,37 +154,37 @@ title Init Oracle database
 46
 47
 48
-49</pre></div></td><td class="code"><div class="highlight"><pre><span class="c">#!/bin/sh</span>
+49</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="ch">#!/bin/sh</span>
 
-<span class="c"># -----------------------------------------</span>
-<span class="c"># 初始化Oracle数据库的shell批处理脚本（适用于类Unix系统）</span>
-<span class="c"># @FileName:  IniOracle.sh</span>
-<span class="c"># @Author  :  vfhky  2014.12.20  https://typecodes.com</span>
-<span class="c"># @param   :  tsmstuct.sql     包含表结构等数据的文件</span>
-<span class="c"># @param   :  tsmdata.sql    包含表数据的文件</span>
-<span class="c"># 执行方法：./IniOracle.sh</span>
-<span class="c"># -----------------------------------------</span>
+<span class="c1"># -----------------------------------------</span>
+<span class="c1"># 初始化Oracle数据库的shell批处理脚本（适用于类Unix系统）</span>
+<span class="c1"># @FileName:  IniOracle.sh</span>
+<span class="c1"># @Author  :  vfhky  2014.12.20  https://typecodes.com</span>
+<span class="c1"># @param   :  tsmstuct.sql     包含表结构等数据的文件</span>
+<span class="c1"># @param   :  tsmdata.sql    包含表数据的文件</span>
+<span class="c1"># 执行方法：./IniOracle.sh</span>
+<span class="c1"># -----------------------------------------</span>
 
-<span class="c"># 为避免中文乱码，需要设置客户端字符集，使之与服务端字符集保持一致</span>
-<span class="nb">export </span><span class="nv">NLS_LANG</span><span class="o">=</span><span class="s1">&#39;AMERICAN_AMERICA.ZHS32GB18030&#39;</span>
-<span class="c"># 加载Oracle用户变量</span>
+<span class="c1"># 为避免中文乱码，需要设置客户端字符集，使之与服务端字符集保持一致</span>
+<span class="nb">export</span> <span class="nv">NLS_LANG</span><span class="o">=</span><span class="s1">&#39;AMERICAN_AMERICA.ZHS32GB18030&#39;</span>
+<span class="c1"># 加载Oracle用户变量</span>
 <span class="nb">source</span> ~/.bashrc
 
 
-<span class="c"># 判断日志文件是否存在，如不存在则新建一个空的日志文件</span>
+<span class="c1"># 判断日志文件是否存在，如不存在则新建一个空的日志文件</span>
 <span class="k">if</span> <span class="o">[</span> ! -f <span class="s2">&quot;tsmstuct.log&quot;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
 touch tsmstuct.log
 <span class="k">fi</span>
 
-<span class="c"># 判断日志文件是否存在，如不存在则新建一个空的日志文件</span>
+<span class="c1"># 判断日志文件是否存在，如不存在则新建一个空的日志文件</span>
 <span class="k">if</span> <span class="o">[</span> ! -f <span class="s2">&quot;tsmdata.log&quot;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
 touch tsmdata.log
 <span class="k">fi</span>
 
-<span class="c"># 日志文件赋权限</span>
+<span class="c1"># 日志文件赋权限</span>
 chmod <span class="m">666</span> tsmstuct.log
 
-<span class="c"># 日志文件赋权限</span>
+<span class="c1"># 日志文件赋权限</span>
 chmod <span class="m">666</span> tsmdata.log
 
 
@@ -208,14 +208,14 @@ sqlplus suntsm/suntsm@orcl @tsmdata.sql &gt;tsmdata.log
 
 <h5>2.1 初始化Oracle数据库的bat批处理脚本的执行过程演示</h5>
 <p>1、用Oracle身份登录Linux，然后通过命令<code>./IniOracle</code>开始执行脚本中的代码。</p>
-<p><img alt="Linux中开始初始化Oracle表结构等" src="https://o3cex9zsl.qnssl.com/2015/01/initoraclestructshell.png" title="Linux中开始初始化Oracle表结构等" /></p>
+<p><img alt="Linux中开始初始化Oracle表结构等" src="https://o3cex9zsl.qnssl.com/2015/01/initoraclestructshell.png" title="Linux中开始初始化Oracle表结构等"></p>
 <p>2、执行成功后继续执行第二条命令，生成的追踪日志文件是当前目录下的tsmdata.log。</p>
-<p><img alt="Linux中开始初始化Oracle表数据" src="https://o3cex9zsl.qnssl.com/2015/01/initoracledatashell.png" title="Linux中开始初始化Oracle表数据" /></p>
+<p><img alt="Linux中开始初始化Oracle表数据" src="https://o3cex9zsl.qnssl.com/2015/01/initoracledatashell.png" title="Linux中开始初始化Oracle表数据"></p>
 <p>3、初始化Oracl数据库完成，可以通过tsmstuct.log和tsmdata.log文件查看执行情况。</p>
-<p><img alt="Linux中整个初始化过程完成" src="https://o3cex9zsl.qnssl.com/2015/01/initoracleshellover.png" title="Linux中整个初始化过程完成" /></p>
+<p><img alt="Linux中整个初始化过程完成" src="https://o3cex9zsl.qnssl.com/2015/01/initoracleshellover.png" title="Linux中整个初始化过程完成"></p>
 <p>4、查看生成的<code>tsmstuct.log</code>和<code>tsmdata.log</code>日志文件。</p>
-<p><img alt="初始化完成后查看生成的log日志" src="https://o3cex9zsl.qnssl.com/2015/01/initoracleshellresult.png" title="初始化完成后查看生成的log日志" /></p>
-		    	<div class="donate_div_container">
+<p><img alt="初始化完成后查看生成的log日志" src="https://o3cex9zsl.qnssl.com/2015/01/initoracleshellresult.png" title="初始化完成后查看生成的log日志"></p>
+</div>		    	<div class="donate_div_container">
 					<div class="donate_div">
 						<p><a href="javascript:void(0)" onclick="donateToggle()" class="donate_word" title="打赏，支持一下">打赏</a></p>
 						<div class="hide_box"></div>
@@ -245,7 +245,7 @@ sqlplus suntsm/suntsm@orcl @tsmdata.sql &gt;tsmdata.log
 					</div>
 				</div>
 		    	<div class="tags">
-					<div class="post_tags">
+					<div class="post_tags" itemprop="keywords">
 						Tags: <a href="https://typecodes.com/tag/oracle.html">oracle</a>,<a href="https://typecodes.com/tag/oraclechu-shi-hua.html">oracle初始化</a>,<a href="https://typecodes.com/tag/oraclejiao-ben.html">oracle脚本</a>					</div>
 					<div class="post-share">
 						<ul class="post-shareul clearfix">
@@ -337,7 +337,6 @@ sqlplus suntsm/suntsm@orcl @tsmdata.sql &gt;tsmdata.log
 		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
 	</section>
 </div>
-				</div>
 			</div>
 		</div>
 		<!--4. bottom begin-->

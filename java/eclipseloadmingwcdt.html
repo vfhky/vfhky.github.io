@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html dir="ltr" lang="zh-CN" class="no-js">
+<html class="no-js">
 	<head>
-		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
   		<meta name="renderer" content="webkit">
 		<title>Eclipse中的搭建C/C++开发环境：安装MinGW和Eclipse CDT插件 &mdash; TypeCodes</title>
 		<meta name="description" content="Eclipse中的搭建C/C++开发环境：安装MinGW和Eclipse CDT插件 &mdash; TypeCodes" />
@@ -34,8 +35,7 @@
 			</div>
 		</div>
 		<div class="container">
-			<div class="row">
-		<!--2. left sider begin-->
+			<div class="row">		<!--2. left sider begin-->
 		<div class="col-md-9" id="blog-main" role="main">
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/java/eclipseloadmingwcdt.html">Eclipse中的搭建C/C++开发环境：安装MinGW和Eclipse CDT插件</a></h2>
@@ -49,7 +49,7 @@
 
 
 <p>安装完MinGW或者Cygwin后，在cmd窗口中输入gcc --version、g++ --version以及gdb --version都能显示相应的版本信息，否则表示安装失败。</p>
-<p><img alt="在cmd中gcc/g++/gdb版本信息" src="https://o3cex9zsl.qnssl.com/2014/03/cmd_gcc_g%2B%2B_gdb.png" title="在cmd中gcc/g++/gdb版本信息" /></p>
+<p><img alt="在cmd中gcc/g++/gdb版本信息" src="https://o3cex9zsl.qnssl.com/2014/03/cmd_gcc_g%2B%2B_gdb.png" title="在cmd中gcc/g++/gdb版本信息"></p>
 <h5>2 安装Eclipse C/C++ Development Tool（CDT）</h5>
 <p>安装CDT的方法有两种，这取决于你之前是否安装了Eclipse：</p>
 <h6>2.1 之前已经安装了“Eclipse for Java Developers”或者其它Eclipse包</h6>
@@ -63,9 +63,9 @@
 <p>对于每一个C++应用，你需要创建一个工程来保存所有的源代码、目标文件、可执行文件以及其他相关的资源。创建一个新的C/C++工程的方法：</p>
 <p>1、选择“File”菜单，点击“New” =&gt; “Project” =&gt; C/C++ =&gt; C/C++ project。2、在“Toolchains”框中，选择你刚才安装的编译器，例如“Cygwin GCC”或者“MinGW GCC”然后一路“NEXT”。3、在“Select Configurations”对话框中，把“Debug”和“Release”都选上，然后“Finish”。</p>
 <h6>4.2 写一个 Hello-world的C++程序</h6>
-<div class="highlight"><pre><span class="cp">#include &lt;iostream&gt;</span>
-<span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>
-<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>
+<div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp"></span>
+<span class="n">using</span> <span class="n">namespace</span> <span class="n">std</span><span class="p">;</span>
+<span class="kr">int</span> <span class="nf">main</span><span class="p">()</span>
 <span class="p">{</span>
     <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Hello, world!&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
     <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
@@ -76,7 +76,7 @@
 <h6>4.3 如果出现“Unresolved Inclusion Error”</h6>
 <p>如果在#include语句下面出现了“unresolved inclusion”，那是因为没有正确设置“include paths for headers”（头文件路径）。可以通过选择“Project”菜单 =&gt; Properties =&gt; C/C++ General =&gt; Paths and Symbols =&gt; 在“Includes”选项中：</p>
 <p>对Cygwin GCC：</p>
-<div class="highlight"><pre><span class="cm">/* 1添加以下路径至“GNU C”，其中$CYGWIN_HOME是你安装Cygwin的路径 */</span><span class="w"></span>
+<div class="highlight"><pre><span></span><span class="cm">/* 1添加以下路径至“GNU C”，其中$CYGWIN_HOME是你安装Cygwin的路径 */</span><span class="w"></span>
 <span class="err">$</span>CYGWIN_HOME<span class="o">\</span>lib<span class="o">\</span>gcc<span class="o">\</span>i686<span class="o">-</span>pc<span class="o">-</span>cygwin<span class="o">\</span><span class="m">4.5</span><span class="o">.</span>x<span class="o">\</span>include<span class="w"></span>
 <span class="err">$</span>CYGWIN_HOME<span class="o">\</span>lib<span class="o">\</span>gcc<span class="o">\</span>i686<span class="o">-</span>pc<span class="o">-</span>cygwin<span class="o">\</span><span class="m">4.5</span><span class="o">.</span>x<span class="o">\</span>include<span class="o">-</span>fixed<span class="w"></span>
 <span class="err">$</span>CYGWIN_HOME<span class="o">\</span>usr<span class="o">\</span>include<span class="w"></span>
@@ -94,7 +94,7 @@
 
 
 <p>对MinGW GCC：</p>
-<div class="highlight"><pre><span class="cm">/* 1添加以下路径至“GNU C”，其中$MINGW_HOME是你安装MinGW的路径 */</span><span class="w"></span>
+<div class="highlight"><pre><span></span><span class="cm">/* 1添加以下路径至“GNU C”，其中$MINGW_HOME是你安装MinGW的路径 */</span><span class="w"></span>
 <span class="err">$</span>MINGW_HOME<span class="o">\</span>lib<span class="o">\</span>gcc<span class="o">\</span>mingw32<span class="o">\</span><span class="m">4.6</span><span class="o">.</span>x<span class="o">\</span>include<span class="w"></span>
 <span class="err">$</span>MINGW_HOME<span class="o">\</span>include<span class="w"></span>
 <span class="err">$</span>MINGW_HOME<span class="o">\</span>lib<span class="o">\</span>gcc<span class="o">\</span>mingw32<span class="o">\</span><span class="m">4.6</span><span class="o">.</span>x<span class="o">\</span>include<span class="o">-</span>fixed<span class="w"></span>
@@ -114,7 +114,7 @@
 <p>ctrl+b表示构建，ctrl+f11表示执行。</p>
 <h5>6 程序调试debug</h5>
 <p>调试的基本步骤：1、设置断点；2、开启调试；3、点击“Step-Over”进行单步调试；4、“Run-To-Line”可以使调试先执行到某一行然后继续调试，“Resume”继续执行，“Terminate”终止调试。</p>
-		    	<div class="donate_div_container">
+</div>		    	<div class="donate_div_container">
 					<div class="donate_div">
 						<p><a href="javascript:void(0)" onclick="donateToggle()" class="donate_word" title="打赏，支持一下">打赏</a></p>
 						<div class="hide_box"></div>
@@ -144,7 +144,7 @@
 					</div>
 				</div>
 		    	<div class="tags">
-					<div class="post_tags">
+					<div class="post_tags" itemprop="keywords">
 						Tags: <a href="https://typecodes.com/tag/eclipse.html">eclipse</a>,<a href="https://typecodes.com/tag/mingw.html">mingw</a>,<a href="https://typecodes.com/tag/cdt.html">cdt</a>					</div>
 					<div class="post-share">
 						<ul class="post-shareul clearfix">
@@ -236,7 +236,6 @@
 		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
 	</section>
 </div>
-				</div>
 			</div>
 		</div>
 		<!--4. bottom begin-->

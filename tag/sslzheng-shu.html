@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html dir="ltr" lang="zh-CN" class="no-js">
+<html class="no-js">
 	<head>
-		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
   		<meta name="renderer" content="webkit">
 		<title>标签 ssl证书 下的文章 - TypeCodes</title>
 		<meta name="description" content="标签 ssl证书 下的文章 - TypeCodes" />
@@ -34,8 +35,7 @@
 			</div>
 		</div>
 		<div class="container">
-			<div class="row">
-		<!--2. left sider begin-->
+			<div class="row">		<!--2. left sider begin-->
 		<div class="col-md-9" id="blog-main" role="main">
 		  	<!--article recycle-->
 			<article class="post">
@@ -45,12 +45,12 @@
 </ul>
 <div class="post-content fmt">
 	<p>前几天博客使用了NameCheap的证书，将原来的http访问改成了https访问（详戳<a href="https://typecodes.com/web/lnmppositivessl.html" title="阿里云CentOS 6.5系统LNMP环境安装SSL证书">这里</a>）。由于下面的原因，现决定不再使用SSL证书，恢复http访问。</p>
-<p><img alt="使用SSL证书访问博客" src="https://o3cex9zsl.qnssl.com/2014/10/blogbeginusessl.png" title="使用SSL证书访问博客" /></p>
+<p><img alt="使用SSL证书访问博客" src="https://o3cex9zsl.qnssl.com/2014/10/blogbeginusessl.png" title="使用SSL证书访问博客"></p>
 <h5>1 无法通过https加载站外静态资源文件</h5>
 <p>主要是因为目前博客所有的静态资源文件，如css样式文件、js脚本文件、图片文件等，都使用了新浪SCS云存储。最初，博客程序中还存在类似于<code>https://o3cex9zsl.qnssl.com/libs/img/typecodes.png</code>这种http请求，所以浏览器地址栏会出现黄色警告图标。后来将所有的http请求全部改成https，结果浏览器地址栏图标变成正常的绿色图标了。</p>
 
 	<p class="more"><a href="https://typecodes.com/web/shutdownblogssl.html" title="决定关闭博客使用SSL证书访问">- 阅读剩余部分 -</a></p>
-			</article>
+</div>			</article>
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/web/lnmppositivessl.html">阿里云CentOS 6.5系统LNMP环境安装SSL证书</a></h2>
 <ul class="post-meta">
@@ -58,7 +58,7 @@
 </ul>
 <div class="post-content fmt">
 	<p>近期参加了github的一项<a href="https://education.github.com/pack" title="GitHub Education Student pack">优惠活动</a>，获得了一年免费的SSL证书。下面是具体的安装过程，当然SSL证书的安装跟博客程序（不管是wordpress或者typecho等等）无关，只是跟服务器的类型（比如Nginx、Apache或者IIS等）有关。</p>
-<div class="highlight"><pre>----------操作说明----------               
+<div class="highlight"><pre><span></span>----------操作说明----------               
 系统：            阿里云CentOS 6.5
 环境：            LNMP（只需配置Nginx服务器就行）
 操作工具：        SecureCRT 7.0
@@ -69,7 +69,7 @@ SSL证书提供商：    PositiveSSL from Namecheap
 
 
 	<p class="more"><a href="https://typecodes.com/web/lnmppositivessl.html" title="阿里云CentOS 6.5系统LNMP环境安装SSL证书">- 阅读剩余部分 -</a></p>
-			</article>
+</div>			</article>
 		  	<!--page navigation-->
 <ol class="page-navigator">
 </ol>		</div>
@@ -123,7 +123,6 @@ SSL证书提供商：    PositiveSSL from Namecheap
 		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
 	</section>
 </div>
-				</div>
 			</div>
 		</div>
 		<!--4. bottom begin-->

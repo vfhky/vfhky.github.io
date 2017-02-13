@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html dir="ltr" lang="zh-CN" class="no-js">
+<html class="no-js">
 	<head>
-		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
   		<meta name="renderer" content="webkit">
 		<title>关于博客评论的链接审查、网站认证的声明 &mdash; TypeCodes</title>
 		<meta name="description" content="关于博客评论的链接审查、网站认证的声明 &mdash; TypeCodes" />
@@ -34,8 +35,7 @@
 			</div>
 		</div>
 		<div class="container">
-			<div class="row">
-		<!--2. left sider begin-->
+			<div class="row">		<!--2. left sider begin-->
 		<div class="col-md-9" id="blog-main" role="main">
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/mix/commentlinksitecertification.html">关于博客评论的链接审查、网站认证的声明</a></h2>
@@ -49,12 +49,12 @@
 
 <p>首先，对于 “访问安全提示” 功能的实现原理如下：vfhky通过对博客评论者留下的链接地址进行审查，然后把该地址添加到库文件中去，最后在前台页面读取出来。在审查时，如果发现是广告链接OR恶意软件链接等不良地址，那么会在前台给出红色警告的标志；如果发现是优质网站（例如包子、威少、小鬼哥、醉风云等等博客），vfhky会免费将其标识为绿色安全的访问提示，并推荐给读者。</p>
 <p>由于设置了访问Referrer限制，所以大家无法直接通过输入 http://vfhky.sinaapp.com/go.php?url=http://www.ebeta.org （这里以 小鬼哥 的博客链接地址作为例子，勿怪^^）来得到系统相应的网站安全检查的结果，只能通过点击评论者留下的链接地址来获取。下图分别是访问优质网站和不良网站时给出的不同提示：</p>
-<p><img alt="外链安全访问提示" src="https://o3cex9zsl.qnssl.com/2013/07/URL_CHECK1.jpg" title="外链安全访问提示" /></p>
+<p><img alt="外链安全访问提示" src="https://o3cex9zsl.qnssl.com/2013/07/URL_CHECK1.jpg" title="外链安全访问提示"></p>
 <p>其次，对于 “网站安全认证” 功能，它其实是系统建立的一份评论者链接的“黑白名单”。效果如下图所示：</p>
-<p><img alt="网站安全认证" src="https://o3cex9zsl.qnssl.com/2013/07/siteverify.png" title="网站安全认证" /></p>
+<p><img alt="网站安全认证" src="https://o3cex9zsl.qnssl.com/2013/07/siteverify.png" title="网站安全认证"></p>
 <p>PS：本来博主不打算公开 网站安全认证 页面的，考虑到发广告人的生活也不容易。但是，某些广告者直接填完广告链接和验证码后，随便写几句无关文章主题的评论就提交了。于是，我做了一个艰难的决定……</p>
 <p>PPS：希望大家一如既往的支持博客，支持vfhky……另外，博客开设的专注于编程的QQ群：24385396，欢迎大家的加入（可以通过点击首页右上侧的图片快捷加群方式）！</p>
-		    	<div class="donate_div_container">
+</div>		    	<div class="donate_div_container">
 					<div class="donate_div">
 						<p><a href="javascript:void(0)" onclick="donateToggle()" class="donate_word" title="打赏，支持一下">打赏</a></p>
 						<div class="hide_box"></div>
@@ -84,7 +84,7 @@
 					</div>
 				</div>
 		    	<div class="tags">
-					<div class="post_tags">
+					<div class="post_tags" itemprop="keywords">
 						Tags: <a href="https://typecodes.com/tag/bo-ke-cheng-chang-lu.html">博客成长录</a>					</div>
 					<div class="post-share">
 						<ul class="post-shareul clearfix">
@@ -176,7 +176,6 @@
 		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
 	</section>
 </div>
-				</div>
 			</div>
 		</div>
 		<!--4. bottom begin-->

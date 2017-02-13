@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html dir="ltr" lang="zh-CN" class="no-js">
+<html class="no-js">
 	<head>
-		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
   		<meta name="renderer" content="webkit">
 		<title>更新博客生成发布及同步GitHub的Shell脚本：解决文件名空格问题 &mdash; TypeCodes</title>
 		<meta name="description" content="更新博客生成发布及同步GitHub的Shell脚本：解决文件名空格问题 &mdash; TypeCodes" />
@@ -34,8 +35,7 @@
 			</div>
 		</div>
 		<div class="container">
-			<div class="row">
-		<!--2. left sider begin-->
+			<div class="row">		<!--2. left sider begin-->
 		<div class="col-md-9" id="blog-main" role="main">
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/linux/updatesyngithubpelicanshell.html">更新博客生成发布及同步GitHub的Shell脚本：解决文件名空格问题</a></h2>
@@ -45,7 +45,7 @@
 <div class="post-content fmt">
 	<p><a href="https://typecodes.com/linux/syngithubmarkdownpelican.html" title="《同步GitHub Markdown文章到Linux服务器后更新Pelican博客的脚本》">前面一篇文章</a>通过Linux Shell脚本的方式，实现博客生成发布及同步GitHub的的功能：先同步GitHub个人仓库中的Markdown文章到本地，然后通过Pelican编译生成静态HTML文件，最后发布到Nginx的web目录下面，同时更新到GitHub个人主页（vfhky.github.io）。</p>
 <p>由于没仔细考虑到Markdown文件名中可能包含空格的问题，所以在Shell脚本的文件名遍历时（代码第108行）出现了BUG：Linux Shell默认把空格空格做为值与值之间的分隔符，所以原本一个带空格的文件名就被拆分成了几个文件名。</p>
-<p><img alt="CentOS7.2服务器默认的IFS为空值" src="https://o3cex9zsl.qnssl.com/2016/03/centos_ifs_default.png" title="CentOS7.2服务器默认的IFS为空值" /></p>
+<p><img alt="CentOS7.2服务器默认的IFS为空值" src="https://o3cex9zsl.qnssl.com/2016/03/centos_ifs_default.png" title="CentOS7.2服务器默认的IFS为空值"></p>
 
 
 <h4>1 解决方法</h4>
@@ -243,16 +243,16 @@
 188
 189
 190
-191</pre></div></td><td class="code"><div class="highlight"><pre><span class="c">#!/bin/bash</span>
-<span class="c"># FileName:      github_pelican_nginx.sh</span>
-<span class="c"># Description:   Synchronize markdown articles with github, convert to html files using Pelican, deliver it to nginx environment.</span>
-<span class="c"># Simple Usage:  ./github_pelican_nginx.sh &quot;commit_comments&quot;</span>
-<span class="c"># Crontab Usage: 00 01 * * * /mydata/backups/bak_list/github_pelican_nginx.sh &gt;/dev/null 2&gt;&amp;1</span>
-<span class="c"># (c) 2016 vfhky https://typecodes.com/linux/syngithubmarkdownpelican.html</span>
-<span class="c"># https://github.com/vfhky/shell-tools/blob/master/synchronize/github_pelican_nginx.sh</span>
+191</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="ch">#!/bin/bash</span>
+<span class="c1"># FileName:      github_pelican_nginx.sh</span>
+<span class="c1"># Description:   Synchronize markdown articles with github, convert to html files using Pelican, deliver it to nginx environment.</span>
+<span class="c1"># Simple Usage:  ./github_pelican_nginx.sh &quot;commit_comments&quot;</span>
+<span class="c1"># Crontab Usage: 00 01 * * * /mydata/backups/bak_list/github_pelican_nginx.sh &gt;/dev/null 2&gt;&amp;1</span>
+<span class="c1"># (c) 2016 vfhky https://typecodes.com/linux/syngithubmarkdownpelican.html</span>
+<span class="c1"># https://github.com/vfhky/shell-tools/blob/master/synchronize/github_pelican_nginx.sh</span>
 
 
-<span class="c"># Basic command.</span>
+<span class="c1"># Basic command.</span>
 <span class="nv">FINDCMD</span><span class="o">=</span><span class="s2">&quot;find&quot;</span>
 <span class="nv">MVCMD</span><span class="o">=</span><span class="s2">&quot;\mv -f&quot;</span>
 <span class="nv">CPCMD</span><span class="o">=</span><span class="s2">&quot;\cp -rf&quot;</span>
@@ -260,42 +260,42 @@
 <span class="nv">TARXCMD</span><span class="o">=</span><span class="s2">&quot;tar -zxf&quot;</span>
 <span class="nv">TARZIPCMD</span><span class="o">=</span><span class="s2">&quot;tar --warning=no-file-changed -zcf&quot;</span>
 
-<span class="c"># Pelican compile markdown files to html.</span>
+<span class="c1"># Pelican compile markdown files to html.</span>
 <span class="nv">PELICAN_COMPILE_DIR</span><span class="o">=</span>/mydata/GitBang/pelican
-<span class="c"># Private bang in github for store your markdown files.</span>
+<span class="c1"># Private bang in github for store your markdown files.</span>
 <span class="nv">GITHUB_PELICAN_DIR</span><span class="o">=</span>/mydata/GitBang/GitHub/BlogBak
-<span class="c"># Backup dir for your website&#39;s version management.</span>
+<span class="c1"># Backup dir for your website&#39;s version management.</span>
 <span class="nv">PELICAN_TAR_DIR</span><span class="o">=</span>/usr/share/nginx/html/pelican_content_bak
-<span class="c"># Dir of your website in nginx server.</span>
+<span class="c1"># Dir of your website in nginx server.</span>
 <span class="nv">PELICAN_BLOG_DIR</span><span class="o">=</span>/usr/share/nginx/html/pelican
-<span class="c"># Dir for this shell script to generate logs automatically.</span>
+<span class="c1"># Dir for this shell script to generate logs automatically.</span>
 <span class="nv">BLOG_PUBLISH_LOG_DIR</span><span class="o">=</span>/mydata/backups/logs/blogpublish
-<span class="c"># Your personal homepage in github.</span>
+<span class="c1"># Your personal homepage in github.</span>
 <span class="nv">GITHUB_PERSONAL_PAGE</span><span class="o">=</span>/mydata/GitBang/GitHub/vfhky.github.io
-<span class="c"># Articles in 15 minutes are legal.</span>
-<span class="nv">TIME_GAP</span><span class="o">=</span>15
+<span class="c1"># Articles in 15 minutes are legal.</span>
+<span class="nv">TIME_GAP</span><span class="o">=</span><span class="m">15</span>
 
-<span class="c"># Get the newest file name.</span>
-<span class="c">#Newest_File=&quot;ls -lrt| tail -n 1 | awk &#39;{print $9}&#39;&quot;</span>
+<span class="c1"># Get the newest file name.</span>
+<span class="c1">#Newest_File=&quot;ls -lrt| tail -n 1 | awk &#39;{print $9}&#39;&quot;</span>
 
-<span class="c"># Name of this shell script.</span>
+<span class="c1"># Name of this shell script.</span>
 <span class="nv">PRGNAME</span><span class="o">=</span><span class="s2">&quot;github_pelican_nginx&quot;</span>
 
-<span class="c"># Current date format: e.g 20150505_2015.</span>
+<span class="c1"># Current date format: e.g 20150505_2015.</span>
 <span class="nv">Current_Date</span><span class="o">=</span><span class="k">$(</span>date +%Y%m%d_%H%M<span class="k">)</span>
 
-<span class="c"># Check if current user is root.</span>
-<span class="o">[</span> <span class="s2">&quot;</span><span class="k">$(</span>id -u<span class="k">)</span><span class="s2">&quot;</span> !<span class="o">=</span> <span class="s2">&quot;0&quot;</span> <span class="o">]</span> <span class="o">&amp;&amp;</span> <span class="nb">echo</span> <span class="s2">&quot;Error: You must be root to run this script.&quot;</span> <span class="o">&amp;&amp;</span> <span class="nb">exit </span>1
+<span class="c1"># Check if current user is root.</span>
+<span class="o">[</span> <span class="s2">&quot;</span><span class="k">$(</span>id -u<span class="k">)</span><span class="s2">&quot;</span> !<span class="o">=</span> <span class="s2">&quot;0&quot;</span> <span class="o">]</span> <span class="o">&amp;&amp;</span> <span class="nb">echo</span> <span class="s2">&quot;Error: You must be root to run this script.&quot;</span> <span class="o">&amp;&amp;</span> <span class="nb">exit</span> <span class="m">1</span>
 
-<span class="c"># Check parameter.</span>
-<span class="k">if</span> <span class="o">[</span> <span class="nv">$# </span>-gt <span class="m">1</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
-    <span class="nb">echo</span> <span class="s2">&quot;Usage:    ./github_pelican_nginx.sh \&quot;commit_comments\&quot;&quot;</span> <span class="o">&amp;&amp;</span> <span class="nb">exit </span>1
+<span class="c1"># Check parameter.</span>
+<span class="k">if</span> <span class="o">[</span> <span class="nv">$#</span> -gt <span class="m">1</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+    <span class="nb">echo</span> <span class="s2">&quot;Usage:    ./github_pelican_nginx.sh \&quot;commit_comments\&quot;&quot;</span> <span class="o">&amp;&amp;</span> <span class="nb">exit</span> <span class="m">1</span>
 <span class="k">fi</span>
 
-<span class="c"># Run command functions.</span>
+<span class="c1"># Run command functions.</span>
 <span class="k">function</span> ERROR<span class="o">()</span> <span class="o">{</span>
     <span class="nb">echo</span> &gt;/dev/null <span class="o">&amp;&amp;</span> <span class="nb">echo</span> <span class="s2">&quot;[</span><span class="k">$(</span>date +%H:%M:%S:%N<span class="k">)</span><span class="s2">][error] </span><span class="nv">$*</span><span class="s2">&quot;</span> &gt;&gt; <span class="si">${</span><span class="nv">BLOG_PUBLISH_LOG_DIR</span><span class="si">}</span>/<span class="si">${</span><span class="nv">Current_Date</span><span class="si">}</span>.log
-    <span class="nb">exit </span>1
+    <span class="nb">exit</span> <span class="m">1</span>
 <span class="o">}</span>
 
 <span class="k">function</span> NOTICE<span class="o">()</span> <span class="o">{</span>
@@ -307,38 +307,38 @@
     <span class="nb">eval</span> <span class="nv">$@</span>
 <span class="o">}</span>
 
-<span class="c"># Git pull command function.</span>
+<span class="c1"># Git pull command function.</span>
 <span class="k">function</span> Git_Pull<span class="o">(){</span>
     RUNCMD <span class="s2">&quot;git pull origin master &gt;/dev/null&quot;</span>
 <span class="o">}</span>
 
-<span class="c"># Git commit command function.</span>
+<span class="c1"># Git commit command function.</span>
 <span class="k">function</span> Git_Commit<span class="o">(){</span>
-    <span class="k">if</span> <span class="o">[</span> <span class="nv">$# </span>-ne <span class="m">1</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+    <span class="k">if</span> <span class="o">[</span> <span class="nv">$#</span> -ne <span class="m">1</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
         ERROR <span class="s2">&quot;Usage: Git_Commit commit_comments!&quot;</span>
-        <span class="nb">exit </span>1<span class="p">;</span>
+        <span class="nb">exit</span> <span class="m">1</span><span class="p">;</span>
     <span class="k">else</span>
         RUNCMD <span class="s2">&quot;git pull &amp;&amp; git add --all &amp;&amp; git commit -m \&quot;</span><span class="nv">$1</span><span class="s2">\&quot; &amp;&amp; git push origin master&quot;</span>
     <span class="k">fi</span>
 <span class="o">}</span>
 
-<span class="c"># Get the path of markdown articles in TIME_GAP minutes.</span>
-<span class="c"># function Get_Files_Path(){</span>
-<span class="c">#    RUNCMD &quot;${FINDCMD} . -mmin -${TIME_GAP} -type f -name \&quot;*.md\&quot; -print0&quot;</span>
-<span class="c"># }</span>
+<span class="c1"># Get the path of markdown articles in TIME_GAP minutes.</span>
+<span class="c1"># function Get_Files_Path(){</span>
+<span class="c1">#    RUNCMD &quot;${FINDCMD} . -mmin -${TIME_GAP} -type f -name \&quot;*.md\&quot; -print0&quot;</span>
+<span class="c1"># }</span>
 
-<span class="c"># Lock down permissions.You should be careful when it comes to your website for the permission of files, but it&#39;s safe using 022.</span>
-<span class="c"># umask 022</span>
+<span class="c1"># Lock down permissions.You should be careful when it comes to your website for the permission of files, but it&#39;s safe using 022.</span>
+<span class="c1"># umask 022</span>
 
-<span class="c"># Create the log dir.</span>
+<span class="c1"># Create the log dir.</span>
 <span class="k">if</span> <span class="o">[</span> ! -d <span class="nv">$BLOG_PUBLISH_LOG_DIR</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
     mkdir -p <span class="nv">$BLOG_PUBLISH_LOG_DIR</span>
 <span class="k">fi</span>
 
 
-<span class="c"># Main process begin.</span>
+<span class="c1"># Main process begin.</span>
 NOTICE <span class="s2">&quot;[1]Start pull from GitHub.&quot;</span>
-<span class="nv">RC</span><span class="o">=</span>0
+<span class="nv">RC</span><span class="o">=</span><span class="m">0</span>
 RUNCMD <span class="s2">&quot;cd </span><span class="si">${</span><span class="nv">GITHUB_PELICAN_DIR</span><span class="si">}</span><span class="s2">/md_article &amp;&amp; Git_Pull&quot;</span>
 
 <span class="nv">RC</span><span class="o">=</span><span class="nv">$?</span>
@@ -347,16 +347,16 @@ RUNCMD <span class="s2">&quot;cd </span><span class="si">${</span><span class="n
 <span class="k">fi</span>
 
 
-<span class="c">#### Method 1:Chang the IFS to del with the blank word in the filename.</span>
-<span class="c">#old_IFS=$IFS</span>
-<span class="c">#IFS=$(echo -en &quot;\n\b&quot;)</span>
+<span class="c1">#### Method 1:Chang the IFS to del with the blank word in the filename.</span>
+<span class="c1">#old_IFS=$IFS</span>
+<span class="c1">#IFS=$(echo -en &quot;\n\b&quot;)</span>
 
 NOTICE <span class="s2">&quot;[2]Start copy the pulled articles to the compile dir of PELICAN.&quot;</span>
-<span class="c"># New_Article_Files=$(Get_Files_Path ${GITHUB_PELICAN_DIR}/md_article)</span>
-<span class="c"># You should not delete the double quotation marks in case of existing a blank in the file path.</span>
-<span class="c">#### Method 1: for New_Article_File in `${FINDCMD} . -mmin -${TIME_GAP} -type f -name &quot;*.md&quot;`</span>
-<span class="c">#### Method 2: use the while recycle.</span>
-<span class="si">${</span><span class="nv">FINDCMD</span><span class="si">}</span> . -mmin -<span class="si">${</span><span class="nv">TIME_GAP</span><span class="si">}</span> -type f -name <span class="s2">&quot;*.md&quot;</span><span class="p">|</span><span class="k">while</span> <span class="nb">read </span>New_Article_File
+<span class="c1"># New_Article_Files=$(Get_Files_Path ${GITHUB_PELICAN_DIR}/md_article)</span>
+<span class="c1"># You should not delete the double quotation marks in case of existing a blank in the file path.</span>
+<span class="c1">#### Method 1: for New_Article_File in `${FINDCMD} . -mmin -${TIME_GAP} -type f -name &quot;*.md&quot;`</span>
+<span class="c1">#### Method 2: use the while recycle.</span>
+<span class="si">${</span><span class="nv">FINDCMD</span><span class="si">}</span> . -mmin -<span class="si">${</span><span class="nv">TIME_GAP</span><span class="si">}</span> -type f -name <span class="s2">&quot;*.md&quot;</span><span class="p">|</span><span class="k">while</span> <span class="nb">read</span> New_Article_File
 <span class="k">do</span>
     <span class="k">if</span> <span class="o">[</span> -z <span class="s2">&quot;</span><span class="si">${</span><span class="nv">New_Article_File</span><span class="si">}</span><span class="s2">&quot;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
         <span class="nb">echo</span> <span class="s2">&quot;No articles, nothing to do.&quot;</span>
@@ -366,8 +366,8 @@ NOTICE <span class="s2">&quot;[2]Start copy the pulled articles to the compile d
     RUNCMD <span class="s2">&quot;mkdir -p </span><span class="si">${</span><span class="nv">FILE_PATH</span><span class="si">}</span><span class="s2"> &amp;&amp; </span><span class="si">${</span><span class="nv">CPCMD</span><span class="si">}</span><span class="s2"> \&quot;</span><span class="si">${</span><span class="nv">New_Article_File</span><span class="si">}</span><span class="s2">\&quot; </span><span class="si">${</span><span class="nv">FILE_PATH</span><span class="si">}</span><span class="s2">&quot;</span>
 <span class="k">done</span>
 
-<span class="c">#### Method 1:Recovery the IFS setting.</span>
-<span class="c">#IFS=${old_IFS}</span>
+<span class="c1">#### Method 1:Recovery the IFS setting.</span>
+<span class="c1">#IFS=${old_IFS}</span>
 
 <span class="nv">RC</span><span class="o">=</span><span class="nv">$?</span>
 <span class="k">if</span> <span class="o">[</span> <span class="nv">$RC</span> -gt <span class="m">0</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
@@ -385,7 +385,7 @@ RUNCMD <span class="s2">&quot;cd </span><span class="si">${</span><span class="n
 
 
 NOTICE <span class="s2">&quot;[4]Start generate a tar packgage and move it to the backup dir.&quot;</span>
-<span class="c"># The command of tar cause the problem that file changed as we read with the value 1, so we should ignore it using OR logic.</span>
+<span class="c1"># The command of tar cause the problem that file changed as we read with the value 1, so we should ignore it using OR logic.</span>
 RUNCMD <span class="s2">&quot;cd </span><span class="si">${</span><span class="nv">PELICAN_COMPILE_DIR</span><span class="si">}</span><span class="s2">/output &amp;&amp; </span><span class="si">${</span><span class="nv">TARZIPCMD</span><span class="si">}</span><span class="s2"> </span><span class="si">${</span><span class="nv">Current_Date</span><span class="si">}</span><span class="s2">.tar.gz . || </span><span class="si">${</span><span class="nv">MVCMD</span><span class="si">}</span><span class="s2"> </span><span class="si">${</span><span class="nv">Current_Date</span><span class="si">}</span><span class="s2">.tar.gz </span><span class="si">${</span><span class="nv">PELICAN_BLOG_DIR</span><span class="si">}</span><span class="s2">&quot;</span>
 
 <span class="nv">RC</span><span class="o">=</span><span class="nv">$?</span>
@@ -402,7 +402,7 @@ RUNCMD <span class="s2">&quot;cd </span><span class="si">${</span><span class="n
     ERROR <span class="s2">&quot;Unpack the target files failed!&quot;</span>
 <span class="k">fi</span>
 
-<span class="c"># if [ $# -eq 1 ]; then</span>
+<span class="c1"># if [ $# -eq 1 ]; then</span>
 <span class="k">if</span> <span class="o">[</span> -n <span class="s2">&quot;</span><span class="nv">$1</span><span class="s2">&quot;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
     <span class="nb">echo</span> <span class="s2">&quot;Ready to synchronize to the homepage on github.com.&quot;</span>
     NOTICE <span class="s2">&quot;[6]Start copy the packgage to the local homepage bang cloned from remote in GitHub.&quot;</span>
@@ -414,12 +414,12 @@ RUNCMD <span class="s2">&quot;cd </span><span class="si">${</span><span class="n
     <span class="k">fi</span>
 
     NOTICE <span class="s2">&quot;[7]Start synchronize website to my homepage on GitHub.&quot;</span>
-    <span class="c"># read -p &quot;Please input your comments on this commitment: &quot; COMMIT_COMMENTS</span>
-    <span class="c"># while [[ -z &quot;${COMMIT_COMMENTS}&quot; ]]</span>
-    <span class="c"># do</span>
-    <span class="c">#   read -p &quot;Comments can not be empty.Please input again: &quot; COMMIT_COMMENTS</span>
-    <span class="c"># done</span>
-    <span class="c"># RUNCMD &quot;Git_Commit \&quot;${COMMIT_COMMENTS}\&quot;&quot;</span>
+    <span class="c1"># read -p &quot;Please input your comments on this commitment: &quot; COMMIT_COMMENTS</span>
+    <span class="c1"># while [[ -z &quot;${COMMIT_COMMENTS}&quot; ]]</span>
+    <span class="c1"># do</span>
+    <span class="c1">#   read -p &quot;Comments can not be empty.Please input again: &quot; COMMIT_COMMENTS</span>
+    <span class="c1"># done</span>
+    <span class="c1"># RUNCMD &quot;Git_Commit \&quot;${COMMIT_COMMENTS}\&quot;&quot;</span>
     RUNCMD <span class="s2">&quot;Git_Commit \&quot;</span><span class="nv">$1</span><span class="s2">\&quot;&quot;</span>
 
     <span class="nv">RC</span><span class="o">=</span><span class="nv">$?</span>
@@ -433,13 +433,13 @@ RUNCMD <span class="s2">&quot;cd </span><span class="si">${</span><span class="n
 
 
 NOTICE <span class="s2">&quot;------END------&quot;</span>
-<span class="nb">exit </span>0
+<span class="nb">exit</span> <span class="m">0</span>
 </pre></div>
 </td></tr></table>
 
 <h4>3 脚本执行结果</h4>
-<p><img alt="github_pelican_nginx脚本执行结果" src="https://o3cex9zsl.qnssl.com/2016/03/github_pelican_nginx_excute_log.png" title="github_pelican_nginx脚本执行结果" /></p>
-		    	<div class="donate_div_container">
+<p><img alt="github_pelican_nginx脚本执行结果" src="https://o3cex9zsl.qnssl.com/2016/03/github_pelican_nginx_excute_log.png" title="github_pelican_nginx脚本执行结果"></p>
+</div>		    	<div class="donate_div_container">
 					<div class="donate_div">
 						<p><a href="javascript:void(0)" onclick="donateToggle()" class="donate_word" title="打赏，支持一下">打赏</a></p>
 						<div class="hide_box"></div>
@@ -469,7 +469,7 @@ NOTICE <span class="s2">&quot;------END------&quot;</span>
 					</div>
 				</div>
 		    	<div class="tags">
-					<div class="post_tags">
+					<div class="post_tags" itemprop="keywords">
 						Tags: <a href="https://typecodes.com/tag/pelican.html">pelican</a>,<a href="https://typecodes.com/tag/github.html">github</a>,<a href="https://typecodes.com/tag/markdown.html">markdown</a>					</div>
 					<div class="post-share">
 						<ul class="post-shareul clearfix">
@@ -561,7 +561,6 @@ NOTICE <span class="s2">&quot;------END------&quot;</span>
 		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
 	</section>
 </div>
-				</div>
 			</div>
 		</div>
 		<!--4. bottom begin-->

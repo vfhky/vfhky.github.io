@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html dir="ltr" lang="zh-CN" class="no-js">
+<html class="no-js">
 	<head>
-		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
   		<meta name="renderer" content="webkit">
 		<title>标签 博客成长录 下的文章 - TypeCodes</title>
 		<meta name="description" content="标签 博客成长录 下的文章 - TypeCodes" />
@@ -34,8 +35,7 @@
 			</div>
 		</div>
 		<div class="container">
-			<div class="row">
-		<!--2. left sider begin-->
+			<div class="row">		<!--2. left sider begin-->
 		<div class="col-md-9" id="blog-main" role="main">
 		  	<!--article recycle-->
 			<article class="post">
@@ -45,10 +45,10 @@
 </ul>
 <div class="post-content fmt">
 	<p>在Linux中如果应用程序会产生日志，那么就需要考虑日志切割，例如按照固定的大小切割、按照日期进行切割等等。同样，在编译<a href="https://typecodes.com/web/centos7compilenginx.html" title="《2015博客升级记(三)：CentOS 7.1编译安装Nginx1.9.0》">Nginx1.9.0</a>、<a href="https://typecodes.com/web/centos7compilemysql.html" title="《2015博客升级记(四)：CentOS 7.1编译安装MySQL5.7.7rc》">MySQL5.7.7rc</a>和<a href="https://typecodes.com/web/centos7compilephp7.html" title="《2015博客升级记(五)：CentOS 7.1编译安装PHP7》">PHP7</a>后，这三个应用服务都会产生日志，尤其是Nginx进程根据配置文件ngnix.conf记录每条访问记录到access.log中。如果所有的日志都打印到同一个文件中的话，那么时间长了的话就会影响效率。</p>
-<p><img alt="Nginx日志切割实例" src="https://o3cex9zsl.qnssl.com/2015/12/nginx_logs_backup.png" title="Nginx日志切割实例" /></p>
+<p><img alt="Nginx日志切割实例" src="https://o3cex9zsl.qnssl.com/2015/12/nginx_logs_backup.png" title="Nginx日志切割实例"></p>
 
 	<p class="more"><a href="https://typecodes.com/linux/applogsbackup.html" title="Linux下Nginx、MySQL和PHP等应用的日志切割脚本">- 阅读剩余部分 -</a></p>
-			</article>
+</div>			</article>
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/mix/sucesstypechotopelican.html">成功将博客从Typecho迁移到Pelican</a></h2>
 <ul class="post-meta">
@@ -58,7 +58,7 @@
 	<p>根据<a href="https://typecodes.com/mix/begintypechotopelican.html" title="《准备将博客从Typecho迁移到Pelican》">前文</a>的上线步骤，目前已经成功的将博客从Typecho迁移到了Pelican。中间上线发布的时候，遇到了好几个问题，不过由于上线步骤中有失败的处理方案（保留Typecho程序），所以在Typecho到Pelican之间来来回回切换了好几次。</p>
 
 	<p class="more"><a href="https://typecodes.com/mix/sucesstypechotopelican.html" title="成功将博客从Typecho迁移到Pelican">- 阅读剩余部分 -</a></p>
-			</article>
+</div>			</article>
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/mix/begintypechotopelican.html">准备将博客从Typecho迁移到Pelican</a></h2>
 <ul class="post-meta">
@@ -68,10 +68,10 @@
 	<p>8月份的时候，终于从庞大的WordPress转到了轻量级的<a href="https://typecodes.com/mix/eventualwptotypecho.html" title="《终于从WordPress转向Typecho了》">博客程序Typecho</a>。简洁的设计和比较出色的Markdown支持，整个Typecho体验还是挺不错的。到10月份的时候，自己了解了一些静态博客程序，包括nodejs的Ghost、Hexo等，ruby写的jekyll以及Python写的<a href="http://docs.getpelican.com/en/3.6.3/" title="Pelican最新3.6.3官方文档">Pelican</a>等。</p>
 <p>由于当时正好接触到了大蟒蛇，而且对js不熟（ruby都没用过），所以就在本地尝试了一下Pelican。之间折腾了一个从Octopress移植过来的主题Pelican-Octopress未果，后面忙着就没怎么弄了。</p>
 <p>前段时间辞职后，闲着就打算把博客“简洁到底”：抛弃MySQL数据库和PHP执行解释，完全采用Python生成静态HTML文件。这样以后就只需要在本地通过Markdown写好文章，然后通过pelican生成html文件即可。</p>
-<p><img alt="准备将博客从Typecho迁移到Pelican" src="https://o3cex9zsl.qnssl.com/2015/12/10/begintypechotopelican.png" title="准备将博客从Typecho迁移到Pelican" /></p>
+<p><img alt="准备将博客从Typecho迁移到Pelican" src="https://o3cex9zsl.qnssl.com/2015/12/10/begintypechotopelican.png" title="准备将博客从Typecho迁移到Pelican"></p>
 
 	<p class="more"><a href="https://typecodes.com/mix/begintypechotopelican.html" title="准备将博客从Typecho迁移到Pelican">- 阅读剩余部分 -</a></p>
-			</article>
+</div>			</article>
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/mix/synweibophpmarkdownimgurl.html">升级博客文章同步微博的插件：PHP正则提取Markdown的图片地址</a></h2>
 <ul class="post-meta">
@@ -79,10 +79,10 @@
 </ul>
 <div class="post-content fmt">
 	<p>作为一个微博控，为了把博客的文章同步到新浪微博上，BZ在<a href="http://open.weibo.com" title="点击查看">新浪微博开放平台</a>申请了一个应用。然后在自己的CentOS服务器上，利用<a href="http://open.weibo.com/wiki/SDK#PHP_SDK" title="点击查看">官方PHP SDK</a>搭了个服务端应用。这样通过博客插件作为请求客户端，调用相关API接口把文章同步到微博上。微博发布后，会显示来源，也即应用名称（如下图BZ的是<code>TypeCodes</code>）。</p>
-<p><img alt="博客文章同步到新浪微博的效果" src="https://o3cex9zsl.qnssl.com/2015/08/blog_synchronize_weibo.png" title="博客文章同步到新浪微博的效果" /></p>
+<p><img alt="博客文章同步到新浪微博的效果" src="https://o3cex9zsl.qnssl.com/2015/08/blog_synchronize_weibo.png" title="博客文章同步到新浪微博的效果"></p>
 
 	<p class="more"><a href="https://typecodes.com/mix/synweibophpmarkdownimgurl.html" title="升级博客文章同步微博的插件：PHP正则提取Markdown的图片地址">- 阅读剩余部分 -</a></p>
-			</article>
+</div>			</article>
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/linux/centos7blogregularbackup.html">2015博客升级记(八)：CentOS7定时备份博客程序的shell脚本</a></h2>
 <ul class="post-meta">
@@ -90,10 +90,10 @@
 </ul>
 <div class="post-content fmt">
 	<p>这是<a href="https://typecodes.com/mix/2015updateblog.html" title="查看原文">《2015年博客升级记》</a>系列文章的第八篇，同时也是这一系列文章的最后一篇，内容主要记录在Linux系统中如何使用shell脚本备份服务器上的博客程序（当然也可以是主机上的任何目录或者文件）。</p>
-<p><img alt="CentOS7定时备份博客程序的shell脚本" src="https://o3cex9zsl.qnssl.com/2015/06/centos_files_backup_shell.png" title="CentOS7定时备份博客程序的shell脚本" /></p>
+<p><img alt="CentOS7定时备份博客程序的shell脚本" src="https://o3cex9zsl.qnssl.com/2015/06/centos_files_backup_shell.png" title="CentOS7定时备份博客程序的shell脚本"></p>
 
 	<p class="more"><a href="https://typecodes.com/linux/centos7blogregularbackup.html" title="2015博客升级记(八)：CentOS7定时备份博客程序的shell脚本">- 阅读剩余部分 -</a></p>
-			</article>
+</div>			</article>
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/linux/centos7mysqlregularbackup.html">2015博客升级记(七)：CentOS7定时备份MySql的shell脚本</a></h2>
 <ul class="post-meta">
@@ -101,10 +101,10 @@
 </ul>
 <div class="post-content fmt">
 	<p>这是<a href="https://typecodes.com/mix/2015updateblog.html" title="查看原文">《2015年博客升级记》</a>系列文章的第七篇，主要记录在Linux系统中如何使用shell脚本备份服务器上的mysql数据库。</p>
-<p><img alt="CentOS7定时备份MySql的shell脚本" src="https://o3cex9zsl.qnssl.com/2015/06/centos_mysql_backup.png" title="CentOS7定时备份MySql的shell脚本" /></p>
+<p><img alt="CentOS7定时备份MySql的shell脚本" src="https://o3cex9zsl.qnssl.com/2015/06/centos_mysql_backup.png" title="CentOS7定时备份MySql的shell脚本"></p>
 
 	<p class="more"><a href="https://typecodes.com/linux/centos7mysqlregularbackup.html" title="2015博客升级记(七)：CentOS7定时备份MySql的shell脚本">- 阅读剩余部分 -</a></p>
-			</article>
+</div>			</article>
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/web/centos7compilephp7.html">2015博客升级记(五)：CentOS 7.1编译安装PHP7</a></h2>
 <ul class="post-meta">
@@ -114,7 +114,7 @@
 	<p>这是<a href="https://typecodes.com/mix/2015updateblog.html" title="查看原文">《2015年博客升级记》</a>系列文章的第五篇，主要记录在Linux系统中如何编译安装PHP7。</p>
 <h5>1 创建php用户和用户组，并在github下载php7源码</h5>
 <p>首先创建一个名为php且<code>没有登录权限</code>的用户和一个名为php的用户组，然后去GitHub下载php7源码包。</p>
-<div class="highlight"><pre>#######新建php用户和php组
+<div class="highlight"><pre><span></span>#######新建php用户和php组
 [root@typecodes ~]# groupadd -r php &amp;&amp; useradd -r -g php -s /bin/false -d /usr/local/php7 -M php
 ######从GitHub下载php7安装包
 [root@typecodes ~]# wget -c --no-check-certificate -O php7-src-master.zip https://github.com/php/php-src/archive/master.zip
@@ -127,7 +127,7 @@
 
 
 	<p class="more"><a href="https://typecodes.com/web/centos7compilephp7.html" title="2015博客升级记(五)：CentOS 7.1编译安装PHP7">- 阅读剩余部分 -</a></p>
-			</article>
+</div>			</article>
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/web/centos7yuminstallmysql5.html">阿里云CentOS 7.1使用yum安装MySql5.6.24</a></h2>
 <ul class="post-meta">
@@ -137,11 +137,15 @@
 	<p>在前面两篇文章<a href="https://typecodes.com/web/centos7compilemysql.html" title="查看原文">《2015博客升级记(四)：CentOS 7.1编译安装MySQL5.7.7rc》</a>和<a href="https://typecodes.com/web/centos7compilemysql5.html" title="查看原文">《阿里云CentOS 7.1编译安装MySql5.6.24》</a>中，都是采用编译MySQL源码的方式安装的，过程相对比较复杂。所以，这篇文章演示如何使用yum的方式安装MySql5.6.24。</p>
 
 	<p class="more"><a href="https://typecodes.com/web/centos7yuminstallmysql5.html" title="阿里云CentOS 7.1使用yum安装MySql5.6.24">- 阅读剩余部分 -</a></p>
-			</article>
+</div>			</article>
 		  	<!--page navigation-->
 <ol class="page-navigator">
-<li class="current"><a href="https://typecodes.com/tag/bo-ke-cheng-chang-lu.html">1</a><li><a href="https://typecodes.com/tag/bo-ke-cheng-chang-lu2.html">2</a>
-       		</li><li><a href="https://typecodes.com/tag/bo-ke-cheng-chang-lu3.html">3</a>
+<li class="current">
+       			<a href="https://typecodes.com/tag/bo-ke-cheng-chang-lu.html">1</a>
+       		</li><li>
+       			<a href="https://typecodes.com/tag/bo-ke-cheng-chang-lu2.html">2</a>
+       		</li><li>
+       			<a href="https://typecodes.com/tag/bo-ke-cheng-chang-lu3.html">3</a>
        		</li><li class="next">
        		<a href="https://typecodes.com/tag/bo-ke-cheng-chang-lu2.html">后一页 &raquo;</a>
        </li></ol>		</div>
@@ -210,7 +214,6 @@
 		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
 	</section>
 </div>
-				</div>
 			</div>
 		</div>
 		<!--4. bottom begin-->

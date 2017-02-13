@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html dir="ltr" lang="zh-CN" class="no-js">
+<html class="no-js">
 	<head>
-		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
   		<meta name="renderer" content="webkit">
 		<title>分类 cseries 下的文章 - TypeCodes</title>
 		<meta name="description" content="分类 cseries 下的文章 - TypeCodes" />
@@ -34,8 +35,7 @@
 			</div>
 		</div>
 		<div class="container">
-			<div class="row">
-		<!--2. left sider begin-->
+			<div class="row">		<!--2. left sider begin-->
 		<div class="col-md-9" id="blog-main" role="main">
 		  	<!--article recycle-->
 			<article class="post">
@@ -47,7 +47,7 @@
 	<p>map容器是C++ STL中的重要一员，平时会遇到删除map容器中value为指定元素的问题，例如删除所有字符串为"123"或者能整除3的元素。</p>
 
 	<p class="more"><a href="https://typecodes.com/cseries/mapdelintstring.html" title="C++删除map容器中指定值的元素">- 阅读剩余部分 -</a></p>
-			</article>
+</div>			</article>
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/cseries/networkselfdefineconv.html">自己实现inet_aton和inet_ntoa函数功能</a></h2>
 <ul class="post-meta">
@@ -60,7 +60,7 @@
 <code>inet_aton</code>是将IPv4地址（点分法）转换成对应的十进制整数；而<code>inet_ntoa</code>是将十进制整数转换成对应的IPv4地址（点分法）。</p>
 
 	<p class="more"><a href="https://typecodes.com/cseries/networkselfdefineconv.html" title="自己实现inet_aton和inet_ntoa函数功能">- 阅读剩余部分 -</a></p>
-			</article>
+</div>			</article>
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/cseries/deldisorderintarrrepeatele.html">C语言删除无序整型数组中的重复元素及时间复杂度</a></h2>
 <ul class="post-meta">
@@ -70,7 +70,7 @@
 	<p>遇到一个题，大概要求是写一个函数处理来去掉一个无序的整型数组（例如int i_arr[] = { 1, 2, 2, 3, 4, 2, 3, 5 };）中重复的元素，并返回最终的长度。</p>
 
 	<p class="more"><a href="https://typecodes.com/cseries/deldisorderintarrrepeatele.html" title="C语言删除无序整型数组中的重复元素及时间复杂度">- 阅读剩余部分 -</a></p>
-			</article>
+</div>			</article>
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/cseries/apuesingledaemonprocess.html">UNIX环境高级编程（APUE）之单实例守护进程</a></h2>
 <ul class="post-meta">
@@ -78,10 +78,10 @@
 </ul>
 <div class="post-content fmt">
 	<p>在UNIX环境高级编程（APUE）中提到了守护进程的创建方法，思路很清晰，所以这里通过代码具体研究下。</p>
-<p><img alt="UNIX环境高级编程（APUE）之单实例守护进程" src="https://o3cex9zsl.qnssl.com/2016/03/apue.png" title="UNIX环境高级编程（APUE）之单实例守护进程" /></p>
+<p><img alt="UNIX环境高级编程（APUE）之单实例守护进程" src="https://o3cex9zsl.qnssl.com/2016/03/apue.png" title="UNIX环境高级编程（APUE）之单实例守护进程"></p>
 
 	<p class="more"><a href="https://typecodes.com/cseries/apuesingledaemonprocess.html" title="UNIX环境高级编程（APUE）之单实例守护进程">- 阅读剩余部分 -</a></p>
-			</article>
+</div>			</article>
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/cseries/kill0checkprocessifexist.html">Linux使用KILL 0检测进程是否存在</a></h2>
 <ul class="post-meta">
@@ -89,10 +89,10 @@
 </ul>
 <div class="post-content fmt">
 	<p>之前遇到过<code>kill( pid, 0 )</code>的情况，由于平常没注意到kill函数的形参为0的情况，不知道它的作用。后面用<code>man 2 kill</code>命令查看了下kill函数的说明，发现可以用来检测进程的存在情况。</p>
-<p><img alt="man 2 kill查看关于形参0的说明" src="https://o3cex9zsl.qnssl.com/2016/03/man2kill0.png" title="man 2 kill查看关于形参0的说明" /></p>
+<p><img alt="man 2 kill查看关于形参0的说明" src="https://o3cex9zsl.qnssl.com/2016/03/man2kill0.png" title="man 2 kill查看关于形参0的说明"></p>
 
 	<p class="more"><a href="https://typecodes.com/cseries/kill0checkprocessifexist.html" title="Linux使用KILL 0检测进程是否存在">- 阅读剩余部分 -</a></p>
-			</article>
+</div>			</article>
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/cseries/vsnprintffilenameline.html">vsnprintf字符串格式化输出实例：日志中打印程序名和行号</a></h2>
 <ul class="post-meta">
@@ -102,7 +102,7 @@
 	<p>在Linux C/C++程序中打印日志时，可能会由于需要打印未知个数的变量参数，那么<code>vsnprintf</code>函数就排上用场了。这里使用一个简单的C程序例子，演示在打印源程序文件名和该打印函数所在的行号的同时，使用vsnprintf函数打印个数未知的参数变量。</p>
 
 	<p class="more"><a href="https://typecodes.com/cseries/vsnprintffilenameline.html" title="vsnprintf字符串格式化输出实例：日志中打印程序名和行号">- 阅读剩余部分 -</a></p>
-			</article>
+</div>			</article>
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/cseries/sigprocmasksigsuspendapp.html">一个sigprocmask和sigsuspend函数的综合应用</a></h2>
 <ul class="post-meta">
@@ -110,10 +110,10 @@
 </ul>
 <div class="post-content fmt">
 	<p>在Linux服务端后台开发中，经常会用到信号处理函数：<code>sigprocmask</code>和<code>sigsuspend</code>。这篇文章主要通过一个综合实例演示如何使用sigprocmask函数屏蔽目标信号（信号掩码）以及sigsuspend函数挂起进程。</p>
-<p><img alt="Linux中编译执行sigprocmask_sigsuspend程序" src="https://o3cex9zsl.qnssl.com/2016/02/sigprocmask_sigsuspend_init.png" title="Linux中编译执行sigprocmask_sigsuspend程序" /></p>
+<p><img alt="Linux中编译执行sigprocmask_sigsuspend程序" src="https://o3cex9zsl.qnssl.com/2016/02/sigprocmask_sigsuspend_init.png" title="Linux中编译执行sigprocmask_sigsuspend程序"></p>
 
 	<p class="more"><a href="https://typecodes.com/cseries/sigprocmasksigsuspendapp.html" title="一个sigprocmask和sigsuspend函数的综合应用">- 阅读剩余部分 -</a></p>
-			</article>
+</div>			</article>
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/cseries/tcpclosewaitsigpipe.html">Linux TCP通信出现CLOSE_WAIT后导致服务端进程挂掉</a></h2>
 <ul class="post-meta">
@@ -121,16 +121,22 @@
 </ul>
 <div class="post-content fmt">
 	<p>在<a href="https://typecodes.com/cseries/tcpdumpwiresharkclosewait2.html" title="《使用TCPDUMP和Wireshark排查服务端CLOSE_WAIT（二）》">前文</a>中讲述了Linux服务端TCP通信出现<code>CLOSE_WAIT</code>状态的原因，这篇文章主要通过一个实例演示它个一个“恶劣”影响：直接使服务端进程Down掉。</p>
-<p><img alt="CentOS服务端建立监听端口" src="https://o3cex9zsl.qnssl.com/2016/02/tcp_socket_server1.png" title="CentOS服务端建立监听端口" /></p>
+<p><img alt="CentOS服务端建立监听端口" src="https://o3cex9zsl.qnssl.com/2016/02/tcp_socket_server1.png" title="CentOS服务端建立监听端口"></p>
 
 	<p class="more"><a href="https://typecodes.com/cseries/tcpclosewaitsigpipe.html" title="Linux TCP通信出现CLOSE_WAIT后导致服务端进程挂掉">- 阅读剩余部分 -</a></p>
-			</article>
+</div>			</article>
 		  	<!--page navigation-->
 <ol class="page-navigator">
-<li class="current"><a href="https://typecodes.com/cseries/index.html">1</a><li><a href="https://typecodes.com/cseries/index2.html">2</a>
-       		</li><li><a href="https://typecodes.com/cseries/index3.html">3</a>
-       		</li><li><a href="https://typecodes.com/cseries/index4.html">4</a>
-       		</li><li><a href="https://typecodes.com/cseries/index5.html">5</a>
+<li class="current">
+       			<a href="https://typecodes.com/cseries/index.html">1</a>
+       		</li><li>
+       			<a href="https://typecodes.com/cseries/index2.html">2</a>
+       		</li><li>
+       			<a href="https://typecodes.com/cseries/index3.html">3</a>
+       		</li><li>
+       			<a href="https://typecodes.com/cseries/index4.html">4</a>
+       		</li><li>
+       			<a href="https://typecodes.com/cseries/index5.html">5</a>
        		</li><li class="next">
        		<a href="https://typecodes.com/cseries/index2.html">后一页 &raquo;</a>
        </li></ol>		</div>
@@ -199,7 +205,6 @@
 		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
 	</section>
 </div>
-				</div>
 			</div>
 		</div>
 		<!--4. bottom begin-->

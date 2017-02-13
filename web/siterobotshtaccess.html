@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html dir="ltr" lang="zh-CN" class="no-js">
+<html class="no-js">
 	<head>
-		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
   		<meta name="renderer" content="webkit">
 		<title>网站的robots和.htaccess应该如何写 &mdash; TypeCodes</title>
 		<meta name="description" content="网站的robots和.htaccess应该如何写 &mdash; TypeCodes" />
@@ -34,8 +35,7 @@
 			</div>
 		</div>
 		<div class="container">
-			<div class="row">
-		<!--2. left sider begin-->
+			<div class="row">		<!--2. left sider begin-->
 		<div class="col-md-9" id="blog-main" role="main">
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/web/siterobotshtaccess.html">网站的robots和.htaccess应该如何写</a></h2>
@@ -48,7 +48,7 @@
 
 <p>其次，分别了解robots和.htacces的具体写法：</p>
 <p>一、robots.txt文件：</p>
-<div class="highlight"><pre>User-agent: *       //针对所有的搜索引擎，把*符号改成Googlebot（google蜘蛛）或者Baiduspider（百度蜘蛛）等
+<div class="highlight"><pre><span></span>User-agent: *       //针对所有的搜索引擎，把*符号改成Googlebot（google蜘蛛）或者Baiduspider（百度蜘蛛）等
 Disallow: /*?*      //禁止访问网站中所有的动态页面
 Disallow: /wp-*     //禁止引擎蜘蛛爬行任何以 wp- 形式命名的目录下面的目录或者文件
 Disallow: /wp-admin
@@ -62,7 +62,7 @@ Disallow: /*.swf$
 
 <p>网站的robots.txt文件只要列出不允许（Disallow）被搜索引擎访问的内容即可，未列出的会被自动视为可以（Allow）访问并收录的内容。</p>
 <p>二、htaccess文件：</p>
-<div class="highlight"><pre># BEGIN WordPress
+<div class="highlight"><pre><span></span># BEGIN WordPress
 <span class="nt">&lt;ifmodule</span> <span class="err">mod_rewrite.c</span><span class="nt">&gt;</span>
 #重定向index.php到主域名
 RewriteEngine On
@@ -118,7 +118,7 @@ Options All -Indexes
 
 <h1>END WordPress</h1>
 <p>这个也是wordpress中.htaccess文件的具体代码。具体的代码功能在上面已经通过#注释了。我想说明的是：①禁止列出目录是很重要的，比如针对博客类的网站，你可以通过访问http://网站域名/wp-admin/images/来查看网站的目录安全性。解决方法有两种，一种是使用上面的代码，另一种是在 images文件夹的目录下放置一个index.php或者index.htm文件（内容可以不填）。②设置网站的防盗链也是很有必要的，具体代码如下：</p>
-<div class="highlight"><pre>RewriteBase /wp-content/uploads/
+<div class="highlight"><pre><span></span>RewriteBase /wp-content/uploads/
 RewriteCond %{HTTP_REFERER} !^$ [NC]
 RewriteCond %{HTTP_REFERER} !sina.com.cn [NC]
 RewriteCond %{HTTP_REFERER} !google.com [NC]
@@ -133,7 +133,7 @@ RewriteRule .*\.(gif|jpg|jpeg|png|bmp|zip|rar|7z|swf|mp3)$ http://vfhky.sinaapp.
 
 
 <p>其中，第一行 RewriteBase /wp-content/uploads/ 表示该目录下的文件是禁止盗链的。即如果uploads目录是你上传文件图片视频音乐等文件的地方，一般盗链耗流量的大户都在这里；第二行 RewriteCond %{HTTP_REFERER} !^$ [NC] 表示如果是用户直接访问你的图片则正常显示图片；另外，像 RewriteCond %{HTTP_REFERER} !royaso.com [NC] 这样的代码表示允许像百度、谷歌、qq之类的“盗链”，也显示正常的图片；倒数第二行 RewriteRule .*.(gif|jpg|jpeg|png|bmp|zip|rar|7z|swf|mp3)$ 表示设置防盗链的文件类型：图片、压缩文件、视频、音乐；最后一行代码表示如果不是上述的几种情况，那么将会被视为盗链，盗链后显示的图片为fangdaolian.png。</p>
-		    	<div class="donate_div_container">
+</div>		    	<div class="donate_div_container">
 					<div class="donate_div">
 						<p><a href="javascript:void(0)" onclick="donateToggle()" class="donate_word" title="打赏，支持一下">打赏</a></p>
 						<div class="hide_box"></div>
@@ -163,7 +163,7 @@ RewriteRule .*\.(gif|jpg|jpeg|png|bmp|zip|rar|7z|swf|mp3)$ http://vfhky.sinaapp.
 					</div>
 				</div>
 		    	<div class="tags">
-					<div class="post_tags">
+					<div class="post_tags" itemprop="keywords">
 						Tags: <a href="https://typecodes.com/tag/robots.html">robots</a>,<a href="https://typecodes.com/tag/htaccess.html">.htaccess</a>					</div>
 					<div class="post-share">
 						<ul class="post-shareul clearfix">
@@ -255,7 +255,6 @@ RewriteRule .*\.(gif|jpg|jpeg|png|bmp|zip|rar|7z|swf|mp3)$ http://vfhky.sinaapp.
 		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
 	</section>
 </div>
-				</div>
 			</div>
 		</div>
 		<!--4. bottom begin-->

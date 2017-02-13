@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html dir="ltr" lang="zh-CN" class="no-js">
+<html class="no-js">
 	<head>
-		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
   		<meta name="renderer" content="webkit">
 		<title>MySQL编译安装时常见错误分析 &mdash; TypeCodes</title>
 		<meta name="description" content="MySQL编译安装时常见错误分析 &mdash; TypeCodes" />
@@ -34,8 +35,7 @@
 			</div>
 		</div>
 		<div class="container">
-			<div class="row">
-		<!--2. left sider begin-->
+			<div class="row">		<!--2. left sider begin-->
 		<div class="col-md-9" id="blog-main" role="main">
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/web/solvemysqlcompileerror.html">MySQL编译安装时常见错误分析</a></h2>
@@ -48,7 +48,7 @@
 
 <h5>1 没有安装MySQL所需要的boost库</h5>
 <p>测试发现编译MySQL5.7以及更高的版本时，都需要下载并引用或者直接安装boost库，否则在执行<code>cmake</code>命令时会报如下错误：</p>
-<div class="highlight"><pre>-- Running cmake version 3.2.1
+<div class="highlight"><pre><span></span>-- Running cmake version 3.2.1
 -- Configuring with MAX_INDEXES = 64U
 -- SIZEOF_VOIDP 8
 -- MySQL 5.7.6-m16          [MySQL版本]
@@ -83,7 +83,7 @@ See also &quot;/mydata/mysql-5.7.6-m16/CMakeFiles/CMakeOutput.log&quot;.
 <p>解决方法：直接按照前文<a href="https://typecodes.com/web/centos7compilemysql.html" title="查看原文">《2015博客升级记(四)：CentOS 7.1编译安装MySQL5.7.7rc》</a>小节2中的方法安装Boost库即可。或者先下载Boost库，然后通过在cmake命令后面添加参数<code>-DDOWNLOAD_BOOST=1 -DWITH_BOOST=Boost库路径</code>即可。</p>
 <h5>2 执行cmake时缺少Ncurses库的支持</h5>
 <p>Ncurses提供功能键定义(快捷键)，屏幕绘制以及基于文本终端的图形互动功能的动态库。</p>
-<div class="highlight"><pre>[root@typecodes ~]# yum -y install ncurses-devel
+<div class="highlight"><pre><span></span>[root@typecodes ~]# yum -y install ncurses-devel
 
 -- Could NOT find Curses (missing:  CURSES_LIBRARY CURSES_INCLUDE_PATH) 
 CMake Error at cmake/readline.cmake:64 (MESSAGE):
@@ -105,17 +105,17 @@ See also &quot;/mydata/mysql-5.7.6-m16/CMakeFiles/CMakeError.log&quot;.
 <p>解决方法：直接执行命令<code>yum -y install ncurses-devel</code>安装Ncurses即可。</p>
 <h5>3 安装MySQL完后，无法正常启动服务</h5>
 <p>在安装完MySQL后，执行命令<code>service mysqld start</code>失败，也即无法正常启动MySQL服务。</p>
-<p><img alt="无法正常启动MySQL服务" src="https://o3cex9zsl.qnssl.com/2015/06/mysql_start_error.png" title="无法正常启动MySQL服务" /></p>
+<p><img alt="无法正常启动MySQL服务" src="https://o3cex9zsl.qnssl.com/2015/06/mysql_start_error.png" title="无法正常启动MySQL服务"></p>
 <p>解决方法：主要通过命令<code>systemctl status mysqld.service</code>和MySQL的日志来分析。如上图所示，在日志文件<code>/var/log/mysql/error.log</code>中可以看到具体的<code>ERROR</code>信息：Could not create unix socket lock file /var/run/mysql/mysql.sock.lock。这种错误一般都是目录不存在或者权限不足，所以我们直接使用命令<code>mkdir -p /var/log/mysql/</code>创建该目录即可，然后可以设置目录权限<code>chown -R mysql:mysql /var/log/mysql/</code>。</p>
 <h5>4 操作MySQL时，报错You must SET PASSWORD before executing this statement</h5>
 <p>用MySQL的root用户登录数据库后，如果之前没有设置密码，那么执行任何操作命令时，会提示如下错误信息。</p>
-<div class="highlight"><pre>mysql&gt; CREATE DATABASE `testmysqldatabase` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
+<div class="highlight"><pre><span></span>mysql&gt; CREATE DATABASE `testmysqldatabase` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
 ERROR 1820 (HY000): You must SET PASSWORD before executing this statement
 </pre></div>
 
 
 <p>常规的使用MySQL安全模式的解决方法如下，但是在MySQL5.7以及更高版本下是行不通的。</p>
-<div class="highlight"><pre>[root@typecodes ~]# service mysqld stop
+<div class="highlight"><pre><span></span>[root@typecodes ~]# service mysqld stop
 Shutting down MySQL..[  OK  ]
 [root@typecodes ~]# /mydata/mysql/bin/mysqld_safe --user=mysql --skip-networking --skip-grant-tables &amp;
 [1] 3688
@@ -128,41 +128,41 @@ ERROR 1290 (HY000): The MySQL server is running with the --skip-grant-tables opt
 
 
 <p>有效的解决方法：</p>
-<div class="highlight"><pre><span class="k">[root@typecodes ~]# mysql -u root -p            [使用root用户登录]</span>
-<span class="err">Enter</span> <span class="err">password:</span>                             <span class="k">[无密码，直接回车]</span>
-<span class="err">Welcome</span> <span class="err">to</span> <span class="err">the</span> <span class="err">MySQL</span> <span class="err">monitor.</span>  <span class="err">Commands</span> <span class="err">end</span> <span class="err">with</span> <span class="c1">; or \g.</span>
-<span class="err">Your</span> <span class="err">MySQL</span> <span class="err">connection</span> <span class="err">id</span> <span class="err">is</span> <span class="err">3</span>
-<span class="err">Server</span> <span class="err">version:</span> <span class="err">5.7.6-m16</span>
+<div class="highlight"><pre><span></span><span class="k">[root@typecodes ~]# mysql -u root -p            [使用root用户登录]</span>
+<span class="na">Enter password:                             [无密码，直接回车]</span>
+<span class="na">Welcome to the MySQL monitor.  Commands end with ; or \g.</span>
+<span class="na">Your MySQL connection id is 3</span>
+<span class="na">Server version: 5.7.6-m16</span>
 
-<span class="err">Copyright</span> <span class="err">(c)</span> <span class="err">2000,</span> <span class="err">2015,</span> <span class="err">Oracle</span> <span class="err">and/or</span> <span class="err">its</span> <span class="err">affiliates.</span> <span class="err">All</span> <span class="err">rights</span> <span class="err">reserved.</span>
+<span class="na">Copyright (c) 2000, 2015, Oracle and/or its affiliates. All rights reserved.</span>
 
-<span class="err">Oracle</span> <span class="err">is</span> <span class="err">a</span> <span class="err">registered</span> <span class="err">trademark</span> <span class="err">of</span> <span class="err">Oracle</span> <span class="err">Corporation</span> <span class="err">and/or</span> <span class="err">its</span>
-<span class="err">affiliates.</span> <span class="err">Other</span> <span class="err">names</span> <span class="err">may</span> <span class="err">be</span> <span class="err">trademarks</span> <span class="err">of</span> <span class="err">their</span> <span class="err">respective</span>
-<span class="err">owners.</span>
+<span class="na">Oracle is a registered trademark of Oracle Corporation and/or its</span>
+<span class="na">affiliates. Other names may be trademarks of their respective</span>
+<span class="na">owners.</span>
 
-<span class="err">Type</span> <span class="err">&#39;help</span><span class="c1">;&#39; or &#39;\h&#39; for help. Type &#39;\c&#39; to clear the current input statement.</span>
+<span class="na">Type &#39;help;&#39; or &#39;\h&#39; for help. Type &#39;\c&#39; to clear the current input statement.</span>
 
-<span class="err">mysql&gt;</span> <span class="err">select</span> <span class="err">*</span> <span class="err">from</span> <span class="err">mysql.user</span><span class="c1">;</span>
-<span class="err">ERROR</span> <span class="err">1820</span> <span class="err">(HY000):</span> <span class="err">You</span> <span class="err">must</span> <span class="err">SET</span> <span class="err">PASSWORD</span> <span class="err">before</span> <span class="err">executing</span> <span class="err">this</span> <span class="err">statement</span>
+<span class="na">mysql&gt; select * from mysql.user;</span>
+<span class="na">ERROR 1820 (HY000): You must SET PASSWORD before executing this statement</span>
 <span class="na">mysql&gt; set password</span><span class="o">=</span><span class="s">&#39;this is a password sample&#39;;</span>
-<span class="err">ERROR</span> <span class="err">1819</span> <span class="err">(HY000):</span> <span class="err">Your</span> <span class="err">password</span> <span class="err">does</span> <span class="err">not</span> <span class="err">satisfy</span> <span class="err">the</span> <span class="err">current</span> <span class="err">policy</span> <span class="err">requirements</span>
+<span class="na">ERROR 1819 (HY000): Your password does not satisfy the current policy requirements</span>
 <span class="c1">######设置当前root用户密码</span>
 <span class="na">mysql&gt; set password</span><span class="o">=</span><span class="s">&#39;your password&#39;;</span>
-<span class="err">Query</span> <span class="err">OK,</span> <span class="err">0</span> <span class="err">rows</span> <span class="err">affected</span> <span class="err">(0.00</span> <span class="err">sec)</span>
+<span class="na">Query OK, 0 rows affected (0.00 sec)</span>
 
-<span class="err">mysql&gt;</span> <span class="err">flush</span> <span class="err">privileges</span><span class="c1">;</span>
-<span class="err">Query</span> <span class="err">OK,</span> <span class="err">0</span> <span class="err">rows</span> <span class="err">affected</span> <span class="err">(0.00</span> <span class="err">sec)</span>
+<span class="na">mysql&gt; flush privileges;</span>
+<span class="na">Query OK, 0 rows affected (0.00 sec)</span>
 </pre></div>
 
 
 <p>需要说明的是，修改用户密码的SQL语句在不同的MySQL版本中是不同的。下面这3种是MySQL5.5以下的版本的修改方法，但是不适用于MySQL5.7以及更高版本。</p>
-<div class="highlight"><pre>mysql&gt; update mysql.user set PASSWORD=&#39;your password&#39; where User=&#39;root&#39;;
+<div class="highlight"><pre><span></span>mysql&gt; update mysql.user set PASSWORD=&#39;your password&#39; where User=&#39;root&#39;;
 
 mysql&gt; SET PASSWORD for root@&#39;localhost&#39; = PASSWORD(&#39;your password&#39;);
 
 mysql&gt; SET PASSWORD = PASSWORD(&#39;your password&#39;);
 </pre></div>
-		    	<div class="donate_div_container">
+</div>		    	<div class="donate_div_container">
 					<div class="donate_div">
 						<p><a href="javascript:void(0)" onclick="donateToggle()" class="donate_word" title="打赏，支持一下">打赏</a></p>
 						<div class="hide_box"></div>
@@ -192,7 +192,7 @@ mysql&gt; SET PASSWORD = PASSWORD(&#39;your password&#39;);
 					</div>
 				</div>
 		    	<div class="tags">
-					<div class="post_tags">
+					<div class="post_tags" itemprop="keywords">
 						Tags: <a href="https://typecodes.com/tag/mysql.html">mysql</a>					</div>
 					<div class="post-share">
 						<ul class="post-shareul clearfix">
@@ -284,7 +284,6 @@ mysql&gt; SET PASSWORD = PASSWORD(&#39;your password&#39;);
 		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
 	</section>
 </div>
-				</div>
 			</div>
 		</div>
 		<!--4. bottom begin-->

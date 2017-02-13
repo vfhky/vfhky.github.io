@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html dir="ltr" lang="zh-CN" class="no-js">
+<html class="no-js">
 	<head>
-		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
   		<meta name="renderer" content="webkit">
 		<title>Oracle数据库SQL操作语句报错的解决 &mdash; TypeCodes</title>
 		<meta name="description" content="Oracle数据库SQL操作语句报错的解决 &mdash; TypeCodes" />
@@ -34,8 +35,7 @@
 			</div>
 		</div>
 		<div class="container">
-			<div class="row">
-		<!--2. left sider begin-->
+			<div class="row">		<!--2. left sider begin-->
 		<div class="col-md-9" id="blog-main" role="main">
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/database/oraclesqlerror.html">Oracle数据库SQL操作语句报错的解决</a></h2>
@@ -45,41 +45,41 @@
 <div class="post-content fmt">
 	<p>最近在小红帽里面用GCCC编译含Oracle数据库SQL操作语句的C程序时候遇到了下面的7个报错信息，现整理出来Mark一下。</p>
 <h5>1 错误信息</h5>
-<div class="highlight"><pre><span class="k">[-1400][ORA-01400: cannot insert NULL into (&quot;CARDMAIN&quot;.&quot;CLR_SFTC000BLOCK0&quot;.&quot;SE]</span>
-<span class="err">&lt;!--</span>
-<span class="err">描述：CARDMAIN数据库用户，CLR_SFTC000BLOCK0数据表，SE表字段</span>
+<div class="highlight"><pre><span></span><span class="k">[-1400][ORA-01400: cannot insert NULL into (&quot;CARDMAIN&quot;.&quot;CLR_SFTC000BLOCK0&quot;.&quot;SE]</span>
+<span class="na">&lt;!--</span>
+<span class="na">描述：CARDMAIN数据库用户，CLR_SFTC000BLOCK0数据表，SE表字段</span>
 
-<span class="err">原因：Oracle数据库对于特定类型的非空字段无法区分空值和空字符串</span>
+<span class="na">原因：Oracle数据库对于特定类型的非空字段无法区分空值和空字符串</span>
 
-<span class="err">解决：明确数据源中的空值类型，并且在INSERT和UPDATE中必须插入一个值，不能将某个值修改为NULL。</span>
-<span class="err">--&gt;</span>
+<span class="na">解决：明确数据源中的空值类型，并且在INSERT和UPDATE中必须插入一个值，不能将某个值修改为NULL。</span>
+<span class="na">--&gt;</span>
 </pre></div>
 
 
 
 
 <h5>2 错误信息</h5>
-<div class="highlight"><pre><span class="k">[-12899][ORA-12899: value too large for column &quot;CARDMAIN&quot;.&quot;CLR_SFTC000BLOCK0&quot;.&quot;]</span>
-<span class="err">&lt;!--</span>
-<span class="err">原因：SQL语句中对于某个字段列中的值类型不符合。例如将int类型的值插入到char类型的数据库字段中。</span>
+<div class="highlight"><pre><span></span><span class="k">[-12899][ORA-12899: value too large for column &quot;CARDMAIN&quot;.&quot;CLR_SFTC000BLOCK0&quot;.&quot;]</span>
+<span class="na">&lt;!--</span>
+<span class="na">原因：SQL语句中对于某个字段列中的值类型不符合。例如将int类型的值插入到char类型的数据库字段中。</span>
 
-<span class="err">解决：检查字段类型。</span>
-<span class="err">--&gt;</span>
+<span class="na">解决：检查字段类型。</span>
+<span class="na">--&gt;</span>
 </pre></div>
 
 
 <h5>3 错误信息</h5>
-<div class="highlight"><pre><span class="k">[ORA-00984: column not allowed here]</span>
-<span class="err">&lt;!--</span>
-<span class="err">原因：一般出现在SQL插入数据时，值引号使用没有成对；又或者应该char类型的字段在插入值时被当做int等类型不加单引号。</span>
+<div class="highlight"><pre><span></span><span class="k">[ORA-00984: column not allowed here]</span>
+<span class="na">&lt;!--</span>
+<span class="na">原因：一般出现在SQL插入数据时，值引号使用没有成对；又或者应该char类型的字段在插入值时被当做int等类型不加单引号。</span>
 
-<span class="err">解决：当数据以char的形式存在时,应加单引号,则插入数据库就不会出现类似错误。例如当数据以char的形式存在时，应加单引号；又或者在SQL插入语句中出现数组不加单引号，直接执行的话就会出现这个错误。</span>
-<span class="err">--&gt;</span>
+<span class="na">解决：当数据以char的形式存在时,应加单引号,则插入数据库就不会出现类似错误。例如当数据以char的形式存在时，应加单引号；又或者在SQL插入语句中出现数组不加单引号，直接执行的话就会出现这个错误。</span>
+<span class="na">--&gt;</span>
 </pre></div>
 
 
 <h5>4 错误信息</h5>
-<div class="highlight"><pre>[-1756][ORA-01756: quoted string not properly terminated
+<div class="highlight"><pre><span></span>[-1756][ORA-01756: quoted string not properly terminated
 &lt;!--
 原因：SQL语句不完整或有语法错误，例如SQL语句引号内的字符串没有正常结束（即不成对）；
 
@@ -89,7 +89,7 @@
 
 
 <h5>5 错误信息</h5>
-<div class="highlight"><pre>[-1008][ORA-01008: not all variables bound] 
+<div class="highlight"><pre><span></span>[-1008][ORA-01008: not all variables bound] 
 &lt;!--
 原因/解决：SQL插入语句中漏掉了某个必须字段的值。
 --&gt;
@@ -97,14 +97,14 @@
 
 
 <h5>6 错误信息</h5>
-<div class="highlight"><pre><span class="k">[-1][ORA-00001: unique constraint (CARDMAIN.pk_clr_sftc000block0) violated]</span>
-<span class="err">&lt;!--</span>
-<span class="err">原因：违反唯一约束，即在INSERT和UPDATE语句中指定值不能已存在于表中，不过允许存在多个NULL值。</span>
+<div class="highlight"><pre><span></span><span class="k">[-1][ORA-00001: unique constraint (CARDMAIN.pk_clr_sftc000block0) violated]</span>
+<span class="na">&lt;!--</span>
+<span class="na">原因：违反唯一约束，即在INSERT和UPDATE语句中指定值不能已存在于表中，不过允许存在多个NULL值。</span>
 
-<span class="err">解决：原来的oracle数据库中已近存在主键值相同的行了，那么如果插入主键值相同的数据就会造成主键冲突。</span>
-<span class="err">--&gt;</span>
+<span class="na">解决：原来的oracle数据库中已近存在主键值相同的行了，那么如果插入主键值相同的数据就会造成主键冲突。</span>
+<span class="na">--&gt;</span>
 </pre></div>
-		    	<div class="donate_div_container">
+</div>		    	<div class="donate_div_container">
 					<div class="donate_div">
 						<p><a href="javascript:void(0)" onclick="donateToggle()" class="donate_word" title="打赏，支持一下">打赏</a></p>
 						<div class="hide_box"></div>
@@ -134,7 +134,7 @@
 					</div>
 				</div>
 		    	<div class="tags">
-					<div class="post_tags">
+					<div class="post_tags" itemprop="keywords">
 						Tags: <a href="https://typecodes.com/tag/oracle.html">oracle</a>					</div>
 					<div class="post-share">
 						<ul class="post-shareul clearfix">
@@ -226,7 +226,6 @@
 		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
 	</section>
 </div>
-				</div>
 			</div>
 		</div>
 		<!--4. bottom begin-->

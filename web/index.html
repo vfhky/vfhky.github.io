@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html dir="ltr" lang="zh-CN" class="no-js">
+<html class="no-js">
 	<head>
-		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
   		<meta name="renderer" content="webkit">
 		<title>分类 web 下的文章 - TypeCodes</title>
 		<meta name="description" content="分类 web 下的文章 - TypeCodes" />
@@ -34,8 +35,7 @@
 			</div>
 		</div>
 		<div class="container">
-			<div class="row">
-		<!--2. left sider begin-->
+			<div class="row">		<!--2. left sider begin-->
 		<div class="col-md-9" id="blog-main" role="main">
 		  	<!--article recycle-->
 			<article class="post">
@@ -48,7 +48,7 @@
 <p>因此，这篇文章主要对这三个PHP配置文件的进行简单说明，具体的配置过程见本文末尾的<code>附录</code>部分。</p>
 
 	<p class="more"><a href="https://typecodes.com/web/php7configure.html" title="PHP7中php.ini、php-fpm和www.conf的配置">- 阅读剩余部分 -</a></p>
-			</article>
+</div>			</article>
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/web/centos7compilephp7.html">2015博客升级记(五)：CentOS 7.1编译安装PHP7</a></h2>
 <ul class="post-meta">
@@ -58,7 +58,7 @@
 	<p>这是<a href="https://typecodes.com/mix/2015updateblog.html" title="查看原文">《2015年博客升级记》</a>系列文章的第五篇，主要记录在Linux系统中如何编译安装PHP7。</p>
 <h5>1 创建php用户和用户组，并在github下载php7源码</h5>
 <p>首先创建一个名为php且<code>没有登录权限</code>的用户和一个名为php的用户组，然后去GitHub下载php7源码包。</p>
-<div class="highlight"><pre>#######新建php用户和php组
+<div class="highlight"><pre><span></span>#######新建php用户和php组
 [root@typecodes ~]# groupadd -r php &amp;&amp; useradd -r -g php -s /bin/false -d /usr/local/php7 -M php
 ######从GitHub下载php7安装包
 [root@typecodes ~]# wget -c --no-check-certificate -O php7-src-master.zip https://github.com/php/php-src/archive/master.zip
@@ -71,7 +71,7 @@
 
 
 	<p class="more"><a href="https://typecodes.com/web/centos7compilephp7.html" title="2015博客升级记(五)：CentOS 7.1编译安装PHP7">- 阅读剩余部分 -</a></p>
-			</article>
+</div>			</article>
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/web/centos7yuminstallmysql5.html">阿里云CentOS 7.1使用yum安装MySql5.6.24</a></h2>
 <ul class="post-meta">
@@ -81,7 +81,7 @@
 	<p>在前面两篇文章<a href="https://typecodes.com/web/centos7compilemysql.html" title="查看原文">《2015博客升级记(四)：CentOS 7.1编译安装MySQL5.7.7rc》</a>和<a href="https://typecodes.com/web/centos7compilemysql5.html" title="查看原文">《阿里云CentOS 7.1编译安装MySql5.6.24》</a>中，都是采用编译MySQL源码的方式安装的，过程相对比较复杂。所以，这篇文章演示如何使用yum的方式安装MySql5.6.24。</p>
 
 	<p class="more"><a href="https://typecodes.com/web/centos7yuminstallmysql5.html" title="阿里云CentOS 7.1使用yum安装MySql5.6.24">- 阅读剩余部分 -</a></p>
-			</article>
+</div>			</article>
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/web/centos7compilemysql5.html">阿里云CentOS 7.1编译安装MySql5.6.24</a></h2>
 <ul class="post-meta">
@@ -92,7 +92,7 @@
 <p>鉴于官方MySql5.6.24相对是一个比较稳定的版本，所以博主之前也在自己的另一台CentOS7.1主机上安装了一遍。不过最后还是图新鲜，选择了MySQL5.7.7rc版本。下面是具体的安装过程，由于和MySQL5.7.7rc的编译安装过程很类似，所以这里尽可能精简文字：</p>
 
 	<p class="more"><a href="https://typecodes.com/web/centos7compilemysql5.html" title="阿里云CentOS 7.1编译安装MySql5.6.24">- 阅读剩余部分 -</a></p>
-			</article>
+</div>			</article>
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/web/solvemysqlcompileerror.html">MySQL编译安装时常见错误分析</a></h2>
 <ul class="post-meta">
@@ -102,7 +102,7 @@
 	<p>这篇文章主要是关于MySQL在编译安装时，可能出现的错误的解决方法。MySQL正确的编译安装操作见前文<a href="https://typecodes.com/web/centos7compilemysql.html" title="查看原文">《2015博客升级记(四)：CentOS 7.1编译安装MySQL5.7.7rc》</a>。</p>
 
 	<p class="more"><a href="https://typecodes.com/web/solvemysqlcompileerror.html" title="MySQL编译安装时常见错误分析">- 阅读剩余部分 -</a></p>
-			</article>
+</div>			</article>
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/web/centosmysqlconfig.html">CentOS系统MySQL的配置文件my.cnf</a></h2>
 <ul class="post-meta">
@@ -114,7 +114,7 @@
 <p>由于MySQL的配置明细不多，所以这里就直接将my.cnf的全部内容贴出来了。</p>
 
 	<p class="more"><a href="https://typecodes.com/web/centosmysqlconfig.html" title="CentOS系统MySQL的配置文件my.cnf">- 阅读剩余部分 -</a></p>
-			</article>
+</div>			</article>
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/web/solvenginxcompileerror.html">Nginx编译安装时常见错误分析</a></h2>
 <ul class="post-meta">
@@ -127,7 +127,7 @@
 <p>解决方法：启动脚本的格式有问题，例如该脚本是dos格式，在Linux系统是中无法识别的。可以通过vim打开该文件，如果可以看到出现<code>^M</code>的字符，就可以确定是DOS格式的了。那么可以在vim中执行命令<code>:%s/\r\+$//e</code>，将其转换成Unix格式即可。</p>
 
 	<p class="more"><a href="https://typecodes.com/web/solvenginxcompileerror.html" title="Nginx编译安装时常见错误分析">- 阅读剩余部分 -</a></p>
-			</article>
+</div>			</article>
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/web/centos7nginxhttpsspdy.html">2015博客升级记(六)：Nginx配置HTTPS和SPDY实战</a></h2>
 <ul class="post-meta">
@@ -137,18 +137,28 @@
 	<p>这是<a href="https://typecodes.com/mix/2015updateblog.html" title="查看原文">《2015年博客升级记》</a>系列文章的第六篇，主要记录如何在CentOS 7.1中Nginx如何配置HTTPS和SPDY。关于具体如何编译安装Nginx，可以查看文章<a href="https://typecodes.com/web/centos7compilenginx.html" title="查看原文">《2015博客升级记(三)：CentOS 7.1编译安装Nginx1.9.0》</a>。</p>
 
 	<p class="more"><a href="https://typecodes.com/web/centos7nginxhttpsspdy.html" title="2015博客升级记(六)：Nginx配置HTTPS和SPDY实战">- 阅读剩余部分 -</a></p>
-			</article>
+</div>			</article>
 		  	<!--page navigation-->
 <ol class="page-navigator">
-<li class="current"><a href="https://typecodes.com/web/index.html">1</a>
-       <li><a href="https://typecodes.com/web/index2.html">2</a>
-       		</li><li><a href="https://typecodes.com/web/index3.html">3</a>
-       		</li><li><a href="https://typecodes.com/web/index4.html">4</a>
-       		</li><li><a href="https://typecodes.com/web/index5.html">5</a>
-       		</li><li><a href="https://typecodes.com/web/index6.html">6</a>
-       		</li><li><a href="https://typecodes.com/web/index7.html">7</a>
-       		</li><li><span>...</span></li><li><a href="https://typecodes.com/web/index10.html">10</a>
-       		</li><li><a href="https://typecodes.com/web/index11.html">11</a>
+<li class="current">
+       			<a href="https://typecodes.com/web/index.html">1</a>
+       		</li>
+       <li>
+       			<a href="https://typecodes.com/web/index2.html">2</a>
+       		</li><li>
+       			<a href="https://typecodes.com/web/index3.html">3</a>
+       		</li><li>
+       			<a href="https://typecodes.com/web/index4.html">4</a>
+       		</li><li>
+       			<a href="https://typecodes.com/web/index5.html">5</a>
+       		</li><li>
+       			<a href="https://typecodes.com/web/index6.html">6</a>
+       		</li><li>
+       			<a href="https://typecodes.com/web/index7.html">7</a>
+       		</li><li><span>...</span></li><li>
+       			<a href="https://typecodes.com/web/index10.html">10</a>
+       		</li><li>
+       			<a href="https://typecodes.com/web/index11.html">11</a>
        		</li><li class="next">
        		<a href="https://typecodes.com/web/index2.html">后一页 &raquo;</a>
        </li></ol>		</div>
@@ -217,7 +227,6 @@
 		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
 	</section>
 </div>
-				</div>
 			</div>
 		</div>
 		<!--4. bottom begin-->

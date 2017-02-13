@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html dir="ltr" lang="zh-CN" class="no-js">
+<html class="no-js">
 	<head>
-		<meta http-equiv="X-UA-Compatible" content="text/html" charset="UTF-8">
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
   		<meta name="renderer" content="webkit">
 		<title>Linux c语言连接MySQL数据库实例 &mdash; TypeCodes</title>
 		<meta name="description" content="Linux c语言连接MySQL数据库实例 &mdash; TypeCodes" />
@@ -34,8 +35,7 @@
 			</div>
 		</div>
 		<div class="container">
-			<div class="row">
-		<!--2. left sider begin-->
+			<div class="row">		<!--2. left sider begin-->
 		<div class="col-md-9" id="blog-main" role="main">
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/cseries/linuxgccgconnectmysql.html">Linux c语言连接MySQL数据库实例</a></h2>
@@ -158,17 +158,17 @@
 108
 109
 110
-111</pre></div></td><td class="code"><div class="highlight"><pre><span class="cm">/** </span>
+111</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="cm">/** </span>
 <span class="cm"> * @FileName    linux_c_mysql.c</span>
 <span class="cm"> * @Describe    A simple example for operating mysql using c programming in linux system.</span>
 <span class="cm"> * @Author      vfhky 2015.12.29 15:40 https://typecodes.com/cseries/linuxgccgconnectmysql.html</span>
 <span class="cm"> * @Compile     gcc -I/usr/local/mysql/include  -L/usr/local/mysql/lib -lmysqlclient  linux_c_mysql.c -o linux_c_mysql</span>
 <span class="cm"> * @Reference   http://dev.mysql.com/doc/refman/5.7/en/c-api-function-overview.html</span>
 <span class="cm"> */</span>
-<span class="cp">#include &lt;stdio.h&gt;</span>
-<span class="cp">#include &lt;stdlib.h&gt;</span>
-<span class="cp">#include &lt;string.h&gt;</span>
-<span class="cp">#include &lt;mysql.h&gt;</span>
+<span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;stdlib.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;string.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;mysql.h&gt;</span><span class="cp"></span>
 
 
 <span class="c1">//MySQL connection.</span>
@@ -275,16 +275,16 @@
 <h4>2 gcc编译方法</h4>
 <p>由于之前在<a href="https://typecodes.com/web/centos7compilemysql.html" title="《2015博客升级记(四)：CentOS 7.1编译安装MySQL5.7.7rc》">搭建MySQL服务</a>的时候，已经把MySQL的动态库路径通过ldconfig命令添加到了Linux系统动态库搜索路径当中了，所以这里直接生成可执行文件就行了。当然，还可以像<a href="https://typecodes.com/cseries/gccgensharedlib.html" title="《Linux gcc编译生成静态库及使用方法》">上一篇文章</a>中的其它3种操作方法，把MySQL动态库mysqlclient.so链接进来最终生成可执行文件。</p>
 <p>用下面这条命令编译即可，其中-I参数表示MySQL数据库头文件路径，-L参数表示MySQL数据库的动态库路径。</p>
-<div class="highlight"><pre>[root@typecodes ~]# gcc -I/usr/local/mysql/include  -L/usr/local/mysql/lib -lmysqlclient  linux_c_mysql.c -o linux_c_mysql
+<div class="highlight"><pre><span></span>[root@typecodes ~]# gcc -I/usr/local/mysql/include  -L/usr/local/mysql/lib -lmysqlclient  linux_c_mysql.c -o linux_c_mysql
 [root@typecodes ~]# ldd linux_c_mysql
 </pre></div>
 
 
-<p><img alt="ldd命令查看可执行文件所依赖的动态库" src="https://o3cex9zsl.qnssl.com/2016/01/gcc_compile_conncet_mysql.png" title="ldd命令查看可执行文件所依赖的动态库" /></p>
+<p><img alt="ldd命令查看可执行文件所依赖的动态库" src="https://o3cex9zsl.qnssl.com/2016/01/gcc_compile_conncet_mysql.png" title="ldd命令查看可执行文件所依赖的动态库"></p>
 <h4>3 执行结果</h4>
 <p>下图是程序执行获取的之前Typecho博客数据库typecodes中的用户表typecodes_users中的数据：</p>
-<p><img alt="ldd命令查看可执行文件所依赖的动态库" src="https://o3cex9zsl.qnssl.com/2016/01/excute_connect_mysql.png" title="ldd命令查看可执行文件所依赖的动态库" /></p>
-		    	<div class="donate_div_container">
+<p><img alt="ldd命令查看可执行文件所依赖的动态库" src="https://o3cex9zsl.qnssl.com/2016/01/excute_connect_mysql.png" title="ldd命令查看可执行文件所依赖的动态库"></p>
+</div>		    	<div class="donate_div_container">
 					<div class="donate_div">
 						<p><a href="javascript:void(0)" onclick="donateToggle()" class="donate_word" title="打赏，支持一下">打赏</a></p>
 						<div class="hide_box"></div>
@@ -314,7 +314,7 @@
 					</div>
 				</div>
 		    	<div class="tags">
-					<div class="post_tags">
+					<div class="post_tags" itemprop="keywords">
 						Tags: <a href="https://typecodes.com/tag/gcc.html">gcc</a>,<a href="https://typecodes.com/tag/mysql.html">mysql</a>					</div>
 					<div class="post-share">
 						<ul class="post-shareul clearfix">
@@ -406,7 +406,6 @@
 		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
 	</section>
 </div>
-				</div>
 			</div>
 		</div>
 		<!--4. bottom begin-->
