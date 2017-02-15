@@ -2458,7 +2458,7 @@ NOTICE &lt;span class="s2"&gt;&amp;quot;------END------&amp;quot;&lt;/span&gt;
 &lt;p&gt;&lt;img alt="Linux中利用netstat和lsof命令查看TCP服务状态" src="https://o3cex9zsl.qnssl.com/2016/02/tcp_linux_client_established.png" title="Linux中利用netstat和lsof命令查看TCP服务状态"&gt;&lt;/p&gt;
 &lt;h4&gt;3 在Windows中利用telnet命令创建一个客户端&lt;/h4&gt;
 &lt;p&gt;在Windows主机（192.168.1.110）中打开一个PowerShell终端界面，然后输入命令&lt;code&gt;telnet 192.168.1.177 8000&lt;/code&gt;作为客户端建立与Linux服务端的TCP连接。&lt;/p&gt;
-&lt;p&gt;这时执行脚本&lt;code&gt;./netstat_nap.sh&lt;/code&gt;，可以看到Windows客户端（端口:64012）和服务端（PID:13035）的TCP通信已经变成&lt;code&gt;ESTABLISHED&lt;/code&gt;状态。同时使用命令&lt;code&gt;lsof -i:8000&lt;/code&gt;，可以看到进程打开的文件。&lt;/p&gt;
+&lt;p&gt;如下图所示，执行脚本&lt;code&gt;./netstat_nap.sh&lt;/code&gt;，可以看到Windows客户端（端口:64012）和服务端（PID:13035）的TCP通信已经变成&lt;code&gt;ESTABLISHED&lt;/code&gt;状态。同时使用命令&lt;code&gt;lsof -i:8000&lt;/code&gt;，可以看到进程打开的文件。此时，处于&lt;code&gt;LISTEN&lt;/code&gt;状态的13035进程对应的&lt;code&gt;Recv-Q&lt;/code&gt;（表示内核中已经接收的队列）从0变成了1。&lt;/p&gt;
 &lt;p&gt;&lt;img alt="Linux中利用netstat和lsof命令查看TCP服务状态" src="https://o3cex9zsl.qnssl.com/2016/02/win_client_netstat_lsof.png" title="Linux中利用netstat和lsof命令查看TCP服务状态"&gt;&lt;/p&gt;
 &lt;h4&gt;4 直接关闭Windows telnet客户端界面并使用Wireshark抓包&lt;/h4&gt;
 &lt;p&gt;在直接关闭telnet界面后，继续使用netstat_nap.sh脚本和lsof命令发现刚才建立的TCP通信出现了&lt;code&gt;CLOSE_WAIT&lt;/code&gt;的状态。&lt;/p&gt;
@@ -9730,21 +9730,114 @@ service sshd start
 
 &lt;h5&gt;8 配置vimrc文件&lt;/h5&gt;
 &lt;p&gt;下面这条vim配置命令是我经常使用的，包括行号、自动缩进、高亮、文件编码和粘贴时不变形的快捷键F9等等，直接使用root用户执行即可。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;[root@typecodes ~]# echo -e &amp;quot;\n\nset nobomb
-set number
-set showmode
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;[root@typecodes ~]# echo -e &amp;quot;\n\n&amp;quot;colo desert                               \&amp;quot;设置主题方案
+\&amp;quot;colo darkblue
+set shortmess=atI                           \&amp;quot;不显示欢迎界面
+set helplang=cn                             \&amp;quot;帮助中文支持
+
+\&amp;quot;set go= \&amp;quot;设置没有GUI界面
+
+set guioptions-=T                           \&amp;quot;隐藏工具栏
+set guioptions-=m                           \&amp;quot;隐藏菜单栏
+set guioptions-=L                           \&amp;quot;隐藏左侧滚动条
+set guioptions-=r                           \&amp;quot;隐藏右侧滚动条
+set guioptions-=b                           \&amp;quot;隐藏底部滚动条
+set guifont=NSimSun:h10                     \&amp;quot;设置新宋体
+
+set encoding=utf-8                          \&amp;quot;编码格式，防止中文乱码
+\&amp;quot;设置当前文档的编码格式以及保存时的格式
+set fileencoding=utf8
+\&amp;quot;vim启动时逐一探测即将打开的文字的编码
+set fileencodings=ucs-bom,utf-8,chinese,gbk,latin-1
+\&amp;quot;设置文件格式，默认ffs=dos,unix
+set ffs=unix,dos,mac
+\&amp;quot;vim提示信息乱码
+language messages zh_CN.utf-8
+\&amp;quot;vim菜单乱码
+source $VIMRUNTIME/delmenu.vim
+source $VIMRUNTIME/menu.vim
+
+set equalalways                             \&amp;quot;分割窗口时保持相等的宽/高
+
+
+\&amp;quot;让回格键可以删除缩进的空格、换行的回车键、以及插入前已经输入的文字
+set backspace=indent,eol,start
+\&amp;quot;让光标移到一行最左边的时候若继续按左键， 光标能回到上一行的最右边，具体可:h whichwrap
+set whichwrap=b,s,&amp;lt;,&amp;gt;,[,]
+\&amp;quot; 我的状态行显示的内容（包括文件类型和解码） 
+set statusline=%F%m%r%h%w\ [TYPE=%Y]\ [%{&amp;amp;ff}][%{&amp;amp;fenc!=&amp;#39;&amp;#39;?&amp;amp;fenc:&amp;amp;enc}]\[%{(&amp;amp;bomb!=&amp;#39;&amp;#39;?&amp;#39;bom&amp;#39;:&amp;#39;nobom&amp;#39;)}]\ [POS=%l,%v][%p%%]\ %{strftime(\\&amp;quot;%Y.%m.%d\ \%H:%M\\&amp;quot;)} \&amp;quot;set statusline=[%F]%y%r%m%*%=[Line:%l/%L,Column:%c][%p%%]
+
+\&amp;quot; 不让vim发出讨厌的滴滴声
+set noerrorbells
+\&amp;quot; 关闭使用可视响铃代替呼叫
+set novisualbell
+
+\&amp;quot;自动缩进
 set autoindent
+\&amp;quot;智能缩进
 set smartindent
-set showmatch
+\&amp;quot;Tab键的宽度
 set tabstop=4
+\&amp;quot;统一缩进为4
 set softtabstop=4
 set shiftwidth=4
-set encoding=utf-8
-set fileencodings=cp936,gb18030,gbk,gb2312,utf-8,ucs-bom,latin-1
-set hlsearch
-set noignorecase
+\&amp;quot;设置自动换行
+set wrap
+
+
+\&amp;quot; 在处理未保存或只读文件的时候，弹出确认
+set confirm
+
+
+\&amp;quot;自动补全设置，利用gvim自带的插件
+autocmd FileType python set omnifunc=pythoncomplete#Complete
+autocmd FileType javascript set omnifunc=javascriptcomplete#CompleteJS
+autocmd FileType html set omnifunc=htmlcomplete#CompleteTags
+autocmd FileType css set omnifunc=csscomplete#CompleteCSS
+autocmd FileType xml set omnifunc=xmlcomplete#CompleteTags
+autocmd FileType php set omnifunc=phpcomplete#CompletePHP
+autocmd FileType c set omnifunc=ccomplete#Complete
+\&amp;quot;无需closetag插件，一行代码完成html/xml的闭合tag自动补全
+autocmd BufNewFile,BufRead *.html,*.htm,*.xml inoremap &amp;lt;/ &amp;lt;/&amp;lt;c-x&amp;gt;&amp;lt;c-o&amp;gt;
+
+
+
+\&amp;quot;让注释符与语句之间留一个空格
+let NERDSpaceDelims=1
+\&amp;quot;多行注释时样子更好看
+let NERDCompactSexyComs=1
+
+
+set nobomb
 set fileformats=unix
-set pastetoggle=&amp;lt;F9&amp;gt;\n&amp;quot; &amp;gt;&amp;gt; /etc/vimrc
+set pastetoggle=&amp;lt;F9&amp;gt;
+set backspace=2                                 \&amp;quot;设置退格键可用
+set shiftwidth=4                                \&amp;quot;换行时行间交错使用4个空格
+set noexpandtab                                 \&amp;quot;不要用空格代替制表符
+set cursorline                                  \&amp;quot;突出显示当前行
+set number                                      \&amp;quot;显示行号
+set showmode
+\&amp;quot;set nocompatible                              \&amp;quot;关闭模式
+set magic                                       \&amp;quot;设置魔术
+set ruler                                       \&amp;quot;右下角显示光标位置的状态行
+set autoindent                                  \&amp;quot;设置自动缩进对齐
+set smartindent                                 \&amp;quot;智能自动缩进
+set cindent                                     \&amp;quot;C风格缩进
+set laststatus=2                                \&amp;quot;总是显示状态行
+set ignorecase                                  \&amp;quot;在搜索时忽略大小写
+set incsearch                                   \&amp;quot;实时搜索
+set hlsearch                                    \&amp;quot;高亮搜索结果
+set noignorecase                                \&amp;quot;不区分大小写
+set completeopt=longest,menu                    \&amp;quot;智能补全
+\&amp;quot;set list                                      \&amp;quot;显示tab符，使用一高亮竖线代替
+set noundofile                                  \&amp;quot;设置无备份
+set nobackup
+set noswapfile
+set showmatch                                   \&amp;quot;设置匹配模式，如括号等
+set autochdir                                   \&amp;quot;自动切换当前目录为当前文件所在的目录
+syntax enable                                   \&amp;quot;打开语法高亮    
+syntax on                                       \&amp;quot;开启文件类型侦测
+set showcmd\n&amp;quot; &amp;gt;&amp;gt; /etc/vimrc
 &lt;/pre&gt;&lt;/div&gt;</content><category term="博客成长录"></category><category term="centos7"></category></entry><entry><title>2015年博客升级记</title><link href="https://typecodes.com/mix/2015updateblog.html" rel="alternate"></link><published>2015-05-23T17:25:00+08:00</published><updated>2015-05-23T17:25:00+08:00</updated><author><name>vfhky</name></author><id>tag:typecodes.com,2015-05-23:/mix/2015updateblog.html</id><summary type="html">&lt;p&gt;这段时间对博客进行了一次升级，主要是从博客程序所在的系统服务器（CentOS）和WEB环境（LNMP）入手。目前自己的Linux服务器已经升级到CentOS7.1，同时LNMP环境也升级到了最新的版本。下面是整个升级过程的详细整理，记录一下方便以后查看。&lt;/p&gt;
 &lt;p&gt;&lt;img alt="2015博客升级记" src="https://o3cex9zsl.qnssl.com/2015/05/updatemyblog.png" title="2015博客升级记"&gt;&lt;/p&gt;
 </summary><content type="html">&lt;p&gt;这段时间对博客进行了一次升级，主要是从博客程序所在的系统服务器（CentOS）和WEB环境（LNMP）入手。目前自己的Linux服务器已经升级到CentOS7.1，同时LNMP环境也升级到了最新的版本。下面是整个升级过程的详细整理，记录一下方便以后查看。&lt;/p&gt;

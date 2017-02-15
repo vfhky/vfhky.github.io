@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html class="no-js">
+<html class="no-js" lang="zh-CN">
 	<head>
 		<meta charset="UTF-8">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -22,10 +22,10 @@
 	</head>
 	<body>
 		<!--1. header navigation begin-->
-		<header role="banner" id="te-site-header">
+		<header id="te-site-header">
 			<div class="container">
-				<a href="https://typecodes.com" class="te-site-logo" role="logo" target="_self"> TypeCodes</a>
-				<ul class="nav nav-pills" id="te-site-nav" role="navigation">
+				<a href="https://typecodes.com" class="te-site-logo" target="_self"> TypeCodes</a>
+				<ul class="nav nav-pills" id="te-site-nav">
 					<li><a href="https://typecodes.com">Home</a></li><li><a href="https://typecodes.com/archives.html" title="Archives">Archives</a></li><li><a href="https://typecodes.com/about.html" title="About">About</a></li></ul>
 			</div>
 		</header>
@@ -54,14 +54,12 @@
 </ol>		</div>
 		<!--3. right sider begin-->
 <div class="col-md-3" id="blog-secondary" role="complementary">
-	<section class="widget">
-		<ul class="widget-list">
-			<form id="search" method="get" action="https://typecodes.com/search.html">
-				<input type="text" name="q" id="s" size="20" x-webkit-speech="" x-webkit-grammar="builtin:search" onwebkitspeechchange="this.value = this.value.replace(this.defaultValue, '')" value="Google...." onfocus="this.value = (this.value == this.defaultValue) ? '' : this.value" onblur="this.value = (this.value == '') ? this.defaultValue : this.value">
-			</form>
-		</ul>
-	</section>
-	<section class="widget">
+	<div class="widget">
+		<form id="search" method="get" action="https://typecodes.com/search.html">
+			<input type="text" name="q" id="s" size="20" value="Google...." onfocus="this.value = (this.value == this.defaultValue) ? '' : this.value" onblur="this.value = (this.value == '') ? this.defaultValue : this.value">
+		</form>
+	</div>
+	<div class="widget">
 		<h3 class="widget-title">Categories</h3>
 		<ul class="widget-list">
 		      <li class="current">
@@ -86,18 +84,18 @@
 		        <a href="https://typecodes.com/web/index.html">Web</a> (88)
 		      </li>
 		</ul>
-	</section>
-	<section class="widget">
+	</div>
+	<div class="widget">
 		<h3 class="widget-title">Recent Posts</h3>
 		<ul class="widget-list">
 			<li class="post">
 				<a href="https://typecodes.com/database/initoraclebatandshell.html">初始化Oracle数据库的bat批处理脚本和shell脚本</a>
 			</li>
 		</ul>
-	</section>
-	<section class="widget widget-feed">
+	</div>
+	<div class="widget widget-feed">
 		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
-	</section>
+	</div>
 </div>
 			</div>
 		</div>

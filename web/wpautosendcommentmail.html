@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html class="no-js">
+<html class="no-js" lang="zh-CN">
 	<head>
 		<meta charset="UTF-8">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -22,10 +22,10 @@
 	</head>
 	<body>
 		<!--1. header navigation begin-->
-		<header role="banner" id="te-site-header">
+		<header id="te-site-header">
 			<div class="container">
-				<a href="https://typecodes.com" class="te-site-logo" role="logo" target="_self"> TypeCodes</a>
-				<ul class="nav nav-pills" id="te-site-nav" role="navigation">
+				<a href="https://typecodes.com" class="te-site-logo" target="_self"> TypeCodes</a>
+				<ul class="nav nav-pills" id="te-site-nav">
 					<li><a href="https://typecodes.com">Home</a></li><li><a href="https://typecodes.com/archives.html" title="Archives">Archives</a></li><li><a href="https://typecodes.com/about.html" title="About">About</a></li></ul>
 			</div>
 		</header>
@@ -156,22 +156,22 @@
 						<p><a href="javascript:void(0)" onclick="donateToggle()" class="donate_word" title="打赏，支持一下">打赏</a></p>
 						<div class="hide_box"></div>
 						<div class="donate_box">
-							<a class="donate_close" href="javascript:void(0)" onclick="donateToggle()" title="关闭"><img src="https://o3cex9zsl.qnssl.com/libs/img/donate_close.png" width="11px" height="10px" alt="取消" /></a>
+							<a class="donate_close" href="javascript:void(0)" onclick="donateToggle()" title="关闭"><img src="https://o3cex9zsl.qnssl.com/libs/img/donate_close.png" width="11" height="10" alt="取消" /></a>
 							<div class="donate_thk">
 								<p>感谢您的支持，我会继续努力的!</p>
 							</div>
 							<div class="donate_payimg">
-								<img src="https://o3cex9zsl.qnssl.com/libs/img/donate_weipayqr.png" width="140px" height="140px" alt="扫码支持" title="扫一扫" />
+								<img src="https://o3cex9zsl.qnssl.com/libs/img/donate_weipayqr.png" width="140" height="140" alt="扫码支持" title="扫一扫" />
 							</div>
 								<div class="pay_explain">扫码打赏，你说多少就多少</div>
 							<div class="donate_way">
 								<div class="donate_way_item checked" data-id="weipay">
 									<span class="donate_radio"></span>
-									<img src="https://o3cex9zsl.qnssl.com/libs/img/donate_wechat.png" width="112px" height="28px" alt="微信" />
+									<img src="https://o3cex9zsl.qnssl.com/libs/img/donate_wechat.png" width="112" height="28" alt="微信" />
 								</div>
 								<div class="donate_way_item" data-id="alipay">
 									<span class="donate_radio"></span>
-									<img src="https://o3cex9zsl.qnssl.com/libs/img/donate_alipay.png" width="85px" height="28px" alt="支付宝" />
+									<img src="https://o3cex9zsl.qnssl.com/libs/img/donate_alipay.png" width="85" height="28" alt="支付宝" />
 								</div>
 							</div>
 							<div class="shang_info">
@@ -181,7 +181,7 @@
 					</div>
 				</div>
 		    	<div class="tags">
-					<div class="post_tags" itemprop="keywords">
+					<div class="post_tags">
 						Tags: <a href="https://typecodes.com/tag/wordpress.html">wordpress</a>,<a href="https://typecodes.com/tag/wordpressping-lun-you-jian-tong-zhi.html">wordpress评论邮件通知</a>					</div>
 					<div class="post-share">
 						<ul class="post-shareul clearfix">
@@ -210,14 +210,12 @@
 		</div>
 		<!--3. right sider begin-->
 <div class="col-md-3" id="blog-secondary" role="complementary">
-	<section class="widget">
-		<ul class="widget-list">
-			<form id="search" method="get" action="https://typecodes.com/search.html">
-				<input type="text" name="q" id="s" size="20" x-webkit-speech="" x-webkit-grammar="builtin:search" onwebkitspeechchange="this.value = this.value.replace(this.defaultValue, '')" value="Google...." onfocus="this.value = (this.value == this.defaultValue) ? '' : this.value" onblur="this.value = (this.value == '') ? this.defaultValue : this.value">
-			</form>
-		</ul>
-	</section>
-	<section class="widget">
+	<div class="widget">
+		<form id="search" method="get" action="https://typecodes.com/search.html">
+			<input type="text" name="q" id="s" size="20" value="Google...." onfocus="this.value = (this.value == this.defaultValue) ? '' : this.value" onblur="this.value = (this.value == '') ? this.defaultValue : this.value">
+		</form>
+	</div>
+	<div class="widget">
 		<h3 class="widget-title">Categories</h3>
 		<ul class="widget-list">
 		      <li class="current">
@@ -242,8 +240,8 @@
 		        <a href="https://typecodes.com/web/index.html">Web</a> (88)
 		      </li>
 		</ul>
-	</section>
-	<section class="widget">
+	</div>
+	<div class="widget">
 		<h3 class="widget-title">Recent Posts</h3>
 		<ul class="widget-list">
 			<li class="post">
@@ -268,10 +266,10 @@
 				<a href="https://typecodes.com/cseries/vsnprintffilenameline.html">vsnprintf字符串格式化输出实例：日志中打印程序名和行号</a>
 			</li>
 		</ul>
-	</section>
-	<section class="widget widget-feed">
+	</div>
+	<div class="widget widget-feed">
 		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
-	</section>
+	</div>
 </div>
 			</div>
 		</div>

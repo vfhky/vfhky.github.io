@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html class="no-js">
+<html class="no-js" lang="zh-CN">
 	<head>
 		<meta charset="UTF-8">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -22,10 +22,10 @@
 	</head>
 	<body>
 		<!--1. header navigation begin-->
-		<header role="banner" id="te-site-header">
+		<header id="te-site-header">
 			<div class="container">
-				<a href="https://typecodes.com" class="te-site-logo" role="logo" target="_self"> TypeCodes</a>
-				<ul class="nav nav-pills" id="te-site-nav" role="navigation">
+				<a href="https://typecodes.com" class="te-site-logo" target="_self"> TypeCodes</a>
+				<ul class="nav nav-pills" id="te-site-nav">
 					<li><a href="https://typecodes.com">Home</a></li><li><a href="https://typecodes.com/archives.html" title="Archives">Archives</a></li><li><a href="https://typecodes.com/about.html" title="About">About</a></li></ul>
 			</div>
 		</header>
@@ -177,43 +177,136 @@ service sshd start
 
 <h5>8 配置vimrc文件</h5>
 <p>下面这条vim配置命令是我经常使用的，包括行号、自动缩进、高亮、文件编码和粘贴时不变形的快捷键F9等等，直接使用root用户执行即可。</p>
-<div class="highlight"><pre><span></span>[root@typecodes ~]# echo -e &quot;\n\nset nobomb
-set number
-set showmode
+<div class="highlight"><pre><span></span>[root@typecodes ~]# echo -e &quot;\n\n&quot;colo desert                               \&quot;设置主题方案
+\&quot;colo darkblue
+set shortmess=atI                           \&quot;不显示欢迎界面
+set helplang=cn                             \&quot;帮助中文支持
+
+\&quot;set go= \&quot;设置没有GUI界面
+
+set guioptions-=T                           \&quot;隐藏工具栏
+set guioptions-=m                           \&quot;隐藏菜单栏
+set guioptions-=L                           \&quot;隐藏左侧滚动条
+set guioptions-=r                           \&quot;隐藏右侧滚动条
+set guioptions-=b                           \&quot;隐藏底部滚动条
+set guifont=NSimSun:h10                     \&quot;设置新宋体
+
+set encoding=utf-8                          \&quot;编码格式，防止中文乱码
+\&quot;设置当前文档的编码格式以及保存时的格式
+set fileencoding=utf8
+\&quot;vim启动时逐一探测即将打开的文字的编码
+set fileencodings=ucs-bom,utf-8,chinese,gbk,latin-1
+\&quot;设置文件格式，默认ffs=dos,unix
+set ffs=unix,dos,mac
+\&quot;vim提示信息乱码
+language messages zh_CN.utf-8
+\&quot;vim菜单乱码
+source $VIMRUNTIME/delmenu.vim
+source $VIMRUNTIME/menu.vim
+
+set equalalways                             \&quot;分割窗口时保持相等的宽/高
+
+
+\&quot;让回格键可以删除缩进的空格、换行的回车键、以及插入前已经输入的文字
+set backspace=indent,eol,start
+\&quot;让光标移到一行最左边的时候若继续按左键， 光标能回到上一行的最右边，具体可:h whichwrap
+set whichwrap=b,s,&lt;,&gt;,[,]
+\&quot; 我的状态行显示的内容（包括文件类型和解码） 
+set statusline=%F%m%r%h%w\ [TYPE=%Y]\ [%{&amp;ff}][%{&amp;fenc!=&#39;&#39;?&amp;fenc:&amp;enc}]\[%{(&amp;bomb!=&#39;&#39;?&#39;bom&#39;:&#39;nobom&#39;)}]\ [POS=%l,%v][%p%%]\ %{strftime(\\&quot;%Y.%m.%d\ \%H:%M\\&quot;)} \&quot;set statusline=[%F]%y%r%m%*%=[Line:%l/%L,Column:%c][%p%%]
+
+\&quot; 不让vim发出讨厌的滴滴声
+set noerrorbells
+\&quot; 关闭使用可视响铃代替呼叫
+set novisualbell
+
+\&quot;自动缩进
 set autoindent
+\&quot;智能缩进
 set smartindent
-set showmatch
+\&quot;Tab键的宽度
 set tabstop=4
+\&quot;统一缩进为4
 set softtabstop=4
 set shiftwidth=4
-set encoding=utf-8
-set fileencodings=cp936,gb18030,gbk,gb2312,utf-8,ucs-bom,latin-1
-set hlsearch
-set noignorecase
+\&quot;设置自动换行
+set wrap
+
+
+\&quot; 在处理未保存或只读文件的时候，弹出确认
+set confirm
+
+
+\&quot;自动补全设置，利用gvim自带的插件
+autocmd FileType python set omnifunc=pythoncomplete#Complete
+autocmd FileType javascript set omnifunc=javascriptcomplete#CompleteJS
+autocmd FileType html set omnifunc=htmlcomplete#CompleteTags
+autocmd FileType css set omnifunc=csscomplete#CompleteCSS
+autocmd FileType xml set omnifunc=xmlcomplete#CompleteTags
+autocmd FileType php set omnifunc=phpcomplete#CompletePHP
+autocmd FileType c set omnifunc=ccomplete#Complete
+\&quot;无需closetag插件，一行代码完成html/xml的闭合tag自动补全
+autocmd BufNewFile,BufRead *.html,*.htm,*.xml inoremap &lt;/ &lt;/&lt;c-x&gt;&lt;c-o&gt;
+
+
+
+\&quot;让注释符与语句之间留一个空格
+let NERDSpaceDelims=1
+\&quot;多行注释时样子更好看
+let NERDCompactSexyComs=1
+
+
+set nobomb
 set fileformats=unix
-set pastetoggle=&lt;F9&gt;\n&quot; &gt;&gt; /etc/vimrc
+set pastetoggle=&lt;F9&gt;
+set backspace=2                                 \&quot;设置退格键可用
+set shiftwidth=4                                \&quot;换行时行间交错使用4个空格
+set noexpandtab                                 \&quot;不要用空格代替制表符
+set cursorline                                  \&quot;突出显示当前行
+set number                                      \&quot;显示行号
+set showmode
+\&quot;set nocompatible                              \&quot;关闭模式
+set magic                                       \&quot;设置魔术
+set ruler                                       \&quot;右下角显示光标位置的状态行
+set autoindent                                  \&quot;设置自动缩进对齐
+set smartindent                                 \&quot;智能自动缩进
+set cindent                                     \&quot;C风格缩进
+set laststatus=2                                \&quot;总是显示状态行
+set ignorecase                                  \&quot;在搜索时忽略大小写
+set incsearch                                   \&quot;实时搜索
+set hlsearch                                    \&quot;高亮搜索结果
+set noignorecase                                \&quot;不区分大小写
+set completeopt=longest,menu                    \&quot;智能补全
+\&quot;set list                                      \&quot;显示tab符，使用一高亮竖线代替
+set noundofile                                  \&quot;设置无备份
+set nobackup
+set noswapfile
+set showmatch                                   \&quot;设置匹配模式，如括号等
+set autochdir                                   \&quot;自动切换当前目录为当前文件所在的目录
+syntax enable                                   \&quot;打开语法高亮    
+syntax on                                       \&quot;开启文件类型侦测
+set showcmd\n&quot; &gt;&gt; /etc/vimrc
 </pre></div>
 </div>		    	<div class="donate_div_container">
 					<div class="donate_div">
 						<p><a href="javascript:void(0)" onclick="donateToggle()" class="donate_word" title="打赏，支持一下">打赏</a></p>
 						<div class="hide_box"></div>
 						<div class="donate_box">
-							<a class="donate_close" href="javascript:void(0)" onclick="donateToggle()" title="关闭"><img src="https://o3cex9zsl.qnssl.com/libs/img/donate_close.png" width="11px" height="10px" alt="取消" /></a>
+							<a class="donate_close" href="javascript:void(0)" onclick="donateToggle()" title="关闭"><img src="https://o3cex9zsl.qnssl.com/libs/img/donate_close.png" width="11" height="10" alt="取消" /></a>
 							<div class="donate_thk">
 								<p>感谢您的支持，我会继续努力的!</p>
 							</div>
 							<div class="donate_payimg">
-								<img src="https://o3cex9zsl.qnssl.com/libs/img/donate_weipayqr.png" width="140px" height="140px" alt="扫码支持" title="扫一扫" />
+								<img src="https://o3cex9zsl.qnssl.com/libs/img/donate_weipayqr.png" width="140" height="140" alt="扫码支持" title="扫一扫" />
 							</div>
 								<div class="pay_explain">扫码打赏，你说多少就多少</div>
 							<div class="donate_way">
 								<div class="donate_way_item checked" data-id="weipay">
 									<span class="donate_radio"></span>
-									<img src="https://o3cex9zsl.qnssl.com/libs/img/donate_wechat.png" width="112px" height="28px" alt="微信" />
+									<img src="https://o3cex9zsl.qnssl.com/libs/img/donate_wechat.png" width="112" height="28" alt="微信" />
 								</div>
 								<div class="donate_way_item" data-id="alipay">
 									<span class="donate_radio"></span>
-									<img src="https://o3cex9zsl.qnssl.com/libs/img/donate_alipay.png" width="85px" height="28px" alt="支付宝" />
+									<img src="https://o3cex9zsl.qnssl.com/libs/img/donate_alipay.png" width="85" height="28" alt="支付宝" />
 								</div>
 							</div>
 							<div class="shang_info">
@@ -223,7 +316,7 @@ set pastetoggle=&lt;F9&gt;\n&quot; &gt;&gt; /etc/vimrc
 					</div>
 				</div>
 		    	<div class="tags">
-					<div class="post_tags" itemprop="keywords">
+					<div class="post_tags">
 						Tags: <a href="https://typecodes.com/tag/bo-ke-cheng-chang-lu.html">博客成长录</a>,<a href="https://typecodes.com/tag/centos7.html">centos7</a>					</div>
 					<div class="post-share">
 						<ul class="post-shareul clearfix">
@@ -252,14 +345,12 @@ set pastetoggle=&lt;F9&gt;\n&quot; &gt;&gt; /etc/vimrc
 		</div>
 		<!--3. right sider begin-->
 <div class="col-md-3" id="blog-secondary" role="complementary">
-	<section class="widget">
-		<ul class="widget-list">
-			<form id="search" method="get" action="https://typecodes.com/search.html">
-				<input type="text" name="q" id="s" size="20" x-webkit-speech="" x-webkit-grammar="builtin:search" onwebkitspeechchange="this.value = this.value.replace(this.defaultValue, '')" value="Google...." onfocus="this.value = (this.value == this.defaultValue) ? '' : this.value" onblur="this.value = (this.value == '') ? this.defaultValue : this.value">
-			</form>
-		</ul>
-	</section>
-	<section class="widget">
+	<div class="widget">
+		<form id="search" method="get" action="https://typecodes.com/search.html">
+			<input type="text" name="q" id="s" size="20" value="Google...." onfocus="this.value = (this.value == this.defaultValue) ? '' : this.value" onblur="this.value = (this.value == '') ? this.defaultValue : this.value">
+		</form>
+	</div>
+	<div class="widget">
 		<h3 class="widget-title">Categories</h3>
 		<ul class="widget-list">
 		      <li class="current">
@@ -284,8 +375,8 @@ set pastetoggle=&lt;F9&gt;\n&quot; &gt;&gt; /etc/vimrc
 		        <a href="https://typecodes.com/web/index.html">Web</a> (88)
 		      </li>
 		</ul>
-	</section>
-	<section class="widget">
+	</div>
+	<div class="widget">
 		<h3 class="widget-title">Recent Posts</h3>
 		<ul class="widget-list">
 			<li class="post">
@@ -310,10 +401,10 @@ set pastetoggle=&lt;F9&gt;\n&quot; &gt;&gt; /etc/vimrc
 				<a href="https://typecodes.com/cseries/vsnprintffilenameline.html">vsnprintf字符串格式化输出实例：日志中打印程序名和行号</a>
 			</li>
 		</ul>
-	</section>
-	<section class="widget widget-feed">
+	</div>
+	<div class="widget widget-feed">
 		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
-	</section>
+	</div>
 </div>
 			</div>
 		</div>
