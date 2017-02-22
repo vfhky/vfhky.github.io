@@ -5,9 +5,7 @@
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
   		<meta name="renderer" content="webkit">
 		<title>再议wordpress反垃圾评论：都是strpos函数惹的祸 - TypeCodes</title>
-  		<meta name="description" content='<h5>1 strpos函数引起的失误</h5>
-<p>前天写了一篇文章<a href="https://typecodes.com/web/wpantispamblacklist.html" title="wordpress关键词黑名单：反垃圾评论再升级">《wordpress关键词黑名单：反垃圾评论再升级》</a>。文章内容是关于如何通过在Willin Kan大神写的comments-ajax.php文件中添加关键词黑名单，实现对评论者的昵称和评论内容进行检测，最终判定是否为垃圾评论。在程序中，博主使用了strpos函数，其功能是：查找字符串首次出现的位置。由于对该函数了解不全，上午 @坏坏博客 童鞋一个邪恶测试，发现了上篇文章代码的BUG。晚上下班回来，仔细看了下代码，发现是自己对strpos函数的片面认识，因此做个笔记Mark一下。</p>
-' />
+  		<meta name="description" content='1 strpos函数引起的失误 前天写了一篇文章《wordpress关键词黑名单：反垃圾评论再升级》。文章内容是关于如何通过在Willin Kan大神写的comments-ajax.php文件中添加关键词黑名单，实现对评论者的昵称和评论内容进行检测，最终判定是否为垃圾评论。在程序中，博主使用了strpos函数，其功能是：查找字符串首次出现的位置。由于对该函数了解不全，上午 @坏坏博客 童鞋一个邪恶测试，发现了上篇文章代码的BUG。晚上下班回来，仔细看了下代码，发现是自己对strpos函数的片面认识，因此做个笔记Mark一下。' />
   		<meta name="viewport" content="width=device-width, initial-scale=1">
   		<link href="https://typecodes.com/atom.xml" type="application/atom+xml" rel="alternate" title="TypeCodes Atom Feed" />
 	  	<link href="https://typecodes.com/feed.xml" type="application/rss+xml" rel="alternate" title="TypeCodes RSS Feed" />

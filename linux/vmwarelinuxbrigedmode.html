@@ -5,17 +5,7 @@
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
   		<meta name="renderer" content="webkit">
 		<title>虚拟机VMWare中Linux用桥接方式连接实例 - TypeCodes</title>
-  		<meta name="description" content='<h5>1 虚拟机网络模式介绍与说明</h5>
-<p>我们在安装完虚拟机VMWare后，会发现在我们的宿主机Windows系统中多出了两个虚拟网卡：VMware Network Adapter VMnet1 和 VMware Network Adapter VMnet8 。因此，我们在使用虚拟机VMWare时，会利用这两个网卡中的一个来进行网络通信服务。具体可以分为如下三种网络工作模式： bridged(桥接模式)、NAT(网络地址转换模式 )和host-only(主机模式)。在VMware的网络模型中，VMware有如下几个虚拟设备：</p>
-<div class="highlight"><pre><span></span>VMnet0：这是VMware用于虚拟桥接网络下的虚拟交换机；
-VMnet1：这是VMware用于虚拟Host-Only网络下的虚拟交换机；
-VMnet8：这是VMware用于虚拟NAT网络下的虚拟交换机；
-VMware Network Adapter VMnet1：这是Host用于与Host-Only虚拟网络进行通信的虚拟网卡；
-VMware Network Adapter VMnet8：这是Host用于与NAT虚拟网络进行通信的虚拟网卡；
-</pre></div>
-
-
-' />
+  		<meta name="description" content='1 虚拟机网络模式介绍与说明 我们在安装完虚拟机VMWare后，会发现在我们的宿主机Windows系统中多出了两个虚拟网卡：VMware Network Adapter VMnet1 和 VMware Network Adapter VMnet8 。因此，我们在使用虚拟机VMWare时，会利用这两个网卡中的一个来进行网络通信服务。具体可以分为如下三种网络工作模式： bridged(桥接模式)、NAT(网络地址转换模式 )和host-only(主机模式)。在VMware的网络模型中，VMware有如下几个虚拟设备： VMnet0：这是VMware用于虚拟桥接网络下的虚拟交换机； VMnet1：这是VMware用于虚拟Host-Only网络下的虚拟交换机； VMnet8：这是VMware用于虚拟NAT网络下的虚拟交换机； VMware Network Adapter VMnet1：这是Host用于与Host-Only虚拟网络进行通信的虚拟网卡； VMware Network Adapter VMnet8：这是Host用于与NAT虚拟网络进行通信的虚拟网卡；' />
   		<meta name="viewport" content="width=device-width, initial-scale=1">
   		<link href="https://typecodes.com/atom.xml" type="application/atom+xml" rel="alternate" title="TypeCodes Atom Feed" />
 	  	<link href="https://typecodes.com/feed.xml" type="application/rss+xml" rel="alternate" title="TypeCodes RSS Feed" />

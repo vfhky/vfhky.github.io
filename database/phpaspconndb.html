@@ -5,27 +5,7 @@
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
   		<meta name="renderer" content="webkit">
 		<title>PHP和ASP的数据库连接代码 - TypeCodes</title>
-  		<meta name="description" content='<h5>（一）PHP的连接代码</h5>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
-2
-3
-4
-5
-6
-7
-8</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-    <span class="nv">$hostname</span><span class="o">=</span><span class="s2">&quot;hostname&quot;</span><span class="p">;</span><span class="c1">//MySQL主机/服务器名</span>
-    <span class="nv">$dbname</span><span class="o">=</span><span class="s2">&quot;dbname&quot;</span><span class="p">;</span><span class="c1">//MySQL数据库名</span>
-    <span class="nv">$username</span><span class="o">=</span><span class="s2">&quot;username&quot;</span><span class="p">;</span><span class="c1">//MySQL用户名</span>
-    <span class="nv">$password</span><span class="o">=</span><span class="s2">&quot;password&quot;</span><span class="p">;</span><span class="c1">//MySQL密码</span>
-    <span class="nv">$conn</span><span class="o">=</span><span class="nb">mysql_connect</span><span class="p">(</span><span class="nv">$hostname</span><span class="p">,</span><span class="nv">$username</span><span class="p">,</span><span class="nv">$password</span><span class="p">)</span> <span class="k">or</span> <span class="nb">trigger_error</span><span class="p">(</span><span class="nb">mysql_error</span><span class="p">(),</span><span class="nx">E_USER_ERROR</span><span class="p">);</span><span class="c1">//登录并连接MySQL</span>
-    <span class="nb">mysql_select_db</span><span class="p">(</span><span class="nv">$dbname</span><span class="p">);</span><span class="c1">//选择数据库dbname</span>
-<span class="cp">?&gt;</span><span class="x"></span>
-</pre></div>
-</td></tr></table>
-
-<p>将上述代码另存为conn.php，就可以通过在页面加入 require("conn.php"); 调用了。</p>
-' />
+  		<meta name="description" content='（一）PHP的连接代码 1 2 3 4 5 6 7 8<?php $hostname="hostname";//MySQL主机/服务器名 $dbname="dbname";//MySQL数据库名 $username="username";//MySQL用户名 $password="password";//MySQL密码 $conn=mysql_connect($hostname,$username,$password) or trigger_error(mysql_error(),E_USER_ERROR);//登录并连接MySQL mysql_select_db($dbname);//选择数据库dbname ?> 将上述代码另存为conn.php，就可以通过在页面加入 require("conn.php"); 调用了。' />
   		<meta name="viewport" content="width=device-width, initial-scale=1">
   		<link href="https://typecodes.com/atom.xml" type="application/atom+xml" rel="alternate" title="TypeCodes Atom Feed" />
 	  	<link href="https://typecodes.com/feed.xml" type="application/rss+xml" rel="alternate" title="TypeCodes RSS Feed" />

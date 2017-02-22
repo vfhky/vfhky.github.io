@@ -5,12 +5,7 @@
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
   		<meta name="renderer" content="webkit">
 		<title>MFC回车键不关闭对话框以及变成TAB键效果 - TypeCodes</title>
-  		<meta name="description" content='<p>之前在弄完这个十六进制字符串异或的工具后，发现直接按回车键就直接关闭了工具。网上搜了下解决方案，然后自己的总结如下4种方法：</p>
-<h5>1 设置一个默认按钮（不推荐）</h5>
-<p>如<a href="https://typecodes.com/cseries/studymfchexstrxortool1.html" title="《图文实例说MFC制作工具的心得（一）》">前文</a>小节5中所述，只要将“进行异或”这个按钮属性中的Default Button设置为"TRUE"就行了。但是这样就直接触发这个按钮对应的事件OnBnClickedButton1，而不是对输入的数据进行合法性检查。</p>
-<h5>2 比较推荐的是重载OnOK()函数或者PreTranslateMessage()函数</h5>
-<p>首先我们需要找到这两个函数的位置，方法有两种，效果都是殊途同归：</p>
-' />
+  		<meta name="description" content='之前在弄完这个十六进制字符串异或的工具后，发现直接按回车键就直接关闭了工具。网上搜了下解决方案，然后自己的总结如下4种方法： 1 设置一个默认按钮（不推荐） 如前文小节5中所述，只要将“进行异或”这个按钮属性中的Default Button设置为"TRUE"就行了。但是这样就直接触发这个按钮对应的事件OnBnClickedButton1，而不是对输入的数据进行合法性检查。 2 比较推荐的是重载OnOK()函数或者PreTranslateMessage()函数 首先我们需要找到这两个函数的位置，方法有两种，效果都是殊途同归：' />
   		<meta name="viewport" content="width=device-width, initial-scale=1">
   		<link href="https://typecodes.com/atom.xml" type="application/atom+xml" rel="alternate" title="TypeCodes Atom Feed" />
 	  	<link href="https://typecodes.com/feed.xml" type="application/rss+xml" rel="alternate" title="TypeCodes RSS Feed" />
