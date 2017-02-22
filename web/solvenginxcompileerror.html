@@ -5,7 +5,11 @@
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
   		<meta name="renderer" content="webkit">
 		<title>Nginx编译安装时常见错误分析 - TypeCodes</title>
-		<meta name="description" content="Nginx编译安装时常见错误分析 - TypeCodes" />
+  		<meta name="description" content="<p>这篇文章主要是关于Nginx在编译安装时，可能出现的错误的解决方法。Nginx正确的编译安装操作见前文<a href="https://typecodes.com/web/centos7compilenginx.html" title="查看原文">《2015博客升级记(三)：CentOS 7.1编译安装Nginx1.9.0》</a>。</p>
+<h5>1 Nginx启动脚本错误：env: /etc/init.d/nginx: No such file or directory</h5>
+<p>明明上传了Nginx服务控制脚本<code>nginx</code>，但是在执行<code>service nginx start</code>命令时，却会报上面的错误。</p>
+<p>解决方法：启动脚本的格式有问题，例如该脚本是dos格式，在Linux系统是中无法识别的。可以通过vim打开该文件，如果可以看到出现<code>^M</code>的字符，就可以确定是DOS格式的了。那么可以在vim中执行命令<code>:%s/\r\+$//e</code>，将其转换成Unix格式即可。</p>
+" />
   		<meta name="viewport" content="width=device-width, initial-scale=1">
   		<link href="https://typecodes.com/atom.xml" type="application/atom+xml" rel="alternate" title="TypeCodes Atom Feed" />
 	  	<link href="https://typecodes.com/feed.xml" type="application/rss+xml" rel="alternate" title="TypeCodes RSS Feed" />
@@ -185,7 +189,7 @@ root      7981  0.0  0.0 112644   964 pts/0    S+   21:19   0:00 grep --color=au
 		        <a href="https://typecodes.com/java/index.html">Java</a> (1)
 		      </li>
 		      <li class="current">
-		        <a href="https://typecodes.com/linux/index.html">Linux</a> (22)
+		        <a href="https://typecodes.com/linux/index.html">Linux</a> (23)
 		      </li>
 		      <li class="current">
 		        <a href="https://typecodes.com/mix/index.html">Mix</a> (54)
@@ -198,6 +202,9 @@ root      7981  0.0  0.0 112644   964 pts/0    S+   21:19   0:00 grep --color=au
 	<div class="widget">
 		<h3 class="widget-title">Recent Posts</h3>
 		<ul class="widget-list">
+			<li class="post">
+				<a href="https://typecodes.com/linux/sedawkfindreplace1.html">使用sed和awk查找和替换字符串处理Makefile文件</a>
+			</li>
 			<li class="post">
 				<a href="https://typecodes.com/cseries/mapdelintstring.html">C++删除map容器中指定值的元素</a>
 			</li>
@@ -215,9 +222,6 @@ root      7981  0.0  0.0 112644   964 pts/0    S+   21:19   0:00 grep --color=au
 			</li>
 			<li class="post">
 				<a href="https://typecodes.com/cseries/kill0checkprocessifexist.html">Linux使用KILL 0检测进程是否存在</a>
-			</li>
-			<li class="post">
-				<a href="https://typecodes.com/cseries/vsnprintffilenameline.html">vsnprintf字符串格式化输出实例：日志中打印程序名和行号</a>
 			</li>
 		</ul>
 	</div>
@@ -261,7 +265,7 @@ root      7981  0.0  0.0 112644   964 pts/0    S+   21:19   0:00 grep --color=au
 		<div class="col-md-12 copyright">
 			<a href="#top"><i class="i-logo-s">TOP</i></a>
 			<p>
-				&copy;  2012-2016 							<a href="https://typecodes.com">TypeCodes</a>. All Rights Reserved<br>Powered by <a href="http://getpelican.com" rel="external" target="_blank">Pelican</a>. <a href="http://www.miitbeian.gov.cn" rel="external nofollow" target="_blank">粤ICP备14050695号</a>
+				&copy;  2012-2017 							<a href="https://typecodes.com">TypeCodes</a>. All Rights Reserved<br>Powered by <a href="http://getpelican.com" rel="external" target="_blank">Pelican</a>. <a href="http://www.miitbeian.gov.cn" rel="external nofollow" target="_blank">粤ICP备14050695号</a>
 			</p>
 		</div>
 	</div>

@@ -5,7 +5,10 @@
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
   		<meta name="renderer" content="webkit">
 		<title>Linux TCP连接Connection Refused和Connection timed out的问题 - TypeCodes</title>
-		<meta name="description" content="Linux TCP连接Connection Refused和Connection timed out的问题 - TypeCodes" />
+  		<meta name="description" content="<p>前段时间和其它系统做联调测试，对方系统采用的是负载均衡模式。调试时采用的是多台手机作为客户端发送到对方负载均衡服务器，然后再把报文转发送到我这边的服务端。在测试的时候，对方测试人员说有的手机客户端会偶尔出现报文发不过来的情况。</p>
+<p>故事有点长，先发一张tcp三次握手的过程图镇楼~</p>
+<p><img alt="Linux tcp三次握手" src="https://o3cex9zsl.qnssl.com/2015/09/tcp_handshake.png" title="Linux tcp三次握手"></p>
+" />
   		<meta name="viewport" content="width=device-width, initial-scale=1">
   		<link href="https://typecodes.com/atom.xml" type="application/atom+xml" rel="alternate" title="TypeCodes Atom Feed" />
 	  	<link href="https://typecodes.com/feed.xml" type="application/rss+xml" rel="alternate" title="TypeCodes RSS Feed" />
@@ -161,7 +164,7 @@ tcp        0      1 10.169.218.97:53794     10.10.223.123:9010      SYN_SENT    
 		        <a href="https://typecodes.com/java/index.html">Java</a> (1)
 		      </li>
 		      <li class="current">
-		        <a href="https://typecodes.com/linux/index.html">Linux</a> (22)
+		        <a href="https://typecodes.com/linux/index.html">Linux</a> (23)
 		      </li>
 		      <li class="current">
 		        <a href="https://typecodes.com/mix/index.html">Mix</a> (54)
@@ -174,6 +177,9 @@ tcp        0      1 10.169.218.97:53794     10.10.223.123:9010      SYN_SENT    
 	<div class="widget">
 		<h3 class="widget-title">Recent Posts</h3>
 		<ul class="widget-list">
+			<li class="post">
+				<a href="https://typecodes.com/linux/sedawkfindreplace1.html">使用sed和awk查找和替换字符串处理Makefile文件</a>
+			</li>
 			<li class="post">
 				<a href="https://typecodes.com/cseries/mapdelintstring.html">C++删除map容器中指定值的元素</a>
 			</li>
@@ -191,9 +197,6 @@ tcp        0      1 10.169.218.97:53794     10.10.223.123:9010      SYN_SENT    
 			</li>
 			<li class="post">
 				<a href="https://typecodes.com/cseries/kill0checkprocessifexist.html">Linux使用KILL 0检测进程是否存在</a>
-			</li>
-			<li class="post">
-				<a href="https://typecodes.com/cseries/vsnprintffilenameline.html">vsnprintf字符串格式化输出实例：日志中打印程序名和行号</a>
 			</li>
 		</ul>
 	</div>
@@ -237,7 +240,7 @@ tcp        0      1 10.169.218.97:53794     10.10.223.123:9010      SYN_SENT    
 		<div class="col-md-12 copyright">
 			<a href="#top"><i class="i-logo-s">TOP</i></a>
 			<p>
-				&copy;  2012-2016 							<a href="https://typecodes.com">TypeCodes</a>. All Rights Reserved<br>Powered by <a href="http://getpelican.com" rel="external" target="_blank">Pelican</a>. <a href="http://www.miitbeian.gov.cn" rel="external nofollow" target="_blank">粤ICP备14050695号</a>
+				&copy;  2012-2017 							<a href="https://typecodes.com">TypeCodes</a>. All Rights Reserved<br>Powered by <a href="http://getpelican.com" rel="external" target="_blank">Pelican</a>. <a href="http://www.miitbeian.gov.cn" rel="external nofollow" target="_blank">粤ICP备14050695号</a>
 			</p>
 		</div>
 	</div>

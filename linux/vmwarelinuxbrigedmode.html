@@ -5,7 +5,17 @@
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
   		<meta name="renderer" content="webkit">
 		<title>虚拟机VMWare中Linux用桥接方式连接实例 - TypeCodes</title>
-		<meta name="description" content="虚拟机VMWare中Linux用桥接方式连接实例 - TypeCodes" />
+  		<meta name="description" content="<h5>1 虚拟机网络模式介绍与说明</h5>
+<p>我们在安装完虚拟机VMWare后，会发现在我们的宿主机Windows系统中多出了两个虚拟网卡：VMware Network Adapter VMnet1 和 VMware Network Adapter VMnet8 。因此，我们在使用虚拟机VMWare时，会利用这两个网卡中的一个来进行网络通信服务。具体可以分为如下三种网络工作模式： bridged(桥接模式)、NAT(网络地址转换模式 )和host-only(主机模式)。在VMware的网络模型中，VMware有如下几个虚拟设备：</p>
+<div class="highlight"><pre><span></span>VMnet0：这是VMware用于虚拟桥接网络下的虚拟交换机；
+VMnet1：这是VMware用于虚拟Host-Only网络下的虚拟交换机；
+VMnet8：这是VMware用于虚拟NAT网络下的虚拟交换机；
+VMware Network Adapter VMnet1：这是Host用于与Host-Only虚拟网络进行通信的虚拟网卡；
+VMware Network Adapter VMnet8：这是Host用于与NAT虚拟网络进行通信的虚拟网卡；
+</pre></div>
+
+
+" />
   		<meta name="viewport" content="width=device-width, initial-scale=1">
   		<link href="https://typecodes.com/atom.xml" type="application/atom+xml" rel="alternate" title="TypeCodes Atom Feed" />
 	  	<link href="https://typecodes.com/feed.xml" type="application/rss+xml" rel="alternate" title="TypeCodes RSS Feed" />
@@ -167,7 +177,7 @@ VMware Network Adapter VMnet8：这是Host用于与NAT虚拟网络进行通信�
 		        <a href="https://typecodes.com/java/index.html">Java</a> (1)
 		      </li>
 		      <li class="current">
-		        <a href="https://typecodes.com/linux/index.html">Linux</a> (22)
+		        <a href="https://typecodes.com/linux/index.html">Linux</a> (23)
 		      </li>
 		      <li class="current">
 		        <a href="https://typecodes.com/mix/index.html">Mix</a> (54)
@@ -180,6 +190,9 @@ VMware Network Adapter VMnet8：这是Host用于与NAT虚拟网络进行通信�
 	<div class="widget">
 		<h3 class="widget-title">Recent Posts</h3>
 		<ul class="widget-list">
+			<li class="post">
+				<a href="https://typecodes.com/linux/sedawkfindreplace1.html">使用sed和awk查找和替换字符串处理Makefile文件</a>
+			</li>
 			<li class="post">
 				<a href="https://typecodes.com/cseries/mapdelintstring.html">C++删除map容器中指定值的元素</a>
 			</li>
@@ -197,9 +210,6 @@ VMware Network Adapter VMnet8：这是Host用于与NAT虚拟网络进行通信�
 			</li>
 			<li class="post">
 				<a href="https://typecodes.com/cseries/kill0checkprocessifexist.html">Linux使用KILL 0检测进程是否存在</a>
-			</li>
-			<li class="post">
-				<a href="https://typecodes.com/cseries/vsnprintffilenameline.html">vsnprintf字符串格式化输出实例：日志中打印程序名和行号</a>
 			</li>
 		</ul>
 	</div>
@@ -243,7 +253,7 @@ VMware Network Adapter VMnet8：这是Host用于与NAT虚拟网络进行通信�
 		<div class="col-md-12 copyright">
 			<a href="#top"><i class="i-logo-s">TOP</i></a>
 			<p>
-				&copy;  2012-2016 							<a href="https://typecodes.com">TypeCodes</a>. All Rights Reserved<br>Powered by <a href="http://getpelican.com" rel="external" target="_blank">Pelican</a>. <a href="http://www.miitbeian.gov.cn" rel="external nofollow" target="_blank">粤ICP备14050695号</a>
+				&copy;  2012-2017 							<a href="https://typecodes.com">TypeCodes</a>. All Rights Reserved<br>Powered by <a href="http://getpelican.com" rel="external" target="_blank">Pelican</a>. <a href="http://www.miitbeian.gov.cn" rel="external nofollow" target="_blank">粤ICP备14050695号</a>
 			</p>
 		</div>
 	</div>

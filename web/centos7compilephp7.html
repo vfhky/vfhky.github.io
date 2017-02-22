@@ -5,7 +5,21 @@
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
   		<meta name="renderer" content="webkit">
 		<title>2015博客升级记(五)：CentOS 7.1编译安装PHP7 - TypeCodes</title>
-		<meta name="description" content="2015博客升级记(五)：CentOS 7.1编译安装PHP7 - TypeCodes" />
+  		<meta name="description" content="<p>这是<a href="https://typecodes.com/mix/2015updateblog.html" title="查看原文">《2015年博客升级记》</a>系列文章的第五篇，主要记录在Linux系统中如何编译安装PHP7。</p>
+<h5>1 创建php用户和用户组，并在github下载php7源码</h5>
+<p>首先创建一个名为php且<code>没有登录权限</code>的用户和一个名为php的用户组，然后去GitHub下载php7源码包。</p>
+<div class="highlight"><pre><span></span>#######新建php用户和php组
+[root@typecodes ~]# groupadd -r php &amp;&amp; useradd -r -g php -s /bin/false -d /usr/local/php7 -M php
+######从GitHub下载php7安装包
+[root@typecodes ~]# wget -c --no-check-certificate -O php7-src-master.zip https://github.com/php/php-src/archive/master.zip
+######开始解压php7包
+[root@typecodes ~]# unzip -q php7-src-master.zip &amp;&amp; cd php-src-master
+#####安装编译php7时需要的依赖包
+[root@typecodes php-src-master]# yum -y install libxml2 libxml2-devel openssl openssl-devel curl-devel libjpeg-devel libpng-devel freetype-devel libmcrypt-devel
+</pre></div>
+
+
+" />
   		<meta name="viewport" content="width=device-width, initial-scale=1">
   		<link href="https://typecodes.com/atom.xml" type="application/atom+xml" rel="alternate" title="TypeCodes Atom Feed" />
 	  	<link href="https://typecodes.com/feed.xml" type="application/rss+xml" rel="alternate" title="TypeCodes RSS Feed" />
@@ -273,7 +287,7 @@ Starting php-fpm  done
 		        <a href="https://typecodes.com/java/index.html">Java</a> (1)
 		      </li>
 		      <li class="current">
-		        <a href="https://typecodes.com/linux/index.html">Linux</a> (22)
+		        <a href="https://typecodes.com/linux/index.html">Linux</a> (23)
 		      </li>
 		      <li class="current">
 		        <a href="https://typecodes.com/mix/index.html">Mix</a> (54)
@@ -286,6 +300,9 @@ Starting php-fpm  done
 	<div class="widget">
 		<h3 class="widget-title">Recent Posts</h3>
 		<ul class="widget-list">
+			<li class="post">
+				<a href="https://typecodes.com/linux/sedawkfindreplace1.html">使用sed和awk查找和替换字符串处理Makefile文件</a>
+			</li>
 			<li class="post">
 				<a href="https://typecodes.com/cseries/mapdelintstring.html">C++删除map容器中指定值的元素</a>
 			</li>
@@ -303,9 +320,6 @@ Starting php-fpm  done
 			</li>
 			<li class="post">
 				<a href="https://typecodes.com/cseries/kill0checkprocessifexist.html">Linux使用KILL 0检测进程是否存在</a>
-			</li>
-			<li class="post">
-				<a href="https://typecodes.com/cseries/vsnprintffilenameline.html">vsnprintf字符串格式化输出实例：日志中打印程序名和行号</a>
 			</li>
 		</ul>
 	</div>
@@ -349,7 +363,7 @@ Starting php-fpm  done
 		<div class="col-md-12 copyright">
 			<a href="#top"><i class="i-logo-s">TOP</i></a>
 			<p>
-				&copy;  2012-2016 							<a href="https://typecodes.com">TypeCodes</a>. All Rights Reserved<br>Powered by <a href="http://getpelican.com" rel="external" target="_blank">Pelican</a>. <a href="http://www.miitbeian.gov.cn" rel="external nofollow" target="_blank">粤ICP备14050695号</a>
+				&copy;  2012-2017 							<a href="https://typecodes.com">TypeCodes</a>. All Rights Reserved<br>Powered by <a href="http://getpelican.com" rel="external" target="_blank">Pelican</a>. <a href="http://www.miitbeian.gov.cn" rel="external nofollow" target="_blank">粤ICP备14050695号</a>
 			</p>
 		</div>
 	</div>

@@ -39,6 +39,18 @@
 		<div class="col-md-9" id="blog-main" role="main">
 		  	<!--article recycle-->
 			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/web/aspanalyzetwo.html">从一段ASP代码分析HTML、CSS、ASP、SQL（二）</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2012-06-30 00:08 | 分类：<a href="https://typecodes.com/web/index.html">web</a></li>
+</ul>
+<div class="post-content fmt">
+	<h5>（一）前台DIV+CSS布局</h5>
+<p>布局样式通过第11行 <code>linkrel ="stylesheet" href="css/index.css" type="text/css"</code> 引入控制的。而从图中可以看出首页(index.asp)是由头部(第18行)、中部(第20行）和底部（第127行）这三个DIV层构成。其中，头部和尾部调用两个页面即可：top.html 和 bottom.html 。</p>
+<p>中部又由左边(第21行)和右边(第23行)构成，即 left.html 和 div id="right" 。中部的右边又由位于上面部分的1个flash层和2个content1层、下面部分的2个content层和1个留言板content2层。所以整个CSS布局框架就是这样的。值得注意的是中间部分嵌套了2个层(即左右两层)，右边的层又嵌套了6个层（1个flash层,2个content1层,2个content层,1个content2层）。</p>
+
+	<p class="more"><a href="https://typecodes.com/web/aspanalyzetwo.html" title="从一段ASP代码分析HTML、CSS、ASP、SQL（二）">- 阅读剩余部分 -</a></p>
+</div>			</article>
+			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/web/aspanalyzeone.html">从一段ASP代码分析HTML、CSS、ASP、SQL（一）</a></h2>
 <ul class="post-meta">
 	<li>作者：vfhky | 时间：2012-06-29 21:49 | 分类：<a href="https://typecodes.com/web/index.html">web</a></li>
@@ -138,7 +150,7 @@
 		        <a href="https://typecodes.com/java/index.html">Java</a> (1)
 		      </li>
 		      <li class="current">
-		        <a href="https://typecodes.com/linux/index.html">Linux</a> (22)
+		        <a href="https://typecodes.com/linux/index.html">Linux</a> (23)
 		      </li>
 		      <li class="current">
 		        <a href="https://typecodes.com/mix/index.html">Mix</a> (54)
@@ -151,6 +163,9 @@
 	<div class="widget">
 		<h3 class="widget-title">Recent Posts</h3>
 		<ul class="widget-list">
+			<li class="post">
+				<a href="https://typecodes.com/linux/sedawkfindreplace1.html">使用sed和awk查找和替换字符串处理Makefile文件</a>
+			</li>
 			<li class="post">
 				<a href="https://typecodes.com/cseries/mapdelintstring.html">C++删除map容器中指定值的元素</a>
 			</li>
@@ -168,9 +183,6 @@
 			</li>
 			<li class="post">
 				<a href="https://typecodes.com/cseries/kill0checkprocessifexist.html">Linux使用KILL 0检测进程是否存在</a>
-			</li>
-			<li class="post">
-				<a href="https://typecodes.com/cseries/vsnprintffilenameline.html">vsnprintf字符串格式化输出实例：日志中打印程序名和行号</a>
 			</li>
 		</ul>
 	</div>
@@ -214,7 +226,7 @@
 		<div class="col-md-12 copyright">
 			<a href="#top"><i class="i-logo-s">TOP</i></a>
 			<p>
-				&copy;  2012-2016 							<a href="https://typecodes.com">TypeCodes</a>. All Rights Reserved<br>Powered by <a href="http://getpelican.com" rel="external" target="_blank">Pelican</a>. <a href="http://www.miitbeian.gov.cn" rel="external nofollow" target="_blank">粤ICP备14050695号</a>
+				&copy;  2012-2017 							<a href="https://typecodes.com">TypeCodes</a>. All Rights Reserved<br>Powered by <a href="http://getpelican.com" rel="external" target="_blank">Pelican</a>. <a href="http://www.miitbeian.gov.cn" rel="external nofollow" target="_blank">粤ICP备14050695号</a>
 			</p>
 		</div>
 	</div>

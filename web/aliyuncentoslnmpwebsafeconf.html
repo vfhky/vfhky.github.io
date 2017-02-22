@@ -5,7 +5,19 @@
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
   		<meta name="renderer" content="webkit">
 		<title>阿里云CentOS主机 LNMP 环境之web安全篇 - TypeCodes</title>
-		<meta name="description" content="阿里云CentOS主机 LNMP 环境之web安全篇 - TypeCodes" />
+  		<meta name="description" content="<p>前面几篇文章介绍了阿里云的CentOS 6.5系统中如何搭建和配置 LNMP 环境，这篇文章主要说说 web 站点的安全配置。</p>
+<h5>1 修改 CentOS 系统的主机名(关系不大, 看个人喜好)</h5>
+<p>默认同开通的阿里云 Linux 主机都是以 AY+随机数 命名的，修改方法如下：</p>
+<div class="highlight"><pre><span></span>[root@typecodes ~]# vi /etc/sysconfig/network
+###### 修改主机名HOSTNAME, 例如 HOSTNAME=typecodes , 然后:wq保存退出
+HOSTNAME=typecodes
+###### 接着执行 hostname 命令
+[root@typecodes ~]# hostname typecodes
+###### 退出ssh, 然后重新登录即可
+</pre></div>
+
+
+" />
   		<meta name="viewport" content="width=device-width, initial-scale=1">
   		<link href="https://typecodes.com/atom.xml" type="application/atom+xml" rel="alternate" title="TypeCodes Atom Feed" />
 	  	<link href="https://typecodes.com/feed.xml" type="application/rss+xml" rel="alternate" title="TypeCodes RSS Feed" />
@@ -194,7 +206,7 @@ Location: https://typecodes.com/
 		        <a href="https://typecodes.com/java/index.html">Java</a> (1)
 		      </li>
 		      <li class="current">
-		        <a href="https://typecodes.com/linux/index.html">Linux</a> (22)
+		        <a href="https://typecodes.com/linux/index.html">Linux</a> (23)
 		      </li>
 		      <li class="current">
 		        <a href="https://typecodes.com/mix/index.html">Mix</a> (54)
@@ -207,6 +219,9 @@ Location: https://typecodes.com/
 	<div class="widget">
 		<h3 class="widget-title">Recent Posts</h3>
 		<ul class="widget-list">
+			<li class="post">
+				<a href="https://typecodes.com/linux/sedawkfindreplace1.html">使用sed和awk查找和替换字符串处理Makefile文件</a>
+			</li>
 			<li class="post">
 				<a href="https://typecodes.com/cseries/mapdelintstring.html">C++删除map容器中指定值的元素</a>
 			</li>
@@ -224,9 +239,6 @@ Location: https://typecodes.com/
 			</li>
 			<li class="post">
 				<a href="https://typecodes.com/cseries/kill0checkprocessifexist.html">Linux使用KILL 0检测进程是否存在</a>
-			</li>
-			<li class="post">
-				<a href="https://typecodes.com/cseries/vsnprintffilenameline.html">vsnprintf字符串格式化输出实例：日志中打印程序名和行号</a>
 			</li>
 		</ul>
 	</div>
@@ -270,7 +282,7 @@ Location: https://typecodes.com/
 		<div class="col-md-12 copyright">
 			<a href="#top"><i class="i-logo-s">TOP</i></a>
 			<p>
-				&copy;  2012-2016 							<a href="https://typecodes.com">TypeCodes</a>. All Rights Reserved<br>Powered by <a href="http://getpelican.com" rel="external" target="_blank">Pelican</a>. <a href="http://www.miitbeian.gov.cn" rel="external nofollow" target="_blank">粤ICP备14050695号</a>
+				&copy;  2012-2017 							<a href="https://typecodes.com">TypeCodes</a>. All Rights Reserved<br>Powered by <a href="http://getpelican.com" rel="external" target="_blank">Pelican</a>. <a href="http://www.miitbeian.gov.cn" rel="external nofollow" target="_blank">粤ICP备14050695号</a>
 			</p>
 		</div>
 	</div>

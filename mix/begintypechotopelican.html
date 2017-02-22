@@ -5,7 +5,11 @@
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
   		<meta name="renderer" content="webkit">
 		<title>准备将博客从Typecho迁移到Pelican - TypeCodes</title>
-		<meta name="description" content="准备将博客从Typecho迁移到Pelican - TypeCodes" />
+  		<meta name="description" content="<p>8月份的时候，终于从庞大的WordPress转到了轻量级的<a href="https://typecodes.com/mix/eventualwptotypecho.html" title="《终于从WordPress转向Typecho了》">博客程序Typecho</a>。简洁的设计和比较出色的Markdown支持，整个Typecho体验还是挺不错的。到10月份的时候，自己了解了一些静态博客程序，包括nodejs的Ghost、Hexo等，ruby写的jekyll以及Python写的<a href="http://docs.getpelican.com/en/3.6.3/" title="Pelican最新3.6.3官方文档">Pelican</a>等。</p>
+<p>由于当时正好接触到了大蟒蛇，而且对js不熟（ruby都没用过），所以就在本地尝试了一下Pelican。之间折腾了一个从Octopress移植过来的主题Pelican-Octopress未果，后面忙着就没怎么弄了。</p>
+<p>前段时间辞职后，闲着就打算把博客“简洁到底”：抛弃MySQL数据库和PHP执行解释，完全采用Python生成静态HTML文件。这样以后就只需要在本地通过Markdown写好文章，然后通过pelican生成html文件即可。</p>
+<p><img alt="准备将博客从Typecho迁移到Pelican" src="https://o3cex9zsl.qnssl.com/2015/12/10/begintypechotopelican.png" title="准备将博客从Typecho迁移到Pelican"></p>
+" />
   		<meta name="viewport" content="width=device-width, initial-scale=1">
   		<link href="https://typecodes.com/atom.xml" type="application/atom+xml" rel="alternate" title="TypeCodes Atom Feed" />
 	  	<link href="https://typecodes.com/feed.xml" type="application/rss+xml" rel="alternate" title="TypeCodes RSS Feed" />
@@ -184,7 +188,7 @@ service nginx reload重载Nginx服务，开放博客评论；
 		        <a href="https://typecodes.com/java/index.html">Java</a> (1)
 		      </li>
 		      <li class="current">
-		        <a href="https://typecodes.com/linux/index.html">Linux</a> (22)
+		        <a href="https://typecodes.com/linux/index.html">Linux</a> (23)
 		      </li>
 		      <li class="current">
 		        <a href="https://typecodes.com/mix/index.html">Mix</a> (54)
@@ -197,6 +201,9 @@ service nginx reload重载Nginx服务，开放博客评论；
 	<div class="widget">
 		<h3 class="widget-title">Recent Posts</h3>
 		<ul class="widget-list">
+			<li class="post">
+				<a href="https://typecodes.com/linux/sedawkfindreplace1.html">使用sed和awk查找和替换字符串处理Makefile文件</a>
+			</li>
 			<li class="post">
 				<a href="https://typecodes.com/cseries/mapdelintstring.html">C++删除map容器中指定值的元素</a>
 			</li>
@@ -214,9 +221,6 @@ service nginx reload重载Nginx服务，开放博客评论；
 			</li>
 			<li class="post">
 				<a href="https://typecodes.com/cseries/kill0checkprocessifexist.html">Linux使用KILL 0检测进程是否存在</a>
-			</li>
-			<li class="post">
-				<a href="https://typecodes.com/cseries/vsnprintffilenameline.html">vsnprintf字符串格式化输出实例：日志中打印程序名和行号</a>
 			</li>
 		</ul>
 	</div>
@@ -260,7 +264,7 @@ service nginx reload重载Nginx服务，开放博客评论；
 		<div class="col-md-12 copyright">
 			<a href="#top"><i class="i-logo-s">TOP</i></a>
 			<p>
-				&copy;  2012-2016 							<a href="https://typecodes.com">TypeCodes</a>. All Rights Reserved<br>Powered by <a href="http://getpelican.com" rel="external" target="_blank">Pelican</a>. <a href="http://www.miitbeian.gov.cn" rel="external nofollow" target="_blank">粤ICP备14050695号</a>
+				&copy;  2012-2017 							<a href="https://typecodes.com">TypeCodes</a>. All Rights Reserved<br>Powered by <a href="http://getpelican.com" rel="external" target="_blank">Pelican</a>. <a href="http://www.miitbeian.gov.cn" rel="external nofollow" target="_blank">粤ICP备14050695号</a>
 			</p>
 		</div>
 	</div>

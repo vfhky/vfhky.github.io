@@ -5,7 +5,10 @@
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
   		<meta name="renderer" content="webkit">
 		<title>Linux问题两连击：桥接模式无法上网、ping域名失败 - TypeCodes</title>
-		<meta name="description" content="Linux问题两连击：桥接模式无法上网、ping域名失败 - TypeCodes" />
+  		<meta name="description" content="<p>问题一：Linux能ping通ip但不能ping通域名；</p>
+<p>问题二：Linux桥接模式能与宿主机Windows通信互访但无法访问互联网。</p>
+<p>上面两个问题都是由Linux中的DNS配置不正确导致的，因为DNS的作用就是将某个域名解析到相对应的IP上。当DNS无法正常把IP和域名相对应起来的时候就出现了上面两种常见的情况。所以，当虚拟机中的Linux系统能够正常和宿主通信，且能ping通外部IP地址，却无法ping通域名。</p>
+" />
   		<meta name="viewport" content="width=device-width, initial-scale=1">
   		<link href="https://typecodes.com/atom.xml" type="application/atom+xml" rel="alternate" title="TypeCodes Atom Feed" />
 	  	<link href="https://typecodes.com/feed.xml" type="application/rss+xml" rel="alternate" title="TypeCodes RSS Feed" />
@@ -149,7 +152,7 @@ PING baidu.com (123.125.114.144) 56(84) bytes of data.
 		        <a href="https://typecodes.com/java/index.html">Java</a> (1)
 		      </li>
 		      <li class="current">
-		        <a href="https://typecodes.com/linux/index.html">Linux</a> (22)
+		        <a href="https://typecodes.com/linux/index.html">Linux</a> (23)
 		      </li>
 		      <li class="current">
 		        <a href="https://typecodes.com/mix/index.html">Mix</a> (54)
@@ -162,6 +165,9 @@ PING baidu.com (123.125.114.144) 56(84) bytes of data.
 	<div class="widget">
 		<h3 class="widget-title">Recent Posts</h3>
 		<ul class="widget-list">
+			<li class="post">
+				<a href="https://typecodes.com/linux/sedawkfindreplace1.html">使用sed和awk查找和替换字符串处理Makefile文件</a>
+			</li>
 			<li class="post">
 				<a href="https://typecodes.com/cseries/mapdelintstring.html">C++删除map容器中指定值的元素</a>
 			</li>
@@ -179,9 +185,6 @@ PING baidu.com (123.125.114.144) 56(84) bytes of data.
 			</li>
 			<li class="post">
 				<a href="https://typecodes.com/cseries/kill0checkprocessifexist.html">Linux使用KILL 0检测进程是否存在</a>
-			</li>
-			<li class="post">
-				<a href="https://typecodes.com/cseries/vsnprintffilenameline.html">vsnprintf字符串格式化输出实例：日志中打印程序名和行号</a>
 			</li>
 		</ul>
 	</div>
@@ -225,7 +228,7 @@ PING baidu.com (123.125.114.144) 56(84) bytes of data.
 		<div class="col-md-12 copyright">
 			<a href="#top"><i class="i-logo-s">TOP</i></a>
 			<p>
-				&copy;  2012-2016 							<a href="https://typecodes.com">TypeCodes</a>. All Rights Reserved<br>Powered by <a href="http://getpelican.com" rel="external" target="_blank">Pelican</a>. <a href="http://www.miitbeian.gov.cn" rel="external nofollow" target="_blank">粤ICP备14050695号</a>
+				&copy;  2012-2017 							<a href="https://typecodes.com">TypeCodes</a>. All Rights Reserved<br>Powered by <a href="http://getpelican.com" rel="external" target="_blank">Pelican</a>. <a href="http://www.miitbeian.gov.cn" rel="external nofollow" target="_blank">粤ICP备14050695号</a>
 			</p>
 		</div>
 	</div>

@@ -5,7 +5,16 @@
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
   		<meta name="renderer" content="webkit">
 		<title>Unix系统进程对SIGTERM、SIGUSR1和SIGUSR2信号处理 - TypeCodes</title>
-		<meta name="description" content="Unix系统进程对SIGTERM、SIGUSR1和SIGUSR2信号处理 - TypeCodes" />
+  		<meta name="description" content="<p>好久没更新博客了，写篇文章除除草。这篇文章主要通过简单的例子说明一下Unix/Linux进程中如果捕捉和处理<code>SIGTERM</code>、<code>SIGUSR1</code>和<code>SIGUSR2</code>信号。</p>
+<p>先说明一下这三个信号：</p>
+<div class="highlight"><pre><span></span>信号(signal)是*nix系统中进程之间通信(IPC)的一种常见方式。
+SIGTERM：进程终止信号，效果等同于*nix shell中不带-9的kill命令；
+SIGUSR1：保留给用户使用的信号；
+SIGUSR2：同SIGUSR1，保留给用户使用的信号。
+</pre></div>
+
+
+" />
   		<meta name="viewport" content="width=device-width, initial-scale=1">
   		<link href="https://typecodes.com/atom.xml" type="application/atom+xml" rel="alternate" title="TypeCodes Atom Feed" />
 	  	<link href="https://typecodes.com/feed.xml" type="application/rss+xml" rel="alternate" title="TypeCodes RSS Feed" />
@@ -314,7 +323,7 @@ Main process exit!
 		        <a href="https://typecodes.com/java/index.html">Java</a> (1)
 		      </li>
 		      <li class="current">
-		        <a href="https://typecodes.com/linux/index.html">Linux</a> (22)
+		        <a href="https://typecodes.com/linux/index.html">Linux</a> (23)
 		      </li>
 		      <li class="current">
 		        <a href="https://typecodes.com/mix/index.html">Mix</a> (54)
@@ -327,6 +336,9 @@ Main process exit!
 	<div class="widget">
 		<h3 class="widget-title">Recent Posts</h3>
 		<ul class="widget-list">
+			<li class="post">
+				<a href="https://typecodes.com/linux/sedawkfindreplace1.html">使用sed和awk查找和替换字符串处理Makefile文件</a>
+			</li>
 			<li class="post">
 				<a href="https://typecodes.com/cseries/mapdelintstring.html">C++删除map容器中指定值的元素</a>
 			</li>
@@ -344,9 +356,6 @@ Main process exit!
 			</li>
 			<li class="post">
 				<a href="https://typecodes.com/cseries/kill0checkprocessifexist.html">Linux使用KILL 0检测进程是否存在</a>
-			</li>
-			<li class="post">
-				<a href="https://typecodes.com/cseries/vsnprintffilenameline.html">vsnprintf字符串格式化输出实例：日志中打印程序名和行号</a>
 			</li>
 		</ul>
 	</div>
@@ -390,7 +399,7 @@ Main process exit!
 		<div class="col-md-12 copyright">
 			<a href="#top"><i class="i-logo-s">TOP</i></a>
 			<p>
-				&copy;  2012-2016 							<a href="https://typecodes.com">TypeCodes</a>. All Rights Reserved<br>Powered by <a href="http://getpelican.com" rel="external" target="_blank">Pelican</a>. <a href="http://www.miitbeian.gov.cn" rel="external nofollow" target="_blank">粤ICP备14050695号</a>
+				&copy;  2012-2017 							<a href="https://typecodes.com">TypeCodes</a>. All Rights Reserved<br>Powered by <a href="http://getpelican.com" rel="external" target="_blank">Pelican</a>. <a href="http://www.miitbeian.gov.cn" rel="external nofollow" target="_blank">粤ICP备14050695号</a>
 			</p>
 		</div>
 	</div>

@@ -5,7 +5,9 @@
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
   		<meta name="renderer" content="webkit">
 		<title>Linux下Nginx、MySQL和PHP等应用的日志切割脚本 - TypeCodes</title>
-		<meta name="description" content="Linux下Nginx、MySQL和PHP等应用的日志切割脚本 - TypeCodes" />
+  		<meta name="description" content="<p>在Linux中如果应用程序会产生日志，那么就需要考虑日志切割，例如按照固定的大小切割、按照日期进行切割等等。同样，在编译<a href="https://typecodes.com/web/centos7compilenginx.html" title="《2015博客升级记(三)：CentOS 7.1编译安装Nginx1.9.0》">Nginx1.9.0</a>、<a href="https://typecodes.com/web/centos7compilemysql.html" title="《2015博客升级记(四)：CentOS 7.1编译安装MySQL5.7.7rc》">MySQL5.7.7rc</a>和<a href="https://typecodes.com/web/centos7compilephp7.html" title="《2015博客升级记(五)：CentOS 7.1编译安装PHP7》">PHP7</a>后，这三个应用服务都会产生日志，尤其是Nginx进程根据配置文件ngnix.conf记录每条访问记录到access.log中。如果所有的日志都打印到同一个文件中的话，那么时间长了的话就会影响效率。</p>
+<p><img alt="Nginx日志切割实例" src="https://o3cex9zsl.qnssl.com/2015/12/nginx_logs_backup.png" title="Nginx日志切割实例"></p>
+" />
   		<meta name="viewport" content="width=device-width, initial-scale=1">
   		<link href="https://typecodes.com/atom.xml" type="application/atom+xml" rel="alternate" title="TypeCodes Atom Feed" />
 	  	<link href="https://typecodes.com/feed.xml" type="application/rss+xml" rel="alternate" title="TypeCodes RSS Feed" />
@@ -333,7 +335,7 @@ NOTICE <span class="s2">&quot;[6]End backup.&quot;</span>
 		        <a href="https://typecodes.com/java/index.html">Java</a> (1)
 		      </li>
 		      <li class="current">
-		        <a href="https://typecodes.com/linux/index.html">Linux</a> (22)
+		        <a href="https://typecodes.com/linux/index.html">Linux</a> (23)
 		      </li>
 		      <li class="current">
 		        <a href="https://typecodes.com/mix/index.html">Mix</a> (54)
@@ -346,6 +348,9 @@ NOTICE <span class="s2">&quot;[6]End backup.&quot;</span>
 	<div class="widget">
 		<h3 class="widget-title">Recent Posts</h3>
 		<ul class="widget-list">
+			<li class="post">
+				<a href="https://typecodes.com/linux/sedawkfindreplace1.html">使用sed和awk查找和替换字符串处理Makefile文件</a>
+			</li>
 			<li class="post">
 				<a href="https://typecodes.com/cseries/mapdelintstring.html">C++删除map容器中指定值的元素</a>
 			</li>
@@ -363,9 +368,6 @@ NOTICE <span class="s2">&quot;[6]End backup.&quot;</span>
 			</li>
 			<li class="post">
 				<a href="https://typecodes.com/cseries/kill0checkprocessifexist.html">Linux使用KILL 0检测进程是否存在</a>
-			</li>
-			<li class="post">
-				<a href="https://typecodes.com/cseries/vsnprintffilenameline.html">vsnprintf字符串格式化输出实例：日志中打印程序名和行号</a>
 			</li>
 		</ul>
 	</div>
@@ -409,7 +411,7 @@ NOTICE <span class="s2">&quot;[6]End backup.&quot;</span>
 		<div class="col-md-12 copyright">
 			<a href="#top"><i class="i-logo-s">TOP</i></a>
 			<p>
-				&copy;  2012-2016 							<a href="https://typecodes.com">TypeCodes</a>. All Rights Reserved<br>Powered by <a href="http://getpelican.com" rel="external" target="_blank">Pelican</a>. <a href="http://www.miitbeian.gov.cn" rel="external nofollow" target="_blank">粤ICP备14050695号</a>
+				&copy;  2012-2017 							<a href="https://typecodes.com">TypeCodes</a>. All Rights Reserved<br>Powered by <a href="http://getpelican.com" rel="external" target="_blank">Pelican</a>. <a href="http://www.miitbeian.gov.cn" rel="external nofollow" target="_blank">粤ICP备14050695号</a>
 			</p>
 		</div>
 	</div>

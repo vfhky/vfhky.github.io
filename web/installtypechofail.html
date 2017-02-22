@@ -5,7 +5,11 @@
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
   		<meta name="renderer" content="webkit">
 		<title>解决阿里云无法安装typecho 1.0，页面全变空白 - TypeCodes</title>
-		<meta name="description" content="解决阿里云无法安装typecho 1.0，页面全变空白 - TypeCodes" />
+  		<meta name="description" content="<p>在Windows中安装 typecho 比较简单，只要先创建了数据库，然后安装过程和wordpress也类似。但是之前博主在自己的阿里云CentOS 6.5系统中安装 typecho，却出现了问题。</p>
+<h5>1 问题描述</h5>
+<p>先用 mysql 的一个用户创建了一个数据库，然后进入typecho的安装页面，填写好相关信息。typecho 会自动检测输入的数据库信息是否正确。如果正确，那么就会出现下图的页面。因为博客的根目录权限是不可写的，所以typecho程序无法自动生成配置文件 config.inc.php 。于是把里面的代码复制出来，并在根目录下新建文件 config.inc.php ，然后把复制的代码粘贴进去。结果在点击“创建完毕，继续安装”后，安装页面就跳转到空白页面了。</p>
+<p><img alt="点击“创建完毕，继续安装”后，安装页面就跳转到空白页面" src="https://o3cex9zsl.qnssl.com/2014/08/typechoconfig.png" title="点击“创建完毕，继续安装”后，安装页面就跳转到空白页面"></p>
+" />
   		<meta name="viewport" content="width=device-width, initial-scale=1">
   		<link href="https://typecodes.com/atom.xml" type="application/atom+xml" rel="alternate" title="TypeCodes Atom Feed" />
 	  	<link href="https://typecodes.com/feed.xml" type="application/rss+xml" rel="alternate" title="TypeCodes RSS Feed" />
@@ -159,7 +163,7 @@ if (!isset($_GET[&#39;finish&#39;]) &amp;&amp; file_exists(__TYPECHO_ROOT_DIR__ 
 		        <a href="https://typecodes.com/java/index.html">Java</a> (1)
 		      </li>
 		      <li class="current">
-		        <a href="https://typecodes.com/linux/index.html">Linux</a> (22)
+		        <a href="https://typecodes.com/linux/index.html">Linux</a> (23)
 		      </li>
 		      <li class="current">
 		        <a href="https://typecodes.com/mix/index.html">Mix</a> (54)
@@ -172,6 +176,9 @@ if (!isset($_GET[&#39;finish&#39;]) &amp;&amp; file_exists(__TYPECHO_ROOT_DIR__ 
 	<div class="widget">
 		<h3 class="widget-title">Recent Posts</h3>
 		<ul class="widget-list">
+			<li class="post">
+				<a href="https://typecodes.com/linux/sedawkfindreplace1.html">使用sed和awk查找和替换字符串处理Makefile文件</a>
+			</li>
 			<li class="post">
 				<a href="https://typecodes.com/cseries/mapdelintstring.html">C++删除map容器中指定值的元素</a>
 			</li>
@@ -189,9 +196,6 @@ if (!isset($_GET[&#39;finish&#39;]) &amp;&amp; file_exists(__TYPECHO_ROOT_DIR__ 
 			</li>
 			<li class="post">
 				<a href="https://typecodes.com/cseries/kill0checkprocessifexist.html">Linux使用KILL 0检测进程是否存在</a>
-			</li>
-			<li class="post">
-				<a href="https://typecodes.com/cseries/vsnprintffilenameline.html">vsnprintf字符串格式化输出实例：日志中打印程序名和行号</a>
 			</li>
 		</ul>
 	</div>
@@ -235,7 +239,7 @@ if (!isset($_GET[&#39;finish&#39;]) &amp;&amp; file_exists(__TYPECHO_ROOT_DIR__ 
 		<div class="col-md-12 copyright">
 			<a href="#top"><i class="i-logo-s">TOP</i></a>
 			<p>
-				&copy;  2012-2016 							<a href="https://typecodes.com">TypeCodes</a>. All Rights Reserved<br>Powered by <a href="http://getpelican.com" rel="external" target="_blank">Pelican</a>. <a href="http://www.miitbeian.gov.cn" rel="external nofollow" target="_blank">粤ICP备14050695号</a>
+				&copy;  2012-2017 							<a href="https://typecodes.com">TypeCodes</a>. All Rights Reserved<br>Powered by <a href="http://getpelican.com" rel="external" target="_blank">Pelican</a>. <a href="http://www.miitbeian.gov.cn" rel="external nofollow" target="_blank">粤ICP备14050695号</a>
 			</p>
 		</div>
 	</div>

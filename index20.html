@@ -39,6 +39,17 @@
 		<div class="col-md-9" id="blog-main" role="main">
 		  	<!--article recycle-->
 			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/database/windowsplsqlmanageoracle.html">如何在Windows宿主机中安装PL/SQL管理虚拟机中的Oracle</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2013-04-20 11:16 | 分类：<a href="https://typecodes.com/database/index.html">database</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>和微软SQL server一样，要想远程管理数据库，那么本地的windows主机中就需要安装sql server的客户端。而在Windows宿主机中管理虚拟机中的Oracle数据库，那么我们也需要安装Oracle数据库的客户端（当然是windows版本）。</p>
+<p>这是常规的做法，但是oracle出产的软件一向遵守庞大臃肿的传统，Oracle11.2.0.2.0的Windows版本竟然和SQL server一样有2G多了。作为一个远程管理工具，我们没有必要在windows中安装一个完整的Oracle。类似于SQL server的Express版本，甲骨文也考虑到了这点，所以精简版的instantclient就应运而生了。下面就是具体的如何在Windows宿主机中安装PL/SQL管理虚拟机中的Oracle数据库步骤：</p>
+
+	<p class="more"><a href="https://typecodes.com/database/windowsplsqlmanageoracle.html" title="如何在Windows宿主机中安装PL/SQL管理虚拟机中的Oracle">- 阅读剩余部分 -</a></p>
+</div>			</article>
+			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/mix/getbaidugift.html">千里佳音，竟然收到百度的一份GIFT</a></h2>
 <ul class="post-meta">
 	<li>作者：vfhky | 时间：2013-04-19 21:19 | 分类：<a href="https://typecodes.com/mix/index.html">mix</a></li>
@@ -115,17 +126,6 @@
 
 	<p class="more"><a href="https://typecodes.com/linux/linuxnotregisteredrhn.html" title="解决Redhat Linux5 yum出现This system is not registered with RHN">- 阅读剩余部分 -</a></p>
 </div>			</article>
-			<article class="post">
-<h2 class="post-title"><a href="https://typecodes.com/web/xamppmysqlrootloginerr.html">解决XAMPP的phpmyadmin平台修改mysql的root密码无法登陆的问题</a></h2>
-<ul class="post-meta">
-	<li>作者：vfhky | 时间：2013-01-13 12:03 | 分类：<a href="https://typecodes.com/web/index.html">web</a></li>
-</ul>
-<div class="post-content fmt">
-	<p>由于在Netbeans中用到了php开发，所以接触到了XAMPP。但是，它和phpnow是有比较大的区别的。php是cmd命令安装，在安装过程就会提示用户设置root的密码，而非安装版的xampp是手动启动的，默认的localhost主机的用户root的密码为空。所以，一旦在xampp的phpmyadmin平台修改mysql数据库用户的密码，就会造成与原来phpmyadmin配置文件xampp/phpMyAdmin/config.inc.php设置的密码（为空）冲突，从而使得用户无法登陆（在电脑为重新启动前能登录phpmyadmin，但是一旦机器重启后就无法登录了）。</p>
-<p><img alt="phpmyadmin无法登录" src="https://o3cex9zsl.qnssl.com/2013/01/error2.png" title="phpmyadmin无法登录"></p>
-
-	<p class="more"><a href="https://typecodes.com/web/xamppmysqlrootloginerr.html" title="解决XAMPP的phpmyadmin平台修改mysql的root密码无法登陆的问题">- 阅读剩余部分 -</a></p>
-</div>			</article>
 		  	<!--page navigation-->
 <ol class="page-navigator">
 <li class="prev"><a href="https://typecodes.com/index19.html">&laquo; 前一页</a></li><li>
@@ -171,7 +171,7 @@
 		        <a href="https://typecodes.com/java/index.html">Java</a> (1)
 		      </li>
 		      <li class="current">
-		        <a href="https://typecodes.com/linux/index.html">Linux</a> (22)
+		        <a href="https://typecodes.com/linux/index.html">Linux</a> (23)
 		      </li>
 		      <li class="current">
 		        <a href="https://typecodes.com/mix/index.html">Mix</a> (54)
@@ -184,6 +184,9 @@
 	<div class="widget">
 		<h3 class="widget-title">Recent Posts</h3>
 		<ul class="widget-list">
+			<li class="post">
+				<a href="https://typecodes.com/linux/sedawkfindreplace1.html">使用sed和awk查找和替换字符串处理Makefile文件</a>
+			</li>
 			<li class="post">
 				<a href="https://typecodes.com/cseries/mapdelintstring.html">C++删除map容器中指定值的元素</a>
 			</li>
@@ -201,9 +204,6 @@
 			</li>
 			<li class="post">
 				<a href="https://typecodes.com/cseries/kill0checkprocessifexist.html">Linux使用KILL 0检测进程是否存在</a>
-			</li>
-			<li class="post">
-				<a href="https://typecodes.com/cseries/vsnprintffilenameline.html">vsnprintf字符串格式化输出实例：日志中打印程序名和行号</a>
 			</li>
 		</ul>
 	</div>
@@ -247,7 +247,7 @@
 		<div class="col-md-12 copyright">
 			<a href="#top"><i class="i-logo-s">TOP</i></a>
 			<p>
-				&copy;  2012-2016 							<a href="https://typecodes.com">TypeCodes</a>. All Rights Reserved<br>Powered by <a href="http://getpelican.com" rel="external" target="_blank">Pelican</a>. <a href="http://www.miitbeian.gov.cn" rel="external nofollow" target="_blank">粤ICP备14050695号</a>
+				&copy;  2012-2017 							<a href="https://typecodes.com">TypeCodes</a>. All Rights Reserved<br>Powered by <a href="http://getpelican.com" rel="external" target="_blank">Pelican</a>. <a href="http://www.miitbeian.gov.cn" rel="external nofollow" target="_blank">粤ICP备14050695号</a>
 			</p>
 		</div>
 	</div>

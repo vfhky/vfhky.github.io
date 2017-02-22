@@ -39,6 +39,20 @@
 		<div class="col-md-9" id="blog-main" role="main">
 		  	<!--article recycle-->
 			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/cseries/mfcreturnkeyshutdialog.html">MFC回车键不关闭对话框以及变成TAB键效果</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2014-11-16 00:05 | 分类：<a href="https://typecodes.com/cseries/index.html">cseries</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>之前在弄完这个十六进制字符串异或的工具后，发现直接按回车键就直接关闭了工具。网上搜了下解决方案，然后自己的总结如下4种方法：</p>
+<h5>1 设置一个默认按钮（不推荐）</h5>
+<p>如<a href="https://typecodes.com/cseries/studymfchexstrxortool1.html" title="《图文实例说MFC制作工具的心得（一）》">前文</a>小节5中所述，只要将“进行异或”这个按钮属性中的Default Button设置为"TRUE"就行了。但是这样就直接触发这个按钮对应的事件OnBnClickedButton1，而不是对输入的数据进行合法性检查。</p>
+<h5>2 比较推荐的是重载OnOK()函数或者PreTranslateMessage()函数</h5>
+<p>首先我们需要找到这两个函数的位置，方法有两种，效果都是殊途同归：</p>
+
+	<p class="more"><a href="https://typecodes.com/cseries/mfcreturnkeyshutdialog.html" title="MFC回车键不关闭对话框以及变成TAB键效果">- 阅读剩余部分 -</a></p>
+</div>			</article>
+			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/cseries/studymfchexstrxortool2.html">图文实例说MFC制作工具的心得（二）</a></h2>
 <ul class="post-meta">
 	<li>作者：vfhky | 时间：2014-11-14 23:58 | 分类：<a href="https://typecodes.com/cseries/index.html">cseries</a></li>
@@ -169,16 +183,6 @@ Buzz
 
 	<p class="more"><a href="https://typecodes.com/cseries/sizeofbyteorder.html" title="C语言字节序的大小端模式">- 阅读剩余部分 -</a></p>
 </div>			</article>
-			<article class="post">
-<h2 class="post-title"><a href="https://typecodes.com/cseries/clangintegerstrtointeger.html">C语言将十进制字符串转成十进制整数</a></h2>
-<ul class="post-meta">
-	<li>作者：vfhky | 时间：2014-11-05 22:05 | 分类：<a href="https://typecodes.com/cseries/index.html">cseries</a></li>
-</ul>
-<div class="post-content fmt">
-	<p>通过<a href="https://typecodes.com/cseries/clanghexstrtointeger.html" title="《C语言将十六进制字符串转成十进制整数》">上一篇文章</a>完成了十六进制字符串转成十进制整数，同理也很容易写出十进制字符串转成十进制整数的函数。考虑到十进制的字符串中可能会出现正负号，即转换后可能出现负整数，同样也增加了对这种情况的处理。例如将十进制的字符串"0621"、"+621"、"6210"、"-1234"转换十进制的整数，即621、621、6210、-1234。下面同样是正向和逆向两种方法的具体代码：</p>
-
-	<p class="more"><a href="https://typecodes.com/cseries/clangintegerstrtointeger.html" title="C语言将十进制字符串转成十进制整数">- 阅读剩余部分 -</a></p>
-</div>			</article>
 		  	<!--page navigation-->
 <ol class="page-navigator">
 <li class="prev"><a href="https://typecodes.com/index8.html">&laquo; 前一页</a></li><li>
@@ -224,7 +228,7 @@ Buzz
 		        <a href="https://typecodes.com/java/index.html">Java</a> (1)
 		      </li>
 		      <li class="current">
-		        <a href="https://typecodes.com/linux/index.html">Linux</a> (22)
+		        <a href="https://typecodes.com/linux/index.html">Linux</a> (23)
 		      </li>
 		      <li class="current">
 		        <a href="https://typecodes.com/mix/index.html">Mix</a> (54)
@@ -237,6 +241,9 @@ Buzz
 	<div class="widget">
 		<h3 class="widget-title">Recent Posts</h3>
 		<ul class="widget-list">
+			<li class="post">
+				<a href="https://typecodes.com/linux/sedawkfindreplace1.html">使用sed和awk查找和替换字符串处理Makefile文件</a>
+			</li>
 			<li class="post">
 				<a href="https://typecodes.com/cseries/mapdelintstring.html">C++删除map容器中指定值的元素</a>
 			</li>
@@ -254,9 +261,6 @@ Buzz
 			</li>
 			<li class="post">
 				<a href="https://typecodes.com/cseries/kill0checkprocessifexist.html">Linux使用KILL 0检测进程是否存在</a>
-			</li>
-			<li class="post">
-				<a href="https://typecodes.com/cseries/vsnprintffilenameline.html">vsnprintf字符串格式化输出实例：日志中打印程序名和行号</a>
 			</li>
 		</ul>
 	</div>
@@ -300,7 +304,7 @@ Buzz
 		<div class="col-md-12 copyright">
 			<a href="#top"><i class="i-logo-s">TOP</i></a>
 			<p>
-				&copy;  2012-2016 							<a href="https://typecodes.com">TypeCodes</a>. All Rights Reserved<br>Powered by <a href="http://getpelican.com" rel="external" target="_blank">Pelican</a>. <a href="http://www.miitbeian.gov.cn" rel="external nofollow" target="_blank">粤ICP备14050695号</a>
+				&copy;  2012-2017 							<a href="https://typecodes.com">TypeCodes</a>. All Rights Reserved<br>Powered by <a href="http://getpelican.com" rel="external" target="_blank">Pelican</a>. <a href="http://www.miitbeian.gov.cn" rel="external nofollow" target="_blank">粤ICP备14050695号</a>
 			</p>
 		</div>
 	</div>

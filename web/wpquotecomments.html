@@ -5,7 +5,9 @@
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
   		<meta name="renderer" content="webkit">
 		<title>如何给wordpress的回复添加引用功能 - TypeCodes</title>
-		<meta name="description" content="如何给wordpress的回复添加引用功能 - TypeCodes" />
+  		<meta name="description" content="<p>在上一篇文章已经写了<a href="https://typecodes.com/web/wpatcommentauthor.html" title="wordpress回复内容前面添加@作者样式">关于评论/回复添加@的方法</a>，今天继续用jQuery添加一个在评论/回复添加引用的功能。其实，只要博客有了评论/回复的@功能，基本上用不着使用引用功能了。</p>
+<p>从那篇关于@功能的文章就知道，只要我们点击那个@某某的链接，我们就可以找到原来的评论。而引用要起的作用也差不多，类似于@，只不过相对于@有更为直观。要使用引用功能，所用原理也是类似@的（温馨提示：大家还是看一下，不然这篇文章可能有些云里雾里了^^）。即要用到jQuery，并且涉及到自己主题评论页面的web结构。不罗嗦了，最终效果如下：</p>
+" />
   		<meta name="viewport" content="width=device-width, initial-scale=1">
   		<link href="https://typecodes.com/atom.xml" type="application/atom+xml" rel="alternate" title="TypeCodes Atom Feed" />
 	  	<link href="https://typecodes.com/feed.xml" type="application/rss+xml" rel="alternate" title="TypeCodes RSS Feed" />
@@ -195,7 +197,7 @@ jQuery(document).ready(function($){ //Begin jQuery
 		        <a href="https://typecodes.com/java/index.html">Java</a> (1)
 		      </li>
 		      <li class="current">
-		        <a href="https://typecodes.com/linux/index.html">Linux</a> (22)
+		        <a href="https://typecodes.com/linux/index.html">Linux</a> (23)
 		      </li>
 		      <li class="current">
 		        <a href="https://typecodes.com/mix/index.html">Mix</a> (54)
@@ -208,6 +210,9 @@ jQuery(document).ready(function($){ //Begin jQuery
 	<div class="widget">
 		<h3 class="widget-title">Recent Posts</h3>
 		<ul class="widget-list">
+			<li class="post">
+				<a href="https://typecodes.com/linux/sedawkfindreplace1.html">使用sed和awk查找和替换字符串处理Makefile文件</a>
+			</li>
 			<li class="post">
 				<a href="https://typecodes.com/cseries/mapdelintstring.html">C++删除map容器中指定值的元素</a>
 			</li>
@@ -225,9 +230,6 @@ jQuery(document).ready(function($){ //Begin jQuery
 			</li>
 			<li class="post">
 				<a href="https://typecodes.com/cseries/kill0checkprocessifexist.html">Linux使用KILL 0检测进程是否存在</a>
-			</li>
-			<li class="post">
-				<a href="https://typecodes.com/cseries/vsnprintffilenameline.html">vsnprintf字符串格式化输出实例：日志中打印程序名和行号</a>
 			</li>
 		</ul>
 	</div>
@@ -271,7 +273,7 @@ jQuery(document).ready(function($){ //Begin jQuery
 		<div class="col-md-12 copyright">
 			<a href="#top"><i class="i-logo-s">TOP</i></a>
 			<p>
-				&copy;  2012-2016 							<a href="https://typecodes.com">TypeCodes</a>. All Rights Reserved<br>Powered by <a href="http://getpelican.com" rel="external" target="_blank">Pelican</a>. <a href="http://www.miitbeian.gov.cn" rel="external nofollow" target="_blank">粤ICP备14050695号</a>
+				&copy;  2012-2017 							<a href="https://typecodes.com">TypeCodes</a>. All Rights Reserved<br>Powered by <a href="http://getpelican.com" rel="external" target="_blank">Pelican</a>. <a href="http://www.miitbeian.gov.cn" rel="external nofollow" target="_blank">粤ICP备14050695号</a>
 			</p>
 		</div>
 	</div>

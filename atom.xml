@@ -1,5 +1,97 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>TypeCodes</title><link href="https://typecodes.com/" rel="alternate"></link><link href="https://typecodes.com/atom.xml" rel="self"></link><id>https://typecodes.com/</id><updated>2016-06-26T10:26:00+08:00</updated><entry><title>C++删除map容器中指定值的元素</title><link href="https://typecodes.com/cseries/mapdelintstring.html" rel="alternate"></link><published>2016-06-26T10:26:00+08:00</published><updated>2016-06-26T10:26:00+08:00</updated><author><name>vfhky</name></author><id>tag:typecodes.com,2016-06-26:/cseries/mapdelintstring.html</id><summary type="html">&lt;p&gt;map容器是C++ STL中的重要一员，平时会遇到删除map容器中value为指定元素的问题，例如删除所有字符串为"123"或者能整除3的元素。&lt;/p&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>TypeCodes</title><link href="https://typecodes.com/" rel="alternate"></link><link href="https://typecodes.com/atom.xml" rel="self"></link><id>https://typecodes.com/</id><updated>2017-02-22T16:39:00+08:00</updated><entry><title>使用sed和awk查找和替换字符串处理Makefile文件</title><link href="https://typecodes.com/linux/sedawkfindreplace1.html" rel="alternate"></link><published>2017-02-22T16:39:00+08:00</published><updated>2017-02-22T16:39:00+08:00</updated><author><name>vfhky</name></author><id>tag:typecodes.com,2017-02-22:/linux/sedawkfindreplace1.html</id><summary type="html">&lt;p&gt;在&lt;a href="https://typecodes.com/linux/handlemakefilebysed.html" title="查看原文"&gt;《使用sed命令批量处理Makefile文件的脚本》&lt;/a&gt;文中使用sed命令对&lt;a href="https://typecodes.com/cseries/cppgeneralmakefile.html" title="《Linux C/C++工程中可生成ELF、动/静态库文件的通用Makefile》"&gt;前文&lt;/a&gt;中的Makefile文件进行了替换、追加和删除操作，这篇文章通过使用sed和awk命令对该Makefile文件的某个字符串进行正则匹配查找以及替换。&lt;/p&gt;
+</summary><content type="html">&lt;p&gt;在&lt;a href="https://typecodes.com/linux/handlemakefilebysed.html" title="查看原文"&gt;《使用sed命令批量处理Makefile文件的脚本》&lt;/a&gt;文中使用sed命令对&lt;a href="https://typecodes.com/cseries/cppgeneralmakefile.html" title="《Linux C/C++工程中可生成ELF、动/静态库文件的通用Makefile》"&gt;前文&lt;/a&gt;中的Makefile文件进行了替换、追加和删除操作，这篇文章通过使用sed和awk命令对该Makefile文件的某个字符串进行正则匹配查找以及替换。&lt;/p&gt;
+
+
+&lt;h4&gt;1 功能需求&lt;/h4&gt;
+&lt;p&gt;由于之前在BZ自己CenOS7中的C/C++工程部分Makefile文件有问题（CC变量被赋值为&lt;code&gt;CC     := g++&lt;/code&gt;），所以想写个shell脚本批量把Makefile文件出错的部分全部替换成&lt;code&gt;CC     := gcc&lt;/code&gt;。&lt;/p&gt;
+&lt;h4&gt;2 shell程序&lt;/h4&gt;
+&lt;p&gt;下面的这份shell脚本比较简单，直接运行&lt;code&gt;./sedawkfindreplace1.sh&lt;/code&gt;即可。在&lt;code&gt;for ... in&lt;/code&gt;的Makefile文件遍历中，先利用了awk命令的正则匹配查找、替换操作，然后是sed命令执行正则匹配查找、替换操作。&lt;/p&gt;
+&lt;p&gt;程序难点应该在于对&lt;code&gt;g++&lt;/code&gt;中的&lt;code&gt;+&lt;/code&gt;号正则匹配。awk的&lt;code&gt;sub&lt;/code&gt;函数的正则替换时，需要对&lt;code&gt;g++&lt;/code&gt;处理成&lt;code&gt;g\+\+&lt;/code&gt;形式，而其它正常都写成&lt;code&gt;g+\+&lt;/code&gt;的形式。&lt;/p&gt;
+&lt;table class="highlighttable"&gt;&lt;tr&gt;&lt;td class="linenos"&gt;&lt;div class="linenodiv"&gt;&lt;pre&gt; 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35&lt;/pre&gt;&lt;/div&gt;&lt;/td&gt;&lt;td class="code"&gt;&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="ch"&gt;#!/bin/bash&lt;/span&gt;
+&lt;span class="c1"&gt;# FileName:      sedawkfindreplace1.sh&lt;/span&gt;
+&lt;span class="c1"&gt;# Description:   Basic usage of sed and awk command such as find and replace words in the regular expression.&lt;/span&gt;
+&lt;span class="c1"&gt;# Simple Usage:  ./sedawkfindreplace1.sh&lt;/span&gt;
+&lt;span class="c1"&gt;# (c) 2017.2.22 vfhky https://typecodes.com/linux/sedawkfindreplace1.html&lt;/span&gt;
+&lt;span class="c1"&gt;# https://github.com/vfhky/shell-tools/blob/master/filehandle/sedawkfindreplace1.sh&lt;/span&gt;
+
+
+&lt;span class="c1"&gt;# Dir to be handled.&lt;/span&gt;
+&lt;span class="nv"&gt;SRC_DIR&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;/home/vfhky/shell&amp;quot;&lt;/span&gt;
+&lt;span class="c1"&gt;# The makefile you want to modify.&lt;/span&gt;
+&lt;span class="nv"&gt;SEARCH_NAME&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;Makefile*&amp;quot;&lt;/span&gt;
+&lt;span class="c1"&gt;# The maximum depth of the dirs where files such as Makefile you&amp;#39;re dealing with lies in.&lt;/span&gt;
+&lt;span class="nv"&gt;MAXDEPTH&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="m"&gt;10&lt;/span&gt;
+
+&lt;span class="c1"&gt;# Get the target files you want to modify.&lt;/span&gt;
+&lt;span class="nv"&gt;ALL_MAKEFILE&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="k"&gt;$(&lt;/span&gt;find &lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;SRC_DIR&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt; -maxdepth &lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;MAXDEPTH&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt; -type f -name &lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;SEARCH_NAME&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;&lt;span class="k"&gt;)&lt;/span&gt;
+
+
+&lt;span class="c1"&gt;# Traverse the target files.&lt;/span&gt;
+&lt;span class="k"&gt;for&lt;/span&gt; FILE in &lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;ALL_MAKEFILE&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;
+&lt;span class="k"&gt;do&lt;/span&gt;
+    &lt;span class="c1"&gt;#### Ways recommended: find &amp;quot;^CC        := g++&amp;quot; by awk command.&lt;/span&gt;
+    awk &lt;span class="s1"&gt;&amp;#39;/CC        := g+\+/{printf( &amp;quot;[%s:%d]: %s\n&amp;quot;, FILENAME, NR, $0) }&amp;#39;&lt;/span&gt; &lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;FILE&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;
+    &lt;span class="c1"&gt;#### replace &amp;quot;g++&amp;quot; with &amp;quot;gcc&amp;quot; using awk command.&lt;/span&gt;
+    &lt;span class="c1"&gt;# awk &amp;#39;{sub(/^CC        := g\+\+/,&amp;quot;CC       := gcc&amp;quot;); print $0}&amp;#39; ${FILE} &amp;gt; ${FILE}.tmp; cp ${FILE}.tmp ${FILE}; rm -rf ${FILE}.tmp&lt;/span&gt;
+
+
+    &lt;span class="c1"&gt;#### find &amp;quot;CC       := g++&amp;quot; by sed command.&lt;/span&gt;
+    &lt;span class="c1"&gt;# sed -n &amp;quot;/^CC      := g+\+/p&amp;quot; ${FILE}&lt;/span&gt;
+    &lt;span class="c1"&gt;#### Ways recommended: replace &amp;quot;g++&amp;quot; with &amp;quot;gcc&amp;quot; using sed command.&lt;/span&gt;
+    &lt;span class="c1"&gt;# sed -i &amp;quot;s#^CC     := g+\+#CC      := gcc#&amp;quot; ${FILE}&lt;/span&gt;
+&lt;span class="k"&gt;done&lt;/span&gt;
+
+&lt;span class="nb"&gt;exit&lt;/span&gt; &lt;span class="m"&gt;0&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+
+&lt;h4&gt;3 脚本测试&lt;/h4&gt;
+&lt;p&gt;BZ在虚拟机的/home/vfhky/shell目录复制了5个错误的Makefile文件，然后先做正则查找测试，结果如下图所示：&lt;/p&gt;
+&lt;p&gt;&lt;img alt="使用sed和awk查找和替换字符串处理Makefile文件" src="https://o3cex9zsl.qnssl.com/2017/02/sedawkfindreplace1_awk_sed_find.png" title="使用sed和awk查找和替换字符串处理Makefile文件"&gt;&lt;/p&gt;
+&lt;h4&gt;4 Linux find 命令中正则&lt;/h4&gt;
+&lt;p&gt;在&lt;code&gt;find&lt;/code&gt;命令的某个参数使用正则，那么最好对这个对数加上双引号，正如上面的代码&lt;code&gt;"${SEARCH_NAME}"&lt;/code&gt;所示，否则会出现下面的错误：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;find&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="n"&gt;paths&lt;/span&gt; &lt;span class="n"&gt;must&lt;/span&gt; &lt;span class="n"&gt;precede&lt;/span&gt; &lt;span class="n"&gt;expression&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="n"&gt;Makefile1&lt;/span&gt;
+&lt;span class="n"&gt;Usage&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="n"&gt;find&lt;/span&gt; &lt;span class="o"&gt;[-&lt;/span&gt;&lt;span class="n"&gt;H&lt;/span&gt;&lt;span class="o"&gt;]&lt;/span&gt; &lt;span class="o"&gt;[-&lt;/span&gt;&lt;span class="n"&gt;L&lt;/span&gt;&lt;span class="o"&gt;]&lt;/span&gt; &lt;span class="o"&gt;[-&lt;/span&gt;&lt;span class="n"&gt;P&lt;/span&gt;&lt;span class="o"&gt;]&lt;/span&gt; &lt;span class="o"&gt;[-&lt;/span&gt;&lt;span class="n"&gt;Olevel&lt;/span&gt;&lt;span class="o"&gt;]&lt;/span&gt; &lt;span class="o"&gt;[-&lt;/span&gt;&lt;span class="n"&gt;D&lt;/span&gt; &lt;span class="n"&gt;help&lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="n"&gt;tree&lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="n"&gt;search&lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="n"&gt;stat&lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="n"&gt;rates&lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="n"&gt;opt&lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="n"&gt;exec&lt;/span&gt;&lt;span class="o"&gt;]&lt;/span&gt; &lt;span class="o"&gt;[&lt;/span&gt;&lt;span class="n"&gt;path&lt;/span&gt;&lt;span class="o"&gt;...]&lt;/span&gt; &lt;span class="o"&gt;[&lt;/span&gt;&lt;span class="n"&gt;expression&lt;/span&gt;&lt;span class="o"&gt;]&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h4&gt;5 脚本管理&lt;/h4&gt;
+&lt;p&gt;目前已经把这个脚本放在Github了，地址是&lt;a href="https://github.com/vfhky/shell-tools" title="点击查看"&gt;https://github.com/vfhky/shell-tools&lt;/a&gt;，以后脚本的更新或者更多好用的脚本也都会加入到这个工程中。&lt;/p&gt;</content><category term="sed"></category><category term="awk"></category><category term="Makefile"></category></entry><entry><title>C++删除map容器中指定值的元素</title><link href="https://typecodes.com/cseries/mapdelintstring.html" rel="alternate"></link><published>2016-06-26T10:26:00+08:00</published><updated>2016-06-26T10:26:00+08:00</updated><author><name>vfhky</name></author><id>tag:typecodes.com,2016-06-26:/cseries/mapdelintstring.html</id><summary type="html">&lt;p&gt;map容器是C++ STL中的重要一员，平时会遇到删除map容器中value为指定元素的问题，例如删除所有字符串为"123"或者能整除3的元素。&lt;/p&gt;
 </summary><content type="html">&lt;p&gt;map容器是C++ STL中的重要一员，平时会遇到删除map容器中value为指定元素的问题，例如删除所有字符串为"123"或者能整除3的元素。&lt;/p&gt;
 
 

@@ -5,7 +5,9 @@
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
   		<meta name="renderer" content="webkit">
 		<title>使用TCPDUMP和Wireshark排查服务端CLOSE_WAIT（一） - TypeCodes</title>
-		<meta name="description" content="使用TCPDUMP和Wireshark排查服务端CLOSE_WAIT（一） - TypeCodes" />
+  		<meta name="description" content="<p>在Linux后端服务网络通信开发中，可能会遇到CLOSE_WAIT的状况。引起TCP CLOSE_WAIT状态的情况很多，归根结底还是由于被动关闭的一方没有关闭socket链路导致的。这篇文章主要是通过用一个简单的例子通过TCPDUMP和Wireshark这两个工具来模拟产生CLOSE_WAIT的情况，<a href="https://typecodes.com/cseries/tcpdumpwiresharkclosewait2.html" title="《使用TCPDUMP和Wireshark排查服务端CLOSE_WAIT（二）》">下一篇</a>主要是对这个问题的原理解释。</p>
+<p><img alt="CentOS服务端建立监听端口" src="https://o3cex9zsl.qnssl.com/2016/02/server_socket_8000.png" title="CentOS服务端建立监听端口"></p>
+" />
   		<meta name="viewport" content="width=device-width, initial-scale=1">
   		<link href="https://typecodes.com/atom.xml" type="application/atom+xml" rel="alternate" title="TypeCodes Atom Feed" />
 	  	<link href="https://typecodes.com/feed.xml" type="application/rss+xml" rel="alternate" title="TypeCodes RSS Feed" />
@@ -326,7 +328,7 @@ listening on eth0, link-type EN10MB (Ethernet), capture size 65535 bytes
 		        <a href="https://typecodes.com/java/index.html">Java</a> (1)
 		      </li>
 		      <li class="current">
-		        <a href="https://typecodes.com/linux/index.html">Linux</a> (22)
+		        <a href="https://typecodes.com/linux/index.html">Linux</a> (23)
 		      </li>
 		      <li class="current">
 		        <a href="https://typecodes.com/mix/index.html">Mix</a> (54)
@@ -339,6 +341,9 @@ listening on eth0, link-type EN10MB (Ethernet), capture size 65535 bytes
 	<div class="widget">
 		<h3 class="widget-title">Recent Posts</h3>
 		<ul class="widget-list">
+			<li class="post">
+				<a href="https://typecodes.com/linux/sedawkfindreplace1.html">使用sed和awk查找和替换字符串处理Makefile文件</a>
+			</li>
 			<li class="post">
 				<a href="https://typecodes.com/cseries/mapdelintstring.html">C++删除map容器中指定值的元素</a>
 			</li>
@@ -356,9 +361,6 @@ listening on eth0, link-type EN10MB (Ethernet), capture size 65535 bytes
 			</li>
 			<li class="post">
 				<a href="https://typecodes.com/cseries/kill0checkprocessifexist.html">Linux使用KILL 0检测进程是否存在</a>
-			</li>
-			<li class="post">
-				<a href="https://typecodes.com/cseries/vsnprintffilenameline.html">vsnprintf字符串格式化输出实例：日志中打印程序名和行号</a>
 			</li>
 		</ul>
 	</div>
@@ -402,7 +404,7 @@ listening on eth0, link-type EN10MB (Ethernet), capture size 65535 bytes
 		<div class="col-md-12 copyright">
 			<a href="#top"><i class="i-logo-s">TOP</i></a>
 			<p>
-				&copy;  2012-2016 							<a href="https://typecodes.com">TypeCodes</a>. All Rights Reserved<br>Powered by <a href="http://getpelican.com" rel="external" target="_blank">Pelican</a>. <a href="http://www.miitbeian.gov.cn" rel="external nofollow" target="_blank">粤ICP备14050695号</a>
+				&copy;  2012-2017 							<a href="https://typecodes.com">TypeCodes</a>. All Rights Reserved<br>Powered by <a href="http://getpelican.com" rel="external" target="_blank">Pelican</a>. <a href="http://www.miitbeian.gov.cn" rel="external nofollow" target="_blank">粤ICP备14050695号</a>
 			</p>
 		</div>
 	</div>

@@ -5,7 +5,18 @@
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
   		<meta name="renderer" content="webkit">
 		<title>阿里云CentOS主机 LNMP 环境之主机安全篇一 - TypeCodes</title>
-		<meta name="description" content="阿里云CentOS主机 LNMP 环境之主机安全篇一 - TypeCodes" />
+  		<meta name="description" content="<p>在<a href="https://typecodes.com/web/aliyuncentoslnmpwebsafeconf.html" title="阿里云CentOS主机 LNMP 环境之web安全篇">前面一篇文章</a>介绍了阿里云的CentOS 6.5系统 LNMP 环境下，如何让 web 站点的更为安全。这篇文章主要从用户登录主机方式入手，简单分享下如何让自己的 Linux 主机更安全。</p>
+<h5>1 禁止 CentOS 系统中除 root 外的用户登录</h5>
+<div class="highlight"><pre><span></span>###### 查看 CentOS 系统中的所有用户
+[root@typecodes ~]# cat /etc/passwd
+root:x:0:0:root:/root:/bin/bash
+bin:x:1:1:bin:/bin:/sbin/nologin
+###### 只需简单在 /etc 目录下建立 nologin 文件即可禁止除root外的用户登录
+[root@typecodes ~]# touch /etc/nologin
+</pre></div>
+
+
+" />
   		<meta name="viewport" content="width=device-width, initial-scale=1">
   		<link href="https://typecodes.com/atom.xml" type="application/atom+xml" rel="alternate" title="TypeCodes Atom Feed" />
 	  	<link href="https://typecodes.com/feed.xml" type="application/rss+xml" rel="alternate" title="TypeCodes RSS Feed" />
@@ -191,7 +202,7 @@ AuthorizedKeysFile .ssh/authorized_keys
 		        <a href="https://typecodes.com/java/index.html">Java</a> (1)
 		      </li>
 		      <li class="current">
-		        <a href="https://typecodes.com/linux/index.html">Linux</a> (22)
+		        <a href="https://typecodes.com/linux/index.html">Linux</a> (23)
 		      </li>
 		      <li class="current">
 		        <a href="https://typecodes.com/mix/index.html">Mix</a> (54)
@@ -204,6 +215,9 @@ AuthorizedKeysFile .ssh/authorized_keys
 	<div class="widget">
 		<h3 class="widget-title">Recent Posts</h3>
 		<ul class="widget-list">
+			<li class="post">
+				<a href="https://typecodes.com/linux/sedawkfindreplace1.html">使用sed和awk查找和替换字符串处理Makefile文件</a>
+			</li>
 			<li class="post">
 				<a href="https://typecodes.com/cseries/mapdelintstring.html">C++删除map容器中指定值的元素</a>
 			</li>
@@ -221,9 +235,6 @@ AuthorizedKeysFile .ssh/authorized_keys
 			</li>
 			<li class="post">
 				<a href="https://typecodes.com/cseries/kill0checkprocessifexist.html">Linux使用KILL 0检测进程是否存在</a>
-			</li>
-			<li class="post">
-				<a href="https://typecodes.com/cseries/vsnprintffilenameline.html">vsnprintf字符串格式化输出实例：日志中打印程序名和行号</a>
 			</li>
 		</ul>
 	</div>
@@ -267,7 +278,7 @@ AuthorizedKeysFile .ssh/authorized_keys
 		<div class="col-md-12 copyright">
 			<a href="#top"><i class="i-logo-s">TOP</i></a>
 			<p>
-				&copy;  2012-2016 							<a href="https://typecodes.com">TypeCodes</a>. All Rights Reserved<br>Powered by <a href="http://getpelican.com" rel="external" target="_blank">Pelican</a>. <a href="http://www.miitbeian.gov.cn" rel="external nofollow" target="_blank">粤ICP备14050695号</a>
+				&copy;  2012-2017 							<a href="https://typecodes.com">TypeCodes</a>. All Rights Reserved<br>Powered by <a href="http://getpelican.com" rel="external" target="_blank">Pelican</a>. <a href="http://www.miitbeian.gov.cn" rel="external nofollow" target="_blank">粤ICP备14050695号</a>
 			</p>
 		</div>
 	</div>

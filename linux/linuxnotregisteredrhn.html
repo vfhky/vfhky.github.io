@@ -5,7 +5,9 @@
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
   		<meta name="renderer" content="webkit">
 		<title>解决Redhat Linux5 yum出现This system is not registered with RHN - TypeCodes</title>
-		<meta name="description" content="解决Redhat Linux5 yum出现This system is not registered with RHN - TypeCodes" />
+  		<meta name="description" content="<p>最近博主在学习Linux，菜鸟级别的的选手连装个Chrome都觉得难，悲了个催的……百度了很多教程，大多是类似的。博主的配置是在VM8下搭建的RHEL5.3 (Tikanga)版本，不知道什么原因，每次在输入yum install google-chrome-stable之后就会出现“This system is not registered with RHN”的错误提示，蛋疼不已。百度无果后，GG大神帮上忙了（搜索Redhat This system is not registered with RHN，会冒出很多国外大牛的文章）。</p>
+<p>出现这个错误的原因是你的Linux木有花钱在红帽网络上注册^^，所以无法下载谷歌Chrome的软件包，解决方案可以使用从Redhat演化而来的免费Linux版本CentOS，通过CentOS的yum更新源来实现RHEL5的YUM功能。下面博主结合GG到的国外文章谈谈How to Install CentOS YUM on Redhat Linux RHEL5，以此来解决This system is not registered with RHN的问题。</p>
+" />
   		<meta name="viewport" content="width=device-width, initial-scale=1">
   		<link href="https://typecodes.com/atom.xml" type="application/atom+xml" rel="alternate" title="TypeCodes Atom Feed" />
 	  	<link href="https://typecodes.com/feed.xml" type="application/rss+xml" rel="alternate" title="TypeCodes RSS Feed" />
@@ -258,7 +260,7 @@ yum-3.2.22-40.el5.centos.noarch.rpm
 		        <a href="https://typecodes.com/java/index.html">Java</a> (1)
 		      </li>
 		      <li class="current">
-		        <a href="https://typecodes.com/linux/index.html">Linux</a> (22)
+		        <a href="https://typecodes.com/linux/index.html">Linux</a> (23)
 		      </li>
 		      <li class="current">
 		        <a href="https://typecodes.com/mix/index.html">Mix</a> (54)
@@ -271,6 +273,9 @@ yum-3.2.22-40.el5.centos.noarch.rpm
 	<div class="widget">
 		<h3 class="widget-title">Recent Posts</h3>
 		<ul class="widget-list">
+			<li class="post">
+				<a href="https://typecodes.com/linux/sedawkfindreplace1.html">使用sed和awk查找和替换字符串处理Makefile文件</a>
+			</li>
 			<li class="post">
 				<a href="https://typecodes.com/cseries/mapdelintstring.html">C++删除map容器中指定值的元素</a>
 			</li>
@@ -288,9 +293,6 @@ yum-3.2.22-40.el5.centos.noarch.rpm
 			</li>
 			<li class="post">
 				<a href="https://typecodes.com/cseries/kill0checkprocessifexist.html">Linux使用KILL 0检测进程是否存在</a>
-			</li>
-			<li class="post">
-				<a href="https://typecodes.com/cseries/vsnprintffilenameline.html">vsnprintf字符串格式化输出实例：日志中打印程序名和行号</a>
 			</li>
 		</ul>
 	</div>
@@ -334,7 +336,7 @@ yum-3.2.22-40.el5.centos.noarch.rpm
 		<div class="col-md-12 copyright">
 			<a href="#top"><i class="i-logo-s">TOP</i></a>
 			<p>
-				&copy;  2012-2016 							<a href="https://typecodes.com">TypeCodes</a>. All Rights Reserved<br>Powered by <a href="http://getpelican.com" rel="external" target="_blank">Pelican</a>. <a href="http://www.miitbeian.gov.cn" rel="external nofollow" target="_blank">粤ICP备14050695号</a>
+				&copy;  2012-2017 							<a href="https://typecodes.com">TypeCodes</a>. All Rights Reserved<br>Powered by <a href="http://getpelican.com" rel="external" target="_blank">Pelican</a>. <a href="http://www.miitbeian.gov.cn" rel="external nofollow" target="_blank">粤ICP备14050695号</a>
 			</p>
 		</div>
 	</div>
