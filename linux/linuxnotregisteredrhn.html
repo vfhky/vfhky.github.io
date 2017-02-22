@@ -5,9 +5,9 @@
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
   		<meta name="renderer" content="webkit">
 		<title>解决Redhat Linux5 yum出现This system is not registered with RHN - TypeCodes</title>
-  		<meta name="description" content="<p>最近博主在学习Linux，菜鸟级别的的选手连装个Chrome都觉得难，悲了个催的……百度了很多教程，大多是类似的。博主的配置是在VM8下搭建的RHEL5.3 (Tikanga)版本，不知道什么原因，每次在输入yum install google-chrome-stable之后就会出现“This system is not registered with RHN”的错误提示，蛋疼不已。百度无果后，GG大神帮上忙了（搜索Redhat This system is not registered with RHN，会冒出很多国外大牛的文章）。</p>
+  		<meta name="description" content='<p>最近博主在学习Linux，菜鸟级别的的选手连装个Chrome都觉得难，悲了个催的……百度了很多教程，大多是类似的。博主的配置是在VM8下搭建的RHEL5.3 (Tikanga)版本，不知道什么原因，每次在输入yum install google-chrome-stable之后就会出现“This system is not registered with RHN”的错误提示，蛋疼不已。百度无果后，GG大神帮上忙了（搜索Redhat This system is not registered with RHN，会冒出很多国外大牛的文章）。</p>
 <p>出现这个错误的原因是你的Linux木有花钱在红帽网络上注册^^，所以无法下载谷歌Chrome的软件包，解决方案可以使用从Redhat演化而来的免费Linux版本CentOS，通过CentOS的yum更新源来实现RHEL5的YUM功能。下面博主结合GG到的国外文章谈谈How to Install CentOS YUM on Redhat Linux RHEL5，以此来解决This system is not registered with RHN的问题。</p>
-" />
+' />
   		<meta name="viewport" content="width=device-width, initial-scale=1">
   		<link href="https://typecodes.com/atom.xml" type="application/atom+xml" rel="alternate" title="TypeCodes Atom Feed" />
 	  	<link href="https://typecodes.com/feed.xml" type="application/rss+xml" rel="alternate" title="TypeCodes RSS Feed" />

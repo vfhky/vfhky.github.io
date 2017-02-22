@@ -5,10 +5,10 @@
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
   		<meta name="renderer" content="webkit">
 		<title>再议C语言将十六进制字符串转成十进制整数 - TypeCodes</title>
-  		<meta name="description" content="<p>前文<a href="https://typecodes.com/cseries/clanghexstrtointeger.html" title="查看原文">《C语言将十六进制字符串转成十进制整数》</a>讲述了将十六进制字符串中单个字符分别从高位到低位正序和从低位到高位逆序转换成对应的十进制数，今天在看原文的程序发现一个不好的地方：由于使用了<code>char * p = HexStr;</code>，也就是直接使用指针p将这个十六进制字符串进行了读取和<code>改写</code>。这样会造成在调用了<code>HexStr2Integer</code>转换函数后，就不能再次使用这个十六进制字符串了。</p>
+  		<meta name="description" content='<p>前文<a href="https://typecodes.com/cseries/clanghexstrtointeger.html" title="查看原文">《C语言将十六进制字符串转成十进制整数》</a>讲述了将十六进制字符串中单个字符分别从高位到低位正序和从低位到高位逆序转换成对应的十进制数，今天在看原文的程序发现一个不好的地方：由于使用了<code>char * p = HexStr;</code>，也就是直接使用指针p将这个十六进制字符串进行了读取和<code>改写</code>。这样会造成在调用了<code>HexStr2Integer</code>转换函数后，就不能再次使用这个十六进制字符串了。</p>
 <p>因此，在转换过程中，可以考虑将原来的这个十六进制字符串在内存中复制一份，然后再对这个复制的<code>副本</code>进行读写，这样就产生副作用了。下面是根据原来的两个程序改进的的代码，主要通过<code>malloc</code>函数开辟一个内存空间，然后复制十六进制字符串中的数据到这个内存空间中，最后对它进行“读写”。</p>
 <p>在下面这两个改进的代码中，还考虑到了这个十六进制字符串以<code>0x</code>开头的形式出现，所以增加了这种情况的处理。</p>
-" />
+' />
   		<meta name="viewport" content="width=device-width, initial-scale=1">
   		<link href="https://typecodes.com/atom.xml" type="application/atom+xml" rel="alternate" title="TypeCodes Atom Feed" />
 	  	<link href="https://typecodes.com/feed.xml" type="application/rss+xml" rel="alternate" title="TypeCodes RSS Feed" />

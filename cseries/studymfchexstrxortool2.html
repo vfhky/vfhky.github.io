@@ -5,11 +5,11 @@
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
   		<meta name="renderer" content="webkit">
 		<title>图文实例说MFC制作工具的心得（二） - TypeCodes</title>
-  		<meta name="description" content="<p>继前文<a href="https://typecodes.com/cseries/studymfchexstrxortool1.html" title="点击查看">《图文实例说MFC制作工具的心得（一）》</a>，这篇文章继续写几点心得。</p>
+  		<meta name="description" content='<p>继前文<a href="https://typecodes.com/cseries/studymfchexstrxortool1.html" title="点击查看">《图文实例说MFC制作工具的心得（一）》</a>，这篇文章继续写几点心得。</p>
 <h5>1 如何将CString转换成char *指针</h5>
 <p>由于异或的时候可以直接调用<a href="https://typecodes.com/cseries/hexstrxor.html" title="《十六进制字符串异或》">《十六进制字符串异或》</a>一文中的十六进制字符串异或方法<code>void hexstrxor(char * HexStr1, char * HexStr2, char * HexStr)</code>。</p>
 <p>但是<code>Edit Control</code>控件添加变量<code>HexStr1</code>、<code>HexStr2</code>都是CString类型，所以需要转换。由于项目的字符集是<code>使用多字节字符集</code>，所以可以通过<code>(LPSTR)(LPCTSTR)CString</code>方法强制将CString数据转换成char *指针类型，这样就可以直接调用了<code>hexstrxor((LPSTR)(LPCTSTR)HexStr1, (LPSTR)(LPCTSTR)HexStr2, HexStrXorResult);</code>。</p>
-" />
+' />
   		<meta name="viewport" content="width=device-width, initial-scale=1">
   		<link href="https://typecodes.com/atom.xml" type="application/atom+xml" rel="alternate" title="TypeCodes Atom Feed" />
 	  	<link href="https://typecodes.com/feed.xml" type="application/rss+xml" rel="alternate" title="TypeCodes RSS Feed" />

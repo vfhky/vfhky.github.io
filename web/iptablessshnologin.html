@@ -5,7 +5,7 @@
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
   		<meta name="renderer" content="webkit">
 		<title>阿里云iptables防火墙配置出错导致ssh无法远程登录 - TypeCodes</title>
-  		<meta name="description" content="<h5>1 悲催的 iptables 探索</h5>
+  		<meta name="description" content='<h5>1 悲催的 iptables 探索</h5>
 <p>由于之前对 iptables 不熟悉，所以在配置 iptables 的时候，直接执行命令<code>iptables -F</code>。结果导致 Securecrt 中所有连接远端服务器的窗口都断掉了，而且博客的所有页面都无法打开。心中顿时一慌，ssh无法登录，即使博客中的程序和数据库已经备份了也无法取出了。</p>
 <p>网上搜了一下，原来在使用这个命令之前一定要先执行命令<code>iptables -P INPUT ACCEPT</code>。</p>
 <div class="highlight"><pre><span></span>###### 即先把 policy 设定为 ACCEPT, 允许所有的封包传输. 否则, 当前连接远程服务器的终端会立即断掉
@@ -15,7 +15,7 @@
 </pre></div>
 
 
-" />
+' />
   		<meta name="viewport" content="width=device-width, initial-scale=1">
   		<link href="https://typecodes.com/atom.xml" type="application/atom+xml" rel="alternate" title="TypeCodes Atom Feed" />
 	  	<link href="https://typecodes.com/feed.xml" type="application/rss+xml" rel="alternate" title="TypeCodes RSS Feed" />

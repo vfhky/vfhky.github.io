@@ -5,9 +5,9 @@
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
   		<meta name="renderer" content="webkit">
 		<title>C语言将十六进制字符串转成十进制整数 - TypeCodes</title>
-  		<meta name="description" content="<p>C/C++处理十六进制文件中的报文内容时，经常会遇到先读取报文头中的长度（例如"E2"、"1F"、"-eE2"等等），再读取报文体中的内容的情况。那么就需要把报文头中表示长度的十六进制字符串转换成十进制的整形数据。</p>
+  		<meta name="description" content='<p>C/C++处理十六进制文件中的报文内容时，经常会遇到先读取报文头中的长度（例如"E2"、"1F"、"-eE2"等等），再读取报文体中的内容的情况。那么就需要把报文头中表示长度的十六进制字符串转换成十进制的整形数据。</p>
 <p>转换方法有两种，一种是正向从字符串低位到高位依次转换，另一种是逆向从字符串高位到低位依次转换。原理都是利用指针变量依次指向十六进制字符串中的单个字符，然后通过ASCII码表转换成对应的整数。考虑到十进制的字符串中可能会出现正负号，即转换后可能出现负整数，所以增加了对这种情况的处理。下面是两种方法的具体代码：</p>
-" />
+' />
   		<meta name="viewport" content="width=device-width, initial-scale=1">
   		<link href="https://typecodes.com/atom.xml" type="application/atom+xml" rel="alternate" title="TypeCodes Atom Feed" />
 	  	<link href="https://typecodes.com/feed.xml" type="application/rss+xml" rel="alternate" title="TypeCodes RSS Feed" />

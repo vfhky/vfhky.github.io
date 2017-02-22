@@ -5,10 +5,10 @@
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
   		<meta name="renderer" content="webkit">
 		<title>配置IIS出现错误的解决方法 - TypeCodes</title>
-  		<meta name="description" content="<p>在给ASP或者ASP.NET等需要配置IIS服务器的过程中，很可能会遇到以下两种错误。尤其是用Win7系统的，配置IIS7.0版本比用XP系统配置IIS5.1版本而言要复杂复杂一些。当同时需要配置ASP和ASP.NET共存的IIS服务器环境时会更有挑战性。下面是我的两个总结:</p>
+  		<meta name="description" content='<p>在给ASP或者ASP.NET等需要配置IIS服务器的过程中，很可能会遇到以下两种错误。尤其是用Win7系统的，配置IIS7.0版本比用XP系统配置IIS5.1版本而言要复杂复杂一些。当同时需要配置ASP和ASP.NET共存的IIS服务器环境时会更有挑战性。下面是我的两个总结:</p>
 <h5>1 错误提示：ADODB.Connection 错误 '800a0e7a'，未找到提供程序。</h5>
 <p>解决：原来的网站是在32位的windows环境中生成的导致在win764位中出现错误（IIS7应用程序池默认没有启用32位程序，也就是说如果使用的是64位操作系统，而没有64位的Jet 4.0驱动程序，那么就要在IIS7中启用32位程序）。此时点击IIS管理器左边的“应用程序池”在“启用32位应用程序”选择“True”。</p>
-" />
+' />
   		<meta name="viewport" content="width=device-width, initial-scale=1">
   		<link href="https://typecodes.com/atom.xml" type="application/atom+xml" rel="alternate" title="TypeCodes Atom Feed" />
 	  	<link href="https://typecodes.com/feed.xml" type="application/rss+xml" rel="alternate" title="TypeCodes RSS Feed" />

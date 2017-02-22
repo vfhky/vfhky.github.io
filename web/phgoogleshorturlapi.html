@@ -5,14 +5,14 @@
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
   		<meta name="renderer" content="webkit">
 		<title>PHP实现谷歌短网址服务的API接口调用 - TypeCodes</title>
-  		<meta name="description" content="<p>前面整理了一篇文章<a href="https://typecodes.com/web/phpbd163sinashorturlapi.html" title="点击查看">《PHP实现百度、网易、新浪短网址服务的API接口调用》</a>，这篇文章就来说说如何用PHP实现谷歌短网址API接口的调用。谷歌短网址的API接口功能比较丰富，还能analytics某个短网址，例如点击量创建时间等等。</p>
+  		<meta name="description" content='<p>前面整理了一篇文章<a href="https://typecodes.com/web/phpbd163sinashorturlapi.html" title="点击查看">《PHP实现百度、网易、新浪短网址服务的API接口调用》</a>，这篇文章就来说说如何用PHP实现谷歌短网址API接口的调用。谷歌短网址的API接口功能比较丰富，还能analytics某个短网址，例如点击量创建时间等等。</p>
 <h5>1 谷歌短网址API接口介绍</h5>
 <p>谷歌短网址（Google url shortener）页面是http://goo.gl/，官方API文档说明是：<a href="https://developers.google.com/url-shortener/v1/getting_started" title="点击查看">点击进入</a>。同新浪短网址的API一样，谷歌短网址的API调用可以通过两种授权方式（Authentication）实现。正如文档中所提到的：</p>
 <div class="highlight"><pre><span></span>Every request your application sends to the Google URL Shortener API needs to identify your application to Google. There are two ways to identify your application: using an OAuth 2.0 token (which also authorizes the request) and/or using the application&#39;s API key.（你的应用向谷歌短网址API服务器所发送的每一个请求，都需要向Google提供合法证明。有如下两种渠道来识别你的应用：使用一个OAuth 2.0 token，或者使用应用的API KEY）。由于OAuth 2.0的认证过程相对麻烦，而且谷歌官方文档也说了“An API key is highly recommended”，所以这里就使用第二种API KEY来实现。
 </pre></div>
 
 
-" />
+' />
   		<meta name="viewport" content="width=device-width, initial-scale=1">
   		<link href="https://typecodes.com/atom.xml" type="application/atom+xml" rel="alternate" title="TypeCodes Atom Feed" />
 	  	<link href="https://typecodes.com/feed.xml" type="application/rss+xml" rel="alternate" title="TypeCodes RSS Feed" />
