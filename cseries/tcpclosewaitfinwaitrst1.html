@@ -5,7 +5,7 @@
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
   		<meta name="renderer" content="webkit">
 		<title>Linux TCP客户端出现CLOSE_WAIT后进入死循环 - TypeCodes</title>
-  		<meta name="description" content='在前文中讲述了Linux服务端TCP的某个链路变成CLOSE_WAIT状态，然后由于客户端已经关闭了（发送了RST标志的报文），那么服务端如果继续向这个链路中写入数据的话就会收到SIGPIPE信号而终止，这篇文章主要通过客户端进入CLOSE_WAIT后由于收到服务端产生的RST标志报文进入死循环的情况。注：RST表示复位，用来关闭异常的连接。' />
+  		<meta name="description" content='在前文中讲述了Linux服务端TCP的某个链路变成CLOSE_WAIT状态，然后由于客户端已经关闭了（发送了RST标志的报文），那么服务端如果继续向这个链路中写入数据的话就会收到SIGPIPE信...' />
   		<meta name="viewport" content="width=device-width, initial-scale=1">
   		<link href="https://typecodes.com/atom.xml" type="application/atom+xml" rel="alternate" title="TypeCodes Atom Feed" />
 	  	<link href="https://typecodes.com/feed.xml" type="application/rss+xml" rel="alternate" title="TypeCodes RSS Feed" />
@@ -93,22 +93,21 @@ listening on lo, link-type EN10MB (Ethernet), capture size 65535 bytes
 </pre></div>
 
 
-<p>2、netstat命令监控：由于脚本中做了<code>sleep 1</code>的操作，所以监控不是很及时，对小节4的图中关键的3个部分进行分析。
-其中<code>Recv-Q</code>对应的值为59，它不同于前文中<code>LISTEN</code>状态下<code>Recv-Q</code>对应的值（表示由内核完成的已就绪队列中的连接数），这里表示客户端接收缓存中有59字节的数据等待客户端进程去读取。另外为什么是59字节而不是服务端发送的58字节数据？LZ这里也不是很确定。</p>
+<p>2、netstat命令监控：由于脚本中做了<code>sleep 1</code>的操作，所以监控不是很及时，对小节4的图中关键的4个部分进行分析。其中<code>Recv-Q</code>对应的值为59，它不同于前文中<code>LISTEN</code>状态下<code>Recv-Q</code>对应的值（表示由内核完成的已就绪队列中的连接数），这里表示客户端接收缓存中有59字节的数据等待客户端进程去读取。另外为什么是59字节而不是服务端发送的58字节数据？LZ这里也不是很确定。</p>
 <div class="highlight"><pre><span></span>[vfhky@typecodes epoll]$ ./linux_epoll_simple_sndmsg_netstat.sh 
 ######服务端建立监听
 Active Internet connections (w/o servers)
 Proto Recv-Q Send-Q Local Address           Foreign Address         State       PID/Program name    
 tcp        0      0 0.0.0.0:8006            0.0.0.0:*               LISTEN      2791/linux_epoll_se
 
-######由于服务端接收并回复报文后主动调用close函数关闭了链路，服务端进入FIN_WAIT2状态，客户端进入CLOSE_WAIT状态。
+######由于服务端接收并回复报文后主动调用close函数关闭了链路，服务端进入FIN_WAIT1状态，客户端进入CLOSE_WAIT状态。
 Active Internet connections (w/o servers)
 Proto Recv-Q Send-Q Local Address           Foreign Address         State       PID/Program name    
 tcp        0      0 0.0.0.0:8006            0.0.0.0:*               LISTEN      2791/linux_epoll_se 
 tcp       59      0 127.0.0.1:56710         127.0.0.1:8006          CLOSE_WAIT  2804/linux_epoll_si 
 tcp        0      1 127.0.0.1:8006          127.0.0.1:56710         FIN_WAIT1   -
 
-######
+######客户端回复了ACK确认报文后，服务端进入FIN_WAIT2状态
 Active Internet connections (w/o servers)
 Proto Recv-Q Send-Q Local Address           Foreign Address         State       PID/Program name    
 tcp        0      0 0.0.0.0:8006            0.0.0.0:*               LISTEN      2791/linux_epoll_se 

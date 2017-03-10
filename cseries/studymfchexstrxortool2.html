@@ -5,7 +5,7 @@
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
   		<meta name="renderer" content="webkit">
 		<title>图文实例说MFC制作工具的心得（二） - TypeCodes</title>
-  		<meta name="description" content='继前文《图文实例说MFC制作工具的心得（一）》，这篇文章继续写几点心得。 1 如何将CString转换成char *指针 由于异或的时候可以直接调用《十六进制字符串异或》一文中的十六进制字符串异或方法void hexstrxor(char * HexStr1, char * HexStr2, char * HexStr)。 但是Edit Control控件添加变量HexStr1、HexStr2都是CString类型，所以需要转换。由于项目的字符集是使用多字节字符集，所以可以通过(LPSTR)(LPCTSTR)CString方法强制将CString数据转换成char *指针类型，这样就可以直接调用了hexstrxor((LPSTR)(LPCTSTR)HexStr1, (LPSTR)(LPCTSTR)HexStr2, HexStrXorResult);。' />
+  		<meta name="description" content='继前文《图文实例说MFC制作工具的心得（一）》，这篇文章继续写几点心得。 1 如何将CString转换成char *指针...' />
   		<meta name="viewport" content="width=device-width, initial-scale=1">
   		<link href="https://typecodes.com/atom.xml" type="application/atom+xml" rel="alternate" title="TypeCodes Atom Feed" />
 	  	<link href="https://typecodes.com/feed.xml" type="application/rss+xml" rel="alternate" title="TypeCodes RSS Feed" />

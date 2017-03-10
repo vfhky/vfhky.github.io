@@ -5,7 +5,7 @@
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
   		<meta name="renderer" content="webkit">
 		<title>阿里云CentOS主机 LNMP 环境配置之Php篇——安装XCache加速器 - TypeCodes</title>
-  		<meta name="description" content='在完成了上面两篇关于阿里云CentOS 6.5主机中 Nginx 和 Mysql 的配置的经验分享后，这篇文章说说如何安装 php 的“加速器”——XCache。相信大家听说过 php 的几款缓存加速器：APC、xcache、eaccelerator等（对于小站咱就不要使用 Memcached 了）。 1 官网下载 XCache 3.1.0 源码(支持php5.1 ~ 5.4) ###### 下载XCache 3.1.0稳定版 [root@typecodes ~]# wget http://xcache.lighttpd.net/pub/Releases/3.1.0/xcache-3.1.0.tar.gz ###### 解压到当前目录 [root@typecodes ~]# tar -zxvf xcache-3.1.0.tar.gz [root@typecodes ~]# cd xcache-3.1.0 ###### phpize是用来扩展php模块的，建立外挂模块 [root@typecodes xcache-3.1.0]# phpize Configuring for: PHP Api Version: 20090626 Zend Module Api No: 20090626 Zend Extension Api No: 20090626 ###### 如果出现 -bash: phpize: command not found，是因为没安装 php-devel 导致的 [root@typecodes ~]# yum install php-devel' />
+  		<meta name="description" content='在完成了上面两篇关于阿里云CentOS 6.5主机中 Nginx 和 Mysql 的配置的经验分享后，这篇文章说说如何安装 php 的“加速器”——XCache。相信大家听说过 php...' />
   		<meta name="viewport" content="width=device-width, initial-scale=1">
   		<link href="https://typecodes.com/atom.xml" type="application/atom+xml" rel="alternate" title="TypeCodes Atom Feed" />
 	  	<link href="https://typecodes.com/feed.xml" type="application/rss+xml" rel="alternate" title="TypeCodes RSS Feed" />
