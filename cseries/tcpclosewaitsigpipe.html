@@ -252,7 +252,7 @@
 <p><img alt="Linux中利用netstat和lsof命令查看TCP服务状态" src="https://o3cex9zsl.qnssl.com/2016/02/win_client_close_netstat_lsof1.png" title="Linux中利用netstat和lsof命令查看TCP服务状态"></p>
 <p>在等待2分钟后，在Windows中使用Wireshark抓包发现由于客户端发送了<code>RST+ACK</code>报文给Linux服务端，所以二者的TCP链路已经被复位了：</p>
 <p><img alt="在Windows中使用Wireshark抓包" src="https://o3cex9zsl.qnssl.com/2016/02/win_client_wireshark1.png" title="在Windows中使用Wireshark抓包"></p>
-<p>这时在Linux中再次使用netstat_nap.sh脚本和lsof命令发现<code>CLOSE_WAIT</code>的状态已经不存在了。</p>
+<p>这时在Linux中再次使用netstat_nap.sh脚本和lsof命令发现<code>CLOSE_WAIT</code>的状态已经不存在了。但是从下图中可以看到处于<code>LISTEN</code>状态的<code>Recv-Q</code>对应的值还是为1，也就是由内核维护的已完成握手的队列中的这个连接还等待着服务端程序<code>读取</code>。</p>
 <p><img alt="Linux中利用netstat和lsof命令查看TCP服务状态" src="https://o3cex9zsl.qnssl.com/2016/02/win_client_close_netstat_lsof2.png" title="Linux中利用netstat和lsof命令查看TCP服务状态"></p>
 <h4>5 关闭Linux telnet客户端</h4>
 <p>在Windows关闭telnet客户端界面并发送<code>RST+ACK</code>报文后，关闭小节2中在Linux中打开的telnet客户端。这时Linux服务端进程会执行第90行处的close()函数，也即执行正常<code>四次挥手</code>关闭TCP连接。</p>

@@ -48,9 +48,9 @@
 
 
 <h4>1 CentOS服务端建立监听端口</h4>
-<p>如上图所示，在虚拟机CentOS7服务器（192.168.1.177）中打开一个终端界面，执行程序<code>linux_epoll_server_2</code>建立8000端口的监听服务（PID:2791）。进程的大体执行过程是使用epoll_wait等待客户端的接入，然后打印的接收报文并回复应答报文，最后关闭这个客户端的连接。</p>
+<p>如上图所示，在虚拟机CentOS7服务器（192.168.1.177）中打开一个终端界面，执行程序<code>linux_epoll_server_2</code>建立8000端口的监听服务（PID:2791）。进程的大体执行过程是通过<code>epoll_wait</code>等待客户端的接入，当可读描述符就绪时打印接收的报文并回复应答报文，最后调用<code>close</code>函数关闭这个描述符并将其从监听事件中删除。</p>
 <h4>2 CentOS客户端连接服务端</h4>
-<p>新建一个Linux会话终端并执行客户端程序linux_epoll_simple_sndmsg_netstat（具体代码见文末附录部分），然后通过三次握手建立TCP连接，接着进程进入循环模式：每次发送完报文会休眠5秒（<code>sleep(5)</code>）然后再次向服务端发送报文。</p>
+<p>新建一个Linux会话终端并执行客户端程序linux_epoll_simple_sndmsg_netstat（具体代码见文末附录部分）。在过三次握手建立TCP连接后进程进入循环模式：每次发送完报文休眠5秒（<code>sleep(5)</code>）接着再次向服务端发送报文。</p>
 <p><img alt="客户端连接服务端" src="https://o3cex9zsl.qnssl.com/2017/03/tcpclosewaitfinwaitrst1_client_process.png" title="客户端连接服务端"></p>
 <h4>3 使用netstat命令查看TCP状态</h4>
 <p>新建一个Linux会话终端并创建一个shell脚本linux_epoll_simple_sndmsg_netstat.sh ，里面包含关键命令<code>sudo netstat -npt|head -n 2;sudo netstat -npa|grep 8006</code>。这个脚本用于监控TCP的通信状态。从下图中可以看到，最终服务端进程（PID:2791）在监听8006端口，然后和客户端进程（PID:2804）建立了TCP连接。</p>
@@ -70,19 +70,20 @@ listening on lo, link-type EN10MB (Ethernet), capture size 65535 bytes
 13:09:58.084191 IP 127.0.0.1.8006 &gt; 127.0.0.1.56710: Flags [S.], seq 2881349854, ack 1652959376, win 43690, options [mss 65495,sackOK,TS val 8433172 ecr 8433172,nop,wscale 7], length 0
 11:55:35.724660 IP 127.0.0.1.56710 &gt; 127.0.0.1.8006: Flags [.], ack 1, win 342, options [nop,nop,TS val 8433172 ecr 8433172], length 0
 
-######客户端发送58字节的报文
+######客户端发送58字节的报文（ seq 1:59中的59=seq(1)+length(58) ）
 11:55:35.724966 IP 127.0.0.1.56710 &gt; 127.0.0.1.8006: Flags [P.], seq 1:59, ack 1, win 342, options [nop,nop,TS val 8433173 ecr 8433172], length 58
-######服务端回复ACK确认报文
+######服务端回复ACK确认报文（ACK=对方SEQ+报文长度=1+58=59）
 11:55:35.724970 IP 127.0.0.1.8006 &gt; 127.0.0.1.56710: Flags [.], ack 59, win 342, options [nop,nop,TS val 8433173 ecr 8433173], length 0
 
-######服务端回复58字节的报文
+######服务端主动发送58字节的报文（ seq 1:59中的59=seq(1)+length(58) ）
 11:55:35.725006 IP 127.0.0.1.8006 &gt; 127.0.0.1.56710: Flags [P.], seq 1:59, ack 59, win 342, options [nop,nop,TS val 8433173 ecr 8433173], length 58
-######客户端回复ACK确认报文
+######客户端回复ACK确认报文（ACK=对方SEQ+报文长度=1+58=59）
 11:55:35.725008 IP 127.0.0.1.56710 &gt; 127.0.0.1.8006: Flags [.], ack 59, win 342, options [nop,nop,TS val 8433173 ecr 8433173], length 0
 
 ######服务端调用close函数关闭连接（发送FIN标志的报文后进入FIN_WAIT_1状态）
 11:55:35.725018 IP 127.0.0.1.8006 &gt; 127.0.0.1.56710: Flags [F.], seq 59, ack 59, win 342, options [nop,nop,TS val 8433173 ecr 8433173], length 0
 ######客户端回复ACK确认报文（客户端进入CLOSE_WAIT状态，服务端进入FIN_WAIT_2状态）
+######ACK=对方SEQ+1=59+1=60
 11:55:35.766501 IP 127.0.0.1.56710 &gt; 127.0.0.1.8006: Flags [.], ack 60, win 342, options [nop,nop,TS val 8433215 ecr 8433173], length 0
 
 ######客户端5秒后再次发送58字节的报文（CLOSE_WAIT状态还是可以向对端发送报文的）
@@ -92,14 +93,22 @@ listening on lo, link-type EN10MB (Ethernet), capture size 65535 bytes
 </pre></div>
 
 
-<p>2、netstat命令监控：由于脚本中包含了<code>sleep 1</code>的代码，所以监控不是很全，这里挑关键的3个部分进行分析：</p>
+<p>2、netstat命令监控：由于脚本中做了<code>sleep 1</code>的操作，所以监控不是很及时，对小节4的图中关键的3个部分进行分析。
+其中<code>Recv-Q</code>对应的值为59，它不同于前文中<code>LISTEN</code>状态下<code>Recv-Q</code>对应的值（表示由内核完成的已就绪队列中的连接数），这里表示客户端接收缓存中有59字节的数据等待客户端进程去读取。另外为什么是59字节而不是服务端发送的58字节数据？LZ这里也不是很确定。</p>
 <div class="highlight"><pre><span></span>[vfhky@typecodes epoll]$ ./linux_epoll_simple_sndmsg_netstat.sh 
 ######服务端建立监听
 Active Internet connections (w/o servers)
 Proto Recv-Q Send-Q Local Address           Foreign Address         State       PID/Program name    
 tcp        0      0 0.0.0.0:8006            0.0.0.0:*               LISTEN      2791/linux_epoll_se
 
-######由于服务端接收并回复报文后主动调用close函数关闭了链路，服务端进入FIN_WAIT2状态，客户端进入CLOSE_WAIT状态
+######由于服务端接收并回复报文后主动调用close函数关闭了链路，服务端进入FIN_WAIT2状态，客户端进入CLOSE_WAIT状态。
+Active Internet connections (w/o servers)
+Proto Recv-Q Send-Q Local Address           Foreign Address         State       PID/Program name    
+tcp        0      0 0.0.0.0:8006            0.0.0.0:*               LISTEN      2791/linux_epoll_se 
+tcp       59      0 127.0.0.1:56710         127.0.0.1:8006          CLOSE_WAIT  2804/linux_epoll_si 
+tcp        0      1 127.0.0.1:8006          127.0.0.1:56710         FIN_WAIT1   -
+
+######
 Active Internet connections (w/o servers)
 Proto Recv-Q Send-Q Local Address           Foreign Address         State       PID/Program name    
 tcp        0      0 0.0.0.0:8006            0.0.0.0:*               LISTEN      2791/linux_epoll_se 
@@ -127,11 +136,11 @@ tcp        0      0 0.0.0.0:8006            0.0.0.0:*               LISTEN      
 </td></tr></table>
 
 <h4>6 得出结论</h4>
-<p>通过小节5中的具体分析，可以看到在服务端调用<code>close函数</code>关闭了客户端的连接后进入<code>FIN_WAIT_1</code>状态，而客户端立马回复了<code>ACK</code>，从而进入了<code>FIN_WAIT_2</code>状态。此时的客户端自然也进入了<code>CLOSE_WAIT</code>状态。</p>
-<p>但是处于<code>CLOSE_WAIT</code>状态的一方还是可以向对端发送报文的，所以客户端在休眠5秒后再次向服务端发送了58字节的报文。然而此时的服务端已经关闭了链路（FIN_WAIT_2状态），所以Linux内核自动发送了一个<code>RST</code>复位标志的报文给客户端，通知关闭这个异常的连接。</p>
-<p>这里可能会产生疑问了，为什么客户端的进程在收到<code>RST</code>报文后会关闭呢？原因和<a href="https://typecodes.com/cseries/tcpclosewaitsigpipe.html" title="查看原文">《Linux TCP通信出现CLOSE_WAIT后导致服务端进程挂掉》</a>是一样的，就是Linux内核产生软中断，发送<code>SIGPIPE</code>信号给客户端进程，导致其默认终止了。这点可以通过设置客户端程序中<code>#define SIGNAL_HANDLE 0</code>为1来验证。</p>
-<p><img alt="Linux TCP客户端出现CLOSE_WAIT后进入死循环" src="https://o3cex9zsl.qnssl.com/2017/03/tcpclosewaitfinwaitrst1_tcpdump.png" title="Linux TCP客户端出现CLOSE_WAIT后进入死循环"></p>
-<p>但是问题又来了：如上图所示，由于捕捉了<code>SIGPIPE</code>信号（对应值为13）后，客户端进程不会终止，所以进入了<code>while死循环</code>。同时由于捕捉了<code>SIGINT</code>信号（对应值为2），导致在客户端所在的Linux会话终端上无法使用<code>Ctrl+C</code>来终止进程，最后只能使用<code>kill</code>信号来终止客户端！</p>
+<p>通过小节5中的具体分析可以看到在服务端调用<code>close函数</code>关闭了客户端的连接后进入<code>FIN_WAIT_1</code>状态，那么客户端立马进入了<code>CLOSE_WAIT</code>状态。而服务端在收到客户端回复的<code>ACK</code>报文后进入<code>FIN_WAIT_2</code>状态。</p>
+<p>因为处于<code>CLOSE_WAIT</code>状态的一方仍然可以向对端发送报文，所以客户端在休眠5秒后再次向服务端发送了58字节的报文。但是此时的服务端已经关闭了链路（FIN_WAIT_2状态），所以Linux内核自动发送了一个<code>RST</code>复位标志的报文给客户端。</p>
+<p>但是为什么客户端进程在收到<code>RST</code>报文后会关闭呢？原因和<a href="https://typecodes.com/cseries/tcpclosewaitsigpipe.html" title="查看原文">《Linux TCP通信出现CLOSE_WAIT后导致服务端进程挂掉》</a>是一样的，就是Linux内核产生软中断，发送<code>SIGPIPE</code>信号给客户端进程，导致其默认终止了。这点可以通过设置客户端程序中<code>#define SIGNAL_HANDLE 0</code>为1来验证，执行的效果如下图所示：</p>
+<p><img alt="Linux TCP客户端出现CLOSE_WAIT后进入死循环" src="https://o3cex9zsl.qnssl.com/2017/03/tcpclosewaitfinwaitrst1_deadcycle.png" title="Linux TCP客户端出现CLOSE_WAIT后进入死循环"></p>
+<p>那么问题又来了，由于捕捉了<code>SIGPIPE</code>信号（对应值为13）后，客户端进程不会终止，所以进入了<code>while死循环</code>。同时由于捕捉了<code>SIGINT</code>信号（对应值为2），导致在客户端所在的Linux会话终端上无法使用<code>Ctrl+C</code>来终止进程，最后只能使用<code>kill</code>信号来终止客户端！</p>
 <h4>7 附录：</h4>
 <p>以上就是Linux TCP通信中客户端出现CLOSE_WAIT后进入死循环的一个实例以及分析过程，下面是客户端程序linux_epoll_simple_sndmsg_netstat.c，工作流程很简单。</p>
 <table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
