@@ -5,23 +5,37 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>https://typecodes.com/</loc>
-<lastmod>2017-02-22T19:16:16-00:00</lastmod>
+<lastmod>2017-03-10T13:41:20-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://typecodes.com/archives.html</loc>
-<lastmod>2017-02-22T19:16:16-00:00</lastmod>
+<lastmod>2017-03-10T13:41:20-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://typecodes.com/categories.html</loc>
-<lastmod>2017-02-22T19:16:16-00:00</lastmod>
+<lastmod>2017-03-10T13:41:20-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
+</url>
+
+<url>
+<loc>https://typecodes.com/cseries/tcpclosewaitfinwaitrst1.html</loc>
+<lastmod>2017-03-10T13:49:00+08:00</lastmod>
+<changefreq>monthly</changefreq>
+<priority>0.7</priority>
+</url>
+
+<url>
+<loc>https://typecodes.com/linux/sedawkfindreplace2.html</loc>
+<lastmod>2017-03-09T16:45:00+08:00</lastmod>
+<changefreq>monthly</changefreq>
+<priority>0.7</priority>
 </url>
 
 <url>
@@ -1580,7 +1594,7 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>https://typecodes.com/cseries/index.html</loc>
-<lastmod>2016-06-26T10:26:00+08:06</lastmod>
+<lastmod>2017-03-10T13:49:00+08:06</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
@@ -1608,7 +1622,7 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>https://typecodes.com/linux/index.html</loc>
-<lastmod>2017-02-22T16:39:00+08:06</lastmod>
+<lastmod>2017-03-09T16:45:00+08:06</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
@@ -1685,7 +1699,7 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>https://typecodes.com/tag/tcp.html</loc>
-<lastmod>2016-02-29T08:39:00+08:06</lastmod>
+<lastmod>2017-03-10T13:49:00+08:06</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
@@ -2140,7 +2154,7 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>https://typecodes.com/tag/sed.html</loc>
-<lastmod>2017-02-22T16:39:00+08:06</lastmod>
+<lastmod>2017-03-09T16:45:00+08:06</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
@@ -2609,7 +2623,7 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>https://typecodes.com/tag/makefile.html</loc>
-<lastmod>2017-02-22T16:39:00+08:06</lastmod>
+<lastmod>2017-03-09T16:45:00+08:06</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
@@ -2637,7 +2651,7 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>https://typecodes.com/tag/tcpdump.html</loc>
-<lastmod>2016-02-29T08:39:00+08:06</lastmod>
+<lastmod>2017-03-10T13:49:00+08:06</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
@@ -2651,7 +2665,7 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>https://typecodes.com/tag/close_wait.html</loc>
-<lastmod>2016-02-29T08:39:00+08:06</lastmod>
+<lastmod>2017-03-10T13:49:00+08:06</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
@@ -2736,6 +2750,13 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 <url>
 <loc>https://typecodes.com/tag/shi-liu-jin-zhi-zi-fu-chuan.html</loc>
 <lastmod>2015-05-30T07:58:00+08:06</lastmod>
+<changefreq>daily</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
+<loc>https://typecodes.com/tag/rst.html</loc>
+<lastmod>2017-03-10T13:49:00+08:06</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
@@ -3078,7 +3099,7 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>https://typecodes.com/tag/awk.html</loc>
-<lastmod>2017-02-22T16:39:00+08:06</lastmod>
+<lastmod>2017-03-09T16:45:00+08:06</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>

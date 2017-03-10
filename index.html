@@ -39,14 +39,35 @@
 		<div class="col-md-9" id="blog-main" role="main">
 		  	<!--article recycle-->
 			<article class="post">
-<h2 class="post-title"><a href="https://typecodes.com/linux/sedawkfindreplace1.html">使用sed和awk查找和替换字符串处理Makefile文件</a></h2>
+<h2 class="post-title"><a href="https://typecodes.com/cseries/tcpclosewaitfinwaitrst1.html">Linux TCP客户端出现CLOSE_WAIT后进入死循环</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2017-03-10 13:49 | 分类：<a href="https://typecodes.com/cseries/index.html">cseries</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>在<a href="https://typecodes.com/cseries/tcpclosewaitsigpipe.html" title="《Linux TCP通信出现CLOSE_WAIT后导致服务端进程挂掉》">前文</a>中讲述了Linux服务端TCP的某个链路变成<code>CLOSE_WAIT</code>状态，然后由于客户端已经关闭了（发送了<code>RST</code>标志的报文），那么服务端如果继续向这个链路中写入数据的话就会收到<code>SIGPIPE</code>信号而终止，这篇文章主要通过客户端进入<code>CLOSE_WAIT</code>后由于收到服务端产生的<code>RST</code>标志报文进入死循环的情况。注：<code>RST</code>表示复位，用来关闭异常的连接。</p>
+<p><img alt="CentOS服务端建立监听" src="https://o3cex9zsl.qnssl.com/2017/03/tcpclosewaitfinwaitrst1_server_process.png" title="CentOS服务端建立监听"></p>
+
+	<p class="more"><a href="https://typecodes.com/cseries/tcpclosewaitfinwaitrst1.html" title="Linux TCP客户端出现CLOSE_WAIT后进入死循环">- 阅读剩余部分 -</a></p>
+</div>			</article>
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/linux/sedawkfindreplace2.html">使用sed和awk查找和替换字符串处理Makefile文件（二）</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2017-03-09 16:45 | 分类：<a href="https://typecodes.com/linux/index.html">linux</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>在<a href="https://typecodes.com/linux/sedawkfindreplace1.html" title="《使用sed和awk查找和替换字符串处理Makefile文件（一）》">前文</a>中演示了使用awk和sed命令正则查找和替换<a href="https://typecodes.com/cseries/cppgeneralmakefile.html" title="《Linux C/C++工程中可生成ELF、动/静态库文件的通用Makefile》">Makefile</a>文件的匹配内容，这篇文章依然使用这个Makefile文件作为awk和sed命令正则匹配查找、替换和删除操作。</p>
+
+	<p class="more"><a href="https://typecodes.com/linux/sedawkfindreplace2.html" title="使用sed和awk查找和替换字符串处理Makefile文件（二）">- 阅读剩余部分 -</a></p>
+</div>			</article>
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/linux/sedawkfindreplace1.html">使用sed和awk查找和替换字符串处理Makefile文件（一）</a></h2>
 <ul class="post-meta">
 	<li>作者：vfhky | 时间：2017-02-22 16:39 | 分类：<a href="https://typecodes.com/linux/index.html">linux</a></li>
 </ul>
 <div class="post-content fmt">
 	<p>在<a href="https://typecodes.com/linux/handlemakefilebysed.html" title="查看原文">《使用sed命令批量处理Makefile文件的脚本》</a>文中使用sed命令对<a href="https://typecodes.com/cseries/cppgeneralmakefile.html" title="《Linux C/C++工程中可生成ELF、动/静态库文件的通用Makefile》">前文</a>中的Makefile文件进行了替换、追加和删除操作，这篇文章通过使用sed和awk命令对该Makefile文件的某个字符串进行正则匹配查找以及替换。</p>
 
-	<p class="more"><a href="https://typecodes.com/linux/sedawkfindreplace1.html" title="使用sed和awk查找和替换字符串处理Makefile文件">- 阅读剩余部分 -</a></p>
+	<p class="more"><a href="https://typecodes.com/linux/sedawkfindreplace1.html" title="使用sed和awk查找和替换字符串处理Makefile文件（一）">- 阅读剩余部分 -</a></p>
 </div>			</article>
 			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/cseries/mapdelintstring.html">C++删除map容器中指定值的元素</a></h2>
@@ -103,27 +124,6 @@
 
 	<p class="more"><a href="https://typecodes.com/cseries/apuesingledaemonprocess.html" title="UNIX环境高级编程（APUE）之单实例守护进程">- 阅读剩余部分 -</a></p>
 </div>			</article>
-			<article class="post">
-<h2 class="post-title"><a href="https://typecodes.com/cseries/kill0checkprocessifexist.html">Linux使用KILL 0检测进程是否存在</a></h2>
-<ul class="post-meta">
-	<li>作者：vfhky | 时间：2016-03-14 11:48 | 分类：<a href="https://typecodes.com/cseries/index.html">cseries</a></li>
-</ul>
-<div class="post-content fmt">
-	<p>之前遇到过<code>kill( pid, 0 )</code>的情况，由于平常没注意到kill函数的形参为0的情况，不知道它的作用。后面用<code>man 2 kill</code>命令查看了下kill函数的说明，发现可以用来检测进程的存在情况。</p>
-<p><img alt="man 2 kill查看关于形参0的说明" src="https://o3cex9zsl.qnssl.com/2016/03/man2kill0.png" title="man 2 kill查看关于形参0的说明"></p>
-
-	<p class="more"><a href="https://typecodes.com/cseries/kill0checkprocessifexist.html" title="Linux使用KILL 0检测进程是否存在">- 阅读剩余部分 -</a></p>
-</div>			</article>
-			<article class="post">
-<h2 class="post-title"><a href="https://typecodes.com/cseries/vsnprintffilenameline.html">vsnprintf字符串格式化输出实例：日志中打印程序名和行号</a></h2>
-<ul class="post-meta">
-	<li>作者：vfhky | 时间：2016-03-13 23:28 | 分类：<a href="https://typecodes.com/cseries/index.html">cseries</a></li>
-</ul>
-<div class="post-content fmt">
-	<p>在Linux C/C++程序中打印日志时，可能会由于需要打印未知个数的变量参数，那么<code>vsnprintf</code>函数就排上用场了。这里使用一个简单的C程序例子，演示在打印源程序文件名和该打印函数所在的行号的同时，使用vsnprintf函数打印个数未知的参数变量。</p>
-
-	<p class="more"><a href="https://typecodes.com/cseries/vsnprintffilenameline.html" title="vsnprintf字符串格式化输出实例：日志中打印程序名和行号">- 阅读剩余部分 -</a></p>
-</div>			</article>
 		  	<!--page navigation-->
 <ol class="page-navigator">
 <li class="current">
@@ -159,7 +159,7 @@
 		<h3 class="widget-title">Categories</h3>
 		<ul class="widget-list">
 		      <li class="current">
-		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (39)
+		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (40)
 		      </li>
 		      <li class="current">
 		        <a href="https://typecodes.com/csharp/index.html">Csharp</a> (6)
@@ -171,7 +171,7 @@
 		        <a href="https://typecodes.com/java/index.html">Java</a> (1)
 		      </li>
 		      <li class="current">
-		        <a href="https://typecodes.com/linux/index.html">Linux</a> (23)
+		        <a href="https://typecodes.com/linux/index.html">Linux</a> (24)
 		      </li>
 		      <li class="current">
 		        <a href="https://typecodes.com/mix/index.html">Mix</a> (54)
@@ -185,7 +185,13 @@
 		<h3 class="widget-title">Recent Posts</h3>
 		<ul class="widget-list">
 			<li class="post">
-				<a href="https://typecodes.com/linux/sedawkfindreplace1.html">使用sed和awk查找和替换字符串处理Makefile文件</a>
+				<a href="https://typecodes.com/cseries/tcpclosewaitfinwaitrst1.html">Linux TCP客户端出现CLOSE_WAIT后进入死循环</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/sedawkfindreplace2.html">使用sed和awk查找和替换字符串处理Makefile文件（二）</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/sedawkfindreplace1.html">使用sed和awk查找和替换字符串处理Makefile文件（一）</a>
 			</li>
 			<li class="post">
 				<a href="https://typecodes.com/cseries/mapdelintstring.html">C++删除map容器中指定值的元素</a>
@@ -198,12 +204,6 @@
 			</li>
 			<li class="post">
 				<a href="https://typecodes.com/cseries/deldisorderintarrrepeatele.html">C语言删除无序整型数组中的重复元素及时间复杂度</a>
-			</li>
-			<li class="post">
-				<a href="https://typecodes.com/cseries/apuesingledaemonprocess.html">UNIX环境高级编程（APUE）之单实例守护进程</a>
-			</li>
-			<li class="post">
-				<a href="https://typecodes.com/cseries/kill0checkprocessifexist.html">Linux使用KILL 0检测进程是否存在</a>
 			</li>
 		</ul>
 	</div>

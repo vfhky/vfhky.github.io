@@ -1,5 +1,353 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>TypeCodes</title><link href="https://typecodes.com/" rel="alternate"></link><link href="https://typecodes.com/atom.xml" rel="self"></link><id>https://typecodes.com/</id><updated>2017-02-22T16:39:00+08:00</updated><entry><title>使用sed和awk查找和替换字符串处理Makefile文件</title><link href="https://typecodes.com/linux/sedawkfindreplace1.html" rel="alternate"></link><published>2017-02-22T16:39:00+08:00</published><updated>2017-02-22T16:39:00+08:00</updated><author><name>vfhky</name></author><id>tag:typecodes.com,2017-02-22:/linux/sedawkfindreplace1.html</id><summary type="html">&lt;p&gt;在&lt;a href="https://typecodes.com/linux/handlemakefilebysed.html" title="查看原文"&gt;《使用sed命令批量处理Makefile文件的脚本》&lt;/a&gt;文中使用sed命令对&lt;a href="https://typecodes.com/cseries/cppgeneralmakefile.html" title="《Linux C/C++工程中可生成ELF、动/静态库文件的通用Makefile》"&gt;前文&lt;/a&gt;中的Makefile文件进行了替换、追加和删除操作，这篇文章通过使用sed和awk命令对该Makefile文件的某个字符串进行正则匹配查找以及替换。&lt;/p&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>TypeCodes</title><link href="https://typecodes.com/" rel="alternate"></link><link href="https://typecodes.com/atom.xml" rel="self"></link><id>https://typecodes.com/</id><updated>2017-03-10T13:49:00+08:00</updated><entry><title>Linux TCP客户端出现CLOSE_WAIT后进入死循环</title><link href="https://typecodes.com/cseries/tcpclosewaitfinwaitrst1.html" rel="alternate"></link><published>2017-03-10T13:49:00+08:00</published><updated>2017-03-10T13:49:00+08:00</updated><author><name>vfhky</name></author><id>tag:typecodes.com,2017-03-10:/cseries/tcpclosewaitfinwaitrst1.html</id><summary type="html">&lt;p&gt;在&lt;a href="https://typecodes.com/cseries/tcpclosewaitsigpipe.html" title="《Linux TCP通信出现CLOSE_WAIT后导致服务端进程挂掉》"&gt;前文&lt;/a&gt;中讲述了Linux服务端TCP的某个链路变成&lt;code&gt;CLOSE_WAIT&lt;/code&gt;状态，然后由于客户端已经关闭了（发送了&lt;code&gt;RST&lt;/code&gt;标志的报文），那么服务端如果继续向这个链路中写入数据的话就会收到&lt;code&gt;SIGPIPE&lt;/code&gt;信号而终止，这篇文章主要通过客户端进入&lt;code&gt;CLOSE_WAIT&lt;/code&gt;后由于收到服务端产生的&lt;code&gt;RST&lt;/code&gt;标志报文进入死循环的情况。注：&lt;code&gt;RST&lt;/code&gt;表示复位，用来关闭异常的连接。&lt;/p&gt;
+&lt;p&gt;&lt;img alt="CentOS服务端建立监听" src="https://o3cex9zsl.qnssl.com/2017/03/tcpclosewaitfinwaitrst1_server_process.png" title="CentOS服务端建立监听"&gt;&lt;/p&gt;
+</summary><content type="html">&lt;p&gt;在&lt;a href="https://typecodes.com/cseries/tcpclosewaitsigpipe.html" title="《Linux TCP通信出现CLOSE_WAIT后导致服务端进程挂掉》"&gt;前文&lt;/a&gt;中讲述了Linux服务端TCP的某个链路变成&lt;code&gt;CLOSE_WAIT&lt;/code&gt;状态，然后由于客户端已经关闭了（发送了&lt;code&gt;RST&lt;/code&gt;标志的报文），那么服务端如果继续向这个链路中写入数据的话就会收到&lt;code&gt;SIGPIPE&lt;/code&gt;信号而终止，这篇文章主要通过客户端进入&lt;code&gt;CLOSE_WAIT&lt;/code&gt;后由于收到服务端产生的&lt;code&gt;RST&lt;/code&gt;标志报文进入死循环的情况。注：&lt;code&gt;RST&lt;/code&gt;表示复位，用来关闭异常的连接。&lt;/p&gt;
+&lt;p&gt;&lt;img alt="CentOS服务端建立监听" src="https://o3cex9zsl.qnssl.com/2017/03/tcpclosewaitfinwaitrst1_server_process.png" title="CentOS服务端建立监听"&gt;&lt;/p&gt;
+
+
+&lt;h4&gt;1 CentOS服务端建立监听端口&lt;/h4&gt;
+&lt;p&gt;如上图所示，在虚拟机CentOS7服务器（192.168.1.177）中打开一个终端界面，执行程序&lt;code&gt;linux_epoll_server_2&lt;/code&gt;建立8000端口的监听服务（PID:2791）。进程的大体执行过程是使用epoll_wait等待客户端的接入，然后打印的接收报文并回复应答报文，最后关闭这个客户端的连接。&lt;/p&gt;
+&lt;h4&gt;2 CentOS客户端连接服务端&lt;/h4&gt;
+&lt;p&gt;新建一个Linux会话终端并执行客户端程序linux_epoll_simple_sndmsg_netstat（具体代码见文末附录部分），然后通过三次握手建立TCP连接，接着进程进入循环模式：每次发送完报文会休眠5秒（&lt;code&gt;sleep(5)&lt;/code&gt;）然后再次向服务端发送报文。&lt;/p&gt;
+&lt;p&gt;&lt;img alt="客户端连接服务端" src="https://o3cex9zsl.qnssl.com/2017/03/tcpclosewaitfinwaitrst1_client_process.png" title="客户端连接服务端"&gt;&lt;/p&gt;
+&lt;h4&gt;3 使用netstat命令查看TCP状态&lt;/h4&gt;
+&lt;p&gt;新建一个Linux会话终端并创建一个shell脚本linux_epoll_simple_sndmsg_netstat.sh ，里面包含关键命令&lt;code&gt;sudo netstat -npt|head -n 2;sudo netstat -npa|grep 8006&lt;/code&gt;。这个脚本用于监控TCP的通信状态。从下图中可以看到，最终服务端进程（PID:2791）在监听8006端口，然后和客户端进程（PID:2804）建立了TCP连接。&lt;/p&gt;
+&lt;p&gt;&lt;img alt="使用netstat命令查看TCP状态" src="https://o3cex9zsl.qnssl.com/2017/03/tcpclosewaitfinwaitrst1_netstat.png" title="使用netstat命令查看TCP状态"&gt;&lt;/p&gt;
+&lt;h4&gt;4 关键步骤：使用tcpdump命令抓取TCP通信包&lt;/h4&gt;
+&lt;p&gt;新建一个Linux会话终端并输入命令&lt;code&gt;sudo tcpdump -i lo -n port 8006&lt;/code&gt;抓取客户端和服务端的TCP通信报文。&lt;/p&gt;
+&lt;p&gt;&lt;img alt="使用tcpdump命令抓取TCP通信包" src="https://o3cex9zsl.qnssl.com/2017/03/tcpclosewaitfinwaitrst1_tcpdump.png" title="使用tcpdump命令抓取TCP通信包"&gt;&lt;/p&gt;
+&lt;h4&gt;5 过程分析&lt;/h4&gt;
+&lt;p&gt;根据前面步骤1服务端、步骤2客户端、步骤3netstat的监控以及步骤4中的TCPDUMP抓包做出具体的分析：&lt;/p&gt;
+&lt;p&gt;1、tcpdump抓包分析：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;[vfhky@typecodes ~]$ sudo tcpdump -i lo -n port 8006
+tcpdump: verbose output suppressed, use -v or -vv for full protocol decode
+listening on lo, link-type EN10MB (Ethernet), capture size 65535 bytes
+
+######三次握手
+11:55:35.724646 IP 127.0.0.1.56710 &amp;gt; 127.0.0.1.8006: Flags [S], seq 1652959375, win 43690, options [mss 65495,sackOK,TS val 8433172 ecr 0,nop,wscale 7], length 0
+13:09:58.084191 IP 127.0.0.1.8006 &amp;gt; 127.0.0.1.56710: Flags [S.], seq 2881349854, ack 1652959376, win 43690, options [mss 65495,sackOK,TS val 8433172 ecr 8433172,nop,wscale 7], length 0
+11:55:35.724660 IP 127.0.0.1.56710 &amp;gt; 127.0.0.1.8006: Flags [.], ack 1, win 342, options [nop,nop,TS val 8433172 ecr 8433172], length 0
+
+######客户端发送58字节的报文
+11:55:35.724966 IP 127.0.0.1.56710 &amp;gt; 127.0.0.1.8006: Flags [P.], seq 1:59, ack 1, win 342, options [nop,nop,TS val 8433173 ecr 8433172], length 58
+######服务端回复ACK确认报文
+11:55:35.724970 IP 127.0.0.1.8006 &amp;gt; 127.0.0.1.56710: Flags [.], ack 59, win 342, options [nop,nop,TS val 8433173 ecr 8433173], length 0
+
+######服务端回复58字节的报文
+11:55:35.725006 IP 127.0.0.1.8006 &amp;gt; 127.0.0.1.56710: Flags [P.], seq 1:59, ack 59, win 342, options [nop,nop,TS val 8433173 ecr 8433173], length 58
+######客户端回复ACK确认报文
+11:55:35.725008 IP 127.0.0.1.56710 &amp;gt; 127.0.0.1.8006: Flags [.], ack 59, win 342, options [nop,nop,TS val 8433173 ecr 8433173], length 0
+
+######服务端调用close函数关闭连接（发送FIN标志的报文后进入FIN_WAIT_1状态）
+11:55:35.725018 IP 127.0.0.1.8006 &amp;gt; 127.0.0.1.56710: Flags [F.], seq 59, ack 59, win 342, options [nop,nop,TS val 8433173 ecr 8433173], length 0
+######客户端回复ACK确认报文（客户端进入CLOSE_WAIT状态，服务端进入FIN_WAIT_2状态）
+11:55:35.766501 IP 127.0.0.1.56710 &amp;gt; 127.0.0.1.8006: Flags [.], ack 60, win 342, options [nop,nop,TS val 8433215 ecr 8433173], length 0
+
+######客户端5秒后再次发送58字节的报文（CLOSE_WAIT状态还是可以向对端发送报文的）
+11:55:40.736161 IP 127.0.0.1.56710 &amp;gt; 127.0.0.1.8006: Flags [P.], seq 59:117, ack 60, win 342, options [nop,nop,TS val 8438184 ecr 8433173], length 58
+######服务端发送RST链路重置标志的报文（客户端关闭）
+11:55:40.736190 IP 127.0.0.1.8006 &amp;gt; 127.0.0.1.56710: Flags [R], seq 2881349914, win 0, length 0
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;2、netstat命令监控：由于脚本中包含了&lt;code&gt;sleep 1&lt;/code&gt;的代码，所以监控不是很全，这里挑关键的3个部分进行分析：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;[vfhky@typecodes epoll]$ ./linux_epoll_simple_sndmsg_netstat.sh 
+######服务端建立监听
+Active Internet connections (w/o servers)
+Proto Recv-Q Send-Q Local Address           Foreign Address         State       PID/Program name    
+tcp        0      0 0.0.0.0:8006            0.0.0.0:*               LISTEN      2791/linux_epoll_se
+
+######由于服务端接收并回复报文后主动调用close函数关闭了链路，服务端进入FIN_WAIT2状态，客户端进入CLOSE_WAIT状态
+Active Internet connections (w/o servers)
+Proto Recv-Q Send-Q Local Address           Foreign Address         State       PID/Program name    
+tcp        0      0 0.0.0.0:8006            0.0.0.0:*               LISTEN      2791/linux_epoll_se 
+tcp       59      0 127.0.0.1:56710         127.0.0.1:8006          CLOSE_WAIT  2804/linux_epoll_si 
+tcp        0      0 127.0.0.1:8006          127.0.0.1:56710         FIN_WAIT2   -
+
+######由于服务端回复了RST标志的报文导致链路重置
+Active Internet connections (w/o servers)
+Proto Recv-Q Send-Q Local Address           Foreign Address         State       PID/Program name    
+tcp        0      0 0.0.0.0:8006            0.0.0.0:*               LISTEN      2791/linux_epoll_se
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;3、客户端进程执行过程分析：&lt;/p&gt;
+&lt;table class="highlighttable"&gt;&lt;tr&gt;&lt;td class="linenos"&gt;&lt;div class="linenodiv"&gt;&lt;pre&gt;1
+2
+3
+4
+5&lt;/pre&gt;&lt;/div&gt;&lt;/td&gt;&lt;td class="code"&gt;&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="cp"&gt;###### 客户端执行过程&lt;/span&gt;
+&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;vfhky&lt;/span&gt;&lt;span class="err"&gt;@&lt;/span&gt;&lt;span class="n"&gt;typecodes&lt;/span&gt; &lt;span class="n"&gt;epoll&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;&lt;span class="err"&gt;$&lt;/span&gt; &lt;span class="n"&gt;linux_epoll_simple_sndmsg&lt;/span&gt;
+&lt;span class="n"&gt;i_send_len&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;58&lt;/span&gt;&lt;span class="p"&gt;].&lt;/span&gt;        &lt;span class="c1"&gt;//第1次发送报文（正常）&lt;/span&gt;
+&lt;span class="n"&gt;i_send_len&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;58&lt;/span&gt;&lt;span class="p"&gt;].&lt;/span&gt;        &lt;span class="c1"&gt;//5秒后再次发送报文，那么会收到RST标志的应答报文&lt;/span&gt;
+&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;vfhky&lt;/span&gt;&lt;span class="err"&gt;@&lt;/span&gt;&lt;span class="n"&gt;typecodes&lt;/span&gt; &lt;span class="n"&gt;epoll&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;&lt;span class="err"&gt;$&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+
+&lt;h4&gt;6 得出结论&lt;/h4&gt;
+&lt;p&gt;通过小节5中的具体分析，可以看到在服务端调用&lt;code&gt;close函数&lt;/code&gt;关闭了客户端的连接后进入&lt;code&gt;FIN_WAIT_1&lt;/code&gt;状态，而客户端立马回复了&lt;code&gt;ACK&lt;/code&gt;，从而进入了&lt;code&gt;FIN_WAIT_2&lt;/code&gt;状态。此时的客户端自然也进入了&lt;code&gt;CLOSE_WAIT&lt;/code&gt;状态。&lt;/p&gt;
+&lt;p&gt;但是处于&lt;code&gt;CLOSE_WAIT&lt;/code&gt;状态的一方还是可以向对端发送报文的，所以客户端在休眠5秒后再次向服务端发送了58字节的报文。然而此时的服务端已经关闭了链路（FIN_WAIT_2状态），所以Linux内核自动发送了一个&lt;code&gt;RST&lt;/code&gt;复位标志的报文给客户端，通知关闭这个异常的连接。&lt;/p&gt;
+&lt;p&gt;这里可能会产生疑问了，为什么客户端的进程在收到&lt;code&gt;RST&lt;/code&gt;报文后会关闭呢？原因和&lt;a href="https://typecodes.com/cseries/tcpclosewaitsigpipe.html" title="查看原文"&gt;《Linux TCP通信出现CLOSE_WAIT后导致服务端进程挂掉》&lt;/a&gt;是一样的，就是Linux内核产生软中断，发送&lt;code&gt;SIGPIPE&lt;/code&gt;信号给客户端进程，导致其默认终止了。这点可以通过设置客户端程序中&lt;code&gt;#define SIGNAL_HANDLE 0&lt;/code&gt;为1来验证。&lt;/p&gt;
+&lt;p&gt;&lt;img alt="Linux TCP客户端出现CLOSE_WAIT后进入死循环" src="https://o3cex9zsl.qnssl.com/2017/03/tcpclosewaitfinwaitrst1_tcpdump.png" title="Linux TCP客户端出现CLOSE_WAIT后进入死循环"&gt;&lt;/p&gt;
+&lt;p&gt;但是问题又来了：如上图所示，由于捕捉了&lt;code&gt;SIGPIPE&lt;/code&gt;信号（对应值为13）后，客户端进程不会终止，所以进入了&lt;code&gt;while死循环&lt;/code&gt;。同时由于捕捉了&lt;code&gt;SIGINT&lt;/code&gt;信号（对应值为2），导致在客户端所在的Linux会话终端上无法使用&lt;code&gt;Ctrl+C&lt;/code&gt;来终止进程，最后只能使用&lt;code&gt;kill&lt;/code&gt;信号来终止客户端！&lt;/p&gt;
+&lt;h4&gt;7 附录：&lt;/h4&gt;
+&lt;p&gt;以上就是Linux TCP通信中客户端出现CLOSE_WAIT后进入死循环的一个实例以及分析过程，下面是客户端程序linux_epoll_simple_sndmsg_netstat.c，工作流程很简单。&lt;/p&gt;
+&lt;table class="highlighttable"&gt;&lt;tr&gt;&lt;td class="linenos"&gt;&lt;div class="linenodiv"&gt;&lt;pre&gt; 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78&lt;/pre&gt;&lt;/div&gt;&lt;/td&gt;&lt;td class="code"&gt;&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="cm"&gt;/** &lt;/span&gt;
+&lt;span class="cm"&gt; * @FileName    linux_epoll_simple_sndmsg.c&lt;/span&gt;
+&lt;span class="cm"&gt; * @Describe    A simple example for creating a listen as a server and simulate generate a sigpipe signal in linux.&lt;/span&gt;
+&lt;span class="cm"&gt; * @Author      vfhky 2017-03-10 12:49 https://typecodes.com/cseries/tcpclosewaitfinwaitrst1.html&lt;/span&gt;
+&lt;span class="cm"&gt; * @Compile     gcc linux_epoll_simple_sndmsg.c -o linux_epoll_simple_sndmsg&lt;/span&gt;
+&lt;span class="cm"&gt; */&lt;/span&gt;
+&lt;span class="cp"&gt;#include&lt;/span&gt; &lt;span class="cpf"&gt;&amp;lt;stdio.h&amp;gt;&lt;/span&gt;&lt;span class="cp"&gt;&lt;/span&gt;
+&lt;span class="cp"&gt;#include&lt;/span&gt; &lt;span class="cpf"&gt;&amp;lt;stdlib.h&amp;gt;&lt;/span&gt;&lt;span class="cp"&gt;&lt;/span&gt;
+&lt;span class="cp"&gt;#include&lt;/span&gt; &lt;span class="cpf"&gt;&amp;lt;unistd.h&amp;gt;&lt;/span&gt;&lt;span class="cp"&gt;&lt;/span&gt;
+&lt;span class="cp"&gt;#include&lt;/span&gt; &lt;span class="cpf"&gt;&amp;lt;errno.h&amp;gt;&lt;/span&gt;&lt;span class="cp"&gt;&lt;/span&gt;
+&lt;span class="cp"&gt;#include&lt;/span&gt; &lt;span class="cpf"&gt;&amp;lt;string.h&amp;gt;&lt;/span&gt;&lt;span class="cp"&gt;&lt;/span&gt;
+&lt;span class="cp"&gt;#include&lt;/span&gt; &lt;span class="cpf"&gt;&amp;lt;sys/types.h&amp;gt;&lt;/span&gt;&lt;span class="cp"&gt;&lt;/span&gt;
+&lt;span class="cp"&gt;#include&lt;/span&gt; &lt;span class="cpf"&gt;&amp;lt;netinet/in.h&amp;gt;&lt;/span&gt;&lt;span class="cp"&gt;&lt;/span&gt;
+&lt;span class="cp"&gt;#include&lt;/span&gt; &lt;span class="cpf"&gt;&amp;lt;sys/socket.h&amp;gt;&lt;/span&gt;&lt;span class="cp"&gt;&lt;/span&gt;
+&lt;span class="cp"&gt;#include&lt;/span&gt; &lt;span class="cpf"&gt;&amp;lt;arpa/inet.h&amp;gt;&lt;/span&gt;&lt;span class="cp"&gt;&lt;/span&gt;
+&lt;span class="cp"&gt;#include&lt;/span&gt; &lt;span class="cpf"&gt;&amp;lt;signal.h&amp;gt;&lt;/span&gt;&lt;span class="cp"&gt;&lt;/span&gt;
+
+&lt;span class="cp"&gt;#define IPADDR &amp;quot;127.0.0.1&amp;quot;&lt;/span&gt;
+&lt;span class="cp"&gt;#define SERVPORT 8006&lt;/span&gt;
+&lt;span class="cp"&gt;#define MAXLINE 1024&lt;/span&gt;
+
+&lt;span class="cp"&gt;#define SIGNAL_HANDLE 0&lt;/span&gt;
+&lt;span class="kt"&gt;void&lt;/span&gt; &lt;span class="nf"&gt;sig_handle&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt; &lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;signal&lt;/span&gt; &lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="n"&gt;printf&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;Receive a signal=[%d].&lt;/span&gt;&lt;span class="se"&gt;\n&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;signal&lt;/span&gt; &lt;span class="p"&gt;);&lt;/span&gt;
+    &lt;span class="k"&gt;return&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+
+
+&lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="nf"&gt;main&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt; &lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;argc&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="kt"&gt;char&lt;/span&gt; &lt;span class="o"&gt;**&lt;/span&gt;&lt;span class="n"&gt;argv&lt;/span&gt; &lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="p"&gt;{&lt;/span&gt;
+&lt;span class="cp"&gt;#if SIGNAL_HANDLE&lt;/span&gt;
+    &lt;span class="k"&gt;struct&lt;/span&gt; &lt;span class="n"&gt;sigaction&lt;/span&gt; &lt;span class="n"&gt;new_act&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;old_act&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="n"&gt;new_act&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;sa_handler&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;sig_handle&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="n"&gt;new_act&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;sa_flags&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="n"&gt;sigemptyset&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="n"&gt;new_act&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;sa_mask&lt;/span&gt; &lt;span class="p"&gt;);&lt;/span&gt;
+    &lt;span class="n"&gt;sigaction&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt; &lt;span class="n"&gt;SIGPIPE&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="n"&gt;new_act&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="n"&gt;old_act&lt;/span&gt; &lt;span class="p"&gt;);&lt;/span&gt;
+    &lt;span class="n"&gt;sigaction&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt; &lt;span class="n"&gt;SIGINT&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="n"&gt;new_act&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="n"&gt;old_act&lt;/span&gt; &lt;span class="p"&gt;);&lt;/span&gt;
+&lt;span class="cp"&gt;#endif&lt;/span&gt;
+
+    &lt;span class="c1"&gt;//发送缓存区&lt;/span&gt;
+    &lt;span class="kt"&gt;char&lt;/span&gt; &lt;span class="n"&gt;buf&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;MAXLINE&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="mh"&gt;0x00&lt;/span&gt;&lt;span class="p"&gt;};&lt;/span&gt;
+    &lt;span class="c1"&gt;//成功发送的字节数&lt;/span&gt;
+    &lt;span class="kt"&gt;unsigned&lt;/span&gt; &lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;i_send_len&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+
+    &lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;sockfd&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="k"&gt;struct&lt;/span&gt; &lt;span class="n"&gt;sockaddr_in&lt;/span&gt; &lt;span class="n"&gt;serv_addr&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+
+    &lt;span class="c1"&gt;//创建1个socket描述符&lt;/span&gt;
+    &lt;span class="k"&gt;if&lt;/span&gt;&lt;span class="p"&gt;((&lt;/span&gt;&lt;span class="n"&gt;sockfd&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;socket&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;AF_INET&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="n"&gt;SOCK_STREAM&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="p"&gt;{&lt;/span&gt;
+        &lt;span class="n"&gt;perror&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;socket error &lt;/span&gt;&lt;span class="se"&gt;\n&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+        &lt;span class="n"&gt;exit&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+    &lt;span class="p"&gt;}&lt;/span&gt;
+
+    &lt;span class="n"&gt;bzero&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="n"&gt;serv_addr&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="k"&gt;sizeof&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;serv_addr&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;);&lt;/span&gt;
+    &lt;span class="n"&gt;serv_addr&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;sin_family&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;AF_INET&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="n"&gt;serv_addr&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;sin_port&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;htons&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;SERVPORT&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+    &lt;span class="n"&gt;inet_pton&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt; &lt;span class="n"&gt;AF_INET&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;IPADDR&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="n"&gt;serv_addr&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;sin_addr&lt;/span&gt; &lt;span class="p"&gt;);&lt;/span&gt;
+
+    &lt;span class="k"&gt;if&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt; &lt;span class="n"&gt;connect&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt; &lt;span class="n"&gt;sockfd&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;struct&lt;/span&gt; &lt;span class="n"&gt;sockaddr&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="n"&gt;serv_addr&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="k"&gt;sizeof&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;struct&lt;/span&gt; &lt;span class="n"&gt;sockaddr&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;==-&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt; &lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="p"&gt;{&lt;/span&gt;
+        &lt;span class="n"&gt;perror&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;connect &lt;/span&gt;&lt;span class="se"&gt;\n&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+        &lt;span class="n"&gt;exit&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+    &lt;span class="p"&gt;}&lt;/span&gt;
+    &lt;span class="n"&gt;printf&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;sockfd=[%d].&lt;/span&gt;&lt;span class="se"&gt;\n&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;sockfd&lt;/span&gt; &lt;span class="p"&gt;);&lt;/span&gt;
+    &lt;span class="k"&gt;while&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt; &lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="p"&gt;{&lt;/span&gt;
+        &lt;span class="n"&gt;sprintf&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt; &lt;span class="n"&gt;buf&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;HTTP/1.0 200 OK&lt;/span&gt;&lt;span class="se"&gt;\r\n&lt;/span&gt;&lt;span class="s"&gt;Content-type: text/plain&lt;/span&gt;&lt;span class="se"&gt;\r\n\r\n&lt;/span&gt;&lt;span class="s"&gt;%s&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;Hello world!&lt;/span&gt;&lt;span class="se"&gt;\n&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;&lt;/span&gt; &lt;span class="p"&gt;);&lt;/span&gt;
+        &lt;span class="k"&gt;if&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt; &lt;span class="n"&gt;i_send_len&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;write&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt; &lt;span class="n"&gt;sockfd&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;buf&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;strlen&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;buf&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt; &lt;span class="p"&gt;)&lt;/span&gt;
+        &lt;span class="p"&gt;{&lt;/span&gt;
+            &lt;span class="n"&gt;printf&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;i_send_len=[%d].&lt;/span&gt;&lt;span class="se"&gt;\n&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;i_send_len&lt;/span&gt; &lt;span class="p"&gt;);&lt;/span&gt;
+        &lt;span class="p"&gt;}&lt;/span&gt;
+        &lt;span class="n"&gt;sleep&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;5&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+    &lt;span class="p"&gt;}&lt;/span&gt;
+
+    &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;</content><category term="tcpdump"></category><category term="tcp"></category><category term="close_wait"></category><category term="rst"></category></entry><entry><title>使用sed和awk查找和替换字符串处理Makefile文件（二）</title><link href="https://typecodes.com/linux/sedawkfindreplace2.html" rel="alternate"></link><published>2017-03-09T16:45:00+08:00</published><updated>2017-03-09T16:45:00+08:00</updated><author><name>vfhky</name></author><id>tag:typecodes.com,2017-03-09:/linux/sedawkfindreplace2.html</id><summary type="html">&lt;p&gt;在&lt;a href="https://typecodes.com/linux/sedawkfindreplace1.html" title="《使用sed和awk查找和替换字符串处理Makefile文件（一）》"&gt;前文&lt;/a&gt;中演示了使用awk和sed命令正则查找和替换&lt;a href="https://typecodes.com/cseries/cppgeneralmakefile.html" title="《Linux C/C++工程中可生成ELF、动/静态库文件的通用Makefile》"&gt;Makefile&lt;/a&gt;文件的匹配内容，这篇文章依然使用这个Makefile文件作为awk和sed命令正则匹配查找、替换和删除操作。&lt;/p&gt;
+</summary><content type="html">&lt;p&gt;在&lt;a href="https://typecodes.com/linux/sedawkfindreplace1.html" title="《使用sed和awk查找和替换字符串处理Makefile文件（一）》"&gt;前文&lt;/a&gt;中演示了使用awk和sed命令正则查找和替换&lt;a href="https://typecodes.com/cseries/cppgeneralmakefile.html" title="《Linux C/C++工程中可生成ELF、动/静态库文件的通用Makefile》"&gt;Makefile&lt;/a&gt;文件的匹配内容，这篇文章依然使用这个Makefile文件作为awk和sed命令正则匹配查找、替换和删除操作。&lt;/p&gt;
+
+
+&lt;h4&gt;1 功能需求&lt;/h4&gt;
+&lt;p&gt;由于之前在BZ自己CenOS7中的C/C++工程部分Makefile文件在&lt;code&gt;make clean&lt;/code&gt;操作时的语句可以优化，也就是可以把&lt;code&gt;-$(RM) $(ULT_BIN)&lt;/code&gt;和&lt;code&gt;-$(RM) $(ULT_BIN)&lt;/code&gt;这两句写成一句&lt;code&gt;-$(RM)  $(ULT_BIN) $(ULT_BIN)&lt;/code&gt;。&lt;/p&gt;
+&lt;h4&gt;2 shell程序&lt;/h4&gt;
+&lt;p&gt;下面的这份shell脚本比较简单，直接运行&lt;code&gt;./sedawkfindreplace2.sh&lt;/code&gt;即可。在&lt;code&gt;for ... in&lt;/code&gt;的Makefile文件遍历中，先利用了awk命令的正则匹配查找、替换操作，然后是sed命令执行正则匹配查找、替换以及删除操作。&lt;/p&gt;
+&lt;p&gt;程序难点应该在于对&lt;code&gt;$&lt;/code&gt;符号的正则匹配（它本来表示结尾，所以需要转义），可以看到awk和sed对它的正则匹配形式是不一样的。&lt;/p&gt;
+&lt;p&gt;另外，脚本中sed命令通过&lt;code&gt;-e&lt;/code&gt;参数先执行正则匹配和替换操作，然后执行正则匹配删除操作。&lt;/p&gt;
+&lt;table class="highlighttable"&gt;&lt;tr&gt;&lt;td class="linenos"&gt;&lt;div class="linenodiv"&gt;&lt;pre&gt; 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38&lt;/pre&gt;&lt;/div&gt;&lt;/td&gt;&lt;td class="code"&gt;&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="ch"&gt;#!/bin/bash&lt;/span&gt;
+&lt;span class="c1"&gt;# FileName:      sedawkfindreplace2.sh&lt;/span&gt;
+&lt;span class="c1"&gt;# Description:   Basic usage of sed and awk command such as find and replace words in the regular expression.&lt;/span&gt;
+&lt;span class="c1"&gt;# Simple Usage:  ./sedawkfindreplace1.sh&lt;/span&gt;
+&lt;span class="c1"&gt;# (c) 2017.3.9 vfhky https://typecodes.com/linux/sedawkfindreplace2.html&lt;/span&gt;
+&lt;span class="c1"&gt;# https://github.com/vfhky/shell-tools/blob/master/filehandle/sedawkfindreplace2.sh&lt;/span&gt;
+
+
+&lt;span class="c1"&gt;# Dir to be handled.&lt;/span&gt;
+&lt;span class="nv"&gt;SRC_DIR&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;/home/vfhky/shell&amp;quot;&lt;/span&gt;
+&lt;span class="c1"&gt;# The makefile you want to modify.&lt;/span&gt;
+&lt;span class="nv"&gt;SEARCH_NAME&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;Makefile*&amp;quot;&lt;/span&gt;
+&lt;span class="c1"&gt;# The maximum depth of the dirs where files such as Makefile you&amp;#39;re dealing with lies in.&lt;/span&gt;
+&lt;span class="nv"&gt;MAXDEPTH&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="m"&gt;10&lt;/span&gt;
+
+&lt;span class="c1"&gt;# Get the target files you want to modify.&lt;/span&gt;
+&lt;span class="nv"&gt;ALL_MAKEFILE&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="k"&gt;$(&lt;/span&gt;find &lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;SRC_DIR&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt; -maxdepth &lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;MAXDEPTH&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt; -type f -name &lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;SEARCH_NAME&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;&lt;span class="k"&gt;)&lt;/span&gt;
+
+
+&lt;span class="c1"&gt;# Traverse the target files.&lt;/span&gt;
+&lt;span class="k"&gt;for&lt;/span&gt; FILE in &lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;ALL_MAKEFILE&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;
+&lt;span class="k"&gt;do&lt;/span&gt;
+    &lt;span class="c1"&gt;#### Ways recommended: find &amp;quot;-$(RM) $(ULT_BIN)&amp;quot; by awk command.&lt;/span&gt;
+    &lt;span class="c1"&gt;#awk &amp;#39;/-\$\(RM\) \$\(ULT_BIN\)/{printf( &amp;quot;[%s:%d]: %s\n&amp;quot;, FILENAME, NR, $0) }&amp;#39; ${FILE}&lt;/span&gt;
+
+    &lt;span class="c1"&gt;#### replace &amp;quot;-$(RM) $(ULT_BIN)&amp;quot; with &amp;quot;-$(RM) $(ULT_BIN) $(ULT_LIBS)&amp;quot; using awk command.&lt;/span&gt;
+    &lt;span class="c1"&gt;# awk &amp;#39;{sub(/-\$\(RM\) \$\(ULT_BIN\)/,&amp;quot;-\$\(RM\) \$\(ULT_BIN\) \$\(ULT_LIBS\)&amp;quot;); print $0}&amp;#39; ${FILE} &amp;gt; ${FILE}.tmp; cp ${FILE}.tmp ${FILE}; rm -rf ${FILE}.tmp&lt;/span&gt;
+
+
+    &lt;span class="c1"&gt;#### find &amp;quot;-$(RM) $(ULT_BIN)&amp;quot; by sed command.&lt;/span&gt;
+    &lt;span class="c1"&gt;#sed -n &amp;quot;/-\$(RM) \$(ULT_BIN)/p&amp;quot; ${FILE}&lt;/span&gt;
+
+    &lt;span class="c1"&gt;#### Ways recommended: Step1. replace &amp;quot;-$(RM) $(ULT_BIN)&amp;quot; with &amp;quot;-$(RM) $(ULT_BIN) $(ULT_LIBS)&amp;quot; using sed command.&lt;/span&gt;
+    &lt;span class="c1"&gt;#### Step2. delete the line contains the words &amp;quot;-$(RM) $(ULT_LIBS)&amp;quot;.&lt;/span&gt;
+    sed -i -e &lt;span class="s2"&gt;&amp;quot;s#-\$(RM) \$(ULT_BIN)#-\$(RM) \$(ULT_BIN) \$(ULT_LIBS)#&amp;quot;&lt;/span&gt; -e &lt;span class="s2"&gt;&amp;quot;/-\$(RM) \$(ULT_LIBS)/d&amp;quot;&lt;/span&gt; &lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;FILE&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;
+&lt;span class="k"&gt;done&lt;/span&gt;
+
+&lt;span class="nb"&gt;exit&lt;/span&gt; &lt;span class="m"&gt;0&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+
+&lt;h4&gt;3 脚本测试&lt;/h4&gt;
+&lt;p&gt;BZ在虚拟机的/home/vfhky/shell目录复制了5个错误的Makefile文件，然后先做正则查找测试，结果如下图所示：&lt;/p&gt;
+&lt;p&gt;&lt;img alt="使用sed和awk查找和替换字符串处理Makefile文件（二）" src="https://o3cex9zsl.qnssl.com/2017/03/sedawkfindreplace1_awk_sed_find_2.png" title="使用sed和awk查找和替换字符串处理Makefile文件（二）"&gt;&lt;/p&gt;
+&lt;h4&gt;4 Linux find 命令中正则&lt;/h4&gt;
+&lt;p&gt;在&lt;code&gt;find&lt;/code&gt;命令的某个参数使用正则，那么最好对这个对数加上双引号，正如上面的代码&lt;code&gt;"${SEARCH_NAME}"&lt;/code&gt;所示，否则会出现下面的错误：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;find&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="n"&gt;paths&lt;/span&gt; &lt;span class="n"&gt;must&lt;/span&gt; &lt;span class="n"&gt;precede&lt;/span&gt; &lt;span class="n"&gt;expression&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="n"&gt;Makefile1&lt;/span&gt;
+&lt;span class="n"&gt;Usage&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="n"&gt;find&lt;/span&gt; &lt;span class="o"&gt;[-&lt;/span&gt;&lt;span class="n"&gt;H&lt;/span&gt;&lt;span class="o"&gt;]&lt;/span&gt; &lt;span class="o"&gt;[-&lt;/span&gt;&lt;span class="n"&gt;L&lt;/span&gt;&lt;span class="o"&gt;]&lt;/span&gt; &lt;span class="o"&gt;[-&lt;/span&gt;&lt;span class="n"&gt;P&lt;/span&gt;&lt;span class="o"&gt;]&lt;/span&gt; &lt;span class="o"&gt;[-&lt;/span&gt;&lt;span class="n"&gt;Olevel&lt;/span&gt;&lt;span class="o"&gt;]&lt;/span&gt; &lt;span class="o"&gt;[-&lt;/span&gt;&lt;span class="n"&gt;D&lt;/span&gt; &lt;span class="n"&gt;help&lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="n"&gt;tree&lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="n"&gt;search&lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="n"&gt;stat&lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="n"&gt;rates&lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="n"&gt;opt&lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="n"&gt;exec&lt;/span&gt;&lt;span class="o"&gt;]&lt;/span&gt; &lt;span class="o"&gt;[&lt;/span&gt;&lt;span class="n"&gt;path&lt;/span&gt;&lt;span class="o"&gt;...]&lt;/span&gt; &lt;span class="o"&gt;[&lt;/span&gt;&lt;span class="n"&gt;expression&lt;/span&gt;&lt;span class="o"&gt;]&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h4&gt;5 脚本管理&lt;/h4&gt;
+&lt;p&gt;目前已经把这个脚本放在Github了，地址是&lt;a href="https://github.com/vfhky/shell-tools" title="点击查看"&gt;https://github.com/vfhky/shell-tools&lt;/a&gt;，以后脚本的更新或者更多好用的脚本也都会加入到这个工程中。&lt;/p&gt;</content><category term="sed"></category><category term="awk"></category><category term="Makefile"></category></entry><entry><title>使用sed和awk查找和替换字符串处理Makefile文件（一）</title><link href="https://typecodes.com/linux/sedawkfindreplace1.html" rel="alternate"></link><published>2017-02-22T16:39:00+08:00</published><updated>2017-02-22T16:39:00+08:00</updated><author><name>vfhky</name></author><id>tag:typecodes.com,2017-02-22:/linux/sedawkfindreplace1.html</id><summary type="html">&lt;p&gt;在&lt;a href="https://typecodes.com/linux/handlemakefilebysed.html" title="查看原文"&gt;《使用sed命令批量处理Makefile文件的脚本》&lt;/a&gt;文中使用sed命令对&lt;a href="https://typecodes.com/cseries/cppgeneralmakefile.html" title="《Linux C/C++工程中可生成ELF、动/静态库文件的通用Makefile》"&gt;前文&lt;/a&gt;中的Makefile文件进行了替换、追加和删除操作，这篇文章通过使用sed和awk命令对该Makefile文件的某个字符串进行正则匹配查找以及替换。&lt;/p&gt;
 </summary><content type="html">&lt;p&gt;在&lt;a href="https://typecodes.com/linux/handlemakefilebysed.html" title="查看原文"&gt;《使用sed命令批量处理Makefile文件的脚本》&lt;/a&gt;文中使用sed命令对&lt;a href="https://typecodes.com/cseries/cppgeneralmakefile.html" title="《Linux C/C++工程中可生成ELF、动/静态库文件的通用Makefile》"&gt;前文&lt;/a&gt;中的Makefile文件进行了替换、追加和删除操作，这篇文章通过使用sed和awk命令对该Makefile文件的某个字符串进行正则匹配查找以及替换。&lt;/p&gt;
 
 
@@ -82,7 +430,7 @@
 
 &lt;h4&gt;3 脚本测试&lt;/h4&gt;
 &lt;p&gt;BZ在虚拟机的/home/vfhky/shell目录复制了5个错误的Makefile文件，然后先做正则查找测试，结果如下图所示：&lt;/p&gt;
-&lt;p&gt;&lt;img alt="使用sed和awk查找和替换字符串处理Makefile文件" src="https://o3cex9zsl.qnssl.com/2017/02/sedawkfindreplace1_awk_sed_find.png" title="使用sed和awk查找和替换字符串处理Makefile文件"&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img alt="使用sed和awk查找和替换字符串处理Makefile文件（一）" src="https://o3cex9zsl.qnssl.com/2017/02/sedawkfindreplace1_awk_sed_find_1.png" title="使用sed和awk查找和替换字符串处理Makefile文件（一）"&gt;&lt;/p&gt;
 &lt;h4&gt;4 Linux find 命令中正则&lt;/h4&gt;
 &lt;p&gt;在&lt;code&gt;find&lt;/code&gt;命令的某个参数使用正则，那么最好对这个对数加上双引号，正如上面的代码&lt;code&gt;"${SEARCH_NAME}"&lt;/code&gt;所示，否则会出现下面的错误：&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;find&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="n"&gt;paths&lt;/span&gt; &lt;span class="n"&gt;must&lt;/span&gt; &lt;span class="n"&gt;precede&lt;/span&gt; &lt;span class="n"&gt;expression&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="n"&gt;Makefile1&lt;/span&gt;
@@ -12702,7 +13050,7 @@ Buzz
 &lt;p&gt;执行&lt;code&gt;b = 254;&lt;/code&gt;后，整型变量b的值 254 在内存单元中的形式是&lt;code&gt;0000 0000 0000 0000 0000 0000 1111 1110&lt;/code&gt;（共4字节，十六进制&lt;code&gt;0x000000fe&lt;/code&gt;）。此时指针变量a仍旧指向b的首地址（低地址/低字节1111 1110，即十六进制的fe）。由于有符号字符型数据占一个字节(范围&lt;code&gt;-128~127&lt;/code&gt;)，所以刚好是变量b的第一个字节&lt;code&gt;1111 1110（十六进制的fe）&lt;/code&gt;。它对应有符号字符型数据&lt;code&gt;-2&lt;/code&gt;，所以&lt;code&gt;*a&lt;/code&gt;的值为&lt;code&gt;-2&lt;/code&gt;。然后在打印&lt;code&gt;printf( "*a=[%d]\n", *a );&lt;/code&gt;时，也就是将有符号整型-2以有符号整型数据输出，也就是&lt;code&gt;-2&lt;/code&gt;。&lt;/p&gt;
 &lt;p&gt;同情形1，&lt;code&gt;printf( "*a=[%u]\n", *a );&lt;/code&gt;输出的内容也是&lt;code&gt;4294967294&lt;/code&gt;。&lt;/p&gt;
 &lt;h6&gt;3.3 情形3：b = 129&lt;/h6&gt;
-&lt;p&gt;执行&lt;code&gt;b = 129;&lt;/code&gt;后，整型变量 b 的值 129 在内存中的形式是&lt;code&gt;0000 0000 0000 0000 0000 0000 1000 0001&lt;/code&gt;（共4字节，十六进制&lt;code&gt;0x00000081&lt;/code&gt;）。此时指针变量a仍旧指向b的首地址（低地址/低字节1000 0001所在的地址）。由于有符号字符型数据占一个字节(范围&lt;code&gt;-128~127&lt;/code&gt;)，所以刚好是变量b的第一个字节&lt;code&gt;1000 0001（十六进制的a1）&lt;/code&gt;。它对应有符号字符型数据&lt;code&gt;-0x7f（即十进制的-127）&lt;/code&gt;，所以&lt;code&gt;*a&lt;/code&gt;的值为&lt;code&gt;-127&lt;/code&gt;。然后在打印&lt;code&gt;printf( "*a=[%d]\n", *a );&lt;/code&gt;时，也就是将有符号整型-127以有符号整型数据输出，也就是&lt;code&gt;-127&lt;/code&gt;。&lt;/p&gt;
+&lt;p&gt;执行&lt;code&gt;b = 129;&lt;/code&gt;后，整型变量 b 的值 129 在内存中的形式是&lt;code&gt;0000 0000 0000 0000 0000 0000 1000 0001&lt;/code&gt;（共4字节，十六进制&lt;code&gt;0x00000081&lt;/code&gt;）。此时指针变量a仍旧指向b的首地址（低地址/低字节1000 0001所在的地址）。由于有符号字符型数据占一个字节(范围&lt;code&gt;-128~127&lt;/code&gt;)，所以刚好是变量b的第一个字节&lt;code&gt;1000 0001（十六进制的81）&lt;/code&gt;。它对应有符号字符型数据&lt;code&gt;-0x7f（即十进制的-127）&lt;/code&gt;，所以&lt;code&gt;*a&lt;/code&gt;的值为&lt;code&gt;-127&lt;/code&gt;。然后在打印&lt;code&gt;printf( "*a=[%d]\n", *a );&lt;/code&gt;时，也就是将有符号整型-127以有符号整型数据输出，也就是&lt;code&gt;-127&lt;/code&gt;。&lt;/p&gt;
 &lt;p&gt;而打印&lt;code&gt;printf( "*a=[%u]\n", *a );&lt;/code&gt;时，是将有符号整型-127以无符号整型数据输出，即求-127的补码形式：-127的绝对值127的内存单元为&lt;code&gt;0000 0000 0000 0000 0000 0000 0111 1111&lt;/code&gt;（4字节），然后取反得到&lt;code&gt;1111 1111 1111 1111 1111 1111 1000 0000&lt;/code&gt;（共4字节），然后加1得到&lt;code&gt;1111 1111 1111 1111 1111 1111 1000 0001&lt;/code&gt;（共4字节），由于此时是无符号，即最高位1不是符号位，所以共 (2^32 - 1) - （255 - 128 - 1） = 4294967296 -1 - 126 = 4294967169。&lt;/p&gt;</content><category term="有符号字符signed"></category><category term="无符号字符unsigned"></category></entry><entry><title>C语言字节序的大小端模式</title><link href="https://typecodes.com/cseries/sizeofbyteorder.html" rel="alternate"></link><published>2014-11-05T23:33:00+08:00</published><updated>2014-11-05T23:33:00+08:00</updated><author><name>vfhky</name></author><id>tag:typecodes.com,2014-11-05:/cseries/sizeofbyteorder.html</id><summary type="html">&lt;p&gt;关于字节序的大小端模式，个人认为CSDN上Hackbuteer1作者的这篇文章&lt;a href="http://blog.csdn.net/hackbuteer1/article/details/7722667" title="大端模式和小端模式"&gt;《大端模式和小端模式》&lt;/a&gt;讲解的很清晰。这里MARK一下自己的学习心得：&lt;/p&gt;
 &lt;p&gt;&lt;img alt="C程序内存映射模式" src="https://o3cex9zsl.qnssl.com/2014/11/memorymapping.png" title="C程序内存映射模式"&gt;&lt;/p&gt;
 &lt;h5&gt;1 原文精华&lt;/h5&gt;

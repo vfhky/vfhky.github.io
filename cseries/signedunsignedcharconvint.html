@@ -121,7 +121,7 @@
 <p>执行<code>b = 254;</code>后，整型变量b的值 254 在内存单元中的形式是<code>0000 0000 0000 0000 0000 0000 1111 1110</code>（共4字节，十六进制<code>0x000000fe</code>）。此时指针变量a仍旧指向b的首地址（低地址/低字节1111 1110，即十六进制的fe）。由于有符号字符型数据占一个字节(范围<code>-128~127</code>)，所以刚好是变量b的第一个字节<code>1111 1110（十六进制的fe）</code>。它对应有符号字符型数据<code>-2</code>，所以<code>*a</code>的值为<code>-2</code>。然后在打印<code>printf( "*a=[%d]\n", *a );</code>时，也就是将有符号整型-2以有符号整型数据输出，也就是<code>-2</code>。</p>
 <p>同情形1，<code>printf( "*a=[%u]\n", *a );</code>输出的内容也是<code>4294967294</code>。</p>
 <h6>3.3 情形3：b = 129</h6>
-<p>执行<code>b = 129;</code>后，整型变量 b 的值 129 在内存中的形式是<code>0000 0000 0000 0000 0000 0000 1000 0001</code>（共4字节，十六进制<code>0x00000081</code>）。此时指针变量a仍旧指向b的首地址（低地址/低字节1000 0001所在的地址）。由于有符号字符型数据占一个字节(范围<code>-128~127</code>)，所以刚好是变量b的第一个字节<code>1000 0001（十六进制的a1）</code>。它对应有符号字符型数据<code>-0x7f（即十进制的-127）</code>，所以<code>*a</code>的值为<code>-127</code>。然后在打印<code>printf( "*a=[%d]\n", *a );</code>时，也就是将有符号整型-127以有符号整型数据输出，也就是<code>-127</code>。</p>
+<p>执行<code>b = 129;</code>后，整型变量 b 的值 129 在内存中的形式是<code>0000 0000 0000 0000 0000 0000 1000 0001</code>（共4字节，十六进制<code>0x00000081</code>）。此时指针变量a仍旧指向b的首地址（低地址/低字节1000 0001所在的地址）。由于有符号字符型数据占一个字节(范围<code>-128~127</code>)，所以刚好是变量b的第一个字节<code>1000 0001（十六进制的81）</code>。它对应有符号字符型数据<code>-0x7f（即十进制的-127）</code>，所以<code>*a</code>的值为<code>-127</code>。然后在打印<code>printf( "*a=[%d]\n", *a );</code>时，也就是将有符号整型-127以有符号整型数据输出，也就是<code>-127</code>。</p>
 <p>而打印<code>printf( "*a=[%u]\n", *a );</code>时，是将有符号整型-127以无符号整型数据输出，即求-127的补码形式：-127的绝对值127的内存单元为<code>0000 0000 0000 0000 0000 0000 0111 1111</code>（4字节），然后取反得到<code>1111 1111 1111 1111 1111 1111 1000 0000</code>（共4字节），然后加1得到<code>1111 1111 1111 1111 1111 1111 1000 0001</code>（共4字节），由于此时是无符号，即最高位1不是符号位，所以共 (2^32 - 1) - （255 - 128 - 1） = 4294967296 -1 - 126 = 4294967169。</p>
 </div>		    	<div class="donate_div_container">
 					<div class="donate_div">
@@ -191,7 +191,7 @@
 		<h3 class="widget-title">Categories</h3>
 		<ul class="widget-list">
 		      <li class="current">
-		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (39)
+		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (40)
 		      </li>
 		      <li class="current">
 		        <a href="https://typecodes.com/csharp/index.html">Csharp</a> (6)
@@ -203,7 +203,7 @@
 		        <a href="https://typecodes.com/java/index.html">Java</a> (1)
 		      </li>
 		      <li class="current">
-		        <a href="https://typecodes.com/linux/index.html">Linux</a> (23)
+		        <a href="https://typecodes.com/linux/index.html">Linux</a> (24)
 		      </li>
 		      <li class="current">
 		        <a href="https://typecodes.com/mix/index.html">Mix</a> (54)
@@ -217,7 +217,13 @@
 		<h3 class="widget-title">Recent Posts</h3>
 		<ul class="widget-list">
 			<li class="post">
-				<a href="https://typecodes.com/linux/sedawkfindreplace1.html">使用sed和awk查找和替换字符串处理Makefile文件</a>
+				<a href="https://typecodes.com/cseries/tcpclosewaitfinwaitrst1.html">Linux TCP客户端出现CLOSE_WAIT后进入死循环</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/sedawkfindreplace2.html">使用sed和awk查找和替换字符串处理Makefile文件（二）</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/sedawkfindreplace1.html">使用sed和awk查找和替换字符串处理Makefile文件（一）</a>
 			</li>
 			<li class="post">
 				<a href="https://typecodes.com/cseries/mapdelintstring.html">C++删除map容器中指定值的元素</a>
@@ -230,12 +236,6 @@
 			</li>
 			<li class="post">
 				<a href="https://typecodes.com/cseries/deldisorderintarrrepeatele.html">C语言删除无序整型数组中的重复元素及时间复杂度</a>
-			</li>
-			<li class="post">
-				<a href="https://typecodes.com/cseries/apuesingledaemonprocess.html">UNIX环境高级编程（APUE）之单实例守护进程</a>
-			</li>
-			<li class="post">
-				<a href="https://typecodes.com/cseries/kill0checkprocessifexist.html">Linux使用KILL 0检测进程是否存在</a>
 			</li>
 		</ul>
 	</div>

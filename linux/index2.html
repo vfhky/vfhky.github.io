@@ -39,6 +39,18 @@
 		<div class="col-md-9" id="blog-main" role="main">
 		  	<!--article recycle-->
 			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/linux/tcpconnectiontimedout.html">Linux TCP连接Connection Refused和Connection timed out的问题</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2015-09-12 22:39 | 分类：<a href="https://typecodes.com/linux/index.html">linux</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>前段时间和其它系统做联调测试，对方系统采用的是负载均衡模式。调试时采用的是多台手机作为客户端发送到对方负载均衡服务器，然后再把报文转发送到我这边的服务端。在测试的时候，对方测试人员说有的手机客户端会偶尔出现报文发不过来的情况。</p>
+<p>故事有点长，先发一张tcp三次握手的过程图镇楼~</p>
+<p><img alt="Linux tcp三次握手" src="https://o3cex9zsl.qnssl.com/2015/09/tcp_handshake.png" title="Linux tcp三次握手"></p>
+
+	<p class="more"><a href="https://typecodes.com/linux/tcpconnectiontimedout.html" title="Linux TCP连接Connection Refused和Connection timed out的问题">- 阅读剩余部分 -</a></p>
+</div>			</article>
+			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/linux/mysqlerrornospace.html">博客MySQL服务惊魂记：Linux磁盘空间不足(Core Dump文件引爆)</a></h2>
 <ul class="post-meta">
 	<li>作者：vfhky | 时间：2015-08-17 22:33 | 分类：<a href="https://typecodes.com/linux/index.html">linux</a></li>
@@ -122,17 +134,6 @@ Linux系统：       阿里云CentOS 7.1（20G）
 
 	<p class="more"><a href="https://typecodes.com/linux/centos7fdiskmountswap.html" title="2015博客升级记(二)：Linux系统磁盘分区挂载和交换空间">- 阅读剩余部分 -</a></p>
 </div>			</article>
-			<article class="post">
-<h2 class="post-title"><a href="https://typecodes.com/linux/centos7afteroperate.html">2015博客升级记(一)：安装CentOS7后需要的操作</a></h2>
-<ul class="post-meta">
-	<li>作者：vfhky | 时间：2015-05-25 16:27 | 分类：<a href="https://typecodes.com/linux/index.html">linux</a></li>
-</ul>
-<div class="post-content fmt">
-	<p>这是<a href="https://typecodes.com/mix/2015updateblog.html" title="查看原文">《2015年博客升级记》</a>系列文章的第一篇，主要记录安装完CentOS7后的一些优化操作，包括更换yum源并升级系统到CentOS7.1、使用sshd登录、修改机器名、vi映射为vim、vimrc的配置。</p>
-<p><img alt="安装CentOS7后需要的操作" src="https://o3cex9zsl.qnssl.com/2015/05/centos7update.png" title="安装CentOS7后需要的操作"></p>
-
-	<p class="more"><a href="https://typecodes.com/linux/centos7afteroperate.html" title="2015博客升级记(一)：安装CentOS7后需要的操作">- 阅读剩余部分 -</a></p>
-</div>			</article>
 		  	<!--page navigation-->
 <ol class="page-navigator">
 <li class="prev"><a href="https://typecodes.com/linux/index.html">&laquo; 前一页</a></li><li>
@@ -155,7 +156,7 @@ Linux系统：       阿里云CentOS 7.1（20G）
 		<h3 class="widget-title">Categories</h3>
 		<ul class="widget-list">
 		      <li class="current">
-		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (39)
+		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (40)
 		      </li>
 		      <li class="current">
 		        <a href="https://typecodes.com/csharp/index.html">Csharp</a> (6)
@@ -167,7 +168,7 @@ Linux系统：       阿里云CentOS 7.1（20G）
 		        <a href="https://typecodes.com/java/index.html">Java</a> (1)
 		      </li>
 		      <li class="current">
-		        <a href="https://typecodes.com/linux/index.html">Linux</a> (23)
+		        <a href="https://typecodes.com/linux/index.html">Linux</a> (24)
 		      </li>
 		      <li class="current">
 		        <a href="https://typecodes.com/mix/index.html">Mix</a> (54)
@@ -181,7 +182,10 @@ Linux系统：       阿里云CentOS 7.1（20G）
 		<h3 class="widget-title">Recent Posts</h3>
 		<ul class="widget-list">
 			<li class="post">
-				<a href="https://typecodes.com/linux/sedawkfindreplace1.html">使用sed和awk查找和替换字符串处理Makefile文件</a>
+				<a href="https://typecodes.com/linux/sedawkfindreplace2.html">使用sed和awk查找和替换字符串处理Makefile文件（二）</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/sedawkfindreplace1.html">使用sed和awk查找和替换字符串处理Makefile文件（一）</a>
 			</li>
 			<li class="post">
 				<a href="https://typecodes.com/linux/handlemakefilebysed.html">使用sed命令批量处理Makefile文件的脚本</a>
@@ -197,9 +201,6 @@ Linux系统：       阿里云CentOS 7.1（20G）
 			</li>
 			<li class="post">
 				<a href="https://typecodes.com/linux/syngithubmarkdownpelican.html">同步GitHub Markdown文章到Linux服务器后更新Pelican博客的脚本</a>
-			</li>
-			<li class="post">
-				<a href="https://typecodes.com/linux/applogsbackup.html">Linux下Nginx、MySQL和PHP等应用的日志切割脚本</a>
 			</li>
 		</ul>
 	</div>

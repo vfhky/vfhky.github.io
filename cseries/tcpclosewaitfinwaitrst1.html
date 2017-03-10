@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html class="no-js" lang="zh-CN">
+	<head>
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+  		<meta name="renderer" content="webkit">
+		<title>Linux TCP客户端出现CLOSE_WAIT后进入死循环 - TypeCodes</title>
+  		<meta name="description" content='在前文中讲述了Linux服务端TCP的某个链路变成CLOSE_WAIT状态，然后由于客户端已经关闭了（发送了RST标志的报文），那么服务端如果继续向这个链路中写入数据的话就会收到SIGPIPE信号而终止，这篇文章主要通过客户端进入CLOSE_WAIT后由于收到服务端产生的RST标志报文进入死循环的情况。注：RST表示复位，用来关闭异常的连接。' />
+  		<meta name="viewport" content="width=device-width, initial-scale=1">
+  		<link href="https://typecodes.com/atom.xml" type="application/atom+xml" rel="alternate" title="TypeCodes Atom Feed" />
+	  	<link href="https://typecodes.com/feed.xml" type="application/rss+xml" rel="alternate" title="TypeCodes RSS Feed" />
+		<link rel="stylesheet" href="https://o3cex9zsl.qnssl.com/libs/css/pelican_vfhky_v1.0.css">
+		<script>
+			var _hmt = _hmt || [];
+			(function() {
+			  var hm = document.createElement("script");
+			  hm.src = "//hm.baidu.com/hm.js?c15c4ab8e91ba9ac3d5a12293cc93359";
+			  var s = document.getElementsByTagName("script")[0]; 
+			  s.parentNode.insertBefore(hm, s);
+			})();
+		</script>
+	</head>
+	<body>
+		<!--1. header navigation begin-->
+		<header id="te-site-header">
+			<div class="container">
+				<a href="https://typecodes.com" class="te-site-logo" target="_self"> TypeCodes</a>
+				<ul class="nav nav-pills" id="te-site-nav">
+					<li><a href="https://typecodes.com">Home</a></li><li><a href="https://typecodes.com/archives.html" title="Archives">Archives</a></li><li><a href="https://typecodes.com/about.html" title="About">About</a></li></ul>
+			</div>
+		</header>
+		<div class="te-headline">
+			<div class="container">
+				<h2 class="te-headline-title"> <a href="https://typecodes.com">TypeCodes</a></h2>
+			</div>
+		</div>
+		<div class="container">
+			<div class="row">		<!--2. left sider begin-->
+		<div class="col-md-9" id="blog-main" role="main">
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/cseries/tcpclosewaitfinwaitrst1.html">Linux TCP客户端出现CLOSE_WAIT后进入死循环</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2017-03-10 13:49 | 分类：<a href="https://typecodes.com/cseries/index.html">cseries</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>在<a href="https://typecodes.com/cseries/tcpclosewaitsigpipe.html" title="《Linux TCP通信出现CLOSE_WAIT后导致服务端进程挂掉》">前文</a>中讲述了Linux服务端TCP的某个链路变成<code>CLOSE_WAIT</code>状态，然后由于客户端已经关闭了（发送了<code>RST</code>标志的报文），那么服务端如果继续向这个链路中写入数据的话就会收到<code>SIGPIPE</code>信号而终止，这篇文章主要通过客户端进入<code>CLOSE_WAIT</code>后由于收到服务端产生的<code>RST</code>标志报文进入死循环的情况。注：<code>RST</code>表示复位，用来关闭异常的连接。</p>
+<p><img alt="CentOS服务端建立监听" src="https://o3cex9zsl.qnssl.com/2017/03/tcpclosewaitfinwaitrst1_server_process.png" title="CentOS服务端建立监听"></p>
+
+
+<h4>1 CentOS服务端建立监听端口</h4>
+<p>如上图所示，在虚拟机CentOS7服务器（192.168.1.177）中打开一个终端界面，执行程序<code>linux_epoll_server_2</code>建立8000端口的监听服务（PID:2791）。进程的大体执行过程是使用epoll_wait等待客户端的接入，然后打印的接收报文并回复应答报文，最后关闭这个客户端的连接。</p>
+<h4>2 CentOS客户端连接服务端</h4>
+<p>新建一个Linux会话终端并执行客户端程序linux_epoll_simple_sndmsg_netstat（具体代码见文末附录部分），然后通过三次握手建立TCP连接，接着进程进入循环模式：每次发送完报文会休眠5秒（<code>sleep(5)</code>）然后再次向服务端发送报文。</p>
+<p><img alt="客户端连接服务端" src="https://o3cex9zsl.qnssl.com/2017/03/tcpclosewaitfinwaitrst1_client_process.png" title="客户端连接服务端"></p>
+<h4>3 使用netstat命令查看TCP状态</h4>
+<p>新建一个Linux会话终端并创建一个shell脚本linux_epoll_simple_sndmsg_netstat.sh ，里面包含关键命令<code>sudo netstat -npt|head -n 2;sudo netstat -npa|grep 8006</code>。这个脚本用于监控TCP的通信状态。从下图中可以看到，最终服务端进程（PID:2791）在监听8006端口，然后和客户端进程（PID:2804）建立了TCP连接。</p>
+<p><img alt="使用netstat命令查看TCP状态" src="https://o3cex9zsl.qnssl.com/2017/03/tcpclosewaitfinwaitrst1_netstat.png" title="使用netstat命令查看TCP状态"></p>
+<h4>4 关键步骤：使用tcpdump命令抓取TCP通信包</h4>
+<p>新建一个Linux会话终端并输入命令<code>sudo tcpdump -i lo -n port 8006</code>抓取客户端和服务端的TCP通信报文。</p>
+<p><img alt="使用tcpdump命令抓取TCP通信包" src="https://o3cex9zsl.qnssl.com/2017/03/tcpclosewaitfinwaitrst1_tcpdump.png" title="使用tcpdump命令抓取TCP通信包"></p>
+<h4>5 过程分析</h4>
+<p>根据前面步骤1服务端、步骤2客户端、步骤3netstat的监控以及步骤4中的TCPDUMP抓包做出具体的分析：</p>
+<p>1、tcpdump抓包分析：</p>
+<div class="highlight"><pre><span></span>[vfhky@typecodes ~]$ sudo tcpdump -i lo -n port 8006
+tcpdump: verbose output suppressed, use -v or -vv for full protocol decode
+listening on lo, link-type EN10MB (Ethernet), capture size 65535 bytes
+
+######三次握手
+11:55:35.724646 IP 127.0.0.1.56710 &gt; 127.0.0.1.8006: Flags [S], seq 1652959375, win 43690, options [mss 65495,sackOK,TS val 8433172 ecr 0,nop,wscale 7], length 0
+13:09:58.084191 IP 127.0.0.1.8006 &gt; 127.0.0.1.56710: Flags [S.], seq 2881349854, ack 1652959376, win 43690, options [mss 65495,sackOK,TS val 8433172 ecr 8433172,nop,wscale 7], length 0
+11:55:35.724660 IP 127.0.0.1.56710 &gt; 127.0.0.1.8006: Flags [.], ack 1, win 342, options [nop,nop,TS val 8433172 ecr 8433172], length 0
+
+######客户端发送58字节的报文
+11:55:35.724966 IP 127.0.0.1.56710 &gt; 127.0.0.1.8006: Flags [P.], seq 1:59, ack 1, win 342, options [nop,nop,TS val 8433173 ecr 8433172], length 58
+######服务端回复ACK确认报文
+11:55:35.724970 IP 127.0.0.1.8006 &gt; 127.0.0.1.56710: Flags [.], ack 59, win 342, options [nop,nop,TS val 8433173 ecr 8433173], length 0
+
+######服务端回复58字节的报文
+11:55:35.725006 IP 127.0.0.1.8006 &gt; 127.0.0.1.56710: Flags [P.], seq 1:59, ack 59, win 342, options [nop,nop,TS val 8433173 ecr 8433173], length 58
+######客户端回复ACK确认报文
+11:55:35.725008 IP 127.0.0.1.56710 &gt; 127.0.0.1.8006: Flags [.], ack 59, win 342, options [nop,nop,TS val 8433173 ecr 8433173], length 0
+
+######服务端调用close函数关闭连接（发送FIN标志的报文后进入FIN_WAIT_1状态）
+11:55:35.725018 IP 127.0.0.1.8006 &gt; 127.0.0.1.56710: Flags [F.], seq 59, ack 59, win 342, options [nop,nop,TS val 8433173 ecr 8433173], length 0
+######客户端回复ACK确认报文（客户端进入CLOSE_WAIT状态，服务端进入FIN_WAIT_2状态）
+11:55:35.766501 IP 127.0.0.1.56710 &gt; 127.0.0.1.8006: Flags [.], ack 60, win 342, options [nop,nop,TS val 8433215 ecr 8433173], length 0
+
+######客户端5秒后再次发送58字节的报文（CLOSE_WAIT状态还是可以向对端发送报文的）
+11:55:40.736161 IP 127.0.0.1.56710 &gt; 127.0.0.1.8006: Flags [P.], seq 59:117, ack 60, win 342, options [nop,nop,TS val 8438184 ecr 8433173], length 58
+######服务端发送RST链路重置标志的报文（客户端关闭）
+11:55:40.736190 IP 127.0.0.1.8006 &gt; 127.0.0.1.56710: Flags [R], seq 2881349914, win 0, length 0
+</pre></div>
+
+
+<p>2、netstat命令监控：由于脚本中包含了<code>sleep 1</code>的代码，所以监控不是很全，这里挑关键的3个部分进行分析：</p>
+<div class="highlight"><pre><span></span>[vfhky@typecodes epoll]$ ./linux_epoll_simple_sndmsg_netstat.sh 
+######服务端建立监听
+Active Internet connections (w/o servers)
+Proto Recv-Q Send-Q Local Address           Foreign Address         State       PID/Program name    
+tcp        0      0 0.0.0.0:8006            0.0.0.0:*               LISTEN      2791/linux_epoll_se
+
+######由于服务端接收并回复报文后主动调用close函数关闭了链路，服务端进入FIN_WAIT2状态，客户端进入CLOSE_WAIT状态
+Active Internet connections (w/o servers)
+Proto Recv-Q Send-Q Local Address           Foreign Address         State       PID/Program name    
+tcp        0      0 0.0.0.0:8006            0.0.0.0:*               LISTEN      2791/linux_epoll_se 
+tcp       59      0 127.0.0.1:56710         127.0.0.1:8006          CLOSE_WAIT  2804/linux_epoll_si 
+tcp        0      0 127.0.0.1:8006          127.0.0.1:56710         FIN_WAIT2   -
+
+######由于服务端回复了RST标志的报文导致链路重置
+Active Internet connections (w/o servers)
+Proto Recv-Q Send-Q Local Address           Foreign Address         State       PID/Program name    
+tcp        0      0 0.0.0.0:8006            0.0.0.0:*               LISTEN      2791/linux_epoll_se
+</pre></div>
+
+
+<p>3、客户端进程执行过程分析：</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="cp">###### 客户端执行过程</span>
+<span class="p">[</span><span class="n">vfhky</span><span class="err">@</span><span class="n">typecodes</span> <span class="n">epoll</span><span class="p">]</span><span class="err">$</span> <span class="n">linux_epoll_simple_sndmsg</span>
+<span class="n">i_send_len</span><span class="o">=</span><span class="p">[</span><span class="mi">58</span><span class="p">].</span>        <span class="c1">//第1次发送报文（正常）</span>
+<span class="n">i_send_len</span><span class="o">=</span><span class="p">[</span><span class="mi">58</span><span class="p">].</span>        <span class="c1">//5秒后再次发送报文，那么会收到RST标志的应答报文</span>
+<span class="p">[</span><span class="n">vfhky</span><span class="err">@</span><span class="n">typecodes</span> <span class="n">epoll</span><span class="p">]</span><span class="err">$</span>
+</pre></div>
+</td></tr></table>
+
+<h4>6 得出结论</h4>
+<p>通过小节5中的具体分析，可以看到在服务端调用<code>close函数</code>关闭了客户端的连接后进入<code>FIN_WAIT_1</code>状态，而客户端立马回复了<code>ACK</code>，从而进入了<code>FIN_WAIT_2</code>状态。此时的客户端自然也进入了<code>CLOSE_WAIT</code>状态。</p>
+<p>但是处于<code>CLOSE_WAIT</code>状态的一方还是可以向对端发送报文的，所以客户端在休眠5秒后再次向服务端发送了58字节的报文。然而此时的服务端已经关闭了链路（FIN_WAIT_2状态），所以Linux内核自动发送了一个<code>RST</code>复位标志的报文给客户端，通知关闭这个异常的连接。</p>
+<p>这里可能会产生疑问了，为什么客户端的进程在收到<code>RST</code>报文后会关闭呢？原因和<a href="https://typecodes.com/cseries/tcpclosewaitsigpipe.html" title="查看原文">《Linux TCP通信出现CLOSE_WAIT后导致服务端进程挂掉》</a>是一样的，就是Linux内核产生软中断，发送<code>SIGPIPE</code>信号给客户端进程，导致其默认终止了。这点可以通过设置客户端程序中<code>#define SIGNAL_HANDLE 0</code>为1来验证。</p>
+<p><img alt="Linux TCP客户端出现CLOSE_WAIT后进入死循环" src="https://o3cex9zsl.qnssl.com/2017/03/tcpclosewaitfinwaitrst1_tcpdump.png" title="Linux TCP客户端出现CLOSE_WAIT后进入死循环"></p>
+<p>但是问题又来了：如上图所示，由于捕捉了<code>SIGPIPE</code>信号（对应值为13）后，客户端进程不会终止，所以进入了<code>while死循环</code>。同时由于捕捉了<code>SIGINT</code>信号（对应值为2），导致在客户端所在的Linux会话终端上无法使用<code>Ctrl+C</code>来终止进程，最后只能使用<code>kill</code>信号来终止客户端！</p>
+<h4>7 附录：</h4>
+<p>以上就是Linux TCP通信中客户端出现CLOSE_WAIT后进入死循环的一个实例以及分析过程，下面是客户端程序linux_epoll_simple_sndmsg_netstat.c，工作流程很简单。</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="cm">/** </span>
+<span class="cm"> * @FileName    linux_epoll_simple_sndmsg.c</span>
+<span class="cm"> * @Describe    A simple example for creating a listen as a server and simulate generate a sigpipe signal in linux.</span>
+<span class="cm"> * @Author      vfhky 2017-03-10 12:49 https://typecodes.com/cseries/tcpclosewaitfinwaitrst1.html</span>
+<span class="cm"> * @Compile     gcc linux_epoll_simple_sndmsg.c -o linux_epoll_simple_sndmsg</span>
+<span class="cm"> */</span>
+<span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;stdlib.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;unistd.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;errno.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;string.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;sys/types.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;netinet/in.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;sys/socket.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;arpa/inet.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;signal.h&gt;</span><span class="cp"></span>
+
+<span class="cp">#define IPADDR &quot;127.0.0.1&quot;</span>
+<span class="cp">#define SERVPORT 8006</span>
+<span class="cp">#define MAXLINE 1024</span>
+
+<span class="cp">#define SIGNAL_HANDLE 0</span>
+<span class="kt">void</span> <span class="nf">sig_handle</span><span class="p">(</span> <span class="kt">int</span> <span class="n">signal</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">printf</span><span class="p">(</span> <span class="s">&quot;Receive a signal=[%d].</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">signal</span> <span class="p">);</span>
+    <span class="k">return</span><span class="p">;</span>
+<span class="p">}</span>
+
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span> <span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">**</span><span class="n">argv</span> <span class="p">)</span>
+<span class="p">{</span>
+<span class="cp">#if SIGNAL_HANDLE</span>
+    <span class="k">struct</span> <span class="n">sigaction</span> <span class="n">new_act</span><span class="p">,</span> <span class="n">old_act</span><span class="p">;</span>
+    <span class="n">new_act</span><span class="p">.</span><span class="n">sa_handler</span> <span class="o">=</span> <span class="n">sig_handle</span><span class="p">;</span>
+    <span class="n">new_act</span><span class="p">.</span><span class="n">sa_flags</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="n">sigemptyset</span><span class="p">(</span> <span class="o">&amp;</span><span class="n">new_act</span><span class="p">.</span><span class="n">sa_mask</span> <span class="p">);</span>
+    <span class="n">sigaction</span><span class="p">(</span> <span class="n">SIGPIPE</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">new_act</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">old_act</span> <span class="p">);</span>
+    <span class="n">sigaction</span><span class="p">(</span> <span class="n">SIGINT</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">new_act</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">old_act</span> <span class="p">);</span>
+<span class="cp">#endif</span>
+
+    <span class="c1">//发送缓存区</span>
+    <span class="kt">char</span> <span class="n">buf</span><span class="p">[</span><span class="n">MAXLINE</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="mh">0x00</span><span class="p">};</span>
+    <span class="c1">//成功发送的字节数</span>
+    <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">i_send_len</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+
+    <span class="kt">int</span> <span class="n">sockfd</span><span class="p">;</span>
+    <span class="k">struct</span> <span class="n">sockaddr_in</span> <span class="n">serv_addr</span><span class="p">;</span>
+
+    <span class="c1">//创建1个socket描述符</span>
+    <span class="k">if</span><span class="p">((</span><span class="n">sockfd</span> <span class="o">=</span> <span class="n">socket</span><span class="p">(</span><span class="n">AF_INET</span><span class="p">,</span><span class="n">SOCK_STREAM</span><span class="p">,</span><span class="mi">0</span><span class="p">))</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">perror</span><span class="p">(</span><span class="s">&quot;socket error </span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+        <span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="n">bzero</span><span class="p">(</span> <span class="o">&amp;</span><span class="n">serv_addr</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">serv_addr</span><span class="p">)</span> <span class="p">);</span>
+    <span class="n">serv_addr</span><span class="p">.</span><span class="n">sin_family</span> <span class="o">=</span> <span class="n">AF_INET</span><span class="p">;</span>
+    <span class="n">serv_addr</span><span class="p">.</span><span class="n">sin_port</span> <span class="o">=</span> <span class="n">htons</span><span class="p">(</span><span class="n">SERVPORT</span><span class="p">);</span>
+    <span class="n">inet_pton</span><span class="p">(</span> <span class="n">AF_INET</span><span class="p">,</span> <span class="n">IPADDR</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">serv_addr</span><span class="p">.</span><span class="n">sin_addr</span> <span class="p">);</span>
+
+    <span class="k">if</span><span class="p">(</span> <span class="n">connect</span><span class="p">(</span> <span class="n">sockfd</span><span class="p">,</span> <span class="p">(</span><span class="k">struct</span> <span class="n">sockaddr</span> <span class="o">*</span><span class="p">)</span><span class="o">&amp;</span><span class="n">serv_addr</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="k">struct</span> <span class="n">sockaddr</span><span class="p">)</span> <span class="p">)</span> <span class="o">==-</span><span class="mi">1</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">perror</span><span class="p">(</span><span class="s">&quot;connect </span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+        <span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="n">printf</span><span class="p">(</span> <span class="s">&quot;sockfd=[%d].</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">sockfd</span> <span class="p">);</span>
+    <span class="k">while</span><span class="p">(</span> <span class="mi">1</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">sprintf</span><span class="p">(</span> <span class="n">buf</span><span class="p">,</span> <span class="s">&quot;HTTP/1.0 200 OK</span><span class="se">\r\n</span><span class="s">Content-type: text/plain</span><span class="se">\r\n\r\n</span><span class="s">%s&quot;</span><span class="p">,</span> <span class="s">&quot;Hello world!</span><span class="se">\n</span><span class="s">&quot;</span> <span class="p">);</span>
+        <span class="k">if</span><span class="p">(</span> <span class="p">(</span> <span class="n">i_send_len</span> <span class="o">=</span> <span class="n">write</span><span class="p">(</span> <span class="n">sockfd</span><span class="p">,</span> <span class="n">buf</span><span class="p">,</span> <span class="n">strlen</span><span class="p">(</span><span class="n">buf</span><span class="p">)</span> <span class="p">)</span> <span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">printf</span><span class="p">(</span> <span class="s">&quot;i_send_len=[%d].</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">i_send_len</span> <span class="p">);</span>
+        <span class="p">}</span>
+        <span class="n">sleep</span><span class="p">(</span><span class="mi">5</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</td></tr></table>
+</div>		    	<div class="donate_div_container">
+					<div class="donate_div">
+						<p><a href="javascript:void(0)" onclick="donateToggle()" class="donate_word" title="打赏，支持一下">打赏</a></p>
+						<div class="hide_box"></div>
+						<div class="donate_box">
+							<a class="donate_close" href="javascript:void(0)" onclick="donateToggle()" title="关闭"><img src="https://o3cex9zsl.qnssl.com/libs/img/donate_close.png" width="11" height="10" alt="取消" /></a>
+							<div class="donate_thk">
+								<p>感谢您的支持，我会继续努力的!</p>
+							</div>
+							<div class="donate_payimg">
+								<img src="https://o3cex9zsl.qnssl.com/libs/img/donate_weipayqr.png" width="140" height="140" alt="扫码支持" title="扫一扫" />
+							</div>
+								<div class="pay_explain">扫码打赏，你说多少就多少</div>
+							<div class="donate_way">
+								<div class="donate_way_item checked" data-id="weipay">
+									<span class="donate_radio"></span>
+									<img src="https://o3cex9zsl.qnssl.com/libs/img/donate_wechat.png" width="112" height="28" alt="微信" />
+								</div>
+								<div class="donate_way_item" data-id="alipay">
+									<span class="donate_radio"></span>
+									<img src="https://o3cex9zsl.qnssl.com/libs/img/donate_alipay.png" width="85" height="28" alt="支付宝" />
+								</div>
+							</div>
+							<div class="shang_info">
+								<p>打开<span id="shang_pay_txt">微信</span>扫一扫，即可进行扫码打赏哦</p>
+							</div>
+						</div>
+					</div>
+				</div>
+		    	<div class="tags">
+					<div class="post_tags">
+						Tags: <a href="https://typecodes.com/tag/tcpdump.html">tcpdump</a>,<a href="https://typecodes.com/tag/tcp.html">tcp</a>,<a href="https://typecodes.com/tag/close_wait.html">close_wait</a>,<a href="https://typecodes.com/tag/rst.html">rst</a>					</div>
+					<div class="post-share">
+						<ul class="post-shareul clearfix">
+							<li class="post-shareli">
+								<a href="http://note.youdao.com/memory/?url=https://typecodes.com/cseries/tcpclosewaitfinwaitrst1.html&title=Linux TCP客户端出现CLOSE_WAIT后进入死循环" class="post-sharea ydshare" target="_blank" rel="nofollow">有道云笔记</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://v.t.sina.com.cn/share/share.php?url=https://typecodes.com/cseries/tcpclosewaitfinwaitrst1.html&title=Linux TCP客户端出现CLOSE_WAIT后进入死循环&source=https://typecodes.com" class="post-sharea wbshare" target="_blank" rel="nofollow">新浪微博</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://v.t.qq.com/share/share.php?title=Linux TCP客户端出现CLOSE_WAIT后进入死循环&url=https://typecodes.com/cseries/tcpclosewaitfinwaitrst1.html&site=https://typecodes.com" class="post-sharea twbshare" target="_blank" rel="nofollow">腾讯微博</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=https://typecodes.com/cseries/tcpclosewaitfinwaitrst1.html&title=Linux TCP客户端出现CLOSE_WAIT后进入死循环&content='utf-8'" class="post-sharea qzoneshare" target="_blank" rel="nofollow">QZone</a>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</article>
+			
+			<div id="comments">
+				<h4 class="num">Comments &raquo;</h4>
+		    	<div id="disqus_thread" aria-live="polite"></div>
+		    	<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+		    </div>
+		</div>
+		<!--3. right sider begin-->
+<div class="col-md-3" id="blog-secondary" role="complementary">
+	<div class="widget">
+		<form id="search" method="get" action="https://typecodes.com/search.html">
+			<input type="text" name="q" id="s" size="20" value="Google...." onfocus="this.value = (this.value == this.defaultValue) ? '' : this.value" onblur="this.value = (this.value == '') ? this.defaultValue : this.value">
+		</form>
+	</div>
+	<div class="widget">
+		<h3 class="widget-title">Categories</h3>
+		<ul class="widget-list">
+		      <li class="current">
+		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (40)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/csharp/index.html">Csharp</a> (6)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/database/index.html">Database</a> (11)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/java/index.html">Java</a> (1)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/linux/index.html">Linux</a> (24)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/mix/index.html">Mix</a> (54)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/web/index.html">Web</a> (88)
+		      </li>
+		</ul>
+	</div>
+	<div class="widget">
+		<h3 class="widget-title">Recent Posts</h3>
+		<ul class="widget-list">
+			<li class="post">
+				<a href="https://typecodes.com/cseries/tcpclosewaitfinwaitrst1.html">Linux TCP客户端出现CLOSE_WAIT后进入死循环</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/sedawkfindreplace2.html">使用sed和awk查找和替换字符串处理Makefile文件（二）</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/sedawkfindreplace1.html">使用sed和awk查找和替换字符串处理Makefile文件（一）</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/mapdelintstring.html">C++删除map容器中指定值的元素</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/handlemakefilebysed.html">使用sed命令批量处理Makefile文件的脚本</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/networkselfdefineconv.html">自己实现inet_aton和inet_ntoa函数功能</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/deldisorderintarrrepeatele.html">C语言删除无序整型数组中的重复元素及时间复杂度</a>
+			</li>
+		</ul>
+	</div>
+	<div class="widget widget-feed">
+		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
+	</div>
+</div>
+			</div>
+		</div>
+		<!--4. bottom begin-->
+		<footer id="te-site-footer">
+<div class="container">
+	<div class="row" role="contentinfo">
+		<section class="col-md-2 col-md-offset-1">
+			<h3>Links</h3>
+			<ul><li><a href="http://blog.vmeila.com/" title="墨迹的Blog" target="_blank">vmeila</a></li><li><a href="https://edi.wang/" title="Edi Wang" target="_blank">Edi Wang</a></li></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul>
+				<li><a href="https://typecodes.com/links.html">More..</a></li>
+			</ul>
+		</section>
+		<section class="col-md-2">
+			<h3>Following</h3>
+			<ul>
+				<li><a href="https://github.com/vfhky" class="following github" target="_blank" rel="external nofollow">GitHub</a></li>
+				<li><a href="http://weibo.com/typecodes" class="following weibo" target="_blank" rel="external nofollow">Weibo</a></li>
+				<li><a href="http://vfhky.sinaapp.com" class="following sae" target="_blank" rel="external nofollow">SAE</a></li>
+				<li><a href="http://www.dwz.cn/mYiwa" class="following qqgroup" target="_blank" rel="external nofollow">Group</a></li>
+			</ul>
+		</section>
+		<div class="col-md-12 copyright">
+			<a href="#top"><i class="i-logo-s">TOP</i></a>
+			<p>
+				&copy;  2012-2017 							<a href="https://typecodes.com">TypeCodes</a>. All Rights Reserved<br>Powered by <a href="http://getpelican.com" rel="external" target="_blank">Pelican</a>. <a href="http://www.miitbeian.gov.cn" rel="external nofollow" target="_blank">粤ICP备14050695号</a>
+			</p>
+		</div>
+	</div>
+</div>		</footer>
+<script type="text/javascript">
+	var disqus_shortname = 'typecodes';
+	var disqus_identifier = '/cseries/tcpclosewaitfinwaitrst1.html';
+	var disqus_url = 'https://typecodes.com/cseries/tcpclosewaitfinwaitrst1.html';
+	var disqus_title = 'Linux TCP客户端出现CLOSE_WAIT后进入死循环';
+	(function() {
+		var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+		dsq.src = "//" + disqus_shortname + '.disqus.com/embed.js';
+		(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	 })();
+</script>
+		<script src="https://o3cex9zsl.qnssl.com/libs/js/jquery_1.5.2.min_v1.1.js"></script>
+	</body>
+</html>

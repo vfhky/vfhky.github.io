@@ -39,6 +39,28 @@
 		<div class="col-md-9" id="blog-main" role="main">
 		  	<!--article recycle-->
 			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/web/crlfloophole.html">配置IIS出现错误的解决方法</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2012-07-24 13:31 | 分类：<a href="https://typecodes.com/web/index.html">web</a></li>
+</ul>
+<div class="post-content fmt">
+	<h5>1 问题描述</h5>
+<p>昨天博客重新改用了一个插件，这个插件虽然也是wordpress官方插件，但是在安装之后网站就出现了一个高危漏洞。根据WASC Threat Classification的说明，该漏洞名称叫做“HTTP响应拆分漏洞”，也叫“CRLF注入攻击”。CR、LF分别对应回车（%0d）、换行（%0a）字符。HTTP头由很多被CRLF组合分离的行构成，每行的结构都是“键：值”。如果用户输入的值部分注入了CRLF字符，它有可能改变的HTTP报头结构。</p>
+<p>HTTP响应拆分是一个新的应用程序的攻击技术，使网页缓存中毒，跨用户涂改，如各种新的攻击，劫持用户的敏感信息和跨站点脚本（XSS）的网页。</p>
+
+	<p class="more"><a href="https://typecodes.com/web/crlfloophole.html" title="配置IIS出现错误的解决方法">- 阅读剩余部分 -</a></p>
+</div>			</article>
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/web/siterobotshtaccess.html">网站的robots和.htaccess应该如何写</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2012-07-19 11:36 | 分类：<a href="https://typecodes.com/web/index.html">web</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>首先，我们了解一下robots和.htacces这两个文件是什么：①robots即文件robots.txt，存放位置为网站的根目录。它是搜索引擎中访问网站的时候要查看的第一个文件。robots.txt文件告诉蜘蛛程序在服务器上什么文件是可以被查看并收录的，而什么文件又是不能让这些搜索引擎查看和收录的。因为一旦一些服务器上的重要文件目录或者文件被别有用心的人搜索到的话，会构成网站安全的巨大威胁。所以有必要写好网站的robots。②.htaccess文件是Apache服务器中的一个配置文件，它负责相关目录下的网页配置。通过htaccess文件，可以帮我们实现：网页301重定向、自定义404错误页面、改变文件扩展名、允许/阻止特定的用户(ip)或者目录的访问、禁止目录列表、配置默认文档等功能。</p>
+
+	<p class="more"><a href="https://typecodes.com/web/siterobotshtaccess.html" title="网站的robots和.htaccess应该如何写">- 阅读剩余部分 -</a></p>
+</div>			</article>
+			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/web/combinededediscuz.html">DEDE织梦和Discuz整合方法</a></h2>
 <ul class="post-meta">
 	<li>作者：vfhky | 时间：2012-07-04 13:40 | 分类：<a href="https://typecodes.com/web/index.html">web</a></li>
@@ -144,28 +166,6 @@
 
 	<p class="more"><a href="https://typecodes.com/csharp/langannotation.html" title="几种编程语言的注释方法">- 阅读剩余部分 -</a></p>
 </div>			</article>
-			<article class="post">
-<h2 class="post-title"><a href="https://typecodes.com/web/asimpajax.html">一个简单的Ajax应用</a></h2>
-<ul class="post-meta">
-	<li>作者：vfhky | 时间：2012-06-30 16:51 | 分类：<a href="https://typecodes.com/web/index.html">web</a></li>
-</ul>
-<div class="post-content fmt">
-	<p>我在上一篇文章中写了在asp中如何用Ajax技术免重载网页检查用户名是否被占用，那么这篇博文主要通过一个简单的Ajax应用来解析一下Ajax技术的原理。</p>
-<p>首先需要三个文件，simpleAjax.hml(用来看效果)，simpleAjax.js(用JavaScript中的XMLHttpRequest对象来直接与服务器进行通信)，simpleAjax.txt(可以自定义异步通信输出内容的文件)。</p>
-
-	<p class="more"><a href="https://typecodes.com/web/asimpajax.html" title="一个简单的Ajax应用">- 阅读剩余部分 -</a></p>
-</div>			</article>
-			<article class="post">
-<h2 class="post-title"><a href="https://typecodes.com/web/talkajax.html">浅谈初步应用Ajax技术</a></h2>
-<ul class="post-meta">
-	<li>作者：vfhky | 时间：2012-06-30 01:30 | 分类：<a href="https://typecodes.com/web/index.html">web</a></li>
-</ul>
-<div class="post-content fmt">
-	<p>为了避免繁重的Web空间服务器负荷，Ajax技术可以使得我们的服务器不再超负载工作了。Ajax全称是“Asynchronous JavaScript and XML”，也即异步JavaScript和XML。它通过JavaScript可使用其XMLHttpRequest对象来直接与服务器进行通信。通过这个对象，JavaScript可在不重载页面的情况与 Web 服务器交换数据。</p>
-<p>由于Ajax在客服端的浏览器与Web服务器端之间使用异步数据传输（HTTP 请求），这样就可使网页从服务器请求少量的信息，而不是整个页面，从而降低了负载。下面通过我自己建的一个ASP网站中的注册页面register.asp来说明：</p>
-
-	<p class="more"><a href="https://typecodes.com/web/talkajax.html" title="浅谈初步应用Ajax技术">- 阅读剩余部分 -</a></p>
-</div>			</article>
 		  	<!--page navigation-->
 <ol class="page-navigator">
 <li class="prev"><a href="https://typecodes.com/index26.html">&laquo; 前一页</a></li><li>
@@ -201,7 +201,7 @@
 		<h3 class="widget-title">Categories</h3>
 		<ul class="widget-list">
 		      <li class="current">
-		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (39)
+		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (40)
 		      </li>
 		      <li class="current">
 		        <a href="https://typecodes.com/csharp/index.html">Csharp</a> (6)
@@ -213,7 +213,7 @@
 		        <a href="https://typecodes.com/java/index.html">Java</a> (1)
 		      </li>
 		      <li class="current">
-		        <a href="https://typecodes.com/linux/index.html">Linux</a> (23)
+		        <a href="https://typecodes.com/linux/index.html">Linux</a> (24)
 		      </li>
 		      <li class="current">
 		        <a href="https://typecodes.com/mix/index.html">Mix</a> (54)
@@ -227,7 +227,13 @@
 		<h3 class="widget-title">Recent Posts</h3>
 		<ul class="widget-list">
 			<li class="post">
-				<a href="https://typecodes.com/linux/sedawkfindreplace1.html">使用sed和awk查找和替换字符串处理Makefile文件</a>
+				<a href="https://typecodes.com/cseries/tcpclosewaitfinwaitrst1.html">Linux TCP客户端出现CLOSE_WAIT后进入死循环</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/sedawkfindreplace2.html">使用sed和awk查找和替换字符串处理Makefile文件（二）</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/sedawkfindreplace1.html">使用sed和awk查找和替换字符串处理Makefile文件（一）</a>
 			</li>
 			<li class="post">
 				<a href="https://typecodes.com/cseries/mapdelintstring.html">C++删除map容器中指定值的元素</a>
@@ -240,12 +246,6 @@
 			</li>
 			<li class="post">
 				<a href="https://typecodes.com/cseries/deldisorderintarrrepeatele.html">C语言删除无序整型数组中的重复元素及时间复杂度</a>
-			</li>
-			<li class="post">
-				<a href="https://typecodes.com/cseries/apuesingledaemonprocess.html">UNIX环境高级编程（APUE）之单实例守护进程</a>
-			</li>
-			<li class="post">
-				<a href="https://typecodes.com/cseries/kill0checkprocessifexist.html">Linux使用KILL 0检测进程是否存在</a>
 			</li>
 		</ul>
 	</div>

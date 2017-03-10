@@ -39,6 +39,31 @@
 		<div class="col-md-9" id="blog-main" role="main">
 		  	<!--article recycle-->
 			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/mix/begintypechotopelican.html">准备将博客从Typecho迁移到Pelican</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2015-12-10 16:20 | 分类：<a href="https://typecodes.com/mix/index.html">mix</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>8月份的时候，终于从庞大的WordPress转到了轻量级的<a href="https://typecodes.com/mix/eventualwptotypecho.html" title="《终于从WordPress转向Typecho了》">博客程序Typecho</a>。简洁的设计和比较出色的Markdown支持，整个Typecho体验还是挺不错的。到10月份的时候，自己了解了一些静态博客程序，包括nodejs的Ghost、Hexo等，ruby写的jekyll以及Python写的<a href="http://docs.getpelican.com/en/3.6.3/" title="Pelican最新3.6.3官方文档">Pelican</a>等。</p>
+<p>由于当时正好接触到了大蟒蛇，而且对js不熟（ruby都没用过），所以就在本地尝试了一下Pelican。之间折腾了一个从Octopress移植过来的主题Pelican-Octopress未果，后面忙着就没怎么弄了。</p>
+<p>前段时间辞职后，闲着就打算把博客“简洁到底”：抛弃MySQL数据库和PHP执行解释，完全采用Python生成静态HTML文件。这样以后就只需要在本地通过Markdown写好文章，然后通过pelican生成html文件即可。</p>
+<p><img alt="准备将博客从Typecho迁移到Pelican" src="https://o3cex9zsl.qnssl.com/2015/12/10/begintypechotopelican.png" title="准备将博客从Typecho迁移到Pelican"></p>
+
+	<p class="more"><a href="https://typecodes.com/mix/begintypechotopelican.html" title="准备将博客从Typecho迁移到Pelican">- 阅读剩余部分 -</a></p>
+</div>			</article>
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/linux/tcpconnectiontimedout.html">Linux TCP连接Connection Refused和Connection timed out的问题</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2015-09-12 22:39 | 分类：<a href="https://typecodes.com/linux/index.html">linux</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>前段时间和其它系统做联调测试，对方系统采用的是负载均衡模式。调试时采用的是多台手机作为客户端发送到对方负载均衡服务器，然后再把报文转发送到我这边的服务端。在测试的时候，对方测试人员说有的手机客户端会偶尔出现报文发不过来的情况。</p>
+<p>故事有点长，先发一张tcp三次握手的过程图镇楼~</p>
+<p><img alt="Linux tcp三次握手" src="https://o3cex9zsl.qnssl.com/2015/09/tcp_handshake.png" title="Linux tcp三次握手"></p>
+
+	<p class="more"><a href="https://typecodes.com/linux/tcpconnectiontimedout.html" title="Linux TCP连接Connection Refused和Connection timed out的问题">- 阅读剩余部分 -</a></p>
+</div>			</article>
+			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/linux/mysqlerrornospace.html">博客MySQL服务惊魂记：Linux磁盘空间不足(Core Dump文件引爆)</a></h2>
 <ul class="post-meta">
 	<li>作者：vfhky | 时间：2015-08-17 22:33 | 分类：<a href="https://typecodes.com/linux/index.html">linux</a></li>
@@ -109,41 +134,6 @@ readelf：显示关于 ELF 目标文件的信息。
 
 	<p class="more"><a href="https://typecodes.com/mix/vpsshadowsockswitchyomegaspeeder.html" title="搭了个Shadowsocks+Proxy SwitchyOmega+net-speeder梯子">- 阅读剩余部分 -</a></p>
 </div>			</article>
-			<article class="post">
-<h2 class="post-title"><a href="https://typecodes.com/cseries/gcclderrlibrarypath.html">Linux gcc链接动态库出错：LIBRARY_PATH和LD_LIBRARY_PATH的区别</a></h2>
-<ul class="post-meta">
-	<li>作者：vfhky | 时间：2015-08-08 22:51 | 分类：<a href="https://typecodes.com/cseries/index.html">cseries</a></li>
-</ul>
-<div class="post-content fmt">
-	<p>昨天在自己的CentOs7.1上写makefile的时候，发现在一个C程序在编译并链接一个已生成好的lib动态库的时候出错。链接命令大概是这样的：</p>
-<div class="highlight"><pre><span></span>[root@typecodes tcpmsg]# gcc -o hello main.c -lmyhello
-/usr/bin/ld: cannot find -lmyhello
-collect2: error: ld returned 1 exit status
-</pre></div>
-
-
-<p><img alt="Linux gcc链接动态库出错" src="https://o3cex9zsl.qnssl.com/2015/08/gcc_linux.png" title="Linux gcc链接动态库出错"></p>
-
-	<p class="more"><a href="https://typecodes.com/cseries/gcclderrlibrarypath.html" title="Linux gcc链接动态库出错：LIBRARY_PATH和LD_LIBRARY_PATH的区别">- 阅读剩余部分 -</a></p>
-</div>			</article>
-			<article class="post">
-<h2 class="post-title"><a href="https://typecodes.com/cseries/unixsigtermkill.html">Unix系统进程对SIGTERM、SIGUSR1和SIGUSR2信号处理</a></h2>
-<ul class="post-meta">
-	<li>作者：vfhky | 时间：2015-08-05 17:41 | 分类：<a href="https://typecodes.com/cseries/index.html">cseries</a></li>
-</ul>
-<div class="post-content fmt">
-	<p>好久没更新博客了，写篇文章除除草。这篇文章主要通过简单的例子说明一下Unix/Linux进程中如果捕捉和处理<code>SIGTERM</code>、<code>SIGUSR1</code>和<code>SIGUSR2</code>信号。</p>
-<p>先说明一下这三个信号：</p>
-<div class="highlight"><pre><span></span>信号(signal)是*nix系统中进程之间通信(IPC)的一种常见方式。
-SIGTERM：进程终止信号，效果等同于*nix shell中不带-9的kill命令；
-SIGUSR1：保留给用户使用的信号；
-SIGUSR2：同SIGUSR1，保留给用户使用的信号。
-</pre></div>
-
-
-
-	<p class="more"><a href="https://typecodes.com/cseries/unixsigtermkill.html" title="Unix系统进程对SIGTERM、SIGUSR1和SIGUSR2信号处理">- 阅读剩余部分 -</a></p>
-</div>			</article>
 		  	<!--page navigation-->
 <ol class="page-navigator">
 <li class="prev"><a href="https://typecodes.com/index3.html">&laquo; 前一页</a></li><li>
@@ -179,7 +169,7 @@ SIGUSR2：同SIGUSR1，保留给用户使用的信号。
 		<h3 class="widget-title">Categories</h3>
 		<ul class="widget-list">
 		      <li class="current">
-		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (39)
+		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (40)
 		      </li>
 		      <li class="current">
 		        <a href="https://typecodes.com/csharp/index.html">Csharp</a> (6)
@@ -191,7 +181,7 @@ SIGUSR2：同SIGUSR1，保留给用户使用的信号。
 		        <a href="https://typecodes.com/java/index.html">Java</a> (1)
 		      </li>
 		      <li class="current">
-		        <a href="https://typecodes.com/linux/index.html">Linux</a> (23)
+		        <a href="https://typecodes.com/linux/index.html">Linux</a> (24)
 		      </li>
 		      <li class="current">
 		        <a href="https://typecodes.com/mix/index.html">Mix</a> (54)
@@ -205,7 +195,13 @@ SIGUSR2：同SIGUSR1，保留给用户使用的信号。
 		<h3 class="widget-title">Recent Posts</h3>
 		<ul class="widget-list">
 			<li class="post">
-				<a href="https://typecodes.com/linux/sedawkfindreplace1.html">使用sed和awk查找和替换字符串处理Makefile文件</a>
+				<a href="https://typecodes.com/cseries/tcpclosewaitfinwaitrst1.html">Linux TCP客户端出现CLOSE_WAIT后进入死循环</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/sedawkfindreplace2.html">使用sed和awk查找和替换字符串处理Makefile文件（二）</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/sedawkfindreplace1.html">使用sed和awk查找和替换字符串处理Makefile文件（一）</a>
 			</li>
 			<li class="post">
 				<a href="https://typecodes.com/cseries/mapdelintstring.html">C++删除map容器中指定值的元素</a>
@@ -218,12 +214,6 @@ SIGUSR2：同SIGUSR1，保留给用户使用的信号。
 			</li>
 			<li class="post">
 				<a href="https://typecodes.com/cseries/deldisorderintarrrepeatele.html">C语言删除无序整型数组中的重复元素及时间复杂度</a>
-			</li>
-			<li class="post">
-				<a href="https://typecodes.com/cseries/apuesingledaemonprocess.html">UNIX环境高级编程（APUE）之单实例守护进程</a>
-			</li>
-			<li class="post">
-				<a href="https://typecodes.com/cseries/kill0checkprocessifexist.html">Linux使用KILL 0检测进程是否存在</a>
 			</li>
 		</ul>
 	</div>
