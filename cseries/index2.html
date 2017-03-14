@@ -39,6 +39,17 @@
 		<div class="col-md-9" id="blog-main" role="main">
 		  	<!--article recycle-->
 			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/cseries/sigprocmasksigsuspendapp.html">一个sigprocmask和sigsuspend函数的综合应用</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2016-02-29 11:39 | 分类：<a href="https://typecodes.com/cseries/index.html">cseries</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>在Linux服务端后台开发中，经常会用到信号处理函数：<code>sigprocmask</code>和<code>sigsuspend</code>。这篇文章主要通过一个综合实例演示如何使用sigprocmask函数屏蔽目标信号（信号掩码）以及sigsuspend函数挂起进程。</p>
+<p><img alt="Linux中编译执行sigprocmask_sigsuspend程序" src="https://o3cex9zsl.qnssl.com/2016/02/sigprocmask_sigsuspend_init.png" title="Linux中编译执行sigprocmask_sigsuspend程序"></p>
+
+	<p class="more"><a href="https://typecodes.com/cseries/sigprocmasksigsuspendapp.html" title="一个sigprocmask和sigsuspend函数的综合应用">- 阅读剩余部分 -</a></p>
+</div>			</article>
+			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/cseries/tcpclosewaitsigpipe.html">Linux TCP通信出现CLOSE_WAIT后导致服务端进程挂掉</a></h2>
 <ul class="post-meta">
 	<li>作者：vfhky | 时间：2016-02-29 08:39 | 分类：<a href="https://typecodes.com/cseries/index.html">cseries</a></li>
@@ -112,17 +123,6 @@
 
 	<p class="more"><a href="https://typecodes.com/cseries/cppgeneralmakefile.html" title="Linux C/C++工程中可生成ELF、动/静态库文件的通用Makefile">- 阅读剩余部分 -</a></p>
 </div>			</article>
-			<article class="post">
-<h2 class="post-title"><a href="https://typecodes.com/cseries/libraryundefinedref.html">解决make编译链接动态库错误：libxx.so: undefined reference to xx</a></h2>
-<ul class="post-meta">
-	<li>作者：vfhky | 时间：2015-08-13 21:05 | 分类：<a href="https://typecodes.com/cseries/index.html">cseries</a></li>
-</ul>
-<div class="post-content fmt">
-	<p>最近在写一个Makefile，调试时遇到了<code>libsrcpbl.so: undefined reference to gcProgramName</code>的问题。在这个Makefile脚本里面，终极目标是通过链接一个自定义的动态库<code>libsrcpbl.so</code>生成一个ELF目标文件。</p>
-<p>由于链接生成libsrcpbl.so动态库的.o文件比较多，无法定位具体的错误程序文件和位置，所以折腾了较长时间。</p>
-
-	<p class="more"><a href="https://typecodes.com/cseries/libraryundefinedref.html" title="解决make编译链接动态库错误：libxx.so: undefined reference to xx">- 阅读剩余部分 -</a></p>
-</div>			</article>
 		  	<!--page navigation-->
 <ol class="page-navigator">
 <li class="prev"><a href="https://typecodes.com/cseries/index.html">&laquo; 前一页</a></li><li>
@@ -135,6 +135,8 @@
        			<a href="https://typecodes.com/cseries/index4.html">4</a>
        		</li><li>
        			<a href="https://typecodes.com/cseries/index5.html">5</a>
+       		</li><li>
+       			<a href="https://typecodes.com/cseries/index6.html">6</a>
        		</li><li class="next">
        		<a href="https://typecodes.com/cseries/index3.html">后一页 &raquo;</a>
        </li></ol>		</div>
@@ -149,7 +151,7 @@
 		<h3 class="widget-title">Categories</h3>
 		<ul class="widget-list">
 		      <li class="current">
-		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (40)
+		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (41)
 		      </li>
 		      <li class="current">
 		        <a href="https://typecodes.com/csharp/index.html">Csharp</a> (6)
@@ -175,6 +177,9 @@
 		<h3 class="widget-title">Recent Posts</h3>
 		<ul class="widget-list">
 			<li class="post">
+				<a href="https://typecodes.com/cseries/gccvsheapnewinit1.html">C++中使用vs2015和g++对new开辟的堆内存是否初始化的分析</a>
+			</li>
+			<li class="post">
 				<a href="https://typecodes.com/cseries/tcpclosewaitfinwaitrst1.html">Linux TCP客户端出现CLOSE_WAIT后进入死循环</a>
 			</li>
 			<li class="post">
@@ -191,9 +196,6 @@
 			</li>
 			<li class="post">
 				<a href="https://typecodes.com/cseries/kill0checkprocessifexist.html">Linux使用KILL 0检测进程是否存在</a>
-			</li>
-			<li class="post">
-				<a href="https://typecodes.com/cseries/vsnprintffilenameline.html">vsnprintf字符串格式化输出实例：日志中打印程序名和行号</a>
 			</li>
 		</ul>
 	</div>

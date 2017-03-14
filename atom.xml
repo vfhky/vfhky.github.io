@@ -1,5 +1,126 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>TypeCodes</title><link href="https://typecodes.com/" rel="alternate"></link><link href="https://typecodes.com/atom.xml" rel="self"></link><id>https://typecodes.com/</id><updated>2017-03-10T13:49:00+08:00</updated><entry><title>Linux TCP客户端出现CLOSE_WAIT后进入死循环</title><link href="https://typecodes.com/cseries/tcpclosewaitfinwaitrst1.html" rel="alternate"></link><published>2017-03-10T13:49:00+08:00</published><updated>2017-03-10T13:49:00+08:00</updated><author><name>vfhky</name></author><id>tag:typecodes.com,2017-03-10:/cseries/tcpclosewaitfinwaitrst1.html</id><summary type="html">&lt;p&gt;在&lt;a href="https://typecodes.com/cseries/tcpclosewaitsigpipe.html" title="《Linux TCP通信出现CLOSE_WAIT后导致服务端进程挂掉》"&gt;前文&lt;/a&gt;中讲述了Linux服务端TCP的某个链路变成&lt;code&gt;CLOSE_WAIT&lt;/code&gt;状态，然后由于客户端已经关闭了（发送了&lt;code&gt;RST&lt;/code&gt;标志的报文），那么服务端如果继续向这个链路中写入数据的话就会收到&lt;code&gt;SIGPIPE&lt;/code&gt;信号而终止，这篇文章主要通过客户端进入&lt;code&gt;CLOSE_WAIT&lt;/code&gt;后由于收到服务端产生的&lt;code&gt;RST&lt;/code&gt;标志报文进入死循环的情况。注：&lt;code&gt;RST&lt;/code&gt;表示复位，用来关闭异常的连接。&lt;/p&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>TypeCodes</title><link href="https://typecodes.com/" rel="alternate"></link><link href="https://typecodes.com/atom.xml" rel="self"></link><id>https://typecodes.com/</id><updated>2017-03-14T23:24:00+08:00</updated><entry><title>C++中使用vs2015和g++对new开辟的堆内存是否初始化的分析</title><link href="https://typecodes.com/cseries/gccvsheapnewinit1.html" rel="alternate"></link><published>2017-03-14T23:24:00+08:00</published><updated>2017-03-14T23:24:00+08:00</updated><author><name>vfhky</name></author><id>tag:typecodes.com,2017-03-14:/cseries/gccvsheapnewinit1.html</id><summary type="html">&lt;p&gt;在C++中使用&lt;code&gt;new&lt;/code&gt;运算符在堆中申请一内存块的使用权的同时还可以执行对该内存块的初始化工作。下面通过使用2个类对象和2个基本数据类型来分析使用&lt;code&gt;new class_object&lt;/code&gt;、&lt;code&gt;new class_object()&lt;/code&gt;和&lt;code&gt;new int&lt;/code&gt;、&lt;code&gt;new int()&lt;/code&gt;对这块内存的初始化情况。&lt;/p&gt;
+</summary><content type="html">&lt;p&gt;在C++中使用&lt;code&gt;new&lt;/code&gt;运算符在堆中申请一内存块的使用权的同时还可以执行对该内存块的初始化工作。下面通过使用2个类对象和2个基本数据类型来分析使用&lt;code&gt;new class_object&lt;/code&gt;、&lt;code&gt;new class_object()&lt;/code&gt;和&lt;code&gt;new int&lt;/code&gt;、&lt;code&gt;new int()&lt;/code&gt;对这块内存的初始化情况。&lt;/p&gt;
+
+
+&lt;h4&gt;1 示例程序&lt;/h4&gt;
+&lt;p&gt;这里用下面这个C++程序作为演示，在后面两个小节中分别使用g++和vs2015来编译。&lt;/p&gt;
+&lt;table class="highlighttable"&gt;&lt;tr&gt;&lt;td class="linenos"&gt;&lt;div class="linenodiv"&gt;&lt;pre&gt; 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49&lt;/pre&gt;&lt;/div&gt;&lt;/td&gt;&lt;td class="code"&gt;&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="cm"&gt;/** &lt;/span&gt;
+&lt;span class="cm"&gt; * @FileName    gccvsheapnewinit1.cpp&lt;/span&gt;
+&lt;span class="cm"&gt; * @Describe    A simple example for using new to allocating mem and initialize it compiled with visual studio and g++.&lt;/span&gt;
+&lt;span class="cm"&gt; * @Author      vfhky 2017-03-14 23:24 https://typecodes.com/cseries/gccvsheapnewinit1.html&lt;/span&gt;
+&lt;span class="cm"&gt; * @Compile     g++ gccvsheapnewinit1.cpp -o gccvsheapnewinit1&lt;/span&gt;
+&lt;span class="cm"&gt; */&lt;/span&gt;
+&lt;span class="cp"&gt;#include&lt;/span&gt; &lt;span class="cpf"&gt;&amp;lt;iostream&amp;gt;&lt;/span&gt;&lt;span class="cp"&gt;&lt;/span&gt;
+&lt;span class="cp"&gt;#include&lt;/span&gt; &lt;span class="cpf"&gt;&amp;lt;stdio.h&amp;gt;&lt;/span&gt;&lt;span class="cp"&gt;&lt;/span&gt;
+&lt;span class="k"&gt;using&lt;/span&gt; &lt;span class="k"&gt;namespace&lt;/span&gt; &lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+
+&lt;span class="c1"&gt;//类A中是否开启默认构造函数&lt;/span&gt;
+&lt;span class="cp"&gt;#define DEFAULTFUN 0&lt;/span&gt;
+
+&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;A&lt;/span&gt;
+&lt;span class="p"&gt;{&lt;/span&gt;
+&lt;span class="k"&gt;public&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
+    &lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;i_value&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="cp"&gt;#if DEFAULTFUN&lt;/span&gt;
+    &lt;span class="c1"&gt;//无参构造函数&lt;/span&gt;
+    &lt;span class="n"&gt;A&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="n"&gt;i_value&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;10&lt;/span&gt;&lt;span class="p"&gt;){}&lt;/span&gt;
+&lt;span class="cp"&gt;#endif&lt;/span&gt;
+&lt;span class="p"&gt;};&lt;/span&gt;
+
+&lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="nf"&gt;main&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt; &lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;argc&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="kt"&gt;char&lt;/span&gt; &lt;span class="o"&gt;**&lt;/span&gt;&lt;span class="n"&gt;argv&lt;/span&gt; &lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="n"&gt;A&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;obj1&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="k"&gt;new&lt;/span&gt; &lt;span class="n"&gt;A&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="c1"&gt;//如果类A中没有自定义的构造函数（调用编译器合成的默认构造函数，不会对数据成员初始化），如果不加括号，则打印1个随机数；如果有自定义的构造函数，那么会调用这个构造函数进行初始化（本例为10）。&lt;/span&gt;
+    &lt;span class="n"&gt;cout&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;new A=[&amp;quot;&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="n"&gt;obj1&lt;/span&gt;&lt;span class="o"&gt;-&amp;gt;&lt;/span&gt;&lt;span class="n"&gt;i_value&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;]&amp;quot;&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="n"&gt;endl&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="k"&gt;delete&lt;/span&gt; &lt;span class="n"&gt;obj1&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+
+    &lt;span class="n"&gt;A&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;obj2&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="k"&gt;new&lt;/span&gt; &lt;span class="n"&gt;A&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;
+    &lt;span class="c1"&gt;//如果类A中没有自定义的构造函数（调用编译器合成的默认构造函数），但是接着会对内存（各个成员变量）进行初始化（默认为0）；如果自定义了构造函数，那么会调用这个构造函数进行初始化（本例为10）。&lt;/span&gt;
+    &lt;span class="n"&gt;cout&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;new A()=[&amp;quot;&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="n"&gt;obj2&lt;/span&gt;&lt;span class="o"&gt;-&amp;gt;&lt;/span&gt;&lt;span class="n"&gt;i_value&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;]&amp;quot;&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="n"&gt;endl&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="k"&gt;delete&lt;/span&gt; &lt;span class="n"&gt;obj2&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+
+    &lt;span class="n"&gt;cout&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;----------------&amp;quot;&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="n"&gt;endl&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+
+    &lt;span class="c1"&gt;//int类型中没有默认构造函数，如果不加括号，那么不会初始化。&lt;/span&gt;
+    &lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;i_arra&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="k"&gt;new&lt;/span&gt; &lt;span class="kt"&gt;int&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;20&lt;/span&gt;&lt;span class="p"&gt;];&lt;/span&gt;
+    &lt;span class="n"&gt;printf&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;new int[10]=[%d]&lt;/span&gt;&lt;span class="se"&gt;\n&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;i_arra&lt;/span&gt;&lt;span class="o"&gt;+&lt;/span&gt;&lt;span class="mi"&gt;10&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;);&lt;/span&gt;
+    &lt;span class="k"&gt;delete&lt;/span&gt; &lt;span class="n"&gt;i_arra&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+
+    &lt;span class="c1"&gt;//int类型中没有默认构造函数，如果加括号，那么会初始化为0。&lt;/span&gt;
+    &lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;i_arrb&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="k"&gt;new&lt;/span&gt; &lt;span class="kt"&gt;int&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;20&lt;/span&gt;&lt;span class="p"&gt;]();&lt;/span&gt;
+    &lt;span class="n"&gt;printf&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;new int[10]()=[%d]&lt;/span&gt;&lt;span class="se"&gt;\n&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;i_arrb&lt;/span&gt;&lt;span class="o"&gt;+&lt;/span&gt;&lt;span class="mi"&gt;10&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;);&lt;/span&gt;
+    &lt;span class="k"&gt;delete&lt;/span&gt; &lt;span class="n"&gt;i_arrb&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+
+    &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+
+&lt;h4&gt;2 使用g++编译器进行编译并执行&lt;/h4&gt;
+&lt;p&gt;无论是否将&lt;code&gt;DEFAULTFUN&lt;/code&gt;的值设置为1（即打开类A中的默认构造函数），在使用g++编译器编译并执行的输出结果都如下图所示。从图中可以看出在使用&lt;code&gt;new&lt;/code&gt;运算符开辟了内存后，会自动对这块内存进行初始化。因此，图中类A的两个对象obj1和obj2对应的数据成员i_value的值都为0，而且整型指针变量指向偏移量为10的那个整数也都是0。&lt;/p&gt;
+&lt;p&gt;&lt;img alt="使用g++编译后执行输出的结果" src="https://o3cex9zsl.qnssl.com/2017/03/heapnewinit1_g++.png" title="使用g++编译后执行输出的结果"&gt;&lt;/p&gt;
+&lt;h4&gt;3 在visual studio 2015中进行编译并执行&lt;/h4&gt;
+&lt;p&gt;分别把上面程序中的&lt;code&gt;DEFAULTFUN&lt;/code&gt;的值设置为0和1，也就是测试类中是否包含自定义的构造函数对使用&lt;code&gt;new&lt;/code&gt;运算符开辟内存并初始化的影响，然后在vs2015中进行编译和执行，具体操作和对应结果如下。&lt;/p&gt;
+&lt;h5&gt;3.1 把&lt;code&gt;DEFAULTFUN&lt;/code&gt;的值设置为0&lt;/h5&gt;
+&lt;p&gt;&lt;code&gt;DEFAULTFUN&lt;/code&gt;的值设置为0，然后在visual studio 2015中进行编译并执行，得到的结果如下图所示。对比类A的对象obj1和obj2的数据成员的输出值可以得出结论：如果类A中没有自定义的构造函数，那么&lt;code&gt;new A&lt;/code&gt;和&lt;code&gt;new A()&lt;/code&gt;会调用编译器合成的默认构造函数，但是只有&lt;code&gt;new A()&lt;/code&gt;会对这块内存（各个成员变量）进行初始化（默认为0）。&lt;/p&gt;
+&lt;p&gt;&lt;img alt="在visual studio2015中编译执行输出的结果" src="https://o3cex9zsl.qnssl.com/2017/03/heapnewinit1_vs2015_1.png" title="在visual studio2015中编译执行输出的结果"&gt;&lt;/p&gt;
+&lt;h5&gt;3.2 把&lt;code&gt;DEFAULTFUN&lt;/code&gt;的值设置为1&lt;/h5&gt;
+&lt;p&gt;&lt;code&gt;DEFAULTFUN&lt;/code&gt;的值设置为1，然后在visual studio 2015中进行编译并执行，得到的结果如下图所示。对比类A的对象obj1和obj2的数据成员的输出值可以得出结论：如果自定义了构造函数，那么不论是&lt;code&gt;new A&lt;/code&gt;还是&lt;code&gt;new A()&lt;/code&gt;都会调用这个构造函数进行初始化（本例为10）。&lt;/p&gt;
+&lt;p&gt;&lt;img alt="在visual studio2015中编译执行输出的结果" src="https://o3cex9zsl.qnssl.com/2017/03/heapnewinit1_vs2015_2.png" title="在visual studio2015中编译执行输出的结果"&gt;&lt;/p&gt;
+&lt;h4&gt;4 总结&lt;/h4&gt;
+&lt;p&gt;从第2小节的结果可以看出，对于g++编译器来说，无论是使用&lt;code&gt;new class_object&lt;/code&gt;、&lt;code&gt;new class_object()&lt;/code&gt;和&lt;code&gt;new int&lt;/code&gt;、&lt;code&gt;new int()&lt;/code&gt;都会对申请的这块内存进行初始化。&lt;/p&gt;
+&lt;p&gt;从第3和第4小节的结果可以看出，对于visual studio 2015编译器来说他们对上述&lt;code&gt;new&lt;/code&gt;运算符的操作有不同的结果，具体总结如下：&lt;/p&gt;
+&lt;p&gt;对于基本数据类型（例如int, char等待）在使用new开辟申请内存空间时，如果使用&lt;code&gt;new data_type[numbers]&lt;/code&gt;不会做内存的初始化操作；而使用&lt;code&gt;new data_type[numbers]()&lt;/code&gt;时除了申请内存空间外还会把这块内存中所有的数据初始化为0。&lt;/p&gt;
+&lt;p&gt;对于对象类型（例如string以及自定义的类对象等）在使用new开辟申请内存空间时，如果没有自定义构造函数，那么使用&lt;code&gt;new data_type[numbers]&lt;/code&gt;和使用&lt;code&gt;new data_type[numbers]()&lt;/code&gt;都会调用由编译器合成的默认构造函数，但是&lt;code&gt;new data_type[numbers]()&lt;/code&gt;还会把这块内存中所有的数据初始化为0；如果自定义了构造函数，那么使用&lt;code&gt;new data_type[numbers]&lt;/code&gt;和使用&lt;code&gt;new data_type[numbers]()&lt;/code&gt;都会调用由编译器合成的默认构造函数，然后进行初始化（例中为10）。&lt;/p&gt;</content><category term="new"></category><category term="heap"></category></entry><entry><title>Linux TCP客户端出现CLOSE_WAIT后进入死循环</title><link href="https://typecodes.com/cseries/tcpclosewaitfinwaitrst1.html" rel="alternate"></link><published>2017-03-10T13:49:00+08:00</published><updated>2017-03-10T13:49:00+08:00</updated><author><name>vfhky</name></author><id>tag:typecodes.com,2017-03-10:/cseries/tcpclosewaitfinwaitrst1.html</id><summary type="html">&lt;p&gt;在&lt;a href="https://typecodes.com/cseries/tcpclosewaitsigpipe.html" title="《Linux TCP通信出现CLOSE_WAIT后导致服务端进程挂掉》"&gt;前文&lt;/a&gt;中讲述了Linux服务端TCP的某个链路变成&lt;code&gt;CLOSE_WAIT&lt;/code&gt;状态，然后由于客户端已经关闭了（发送了&lt;code&gt;RST&lt;/code&gt;标志的报文），那么服务端如果继续向这个链路中写入数据的话就会收到&lt;code&gt;SIGPIPE&lt;/code&gt;信号而终止，这篇文章主要通过客户端进入&lt;code&gt;CLOSE_WAIT&lt;/code&gt;后由于收到服务端产生的&lt;code&gt;RST&lt;/code&gt;标志报文进入死循环的情况。注：&lt;code&gt;RST&lt;/code&gt;表示复位，用来关闭异常的连接。&lt;/p&gt;
 &lt;p&gt;&lt;img alt="CentOS服务端建立监听" src="https://o3cex9zsl.qnssl.com/2017/03/tcpclosewaitfinwaitrst1_server_process.png" title="CentOS服务端建立监听"&gt;&lt;/p&gt;
 </summary><content type="html">&lt;p&gt;在&lt;a href="https://typecodes.com/cseries/tcpclosewaitsigpipe.html" title="《Linux TCP通信出现CLOSE_WAIT后导致服务端进程挂掉》"&gt;前文&lt;/a&gt;中讲述了Linux服务端TCP的某个链路变成&lt;code&gt;CLOSE_WAIT&lt;/code&gt;状态，然后由于客户端已经关闭了（发送了&lt;code&gt;RST&lt;/code&gt;标志的报文），那么服务端如果继续向这个链路中写入数据的话就会收到&lt;code&gt;SIGPIPE&lt;/code&gt;信号而终止，这篇文章主要通过客户端进入&lt;code&gt;CLOSE_WAIT&lt;/code&gt;后由于收到服务端产生的&lt;code&gt;RST&lt;/code&gt;标志报文进入死循环的情况。注：&lt;code&gt;RST&lt;/code&gt;表示复位，用来关闭异常的连接。&lt;/p&gt;
 &lt;p&gt;&lt;img alt="CentOS服务端建立监听" src="https://o3cex9zsl.qnssl.com/2017/03/tcpclosewaitfinwaitrst1_server_process.png" title="CentOS服务端建立监听"&gt;&lt;/p&gt;
@@ -18875,7 +18996,7 @@ ORCL =
 &lt;h5&gt;（二）博客写作更新规划&lt;/h5&gt;
 &lt;p&gt;由于工作比较繁忙，所以调整博客内容更新时间，如果没有重要的更新内容，博客将于每周周六和周日准时更新。内容方面将倾向于Linux+C+Oracle，当然偶尔也会发点小牢骚，嘿嘿。&lt;/p&gt;
 &lt;h5&gt;（三）关于现阶段博客SEO信息&lt;/h5&gt;
-&lt;p&gt;&lt;img alt="博客的SEO信息" src="https://o3cex9zsl.qnssl.com/2013/04/blogseo.png" title="博客的SEO信息"&gt;](https://o3cex9zsl.qnssl.com/2013/04/blogseo.png)&lt;/p&gt;
+&lt;p&gt;&lt;img alt="博客的SEO信息" src="https://o3cex9zsl.qnssl.com/2013/04/blogseo.png" title="博客的SEO信息"&gt;&lt;/p&gt;
 &lt;p&gt;由于博客先前的主机位于国外，在3月份的时候，博客的访问速度有时慢到几乎打不开，外加寒假期间博主未更新任何内容，所以百度的收录一直不高。而从3月20号到4月3号期间，vfhky下决心把主机迁回国内并备案，所以关闭了博客，导致现在百度的收录为0（谷歌、搜狗、搜搜、360还是正常收录）。&lt;/p&gt;
 &lt;p&gt;在备案期间，像&lt;a href="http://sparrowwei.com/" title="点击查看 四道风"&gt;sparrowwei&lt;/a&gt;、&lt;a href="http://yusky.me/" title="点击查看 yusky的博客 "&gt;yusky&lt;/a&gt;、 &lt;a href="http://blog.foreverlove.us/" title="点击查看  翟子博客 "&gt;翟子&lt;/a&gt; 这些好基友从未撤过博客的链接（虽然在备案前我也挨个通知了它们），在此一并感谢！鉴于百度的收录情况，大家在博客中可以根据博客顶部的菜单导航栏、右侧栏的读者推荐、热评文章以及博客右上角强大的谷歌搜索找到自己想要的文章。相信，这段时间百度的收录会回归正常的。&lt;/p&gt;
 &lt;h5&gt;（四）关于博客域名&lt;/h5&gt;

@@ -39,6 +39,17 @@
 		<div class="col-md-9" id="blog-main" role="main">
 		  	<!--article recycle-->
 			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/web/php7configure.html">PHP7中php.ini、php-fpm和www.conf的配置</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2015-06-27 19:05 | 分类：<a href="https://typecodes.com/web/index.html">web</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>根据前文<a href="https://typecodes.com/web/centos7compilephp7.html" title="查看原文">《2015博客升级记(五)：CentOS 7.1编译安装PHP7》</a>的<code>configure</code>编译参数设定，安装后的PHP7配置文件所在路径是<code>/usr/local/php7/etc</code>。该目录下会有两个配置文件：<code>php-fpm.conf</code>和<code>php.ini</code>，以及一个文件夹<code>php-fpm.d</code>（包含<code>www.conf</code>文件）。</p>
+<p>因此，这篇文章主要对这三个PHP配置文件的进行简单说明，具体的配置过程见本文末尾的<code>附录</code>部分。</p>
+
+	<p class="more"><a href="https://typecodes.com/web/php7configure.html" title="PHP7中php.ini、php-fpm和www.conf的配置">- 阅读剩余部分 -</a></p>
+</div>			</article>
+			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/web/centos7compilephp7.html">2015博客升级记(五)：CentOS 7.1编译安装PHP7</a></h2>
 <ul class="post-meta">
 	<li>作者：vfhky | 时间：2015-06-26 19:16 | 分类：<a href="https://typecodes.com/web/index.html">web</a></li>
@@ -127,35 +138,6 @@
 
 	<p class="more"><a href="https://typecodes.com/web/centos7nginxhttpsspdy.html" title="2015博客升级记(六)：Nginx配置HTTPS和SPDY实战">- 阅读剩余部分 -</a></p>
 </div>			</article>
-			<article class="post">
-<h2 class="post-title"><a href="https://typecodes.com/web/centos7compilemysql.html">2015博客升级记(四)：CentOS 7.1编译安装MySQL5.7.7rc</a></h2>
-<ul class="post-meta">
-	<li>作者：vfhky | 时间：2015-06-21 00:53 | 分类：<a href="https://typecodes.com/web/index.html">web</a></li>
-</ul>
-<div class="post-content fmt">
-	<p>这是<a href="https://typecodes.com/mix/2015updateblog.html" title="查看原文">《2015年博客升级记》</a>系列文章的第四篇，主要记录在Linux系统中如何编译安装MySql数据库。</p>
-<h5>1 创建mysql用户和用户组，并下载MySQL5.7.7 Release Candidate版本</h5>
-<p>首先创建一个名为mysql且<code>没有登录权限</code>的用户和一个名为mysql的用户组，然后去mysql官网下载MySQL5.7.7rc版本。</p>
-<div class="highlight"><pre><span></span>#######新建mysql用户和mysql组
-[root@typecodes ~]# groupadd -r mysql &amp;&amp; useradd -r -g mysql -s /bin/false -M mysql
-
-######从官网或者博客备份地址下载MySQL5.7.7 Release Candidate版本
-[root@typecodes ~]# wget -c http://cdn.mysql.com/Downloads/MySQL-5.7/mysql-5.7.7-rc.tar.gz
-[root@typecodes ~]# wget -c http://git.typecodes.com/libs/mysql/mysql-5.7.7-rc.tar.gz
-[root@typecodes ~]# md5sum mysql-5.7.7-rc.tar.gz        [MD5校验]
-36a96021a93ca236e76f5c90ae19cd44  mysql-5.7.7-rc.tar.gz
-######开始解压MySQL5.7.7
-[root@typecodes ~]# tar -zxf mysql-5.7.7-rc.tar.gz &amp;&amp; cd mysql-5.7.7-rc
-######下载gmock：google的c++mock框架，从mysql 5.6开始支持
-[root@typecodes mysql-5.7.7-rc]# wget -c http://git.typecodes.com/libs/ccpp/gmock-1.6.0.zip
-######将其解压到MySQL5.7.7的source_downloads目录下
-[root@typecodes mysql-5.7.7-rc]# unzip gmock-1.6.0.zip -d source_downloads
-</pre></div>
-
-
-
-	<p class="more"><a href="https://typecodes.com/web/centos7compilemysql.html" title="2015博客升级记(四)：CentOS 7.1编译安装MySQL5.7.7rc">- 阅读剩余部分 -</a></p>
-</div>			</article>
 		  	<!--page navigation-->
 <ol class="page-navigator">
 <li class="prev"><a href="https://typecodes.com/index5.html">&laquo; 前一页</a></li><li>
@@ -172,9 +154,9 @@
        		</li><li>
        			<a href="https://typecodes.com/index7.html">7</a>
        		</li><li><span>...</span></li><li>
-       			<a href="https://typecodes.com/index27.html">27</a>
-       		</li><li>
        			<a href="https://typecodes.com/index28.html">28</a>
+       		</li><li>
+       			<a href="https://typecodes.com/index29.html">29</a>
        		</li><li class="next">
        		<a href="https://typecodes.com/index7.html">后一页 &raquo;</a>
        </li></ol>		</div>
@@ -189,7 +171,7 @@
 		<h3 class="widget-title">Categories</h3>
 		<ul class="widget-list">
 		      <li class="current">
-		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (40)
+		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (41)
 		      </li>
 		      <li class="current">
 		        <a href="https://typecodes.com/csharp/index.html">Csharp</a> (6)
@@ -215,6 +197,9 @@
 		<h3 class="widget-title">Recent Posts</h3>
 		<ul class="widget-list">
 			<li class="post">
+				<a href="https://typecodes.com/cseries/gccvsheapnewinit1.html">C++中使用vs2015和g++对new开辟的堆内存是否初始化的分析</a>
+			</li>
+			<li class="post">
 				<a href="https://typecodes.com/cseries/tcpclosewaitfinwaitrst1.html">Linux TCP客户端出现CLOSE_WAIT后进入死循环</a>
 			</li>
 			<li class="post">
@@ -231,9 +216,6 @@
 			</li>
 			<li class="post">
 				<a href="https://typecodes.com/cseries/networkselfdefineconv.html">自己实现inet_aton和inet_ntoa函数功能</a>
-			</li>
-			<li class="post">
-				<a href="https://typecodes.com/cseries/deldisorderintarrrepeatele.html">C语言删除无序整型数组中的重复元素及时间复杂度</a>
 			</li>
 		</ul>
 	</div>
