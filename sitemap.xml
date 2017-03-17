@@ -5,21 +5,21 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>https://typecodes.com/</loc>
-<lastmod>2017-03-14T23:24:00-00:00</lastmod>
+<lastmod>2017-03-17T23:45:25-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://typecodes.com/archives.html</loc>
-<lastmod>2017-03-14T23:24:00-00:00</lastmod>
+<lastmod>2017-03-17T23:45:25-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://typecodes.com/categories.html</loc>
-<lastmod>2017-03-14T23:24:00-00:00</lastmod>
+<lastmod>2017-03-17T23:45:25-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
@@ -2419,6 +2419,13 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 </url>
 
 <url>
+<loc>https://typecodes.com/tag/g.html</loc>
+<lastmod>2017-03-14T23:24:00+08:06</lastmod>
+<changefreq>daily</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
 <loc>https://typecodes.com/tag/linuxqiao-jie-mo-shi.html</loc>
 <lastmod>2013-08-04T01:14:00+08:06</lastmod>
 <changefreq>daily</changefreq>
@@ -2923,8 +2930,8 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 </url>
 
 <url>
-<loc>https://typecodes.com/tag/bai-du.html</loc>
-<lastmod>2013-04-19T21:19:00+08:06</lastmod>
+<loc>https://typecodes.com/tag/vs.html</loc>
+<lastmod>2017-03-14T23:24:00+08:06</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
@@ -2988,6 +2995,13 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 <url>
 <loc>https://typecodes.com/tag/sigusr1-sigusr2.html</loc>
 <lastmod>2015-08-05T17:41:00+08:06</lastmod>
+<changefreq>daily</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
+<loc>https://typecodes.com/tag/bai-du.html</loc>
+<lastmod>2013-04-19T21:19:00+08:06</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>

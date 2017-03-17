@@ -4,8 +4,8 @@
 		<meta charset="UTF-8">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
   		<meta name="renderer" content="webkit">
-		<title>标签 十六进制字符串 下的文章 - TypeCodes</title>
-		<meta name="description" content='标签 十六进制字符串 下的文章 - TypeCodes' />
+		<title>标签 g++ 下的文章 - TypeCodes</title>
+		<meta name="description" content='标签 g++ 下的文章 - TypeCodes' />
   		<meta name="viewport" content="width=device-width, initial-scale=1">
   		<link href="https://typecodes.com/atom.xml" type="application/atom+xml" rel="alternate" title="TypeCodes Atom Feed" />
 	  	<link href="https://typecodes.com/feed.xml" type="application/rss+xml" rel="alternate" title="TypeCodes RSS Feed" />
@@ -39,19 +39,18 @@
 		<div class="col-md-9" id="blog-main" role="main">
 		  	<!--article recycle-->
 			<article class="post">
-<h2 class="post-title"><a href="https://typecodes.com/cseries/clanghexstrtointeger.html">C语言将十六进制字符串转成十进制整数</a></h2>
+<h2 class="post-title"><a href="https://typecodes.com/cseries/gccvsheapnewinit1.html">C++中使用vs2015和g++对new开辟的堆内存是否初始化的分析</a></h2>
 <ul class="post-meta">
-	<li>作者：vfhky | 时间：2014-11-04 22:22 | 分类：<a href="https://typecodes.com/cseries/index.html">cseries</a></li>
+	<li>作者：vfhky | 时间：2017-03-14 23:24 | 分类：<a href="https://typecodes.com/cseries/index.html">cseries</a></li>
 </ul>
 <div class="post-content fmt">
-	<p>C/C++处理十六进制文件中的报文内容时，经常会遇到先读取报文头中的长度（例如"E2"、"1F"、"-eE2"等等），再读取报文体中的内容的情况。那么就需要把报文头中表示长度的十六进制字符串转换成十进制的整形数据。</p>
-<p>转换方法有两种，一种是正向从字符串低位到高位依次转换，另一种是逆向从字符串高位到低位依次转换。原理都是利用指针变量依次指向十六进制字符串中的单个字符，然后通过ASCII码表转换成对应的整数。考虑到十进制的字符串中可能会出现正负号，即转换后可能出现负整数，所以增加了对这种情况的处理。下面是两种方法的具体代码：</p>
+	<p>在C++中使用<code>new</code>运算符在堆中申请一内存块的使用权的同时还可以执行对该内存块的初始化工作。下面通过使用2个类对象和2个基本数据类型来分析使用<code>new class_object</code>、<code>new class_object()</code>和<code>new int</code>、<code>new int()</code>对这块内存的初始化情况。</p>
 
-	<p class="more"><a href="https://typecodes.com/cseries/clanghexstrtointeger.html" title="C语言将十六进制字符串转成十进制整数">- 阅读剩余部分 -</a></p>
+	<p class="more"><a href="https://typecodes.com/cseries/gccvsheapnewinit1.html" title="C++中使用vs2015和g++对new开辟的堆内存是否初始化的分析">- 阅读剩余部分 -</a></p>
 </div>			</article>
 		  	<!--page navigation-->
 <ol class="page-navigator">
-<li class="prev"><a href="https://typecodes.com/tag/shi-liu-jin-zhi-zi-fu-chuan.html">&laquo; 前一页</a></li><li><a href="https://typecodes.com/tag/shi-liu-jin-zhi-zi-fu-chuan.html">1</a></li><li class="current"><a href="https://typecodes.com/tag/shi-liu-jin-zhi-zi-fu-chuan2.html">2</a></li></ol>		</div>
+</ol>		</div>
 		<!--3. right sider begin-->
 <div class="col-md-3" id="blog-secondary" role="complementary">
 	<div class="widget">
@@ -89,25 +88,7 @@
 		<h3 class="widget-title">Recent Posts</h3>
 		<ul class="widget-list">
 			<li class="post">
-				<a href="https://typecodes.com/cseries/simplifychexstrtoint.html">视角：C语言将十六进制字符串转成十进制整数</a>
-			</li>
-			<li class="post">
-				<a href="https://typecodes.com/cseries/againchexstrtointeger.html">再议C语言将十六进制字符串转成十进制整数</a>
-			</li>
-			<li class="post">
-				<a href="https://typecodes.com/csharp/hexstringxor2.html">C#实现十六进制字符串异或（二）</a>
-			</li>
-			<li class="post">
-				<a href="https://typecodes.com/csharp/hexstringxor1.html">C#实现十六进制字符串异或（一）</a>
-			</li>
-			<li class="post">
-				<a href="https://typecodes.com/cseries/studymfchexstrxortool2.html">图文实例说MFC制作工具的心得（二）</a>
-			</li>
-			<li class="post">
-				<a href="https://typecodes.com/cseries/studymfchexstrxortool1.html">图文实例说MFC制作工具的心得（一）</a>
-			</li>
-			<li class="post">
-				<a href="https://typecodes.com/cseries/mfchexstrxortool.html">MFC写了一个十六进制字符串异或的工具</a>
+				<a href="https://typecodes.com/cseries/gccvsheapnewinit1.html">C++中使用vs2015和g++对new开辟的堆内存是否初始化的分析</a>
 			</li>
 		</ul>
 	</div>
@@ -151,7 +132,7 @@
 		<div class="col-md-12 copyright">
 			<a href="#top"><i class="i-logo-s">TOP</i></a>
 			<p>
-				&copy;  2014-2015 							<a href="https://typecodes.com">TypeCodes</a>. All Rights Reserved<br>Powered by <a href="http://getpelican.com" rel="external" target="_blank">Pelican</a>. <a href="http://www.miitbeian.gov.cn" rel="external nofollow" target="_blank">粤ICP备14050695号</a>
+				&copy;  2017 							<a href="https://typecodes.com">TypeCodes</a>. All Rights Reserved<br>Powered by <a href="http://getpelican.com" rel="external" target="_blank">Pelican</a>. <a href="http://www.miitbeian.gov.cn" rel="external nofollow" target="_blank">粤ICP备14050695号</a>
 			</p>
 		</div>
 	</div>
