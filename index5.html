@@ -39,6 +39,23 @@
 		<div class="col-md-9" id="blog-main" role="main">
 		  	<!--article recycle-->
 			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/cseries/nmobjectfilesymbol.html">Unix系统中nm命令展示目标文件符号的方法</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2015-08-12 00:07 | 分类：<a href="https://typecodes.com/cseries/index.html">cseries</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>在*nix系统中，通过gnu开源gcc或者g++工具生成的目标文件（object file），可以用<code>nm</code>、<code>objdump</code>和<code>readelf</code>这三个命令来查看。</p>
+<div class="highlight"><pre><span></span>nm：显示目标文件中的符号；
+objdump：打印目标文件中的详细信息；
+readelf：显示关于 ELF 目标文件的信息。
+</pre></div>
+
+
+<p>之前在调试makefile文件的时候，链接动态库出错：<code>libsrcpbl.so: undefined reference to 'gcProgramName'</code>。也就是变量gcProgramName没定义，后来通过<code>nm -u libsrcpbl.so</code>命令辅助排查解决了。</p>
+
+	<p class="more"><a href="https://typecodes.com/cseries/nmobjectfilesymbol.html" title="Unix系统中nm命令展示目标文件符号的方法">- 阅读剩余部分 -</a></p>
+</div>			</article>
+			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/mix/vpsshadowsockswitchyomegaspeeder.html">搭了个Shadowsocks+Proxy SwitchyOmega+net-speeder梯子</a></h2>
 <ul class="post-meta">
 	<li>作者：vfhky | 时间：2015-08-09 14:09 | 分类：<a href="https://typecodes.com/mix/index.html">mix</a></li>
@@ -128,17 +145,6 @@ SIGUSR2：同SIGUSR1，保留给用户使用的信号。
 
 	<p class="more"><a href="https://typecodes.com/linux/centos7mysqlregularbackup.html" title="2015博客升级记(七)：CentOS7定时备份MySql的shell脚本">- 阅读剩余部分 -</a></p>
 </div>			</article>
-			<article class="post">
-<h2 class="post-title"><a href="https://typecodes.com/mix/codinggitsshbug.html">Coding.net上git仓库ssh地址的"bug"</a></h2>
-<ul class="post-meta">
-	<li>作者：vfhky | 时间：2015-06-28 19:34 | 分类：<a href="https://typecodes.com/mix/index.html">mix</a></li>
-</ul>
-<div class="post-content fmt">
-	<p>前段时间在用Coding.net同步git仓库时，能正常使用非https的ssh协议，但是这两天在自己的Windows机器上push内容时，报如下图中的错误<code>Permission denied (publickey).</code>：</p>
-<p><img alt="Coding.net报错Permission denied (publickey)" src="https://o3cex9zsl.qnssl.com/2015/06/git_push_error.png" title="Coding.net报错Permission denied (publickey)"></p>
-
-	<p class="more"><a href="https://typecodes.com/mix/codinggitsshbug.html" title="Coding.net上git仓库ssh地址的"bug"">- 阅读剩余部分 -</a></p>
-</div>			</article>
 		  	<!--page navigation-->
 <ol class="page-navigator">
 <li class="prev"><a href="https://typecodes.com/index4.html">&laquo; 前一页</a></li><li><a href="https://typecodes.com/index.html">1</a></li>
@@ -171,7 +177,7 @@ SIGUSR2：同SIGUSR1，保留给用户使用的信号。
 		        <a href="https://typecodes.com/linux/index.html">Linux</a> (24)
 		      </li>
 		      <li class="current">
-		        <a href="https://typecodes.com/mix/index.html">Mix</a> (54)
+		        <a href="https://typecodes.com/mix/index.html">Mix</a> (55)
 		      </li>
 		      <li class="current">
 		        <a href="https://typecodes.com/web/index.html">Web</a> (88)
@@ -181,6 +187,9 @@ SIGUSR2：同SIGUSR1，保留给用户使用的信号。
 	<div class="widget">
 		<h3 class="widget-title">Recent Posts</h3>
 		<ul class="widget-list">
+			<li class="post">
+				<a href="https://typecodes.com/mix/gitsubtree1.html">Git多仓库作子目录的双向同步：一次Git Subtree的实践</a>
+			</li>
 			<li class="post">
 				<a href="https://typecodes.com/cseries/gccvsheapnewinit1.html">C++中使用vs2015和g++对new开辟的堆内存是否初始化的分析</a>
 			</li>
@@ -198,9 +207,6 @@ SIGUSR2：同SIGUSR1，保留给用户使用的信号。
 			</li>
 			<li class="post">
 				<a href="https://typecodes.com/linux/handlemakefilebysed.html">使用sed命令批量处理Makefile文件的脚本</a>
-			</li>
-			<li class="post">
-				<a href="https://typecodes.com/cseries/networkselfdefineconv.html">自己实现inet_aton和inet_ntoa函数功能</a>
 			</li>
 		</ul>
 	</div>

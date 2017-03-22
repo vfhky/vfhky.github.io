@@ -39,6 +39,19 @@
 		<div class="col-md-9" id="blog-main" role="main">
 		  	<!--article recycle-->
 			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/web/phpjquerywponlinenum.html">PHP+jQuery实现wordpress当前在线人数统计</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2013-09-21 22:41 | 分类：<a href="https://typecodes.com/web/index.html">web</a></li>
+</ul>
+<div class="post-content fmt">
+	<h5>1 在线人数统计：插件OR代码</h5>
+<p>如何实现一个web站点的在线人数统计？方法可能有很多，在最开始接触PHP的时候，大家可能会用session保存当前用户的IP地址和时间；也有人把登录用户的IP地址和登录时间保存到数据库中，然后在需要的地方查询数据库得到相应的数据；当然还可以用txt、html等文件来保存用户的IP和最初登录的时间，然后不断读写文件取得数据；最后，还可以用cnzz等统计方代码或者WP插件通过加载javascript脚本显示当前在线人数。</p>
+<h5>2 用PHP+jQuery实现</h5>
+<p>网上搜了下相关的教程，代码基本类似，都是直接通过PHP读写txt文件实现的。博主起初采用这种方法，发现页面加载较之前明显变慢。考虑到不断读写文件对页面速度的影响，博主于是改用jQuery加载的方式实现当前在线人数统计。具体方法如下：</p>
+
+	<p class="more"><a href="https://typecodes.com/web/phpjquerywponlinenum.html" title="PHP+jQuery实现wordpress当前在线人数统计">- 阅读剩余部分 -</a></p>
+</div>			</article>
+			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/web/wplimitnogravatar.html">wordpress中限制没有Gravatar头像的访客提交评论</a></h2>
 <ul class="post-meta">
 	<li>作者：vfhky | 时间：2013-09-15 12:13 | 分类：<a href="https://typecodes.com/web/index.html">web</a></li>
@@ -129,18 +142,6 @@ if($post-&gt;comment_parent == &quot;&quot;){
 
 	<p class="more"><a href="https://typecodes.com/web/wptaoiplibapitwo.html" title="WordPress使用淘宝IP地址库的API显示评论者的位置信息（二）">- 阅读剩余部分 -</a></p>
 </div>			</article>
-			<article class="post">
-<h2 class="post-title"><a href="https://typecodes.com/web/testapiedgetoolreturnmessage.html">调试API接口的利器——获取返回数据中的信息提示字段</a></h2>
-<ul class="post-meta">
-	<li>作者：vfhky | 时间：2013-08-29 21:03 | 分类：<a href="https://typecodes.com/web/index.html">web</a></li>
-</ul>
-<div class="post-content fmt">
-	<h5>1 调试腾讯开放平台QQ登录API</h5>
-<p>最近博主在测试腾讯开放平台的QQ登录API时，遇到了一个棘手问题。根据腾讯官方API文档，vfhky写了一个调用 <a href="http://wiki.connect.qq.com/get_info" title="查看腾讯官方关于get_info的API文档">get_info</a> 接口的程序。该接口能够获取QQ登录用户的微博信息，例如用户的出身日期、教育信息、FANS数目、微博内容等。具体大家也可以看看官方给出的API接口信息，地址是 http://wiki.connect.qq.com/get_info。</p>
-<p><img alt="腾讯后台API管理" src="https://o3cex9zsl.qnssl.com/2013/08/QQAPI_Oauth.png" title="腾讯后台API管理"></p>
-
-	<p class="more"><a href="https://typecodes.com/web/testapiedgetoolreturnmessage.html" title="调试API接口的利器——获取返回数据中的信息提示字段">- 阅读剩余部分 -</a></p>
-</div>			</article>
 		  	<!--page navigation-->
 <ol class="page-navigator">
 <li class="prev"><a href="https://typecodes.com/index16.html">&laquo; 前一页</a></li><li><a href="https://typecodes.com/index.html">1</a></li>
@@ -173,7 +174,7 @@ if($post-&gt;comment_parent == &quot;&quot;){
 		        <a href="https://typecodes.com/linux/index.html">Linux</a> (24)
 		      </li>
 		      <li class="current">
-		        <a href="https://typecodes.com/mix/index.html">Mix</a> (54)
+		        <a href="https://typecodes.com/mix/index.html">Mix</a> (55)
 		      </li>
 		      <li class="current">
 		        <a href="https://typecodes.com/web/index.html">Web</a> (88)
@@ -183,6 +184,9 @@ if($post-&gt;comment_parent == &quot;&quot;){
 	<div class="widget">
 		<h3 class="widget-title">Recent Posts</h3>
 		<ul class="widget-list">
+			<li class="post">
+				<a href="https://typecodes.com/mix/gitsubtree1.html">Git多仓库作子目录的双向同步：一次Git Subtree的实践</a>
+			</li>
 			<li class="post">
 				<a href="https://typecodes.com/cseries/gccvsheapnewinit1.html">C++中使用vs2015和g++对new开辟的堆内存是否初始化的分析</a>
 			</li>
@@ -200,9 +204,6 @@ if($post-&gt;comment_parent == &quot;&quot;){
 			</li>
 			<li class="post">
 				<a href="https://typecodes.com/linux/handlemakefilebysed.html">使用sed命令批量处理Makefile文件的脚本</a>
-			</li>
-			<li class="post">
-				<a href="https://typecodes.com/cseries/networkselfdefineconv.html">自己实现inet_aton和inet_ntoa函数功能</a>
 			</li>
 		</ul>
 	</div>

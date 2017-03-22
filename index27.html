@@ -39,6 +39,16 @@
 		<div class="col-md-9" id="blog-main" role="main">
 		  	<!--article recycle-->
 			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/mix/thinkaboutlife.html">Some Thing about Life</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2012-07-26 00:00 | 分类：<a href="https://typecodes.com/mix/index.html">mix</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>生活，真的很难用一个词语来描述它。因为每个阶段，你对它会有不同的认识。而且，即使当你处在某一阶段的时候也会有不同的感悟。</p>
+
+	<p class="more"><a href="https://typecodes.com/mix/thinkaboutlife.html" title="Some Thing about Life">- 阅读剩余部分 -</a></p>
+</div>			</article>
+			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/mix/chromegoagent.html">翻越那道墙，用谷歌Goagent打造自己的chrome利器</a></h2>
 <ul class="post-meta">
 	<li>作者：vfhky | 时间：2012-07-25 22:10 | 分类：<a href="https://typecodes.com/mix/index.html">mix</a></li>
@@ -117,35 +127,6 @@
 
 	<p class="more"><a href="https://typecodes.com/web/configiiserr.html" title="配置IIS出现错误的解决方法">- 阅读剩余部分 -</a></p>
 </div>			</article>
-			<article class="post">
-<h2 class="post-title"><a href="https://typecodes.com/database/phpaspconndb.html">PHP和ASP的数据库连接代码</a></h2>
-<ul class="post-meta">
-	<li>作者：vfhky | 时间：2012-07-01 13:27 | 分类：<a href="https://typecodes.com/database/index.html">database</a></li>
-</ul>
-<div class="post-content fmt">
-	<h5>（一）PHP的连接代码</h5>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
-2
-3
-4
-5
-6
-7
-8</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="cp">&lt;?php</span>
-    <span class="nv">$hostname</span><span class="o">=</span><span class="s2">&quot;hostname&quot;</span><span class="p">;</span><span class="c1">//MySQL主机/服务器名</span>
-    <span class="nv">$dbname</span><span class="o">=</span><span class="s2">&quot;dbname&quot;</span><span class="p">;</span><span class="c1">//MySQL数据库名</span>
-    <span class="nv">$username</span><span class="o">=</span><span class="s2">&quot;username&quot;</span><span class="p">;</span><span class="c1">//MySQL用户名</span>
-    <span class="nv">$password</span><span class="o">=</span><span class="s2">&quot;password&quot;</span><span class="p">;</span><span class="c1">//MySQL密码</span>
-    <span class="nv">$conn</span><span class="o">=</span><span class="nb">mysql_connect</span><span class="p">(</span><span class="nv">$hostname</span><span class="p">,</span><span class="nv">$username</span><span class="p">,</span><span class="nv">$password</span><span class="p">)</span> <span class="k">or</span> <span class="nb">trigger_error</span><span class="p">(</span><span class="nb">mysql_error</span><span class="p">(),</span><span class="nx">E_USER_ERROR</span><span class="p">);</span><span class="c1">//登录并连接MySQL</span>
-    <span class="nb">mysql_select_db</span><span class="p">(</span><span class="nv">$dbname</span><span class="p">);</span><span class="c1">//选择数据库dbname</span>
-<span class="cp">?&gt;</span><span class="x"></span>
-</pre></div>
-</td></tr></table>
-
-<p>将上述代码另存为conn.php，就可以通过在页面加入 require("conn.php"); 调用了。</p>
-
-	<p class="more"><a href="https://typecodes.com/database/phpaspconndb.html" title="PHP和ASP的数据库连接代码">- 阅读剩余部分 -</a></p>
-</div>			</article>
 		  	<!--page navigation-->
 <ol class="page-navigator">
 <li class="prev"><a href="https://typecodes.com/index26.html">&laquo; 前一页</a></li><li><a href="https://typecodes.com/index.html">1</a></li>
@@ -178,7 +159,7 @@
 		        <a href="https://typecodes.com/linux/index.html">Linux</a> (24)
 		      </li>
 		      <li class="current">
-		        <a href="https://typecodes.com/mix/index.html">Mix</a> (54)
+		        <a href="https://typecodes.com/mix/index.html">Mix</a> (55)
 		      </li>
 		      <li class="current">
 		        <a href="https://typecodes.com/web/index.html">Web</a> (88)
@@ -188,6 +169,9 @@
 	<div class="widget">
 		<h3 class="widget-title">Recent Posts</h3>
 		<ul class="widget-list">
+			<li class="post">
+				<a href="https://typecodes.com/mix/gitsubtree1.html">Git多仓库作子目录的双向同步：一次Git Subtree的实践</a>
+			</li>
 			<li class="post">
 				<a href="https://typecodes.com/cseries/gccvsheapnewinit1.html">C++中使用vs2015和g++对new开辟的堆内存是否初始化的分析</a>
 			</li>
@@ -205,9 +189,6 @@
 			</li>
 			<li class="post">
 				<a href="https://typecodes.com/linux/handlemakefilebysed.html">使用sed命令批量处理Makefile文件的脚本</a>
-			</li>
-			<li class="post">
-				<a href="https://typecodes.com/cseries/networkselfdefineconv.html">自己实现inet_aton和inet_ntoa函数功能</a>
 			</li>
 		</ul>
 	</div>

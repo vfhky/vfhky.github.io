@@ -39,6 +39,28 @@
 		<div class="col-md-9" id="blog-main" role="main">
 		  	<!--article recycle-->
 			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/database/oraclesqlerror.html">Oracle数据库SQL操作语句报错的解决</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2013-08-04 00:04 | 分类：<a href="https://typecodes.com/database/index.html">database</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>最近在小红帽里面用GCCC编译含Oracle数据库SQL操作语句的C程序时候遇到了下面的7个报错信息，现整理出来Mark一下。</p>
+<h5>1 错误信息</h5>
+<div class="highlight"><pre><span></span><span class="k">[-1400][ORA-01400: cannot insert NULL into (&quot;CARDMAIN&quot;.&quot;CLR_SFTC000BLOCK0&quot;.&quot;SE]</span>
+<span class="na">&lt;!--</span>
+<span class="na">描述：CARDMAIN数据库用户，CLR_SFTC000BLOCK0数据表，SE表字段</span>
+
+<span class="na">原因：Oracle数据库对于特定类型的非空字段无法区分空值和空字符串</span>
+
+<span class="na">解决：明确数据源中的空值类型，并且在INSERT和UPDATE中必须插入一个值，不能将某个值修改为NULL。</span>
+<span class="na">--&gt;</span>
+</pre></div>
+
+
+
+	<p class="more"><a href="https://typecodes.com/database/oraclesqlerror.html" title="Oracle数据库SQL操作语句报错的解决">- 阅读剩余部分 -</a></p>
+</div>			</article>
+			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/web/phptimegap.html">PHP获取两个时间相差的年数、月数和天数</a></h2>
 <ul class="post-meta">
 	<li>作者：vfhky | 时间：2013-07-29 00:19 | 分类：<a href="https://typecodes.com/web/index.html">web</a></li>
@@ -123,16 +145,6 @@ Linux Error: 2: No such file or directory
 
 	<p class="more"><a href="https://typecodes.com/web/wpcopywithbloglink.html" title="Wordpress文章复制自动添加博客链接的JS脚本（兼容IE、Firefox和Chrome）">- 阅读剩余部分 -</a></p>
 </div>			</article>
-			<article class="post">
-<h2 class="post-title"><a href="https://typecodes.com/mix/cmsblogwithvfhkyreturn.html">启用CMS类型的博客主题，vfhky再次回归</a></h2>
-<ul class="post-meta">
-	<li>作者：vfhky | 时间：2013-07-14 22:12 | 分类：<a href="https://typecodes.com/mix/index.html">mix</a></li>
-</ul>
-<div class="post-content fmt">
-	<p>由于种种原因，原定于5月底更换的主题未能正常上线。本以为最迟应该可以在6月份完成的，但是毕业设计、毕业旅行、回家……种种的种种，让我不得不停下来；本以为毕业后时间还很长，就像刚进大学时候觉得大学四年会很漫长，结果就是后知后觉了。好吧，不罗嗦了，直接进入主题：</p>
-
-	<p class="more"><a href="https://typecodes.com/mix/cmsblogwithvfhkyreturn.html" title="启用CMS类型的博客主题，vfhky再次回归">- 阅读剩余部分 -</a></p>
-</div>			</article>
 		  	<!--page navigation-->
 <ol class="page-navigator">
 <li class="prev"><a href="https://typecodes.com/index18.html">&laquo; 前一页</a></li><li><a href="https://typecodes.com/index.html">1</a></li>
@@ -165,7 +177,7 @@ Linux Error: 2: No such file or directory
 		        <a href="https://typecodes.com/linux/index.html">Linux</a> (24)
 		      </li>
 		      <li class="current">
-		        <a href="https://typecodes.com/mix/index.html">Mix</a> (54)
+		        <a href="https://typecodes.com/mix/index.html">Mix</a> (55)
 		      </li>
 		      <li class="current">
 		        <a href="https://typecodes.com/web/index.html">Web</a> (88)
@@ -175,6 +187,9 @@ Linux Error: 2: No such file or directory
 	<div class="widget">
 		<h3 class="widget-title">Recent Posts</h3>
 		<ul class="widget-list">
+			<li class="post">
+				<a href="https://typecodes.com/mix/gitsubtree1.html">Git多仓库作子目录的双向同步：一次Git Subtree的实践</a>
+			</li>
 			<li class="post">
 				<a href="https://typecodes.com/cseries/gccvsheapnewinit1.html">C++中使用vs2015和g++对new开辟的堆内存是否初始化的分析</a>
 			</li>
@@ -192,9 +207,6 @@ Linux Error: 2: No such file or directory
 			</li>
 			<li class="post">
 				<a href="https://typecodes.com/linux/handlemakefilebysed.html">使用sed命令批量处理Makefile文件的脚本</a>
-			</li>
-			<li class="post">
-				<a href="https://typecodes.com/cseries/networkselfdefineconv.html">自己实现inet_aton和inet_ntoa函数功能</a>
 			</li>
 		</ul>
 	</div>

@@ -1,5 +1,188 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>TypeCodes</title><link href="https://typecodes.com/" rel="alternate"></link><link href="https://typecodes.com/atom.xml" rel="self"></link><id>https://typecodes.com/</id><updated>2017-03-14T23:24:00+08:00</updated><entry><title>C++中使用vs2015和g++对new开辟的堆内存是否初始化的分析</title><link href="https://typecodes.com/cseries/gccvsheapnewinit1.html" rel="alternate"></link><published>2017-03-14T23:24:00+08:00</published><updated>2017-03-14T23:24:00+08:00</updated><author><name>vfhky</name></author><id>tag:typecodes.com,2017-03-14:/cseries/gccvsheapnewinit1.html</id><summary type="html">&lt;p&gt;在C++中使用&lt;code&gt;new&lt;/code&gt;运算符在堆中申请一内存块的使用权的同时还可以执行对该内存块的初始化工作。下面通过使用2个类对象和2个基本数据类型来分析使用&lt;code&gt;new class_object&lt;/code&gt;、&lt;code&gt;new class_object()&lt;/code&gt;和&lt;code&gt;new int&lt;/code&gt;、&lt;code&gt;new int()&lt;/code&gt;对这块内存的初始化情况。&lt;/p&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>TypeCodes</title><link href="https://typecodes.com/" rel="alternate"></link><link href="https://typecodes.com/atom.xml" rel="self"></link><id>https://typecodes.com/</id><updated>2017-03-22T18:30:00+08:00</updated><entry><title>Git多仓库作子目录的双向同步：一次Git Subtree的实践</title><link href="https://typecodes.com/mix/gitsubtree1.html" rel="alternate"></link><published>2017-03-22T18:30:00+08:00</published><updated>2017-03-22T18:30:00+08:00</updated><author><name>vfhky</name></author><id>tag:typecodes.com,2017-03-22:/mix/gitsubtree1.html</id><summary type="html">&lt;p&gt;今年1月中旬的时候BZ在GitHub上收到Typecho社区组织&lt;a href="https://github.com/typecho-fans" title="GitHub的Organizations名"&gt;typecho-fans&lt;/a&gt;的成员邀请，原来是想把所有TP的开源插件都整合到&lt;a href="https://github.com/typecho-fans/plugins" title="点击查看"&gt;GitHub&lt;/a&gt;上进行维护。之前BLOG在使用Typecho的时候写了3个插件：&lt;a href="https://typecodes.com/web/scsfortypecho.html" title="《新浪云存储(SCS) for Typecho 插件》"&gt;新浪云存储SCS插件&lt;/a&gt;、&lt;a href="https://typecodes.com/web/typechomp3player.html" title="《音乐播放器PlayAtWill for typecho插件（移植自wordpress）》"&gt;移植自WordPress的音乐播放器插件&lt;/a&gt;和&lt;a href="https://typecodes.com/web/scsfortypecho.html" title="《升级博客文章同步微博的插件：PHP正则提取Markdown的图片地址》"&gt;新浪微博同步插件&lt;/a&gt;，那如果放到typecho-fans上进行维护的话对使用者和开发者来说都是挺方便的。但是当时不知道怎么把之前这3个已经放在GitHub上进行维护的插件仓库作为子目录/仓库同步到typecho-fans的插件仓库中，所以一直都没有行动。&lt;/p&gt;
+&lt;p&gt;&lt;img alt="Git多仓库作子目录的双向同步：一次Git Subtree的实践" src="https://o3cex9zsl.qnssl.com/2017/03/gitsubtree1_typecho_fans.png" title="Git多仓库作子目录的双向同步：一次Git Subtree的实践"&gt;&lt;/p&gt;
+</summary><content type="html">&lt;p&gt;今年1月中旬的时候BZ在GitHub上收到Typecho社区组织&lt;a href="https://github.com/typecho-fans" title="GitHub的Organizations名"&gt;typecho-fans&lt;/a&gt;的成员邀请，原来是想把所有TP的开源插件都整合到&lt;a href="https://github.com/typecho-fans/plugins" title="点击查看"&gt;GitHub&lt;/a&gt;上进行维护。之前BLOG在使用Typecho的时候写了3个插件：&lt;a href="https://typecodes.com/web/scsfortypecho.html" title="《新浪云存储(SCS) for Typecho 插件》"&gt;新浪云存储SCS插件&lt;/a&gt;、&lt;a href="https://typecodes.com/web/typechomp3player.html" title="《音乐播放器PlayAtWill for typecho插件（移植自wordpress）》"&gt;移植自WordPress的音乐播放器插件&lt;/a&gt;和&lt;a href="https://typecodes.com/web/scsfortypecho.html" title="《升级博客文章同步微博的插件：PHP正则提取Markdown的图片地址》"&gt;新浪微博同步插件&lt;/a&gt;，那如果放到typecho-fans上进行维护的话对使用者和开发者来说都是挺方便的。但是当时不知道怎么把之前这3个已经放在GitHub上进行维护的插件仓库作为子目录/仓库同步到typecho-fans的插件仓库中，所以一直都没有行动。&lt;/p&gt;
+&lt;p&gt;&lt;img alt="Git多仓库作子目录的双向同步：一次Git Subtree的实践" src="https://o3cex9zsl.qnssl.com/2017/03/gitsubtree1_typecho_fans.png" title="Git多仓库作子目录的双向同步：一次Git Subtree的实践"&gt;&lt;/p&gt;
+
+
+&lt;p&gt;这几天发现在社区GitHub上的README文件中已经推荐用&lt;code&gt;subtree&lt;/code&gt;方法添加作者之前的插件repo（&lt;code&gt;submodule&lt;/code&gt;方法能链接至原repo但也会给下载与维护带来一定麻烦），所以BZ查了&lt;code&gt;subtree&lt;/code&gt;的相关资料，然后成功将自己之前放在GitHub上的这3个插件repo作为社区插件库的3个子目录进行&lt;code&gt;双向同步&lt;/code&gt;维护。下面是这次&lt;code&gt;Git Subtree&lt;/code&gt;实践的具体过程。&lt;/p&gt;
+&lt;h4&gt;1 克隆社区维护的插件库到本地&lt;/h4&gt;
+&lt;p&gt;BZ在自己的Win 10机器上安装了git version 2.11.0.windows.1，因此下面所有的操作都是通过&lt;code&gt;Git Bash&lt;/code&gt;实现的。如下所示，首先使用git clone命令把由社区维护的插件库克隆到E盘(plugins目录)。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;####### 进入硬盘的E目录并clone项目
+vfhky@vfhky-pc MINGW64 /e
+$ git clone git@github.com:typecho-fans/plugins.git
+Cloning into &amp;#39;plugins&amp;#39;...
+remote: Counting objects: 3928, done.
+remote: Compressing objects: 100% (124/124), done.
+remote: Total 3928 (delta 51), reused 0 (delta 0), pack-reused 3803
+Receiving objects: 100% (3928/3928), 7.58 MiB | 265.00 KiB/s, done.
+Resolving deltas: 100% (1284/1284), done.
+Checking out files: 100% (1484/1484), done.
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h4&gt;2 添加第1个要作为子仓库/目录的远程仓库&lt;/h4&gt;
+&lt;p&gt;进入刚建立的plugins目录，然后使用&lt;code&gt;git remote add&lt;/code&gt;命令把要合并进来作为子仓库/目录的远程库&lt;code&gt;PlayAtWill&lt;/code&gt;加入到本地仓库plugins中。注意：一个本地的仓库可以添加多个远程仓库！&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="cp"&gt;####### 添加远程仓库PlayAtWill，其中-f意思是在添加远程仓库之后，立即执行fetch &lt;/span&gt;
+&lt;span class="n"&gt;vfhky&lt;/span&gt;&lt;span class="p"&gt;@&lt;/span&gt;&lt;span class="n"&gt;vfhky&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;pc&lt;/span&gt; &lt;span class="n"&gt;MINGW64&lt;/span&gt; &lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;e&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;plugins&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;master&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="err"&gt;$&lt;/span&gt; &lt;span class="n"&gt;git&lt;/span&gt; &lt;span class="n"&gt;remote&lt;/span&gt; &lt;span class="n"&gt;add&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;f&lt;/span&gt; &lt;span class="n"&gt;PlayAtWill&lt;/span&gt; &lt;span class="n"&gt;git&lt;/span&gt;&lt;span class="p"&gt;@&lt;/span&gt;&lt;span class="n"&gt;github&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nl"&gt;com&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="n"&gt;vfhky&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;PlayAtWill&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;git&lt;/span&gt;
+&lt;span class="n"&gt;Updating&lt;/span&gt; &lt;span class="n"&gt;PlayAtWill&lt;/span&gt;
+&lt;span class="nl"&gt;warning&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;no&lt;/span&gt; &lt;span class="n"&gt;common&lt;/span&gt; &lt;span class="n"&gt;commits&lt;/span&gt;
+&lt;span class="nl"&gt;remote&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;Counting&lt;/span&gt; &lt;span class="nl"&gt;objects&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="mi"&gt;15&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;done&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;
+&lt;span class="nl"&gt;remote&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;Total&lt;/span&gt; &lt;span class="mi"&gt;15&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;delta&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt; &lt;span class="n"&gt;reused&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;delta&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt; &lt;span class="n"&gt;pack&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;reused&lt;/span&gt; &lt;span class="mi"&gt;14&lt;/span&gt;
+&lt;span class="n"&gt;Unpacking&lt;/span&gt; &lt;span class="nl"&gt;objects&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="mi"&gt;100&lt;/span&gt;&lt;span class="o"&gt;%&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;15&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="mi"&gt;15&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt; &lt;span class="n"&gt;done&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;
+&lt;span class="n"&gt;From&lt;/span&gt; &lt;span class="n"&gt;github&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nl"&gt;com&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="n"&gt;vfhky&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;PlayAtWill&lt;/span&gt;
+ &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;new&lt;/span&gt; &lt;span class="n"&gt;branch&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;      &lt;span class="n"&gt;master&lt;/span&gt;     &lt;span class="o"&gt;-&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;PlayAtWill&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;master&lt;/span&gt;
+ &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;new&lt;/span&gt; &lt;span class="n"&gt;tag&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;         &lt;span class="n"&gt;v1&lt;/span&gt;&lt;span class="mf"&gt;.0.0&lt;/span&gt;     &lt;span class="o"&gt;-&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;v1&lt;/span&gt;&lt;span class="mf"&gt;.0.0&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h4&gt;3 把第1个远程仓库作为本地仓库的子仓库/目录&lt;/h4&gt;
+&lt;p&gt;在添加完&lt;code&gt;PlayAtWill&lt;/code&gt;这个远程仓库后就可以通过&lt;code&gt;git subtree add&lt;/code&gt;命令来设置这个远程仓库为社区插件库plugins的一个子仓库（或者称为子目录）了。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;####### 其中--squash意思是把subtree的改动合并成一次commit，这样就不用拉取子项目完整的历史记录。
+vfhky@vfhky-pc MINGW64 /e/plugins (master)
+$ git subtree add --prefix=PlayAtWill PlayAtWill master --squash
+git fetch PlayAtWill master
+From github.com:vfhky/PlayAtWill
+ * branch            master     -&amp;gt; FETCH_HEAD
+Added dir &amp;#39;PlayAtWill&amp;#39;         【此时在本地仓库同步创建了远程PlayAtWill仓库】
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h4&gt;4 查看本地整个仓库情况&lt;/h4&gt;
+&lt;p&gt;使用&lt;code&gt;git status&lt;/code&gt;命令查看本地整个仓库plugins的情况，结果如下所示。可以看到由于第2、3小节的操作，现在本地仓库已经比对应的远程仓库(origin/master)多了2个&lt;code&gt;commits&lt;/code&gt;。如果此时本地仓库没有要更改的文件的话，那么直接使用&lt;code&gt;git push&lt;/code&gt;命令可以推送到typecho-fans的远程仓库中了（其它开发成员也能看到此次更新）。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;vfhky@vfhky-pc MINGW64 /e/plugins (master)
+$ git status
+On branch master
+Your branch is ahead of &amp;#39;origin/master&amp;#39; by 2 commits.
+  (use &amp;quot;git push&amp;quot; to publish your local commits)
+nothing to commit, working tree clean
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h4&gt;5 添加第2个要作为子仓库/目录的远程仓库&lt;/h4&gt;
+&lt;p&gt;同小节2中的操作一样，使用&lt;code&gt;git remote add&lt;/code&gt;命令把要合并进来作为子仓库/目录的远程库&lt;code&gt;SCS&lt;/code&gt;加入到本地仓库plugins中。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="cp"&gt;####### 添加远程仓库SCS，其中-f意思是在添加远程仓库之后，立即执行fetch &lt;/span&gt;
+&lt;span class="n"&gt;vfhky&lt;/span&gt;&lt;span class="p"&gt;@&lt;/span&gt;&lt;span class="n"&gt;vfhky&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;pc&lt;/span&gt; &lt;span class="n"&gt;MINGW64&lt;/span&gt; &lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;e&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;plugins&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;master&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="err"&gt;$&lt;/span&gt; &lt;span class="n"&gt;git&lt;/span&gt; &lt;span class="n"&gt;remote&lt;/span&gt; &lt;span class="n"&gt;add&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;f&lt;/span&gt; &lt;span class="n"&gt;SCS&lt;/span&gt; &lt;span class="n"&gt;git&lt;/span&gt;&lt;span class="p"&gt;@&lt;/span&gt;&lt;span class="n"&gt;github&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nl"&gt;com&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="n"&gt;vfhky&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;SCS&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;git&lt;/span&gt;
+&lt;span class="n"&gt;Updating&lt;/span&gt; &lt;span class="n"&gt;SCS&lt;/span&gt;
+&lt;span class="nl"&gt;warning&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;no&lt;/span&gt; &lt;span class="n"&gt;common&lt;/span&gt; &lt;span class="n"&gt;commits&lt;/span&gt;
+&lt;span class="nl"&gt;remote&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;Counting&lt;/span&gt; &lt;span class="nl"&gt;objects&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="mi"&gt;48&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;done&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;
+&lt;span class="nl"&gt;remote&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;Compressing&lt;/span&gt; &lt;span class="nl"&gt;objects&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="mi"&gt;100&lt;/span&gt;&lt;span class="o"&gt;%&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;6&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="mi"&gt;6&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt; &lt;span class="n"&gt;done&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;
+&lt;span class="nl"&gt;remote&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;Total&lt;/span&gt; &lt;span class="mi"&gt;48&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;delta&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt; &lt;span class="n"&gt;reused&lt;/span&gt; &lt;span class="mi"&gt;6&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;delta&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt; &lt;span class="n"&gt;pack&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;reused&lt;/span&gt; &lt;span class="mi"&gt;42&lt;/span&gt;
+&lt;span class="n"&gt;Unpacking&lt;/span&gt; &lt;span class="nl"&gt;objects&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="mi"&gt;100&lt;/span&gt;&lt;span class="o"&gt;%&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;48&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="mi"&gt;48&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt; &lt;span class="n"&gt;done&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;
+&lt;span class="n"&gt;From&lt;/span&gt; &lt;span class="n"&gt;github&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nl"&gt;com&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="n"&gt;vfhky&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;SCS&lt;/span&gt;
+ &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;new&lt;/span&gt; &lt;span class="n"&gt;branch&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;      &lt;span class="n"&gt;master&lt;/span&gt;     &lt;span class="o"&gt;-&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;SCS&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;master&lt;/span&gt;
+ &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;new&lt;/span&gt; &lt;span class="n"&gt;tag&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;         &lt;span class="n"&gt;v1&lt;/span&gt;&lt;span class="mf"&gt;.1.1&lt;/span&gt;     &lt;span class="o"&gt;-&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;v1&lt;/span&gt;&lt;span class="mf"&gt;.1.1&lt;/span&gt;
+ &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;new&lt;/span&gt; &lt;span class="n"&gt;tag&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;         &lt;span class="n"&gt;v1&lt;/span&gt;&lt;span class="mf"&gt;.0.1&lt;/span&gt;     &lt;span class="o"&gt;-&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;v1&lt;/span&gt;&lt;span class="mf"&gt;.0.1&lt;/span&gt;
+ &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;new&lt;/span&gt; &lt;span class="n"&gt;tag&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;         &lt;span class="n"&gt;v1&lt;/span&gt;&lt;span class="mf"&gt;.0.2&lt;/span&gt;     &lt;span class="o"&gt;-&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;v1&lt;/span&gt;&lt;span class="mf"&gt;.0.2&lt;/span&gt;
+ &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;new&lt;/span&gt; &lt;span class="n"&gt;tag&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;         &lt;span class="n"&gt;v1&lt;/span&gt;&lt;span class="mf"&gt;.0.3&lt;/span&gt;     &lt;span class="o"&gt;-&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;v1&lt;/span&gt;&lt;span class="mf"&gt;.0.3&lt;/span&gt;
+ &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;new&lt;/span&gt; &lt;span class="n"&gt;tag&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;         &lt;span class="n"&gt;v1&lt;/span&gt;&lt;span class="mf"&gt;.0.4&lt;/span&gt;     &lt;span class="o"&gt;-&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;v1&lt;/span&gt;&lt;span class="mf"&gt;.0.4&lt;/span&gt;
+ &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;new&lt;/span&gt; &lt;span class="n"&gt;tag&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;         &lt;span class="n"&gt;v1&lt;/span&gt;&lt;span class="mf"&gt;.1.0&lt;/span&gt;     &lt;span class="o"&gt;-&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;v1&lt;/span&gt;&lt;span class="mf"&gt;.1.0&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h4&gt;6 把第2个远程仓库作为本地仓库的子仓库/目录&lt;/h4&gt;
+&lt;p&gt;同小节3中的操作一样，使用&lt;code&gt;git subtree add&lt;/code&gt;命令来设置这个远程仓库SCS作为社区插件库plugins的一个子仓库（或者称为子目录）了。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;####### 其中--squash意思是把subtree的改动合并成一次commit，这样就不用拉取子项目完整的历史记录。
+vfhky@vfhky-pc MINGW64 /e/plugins (master)
+$ git subtree add --prefix=SCS SCS master --squash
+git fetch SCS master
+From github.com:vfhky/SCS
+ * branch            master     -&amp;gt; FETCH_HEAD
+Added dir &amp;#39;SCS&amp;#39;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h4&gt;7 修改项目的readme.md文件&lt;/h4&gt;
+&lt;p&gt;由于新增了两个插件，所以需要更新下本地仓库的readme.md文件。这里BZ在自己的win10上安装了MarkdownPad2，所以直接使用MarkdownPad命令打开这个文件编辑即可。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;vfhky@vfhky-pc MINGW64 /e/plugins (master)
+$ /d/MarkdownPad\ 2/MarkdownPad2.exe  README.md
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h4&gt;8 查看本地整个仓库情况&lt;/h4&gt;
+&lt;p&gt;同小节4中的操作一样，使用&lt;code&gt;git status&lt;/code&gt;命令查看本地整个仓库plugins的情况，结果如下所示。可以看到本地仓库由于第2/3/5/6小节的操作一共进行了4个&lt;code&gt;commits&lt;/code&gt;，然后由于小节7的操作修改了README.md文件（等待&lt;code&gt;git add&lt;/code&gt;操作）。 &lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;vfhky@vfhky-pc MINGW64 /e/plugins (master)
+$ git status
+On branch master
+Your branch is ahead of &amp;#39;origin/master&amp;#39; by 4 commits.
+  (use &amp;quot;git push&amp;quot; to publish your local commits)
+Changes not staged for commit:
+  (use &amp;quot;git add &amp;lt;file&amp;gt;...&amp;quot; to update what will be committed)
+  (use &amp;quot;git checkout -- &amp;lt;file&amp;gt;...&amp;quot; to discard changes in working directory)
+        modified:   README.md
+no changes added to commit (use &amp;quot;git add&amp;quot; and/or &amp;quot;git commit -a&amp;quot;)
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h4&gt;9 查看git的操作记录&lt;/h4&gt;
+&lt;p&gt;使用&lt;code&gt;git log&lt;/code&gt;命令查看本地仓库的git操作日志，结果如下：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;vfhky@vfhky-pc MINGW64 /e/plugins (master)
+$ git log
+commit 126fdf96dc462f22c5a64b71f92d425de12b3f06
+Merge: 3175b06 c4f6105
+Author: vfhky &amp;lt;vfhky@qq.com&amp;gt;
+Date:   Tue Mar 21 20:27:57 2017 +0800
+    Merge commit &amp;#39;c4f61059b3cf459466a4972bc34246de524e1f33&amp;#39; as &amp;#39;SCS&amp;#39;
+commit c4f61059b3cf459466a4972bc34246de524e1f33
+Author: vfhky &amp;lt;vfhky@qq.com&amp;gt;
+Date:   Tue Mar 21 20:27:57 2017 +0800
+    Squashed &amp;#39;SCS/&amp;#39; content from commit 00668df
+    git-subtree-dir: SCS
+    git-subtree-split: 00668dfe151c7ea371595a297075249d39916c51
+commit 3175b0670d5a2410170e4f8a74791580639fea38
+Merge: 0e9dfe9 f4f9dca
+Author: vfhky &amp;lt;vfhky@qq.com&amp;gt;
+Date:   Tue Mar 21 20:25:00 2017 +0800
+    Merge commit &amp;#39;f4f9dcab478239e4be38da081417cd627f9c64bf&amp;#39; as &amp;#39;PlayAtWill&amp;#39;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h4&gt;10 把本地仓库所有的更新都同步到远程仓库&lt;/h4&gt;
+&lt;p&gt;通过小节8/9的分析，确认了整个本地仓库的所有更新和提交都是无误的，那么就使用&lt;code&gt;git add&lt;/code&gt;、&lt;code&gt;git commit -m&lt;/code&gt;和&lt;code&gt;git push&lt;/code&gt;这3个命令把本地仓库的所有操作同步更新到社区typecho-fans的远程仓库中。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;vfhky&lt;/span&gt;&lt;span class="p"&gt;@&lt;/span&gt;&lt;span class="n"&gt;vfhky&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;pc&lt;/span&gt; &lt;span class="n"&gt;MINGW64&lt;/span&gt; &lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;e&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;plugins&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;master&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="err"&gt;$&lt;/span&gt; &lt;span class="n"&gt;git&lt;/span&gt; &lt;span class="n"&gt;add&lt;/span&gt; &lt;span class="o"&gt;--&lt;/span&gt;&lt;span class="n"&gt;all&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class="n"&gt;git&lt;/span&gt; &lt;span class="n"&gt;commit&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;m&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;add two plugins.&amp;quot;&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class="n"&gt;git&lt;/span&gt; &lt;span class="n"&gt;push&lt;/span&gt; &lt;span class="n"&gt;origin&lt;/span&gt; &lt;span class="n"&gt;master&lt;/span&gt;
+&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;master&lt;/span&gt; &lt;span class="n"&gt;bafc97f&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="n"&gt;add&lt;/span&gt; &lt;span class="n"&gt;two&lt;/span&gt; &lt;span class="n"&gt;plugins&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;
+ &lt;span class="mi"&gt;1&lt;/span&gt; &lt;span class="n"&gt;file&lt;/span&gt; &lt;span class="n"&gt;changed&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;2&lt;/span&gt; &lt;span class="n"&gt;insertions&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;+&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="n"&gt;Counting&lt;/span&gt; &lt;span class="nl"&gt;objects&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="mi"&gt;18&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;done&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;
+&lt;span class="n"&gt;Delta&lt;/span&gt; &lt;span class="n"&gt;compression&lt;/span&gt; &lt;span class="n"&gt;using&lt;/span&gt; &lt;span class="n"&gt;up&lt;/span&gt; &lt;span class="n"&gt;to&lt;/span&gt; &lt;span class="mi"&gt;8&lt;/span&gt; &lt;span class="n"&gt;threads&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;
+&lt;span class="n"&gt;Compressing&lt;/span&gt; &lt;span class="nl"&gt;objects&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="mi"&gt;100&lt;/span&gt;&lt;span class="o"&gt;%&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;18&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="mi"&gt;18&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt; &lt;span class="n"&gt;done&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;
+&lt;span class="n"&gt;Writing&lt;/span&gt; &lt;span class="nl"&gt;objects&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="mi"&gt;100&lt;/span&gt;&lt;span class="o"&gt;%&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;18&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="mi"&gt;18&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt; &lt;span class="mf"&gt;27.09&lt;/span&gt; &lt;span class="n"&gt;KiB&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt; &lt;span class="n"&gt;bytes&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;s&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;done&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;
+&lt;span class="n"&gt;Total&lt;/span&gt; &lt;span class="mi"&gt;18&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;delta&lt;/span&gt; &lt;span class="mi"&gt;4&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt; &lt;span class="n"&gt;reused&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;delta&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="nl"&gt;remote&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;Resolving&lt;/span&gt; &lt;span class="nl"&gt;deltas&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="mi"&gt;100&lt;/span&gt;&lt;span class="o"&gt;%&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;4&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="mi"&gt;4&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt; &lt;span class="n"&gt;completed&lt;/span&gt; &lt;span class="n"&gt;with&lt;/span&gt; &lt;span class="mi"&gt;2&lt;/span&gt; &lt;span class="n"&gt;local&lt;/span&gt; &lt;span class="n"&gt;objects&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;
+&lt;span class="n"&gt;To&lt;/span&gt; &lt;span class="n"&gt;github&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nl"&gt;com&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="n"&gt;typecho&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;fans&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;plugins&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;git&lt;/span&gt;
+   &lt;span class="mf"&gt;0e9&lt;/span&gt;&lt;span class="n"&gt;dfe9&lt;/span&gt;&lt;span class="p"&gt;..&lt;/span&gt;&lt;span class="n"&gt;bafc97f&lt;/span&gt;  &lt;span class="n"&gt;master&lt;/span&gt; &lt;span class="o"&gt;-&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;master&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;通过上面的操作已经成功把本地仓库的所有操作同步更新到了社区的远程仓库中了，效果如下图所示。&lt;/p&gt;
+&lt;p&gt;&lt;img alt="成功把本地仓库的所有操作同步更新到了社区的远程仓库中" src="https://o3cex9zsl.qnssl.com/2017/03/gitsubtree1_syn_typecho_fans.png" title="成功把本地仓库的所有操作同步更新到了社区的远程仓库中"&gt;&lt;/p&gt;
+&lt;h4&gt;11 对子仓库的操作同步更新到其对应的原来的远程仓库&lt;/h4&gt;
+&lt;p&gt;如果在本地仓库中对刚才通过&lt;code&gt;git subtree add&lt;/code&gt;命令设置为子仓库的SCS和PlayAtWill作修改，又如何同步更新到这两个子仓库原来对应的远程仓库中呢？&lt;/p&gt;
+&lt;p&gt;这里以修改子仓库SCS为例，已知它原来对应的远程仓库是git@github.com:vfhky/SCS.git。当修改了SCS中的&lt;code&gt;README.md&lt;/code&gt;文件（并且已经在本地仓库作了&lt;code&gt;git commit&lt;/code&gt;和&lt;code&gt;git push&lt;/code&gt;操作），那么使用&lt;code&gt;git subtree push&lt;/code&gt;命令就可以同步更新到它原来对应的远程仓库了。&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;git subtree push&lt;/code&gt;的原理是先遍历本地仓库所有的&lt;code&gt;git commit&lt;/code&gt;操作，然后匹配出对子仓库&lt;code&gt;SCS&lt;/code&gt;的那些&lt;code&gt;commit&lt;/code&gt;，最后把这些操作同步更新到它原来对应的远程仓库中。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;####### 对子仓库的操作同步更新到其对应的原来远程仓库
+vfhky@vfhky-pc MINGW64 /e/plugins (master)
+$ git subtree push --prefix=SCS git@github.com:vfhky/SCS.git master --squash
+git push using:  git@github.com:vfhky/SCS.git master
+Counting objects: 3, done.
+Delta compression using up to 8 threads.
+Compressing objects: 100% (3/3), done.
+Writing objects: 100% (3/3), 360 bytes | 0 bytes/s, done.
+Total 3 (delta 1), reused 0 (delta 0)
+remote: Resolving deltas: 100% (1/1), completed with 1 local objects.
+To github.com:vfhky/SCS.git
+   00668df..088684c  088684c0e68554dea3c29c61c68003798ddbd781 -&amp;gt; master
+vfhky@vfhky-pc MINGW64 /e/plugins (master)
+$
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;最终的同步效果如下图所示。&lt;/p&gt;
+&lt;p&gt;&lt;img alt="对子仓库的操作同步更新到其对应的原来远程仓库" src="https://o3cex9zsl.qnssl.com/2017/03/gitsubtree1_syn_scs.png" title="对子仓库的操作同步更新到其对应的原来远程仓库"&gt;&lt;/p&gt;
+&lt;h4&gt;12 把子仓库对应的远程仓库的操作同步更新到本地仓库&lt;/h4&gt;
+&lt;p&gt;如果对子仓库原来对应的远程仓库作了修改，那么可以在本地仓库使用&lt;code&gt;git subtree pull --prefix=SCS git@github.com:vfhky/SCS.git master --squash&lt;/code&gt;命令来获取其远程仓库更新的内容，这里就不做演示了。到此，关于子仓库和其原来对应的远程仓库的&lt;code&gt;双向同步&lt;/code&gt;操作演示已经完毕。&lt;/p&gt;</content><category term="git"></category></entry><entry><title>C++中使用vs2015和g++对new开辟的堆内存是否初始化的分析</title><link href="https://typecodes.com/cseries/gccvsheapnewinit1.html" rel="alternate"></link><published>2017-03-14T23:24:00+08:00</published><updated>2017-03-14T23:24:00+08:00</updated><author><name>vfhky</name></author><id>tag:typecodes.com,2017-03-14:/cseries/gccvsheapnewinit1.html</id><summary type="html">&lt;p&gt;在C++中使用&lt;code&gt;new&lt;/code&gt;运算符在堆中申请一内存块的使用权的同时还可以执行对该内存块的初始化工作。下面通过使用2个类对象和2个基本数据类型来分析使用&lt;code&gt;new class_object&lt;/code&gt;、&lt;code&gt;new class_object()&lt;/code&gt;和&lt;code&gt;new int&lt;/code&gt;、&lt;code&gt;new int()&lt;/code&gt;对这块内存的初始化情况。&lt;/p&gt;
 </summary><content type="html">&lt;p&gt;在C++中使用&lt;code&gt;new&lt;/code&gt;运算符在堆中申请一内存块的使用权的同时还可以执行对该内存块的初始化工作。下面通过使用2个类对象和2个基本数据类型来分析使用&lt;code&gt;new class_object&lt;/code&gt;、&lt;code&gt;new class_object()&lt;/code&gt;和&lt;code&gt;new int&lt;/code&gt;、&lt;code&gt;new int()&lt;/code&gt;对这块内存的初始化情况。&lt;/p&gt;
 
 
@@ -9610,7 +9793,12 @@ rh_status_q&lt;span class="o"&gt;()&lt;/span&gt; &lt;span class="o"&gt;{&lt;/spa
 [root@typecodes ~]# service nginx status
 ######在Nginx服务启动的状态下，重新加载nginx.conf这个配置文件
 [root@typecodes ~]# service nginx reload
-&lt;/pre&gt;&lt;/div&gt;</content><category term="nginx shell脚本"></category><category term="nginx"></category></entry><entry><title>2015博客升级记(三)：CentOS 7.1编译安装Nginx1.9.0</title><link href="https://typecodes.com/web/centos7compilenginx.html" rel="alternate"></link><published>2015-06-03T16:06:00+08:00</published><updated>2015-06-03T16:06:00+08:00</updated><author><name>vfhky</name></author><id>tag:typecodes.com,2015-06-03:/web/centos7compilenginx.html</id><summary type="html">&lt;p&gt;这是&lt;a href="https://typecodes.com/mix/2015updateblog.html" title="查看原文"&gt;《2015年博客升级记》&lt;/a&gt;系列文章的第三篇，主要记录如何在CentOS 7.1中编译安装Nginx官方最新的1.9.0版本。由于像Nginx、Mysql和PHP7的的源码都是用C/C++写的，所以自己的CentOS 7.1服务器上必须要安装gcc和g++软件（CentOS 7系列会自带这两个编译软件）。&lt;/p&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h5&gt;update 2017.03.22 17:22&lt;/h5&gt;
+&lt;p&gt;看到很多网站引用了本篇文章，由于这一年多的时间相关启动脚本和配置文件可能存在一些优化更新。当时在写这篇文章的时候也忘了说明这些关于Nginx和MySQL以及PHP7的启动脚本和配置文件的维护都托管在GitHub上了，所以请大家参考GitHub上最新的项目代码，地址如下：&lt;/p&gt;
+&lt;p&gt;&lt;a href="https://github.com/vfhky/mylnmp" title="关于Nginx和MySQL以及PHP7的启动脚本和配置文件"&gt;https://github.com/vfhky/mylnmp&lt;/a&gt;&lt;/p&gt;</content><category term="nginx shell脚本"></category><category term="nginx"></category></entry><entry><title>2015博客升级记(三)：CentOS 7.1编译安装Nginx1.9.0</title><link href="https://typecodes.com/web/centos7compilenginx.html" rel="alternate"></link><published>2015-06-03T16:06:00+08:00</published><updated>2015-06-03T16:06:00+08:00</updated><author><name>vfhky</name></author><id>tag:typecodes.com,2015-06-03:/web/centos7compilenginx.html</id><summary type="html">&lt;p&gt;这是&lt;a href="https://typecodes.com/mix/2015updateblog.html" title="查看原文"&gt;《2015年博客升级记》&lt;/a&gt;系列文章的第三篇，主要记录如何在CentOS 7.1中编译安装Nginx官方最新的1.9.0版本。由于像Nginx、Mysql和PHP7的的源码都是用C/C++写的，所以自己的CentOS 7.1服务器上必须要安装gcc和g++软件（CentOS 7系列会自带这两个编译软件）。&lt;/p&gt;
 &lt;p&gt;&lt;img alt="CentOS 7.1编译安装Nginx1.9.0" src="https://o3cex9zsl.qnssl.com/2015/05/nginxlogo.png" title="CentOS 7.1编译安装Nginx1.9.0"&gt;&lt;/p&gt;
 </summary><content type="html">&lt;p&gt;这是&lt;a href="https://typecodes.com/mix/2015updateblog.html" title="查看原文"&gt;《2015年博客升级记》&lt;/a&gt;系列文章的第三篇，主要记录如何在CentOS 7.1中编译安装Nginx官方最新的1.9.0版本。由于像Nginx、Mysql和PHP7的的源码都是用C/C++写的，所以自己的CentOS 7.1服务器上必须要安装gcc和g++软件（CentOS 7系列会自带这两个编译软件）。&lt;/p&gt;
 &lt;p&gt;&lt;img alt="CentOS 7.1编译安装Nginx1.9.0" src="https://o3cex9zsl.qnssl.com/2015/05/nginxlogo.png" title="CentOS 7.1编译安装Nginx1.9.0"&gt;&lt;/p&gt;
