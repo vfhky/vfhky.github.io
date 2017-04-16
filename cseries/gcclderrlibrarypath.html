@@ -93,7 +93,7 @@ If your library is shared then it needs to be dynamically linked to your program
 <h4>4 总结</h4>
 <p>关于<code>LIBRARY_PATH</code>和<code>LD_LIBRARY_PATH</code>的关系，这里自己再总结一下。</p>
 <h5>4.1 Linux gcc编译链接时的动态库搜索路径</h5>
-<p>GCC编译、链接生成可执行文件时，动态库的搜索路径顺序如下（注意不会递归性地在其子目录下搜索）：</p>
+<p>GCC编译、链接生成可执行文件时，动态库的搜索路径就包含<code>LIBRARY_PATH</code>，具体的搜索路径顺序如下（注意不会递归性地在其子目录下搜索）：</p>
 <div class="highlight"><pre><span></span>1、gcc编译、链接命令中的-L选项；
 2、gcc的环境变量的LIBRARY_PATH（多个路径用冒号分割）；
 3、gcc默认动态库目录：/lib:/usr/lib:usr/lib64:/usr/local/lib。
@@ -101,7 +101,7 @@ If your library is shared then it needs to be dynamically linked to your program
 
 
 <h5>4.2 执行二进制文件时的动态库搜索路径</h5>
-<p>链接生成二进制可执行文件后，在运行程序加载动态库文件时，搜索的路径顺序如下：</p>
+<p>链接生成二进制可执行文件后，运行该程序加载动态库文件时就会搜索包含<code>LD_LIBRARY_PATH</code>路径下的动态库，具体顺序如下：</p>
 <div class="highlight"><pre><span></span>1、编译目标代码时指定的动态库搜索路径：用选项-Wl,rpath和include指定的动态库的搜索路径，比如gcc -Wl,-rpath,include -L. -ldltest hello.c，在执行文件时会搜索路径`./include`；
 2、环境变量LD_LIBRARY_PATH（多个路径用冒号分割）；
 3、在 /etc/ld.so.conf.d/ 目录下的配置文件指定的动态库绝对路径（通过ldconfig生效，一般是非root用户时使用）；
@@ -192,7 +192,7 @@ If your library is shared then it needs to be dynamically linked to your program
 		<h3 class="widget-title">Categories</h3>
 		<ul class="widget-list">
 		      <li class="current">
-		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (41)
+		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (42)
 		      </li>
 		      <li class="current">
 		        <a href="https://typecodes.com/csharp/index.html">Csharp</a> (6)
@@ -218,6 +218,9 @@ If your library is shared then it needs to be dynamically linked to your program
 		<h3 class="widget-title">Recent Posts</h3>
 		<ul class="widget-list">
 			<li class="post">
+				<a href="https://typecodes.com/cseries/templatejsoncpp2file1.html">Linux C++使用函数模板实现JSON数据快速和完整写入到文件</a>
+			</li>
+			<li class="post">
 				<a href="https://typecodes.com/mix/gitsubtree1.html">Git多仓库作子目录的双向同步：一次Git Subtree的实践</a>
 			</li>
 			<li class="post">
@@ -234,9 +237,6 @@ If your library is shared then it needs to be dynamically linked to your program
 			</li>
 			<li class="post">
 				<a href="https://typecodes.com/cseries/mapdelintstring.html">C++删除map容器中指定值的元素</a>
-			</li>
-			<li class="post">
-				<a href="https://typecodes.com/linux/handlemakefilebysed.html">使用sed命令批量处理Makefile文件的脚本</a>
 			</li>
 		</ul>
 	</div>

@@ -39,6 +39,17 @@
 		<div class="col-md-9" id="blog-main" role="main">
 		  	<!--article recycle-->
 			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/cseries/templatejsoncpp2file1.html">Linux C++使用函数模板实现JSON数据快速和完整写入到文件</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2017-04-16 15:54 | 分类：<a href="https://typecodes.com/cseries/index.html">cseries</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>昨天在自己的CentOS7机器上编译了JSONCPP库，然后根据api写了下面这个简单的测试程序。代码涉及了文件流数据读取和写入、jsoncpp库的读写api的使用。整个处理流程是先读取一个json格式文件的内容，然后把这些内容分别用jsoncpp库的<code>Json::FastWriter</code>（快速写入）和<code>Json::StyledWriter</code>（完整写入）这两个方式写入到两个文件中，最后读取这两个文件并输出。</p>
+<p><img alt="Linux C++使用函数模板实现JSON数据快速和完整写入到文件" src="https://o3cex9zsl.qnssl.com/2017/04/jsoncpp_basic_4_1.png" title="Linux C++使用函数模板实现JSON数据快速和完整写入到文件"></p>
+
+	<p class="more"><a href="https://typecodes.com/cseries/templatejsoncpp2file1.html" title="Linux C++使用函数模板实现JSON数据快速和完整写入到文件">- 阅读剩余部分 -</a></p>
+</div>			</article>
+			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/cseries/gccvsheapnewinit1.html">C++中使用vs2015和g++对new开辟的堆内存是否初始化的分析</a></h2>
 <ul class="post-meta">
 	<li>作者：vfhky | 时间：2017-03-14 23:24 | 分类：<a href="https://typecodes.com/cseries/index.html">cseries</a></li>
@@ -114,16 +125,6 @@
 
 	<p class="more"><a href="https://typecodes.com/cseries/kill0checkprocessifexist.html" title="Linux使用KILL 0检测进程是否存在">- 阅读剩余部分 -</a></p>
 </div>			</article>
-			<article class="post">
-<h2 class="post-title"><a href="https://typecodes.com/cseries/vsnprintffilenameline.html">vsnprintf字符串格式化输出实例：日志中打印程序名和行号</a></h2>
-<ul class="post-meta">
-	<li>作者：vfhky | 时间：2016-03-13 23:28 | 分类：<a href="https://typecodes.com/cseries/index.html">cseries</a></li>
-</ul>
-<div class="post-content fmt">
-	<p>在Linux C/C++程序中打印日志时，可能会由于需要打印未知个数的变量参数，那么<code>vsnprintf</code>函数就排上用场了。这里使用一个简单的C程序例子，演示在打印源程序文件名和该打印函数所在的行号的同时，使用vsnprintf函数打印个数未知的参数变量。</p>
-
-	<p class="more"><a href="https://typecodes.com/cseries/vsnprintffilenameline.html" title="vsnprintf字符串格式化输出实例：日志中打印程序名和行号">- 阅读剩余部分 -</a></p>
-</div>			</article>
 		  	<!--page navigation-->
 <ol class="page-navigator">
 <li class="current"><a href="https://typecodes.com/cseries/index.html">1</a></li><li><a href="https://typecodes.com/cseries/index2.html">2</a></li><li><a href="https://typecodes.com/cseries/index3.html">3</a></li><li><a href="https://typecodes.com/cseries/index4.html">4</a></li><li><a href="https://typecodes.com/cseries/index5.html">5</a></li><li><a href="https://typecodes.com/cseries/index6.html">6</a></li><li class="next">
@@ -140,7 +141,7 @@
 		<h3 class="widget-title">Categories</h3>
 		<ul class="widget-list">
 		      <li class="current">
-		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (41)
+		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (42)
 		      </li>
 		      <li class="current">
 		        <a href="https://typecodes.com/csharp/index.html">Csharp</a> (6)
@@ -166,6 +167,9 @@
 		<h3 class="widget-title">Recent Posts</h3>
 		<ul class="widget-list">
 			<li class="post">
+				<a href="https://typecodes.com/cseries/templatejsoncpp2file1.html">Linux C++使用函数模板实现JSON数据快速和完整写入到文件</a>
+			</li>
+			<li class="post">
 				<a href="https://typecodes.com/cseries/gccvsheapnewinit1.html">C++中使用vs2015和g++对new开辟的堆内存是否初始化的分析</a>
 			</li>
 			<li class="post">
@@ -182,9 +186,6 @@
 			</li>
 			<li class="post">
 				<a href="https://typecodes.com/cseries/apuesingledaemonprocess.html">UNIX环境高级编程（APUE）之单实例守护进程</a>
-			</li>
-			<li class="post">
-				<a href="https://typecodes.com/cseries/kill0checkprocessifexist.html">Linux使用KILL 0检测进程是否存在</a>
 			</li>
 		</ul>
 	</div>

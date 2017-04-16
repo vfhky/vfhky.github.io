@@ -39,6 +39,16 @@
 		<div class="col-md-9" id="blog-main" role="main">
 		  	<!--article recycle-->
 			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/web/phpsolvewparticleid.html">PHP程序解决WordPress重新排列不连续的文章ID</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2012-07-28 01:08 | 分类：<a href="https://typecodes.com/web/index.html">web</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>wordpress有个缺点，那就是在后天发表文章的时候，系统会自动等时间地帮你备份。虽然出发点是好的，但是却导致了发表的文章的ID不连续。比如，前一篇文章的网站是27.html，很可能在你发表下一篇文章的时候网站会变成45.html。至此为止，博客中总共18篇文章，在我没进行重新排序之前，文章的ID已经达到了300多了。所以趁文章还不多的，赶紧采取一些措施解决下。废话少说，贴出代码（代码中已注释）。其中数据库表的前缀默认为wp_，应该根据自己的表进行修改。(温馨提示：在任何数据库的操作前，最好先备份数据库！！！）</p>
+
+	<p class="more"><a href="https://typecodes.com/web/phpsolvewparticleid.html" title="PHP程序解决WordPress重新排列不连续的文章ID">- 阅读剩余部分 -</a></p>
+</div>			</article>
+			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/mix/thinkaboutlife.html">Some Thing about Life</a></h2>
 <ul class="post-meta">
 	<li>作者：vfhky | 时间：2012-07-26 00:00 | 分类：<a href="https://typecodes.com/mix/index.html">mix</a></li>
@@ -115,18 +125,6 @@
 
 	<p class="more"><a href="https://typecodes.com/mix/delwin7surpic.html" title="如何删除Win7任务栏上通知区域中的多余图标">- 阅读剩余部分 -</a></p>
 </div>			</article>
-			<article class="post">
-<h2 class="post-title"><a href="https://typecodes.com/web/configiiserr.html">配置IIS出现错误的解决方法</a></h2>
-<ul class="post-meta">
-	<li>作者：vfhky | 时间：2012-07-03 22:40 | 分类：<a href="https://typecodes.com/web/index.html">web</a></li>
-</ul>
-<div class="post-content fmt">
-	<p>在给ASP或者ASP.NET等需要配置IIS服务器的过程中，很可能会遇到以下两种错误。尤其是用Win7系统的，配置IIS7.0版本比用XP系统配置IIS5.1版本而言要复杂复杂一些。当同时需要配置ASP和ASP.NET共存的IIS服务器环境时会更有挑战性。下面是我的两个总结:</p>
-<h5>1 错误提示：ADODB.Connection 错误 '800a0e7a'，未找到提供程序。</h5>
-<p>解决：原来的网站是在32位的windows环境中生成的导致在win764位中出现错误（IIS7应用程序池默认没有启用32位程序，也就是说如果使用的是64位操作系统，而没有64位的Jet 4.0驱动程序，那么就要在IIS7中启用32位程序）。此时点击IIS管理器左边的“应用程序池”在“启用32位应用程序”选择“True”。</p>
-
-	<p class="more"><a href="https://typecodes.com/web/configiiserr.html" title="配置IIS出现错误的解决方法">- 阅读剩余部分 -</a></p>
-</div>			</article>
 		  	<!--page navigation-->
 <ol class="page-navigator">
 <li class="prev"><a href="https://typecodes.com/index26.html">&laquo; 前一页</a></li><li><a href="https://typecodes.com/index.html">1</a></li>
@@ -144,7 +142,7 @@
 		<h3 class="widget-title">Categories</h3>
 		<ul class="widget-list">
 		      <li class="current">
-		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (41)
+		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (42)
 		      </li>
 		      <li class="current">
 		        <a href="https://typecodes.com/csharp/index.html">Csharp</a> (6)
@@ -170,6 +168,9 @@
 		<h3 class="widget-title">Recent Posts</h3>
 		<ul class="widget-list">
 			<li class="post">
+				<a href="https://typecodes.com/cseries/templatejsoncpp2file1.html">Linux C++使用函数模板实现JSON数据快速和完整写入到文件</a>
+			</li>
+			<li class="post">
 				<a href="https://typecodes.com/mix/gitsubtree1.html">Git多仓库作子目录的双向同步：一次Git Subtree的实践</a>
 			</li>
 			<li class="post">
@@ -186,9 +187,6 @@
 			</li>
 			<li class="post">
 				<a href="https://typecodes.com/cseries/mapdelintstring.html">C++删除map容器中指定值的元素</a>
-			</li>
-			<li class="post">
-				<a href="https://typecodes.com/linux/handlemakefilebysed.html">使用sed命令批量处理Makefile文件的脚本</a>
 			</li>
 		</ul>
 	</div>

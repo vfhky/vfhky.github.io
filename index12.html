@@ -39,6 +39,17 @@
 		<div class="col-md-9" id="blog-main" role="main">
 		  	<!--article recycle-->
 			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/web/phpunixtimeconvert.html">PHP中将Unix timestamp时间戳转换成北京时间</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2014-08-19 22:12 | 分类：<a href="https://typecodes.com/web/index.html">web</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>由于博客刚从wordpress转到typecho，所以对之前的数据库需要处理。在wordpress数据库中，文章和评论的时间记录形式和typecho不同：wordpress中登记的是北京时间，形如 2014-08-19 21:05:27；而typecho数据库中登记的是时间戳Unix timestamp，形如1408456593（对应标准北京时间是 2014/8/19 21:56:33 ）。</p>
+<p>于是，我在typecho中用<code>date('Y-m-d H:i', $older_date)</code>函数把从数据库读取出来的Unix timestamp格式的<code>$older_date</code>转换成形如 2014-08-19 21:05 的北京时间后，发现比当前的北京时间少了8个小时。GG一番，原来是时区导致的：格林威治时间与中国东八区本地时间相差8个时差。解决方法如下：</p>
+
+	<p class="more"><a href="https://typecodes.com/web/phpunixtimeconvert.html" title="PHP中将Unix timestamp时间戳转换成北京时间">- 阅读剩余部分 -</a></p>
+</div>			</article>
+			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/web/mysqlimportmessy.html">完美解决Mysql导入数据库中文乱码的问题</a></h2>
 <ul class="post-meta">
 	<li>作者：vfhky | 时间：2014-08-18 22:24 | 分类：<a href="https://typecodes.com/web/index.html">web</a></li>
@@ -164,18 +175,6 @@ Zend Extension Api No:  20090626
 
 	<p class="more"><a href="https://typecodes.com/web/aliyuncentoslnmpxcacheconf.html" title="阿里云CentOS主机 LNMP 环境配置之Php篇——安装XCache加速器">- 阅读剩余部分 -</a></p>
 </div>			</article>
-			<article class="post">
-<h2 class="post-title"><a href="https://typecodes.com/web/aliyuncentoslnmpnginxconf.html">阿里云CentOS主机 LNMP 环境配置之Nginx篇</a></h2>
-<ul class="post-meta">
-	<li>作者：vfhky | 时间：2014-08-13 23:22 | 分类：<a href="https://typecodes.com/web/index.html">web</a></li>
-</ul>
-<div class="post-content fmt">
-	<p>上一篇文章主要分享了<a href="https://typecodes.com/web/aliyuncentoslnmpmysqlconf.html" title="阿里云CentOS主机 LNMP 环境配置之Mysql篇">LNMP 环境如何简单配置 Mysql</a>。这篇文章简要说说如何配置 Nginx 。是其默认配置文件是<code>nginx.conf</code>和<code>default.conf</code>。</p>
-<h5>1 nginx.conf配置文件</h5>
-<p>在 nginx.conf 文件中，会看到 nginx 默认的错误日志保存文件：error.log。它记录了服务器端由nginx处理的错误信息，例如永久跳转301、页面不存在404错误、服务器错误500错误等等。</p>
-
-	<p class="more"><a href="https://typecodes.com/web/aliyuncentoslnmpnginxconf.html" title="阿里云CentOS主机 LNMP 环境配置之Nginx篇">- 阅读剩余部分 -</a></p>
-</div>			</article>
 		  	<!--page navigation-->
 <ol class="page-navigator">
 <li class="prev"><a href="https://typecodes.com/index11.html">&laquo; 前一页</a></li><li><a href="https://typecodes.com/index.html">1</a></li>
@@ -193,7 +192,7 @@ Zend Extension Api No:  20090626
 		<h3 class="widget-title">Categories</h3>
 		<ul class="widget-list">
 		      <li class="current">
-		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (41)
+		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (42)
 		      </li>
 		      <li class="current">
 		        <a href="https://typecodes.com/csharp/index.html">Csharp</a> (6)
@@ -219,6 +218,9 @@ Zend Extension Api No:  20090626
 		<h3 class="widget-title">Recent Posts</h3>
 		<ul class="widget-list">
 			<li class="post">
+				<a href="https://typecodes.com/cseries/templatejsoncpp2file1.html">Linux C++使用函数模板实现JSON数据快速和完整写入到文件</a>
+			</li>
+			<li class="post">
 				<a href="https://typecodes.com/mix/gitsubtree1.html">Git多仓库作子目录的双向同步：一次Git Subtree的实践</a>
 			</li>
 			<li class="post">
@@ -235,9 +237,6 @@ Zend Extension Api No:  20090626
 			</li>
 			<li class="post">
 				<a href="https://typecodes.com/cseries/mapdelintstring.html">C++删除map容器中指定值的元素</a>
-			</li>
-			<li class="post">
-				<a href="https://typecodes.com/linux/handlemakefilebysed.html">使用sed命令批量处理Makefile文件的脚本</a>
 			</li>
 		</ul>
 	</div>

@@ -39,6 +39,25 @@
 		<div class="col-md-9" id="blog-main" role="main">
 		  	<!--article recycle-->
 			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/web/lnmppositivessl.html">阿里云CentOS 6.5系统LNMP环境安装SSL证书</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2014-10-15 00:02 | 分类：<a href="https://typecodes.com/web/index.html">web</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>近期参加了github的一项<a href="https://education.github.com/pack" title="GitHub Education Student pack">优惠活动</a>，获得了一年免费的SSL证书。下面是具体的安装过程，当然SSL证书的安装跟博客程序（不管是wordpress或者typecho等等）无关，只是跟服务器的类型（比如Nginx、Apache或者IIS等）有关。</p>
+<div class="highlight"><pre><span></span>----------操作说明----------               
+系统：            阿里云CentOS 6.5
+环境：            LNMP（只需配置Nginx服务器就行）
+操作工具：        SecureCRT 7.0
+博客程序：        Typecho 14.10
+SSL证书提供商：    PositiveSSL from Namecheap
+</pre></div>
+
+
+
+	<p class="more"><a href="https://typecodes.com/web/lnmppositivessl.html" title="阿里云CentOS 6.5系统LNMP环境安装SSL证书">- 阅读剩余部分 -</a></p>
+</div>			</article>
+			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/web/scsfortypechov111.html">更新新浪云存储(SCS) for Typecho 插件版本V1.1.1</a></h2>
 <ul class="post-meta">
 	<li>作者：vfhky | 时间：2014-09-20 11:34 | 分类：<a href="https://typecodes.com/web/index.html">web</a></li>
@@ -134,17 +153,6 @@
 
 	<p class="more"><a href="https://typecodes.com/cseries/trimspace0xC0000005.html" title="未经处理的异常:0xC0000005:读取/写入位置冲突——从去掉字符串所有空格说起">- 阅读剩余部分 -</a></p>
 </div>			</article>
-			<article class="post">
-<h2 class="post-title"><a href="https://typecodes.com/web/phpunixtimeconvert.html">PHP中将Unix timestamp时间戳转换成北京时间</a></h2>
-<ul class="post-meta">
-	<li>作者：vfhky | 时间：2014-08-19 22:12 | 分类：<a href="https://typecodes.com/web/index.html">web</a></li>
-</ul>
-<div class="post-content fmt">
-	<p>由于博客刚从wordpress转到typecho，所以对之前的数据库需要处理。在wordpress数据库中，文章和评论的时间记录形式和typecho不同：wordpress中登记的是北京时间，形如 2014-08-19 21:05:27；而typecho数据库中登记的是时间戳Unix timestamp，形如1408456593（对应标准北京时间是 2014/8/19 21:56:33 ）。</p>
-<p>于是，我在typecho中用<code>date('Y-m-d H:i', $older_date)</code>函数把从数据库读取出来的Unix timestamp格式的<code>$older_date</code>转换成形如 2014-08-19 21:05 的北京时间后，发现比当前的北京时间少了8个小时。GG一番，原来是时区导致的：格林威治时间与中国东八区本地时间相差8个时差。解决方法如下：</p>
-
-	<p class="more"><a href="https://typecodes.com/web/phpunixtimeconvert.html" title="PHP中将Unix timestamp时间戳转换成北京时间">- 阅读剩余部分 -</a></p>
-</div>			</article>
 		  	<!--page navigation-->
 <ol class="page-navigator">
 <li class="prev"><a href="https://typecodes.com/index10.html">&laquo; 前一页</a></li><li><a href="https://typecodes.com/index.html">1</a></li>
@@ -162,7 +170,7 @@
 		<h3 class="widget-title">Categories</h3>
 		<ul class="widget-list">
 		      <li class="current">
-		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (41)
+		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (42)
 		      </li>
 		      <li class="current">
 		        <a href="https://typecodes.com/csharp/index.html">Csharp</a> (6)
@@ -188,6 +196,9 @@
 		<h3 class="widget-title">Recent Posts</h3>
 		<ul class="widget-list">
 			<li class="post">
+				<a href="https://typecodes.com/cseries/templatejsoncpp2file1.html">Linux C++使用函数模板实现JSON数据快速和完整写入到文件</a>
+			</li>
+			<li class="post">
 				<a href="https://typecodes.com/mix/gitsubtree1.html">Git多仓库作子目录的双向同步：一次Git Subtree的实践</a>
 			</li>
 			<li class="post">
@@ -204,9 +215,6 @@
 			</li>
 			<li class="post">
 				<a href="https://typecodes.com/cseries/mapdelintstring.html">C++删除map容器中指定值的元素</a>
-			</li>
-			<li class="post">
-				<a href="https://typecodes.com/linux/handlemakefilebysed.html">使用sed命令批量处理Makefile文件的脚本</a>
 			</li>
 		</ul>
 	</div>

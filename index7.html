@@ -39,6 +39,19 @@
 		<div class="col-md-9" id="blog-main" role="main">
 		  	<!--article recycle-->
 			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/web/solvenginxcompileerror.html">Nginx编译安装时常见错误分析</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2015-06-22 17:02 | 分类：<a href="https://typecodes.com/web/index.html">web</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>这篇文章主要是关于Nginx在编译安装时，可能出现的错误的解决方法。Nginx正确的编译安装操作见前文<a href="https://typecodes.com/web/centos7compilenginx.html" title="查看原文">《2015博客升级记(三)：CentOS 7.1编译安装Nginx1.9.0》</a>。</p>
+<h5>1 Nginx启动脚本错误：env: /etc/init.d/nginx: No such file or directory</h5>
+<p>明明上传了Nginx服务控制脚本<code>nginx</code>，但是在执行<code>service nginx start</code>命令时，却会报上面的错误。</p>
+<p>解决方法：启动脚本的格式有问题，例如该脚本是dos格式，在Linux系统是中无法识别的。可以通过vim打开该文件，如果可以看到出现<code>^M</code>的字符，就可以确定是DOS格式的了。那么可以在vim中执行命令<code>:%s/\r\+$//e</code>，将其转换成Unix格式即可。</p>
+
+	<p class="more"><a href="https://typecodes.com/web/solvenginxcompileerror.html" title="Nginx编译安装时常见错误分析">- 阅读剩余部分 -</a></p>
+</div>			</article>
+			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/web/centos7nginxhttpsspdy.html">2015博客升级记(六)：Nginx配置HTTPS和SPDY实战</a></h2>
 <ul class="post-meta">
 	<li>作者：vfhky | 时间：2015-06-21 22:39 | 分类：<a href="https://typecodes.com/web/index.html">web</a></li>
@@ -131,16 +144,6 @@
 
 	<p class="more"><a href="https://typecodes.com/mix/typechocommentmarkdown.html" title="Typecho评论中开启和使用Markdown的方法">- 阅读剩余部分 -</a></p>
 </div>			</article>
-			<article class="post">
-<h2 class="post-title"><a href="https://typecodes.com/cseries/simplifychexstrtoint.html">视角：C语言将十六进制字符串转成十进制整数</a></h2>
-<ul class="post-meta">
-	<li>作者：vfhky | 时间：2015-05-30 07:58 | 分类：<a href="https://typecodes.com/cseries/index.html">cseries</a></li>
-</ul>
-<div class="post-content fmt">
-	<p>在前文<a href="https://typecodes.com/cseries/againchexstrtointeger.html/comment-page-1#comment-1665" title="查看原文评论">《再议C语言将十六进制字符串转成十进制整数》</a>中 <a href="http://pewae.com/">@大致</a> 童鞋帮忙提了一个思路：直接将指针<code>p</code>读取的十六进制字符串中的单个字符转换后的结果保存在<code>iResult</code>中，而不是保存在指针p指向的内存中。这样思路更为简洁，下面是具体的两个实现程序。</p>
-
-	<p class="more"><a href="https://typecodes.com/cseries/simplifychexstrtoint.html" title="视角：C语言将十六进制字符串转成十进制整数">- 阅读剩余部分 -</a></p>
-</div>			</article>
 		  	<!--page navigation-->
 <ol class="page-navigator">
 <li class="prev"><a href="https://typecodes.com/index6.html">&laquo; 前一页</a></li><li><a href="https://typecodes.com/index.html">1</a></li>
@@ -158,7 +161,7 @@
 		<h3 class="widget-title">Categories</h3>
 		<ul class="widget-list">
 		      <li class="current">
-		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (41)
+		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (42)
 		      </li>
 		      <li class="current">
 		        <a href="https://typecodes.com/csharp/index.html">Csharp</a> (6)
@@ -184,6 +187,9 @@
 		<h3 class="widget-title">Recent Posts</h3>
 		<ul class="widget-list">
 			<li class="post">
+				<a href="https://typecodes.com/cseries/templatejsoncpp2file1.html">Linux C++使用函数模板实现JSON数据快速和完整写入到文件</a>
+			</li>
+			<li class="post">
 				<a href="https://typecodes.com/mix/gitsubtree1.html">Git多仓库作子目录的双向同步：一次Git Subtree的实践</a>
 			</li>
 			<li class="post">
@@ -200,9 +206,6 @@
 			</li>
 			<li class="post">
 				<a href="https://typecodes.com/cseries/mapdelintstring.html">C++删除map容器中指定值的元素</a>
-			</li>
-			<li class="post">
-				<a href="https://typecodes.com/linux/handlemakefilebysed.html">使用sed命令批量处理Makefile文件的脚本</a>
 			</li>
 		</ul>
 	</div>
