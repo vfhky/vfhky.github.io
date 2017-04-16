@@ -225,7 +225,7 @@ Complete!
 </pre></div>
 
 
-<p>然后使用命令<code>systemctl status mysql.service</code>查看MySQL数据库启动后的服务状态：</p>
+<p>然后使用命令<code>systemctl status mysqld.service</code>查看MySQL数据库启动后的服务状态：</p>
 <p><img alt="systemctl命令查看MySQL服务状态" src="https://o3cex9zsl.qnssl.com/2016/02/mysql_process_status.png" title="systemctl命令查看MySQL服务状态"></p>
 <h4>5 获取初始密码</h4>
 <p>使用YUM安装并启动MySQL服务后，MySQL进程会自动在进程日志中打印root用户的初始密码：</p>
@@ -319,6 +319,12 @@ Bye
 <h4>附录3：删除MySQL的Repository</h4>
 <p>因为小节3中安装了MySQL的Yum Repository，所以以后每次执行yum操作时，都会去检查更新。如果想要去掉这种自动检查操作的话，可以使用如下命令卸载MySQL的Repository即可。</p>
 <div class="highlight"><pre><span></span>[root@typecodes ~]# yum -y remove mysql57-community-release-el7-7.noarch
+</pre></div>
+
+
+<h4>update 2017.04.10 11:10</h4>
+<p>使用上面的yum方法也可以安装目前mysql官网上最新的版本mysql5.7.18。只要替换小节2中rmp包的版本即可，后续操作步骤不变。</p>
+<div class="highlight"><pre><span></span>wget -i -c http://dev.mysql.com/get/mysql57-community-release-el7-10.noarch.rpm
 </pre></div>
 </div>		    	<div class="donate_div_container">
 					<div class="donate_div">
