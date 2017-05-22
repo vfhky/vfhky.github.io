@@ -1,24 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom"><title>TypeCodes</title><link href="https://typecodes.com/" rel="alternate"></link><link href="https://typecodes.com/atom.xml" rel="self"></link><id>https://typecodes.com/</id><updated>2017-05-22T23:45:00+08:00</updated><entry><title>使用sed和awk查找和替换字符串处理Makefile文件（三）</title><link href="https://typecodes.com/linux/sedawkfindreplace3.html" rel="alternate"></link><published>2017-05-22T23:45:00+08:00</published><updated>2017-05-22T23:45:00+08:00</updated><author><name>vfhky</name></author><id>tag:typecodes.com,2017-05-22:/linux/sedawkfindreplace3.html</id><summary type="html">&lt;p&gt;在&lt;a href="https://typecodes.com/linux/sedawkfindreplace2.html" title="《使用sed和awk查找和替换字符串处理Makefile文件（二）》"&gt;前文&lt;/a&gt;中演示了使用awk和sed命令正则查找和替换&lt;a href="https://typecodes.com/cseries/cppgeneralmakefile.html" title="《Linux C/C++工程中可生成ELF、动/静态库文件的通用Makefile》"&gt;Makefile&lt;/a&gt;文件中的&lt;code&gt;make clean&lt;/code&gt;操作规则：把&lt;code&gt;-$(RM) $(ULT_BIN)&lt;/code&gt;和&lt;code&gt;-$(RM) $(ULT_BIN)&lt;/code&gt;这两句写成一句&lt;code&gt;-$(RM)  $(ULT_BIN) $(ULT_BIN)&lt;/code&gt;，这篇文件主要是通过&lt;code&gt;sed&lt;/code&gt;和&lt;code&gt;awk&lt;/code&gt;命令继续优化该Makefile文件。&lt;/p&gt;
-&lt;p&gt;&lt;img alt="使用sed和awk查找和替换字符串处理Makefile文件（三）" src="https://o3cex9zsl.qnssl.com/2017/05/sedawkfindreplace3_awk_sed_find_2.png" title="使用sed和awk查找和替换字符串处理Makefile文件（三）"&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img alt="使用sed和awk查找和替换字符串处理Makefile文件（三）" src="https://o3cex9zsl.qnssl.com/2017/05/sedawkfindreplace3_awk_sed_find_1.png" title="使用sed和awk查找和替换字符串处理Makefile文件（三）"&gt;&lt;/p&gt;
 </summary><content type="html">&lt;p&gt;在&lt;a href="https://typecodes.com/linux/sedawkfindreplace2.html" title="《使用sed和awk查找和替换字符串处理Makefile文件（二）》"&gt;前文&lt;/a&gt;中演示了使用awk和sed命令正则查找和替换&lt;a href="https://typecodes.com/cseries/cppgeneralmakefile.html" title="《Linux C/C++工程中可生成ELF、动/静态库文件的通用Makefile》"&gt;Makefile&lt;/a&gt;文件中的&lt;code&gt;make clean&lt;/code&gt;操作规则：把&lt;code&gt;-$(RM) $(ULT_BIN)&lt;/code&gt;和&lt;code&gt;-$(RM) $(ULT_BIN)&lt;/code&gt;这两句写成一句&lt;code&gt;-$(RM)  $(ULT_BIN) $(ULT_BIN)&lt;/code&gt;，这篇文件主要是通过&lt;code&gt;sed&lt;/code&gt;和&lt;code&gt;awk&lt;/code&gt;命令继续优化该Makefile文件。&lt;/p&gt;
-&lt;p&gt;&lt;img alt="使用sed和awk查找和替换字符串处理Makefile文件（三）" src="https://o3cex9zsl.qnssl.com/2017/05/sedawkfindreplace3_awk_sed_find_2.png" title="使用sed和awk查找和替换字符串处理Makefile文件（三）"&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img alt="使用sed和awk查找和替换字符串处理Makefile文件（三）" src="https://o3cex9zsl.qnssl.com/2017/05/sedawkfindreplace3_awk_sed_find_1.png" title="使用sed和awk查找和替换字符串处理Makefile文件（三）"&gt;&lt;/p&gt;
 
 
 &lt;h4&gt;1 具体功能需求&lt;/h4&gt;
 &lt;p&gt;要实现的效果如果上图所示，左边表示之前的Makefile文件，右边是通过本次Shell脚本处理后的Makefile文件。因此，具体的需求功能如下：&lt;/p&gt;
 &lt;p&gt;需求1：&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="err"&gt;之前这个Makefile脚本在生成多个可执行文件时会调用`gen_excbin`包，然后执行`*.o`的生成规则，但是由于它前面加了`&lt;/span&gt;&lt;span class="k"&gt;$(&lt;/span&gt;&lt;span class="nv"&gt;CURDIR&lt;/span&gt;&lt;span class="k"&gt;)&lt;/span&gt;&lt;span class="err"&gt;/`变量，而`%.cpp`和`.c`前面没有加，所以就`gen_depend`包生成.d依赖文件了。所以为了批量替换掉虚拟机中项目现有所有的Makefile文件，BZ选择用包含`sed`和`awk`命令的shell脚本来处理。&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-
+&lt;p&gt;之前这个Makefile脚本在生成多个可执行文件时会调用&lt;code&gt;gen_excbin&lt;/code&gt;包，然后执行&lt;code&gt;*.o&lt;/code&gt;的生成规则，但是由于它前面加了&lt;code&gt;$(CURDIR)/&lt;/code&gt;变量，而&lt;code&gt;%.cpp&lt;/code&gt;和&lt;code&gt;.c&lt;/code&gt;前面没有加，所以就&lt;code&gt;gen_depend&lt;/code&gt;包生成.d依赖文件了。所以为了批量替换掉虚拟机中项目现有所有的Makefile文件，BZ选择用包含&lt;code&gt;sed&lt;/code&gt;和&lt;code&gt;awk&lt;/code&gt;命令的shell脚本来处理。&lt;/p&gt;
 &lt;p&gt;需求2：&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;每调用`gen_excbin`或者`gen_libs`包生成可执行文件或者库文件后（即`$$@`和`$$@ $$^)`结尾处）都追加打印一个包含`SUCCESS`文件的行，方便区分生成多个可执行文件时日志不好区分的情形。
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p&gt;需求3：
-    替换掉原来的&lt;code&gt;$(bin).o&lt;/code&gt;为&lt;code&gt;$(CURDIR)/$(bin).o&lt;/code&gt;。&lt;/p&gt;
+&lt;p&gt;每调用&lt;code&gt;gen_excbin&lt;/code&gt;或者&lt;code&gt;gen_libs&lt;/code&gt;包生成可执行文件或者库文件后（即&lt;code&gt;$$@&lt;/code&gt;和&lt;code&gt;$$@ $$^)&lt;/code&gt;结尾处）都追加打印一个包含&lt;code&gt;SUCCESS&lt;/code&gt;文件的行，方便区分生成多个可执行文件时日志不好区分的情形。&lt;/p&gt;
+&lt;p&gt;需求3：&lt;/p&gt;
+&lt;p&gt;替换掉原来的&lt;code&gt;$(bin).o&lt;/code&gt;为&lt;code&gt;$(CURDIR)/$(bin).o&lt;/code&gt;。&lt;/p&gt;
 &lt;h4&gt;2 shell程序&lt;/h4&gt;
 &lt;p&gt;下面的这份shell脚本比较简单，直接运行&lt;code&gt;./sedawkfindreplace3.sh&lt;/code&gt;即可。同&lt;a href="https://typecodes.com/linux/sedawkfindreplace2.html" title="《使用sed和awk查找和替换字符串处理Makefile文件（二）》"&gt;前文&lt;/a&gt;的脚本框架一样，这里先使用&lt;code&gt;for ... in&lt;/code&gt;的Makefile文件遍历中，然后利用了awk命令的正则匹配查找、替换操作，然后是sed命令执行正则匹配查找、替换以及追加操作。&lt;/p&gt;
 &lt;table class="highlighttable"&gt;&lt;tr&gt;&lt;td class="linenos"&gt;&lt;div class="linenodiv"&gt;&lt;pre&gt; 1
@@ -139,7 +133,7 @@
 
 &lt;h4&gt;3 脚本测试&lt;/h4&gt;
 &lt;p&gt;BZ在虚拟机的/home/vfhky/shell目录复制了5个错误的Makefile文件，然后先做正则查找测试，结果如下图所示：&lt;/p&gt;
-&lt;p&gt;&lt;img alt="使用sed和awk查找和替换字符串处理Makefile文件（三）" src="https://o3cex9zsl.qnssl.com/2017/05/sedawkfindreplace3_awk_sed_find_1.png" title="使用sed和awk查找和替换字符串处理Makefile文件（三）"&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img alt="使用sed和awk查找和替换字符串处理Makefile文件（三）" src="https://o3cex9zsl.qnssl.com/2017/05/sedawkfindreplace3_awk_sed_find_2.png" title="使用sed和awk查找和替换字符串处理Makefile文件（三）"&gt;&lt;/p&gt;
 &lt;h4&gt;4 Linux find 命令中正则&lt;/h4&gt;
 &lt;p&gt;在&lt;code&gt;find&lt;/code&gt;命令的某个参数使用正则，那么最好对这个对数加上双引号，正如上面的代码&lt;code&gt;"${SEARCH_NAME}"&lt;/code&gt;所示，否则会出现下面的错误：&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;find&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="n"&gt;paths&lt;/span&gt; &lt;span class="n"&gt;must&lt;/span&gt; &lt;span class="n"&gt;precede&lt;/span&gt; &lt;span class="n"&gt;expression&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="n"&gt;Makefile1&lt;/span&gt;
