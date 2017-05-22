@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html class="no-js" lang="zh-CN">
+	<head>
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+  		<meta name="renderer" content="webkit">
+		<title>使用C++ STL库统计一散文中单词出现次数和行号 - TypeCodes</title>
+  		<meta name="description" content='在开发过程中经常会遇到文件处理的情形，例如统计一篇文章单词的数量、行数、出现频率最高的几个单词等等。这篇文章主要通过C++来解析一篇文章，实现每个单词（不区分大小写）出现的总次数和出现的行号的统计。' />
+  		<meta name="viewport" content="width=device-width, initial-scale=1">
+  		<link href="https://typecodes.com/atom.xml" type="application/atom+xml" rel="alternate" title="TypeCodes Atom Feed" />
+	  	<link href="https://typecodes.com/feed.xml" type="application/rss+xml" rel="alternate" title="TypeCodes RSS Feed" />
+		<link rel="stylesheet" href="https://o3cex9zsl.qnssl.com/libs/css/pelican_vfhky_v1.0.css">
+		<script>
+			var _hmt = _hmt || [];
+			(function() {
+			  var hm = document.createElement("script");
+			  hm.src = "//hm.baidu.com/hm.js?c15c4ab8e91ba9ac3d5a12293cc93359";
+			  var s = document.getElementsByTagName("script")[0]; 
+			  s.parentNode.insertBefore(hm, s);
+			})();
+		</script>
+	</head>
+	<body>
+		<!--1. header navigation begin-->
+		<header id="te-site-header">
+			<div class="container">
+				<a href="https://typecodes.com" class="te-site-logo" target="_self"> TypeCodes</a>
+				<ul class="nav nav-pills" id="te-site-nav">
+					<li><a href="https://typecodes.com">Home</a></li><li><a href="https://typecodes.com/archives.html" title="Archives">Archives</a></li><li><a href="https://typecodes.com/about.html" title="About">About</a></li></ul>
+			</div>
+		</header>
+		<div class="te-headline">
+			<div class="container">
+				<h2 class="te-headline-title"> <a href="https://typecodes.com">TypeCodes</a></h2>
+			</div>
+		</div>
+		<div class="container">
+			<div class="row">		<!--2. left sider begin-->
+		<div class="col-md-9" id="blog-main" role="main">
+			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/cseries/stlcalcarticlewordlines1.html">使用C++ STL库统计一散文中单词出现次数和行号</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2017-04-16 16:44 | 分类：<a href="https://typecodes.com/cseries/index.html">cseries</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>在开发过程中经常会遇到文件处理的情形，例如统计一篇文章单词的数量、行数、出现频率最高的几个单词等等。这篇文章主要通过C++来解析一篇文章，实现每个单词（不区分大小写）出现的总次数和出现的行号的统计。</p>
+<p><img alt="使用C++ STL库统计一散文中单词出现次数和行号" src="https://o3cex9zsl.qnssl.com/2017/04/stlcalcarticlewordlines1_1.png" title="使用C++ STL库统计一散文中单词出现次数和行号"></p>
+
+
+<h4>1 演示程序</h4>
+<p>文件处理能比较好地考验对开发语言基础技能的掌握能力，因为这需要去考虑数据的读取、数据的存储方式、数据的处理等等，可能不同的处理方法会得到不同的效率和结果。</p>
+<p>下面的代码主要是使用C++的STL库解析一篇英文散文（网上看到不错就wget下来了），涉及的编程基本点如下：</p>
+<div class="highlight"><pre><span></span>1、STL容器中的map和vector容器；
+2、ifstream库文件流的操作；
+3、string的分割查找find、获取子串substr、去除非法字符等待；
+4、c++中的基本知识点：构造函数（包括常量的初始化）、引用、对象的构造和析构等等。
+</pre></div>
+
+
+<p>文章内容如上图所示，下面直接呈上代码：</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>  1
+  2
+  3
+  4
+  5
+  6
+  7
+  8
+  9
+ 10
+ 11
+ 12
+ 13
+ 14
+ 15
+ 16
+ 17
+ 18
+ 19
+ 20
+ 21
+ 22
+ 23
+ 24
+ 25
+ 26
+ 27
+ 28
+ 29
+ 30
+ 31
+ 32
+ 33
+ 34
+ 35
+ 36
+ 37
+ 38
+ 39
+ 40
+ 41
+ 42
+ 43
+ 44
+ 45
+ 46
+ 47
+ 48
+ 49
+ 50
+ 51
+ 52
+ 53
+ 54
+ 55
+ 56
+ 57
+ 58
+ 59
+ 60
+ 61
+ 62
+ 63
+ 64
+ 65
+ 66
+ 67
+ 68
+ 69
+ 70
+ 71
+ 72
+ 73
+ 74
+ 75
+ 76
+ 77
+ 78
+ 79
+ 80
+ 81
+ 82
+ 83
+ 84
+ 85
+ 86
+ 87
+ 88
+ 89
+ 90
+ 91
+ 92
+ 93
+ 94
+ 95
+ 96
+ 97
+ 98
+ 99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150
+151
+152
+153
+154
+155
+156
+157
+158
+159
+160
+161
+162
+163
+164
+165
+166
+167
+168
+169
+170
+171
+172
+173
+174
+175
+176
+177
+178
+179
+180
+181
+182
+183</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="cm">/** </span>
+<span class="cm"> * @FileName    stl_apply_readfile_1.cpp</span>
+<span class="cm"> * @Describe    A simple example for using c++ STL to calculate words and line numbers in an article.</span>
+<span class="cm"> * @Author      vfhky 2017-04-16 16:44 https://typecodes.com/cseries/stlcalcarticlewordlines1.html</span>
+<span class="cm"> * @Compile     g++ stl_apply_readfile_1.cpp -o stl_apply_readfile_1</span>
+<span class="cm"> */</span>
+<span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;map&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;vector&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;fstream&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;algorithm&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;string&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;assert.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;string.h&gt;</span><span class="cp"></span>
+<span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>
+
+
+<span class="k">class</span> <span class="nc">CFileHandle</span>
+<span class="p">{</span>
+<span class="k">public</span><span class="o">:</span>
+    <span class="n">CFileHandle</span><span class="p">(</span> <span class="k">const</span> <span class="n">string</span> <span class="o">&amp;</span><span class="n">s_file_name</span> <span class="p">)</span> <span class="o">:</span> <span class="n">s_m_file_name</span><span class="p">(</span><span class="n">s_file_name</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">i_m_line_number</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="c1">//读取每行的数据，然后进行处理</span>
+    <span class="kt">void</span> <span class="n">ReadFile</span><span class="p">(</span> <span class="k">const</span> <span class="n">string</span> <span class="o">&amp;</span><span class="n">s_file_name</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">ifstream</span> <span class="n">inFile</span><span class="p">;</span>
+
+        <span class="c1">//以二进制可读的方式打开文件，也可以使用： inFile.open( s_file_name.data() );</span>
+        <span class="n">inFile</span><span class="p">.</span><span class="n">open</span><span class="p">(</span> <span class="n">s_file_name</span><span class="p">.</span><span class="n">c_str</span><span class="p">(),</span> <span class="n">ios</span><span class="o">::</span><span class="n">in</span> <span class="o">|</span> <span class="n">ios</span><span class="o">::</span><span class="n">binary</span> <span class="p">);</span>
+
+        <span class="c1">//Checks if the file stream has an associated file.</span>
+        <span class="n">assert</span><span class="p">(</span> <span class="n">inFile</span><span class="p">.</span><span class="n">is_open</span><span class="p">()</span> <span class="p">);</span>
+
+        <span class="c1">//每一行的数据</span>
+        <span class="n">string</span> <span class="n">s_line_buf</span><span class="p">;</span>
+
+        <span class="c1">//读取一行内容    getline( inFile, s_line_buf )</span>
+        <span class="k">while</span><span class="p">(</span> <span class="n">getline</span><span class="p">(</span> <span class="n">inFile</span><span class="p">,</span> <span class="n">s_line_buf</span><span class="p">,</span> <span class="n">inFile</span><span class="p">.</span><span class="n">widen</span><span class="p">(</span><span class="sc">&#39;\n&#39;</span><span class="p">)</span> <span class="p">)</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="o">++</span><span class="n">i_m_line_number</span><span class="p">;</span>
+
+            <span class="c1">//统一转换成大写：也可以使用 transform( s_line_buf.begin(), s_line_buf.end(), s_line_buf.begin(), ::toupper );</span>
+            <span class="n">transform</span><span class="p">(</span> <span class="n">s_line_buf</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span> <span class="n">s_line_buf</span><span class="p">.</span><span class="n">end</span><span class="p">(),</span> <span class="n">s_line_buf</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span> <span class="p">(</span><span class="kt">int</span> <span class="p">(</span><span class="o">*</span><span class="p">)(</span><span class="kt">int</span><span class="p">))</span><span class="n">toupper</span> <span class="p">);</span>
+
+            <span class="c1">//开始数据处理</span>
+            <span class="n">HandleLine</span><span class="p">(</span> <span class="n">s_line_buf</span> <span class="p">);</span>
+        <span class="p">}</span>
+
+        <span class="c1">//关闭文件流</span>
+        <span class="n">inFile</span><span class="p">.</span><span class="n">close</span><span class="p">();</span>
+    <span class="p">}</span>
+
+    <span class="c1">//对每行的数据进行解析</span>
+    <span class="kt">void</span> <span class="n">HandleLine</span><span class="p">(</span> <span class="k">const</span> <span class="n">string</span> <span class="o">&amp;</span><span class="n">s_line_buf</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">string</span> <span class="n">s_word_buf</span><span class="p">;</span>
+        <span class="kt">int</span> <span class="n">i_start</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">i_last</span><span class="o">=</span><span class="n">s_line_buf</span><span class="p">.</span><span class="n">size</span><span class="p">();</span>
+        <span class="c1">//std::size_t i_split_pos;</span>
+        <span class="kt">int</span> <span class="n">i_split_pos</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+
+        <span class="k">while</span><span class="p">(</span> <span class="n">i_start</span> <span class="o">&lt;</span> <span class="n">i_last</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">i_split_pos</span> <span class="o">=</span> <span class="n">s_line_buf</span><span class="p">.</span><span class="n">find</span><span class="p">(</span> <span class="sc">&#39; &#39;</span><span class="p">,</span> <span class="n">i_start</span> <span class="p">);</span>
+            <span class="n">string</span> <span class="n">s_word</span><span class="p">;</span>
+
+            <span class="c1">//if( i_split_pos == std::string::npos )</span>
+            <span class="k">if</span><span class="p">(</span> <span class="n">i_split_pos</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span> <span class="p">)</span>
+            <span class="p">{</span>
+                <span class="n">s_word</span> <span class="o">=</span> <span class="n">s_line_buf</span><span class="p">.</span><span class="n">substr</span><span class="p">(</span> <span class="n">i_start</span><span class="p">,</span> <span class="n">i_last</span> <span class="p">);</span>
+                <span class="n">HandleUnkind</span><span class="p">(</span> <span class="n">s_word</span> <span class="p">);</span>
+                <span class="n">HandleWord</span><span class="p">(</span> <span class="n">s_word</span> <span class="p">);</span>
+                <span class="k">break</span><span class="p">;</span>
+            <span class="p">}</span>
+            <span class="cm">/**</span>
+<span class="cm">                避免空格，也可以使用下面这两行来去掉行首和行尾的空格</span>
+<span class="cm">                s_line_buf.erase( 0, s_line_buf.find_first_not_of(&quot; &quot;) );</span>
+<span class="cm">                s_line_buf.erase( s_line_buf.find_last_not_of(&quot; &quot;) + 1 );</span>
+<span class="cm">             */</span>
+            <span class="k">else</span> <span class="k">if</span><span class="p">(</span> <span class="n">i_start</span> <span class="o">!=</span> <span class="n">i_split_pos</span> <span class="p">)</span>
+            <span class="p">{</span>
+                <span class="n">s_word</span> <span class="o">=</span> <span class="n">s_line_buf</span><span class="p">.</span><span class="n">substr</span><span class="p">(</span> <span class="n">i_start</span><span class="p">,</span> <span class="n">i_split_pos</span><span class="o">-</span><span class="n">i_start</span> <span class="p">);</span>
+                <span class="n">HandleUnkind</span><span class="p">(</span> <span class="n">s_word</span> <span class="p">);</span>
+                <span class="n">HandleWord</span><span class="p">(</span> <span class="n">s_word</span> <span class="p">);</span>
+                <span class="n">i_start</span> <span class="o">=</span> <span class="n">i_split_pos</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span>
+            <span class="p">}</span>
+            <span class="c1">//对于行首的空格不进行处理</span>
+            <span class="k">else</span>
+            <span class="p">{</span>
+                <span class="n">i_start</span> <span class="o">=</span> <span class="n">i_split_pos</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="c1">//去除每个单词可能包含的非字符（除0~9和A~Z外的数据）</span>
+    <span class="kt">void</span> <span class="n">HandleUnkind</span><span class="p">(</span> <span class="n">string</span> <span class="o">&amp;</span><span class="n">s_word_buf</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">assert</span><span class="p">(</span> <span class="n">s_word_buf</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="p">);</span>
+
+        <span class="c1">//char c_word_buf[s_word_buf.size()+1]; 在vs中会报错：error C2131: 表达式的计算结果不是常数</span>
+        <span class="kt">char</span> <span class="o">*</span><span class="n">c_word_buf</span> <span class="o">=</span> <span class="k">new</span> <span class="kt">char</span><span class="p">[</span><span class="n">s_word_buf</span><span class="p">.</span><span class="n">size</span><span class="p">()</span><span class="o">+</span><span class="mi">1</span><span class="p">]();</span>
+
+        <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+        <span class="k">for</span><span class="p">(</span> <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">i</span><span class="o">&lt;</span><span class="n">s_word_buf</span><span class="p">.</span><span class="n">size</span><span class="p">();</span> <span class="o">++</span><span class="n">i</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">if</span><span class="p">(</span> <span class="p">(</span> <span class="n">s_word_buf</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mh">0x30</span> <span class="o">&amp;&amp;</span> <span class="n">s_word_buf</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="mh">0x39</span> <span class="p">)</span> <span class="o">||</span> <span class="p">(</span> <span class="n">s_word_buf</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mh">0x41</span> <span class="o">&amp;&amp;</span> <span class="n">s_word_buf</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="mh">0x5A</span> <span class="p">)</span> <span class="p">)</span>
+            <span class="p">{</span>
+                <span class="n">c_word_buf</span><span class="p">[</span><span class="n">j</span><span class="o">++</span><span class="p">]</span> <span class="o">=</span> <span class="n">s_word_buf</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+
+        <span class="n">s_word_buf</span> <span class="o">=</span> <span class="n">c_word_buf</span><span class="p">;</span>
+        <span class="k">delete</span> <span class="n">c_word_buf</span><span class="p">;</span> 
+    <span class="p">}</span>
+
+    <span class="c1">//对每个单词的处理</span>
+    <span class="kt">void</span> <span class="n">HandleWord</span><span class="p">(</span> <span class="k">const</span> <span class="n">string</span> <span class="o">&amp;</span><span class="n">s_word_buf</span> <span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">map</span><span class="o">&lt;</span><span class="n">string</span><span class="p">,</span> <span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="o">&gt;::</span><span class="n">iterator</span> <span class="n">mapit</span> <span class="o">=</span> <span class="n">mapobj</span><span class="p">.</span><span class="n">find</span><span class="p">(</span> <span class="n">s_word_buf</span> <span class="p">);</span>
+
+        <span class="c1">//如果该单词不存在</span>
+        <span class="k">if</span><span class="p">(</span> <span class="n">mapit</span> <span class="o">==</span> <span class="n">mapobj</span><span class="p">.</span><span class="n">end</span><span class="p">()</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">vect</span><span class="p">;</span>
+            <span class="n">vect</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span> <span class="n">i_m_line_number</span> <span class="p">);</span>
+            <span class="n">mapobj</span><span class="p">.</span><span class="n">insert</span><span class="p">(</span> <span class="n">make_pair</span><span class="p">(</span> <span class="n">s_word_buf</span><span class="p">,</span> <span class="n">vect</span> <span class="p">)</span> <span class="p">);</span>
+        <span class="p">}</span>
+        <span class="k">else</span>
+        <span class="p">{</span>
+            <span class="n">mapit</span><span class="o">-&gt;</span><span class="n">second</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span> <span class="n">i_m_line_number</span> <span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="c1">//遍历map对象</span>
+    <span class="kt">void</span> <span class="n">Traverse</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="n">map</span><span class="o">&lt;</span> <span class="n">string</span><span class="p">,</span> <span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="o">&gt;::</span><span class="n">iterator</span> <span class="n">mapit</span> <span class="o">=</span> <span class="n">mapobj</span><span class="p">.</span><span class="n">begin</span><span class="p">();</span>
+        <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Words</span><span class="se">\t\t\t\t</span><span class="s">Counts</span><span class="se">\t\t\t\t</span><span class="s">Lines&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+        <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;---------------------------------------------------------------------&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+        <span class="k">for</span><span class="p">(</span> <span class="p">;</span> <span class="n">mapit</span> <span class="o">!=</span> <span class="n">mapobj</span><span class="p">.</span><span class="n">end</span><span class="p">();</span> <span class="o">++</span><span class="n">mapit</span> <span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">mapit</span><span class="o">-&gt;</span><span class="n">first</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;</span><span class="se">\t\t\t\t</span><span class="s">&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">mapit</span><span class="o">-&gt;</span><span class="n">second</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;</span><span class="se">\t\t\t\t</span><span class="s">&quot;</span><span class="p">;</span>
+            <span class="k">for</span><span class="p">(</span> <span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;::</span><span class="n">iterator</span> <span class="n">vectorit</span> <span class="o">=</span> <span class="n">mapit</span><span class="o">-&gt;</span><span class="n">second</span><span class="p">.</span><span class="n">begin</span><span class="p">();</span> <span class="n">vectorit</span> <span class="o">!=</span> <span class="n">mapit</span><span class="o">-&gt;</span><span class="n">second</span><span class="p">.</span><span class="n">end</span><span class="p">();</span> <span class="o">++</span><span class="n">vectorit</span> <span class="p">)</span>
+            <span class="p">{</span>
+                <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="o">*</span><span class="n">vectorit</span> <span class="o">&lt;&lt;</span> <span class="s">&quot; &quot;</span><span class="p">;</span>
+            <span class="p">}</span>
+            <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="c1">//获取文件总行数</span>
+    <span class="k">const</span> <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">GetTotalLines</span><span class="p">()</span> <span class="k">const</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="n">i_m_line_number</span><span class="p">;</span>
+    <span class="p">}</span>
+
+<span class="k">private</span><span class="o">:</span>
+    <span class="n">map</span><span class="o">&lt;</span><span class="n">string</span><span class="p">,</span> <span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="o">&gt;</span> <span class="n">mapobj</span><span class="p">;</span>
+    <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">i_m_line_number</span><span class="p">;</span>
+    <span class="k">const</span> <span class="n">string</span> <span class="n">s_m_file_name</span><span class="p">;</span>
+<span class="p">};</span>
+
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span> <span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">**</span><span class="n">argv</span> <span class="p">)</span>
+<span class="p">{</span>
+    <span class="c1">//文件所在路径</span>
+    <span class="k">const</span> <span class="n">string</span> <span class="n">s_file_name</span> <span class="o">=</span>  <span class="s">&quot;STL_APPLY_READFILE_1&quot;</span><span class="p">;</span>
+
+    <span class="n">CFileHandle</span> <span class="o">*</span><span class="n">pCFileHandle</span> <span class="o">=</span> <span class="k">new</span> <span class="n">CFileHandle</span><span class="p">(</span> <span class="n">s_file_name</span> <span class="p">);</span>
+
+    <span class="c1">//开始处理文件</span>
+    <span class="n">pCFileHandle</span><span class="o">-&gt;</span><span class="n">ReadFile</span><span class="p">(</span> <span class="n">s_file_name</span> <span class="p">);</span>
+    <span class="c1">//打印总行数</span>
+    <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;[&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">__FILE__</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;:&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">__LINE__</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;] Total Lines=[&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">pCFileHandle</span><span class="o">-&gt;</span><span class="n">GetTotalLines</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;].&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+    <span class="c1">//遍历结果</span>
+    <span class="n">pCFileHandle</span><span class="o">-&gt;</span><span class="n">Traverse</span><span class="p">();</span>
+
+    <span class="k">delete</span> <span class="n">pCFileHandle</span><span class="p">;</span>
+
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</td></tr></table>
+
+<h4>2 使用g++编译器进行编译并执行</h4>
+<p>使用g++或者之前写的这个<a href="https://typecodes.com/cseries/cppgeneralmakefile.html" title="《Linux C/C++工程中可生成ELF、动/静态库文件的通用Makefile》">Makefile</a>文件进行编译，结果如下图所示。</p>
+<p><img alt="使用make命令编译的结果" src="https://o3cex9zsl.qnssl.com/2017/04/stlcalcarticlewordlines1_2.png" title="使用make命令编译的结果"></p>
+<p>接着执行程序<code>stl_apply_readfile_1</code>，效果如下图所示（图片大小的限制只显示了一部分结果）。另外，上面C++程序中的数据处理函数<code>HandleUnkind</code>相对比较<code>粗略</code>：只简单过滤了非数字和字母的字符。这样会出现类似把<code>YOU'R</code>这样的数据处理成<code>YOUR</code>的情况，大家可以进行代码改进做更精细化的处理。</p>
+<p><img alt="使用C++ STL库统计一散文中单词出现次数和行号" src="https://o3cex9zsl.qnssl.com/2017/04/stlcalcarticlewordlines1_3.png" title="使用C++ STL库统计一散文中单词出现次数和行号"></p>
+</div>		    	<div class="donate_div_container">
+					<div class="donate_div">
+						<p><a href="javascript:void(0)" onclick="donateToggle()" class="donate_word" title="打赏，支持一下">打赏</a></p>
+						<div class="hide_box"></div>
+						<div class="donate_box">
+							<a class="donate_close" href="javascript:void(0)" onclick="donateToggle()" title="关闭"><img src="https://o3cex9zsl.qnssl.com/libs/img/donate_close.png" width="11" height="10" alt="取消" /></a>
+							<div class="donate_thk">
+								<p>感谢您的支持，我会继续努力的!</p>
+							</div>
+							<div class="donate_payimg">
+								<img src="https://o3cex9zsl.qnssl.com/libs/img/donate_weipayqr.png" width="140" height="140" alt="扫码支持" title="扫一扫" />
+							</div>
+								<div class="pay_explain">扫码打赏，你说多少就多少</div>
+							<div class="donate_way">
+								<div class="donate_way_item checked" data-id="weipay">
+									<span class="donate_radio"></span>
+									<img src="https://o3cex9zsl.qnssl.com/libs/img/donate_wechat.png" width="112" height="28" alt="微信" />
+								</div>
+								<div class="donate_way_item" data-id="alipay">
+									<span class="donate_radio"></span>
+									<img src="https://o3cex9zsl.qnssl.com/libs/img/donate_alipay.png" width="85" height="28" alt="支付宝" />
+								</div>
+							</div>
+							<div class="shang_info">
+								<p>打开<span id="shang_pay_txt">微信</span>扫一扫，即可进行扫码打赏哦</p>
+							</div>
+						</div>
+					</div>
+				</div>
+		    	<div class="tags">
+					<div class="post_tags">
+						Tags: <a href="https://typecodes.com/tag/stl.html">stl</a>					</div>
+					<div class="post-share">
+						<ul class="post-shareul clearfix">
+							<li class="post-shareli">
+								<a href="http://note.youdao.com/memory/?url=https://typecodes.com/cseries/stlcalcarticlewordlines1.html&title=使用C++ STL库统计一散文中单词出现次数和行号" class="post-sharea ydshare" target="_blank" rel="nofollow">有道云笔记</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://v.t.sina.com.cn/share/share.php?url=https://typecodes.com/cseries/stlcalcarticlewordlines1.html&title=使用C++ STL库统计一散文中单词出现次数和行号&source=https://typecodes.com" class="post-sharea wbshare" target="_blank" rel="nofollow">新浪微博</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://v.t.qq.com/share/share.php?title=使用C++ STL库统计一散文中单词出现次数和行号&url=https://typecodes.com/cseries/stlcalcarticlewordlines1.html&site=https://typecodes.com" class="post-sharea twbshare" target="_blank" rel="nofollow">腾讯微博</a>
+							</li>
+							<li class="post-shareli">
+								<a href="http://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=https://typecodes.com/cseries/stlcalcarticlewordlines1.html&title=使用C++ STL库统计一散文中单词出现次数和行号&content='utf-8'" class="post-sharea qzoneshare" target="_blank" rel="nofollow">QZone</a>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</article>
+			
+			<div id="comments">
+				<h4 class="num">Comments &raquo;</h4>
+		    	<div id="disqus_thread" aria-live="polite"></div>
+		    	<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+		    </div>
+		</div>
+		<!--3. right sider begin-->
+<div class="col-md-3" id="blog-secondary" role="complementary">
+	<div class="widget">
+		<form id="search" method="get" action="https://typecodes.com/search.html">
+			<input type="text" name="q" id="s" size="20" value="Google...." onfocus="this.value = (this.value == this.defaultValue) ? '' : this.value" onblur="this.value = (this.value == '') ? this.defaultValue : this.value">
+		</form>
+	</div>
+	<div class="widget">
+		<h3 class="widget-title">Categories</h3>
+		<ul class="widget-list">
+		      <li class="current">
+		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (43)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/csharp/index.html">Csharp</a> (6)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/database/index.html">Database</a> (11)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/java/index.html">Java</a> (1)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/linux/index.html">Linux</a> (24)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/mix/index.html">Mix</a> (55)
+		      </li>
+		      <li class="current">
+		        <a href="https://typecodes.com/web/index.html">Web</a> (88)
+		      </li>
+		</ul>
+	</div>
+	<div class="widget">
+		<h3 class="widget-title">Recent Posts</h3>
+		<ul class="widget-list">
+			<li class="post">
+				<a href="https://typecodes.com/cseries/stlcalcarticlewordlines1.html">使用C++ STL库统计一散文中单词出现次数和行号</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/templatejsoncpp2file1.html">Linux C++使用函数模板实现JSON数据快速和完整写入到文件</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/mix/gitsubtree1.html">Git多仓库作子目录的双向同步：一次Git Subtree的实践</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/gccvsheapnewinit1.html">C++中使用vs2015和g++对new开辟的堆内存是否初始化的分析</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/cseries/tcpclosewaitfinwaitrst1.html">Linux TCP客户端出现CLOSE_WAIT后进入死循环</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/sedawkfindreplace2.html">使用sed和awk查找和替换字符串处理Makefile文件（二）</a>
+			</li>
+			<li class="post">
+				<a href="https://typecodes.com/linux/sedawkfindreplace1.html">使用sed和awk查找和替换字符串处理Makefile文件（一）</a>
+			</li>
+		</ul>
+	</div>
+	<div class="widget widget-feed">
+		<a href="https://typecodes.com/feed.xml"><i class="i-rss"></i>RSS 订阅</a>
+	</div>
+</div>
+			</div>
+		</div>
+		<!--4. bottom begin-->
+		<footer id="te-site-footer">
+<div class="container">
+	<div class="row" role="contentinfo">
+		<section class="col-md-2 col-md-offset-1">
+			<h3>Links</h3>
+			<ul><li><a href="http://blog.vmeila.com/" title="墨迹的Blog" target="_blank">vmeila</a></li><li><a href="https://edi.wang/" title="Edi Wang" target="_blank">Edi Wang</a></li></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul></ul>
+		</section>
+		<section class="col-md-2">
+			<h3>&nbsp;</h3>
+			<ul>
+				<li><a href="https://typecodes.com/links.html">More..</a></li>
+			</ul>
+		</section>
+		<section class="col-md-2">
+			<h3>Following</h3>
+			<ul>
+				<li><a href="https://github.com/vfhky" class="following github" target="_blank" rel="external nofollow">GitHub</a></li>
+				<li><a href="http://weibo.com/typecodes" class="following weibo" target="_blank" rel="external nofollow">Weibo</a></li>
+				<li><a href="http://vfhky.sinaapp.com" class="following sae" target="_blank" rel="external nofollow">SAE</a></li>
+				<li><a href="http://www.dwz.cn/mYiwa" class="following qqgroup" target="_blank" rel="external nofollow">Group</a></li>
+			</ul>
+		</section>
+		<div class="col-md-12 copyright">
+			<a href="#top"><i class="i-logo-s">TOP</i></a>
+			<p>
+				&copy;  2012-2017 							<a href="https://typecodes.com">TypeCodes</a>. All Rights Reserved<br>Powered by <a href="http://getpelican.com" rel="external" target="_blank">Pelican</a>. <a href="http://www.miitbeian.gov.cn" rel="external nofollow" target="_blank">粤ICP备14050695号</a>
+			</p>
+		</div>
+	</div>
+</div>		</footer>
+<script type="text/javascript">
+	var disqus_shortname = 'typecodes';
+	var disqus_identifier = '/cseries/stlcalcarticlewordlines1.html';
+	var disqus_url = 'https://typecodes.com/cseries/stlcalcarticlewordlines1.html';
+	var disqus_title = '使用C++ STL库统计一散文中单词出现次数和行号';
+	(function() {
+		var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+		dsq.src = "//" + disqus_shortname + '.disqus.com/embed.js';
+		(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+	 })();
+</script>
+		<script src="https://o3cex9zsl.qnssl.com/libs/js/jquery_1.5.2.min_v1.1.js"></script>
+	</body>
+</html>

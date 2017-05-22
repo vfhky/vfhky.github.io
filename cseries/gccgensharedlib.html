@@ -4,8 +4,8 @@
 		<meta charset="UTF-8">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
   		<meta name="renderer" content="webkit">
-		<title>Linux gcc编译生成静态库及使用方法 - TypeCodes</title>
-  		<meta name="description" content='这篇文章主要通过实例演示在Linux下如何使用gcc编译生成动态库文件以及其它程序如何使用该动态库。' />
+		<title>Linux gcc编译生成静态库和共享动态库的过程 - TypeCodes</title>
+  		<meta name="description" content='这篇文章主要通过实例演示在Linux下如何使用gcc分别编译生成静态库和动态库文件以及其它程序如何使用这个生成的静态库和动态库。' />
   		<meta name="viewport" content="width=device-width, initial-scale=1">
   		<link href="https://typecodes.com/atom.xml" type="application/atom+xml" rel="alternate" title="TypeCodes Atom Feed" />
 	  	<link href="https://typecodes.com/feed.xml" type="application/rss+xml" rel="alternate" title="TypeCodes RSS Feed" />
@@ -38,12 +38,12 @@
 			<div class="row">		<!--2. left sider begin-->
 		<div class="col-md-9" id="blog-main" role="main">
 			<article class="post">
-<h2 class="post-title"><a href="https://typecodes.com/cseries/gccgensharedlib.html">Linux gcc编译生成静态库及使用方法</a></h2>
+<h2 class="post-title"><a href="https://typecodes.com/cseries/gccgensharedlib.html">Linux gcc编译生成静态库和共享动态库的过程</a></h2>
 <ul class="post-meta">
 	<li>作者：vfhky | 时间：2016-01-05 22:48 | 分类：<a href="https://typecodes.com/cseries/index.html">cseries</a></li>
 </ul>
 <div class="post-content fmt">
-	<p>这篇文章主要通过实例演示在Linux下如何使用gcc编译生成动态库文件以及其它程序如何使用该动态库。</p>
+	<p>这篇文章主要通过实例演示在Linux下如何使用gcc分别编译生成静态库和动态库文件以及其它程序如何使用这个生成的静态库和动态库。</p>
 
 
 <h4>1 要用到的3个测试程序</h4>
@@ -173,8 +173,8 @@ Hello everyone!
 </pre></div>
 
 
-<h4>3 生成动态库</h4>
-<p>可以如下面3.1小节所示通过gcc直接生成动态库文件，也可以像3.2小节中那样依次生成realname、soname、linkname库文件。不经常更新动态库版本的话，一般会采用3.1小节中的做法；版本更新较频繁的动态库，诸如MySQL的一些动态库就是采用的2.2小节中的做法。</p>
+<h4>3 生成动态库文件</h4>
+<p>可以如下面3.1小节所示通过gcc直接生成动态库文件，也可以像3.2小节中那样依次生成realname、soname、linkname库文件。不经常更新动态库版本的话，一般会采用3.1小节中的做法；版本更新较频繁的动态库，诸如MySQL的一些动态库就是采用的3.2小节中的做法。</p>
 <h5>3.1 直接编译生成symbolic link动态库文件</h5>
 <div class="highlight"><pre><span></span>##### 生成hello.o目标文件
 [root@typecodes ~]# gcc -c -fPIC hello.c
@@ -189,19 +189,19 @@ Hello everyone!
 
 
 <p>如下图所示，可执行文件hello找不到链接的动态库libmyhello.so而报错：</p>
-<p><img alt="error while loading shared libraries" src="https://o3cex9zsl.qnssl.com/2016/01/errorloadingsharedlib.png" title="error while loading shared libraries"></p>
-<p>原因分析：使用<code>ldd hello</code>命令查看可执行文件hello依赖的动态库libmyhello.so，结果是not found。</p>
-<p><img alt="ldd命令查看可执行文件所依赖的动态库" src="https://o3cex9zsl.qnssl.com/2016/01/lddlibnotfound.png" title="ldd命令查看可执行文件所依赖的动态库"></p>
-<p>解决方法：使用<code>root</code>用户把自己生成的动态共享库路径添加系统动态库中即可。</p>
-<div class="highlight"><pre><span></span>##### ldconfig更新配置文件目录下的所有动态链接库为Linux系统所共享
-[root@typecodes ~]# echo &quot;/root/&quot;&gt;/etc/ld.so.conf.d/test.conf
-[root@typecodes ~]# ldconfig
-##### 运行可执行文件
-[root@typecodes ~]# ./hello
-Welcome to typecodes.com.
-</pre></div>
-
-
+<p><img alt="error while loading shared libraries" src="https://o3cex9zsl.qnssl.com/2016/01/errorloadingsharedlib.png" title="error while loading shared libraries">
+​ <br>
+原因分析：使用<code>ldd hello</code>命令查看可执行文件hello依赖的动态库libmyhello.so，结果是not found。</p>
+<p><img alt="ldd命令查看可执行文件所依赖的动态库" src="https://o3cex9zsl.qnssl.com/2016/01/lddlibnotfound.png" title="ldd命令查看可执行文件所依赖的动态库">
+​ <br>
+解决方法一：使用<code>root</code>用户把自己生成的动态共享库路径添加系统动态库中即可。
+​ <br>
+    ##### ldconfig更新配置文件目录下的所有动态链接库为Linux系统所共享
+    [root@typecodes ~]# echo "/root/"&gt;/etc/ld.so.conf.d/test.conf
+    [root@typecodes ~]# ldconfig
+    ##### 运行可执行文件
+    [root@typecodes ~]# ./hello
+    Welcome to typecodes.com.</p>
 <p>这时使用<code>ldconfig -v</code>命令查看系统动态库的搜索路径，可以看到libmyhello.so.1动态库所在的路径为绝对路径<code>/root/</code>：</p>
 <p><img alt="ldconfig命令查看系统动态库路径" src="https://o3cex9zsl.qnssl.com/2016/01/ldconfigviewlibrary.png" title="ldconfig命令查看系统动态库路径"></p>
 <h5>3.2 先生成real name动态库文件，然后创建soname软连接，最后创建link name软链接</h5>
@@ -217,8 +217,9 @@ Welcome to typecodes.com.
 <p><img alt="readelf查看动态库信息" src="https://o3cex9zsl.qnssl.com/2016/01/readelfdynamiclib.png" title="readelf查看动态库信息"></p>
 <p>如下图所示，使用<code>ldconfig -vn .</code>命令在当前目录自动生成一个软链接：将soname（libmyhello.so.1）链接到real name（libmyhello.so.1.0.1）。</p>
 <p><img alt="ldconfig命令生成soname文件软链接" src="https://o3cex9zsl.qnssl.com/2016/01/ldconfigvngensoftlink.png" title="ldconfig命令生成soname文件软链接"></p>
-<p>如下图所示，使用<code>ln -sf libmyhello.so.1 libmyhello.so</code>命令创建链接到soname的共享库文件名(Link Name)：libmyhello.so。</p>
-<p><img alt="创建链接到real name的Link Name库文件" src="https://o3cex9zsl.qnssl.com/2016/01/lnsfgensoftliblink.png" title="创建链接到real name的Link Name库文件"></p>
+<p>如下图所示，使用<code>ln -sf libmyhello.so.1 libmyhello.so</code>命令创建链接到soname的共享库文件名(Link Name)：libmyhello.so。
+​ <br>
+<img alt="创建链接到real name的Link Name库文件" src="https://o3cex9zsl.qnssl.com/2016/01/lnsfgensoftliblink.png" title="创建链接到real name的Link Name库文件"></p>
 <p>这里如果和前面一样，直接链接创建的动态库文件libmyhello.so生成可执行文件hello，然后直至执行hello，那么也会提示找不到链接的动态库libmyhello.so：</p>
 <div class="highlight"><pre><span></span>[root@typecodes ~]# gcc -o hello main.c -L. -lmyhello
 </pre></div>
@@ -237,7 +238,7 @@ Welcome to typecodes.com.
 </pre></div>
 </td></tr></table>
 
-<p>3.1小节中的方法需要root用户权限，对于非root用户还可以有另一种等效方法：如前文<a href="https://typecodes.com/cseries/gcclderrlibrarypath.html" title="查看原文">《Linux gcc链接动态库出错：LIBRARY_PATH和LD_LIBRARY_PATH的区别》</a>所述，只要在当前Linux系统中配置<code>LD_LIBRARY_PATH</code>变量，就可以搜索到依赖的动态库libmyhello.so。</p>
+<p>3.1小节中的方法需要root用户权限，对于非root用户有方法二来解决：如前文<a href="https://typecodes.com/cseries/gcclderrlibrarypath.html" title="查看原文">《Linux gcc链接动态库出错：LIBRARY_PATH和LD_LIBRARY_PATH的区别》</a>所述，只要在当前Linux系统中配置<code>LD_LIBRARY_PATH</code>变量，就可以搜索到依赖的动态库libmyhello.so。</p>
 <table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
  2
  3
@@ -273,7 +274,7 @@ libmyhello.so.1.0
 </td></tr></table>
 
 <p><img alt="设置LD_LIBRARY_PATH变量后，使用readelf查看动态库信息" src="https://o3cex9zsl.qnssl.com/2016/01/export_ld_library_path.png" title="设置LD_LIBRARY_PATH变量后，使用readelf查看动态库信息"></p>
-<p>当然还有方法三：gcc链接动态库生成可执行文件时，加入rpath参数。</p>
+<p>解决方法三：gcc链接动态库生成可执行文件时，加入rpath参数。</p>
 <div class="highlight"><pre><span></span>[root@typecodes ~]# gcc -o hello main.c -Wl,-rpath=./ -L. -lmyhello
 [root@typecodes ~]# ./hello
 Welcome to typecodes.com.
@@ -283,10 +284,19 @@ libmyhello.so.1.0.1
 
 
 <p><img alt="gcc链接动态库生成可执行文件时，加入rpath参数" src="https://o3cex9zsl.qnssl.com/2016/01/gccwlrpath.png" title="gcc链接动态库生成可执行文件时，加入rpath参数"></p>
-<p>方法四：最简单的操作就是直接将生成的动态库文件拷贝到Linux系统动态库搜索目录下。</p>
+<p>解决方法四：最简单的操作就是直接将生成的动态库文件拷贝到Linux系统动态库搜索目录下。</p>
 <div class="highlight"><pre><span></span>/lib、/lib64：                        系统必备共享库
 /usr/lib、/usr/lib64：                标准共享库和静态库
 /usr/local/lib：                 本地/第三方函数库
+</pre></div>
+
+
+<h4>4 总结（update 2017.04.18 12:10）</h4>
+<p>小节2中讲述了静态库文件的生成方法，小节3中讲述了动态库的生成方法。同时，在<code>执行</code>程序时如果报错提示找不到对应的库文件（可以通过<code>readelf -d hello</code>验证），那么一共有4种方法。</p>
+<div class="highlight"><pre><span></span>1、添加库路径到 /etc/ld.so.conf.d/ 目录下的配置文件中，然后执行命令ldconfig；
+2、添加库路径到 LD_LIBRARY_PATH 环境变量中；
+3、在编译链接命令中加入参数 -rpath=库文件所在路径 ；
+4、最简单的方式：把库文件拷贝到Linux系统库文件所在目录下（/lib、/lib64、/usr/lib、/usr/lib64、/usr/local/lib等）。
 </pre></div>
 </div>		    	<div class="donate_div_container">
 					<div class="donate_div">
@@ -323,16 +333,16 @@ libmyhello.so.1.0.1
 					<div class="post-share">
 						<ul class="post-shareul clearfix">
 							<li class="post-shareli">
-								<a href="http://note.youdao.com/memory/?url=https://typecodes.com/cseries/gccgensharedlib.html&title=Linux gcc编译生成静态库及使用方法" class="post-sharea ydshare" target="_blank" rel="nofollow">有道云笔记</a>
+								<a href="http://note.youdao.com/memory/?url=https://typecodes.com/cseries/gccgensharedlib.html&title=Linux gcc编译生成静态库和共享动态库的过程" class="post-sharea ydshare" target="_blank" rel="nofollow">有道云笔记</a>
 							</li>
 							<li class="post-shareli">
-								<a href="http://v.t.sina.com.cn/share/share.php?url=https://typecodes.com/cseries/gccgensharedlib.html&title=Linux gcc编译生成静态库及使用方法&source=https://typecodes.com" class="post-sharea wbshare" target="_blank" rel="nofollow">新浪微博</a>
+								<a href="http://v.t.sina.com.cn/share/share.php?url=https://typecodes.com/cseries/gccgensharedlib.html&title=Linux gcc编译生成静态库和共享动态库的过程&source=https://typecodes.com" class="post-sharea wbshare" target="_blank" rel="nofollow">新浪微博</a>
 							</li>
 							<li class="post-shareli">
-								<a href="http://v.t.qq.com/share/share.php?title=Linux gcc编译生成静态库及使用方法&url=https://typecodes.com/cseries/gccgensharedlib.html&site=https://typecodes.com" class="post-sharea twbshare" target="_blank" rel="nofollow">腾讯微博</a>
+								<a href="http://v.t.qq.com/share/share.php?title=Linux gcc编译生成静态库和共享动态库的过程&url=https://typecodes.com/cseries/gccgensharedlib.html&site=https://typecodes.com" class="post-sharea twbshare" target="_blank" rel="nofollow">腾讯微博</a>
 							</li>
 							<li class="post-shareli">
-								<a href="http://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=https://typecodes.com/cseries/gccgensharedlib.html&title=Linux gcc编译生成静态库及使用方法&content='utf-8'" class="post-sharea qzoneshare" target="_blank" rel="nofollow">QZone</a>
+								<a href="http://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=https://typecodes.com/cseries/gccgensharedlib.html&title=Linux gcc编译生成静态库和共享动态库的过程&content='utf-8'" class="post-sharea qzoneshare" target="_blank" rel="nofollow">QZone</a>
 							</li>
 						</ul>
 					</div>
@@ -356,7 +366,7 @@ libmyhello.so.1.0.1
 		<h3 class="widget-title">Categories</h3>
 		<ul class="widget-list">
 		      <li class="current">
-		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (42)
+		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (43)
 		      </li>
 		      <li class="current">
 		        <a href="https://typecodes.com/csharp/index.html">Csharp</a> (6)
@@ -382,6 +392,9 @@ libmyhello.so.1.0.1
 		<h3 class="widget-title">Recent Posts</h3>
 		<ul class="widget-list">
 			<li class="post">
+				<a href="https://typecodes.com/cseries/stlcalcarticlewordlines1.html">使用C++ STL库统计一散文中单词出现次数和行号</a>
+			</li>
+			<li class="post">
 				<a href="https://typecodes.com/cseries/templatejsoncpp2file1.html">Linux C++使用函数模板实现JSON数据快速和完整写入到文件</a>
 			</li>
 			<li class="post">
@@ -398,9 +411,6 @@ libmyhello.so.1.0.1
 			</li>
 			<li class="post">
 				<a href="https://typecodes.com/linux/sedawkfindreplace1.html">使用sed和awk查找和替换字符串处理Makefile文件（一）</a>
-			</li>
-			<li class="post">
-				<a href="https://typecodes.com/cseries/mapdelintstring.html">C++删除map容器中指定值的元素</a>
 			</li>
 		</ul>
 	</div>
@@ -453,7 +463,7 @@ libmyhello.so.1.0.1
 	var disqus_shortname = 'typecodes';
 	var disqus_identifier = '/cseries/gccgensharedlib.html';
 	var disqus_url = 'https://typecodes.com/cseries/gccgensharedlib.html';
-	var disqus_title = 'Linux gcc编译生成静态库及使用方法';
+	var disqus_title = 'Linux gcc编译生成静态库和共享动态库的过程';
 	(function() {
 		var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
 		dsq.src = "//" + disqus_shortname + '.disqus.com/embed.js';

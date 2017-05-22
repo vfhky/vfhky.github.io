@@ -1,5 +1,394 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>TypeCodes</title><link href="https://typecodes.com/" rel="alternate"></link><link href="https://typecodes.com/atom.xml" rel="self"></link><id>https://typecodes.com/</id><updated>2017-04-16T15:54:00+08:00</updated><entry><title>Linux C++使用函数模板实现JSON数据快速和完整写入到文件</title><link href="https://typecodes.com/cseries/templatejsoncpp2file1.html" rel="alternate"></link><published>2017-04-16T15:54:00+08:00</published><updated>2017-04-16T15:54:00+08:00</updated><author><name>vfhky</name></author><id>tag:typecodes.com,2017-04-16:/cseries/templatejsoncpp2file1.html</id><summary type="html">&lt;p&gt;昨天在自己的CentOS7机器上编译了JSONCPP库，然后根据api写了下面这个简单的测试程序。代码涉及了文件流数据读取和写入、jsoncpp库的读写api的使用。整个处理流程是先读取一个json格式文件的内容，然后把这些内容分别用jsoncpp库的&lt;code&gt;Json::FastWriter&lt;/code&gt;（快速写入）和&lt;code&gt;Json::StyledWriter&lt;/code&gt;（完整写入）这两个方式写入到两个文件中，最后读取这两个文件并输出。&lt;/p&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>TypeCodes</title><link href="https://typecodes.com/" rel="alternate"></link><link href="https://typecodes.com/atom.xml" rel="self"></link><id>https://typecodes.com/</id><updated>2017-04-16T16:44:00+08:00</updated><entry><title>使用C++ STL库统计一散文中单词出现次数和行号</title><link href="https://typecodes.com/cseries/stlcalcarticlewordlines1.html" rel="alternate"></link><published>2017-04-16T16:44:00+08:00</published><updated>2017-04-16T16:44:00+08:00</updated><author><name>vfhky</name></author><id>tag:typecodes.com,2017-04-16:/cseries/stlcalcarticlewordlines1.html</id><summary type="html">&lt;p&gt;在开发过程中经常会遇到文件处理的情形，例如统计一篇文章单词的数量、行数、出现频率最高的几个单词等等。这篇文章主要通过C++来解析一篇文章，实现每个单词（不区分大小写）出现的总次数和出现的行号的统计。&lt;/p&gt;
+&lt;p&gt;&lt;img alt="使用C++ STL库统计一散文中单词出现次数和行号" src="https://o3cex9zsl.qnssl.com/2017/04/stlcalcarticlewordlines1_1.png" title="使用C++ STL库统计一散文中单词出现次数和行号"&gt;&lt;/p&gt;
+</summary><content type="html">&lt;p&gt;在开发过程中经常会遇到文件处理的情形，例如统计一篇文章单词的数量、行数、出现频率最高的几个单词等等。这篇文章主要通过C++来解析一篇文章，实现每个单词（不区分大小写）出现的总次数和出现的行号的统计。&lt;/p&gt;
+&lt;p&gt;&lt;img alt="使用C++ STL库统计一散文中单词出现次数和行号" src="https://o3cex9zsl.qnssl.com/2017/04/stlcalcarticlewordlines1_1.png" title="使用C++ STL库统计一散文中单词出现次数和行号"&gt;&lt;/p&gt;
+
+
+&lt;h4&gt;1 演示程序&lt;/h4&gt;
+&lt;p&gt;文件处理能比较好地考验对开发语言基础技能的掌握能力，因为这需要去考虑数据的读取、数据的存储方式、数据的处理等等，可能不同的处理方法会得到不同的效率和结果。&lt;/p&gt;
+&lt;p&gt;下面的代码主要是使用C++的STL库解析一篇英文散文（网上看到不错就wget下来了），涉及的编程基本点如下：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;1、STL容器中的map和vector容器；
+2、ifstream库文件流的操作；
+3、string的分割查找find、获取子串substr、去除非法字符等待；
+4、c++中的基本知识点：构造函数（包括常量的初始化）、引用、对象的构造和析构等等。
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;文章内容如上图所示，下面直接呈上代码：&lt;/p&gt;
+&lt;table class="highlighttable"&gt;&lt;tr&gt;&lt;td class="linenos"&gt;&lt;div class="linenodiv"&gt;&lt;pre&gt;  1
+  2
+  3
+  4
+  5
+  6
+  7
+  8
+  9
+ 10
+ 11
+ 12
+ 13
+ 14
+ 15
+ 16
+ 17
+ 18
+ 19
+ 20
+ 21
+ 22
+ 23
+ 24
+ 25
+ 26
+ 27
+ 28
+ 29
+ 30
+ 31
+ 32
+ 33
+ 34
+ 35
+ 36
+ 37
+ 38
+ 39
+ 40
+ 41
+ 42
+ 43
+ 44
+ 45
+ 46
+ 47
+ 48
+ 49
+ 50
+ 51
+ 52
+ 53
+ 54
+ 55
+ 56
+ 57
+ 58
+ 59
+ 60
+ 61
+ 62
+ 63
+ 64
+ 65
+ 66
+ 67
+ 68
+ 69
+ 70
+ 71
+ 72
+ 73
+ 74
+ 75
+ 76
+ 77
+ 78
+ 79
+ 80
+ 81
+ 82
+ 83
+ 84
+ 85
+ 86
+ 87
+ 88
+ 89
+ 90
+ 91
+ 92
+ 93
+ 94
+ 95
+ 96
+ 97
+ 98
+ 99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150
+151
+152
+153
+154
+155
+156
+157
+158
+159
+160
+161
+162
+163
+164
+165
+166
+167
+168
+169
+170
+171
+172
+173
+174
+175
+176
+177
+178
+179
+180
+181
+182
+183&lt;/pre&gt;&lt;/div&gt;&lt;/td&gt;&lt;td class="code"&gt;&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="cm"&gt;/** &lt;/span&gt;
+&lt;span class="cm"&gt; * @FileName    stl_apply_readfile_1.cpp&lt;/span&gt;
+&lt;span class="cm"&gt; * @Describe    A simple example for using c++ STL to calculate words and line numbers in an article.&lt;/span&gt;
+&lt;span class="cm"&gt; * @Author      vfhky 2017-04-16 16:44 https://typecodes.com/cseries/stlcalcarticlewordlines1.html&lt;/span&gt;
+&lt;span class="cm"&gt; * @Compile     g++ stl_apply_readfile_1.cpp -o stl_apply_readfile_1&lt;/span&gt;
+&lt;span class="cm"&gt; */&lt;/span&gt;
+&lt;span class="cp"&gt;#include&lt;/span&gt; &lt;span class="cpf"&gt;&amp;lt;iostream&amp;gt;&lt;/span&gt;&lt;span class="cp"&gt;&lt;/span&gt;
+&lt;span class="cp"&gt;#include&lt;/span&gt; &lt;span class="cpf"&gt;&amp;lt;map&amp;gt;&lt;/span&gt;&lt;span class="cp"&gt;&lt;/span&gt;
+&lt;span class="cp"&gt;#include&lt;/span&gt; &lt;span class="cpf"&gt;&amp;lt;vector&amp;gt;&lt;/span&gt;&lt;span class="cp"&gt;&lt;/span&gt;
+&lt;span class="cp"&gt;#include&lt;/span&gt; &lt;span class="cpf"&gt;&amp;lt;fstream&amp;gt;&lt;/span&gt;&lt;span class="cp"&gt;&lt;/span&gt;
+&lt;span class="cp"&gt;#include&lt;/span&gt; &lt;span class="cpf"&gt;&amp;lt;algorithm&amp;gt;&lt;/span&gt;&lt;span class="cp"&gt;&lt;/span&gt;
+&lt;span class="cp"&gt;#include&lt;/span&gt; &lt;span class="cpf"&gt;&amp;lt;string&amp;gt;&lt;/span&gt;&lt;span class="cp"&gt;&lt;/span&gt;
+&lt;span class="cp"&gt;#include&lt;/span&gt; &lt;span class="cpf"&gt;&amp;lt;assert.h&amp;gt;&lt;/span&gt;&lt;span class="cp"&gt;&lt;/span&gt;
+&lt;span class="cp"&gt;#include&lt;/span&gt; &lt;span class="cpf"&gt;&amp;lt;string.h&amp;gt;&lt;/span&gt;&lt;span class="cp"&gt;&lt;/span&gt;
+&lt;span class="k"&gt;using&lt;/span&gt; &lt;span class="k"&gt;namespace&lt;/span&gt; &lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+
+
+&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;CFileHandle&lt;/span&gt;
+&lt;span class="p"&gt;{&lt;/span&gt;
+&lt;span class="k"&gt;public&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
+    &lt;span class="n"&gt;CFileHandle&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt; &lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="n"&gt;string&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="n"&gt;s_file_name&lt;/span&gt; &lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="n"&gt;s_m_file_name&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;s_file_name&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="p"&gt;{&lt;/span&gt;
+        &lt;span class="n"&gt;i_m_line_number&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="p"&gt;}&lt;/span&gt;
+
+    &lt;span class="c1"&gt;//读取每行的数据，然后进行处理&lt;/span&gt;
+    &lt;span class="kt"&gt;void&lt;/span&gt; &lt;span class="n"&gt;ReadFile&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt; &lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="n"&gt;string&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="n"&gt;s_file_name&lt;/span&gt; &lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="p"&gt;{&lt;/span&gt;
+        &lt;span class="n"&gt;ifstream&lt;/span&gt; &lt;span class="n"&gt;inFile&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+
+        &lt;span class="c1"&gt;//以二进制可读的方式打开文件，也可以使用： inFile.open( s_file_name.data() );&lt;/span&gt;
+        &lt;span class="n"&gt;inFile&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;open&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt; &lt;span class="n"&gt;s_file_name&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;c_str&lt;/span&gt;&lt;span class="p"&gt;(),&lt;/span&gt; &lt;span class="n"&gt;ios&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;in&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt; &lt;span class="n"&gt;ios&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="n"&gt;binary&lt;/span&gt; &lt;span class="p"&gt;);&lt;/span&gt;
+
+        &lt;span class="c1"&gt;//Checks if the file stream has an associated file.&lt;/span&gt;
+        &lt;span class="n"&gt;assert&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt; &lt;span class="n"&gt;inFile&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;is_open&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="p"&gt;);&lt;/span&gt;
+
+        &lt;span class="c1"&gt;//每一行的数据&lt;/span&gt;
+        &lt;span class="n"&gt;string&lt;/span&gt; &lt;span class="n"&gt;s_line_buf&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+
+        &lt;span class="c1"&gt;//读取一行内容    getline( inFile, s_line_buf )&lt;/span&gt;
+        &lt;span class="k"&gt;while&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt; &lt;span class="n"&gt;getline&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt; &lt;span class="n"&gt;inFile&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;s_line_buf&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;inFile&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;widen&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="sc"&gt;&amp;#39;\n&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;)&lt;/span&gt;
+        &lt;span class="p"&gt;{&lt;/span&gt;
+            &lt;span class="o"&gt;++&lt;/span&gt;&lt;span class="n"&gt;i_m_line_number&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+
+            &lt;span class="c1"&gt;//统一转换成大写：也可以使用 transform( s_line_buf.begin(), s_line_buf.end(), s_line_buf.begin(), ::toupper );&lt;/span&gt;
+            &lt;span class="n"&gt;transform&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt; &lt;span class="n"&gt;s_line_buf&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;begin&lt;/span&gt;&lt;span class="p"&gt;(),&lt;/span&gt; &lt;span class="n"&gt;s_line_buf&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;end&lt;/span&gt;&lt;span class="p"&gt;(),&lt;/span&gt; &lt;span class="n"&gt;s_line_buf&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;begin&lt;/span&gt;&lt;span class="p"&gt;(),&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="p"&gt;)(&lt;/span&gt;&lt;span class="kt"&gt;int&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;&lt;span class="n"&gt;toupper&lt;/span&gt; &lt;span class="p"&gt;);&lt;/span&gt;
+
+            &lt;span class="c1"&gt;//开始数据处理&lt;/span&gt;
+            &lt;span class="n"&gt;HandleLine&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt; &lt;span class="n"&gt;s_line_buf&lt;/span&gt; &lt;span class="p"&gt;);&lt;/span&gt;
+        &lt;span class="p"&gt;}&lt;/span&gt;
+
+        &lt;span class="c1"&gt;//关闭文件流&lt;/span&gt;
+        &lt;span class="n"&gt;inFile&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;close&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;
+    &lt;span class="p"&gt;}&lt;/span&gt;
+
+    &lt;span class="c1"&gt;//对每行的数据进行解析&lt;/span&gt;
+    &lt;span class="kt"&gt;void&lt;/span&gt; &lt;span class="n"&gt;HandleLine&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt; &lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="n"&gt;string&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="n"&gt;s_line_buf&lt;/span&gt; &lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="p"&gt;{&lt;/span&gt;
+        &lt;span class="n"&gt;string&lt;/span&gt; &lt;span class="n"&gt;s_word_buf&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+        &lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;i_start&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;i_last&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;s_line_buf&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;size&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;
+        &lt;span class="c1"&gt;//std::size_t i_split_pos;&lt;/span&gt;
+        &lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;i_split_pos&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+
+        &lt;span class="k"&gt;while&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt; &lt;span class="n"&gt;i_start&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt; &lt;span class="n"&gt;i_last&lt;/span&gt; &lt;span class="p"&gt;)&lt;/span&gt;
+        &lt;span class="p"&gt;{&lt;/span&gt;
+            &lt;span class="n"&gt;i_split_pos&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;s_line_buf&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;find&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt; &lt;span class="sc"&gt;&amp;#39; &amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;i_start&lt;/span&gt; &lt;span class="p"&gt;);&lt;/span&gt;
+            &lt;span class="n"&gt;string&lt;/span&gt; &lt;span class="n"&gt;s_word&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+
+            &lt;span class="c1"&gt;//if( i_split_pos == std::string::npos )&lt;/span&gt;
+            &lt;span class="k"&gt;if&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt; &lt;span class="n"&gt;i_split_pos&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt; &lt;span class="p"&gt;)&lt;/span&gt;
+            &lt;span class="p"&gt;{&lt;/span&gt;
+                &lt;span class="n"&gt;s_word&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;s_line_buf&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;substr&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt; &lt;span class="n"&gt;i_start&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;i_last&lt;/span&gt; &lt;span class="p"&gt;);&lt;/span&gt;
+                &lt;span class="n"&gt;HandleUnkind&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt; &lt;span class="n"&gt;s_word&lt;/span&gt; &lt;span class="p"&gt;);&lt;/span&gt;
+                &lt;span class="n"&gt;HandleWord&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt; &lt;span class="n"&gt;s_word&lt;/span&gt; &lt;span class="p"&gt;);&lt;/span&gt;
+                &lt;span class="k"&gt;break&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+            &lt;span class="p"&gt;}&lt;/span&gt;
+            &lt;span class="cm"&gt;/**&lt;/span&gt;
+&lt;span class="cm"&gt;                避免空格，也可以使用下面这两行来去掉行首和行尾的空格&lt;/span&gt;
+&lt;span class="cm"&gt;                s_line_buf.erase( 0, s_line_buf.find_first_not_of(&amp;quot; &amp;quot;) );&lt;/span&gt;
+&lt;span class="cm"&gt;                s_line_buf.erase( s_line_buf.find_last_not_of(&amp;quot; &amp;quot;) + 1 );&lt;/span&gt;
+&lt;span class="cm"&gt;             */&lt;/span&gt;
+            &lt;span class="k"&gt;else&lt;/span&gt; &lt;span class="k"&gt;if&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt; &lt;span class="n"&gt;i_start&lt;/span&gt; &lt;span class="o"&gt;!=&lt;/span&gt; &lt;span class="n"&gt;i_split_pos&lt;/span&gt; &lt;span class="p"&gt;)&lt;/span&gt;
+            &lt;span class="p"&gt;{&lt;/span&gt;
+                &lt;span class="n"&gt;s_word&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;s_line_buf&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;substr&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt; &lt;span class="n"&gt;i_start&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;i_split_pos&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;i_start&lt;/span&gt; &lt;span class="p"&gt;);&lt;/span&gt;
+                &lt;span class="n"&gt;HandleUnkind&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt; &lt;span class="n"&gt;s_word&lt;/span&gt; &lt;span class="p"&gt;);&lt;/span&gt;
+                &lt;span class="n"&gt;HandleWord&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt; &lt;span class="n"&gt;s_word&lt;/span&gt; &lt;span class="p"&gt;);&lt;/span&gt;
+                &lt;span class="n"&gt;i_start&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;i_split_pos&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+            &lt;span class="p"&gt;}&lt;/span&gt;
+            &lt;span class="c1"&gt;//对于行首的空格不进行处理&lt;/span&gt;
+            &lt;span class="k"&gt;else&lt;/span&gt;
+            &lt;span class="p"&gt;{&lt;/span&gt;
+                &lt;span class="n"&gt;i_start&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;i_split_pos&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+            &lt;span class="p"&gt;}&lt;/span&gt;
+        &lt;span class="p"&gt;}&lt;/span&gt;
+    &lt;span class="p"&gt;}&lt;/span&gt;
+
+    &lt;span class="c1"&gt;//去除每个单词可能包含的非字符（除0~9和A~Z外的数据）&lt;/span&gt;
+    &lt;span class="kt"&gt;void&lt;/span&gt; &lt;span class="n"&gt;HandleUnkind&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt; &lt;span class="n"&gt;string&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="n"&gt;s_word_buf&lt;/span&gt; &lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="p"&gt;{&lt;/span&gt;
+        &lt;span class="n"&gt;assert&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt; &lt;span class="n"&gt;s_word_buf&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;size&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="p"&gt;);&lt;/span&gt;
+
+        &lt;span class="c1"&gt;//char c_word_buf[s_word_buf.size()+1]; 在vs中会报错：error C2131: 表达式的计算结果不是常数&lt;/span&gt;
+        &lt;span class="kt"&gt;char&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;c_word_buf&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="k"&gt;new&lt;/span&gt; &lt;span class="kt"&gt;char&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;s_word_buf&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;size&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;&lt;span class="o"&gt;+&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;]();&lt;/span&gt;
+
+        &lt;span class="kt"&gt;unsigned&lt;/span&gt; &lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;j&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+        &lt;span class="k"&gt;for&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt; &lt;span class="kt"&gt;unsigned&lt;/span&gt; &lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;i&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="n"&gt;i&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;s_word_buf&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;size&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt; &lt;span class="o"&gt;++&lt;/span&gt;&lt;span class="n"&gt;i&lt;/span&gt; &lt;span class="p"&gt;)&lt;/span&gt;
+        &lt;span class="p"&gt;{&lt;/span&gt;
+            &lt;span class="k"&gt;if&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt; &lt;span class="n"&gt;s_word_buf&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;i&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;&amp;gt;=&lt;/span&gt; &lt;span class="mh"&gt;0x30&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class="n"&gt;s_word_buf&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;i&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;=&lt;/span&gt; &lt;span class="mh"&gt;0x39&lt;/span&gt; &lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;||&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt; &lt;span class="n"&gt;s_word_buf&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;i&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;&amp;gt;=&lt;/span&gt; &lt;span class="mh"&gt;0x41&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class="n"&gt;s_word_buf&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;i&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;=&lt;/span&gt; &lt;span class="mh"&gt;0x5A&lt;/span&gt; &lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;)&lt;/span&gt;
+            &lt;span class="p"&gt;{&lt;/span&gt;
+                &lt;span class="n"&gt;c_word_buf&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;j&lt;/span&gt;&lt;span class="o"&gt;++&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;s_word_buf&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;i&lt;/span&gt;&lt;span class="p"&gt;];&lt;/span&gt;
+            &lt;span class="p"&gt;}&lt;/span&gt;
+        &lt;span class="p"&gt;}&lt;/span&gt;
+
+        &lt;span class="n"&gt;s_word_buf&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;c_word_buf&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+        &lt;span class="k"&gt;delete&lt;/span&gt; &lt;span class="n"&gt;c_word_buf&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; 
+    &lt;span class="p"&gt;}&lt;/span&gt;
+
+    &lt;span class="c1"&gt;//对每个单词的处理&lt;/span&gt;
+    &lt;span class="kt"&gt;void&lt;/span&gt; &lt;span class="n"&gt;HandleWord&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt; &lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="n"&gt;string&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="n"&gt;s_word_buf&lt;/span&gt; &lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="p"&gt;{&lt;/span&gt;
+        &lt;span class="n"&gt;map&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;string&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;vector&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="kt"&gt;int&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="o"&gt;&amp;gt;::&lt;/span&gt;&lt;span class="n"&gt;iterator&lt;/span&gt; &lt;span class="n"&gt;mapit&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;mapobj&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;find&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt; &lt;span class="n"&gt;s_word_buf&lt;/span&gt; &lt;span class="p"&gt;);&lt;/span&gt;
+
+        &lt;span class="c1"&gt;//如果该单词不存在&lt;/span&gt;
+        &lt;span class="k"&gt;if&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt; &lt;span class="n"&gt;mapit&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="n"&gt;mapobj&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;end&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="p"&gt;)&lt;/span&gt;
+        &lt;span class="p"&gt;{&lt;/span&gt;
+            &lt;span class="n"&gt;vector&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="kt"&gt;int&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;vect&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+            &lt;span class="n"&gt;vect&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;push_back&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt; &lt;span class="n"&gt;i_m_line_number&lt;/span&gt; &lt;span class="p"&gt;);&lt;/span&gt;
+            &lt;span class="n"&gt;mapobj&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;insert&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt; &lt;span class="n"&gt;make_pair&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt; &lt;span class="n"&gt;s_word_buf&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;vect&lt;/span&gt; &lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;);&lt;/span&gt;
+        &lt;span class="p"&gt;}&lt;/span&gt;
+        &lt;span class="k"&gt;else&lt;/span&gt;
+        &lt;span class="p"&gt;{&lt;/span&gt;
+            &lt;span class="n"&gt;mapit&lt;/span&gt;&lt;span class="o"&gt;-&amp;gt;&lt;/span&gt;&lt;span class="n"&gt;second&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;push_back&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt; &lt;span class="n"&gt;i_m_line_number&lt;/span&gt; &lt;span class="p"&gt;);&lt;/span&gt;
+        &lt;span class="p"&gt;}&lt;/span&gt;
+    &lt;span class="p"&gt;}&lt;/span&gt;
+
+    &lt;span class="c1"&gt;//遍历map对象&lt;/span&gt;
+    &lt;span class="kt"&gt;void&lt;/span&gt; &lt;span class="n"&gt;Traverse&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+    &lt;span class="p"&gt;{&lt;/span&gt;
+        &lt;span class="n"&gt;map&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt; &lt;span class="n"&gt;string&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;vector&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="kt"&gt;int&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="o"&gt;&amp;gt;::&lt;/span&gt;&lt;span class="n"&gt;iterator&lt;/span&gt; &lt;span class="n"&gt;mapit&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;mapobj&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;begin&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;
+        &lt;span class="n"&gt;cout&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;Words&lt;/span&gt;&lt;span class="se"&gt;\t\t\t\t&lt;/span&gt;&lt;span class="s"&gt;Counts&lt;/span&gt;&lt;span class="se"&gt;\t\t\t\t&lt;/span&gt;&lt;span class="s"&gt;Lines&amp;quot;&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="n"&gt;endl&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+        &lt;span class="n"&gt;cout&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;---------------------------------------------------------------------&amp;quot;&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="n"&gt;endl&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+        &lt;span class="k"&gt;for&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt; &lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="n"&gt;mapit&lt;/span&gt; &lt;span class="o"&gt;!=&lt;/span&gt; &lt;span class="n"&gt;mapobj&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;end&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt; &lt;span class="o"&gt;++&lt;/span&gt;&lt;span class="n"&gt;mapit&lt;/span&gt; &lt;span class="p"&gt;)&lt;/span&gt;
+        &lt;span class="p"&gt;{&lt;/span&gt;
+            &lt;span class="n"&gt;cout&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="n"&gt;mapit&lt;/span&gt;&lt;span class="o"&gt;-&amp;gt;&lt;/span&gt;&lt;span class="n"&gt;first&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;&lt;/span&gt;&lt;span class="se"&gt;\t\t\t\t&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="n"&gt;mapit&lt;/span&gt;&lt;span class="o"&gt;-&amp;gt;&lt;/span&gt;&lt;span class="n"&gt;second&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;size&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;&lt;/span&gt;&lt;span class="se"&gt;\t\t\t\t&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+            &lt;span class="k"&gt;for&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt; &lt;span class="n"&gt;vector&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="kt"&gt;int&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;::&lt;/span&gt;&lt;span class="n"&gt;iterator&lt;/span&gt; &lt;span class="n"&gt;vectorit&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;mapit&lt;/span&gt;&lt;span class="o"&gt;-&amp;gt;&lt;/span&gt;&lt;span class="n"&gt;second&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;begin&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt; &lt;span class="n"&gt;vectorit&lt;/span&gt; &lt;span class="o"&gt;!=&lt;/span&gt; &lt;span class="n"&gt;mapit&lt;/span&gt;&lt;span class="o"&gt;-&amp;gt;&lt;/span&gt;&lt;span class="n"&gt;second&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;end&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt; &lt;span class="o"&gt;++&lt;/span&gt;&lt;span class="n"&gt;vectorit&lt;/span&gt; &lt;span class="p"&gt;)&lt;/span&gt;
+            &lt;span class="p"&gt;{&lt;/span&gt;
+                &lt;span class="n"&gt;cout&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;vectorit&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="s"&gt;&amp;quot; &amp;quot;&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+            &lt;span class="p"&gt;}&lt;/span&gt;
+            &lt;span class="n"&gt;cout&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="n"&gt;endl&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+        &lt;span class="p"&gt;}&lt;/span&gt;
+    &lt;span class="p"&gt;}&lt;/span&gt;
+
+    &lt;span class="c1"&gt;//获取文件总行数&lt;/span&gt;
+    &lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="kt"&gt;unsigned&lt;/span&gt; &lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;GetTotalLines&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="k"&gt;const&lt;/span&gt;
+    &lt;span class="p"&gt;{&lt;/span&gt;
+        &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;i_m_line_number&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="p"&gt;}&lt;/span&gt;
+
+&lt;span class="k"&gt;private&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
+    &lt;span class="n"&gt;map&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;string&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;vector&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="kt"&gt;int&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;mapobj&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="kt"&gt;unsigned&lt;/span&gt; &lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;i_m_line_number&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="n"&gt;string&lt;/span&gt; &lt;span class="n"&gt;s_m_file_name&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="p"&gt;};&lt;/span&gt;
+
+
+&lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="nf"&gt;main&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt; &lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;argc&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="kt"&gt;char&lt;/span&gt; &lt;span class="o"&gt;**&lt;/span&gt;&lt;span class="n"&gt;argv&lt;/span&gt; &lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="c1"&gt;//文件所在路径&lt;/span&gt;
+    &lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="n"&gt;string&lt;/span&gt; &lt;span class="n"&gt;s_file_name&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt;  &lt;span class="s"&gt;&amp;quot;STL_APPLY_READFILE_1&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+
+    &lt;span class="n"&gt;CFileHandle&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;pCFileHandle&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="k"&gt;new&lt;/span&gt; &lt;span class="n"&gt;CFileHandle&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt; &lt;span class="n"&gt;s_file_name&lt;/span&gt; &lt;span class="p"&gt;);&lt;/span&gt;
+
+    &lt;span class="c1"&gt;//开始处理文件&lt;/span&gt;
+    &lt;span class="n"&gt;pCFileHandle&lt;/span&gt;&lt;span class="o"&gt;-&amp;gt;&lt;/span&gt;&lt;span class="n"&gt;ReadFile&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt; &lt;span class="n"&gt;s_file_name&lt;/span&gt; &lt;span class="p"&gt;);&lt;/span&gt;
+    &lt;span class="c1"&gt;//打印总行数&lt;/span&gt;
+    &lt;span class="n"&gt;cout&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;[&amp;quot;&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="n"&gt;__FILE__&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;:&amp;quot;&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="n"&gt;__LINE__&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;] Total Lines=[&amp;quot;&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="n"&gt;pCFileHandle&lt;/span&gt;&lt;span class="o"&gt;-&amp;gt;&lt;/span&gt;&lt;span class="n"&gt;GetTotalLines&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;].&amp;quot;&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class="n"&gt;endl&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="c1"&gt;//遍历结果&lt;/span&gt;
+    &lt;span class="n"&gt;pCFileHandle&lt;/span&gt;&lt;span class="o"&gt;-&amp;gt;&lt;/span&gt;&lt;span class="n"&gt;Traverse&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;
+
+    &lt;span class="k"&gt;delete&lt;/span&gt; &lt;span class="n"&gt;pCFileHandle&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+
+    &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+
+&lt;h4&gt;2 使用g++编译器进行编译并执行&lt;/h4&gt;
+&lt;p&gt;使用g++或者之前写的这个&lt;a href="https://typecodes.com/cseries/cppgeneralmakefile.html" title="《Linux C/C++工程中可生成ELF、动/静态库文件的通用Makefile》"&gt;Makefile&lt;/a&gt;文件进行编译，结果如下图所示。&lt;/p&gt;
+&lt;p&gt;&lt;img alt="使用make命令编译的结果" src="https://o3cex9zsl.qnssl.com/2017/04/stlcalcarticlewordlines1_2.png" title="使用make命令编译的结果"&gt;&lt;/p&gt;
+&lt;p&gt;接着执行程序&lt;code&gt;stl_apply_readfile_1&lt;/code&gt;，效果如下图所示（图片大小的限制只显示了一部分结果）。另外，上面C++程序中的数据处理函数&lt;code&gt;HandleUnkind&lt;/code&gt;相对比较&lt;code&gt;粗略&lt;/code&gt;：只简单过滤了非数字和字母的字符。这样会出现类似把&lt;code&gt;YOU'R&lt;/code&gt;这样的数据处理成&lt;code&gt;YOUR&lt;/code&gt;的情况，大家可以进行代码改进做更精细化的处理。&lt;/p&gt;
+&lt;p&gt;&lt;img alt="使用C++ STL库统计一散文中单词出现次数和行号" src="https://o3cex9zsl.qnssl.com/2017/04/stlcalcarticlewordlines1_3.png" title="使用C++ STL库统计一散文中单词出现次数和行号"&gt;&lt;/p&gt;</content><category term="stl"></category></entry><entry><title>Linux C++使用函数模板实现JSON数据快速和完整写入到文件</title><link href="https://typecodes.com/cseries/templatejsoncpp2file1.html" rel="alternate"></link><published>2017-04-16T15:54:00+08:00</published><updated>2017-04-16T15:54:00+08:00</updated><author><name>vfhky</name></author><id>tag:typecodes.com,2017-04-16:/cseries/templatejsoncpp2file1.html</id><summary type="html">&lt;p&gt;昨天在自己的CentOS7机器上编译了JSONCPP库，然后根据api写了下面这个简单的测试程序。代码涉及了文件流数据读取和写入、jsoncpp库的读写api的使用。整个处理流程是先读取一个json格式文件的内容，然后把这些内容分别用jsoncpp库的&lt;code&gt;Json::FastWriter&lt;/code&gt;（快速写入）和&lt;code&gt;Json::StyledWriter&lt;/code&gt;（完整写入）这两个方式写入到两个文件中，最后读取这两个文件并输出。&lt;/p&gt;
 &lt;p&gt;&lt;img alt="Linux C++使用函数模板实现JSON数据快速和完整写入到文件" src="https://o3cex9zsl.qnssl.com/2017/04/jsoncpp_basic_4_1.png" title="Linux C++使用函数模板实现JSON数据快速和完整写入到文件"&gt;&lt;/p&gt;
 </summary><content type="html">&lt;p&gt;昨天在自己的CentOS7机器上编译了JSONCPP库，然后根据api写了下面这个简单的测试程序。代码涉及了文件流数据读取和写入、jsoncpp库的读写api的使用。整个处理流程是先读取一个json格式文件的内容，然后把这些内容分别用jsoncpp库的&lt;code&gt;Json::FastWriter&lt;/code&gt;（快速写入）和&lt;code&gt;Json::StyledWriter&lt;/code&gt;（完整写入）这两个方式写入到两个文件中，最后读取这两个文件并输出。&lt;/p&gt;
 &lt;p&gt;&lt;img alt="Linux C++使用函数模板实现JSON数据快速和完整写入到文件" src="https://o3cex9zsl.qnssl.com/2017/04/jsoncpp_basic_4_1.png" title="Linux C++使用函数模板实现JSON数据快速和完整写入到文件"&gt;&lt;/p&gt;
@@ -123,8 +512,8 @@
 114
 115&lt;/pre&gt;&lt;/div&gt;&lt;/td&gt;&lt;td class="code"&gt;&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="cm"&gt;/** &lt;/span&gt;
 &lt;span class="cm"&gt; * @FileName    jsoncpp_basic_4.cpp&lt;/span&gt;
-&lt;span class="cm"&gt; * @Describe    A simple example for using new to allocating mem and initialize it compiled with visual studio and g++.&lt;/span&gt;
-&lt;span class="cm"&gt; * @Author      vfhky 2017-03-14 23:24 https://typecodes.com/cseries/jsoncpp_basic_4.html&lt;/span&gt;
+&lt;span class="cm"&gt; * @Describe    A simple example for using function template to complete Json::FastWriter and Json::StyledWriter.&lt;/span&gt;
+&lt;span class="cm"&gt; * @Author      vfhky 2017-04-16 15:54 https://typecodes.com/cseries/templatejsoncpp2file1.html&lt;/span&gt;
 &lt;span class="cm"&gt; * @Compile     g++ jsoncpp_basic_4.cpp -ljsoncpp -o jsoncpp_basic_4&lt;/span&gt;
 &lt;span class="cm"&gt; */&lt;/span&gt;
 &lt;span class="cp"&gt;#include&lt;/span&gt; &lt;span class="cpf"&gt;&amp;lt;iostream&amp;gt;&lt;/span&gt;&lt;span class="cp"&gt;&lt;/span&gt;
@@ -240,7 +629,7 @@
 &lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 
 &lt;h4&gt;2 编译并执行&lt;/h4&gt;
-&lt;p&gt;使用g++或者之前写的这个(Makefile)[https://typecodes.com/cseries/cppgeneralmakefile.html "《Linux C/C++工程中可生成ELF、动/静态库文件的通用Makefile》"]文件进行编译，执行结果如开头的图片所示。&lt;/p&gt;
+&lt;p&gt;使用g++或者之前写的这个&lt;a href="https://typecodes.com/cseries/cppgeneralmakefile.html" title="《Linux C/C++工程中可生成ELF、动/静态库文件的通用Makefile》"&gt;Makefile&lt;/a&gt;文件进行编译，执行结果如开头的图片所示。&lt;/p&gt;
 &lt;p&gt;&lt;img alt="Linux C++使用函数模板实现JSON数据快速和完整写入到文件" src="https://o3cex9zsl.qnssl.com/2017/04/jsoncpp_basic_4_2.png" title="Linux C++使用函数模板实现JSON数据快速和完整写入到文件"&gt;&lt;/p&gt;</content><category term="jsoncpp"></category><category term="json"></category><category term="template"></category></entry><entry><title>Git多仓库作子目录的双向同步：一次Git Subtree的实践</title><link href="https://typecodes.com/mix/gitsubtree1.html" rel="alternate"></link><published>2017-03-22T18:30:00+08:00</published><updated>2017-03-22T18:30:00+08:00</updated><author><name>vfhky</name></author><id>tag:typecodes.com,2017-03-22:/mix/gitsubtree1.html</id><summary type="html">&lt;p&gt;今年1月中旬的时候BZ在GitHub上收到Typecho社区组织&lt;a href="https://github.com/typecho-fans" title="GitHub的Organizations名"&gt;typecho-fans&lt;/a&gt;的成员邀请，原来是想把所有TP的开源插件都整合到&lt;a href="https://github.com/typecho-fans/plugins" title="点击查看"&gt;GitHub&lt;/a&gt;上进行维护。之前BLOG在使用Typecho的时候写了3个插件：&lt;a href="https://typecodes.com/web/scsfortypecho.html" title="《新浪云存储(SCS) for Typecho 插件》"&gt;新浪云存储SCS插件&lt;/a&gt;、&lt;a href="https://typecodes.com/web/typechomp3player.html" title="《音乐播放器PlayAtWill for typecho插件（移植自wordpress）》"&gt;移植自WordPress的音乐播放器插件&lt;/a&gt;和&lt;a href="https://typecodes.com/mix/synweibophpmarkdownimgurl.html" title="《升级博客文章同步微博的插件：PHP正则提取Markdown的图片地址》"&gt;新浪微博同步插件&lt;/a&gt;，那如果放到typecho-fans上进行维护的话对使用者和开发者来说都是挺方便的。但是当时不知道怎么把之前这3个已经放在GitHub上进行维护的插件仓库作为子目录/仓库同步到typecho-fans的插件仓库中，所以一直都没有行动。&lt;/p&gt;
 &lt;p&gt;&lt;img alt="Git多仓库作子目录的双向同步：一次Git Subtree的实践" src="https://o3cex9zsl.qnssl.com/2017/03/gitsubtree1_typecho_fans.png" title="Git多仓库作子目录的双向同步：一次Git Subtree的实践"&gt;&lt;/p&gt;
 </summary><content type="html">&lt;p&gt;今年1月中旬的时候BZ在GitHub上收到Typecho社区组织&lt;a href="https://github.com/typecho-fans" title="GitHub的Organizations名"&gt;typecho-fans&lt;/a&gt;的成员邀请，原来是想把所有TP的开源插件都整合到&lt;a href="https://github.com/typecho-fans/plugins" title="点击查看"&gt;GitHub&lt;/a&gt;上进行维护。之前BLOG在使用Typecho的时候写了3个插件：&lt;a href="https://typecodes.com/web/scsfortypecho.html" title="《新浪云存储(SCS) for Typecho 插件》"&gt;新浪云存储SCS插件&lt;/a&gt;、&lt;a href="https://typecodes.com/web/typechomp3player.html" title="《音乐播放器PlayAtWill for typecho插件（移植自wordpress）》"&gt;移植自WordPress的音乐播放器插件&lt;/a&gt;和&lt;a href="https://typecodes.com/mix/synweibophpmarkdownimgurl.html" title="《升级博客文章同步微博的插件：PHP正则提取Markdown的图片地址》"&gt;新浪微博同步插件&lt;/a&gt;，那如果放到typecho-fans上进行维护的话对使用者和开发者来说都是挺方便的。但是当时不知道怎么把之前这3个已经放在GitHub上进行维护的插件仓库作为子目录/仓库同步到typecho-fans的插件仓库中，所以一直都没有行动。&lt;/p&gt;
@@ -5304,8 +5693,8 @@ NOTICE &lt;span class="s2"&gt;&amp;quot;------END------&amp;quot;&lt;/span&gt;
 &lt;p&gt;&lt;img alt="ldd命令查看可执行文件所依赖的动态库" src="https://o3cex9zsl.qnssl.com/2016/01/gcc_compile_conncet_mysql.png" title="ldd命令查看可执行文件所依赖的动态库"&gt;&lt;/p&gt;
 &lt;h4&gt;3 执行结果&lt;/h4&gt;
 &lt;p&gt;下图是程序执行获取的之前Typecho博客数据库typecodes中的用户表typecodes_users中的数据：&lt;/p&gt;
-&lt;p&gt;&lt;img alt="ldd命令查看可执行文件所依赖的动态库" src="https://o3cex9zsl.qnssl.com/2016/01/excute_connect_mysql.png" title="ldd命令查看可执行文件所依赖的动态库"&gt;&lt;/p&gt;</content><category term="gcc"></category><category term="mysql"></category></entry><entry><title>Linux gcc编译生成静态库及使用方法</title><link href="https://typecodes.com/cseries/gccgensharedlib.html" rel="alternate"></link><published>2016-01-05T22:48:00+08:00</published><updated>2016-01-05T22:48:00+08:00</updated><author><name>vfhky</name></author><id>tag:typecodes.com,2016-01-05:/cseries/gccgensharedlib.html</id><summary type="html">&lt;p&gt;这篇文章主要通过实例演示在Linux下如何使用gcc编译生成动态库文件以及其它程序如何使用该动态库。&lt;/p&gt;
-</summary><content type="html">&lt;p&gt;这篇文章主要通过实例演示在Linux下如何使用gcc编译生成动态库文件以及其它程序如何使用该动态库。&lt;/p&gt;
+&lt;p&gt;&lt;img alt="ldd命令查看可执行文件所依赖的动态库" src="https://o3cex9zsl.qnssl.com/2016/01/excute_connect_mysql.png" title="ldd命令查看可执行文件所依赖的动态库"&gt;&lt;/p&gt;</content><category term="gcc"></category><category term="mysql"></category></entry><entry><title>Linux gcc编译生成静态库和共享动态库的过程</title><link href="https://typecodes.com/cseries/gccgensharedlib.html" rel="alternate"></link><published>2016-01-05T22:48:00+08:00</published><updated>2016-01-05T22:48:00+08:00</updated><author><name>vfhky</name></author><id>tag:typecodes.com,2016-01-05:/cseries/gccgensharedlib.html</id><summary type="html">&lt;p&gt;这篇文章主要通过实例演示在Linux下如何使用gcc分别编译生成静态库和动态库文件以及其它程序如何使用这个生成的静态库和动态库。&lt;/p&gt;
+</summary><content type="html">&lt;p&gt;这篇文章主要通过实例演示在Linux下如何使用gcc分别编译生成静态库和动态库文件以及其它程序如何使用这个生成的静态库和动态库。&lt;/p&gt;
 
 
 &lt;h4&gt;1 要用到的3个测试程序&lt;/h4&gt;
@@ -5435,8 +5824,8 @@ Hello everyone!
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;h4&gt;3 生成动态库&lt;/h4&gt;
-&lt;p&gt;可以如下面3.1小节所示通过gcc直接生成动态库文件，也可以像3.2小节中那样依次生成realname、soname、linkname库文件。不经常更新动态库版本的话，一般会采用3.1小节中的做法；版本更新较频繁的动态库，诸如MySQL的一些动态库就是采用的2.2小节中的做法。&lt;/p&gt;
+&lt;h4&gt;3 生成动态库文件&lt;/h4&gt;
+&lt;p&gt;可以如下面3.1小节所示通过gcc直接生成动态库文件，也可以像3.2小节中那样依次生成realname、soname、linkname库文件。不经常更新动态库版本的话，一般会采用3.1小节中的做法；版本更新较频繁的动态库，诸如MySQL的一些动态库就是采用的3.2小节中的做法。&lt;/p&gt;
 &lt;h5&gt;3.1 直接编译生成symbolic link动态库文件&lt;/h5&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;##### 生成hello.o目标文件
 [root@typecodes ~]# gcc -c -fPIC hello.c
@@ -5451,19 +5840,19 @@ Hello everyone!
 
 
 &lt;p&gt;如下图所示，可执行文件hello找不到链接的动态库libmyhello.so而报错：&lt;/p&gt;
-&lt;p&gt;&lt;img alt="error while loading shared libraries" src="https://o3cex9zsl.qnssl.com/2016/01/errorloadingsharedlib.png" title="error while loading shared libraries"&gt;&lt;/p&gt;
-&lt;p&gt;原因分析：使用&lt;code&gt;ldd hello&lt;/code&gt;命令查看可执行文件hello依赖的动态库libmyhello.so，结果是not found。&lt;/p&gt;
-&lt;p&gt;&lt;img alt="ldd命令查看可执行文件所依赖的动态库" src="https://o3cex9zsl.qnssl.com/2016/01/lddlibnotfound.png" title="ldd命令查看可执行文件所依赖的动态库"&gt;&lt;/p&gt;
-&lt;p&gt;解决方法：使用&lt;code&gt;root&lt;/code&gt;用户把自己生成的动态共享库路径添加系统动态库中即可。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;##### ldconfig更新配置文件目录下的所有动态链接库为Linux系统所共享
-[root@typecodes ~]# echo &amp;quot;/root/&amp;quot;&amp;gt;/etc/ld.so.conf.d/test.conf
-[root@typecodes ~]# ldconfig
-##### 运行可执行文件
-[root@typecodes ~]# ./hello
-Welcome to typecodes.com.
-&lt;/pre&gt;&lt;/div&gt;
-
-
+&lt;p&gt;&lt;img alt="error while loading shared libraries" src="https://o3cex9zsl.qnssl.com/2016/01/errorloadingsharedlib.png" title="error while loading shared libraries"&gt;
+​ &lt;br&gt;
+原因分析：使用&lt;code&gt;ldd hello&lt;/code&gt;命令查看可执行文件hello依赖的动态库libmyhello.so，结果是not found。&lt;/p&gt;
+&lt;p&gt;&lt;img alt="ldd命令查看可执行文件所依赖的动态库" src="https://o3cex9zsl.qnssl.com/2016/01/lddlibnotfound.png" title="ldd命令查看可执行文件所依赖的动态库"&gt;
+​ &lt;br&gt;
+解决方法一：使用&lt;code&gt;root&lt;/code&gt;用户把自己生成的动态共享库路径添加系统动态库中即可。
+​ &lt;br&gt;
+    ##### ldconfig更新配置文件目录下的所有动态链接库为Linux系统所共享
+    [root@typecodes ~]# echo "/root/"&amp;gt;/etc/ld.so.conf.d/test.conf
+    [root@typecodes ~]# ldconfig
+    ##### 运行可执行文件
+    [root@typecodes ~]# ./hello
+    Welcome to typecodes.com.&lt;/p&gt;
 &lt;p&gt;这时使用&lt;code&gt;ldconfig -v&lt;/code&gt;命令查看系统动态库的搜索路径，可以看到libmyhello.so.1动态库所在的路径为绝对路径&lt;code&gt;/root/&lt;/code&gt;：&lt;/p&gt;
 &lt;p&gt;&lt;img alt="ldconfig命令查看系统动态库路径" src="https://o3cex9zsl.qnssl.com/2016/01/ldconfigviewlibrary.png" title="ldconfig命令查看系统动态库路径"&gt;&lt;/p&gt;
 &lt;h5&gt;3.2 先生成real name动态库文件，然后创建soname软连接，最后创建link name软链接&lt;/h5&gt;
@@ -5479,8 +5868,9 @@ Welcome to typecodes.com.
 &lt;p&gt;&lt;img alt="readelf查看动态库信息" src="https://o3cex9zsl.qnssl.com/2016/01/readelfdynamiclib.png" title="readelf查看动态库信息"&gt;&lt;/p&gt;
 &lt;p&gt;如下图所示，使用&lt;code&gt;ldconfig -vn .&lt;/code&gt;命令在当前目录自动生成一个软链接：将soname（libmyhello.so.1）链接到real name（libmyhello.so.1.0.1）。&lt;/p&gt;
 &lt;p&gt;&lt;img alt="ldconfig命令生成soname文件软链接" src="https://o3cex9zsl.qnssl.com/2016/01/ldconfigvngensoftlink.png" title="ldconfig命令生成soname文件软链接"&gt;&lt;/p&gt;
-&lt;p&gt;如下图所示，使用&lt;code&gt;ln -sf libmyhello.so.1 libmyhello.so&lt;/code&gt;命令创建链接到soname的共享库文件名(Link Name)：libmyhello.so。&lt;/p&gt;
-&lt;p&gt;&lt;img alt="创建链接到real name的Link Name库文件" src="https://o3cex9zsl.qnssl.com/2016/01/lnsfgensoftliblink.png" title="创建链接到real name的Link Name库文件"&gt;&lt;/p&gt;
+&lt;p&gt;如下图所示，使用&lt;code&gt;ln -sf libmyhello.so.1 libmyhello.so&lt;/code&gt;命令创建链接到soname的共享库文件名(Link Name)：libmyhello.so。
+​ &lt;br&gt;
+&lt;img alt="创建链接到real name的Link Name库文件" src="https://o3cex9zsl.qnssl.com/2016/01/lnsfgensoftliblink.png" title="创建链接到real name的Link Name库文件"&gt;&lt;/p&gt;
 &lt;p&gt;这里如果和前面一样，直接链接创建的动态库文件libmyhello.so生成可执行文件hello，然后直至执行hello，那么也会提示找不到链接的动态库libmyhello.so：&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;[root@typecodes ~]# gcc -o hello main.c -L. -lmyhello
 &lt;/pre&gt;&lt;/div&gt;
@@ -5499,7 +5889,7 @@ Welcome to typecodes.com.
 &lt;/pre&gt;&lt;/div&gt;
 &lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 
-&lt;p&gt;3.1小节中的方法需要root用户权限，对于非root用户还可以有另一种等效方法：如前文&lt;a href="https://typecodes.com/cseries/gcclderrlibrarypath.html" title="查看原文"&gt;《Linux gcc链接动态库出错：LIBRARY_PATH和LD_LIBRARY_PATH的区别》&lt;/a&gt;所述，只要在当前Linux系统中配置&lt;code&gt;LD_LIBRARY_PATH&lt;/code&gt;变量，就可以搜索到依赖的动态库libmyhello.so。&lt;/p&gt;
+&lt;p&gt;3.1小节中的方法需要root用户权限，对于非root用户有方法二来解决：如前文&lt;a href="https://typecodes.com/cseries/gcclderrlibrarypath.html" title="查看原文"&gt;《Linux gcc链接动态库出错：LIBRARY_PATH和LD_LIBRARY_PATH的区别》&lt;/a&gt;所述，只要在当前Linux系统中配置&lt;code&gt;LD_LIBRARY_PATH&lt;/code&gt;变量，就可以搜索到依赖的动态库libmyhello.so。&lt;/p&gt;
 &lt;table class="highlighttable"&gt;&lt;tr&gt;&lt;td class="linenos"&gt;&lt;div class="linenodiv"&gt;&lt;pre&gt; 1
  2
  3
@@ -5535,7 +5925,7 @@ libmyhello.so.1.0
 &lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 
 &lt;p&gt;&lt;img alt="设置LD_LIBRARY_PATH变量后，使用readelf查看动态库信息" src="https://o3cex9zsl.qnssl.com/2016/01/export_ld_library_path.png" title="设置LD_LIBRARY_PATH变量后，使用readelf查看动态库信息"&gt;&lt;/p&gt;
-&lt;p&gt;当然还有方法三：gcc链接动态库生成可执行文件时，加入rpath参数。&lt;/p&gt;
+&lt;p&gt;解决方法三：gcc链接动态库生成可执行文件时，加入rpath参数。&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;[root@typecodes ~]# gcc -o hello main.c -Wl,-rpath=./ -L. -lmyhello
 [root@typecodes ~]# ./hello
 Welcome to typecodes.com.
@@ -5545,10 +5935,19 @@ libmyhello.so.1.0.1
 
 
 &lt;p&gt;&lt;img alt="gcc链接动态库生成可执行文件时，加入rpath参数" src="https://o3cex9zsl.qnssl.com/2016/01/gccwlrpath.png" title="gcc链接动态库生成可执行文件时，加入rpath参数"&gt;&lt;/p&gt;
-&lt;p&gt;方法四：最简单的操作就是直接将生成的动态库文件拷贝到Linux系统动态库搜索目录下。&lt;/p&gt;
+&lt;p&gt;解决方法四：最简单的操作就是直接将生成的动态库文件拷贝到Linux系统动态库搜索目录下。&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;/lib、/lib64：                        系统必备共享库
 /usr/lib、/usr/lib64：                标准共享库和静态库
 /usr/local/lib：                 本地/第三方函数库
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h4&gt;4 总结（update 2017.04.18 12:10）&lt;/h4&gt;
+&lt;p&gt;小节2中讲述了静态库文件的生成方法，小节3中讲述了动态库的生成方法。同时，在&lt;code&gt;执行&lt;/code&gt;程序时如果报错提示找不到对应的库文件（可以通过&lt;code&gt;readelf -d hello&lt;/code&gt;验证），那么一共有4种方法。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;1、添加库路径到 /etc/ld.so.conf.d/ 目录下的配置文件中，然后执行命令ldconfig；
+2、添加库路径到 LD_LIBRARY_PATH 环境变量中；
+3、在编译链接命令中加入参数 -rpath=库文件所在路径 ；
+4、最简单的方式：把库文件拷贝到Linux系统库文件所在目录下（/lib、/lib64、/usr/lib、/usr/lib64、/usr/local/lib等）。
 &lt;/pre&gt;&lt;/div&gt;</content><category term="gcc"></category><category term="静态库"></category><category term="soname"></category><category term="real name"></category><category term="link name"></category><category term="rpath"></category><category term="ldconfig"></category></entry><entry><title>Linux下Nginx、MySQL和PHP等应用的日志切割脚本</title><link href="https://typecodes.com/linux/applogsbackup.html" rel="alternate"></link><published>2015-12-18T21:01:00+08:00</published><updated>2015-12-18T21:01:00+08:00</updated><author><name>vfhky</name></author><id>tag:typecodes.com,2015-12-18:/linux/applogsbackup.html</id><summary type="html">&lt;p&gt;在Linux中如果应用程序会产生日志，那么就需要考虑日志切割，例如按照固定的大小切割、按照日期进行切割等等。同样，在编译&lt;a href="https://typecodes.com/web/centos7compilenginx.html" title="《2015博客升级记(三)：CentOS 7.1编译安装Nginx1.9.0》"&gt;Nginx1.9.0&lt;/a&gt;、&lt;a href="https://typecodes.com/web/centos7compilemysql.html" title="《2015博客升级记(四)：CentOS 7.1编译安装MySQL5.7.7rc》"&gt;MySQL5.7.7rc&lt;/a&gt;和&lt;a href="https://typecodes.com/web/centos7compilephp7.html" title="《2015博客升级记(五)：CentOS 7.1编译安装PHP7》"&gt;PHP7&lt;/a&gt;后，这三个应用服务都会产生日志，尤其是Nginx进程根据配置文件ngnix.conf记录每条访问记录到access.log中。如果所有的日志都打印到同一个文件中的话，那么时间长了的话就会影响效率。&lt;/p&gt;
 &lt;p&gt;&lt;img alt="Nginx日志切割实例" src="https://o3cex9zsl.qnssl.com/2015/12/nginx_logs_backup.png" title="Nginx日志切割实例"&gt;&lt;/p&gt;
 </summary><content type="html">&lt;p&gt;在Linux中如果应用程序会产生日志，那么就需要考虑日志切割，例如按照固定的大小切割、按照日期进行切割等等。同样，在编译&lt;a href="https://typecodes.com/web/centos7compilenginx.html" title="《2015博客升级记(三)：CentOS 7.1编译安装Nginx1.9.0》"&gt;Nginx1.9.0&lt;/a&gt;、&lt;a href="https://typecodes.com/web/centos7compilemysql.html" title="《2015博客升级记(四)：CentOS 7.1编译安装MySQL5.7.7rc》"&gt;MySQL5.7.7rc&lt;/a&gt;和&lt;a href="https://typecodes.com/web/centos7compilephp7.html" title="《2015博客升级记(五)：CentOS 7.1编译安装PHP7》"&gt;PHP7&lt;/a&gt;后，这三个应用服务都会产生日志，尤其是Nginx进程根据配置文件ngnix.conf记录每条访问记录到access.log中。如果所有的日志都打印到同一个文件中的话，那么时间长了的话就会影响效率。&lt;/p&gt;
@@ -6479,22 +6878,22 @@ make: *** [/root/gcc_test/tcp_msg/bin/test] Error 1
 &lt;p&gt;在make编译链接某个动态库lxx.so时，如果报&lt;code&gt;libxx.so: undefined reference to xx&lt;/code&gt;的话，很可能是由下面两种原因引起的。Unix/Linux系统中使用&lt;code&gt;nm&lt;/code&gt;、&lt;code&gt;objdump&lt;/code&gt;和&lt;code&gt;readelf&lt;/code&gt;命令可以辅助调试目标文件。&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;1、链接的动态库中存在只做了声明的自定义的函数/全局变量，但是在其它对象文件中没有实现定义；
 2、链接生成的目标文件中引用了某动态库的自定义函数/全局变量，但是没有通过`-lXX`选项链接进来。
-&lt;/pre&gt;&lt;/div&gt;</content><category term="nm"></category><category term="undefined reference"></category></entry><entry><title>Unix系统中nm命令展示目标文件符号的方法</title><link href="https://typecodes.com/cseries/nmobjectfilesymbol.html" rel="alternate"></link><published>2015-08-12T00:07:00+08:00</published><updated>2015-08-12T00:07:00+08:00</updated><author><name>vfhky</name></author><id>tag:typecodes.com,2015-08-12:/cseries/nmobjectfilesymbol.html</id><summary type="html">&lt;p&gt;在*nix系统中，通过gnu开源gcc或者g++工具生成的目标文件（object file），可以用&lt;code&gt;nm&lt;/code&gt;、&lt;code&gt;objdump&lt;/code&gt;和&lt;code&gt;readelf&lt;/code&gt;这三个命令来查看。&lt;/p&gt;
+&lt;/pre&gt;&lt;/div&gt;</content><category term="nm"></category><category term="undefined reference"></category></entry><entry><title>Unix系统中nm命令展示目标文件符号的方法</title><link href="https://typecodes.com/cseries/nmobjectfilesymbol.html" rel="alternate"></link><published>2015-08-12T00:07:00+08:00</published><updated>2015-08-12T00:07:00+08:00</updated><author><name>vfhky</name></author><id>tag:typecodes.com,2015-08-12:/cseries/nmobjectfilesymbol.html</id><summary type="html">&lt;p&gt;在unix系统中，通过gnu开源gcc或者g++工具生成的目标文件（object file），可以用&lt;code&gt;nm&lt;/code&gt;、&lt;code&gt;objdump&lt;/code&gt;和&lt;code&gt;readelf&lt;/code&gt;这三个命令来查看。&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;nm：显示目标文件中的符号；
 objdump：打印目标文件中的详细信息；
 readelf：显示关于 ELF 目标文件的信息。
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;之前在调试makefile文件的时候，链接动态库出错：&lt;code&gt;libsrcpbl.so: undefined reference to 'gcProgramName'&lt;/code&gt;。也就是变量gcProgramName没定义，后来通过&lt;code&gt;nm -u libsrcpbl.so&lt;/code&gt;命令辅助排查解决了。&lt;/p&gt;
-</summary><content type="html">&lt;p&gt;在*nix系统中，通过gnu开源gcc或者g++工具生成的目标文件（object file），可以用&lt;code&gt;nm&lt;/code&gt;、&lt;code&gt;objdump&lt;/code&gt;和&lt;code&gt;readelf&lt;/code&gt;这三个命令来查看。&lt;/p&gt;
+&lt;p&gt;之前在&lt;a href="https://typecodes.com/cseries/libraryundefinedref.html" title="《解决make编译链接动态库错误：libxx.so: undefined reference to xx》"&gt;调试makefile文件&lt;/a&gt;的时候，链接动态库出错：&lt;code&gt;libsrcpbl.so: undefined reference to 'gcProgramName'&lt;/code&gt;。也就是变量gcProgramName没定义，后来通过&lt;code&gt;nm -u libsrcpbl.so&lt;/code&gt;命令辅助排查解决了。&lt;/p&gt;
+</summary><content type="html">&lt;p&gt;在unix系统中，通过gnu开源gcc或者g++工具生成的目标文件（object file），可以用&lt;code&gt;nm&lt;/code&gt;、&lt;code&gt;objdump&lt;/code&gt;和&lt;code&gt;readelf&lt;/code&gt;这三个命令来查看。&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;nm：显示目标文件中的符号；
 objdump：打印目标文件中的详细信息；
 readelf：显示关于 ELF 目标文件的信息。
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;之前在调试makefile文件的时候，链接动态库出错：&lt;code&gt;libsrcpbl.so: undefined reference to 'gcProgramName'&lt;/code&gt;。也就是变量gcProgramName没定义，后来通过&lt;code&gt;nm -u libsrcpbl.so&lt;/code&gt;命令辅助排查解决了。&lt;/p&gt;
+&lt;p&gt;之前在&lt;a href="https://typecodes.com/cseries/libraryundefinedref.html" title="《解决make编译链接动态库错误：libxx.so: undefined reference to xx》"&gt;调试makefile文件&lt;/a&gt;的时候，链接动态库出错：&lt;code&gt;libsrcpbl.so: undefined reference to 'gcProgramName'&lt;/code&gt;。也就是变量gcProgramName没定义，后来通过&lt;code&gt;nm -u libsrcpbl.so&lt;/code&gt;命令辅助排查解决了。&lt;/p&gt;
 
 
 &lt;p&gt;为了更全面的了解一下这个命令，在自己的CentOS7.1机器上通过&lt;code&gt;man nm&lt;/code&gt;操作查看gnu官方说明手册。同时，对里面涉及的一些opinion选项和nm命令显示的符号做了DESCRIPTION说明，供以后参考。&lt;/p&gt;

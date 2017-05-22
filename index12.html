@@ -39,6 +39,17 @@
 		<div class="col-md-9" id="blog-main" role="main">
 		  	<!--article recycle-->
 			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/cseries/trimspace0xC0000005.html">未经处理的异常:0xC0000005:读取/写入位置冲突——从去掉字符串所有空格说起</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2014-08-30 13:17 | 分类：<a href="https://typecodes.com/cseries/index.html">cseries</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>在c/c++中，有时会遇到0xC0000005: 读取/写入位置冲突的问题。明明编译器编译通过，但是在执行的时候就出现<code>Segmentation fault(coredump)</code>了。</p>
+<p>该错误是由于内存访问出错引起的，最常见于指针的错误使用和数组越界等。下面是博主之前的一个经历——去掉一个字符串前后的所有空格。</p>
+
+	<p class="more"><a href="https://typecodes.com/cseries/trimspace0xC0000005.html" title="未经处理的异常:0xC0000005:读取/写入位置冲突——从去掉字符串所有空格说起">- 阅读剩余部分 -</a></p>
+</div>			</article>
+			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/web/phpunixtimeconvert.html">PHP中将Unix timestamp时间戳转换成北京时间</a></h2>
 <ul class="post-meta">
 	<li>作者：vfhky | 时间：2014-08-19 22:12 | 分类：<a href="https://typecodes.com/web/index.html">web</a></li>
@@ -146,35 +157,6 @@ HOSTNAME=typecodes
 
 	<p class="more"><a href="https://typecodes.com/web/aliyuncentoslnmpwebsafeconf.html" title="阿里云CentOS主机 LNMP 环境之web安全篇">- 阅读剩余部分 -</a></p>
 </div>			</article>
-			<article class="post">
-<h2 class="post-title"><a href="https://typecodes.com/web/aliyuncentoslnmpxcacheconf.html">阿里云CentOS主机 LNMP 环境配置之Php篇——安装XCache加速器</a></h2>
-<ul class="post-meta">
-	<li>作者：vfhky | 时间：2014-08-14 23:06 | 分类：<a href="https://typecodes.com/web/index.html">web</a></li>
-</ul>
-<div class="post-content fmt">
-	<p>在完成了上面两篇关于阿里云CentOS 6.5主机中 Nginx 和 Mysql 的配置的经验分享后，这篇文章说说如何安装 php 的“加速器”——<a href="http://xcache.lighttpd.net/wiki/ReleaseArchive" title="XCache稳定版官方介绍">XCache</a>。相信大家听说过 php 的几款缓存加速器：APC、xcache、eaccelerator等（对于小站咱就不要使用 Memcached 了）。</p>
-<h5>1 官网下载 XCache 3.1.0 源码(支持php5.1 ~ 5.4)</h5>
-<div class="highlight"><pre><span></span>###### 下载XCache 3.1.0稳定版
-[root@typecodes ~]# wget http://xcache.lighttpd.net/pub/Releases/3.1.0/xcache-3.1.0.tar.gz
-###### 解压到当前目录
-[root@typecodes ~]# tar -zxvf xcache-3.1.0.tar.gz
-[root@typecodes ~]# cd xcache-3.1.0
-
-###### phpize是用来扩展php模块的，建立外挂模块
-[root@typecodes xcache-3.1.0]# phpize
-Configuring for:
-PHP Api Version:        20090626
-Zend Module Api No:     20090626
-Zend Extension Api No:  20090626
-
-###### 如果出现 -bash: phpize: command not found，是因为没安装 php-devel 导致的
-[root@typecodes ~]# yum install php-devel
-</pre></div>
-
-
-
-	<p class="more"><a href="https://typecodes.com/web/aliyuncentoslnmpxcacheconf.html" title="阿里云CentOS主机 LNMP 环境配置之Php篇——安装XCache加速器">- 阅读剩余部分 -</a></p>
-</div>			</article>
 		  	<!--page navigation-->
 <ol class="page-navigator">
 <li class="prev"><a href="https://typecodes.com/index11.html">&laquo; 前一页</a></li><li><a href="https://typecodes.com/index.html">1</a></li>
@@ -192,7 +174,7 @@ Zend Extension Api No:  20090626
 		<h3 class="widget-title">Categories</h3>
 		<ul class="widget-list">
 		      <li class="current">
-		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (42)
+		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (43)
 		      </li>
 		      <li class="current">
 		        <a href="https://typecodes.com/csharp/index.html">Csharp</a> (6)
@@ -218,6 +200,9 @@ Zend Extension Api No:  20090626
 		<h3 class="widget-title">Recent Posts</h3>
 		<ul class="widget-list">
 			<li class="post">
+				<a href="https://typecodes.com/cseries/stlcalcarticlewordlines1.html">使用C++ STL库统计一散文中单词出现次数和行号</a>
+			</li>
+			<li class="post">
 				<a href="https://typecodes.com/cseries/templatejsoncpp2file1.html">Linux C++使用函数模板实现JSON数据快速和完整写入到文件</a>
 			</li>
 			<li class="post">
@@ -234,9 +219,6 @@ Zend Extension Api No:  20090626
 			</li>
 			<li class="post">
 				<a href="https://typecodes.com/linux/sedawkfindreplace1.html">使用sed和awk查找和替换字符串处理Makefile文件（一）</a>
-			</li>
-			<li class="post">
-				<a href="https://typecodes.com/cseries/mapdelintstring.html">C++删除map容器中指定值的元素</a>
 			</li>
 		</ul>
 	</div>

@@ -39,6 +39,16 @@
 		<div class="col-md-9" id="blog-main" role="main">
 		  	<!--article recycle-->
 			<article class="post">
+<h2 class="post-title"><a href="https://typecodes.com/cseries/gccgensharedlib.html">Linux gcc编译生成静态库和共享动态库的过程</a></h2>
+<ul class="post-meta">
+	<li>作者：vfhky | 时间：2016-01-05 22:48 | 分类：<a href="https://typecodes.com/cseries/index.html">cseries</a></li>
+</ul>
+<div class="post-content fmt">
+	<p>这篇文章主要通过实例演示在Linux下如何使用gcc分别编译生成静态库和动态库文件以及其它程序如何使用这个生成的静态库和动态库。</p>
+
+	<p class="more"><a href="https://typecodes.com/cseries/gccgensharedlib.html" title="Linux gcc编译生成静态库和共享动态库的过程">- 阅读剩余部分 -</a></p>
+</div>			</article>
+			<article class="post">
 <h2 class="post-title"><a href="https://typecodes.com/cseries/cppgeneralmakefile.html">Linux C/C++工程中可生成ELF、动/静态库文件的通用Makefile</a></h2>
 <ul class="post-meta">
 	<li>作者：vfhky | 时间：2015-08-14 20:27 | 分类：<a href="https://typecodes.com/cseries/index.html">cseries</a></li>
@@ -66,14 +76,14 @@
 	<li>作者：vfhky | 时间：2015-08-12 00:07 | 分类：<a href="https://typecodes.com/cseries/index.html">cseries</a></li>
 </ul>
 <div class="post-content fmt">
-	<p>在*nix系统中，通过gnu开源gcc或者g++工具生成的目标文件（object file），可以用<code>nm</code>、<code>objdump</code>和<code>readelf</code>这三个命令来查看。</p>
+	<p>在unix系统中，通过gnu开源gcc或者g++工具生成的目标文件（object file），可以用<code>nm</code>、<code>objdump</code>和<code>readelf</code>这三个命令来查看。</p>
 <div class="highlight"><pre><span></span>nm：显示目标文件中的符号；
 objdump：打印目标文件中的详细信息；
 readelf：显示关于 ELF 目标文件的信息。
 </pre></div>
 
 
-<p>之前在调试makefile文件的时候，链接动态库出错：<code>libsrcpbl.so: undefined reference to 'gcProgramName'</code>。也就是变量gcProgramName没定义，后来通过<code>nm -u libsrcpbl.so</code>命令辅助排查解决了。</p>
+<p>之前在<a href="https://typecodes.com/cseries/libraryundefinedref.html" title="《解决make编译链接动态库错误：libxx.so: undefined reference to xx》">调试makefile文件</a>的时候，链接动态库出错：<code>libsrcpbl.so: undefined reference to 'gcProgramName'</code>。也就是变量gcProgramName没定义，后来通过<code>nm -u libsrcpbl.so</code>命令辅助排查解决了。</p>
 
 	<p class="more"><a href="https://typecodes.com/cseries/nmobjectfilesymbol.html" title="Unix系统中nm命令展示目标文件符号的方法">- 阅读剩余部分 -</a></p>
 </div>			</article>
@@ -134,16 +144,6 @@ SIGUSR2：同SIGUSR1，保留给用户使用的信号。
 
 	<p class="more"><a href="https://typecodes.com/cseries/againchexstrtointeger.html" title="再议C语言将十六进制字符串转成十进制整数">- 阅读剩余部分 -</a></p>
 </div>			</article>
-			<article class="post">
-<h2 class="post-title"><a href="https://typecodes.com/cseries/doubledimensionalarray.html">指针数组和指针的指针（间级指针）实例分析</a></h2>
-<ul class="post-meta">
-	<li>作者：vfhky | 时间：2014-11-17 22:09 | 分类：<a href="https://typecodes.com/cseries/index.html">cseries</a></li>
-</ul>
-<div class="post-content fmt">
-	<p>网上看到一个关于指向指针的指针变量（间级指针）和指针数组的分析题，感觉比较有代表性，所以摘录了下来自己分析了一番。</p>
-
-	<p class="more"><a href="https://typecodes.com/cseries/doubledimensionalarray.html" title="指针数组和指针的指针（间级指针）实例分析">- 阅读剩余部分 -</a></p>
-</div>			</article>
 		  	<!--page navigation-->
 <ol class="page-navigator">
 <li class="prev"><a href="https://typecodes.com/cseries/index2.html">&laquo; 前一页</a></li><li><a href="https://typecodes.com/cseries/index.html">1</a></li><li><a href="https://typecodes.com/cseries/index2.html">2</a></li><li class="current"><a href="https://typecodes.com/cseries/index3.html">3</a></li><li><a href="https://typecodes.com/cseries/index4.html">4</a></li><li><a href="https://typecodes.com/cseries/index5.html">5</a></li><li><a href="https://typecodes.com/cseries/index6.html">6</a></li><li class="next">
@@ -160,7 +160,7 @@ SIGUSR2：同SIGUSR1，保留给用户使用的信号。
 		<h3 class="widget-title">Categories</h3>
 		<ul class="widget-list">
 		      <li class="current">
-		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (42)
+		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (43)
 		      </li>
 		      <li class="current">
 		        <a href="https://typecodes.com/csharp/index.html">Csharp</a> (6)
@@ -186,6 +186,9 @@ SIGUSR2：同SIGUSR1，保留给用户使用的信号。
 		<h3 class="widget-title">Recent Posts</h3>
 		<ul class="widget-list">
 			<li class="post">
+				<a href="https://typecodes.com/cseries/stlcalcarticlewordlines1.html">使用C++ STL库统计一散文中单词出现次数和行号</a>
+			</li>
+			<li class="post">
 				<a href="https://typecodes.com/cseries/templatejsoncpp2file1.html">Linux C++使用函数模板实现JSON数据快速和完整写入到文件</a>
 			</li>
 			<li class="post">
@@ -202,9 +205,6 @@ SIGUSR2：同SIGUSR1，保留给用户使用的信号。
 			</li>
 			<li class="post">
 				<a href="https://typecodes.com/cseries/deldisorderintarrrepeatele.html">C语言删除无序整型数组中的重复元素及时间复杂度</a>
-			</li>
-			<li class="post">
-				<a href="https://typecodes.com/cseries/apuesingledaemonprocess.html">UNIX环境高级编程（APUE）之单实例守护进程</a>
 			</li>
 		</ul>
 	</div>

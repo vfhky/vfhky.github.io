@@ -5,7 +5,7 @@
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
   		<meta name="renderer" content="webkit">
 		<title>Unix系统中nm命令展示目标文件符号的方法 - TypeCodes</title>
-  		<meta name="description" content='在*nix系统中，通过gnu开源gcc或者g++工具生成的目标文件（object file），可以用nm、objdump和readelf这三个命令来查看。 nm：显示目标文件中的符号；...' />
+  		<meta name="description" content='在unix系统中，通过gnu开源gcc或者g++工具生成的目标文件（object file），可以用nm、objdump和readelf这三个命令来查看。 nm：显示目标文件中的符号；...' />
   		<meta name="viewport" content="width=device-width, initial-scale=1">
   		<link href="https://typecodes.com/atom.xml" type="application/atom+xml" rel="alternate" title="TypeCodes Atom Feed" />
 	  	<link href="https://typecodes.com/feed.xml" type="application/rss+xml" rel="alternate" title="TypeCodes RSS Feed" />
@@ -43,14 +43,14 @@
 	<li>作者：vfhky | 时间：2015-08-12 00:07 | 分类：<a href="https://typecodes.com/cseries/index.html">cseries</a></li>
 </ul>
 <div class="post-content fmt">
-	<p>在*nix系统中，通过gnu开源gcc或者g++工具生成的目标文件（object file），可以用<code>nm</code>、<code>objdump</code>和<code>readelf</code>这三个命令来查看。</p>
+	<p>在unix系统中，通过gnu开源gcc或者g++工具生成的目标文件（object file），可以用<code>nm</code>、<code>objdump</code>和<code>readelf</code>这三个命令来查看。</p>
 <div class="highlight"><pre><span></span>nm：显示目标文件中的符号；
 objdump：打印目标文件中的详细信息；
 readelf：显示关于 ELF 目标文件的信息。
 </pre></div>
 
 
-<p>之前在调试makefile文件的时候，链接动态库出错：<code>libsrcpbl.so: undefined reference to 'gcProgramName'</code>。也就是变量gcProgramName没定义，后来通过<code>nm -u libsrcpbl.so</code>命令辅助排查解决了。</p>
+<p>之前在<a href="https://typecodes.com/cseries/libraryundefinedref.html" title="《解决make编译链接动态库错误：libxx.so: undefined reference to xx》">调试makefile文件</a>的时候，链接动态库出错：<code>libsrcpbl.so: undefined reference to 'gcProgramName'</code>。也就是变量gcProgramName没定义，后来通过<code>nm -u libsrcpbl.so</code>命令辅助排查解决了。</p>
 
 
 <p>为了更全面的了解一下这个命令，在自己的CentOS7.1机器上通过<code>man nm</code>操作查看gnu官方说明手册。同时，对里面涉及的一些opinion选项和nm命令显示的符号做了DESCRIPTION说明，供以后参考。</p>
@@ -345,7 +345,7 @@ binutils-2.23.52.0.1                                                        2015
 		<h3 class="widget-title">Categories</h3>
 		<ul class="widget-list">
 		      <li class="current">
-		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (42)
+		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (43)
 		      </li>
 		      <li class="current">
 		        <a href="https://typecodes.com/csharp/index.html">Csharp</a> (6)
@@ -371,6 +371,9 @@ binutils-2.23.52.0.1                                                        2015
 		<h3 class="widget-title">Recent Posts</h3>
 		<ul class="widget-list">
 			<li class="post">
+				<a href="https://typecodes.com/cseries/stlcalcarticlewordlines1.html">使用C++ STL库统计一散文中单词出现次数和行号</a>
+			</li>
+			<li class="post">
 				<a href="https://typecodes.com/cseries/templatejsoncpp2file1.html">Linux C++使用函数模板实现JSON数据快速和完整写入到文件</a>
 			</li>
 			<li class="post">
@@ -387,9 +390,6 @@ binutils-2.23.52.0.1                                                        2015
 			</li>
 			<li class="post">
 				<a href="https://typecodes.com/linux/sedawkfindreplace1.html">使用sed和awk查找和替换字符串处理Makefile文件（一）</a>
-			</li>
-			<li class="post">
-				<a href="https://typecodes.com/cseries/mapdelintstring.html">C++删除map容器中指定值的元素</a>
 			</li>
 		</ul>
 	</div>
