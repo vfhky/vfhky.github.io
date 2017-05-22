@@ -1,5 +1,155 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>TypeCodes</title><link href="https://typecodes.com/" rel="alternate"></link><link href="https://typecodes.com/atom.xml" rel="self"></link><id>https://typecodes.com/</id><updated>2017-04-16T16:44:00+08:00</updated><entry><title>使用C++ STL库统计一散文中单词出现次数和行号</title><link href="https://typecodes.com/cseries/stlcalcarticlewordlines1.html" rel="alternate"></link><published>2017-04-16T16:44:00+08:00</published><updated>2017-04-16T16:44:00+08:00</updated><author><name>vfhky</name></author><id>tag:typecodes.com,2017-04-16:/cseries/stlcalcarticlewordlines1.html</id><summary type="html">&lt;p&gt;在开发过程中经常会遇到文件处理的情形，例如统计一篇文章单词的数量、行数、出现频率最高的几个单词等等。这篇文章主要通过C++来解析一篇文章，实现每个单词（不区分大小写）出现的总次数和出现的行号的统计。&lt;/p&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>TypeCodes</title><link href="https://typecodes.com/" rel="alternate"></link><link href="https://typecodes.com/atom.xml" rel="self"></link><id>https://typecodes.com/</id><updated>2017-05-22T23:45:00+08:00</updated><entry><title>使用sed和awk查找和替换字符串处理Makefile文件（三）</title><link href="https://typecodes.com/linux/sedawkfindreplace3.html" rel="alternate"></link><published>2017-05-22T23:45:00+08:00</published><updated>2017-05-22T23:45:00+08:00</updated><author><name>vfhky</name></author><id>tag:typecodes.com,2017-05-22:/linux/sedawkfindreplace3.html</id><summary type="html">&lt;p&gt;在&lt;a href="https://typecodes.com/linux/sedawkfindreplace2.html" title="《使用sed和awk查找和替换字符串处理Makefile文件（二）》"&gt;前文&lt;/a&gt;中演示了使用awk和sed命令正则查找和替换&lt;a href="https://typecodes.com/cseries/cppgeneralmakefile.html" title="《Linux C/C++工程中可生成ELF、动/静态库文件的通用Makefile》"&gt;Makefile&lt;/a&gt;文件中的&lt;code&gt;make clean&lt;/code&gt;操作规则：把&lt;code&gt;-$(RM) $(ULT_BIN)&lt;/code&gt;和&lt;code&gt;-$(RM) $(ULT_BIN)&lt;/code&gt;这两句写成一句&lt;code&gt;-$(RM)  $(ULT_BIN) $(ULT_BIN)&lt;/code&gt;，这篇文件主要是通过&lt;code&gt;sed&lt;/code&gt;和&lt;code&gt;awk&lt;/code&gt;命令继续优化该Makefile文件。&lt;/p&gt;
+&lt;p&gt;&lt;img alt="使用sed和awk查找和替换字符串处理Makefile文件（三）" src="https://o3cex9zsl.qnssl.com/2017/05/sedawkfindreplace3_awk_sed_find_2.png" title="使用sed和awk查找和替换字符串处理Makefile文件（三）"&gt;&lt;/p&gt;
+</summary><content type="html">&lt;p&gt;在&lt;a href="https://typecodes.com/linux/sedawkfindreplace2.html" title="《使用sed和awk查找和替换字符串处理Makefile文件（二）》"&gt;前文&lt;/a&gt;中演示了使用awk和sed命令正则查找和替换&lt;a href="https://typecodes.com/cseries/cppgeneralmakefile.html" title="《Linux C/C++工程中可生成ELF、动/静态库文件的通用Makefile》"&gt;Makefile&lt;/a&gt;文件中的&lt;code&gt;make clean&lt;/code&gt;操作规则：把&lt;code&gt;-$(RM) $(ULT_BIN)&lt;/code&gt;和&lt;code&gt;-$(RM) $(ULT_BIN)&lt;/code&gt;这两句写成一句&lt;code&gt;-$(RM)  $(ULT_BIN) $(ULT_BIN)&lt;/code&gt;，这篇文件主要是通过&lt;code&gt;sed&lt;/code&gt;和&lt;code&gt;awk&lt;/code&gt;命令继续优化该Makefile文件。&lt;/p&gt;
+&lt;p&gt;&lt;img alt="使用sed和awk查找和替换字符串处理Makefile文件（三）" src="https://o3cex9zsl.qnssl.com/2017/05/sedawkfindreplace3_awk_sed_find_2.png" title="使用sed和awk查找和替换字符串处理Makefile文件（三）"&gt;&lt;/p&gt;
+
+
+&lt;h4&gt;1 具体功能需求&lt;/h4&gt;
+&lt;p&gt;要实现的效果如果上图所示，左边表示之前的Makefile文件，右边是通过本次Shell脚本处理后的Makefile文件。因此，具体的需求功能如下：&lt;/p&gt;
+&lt;p&gt;需求1：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="err"&gt;之前这个Makefile脚本在生成多个可执行文件时会调用`gen_excbin`包，然后执行`*.o`的生成规则，但是由于它前面加了`&lt;/span&gt;&lt;span class="k"&gt;$(&lt;/span&gt;&lt;span class="nv"&gt;CURDIR&lt;/span&gt;&lt;span class="k"&gt;)&lt;/span&gt;&lt;span class="err"&gt;/`变量，而`%.cpp`和`.c`前面没有加，所以就`gen_depend`包生成.d依赖文件了。所以为了批量替换掉虚拟机中项目现有所有的Makefile文件，BZ选择用包含`sed`和`awk`命令的shell脚本来处理。&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;需求2：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;每调用`gen_excbin`或者`gen_libs`包生成可执行文件或者库文件后（即`$$@`和`$$@ $$^)`结尾处）都追加打印一个包含`SUCCESS`文件的行，方便区分生成多个可执行文件时日志不好区分的情形。
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;需求3：
+    替换掉原来的&lt;code&gt;$(bin).o&lt;/code&gt;为&lt;code&gt;$(CURDIR)/$(bin).o&lt;/code&gt;。&lt;/p&gt;
+&lt;h4&gt;2 shell程序&lt;/h4&gt;
+&lt;p&gt;下面的这份shell脚本比较简单，直接运行&lt;code&gt;./sedawkfindreplace3.sh&lt;/code&gt;即可。同&lt;a href="https://typecodes.com/linux/sedawkfindreplace2.html" title="《使用sed和awk查找和替换字符串处理Makefile文件（二）》"&gt;前文&lt;/a&gt;的脚本框架一样，这里先使用&lt;code&gt;for ... in&lt;/code&gt;的Makefile文件遍历中，然后利用了awk命令的正则匹配查找、替换操作，然后是sed命令执行正则匹配查找、替换以及追加操作。&lt;/p&gt;
+&lt;table class="highlighttable"&gt;&lt;tr&gt;&lt;td class="linenos"&gt;&lt;div class="linenodiv"&gt;&lt;pre&gt; 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57&lt;/pre&gt;&lt;/div&gt;&lt;/td&gt;&lt;td class="code"&gt;&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="ch"&gt;#!/bin/bash&lt;/span&gt;
+&lt;span class="c1"&gt;# FileName:      sedawkfindreplace3.sh&lt;/span&gt;
+&lt;span class="c1"&gt;# Description:   Basic usage of sed and awk command such as find and replace words in the regular expression.&lt;/span&gt;
+&lt;span class="c1"&gt;# Simple Usage:  ./sedawkfindreplace1.sh&lt;/span&gt;
+&lt;span class="c1"&gt;# (c) 2017.5.22 vfhky https://typecodes.com/linux/sedawkfindreplace3.html&lt;/span&gt;
+&lt;span class="c1"&gt;# https://github.com/vfhky/shell-tools/blob/master/filehandle/sedawkfindreplace3.sh&lt;/span&gt;
+
+
+&lt;span class="c1"&gt;# Dir to be handled for windows.&lt;/span&gt;
+&lt;span class="c1"&gt;# SRC_DIR=&amp;quot;/e/typecodes.com/vfhky/src&amp;quot;&lt;/span&gt;
+&lt;span class="c1"&gt;# Dir to be handled for Linux.&lt;/span&gt;
+&lt;span class="nv"&gt;SRC_DIR&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;/home/vfhky/src&amp;quot;&lt;/span&gt;
+&lt;span class="c1"&gt;# The makefile you want to modify.&lt;/span&gt;
+&lt;span class="nv"&gt;SEARCH_NAME&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;Makefile*&amp;quot;&lt;/span&gt;
+&lt;span class="c1"&gt;# The maximum depth of the dirs where files such as Makefile you&amp;#39;re dealing with lies in.&lt;/span&gt;
+&lt;span class="nv"&gt;MAXDEPTH&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="m"&gt;10&lt;/span&gt;
+
+&lt;span class="c1"&gt;# Get the target files you want to modify.&lt;/span&gt;
+&lt;span class="nv"&gt;ALL_MAKEFILE&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="k"&gt;$(&lt;/span&gt;find &lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;SRC_DIR&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt; -maxdepth &lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;MAXDEPTH&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt; -type f -name &lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;SEARCH_NAME&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;&lt;span class="k"&gt;)&lt;/span&gt;
+
+
+&lt;span class="c1"&gt;# Traverse the target files.&lt;/span&gt;
+&lt;span class="k"&gt;for&lt;/span&gt; FILE in &lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;ALL_MAKEFILE&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;
+&lt;span class="k"&gt;do&lt;/span&gt;
+    &lt;span class="nb"&gt;echo&lt;/span&gt; -e &lt;span class="s1"&gt;&amp;#39;Handling file=[&amp;#39;&lt;/span&gt;&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;FILE&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;]&amp;#39;&lt;/span&gt;
+    &lt;span class="c1"&gt;#### Ways recommended: find &amp;quot;-$(RM) $(ULT_BIN)&amp;quot; by awk command.&lt;/span&gt;
+    &lt;span class="c1"&gt;#awk &amp;#39;/\$\(CURDIR\)\/\%\.o\: \%\.cpp/{printf( &amp;quot;[%s:%d]: %s\n&amp;quot;, FILENAME, NR, $0) }&amp;#39; ${FILE}&lt;/span&gt;
+    &lt;span class="c1"&gt;#awk &amp;#39;/-lprint$/{printf( &amp;quot;[%s:%d]: %s\n&amp;quot;, FILENAME, NR, $0) }&amp;#39; ${FILE}&lt;/span&gt;
+
+    &lt;span class="c1"&gt;#### replace &amp;quot;-$(RM) $(ULT_BIN)&amp;quot; with &amp;quot;-$(RM) $(ULT_BIN) $(ULT_LIBS)&amp;quot; using awk command.&lt;/span&gt;
+    &lt;span class="c1"&gt;# awk &amp;#39;{sub(/-\$\(RM\) \$\(ULT_BIN\)/,&amp;quot;-\$\(RM\) \$\(ULT_BIN\) \$\(ULT_LIBS\)&amp;quot;); print $0}&amp;#39; ${FILE} &amp;gt; ${FILE}.tmp; cp ${FILE}.tmp ${FILE}; rm -rf ${FILE}.tmp&lt;/span&gt;
+
+
+    &lt;span class="c1"&gt;#### find &amp;quot;-$(RM) $(ULT_BIN)&amp;quot; by sed command.&lt;/span&gt;
+    &lt;span class="c1"&gt;#sed -n &amp;quot;/\$(CURDIR)\/\%.o: \%.c$/p&amp;quot; ${FILE}&lt;/span&gt;
+
+    &lt;span class="c1"&gt;#### Ways recommended: Step1. replace &amp;quot;-$(RM) $(ULT_BIN)&amp;quot; with &amp;quot;-$(RM) $(ULT_BIN) $(ULT_LIBS)&amp;quot; using sed command.&lt;/span&gt;
+
+    &lt;span class="c1"&gt;## 替换&lt;/span&gt;
+    sed -i &lt;span class="s1"&gt;&amp;#39;s#\$(CURDIR)\/\%.o: \%.cpp$#\$(CURDIR)\/\%.o: \$(CURDIR)\/\%.cpp#g&amp;#39;&lt;/span&gt; &lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;FILE&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;
+
+    &lt;span class="c1"&gt;## 替换&lt;/span&gt;
+    sed -i &lt;span class="s1"&gt;&amp;#39;s#\$(CURDIR)\/\%.o: \%.c$#\$(CURDIR)\/\%.o: \$(CURDIR)\/\%.c#g&amp;#39;&lt;/span&gt; &lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;FILE&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;
+
+    &lt;span class="c1"&gt;## 替换&lt;/span&gt;
+    sed -i &lt;span class="s1"&gt;&amp;#39;s#$(bin).o#\$(CURDIR)\/$(bin).o#g&amp;#39;&lt;/span&gt; &lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;FILE&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;
+
+    &lt;span class="c1"&gt;## 追加（以  $$@  结尾）&lt;/span&gt;
+    sed -i &lt;span class="s1"&gt;&amp;#39;/ -o \$\$\@$/ a\&lt;/span&gt;
+&lt;span class="s1"&gt;    @echo \&amp;quot;========================Success========================\&amp;quot;&amp;#39;&lt;/span&gt; &lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;FILE&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;
+
+    &lt;span class="c1"&gt;## 追加（以  $$@ $$^)  结尾）&lt;/span&gt;
+    sed -i &lt;span class="s1"&gt;&amp;#39;/\$\$\@ \$\$\^)$/ a\&lt;/span&gt;
+&lt;span class="s1"&gt;    @echo \&amp;quot;========================Success========================\&amp;quot;&amp;#39;&lt;/span&gt; &lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nv"&gt;FILE&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;
+&lt;span class="k"&gt;done&lt;/span&gt;
+
+&lt;span class="nb"&gt;exit&lt;/span&gt; &lt;span class="m"&gt;0&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+
+&lt;h4&gt;3 脚本测试&lt;/h4&gt;
+&lt;p&gt;BZ在虚拟机的/home/vfhky/shell目录复制了5个错误的Makefile文件，然后先做正则查找测试，结果如下图所示：&lt;/p&gt;
+&lt;p&gt;&lt;img alt="使用sed和awk查找和替换字符串处理Makefile文件（三）" src="https://o3cex9zsl.qnssl.com/2017/05/sedawkfindreplace3_awk_sed_find_1.png" title="使用sed和awk查找和替换字符串处理Makefile文件（三）"&gt;&lt;/p&gt;
+&lt;h4&gt;4 Linux find 命令中正则&lt;/h4&gt;
+&lt;p&gt;在&lt;code&gt;find&lt;/code&gt;命令的某个参数使用正则，那么最好对这个对数加上双引号，正如上面的代码&lt;code&gt;"${SEARCH_NAME}"&lt;/code&gt;所示，否则会出现下面的错误：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;find&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="n"&gt;paths&lt;/span&gt; &lt;span class="n"&gt;must&lt;/span&gt; &lt;span class="n"&gt;precede&lt;/span&gt; &lt;span class="n"&gt;expression&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="n"&gt;Makefile1&lt;/span&gt;
+&lt;span class="n"&gt;Usage&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="n"&gt;find&lt;/span&gt; &lt;span class="o"&gt;[-&lt;/span&gt;&lt;span class="n"&gt;H&lt;/span&gt;&lt;span class="o"&gt;]&lt;/span&gt; &lt;span class="o"&gt;[-&lt;/span&gt;&lt;span class="n"&gt;L&lt;/span&gt;&lt;span class="o"&gt;]&lt;/span&gt; &lt;span class="o"&gt;[-&lt;/span&gt;&lt;span class="n"&gt;P&lt;/span&gt;&lt;span class="o"&gt;]&lt;/span&gt; &lt;span class="o"&gt;[-&lt;/span&gt;&lt;span class="n"&gt;Olevel&lt;/span&gt;&lt;span class="o"&gt;]&lt;/span&gt; &lt;span class="o"&gt;[-&lt;/span&gt;&lt;span class="n"&gt;D&lt;/span&gt; &lt;span class="n"&gt;help&lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="n"&gt;tree&lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="n"&gt;search&lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="n"&gt;stat&lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="n"&gt;rates&lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="n"&gt;opt&lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="n"&gt;exec&lt;/span&gt;&lt;span class="o"&gt;]&lt;/span&gt; &lt;span class="o"&gt;[&lt;/span&gt;&lt;span class="n"&gt;path&lt;/span&gt;&lt;span class="o"&gt;...]&lt;/span&gt; &lt;span class="o"&gt;[&lt;/span&gt;&lt;span class="n"&gt;expression&lt;/span&gt;&lt;span class="o"&gt;]&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h4&gt;5 脚本管理&lt;/h4&gt;
+&lt;p&gt;目前已经把这个脚本放在Github了，地址是&lt;a href="https://github.com/vfhky/shell-tools" title="点击查看"&gt;https://github.com/vfhky/shell-tools&lt;/a&gt;，以后脚本的更新或者更多好用的脚本也都会加入到这个工程中。&lt;/p&gt;
+&lt;p&gt;同时，BZ也把修改后的Makefile文件同步更新到了对应的Github上了，欢迎关注，地址还是之前的：&lt;a href="https://github.com/vfhky/General_Makefile" title="点击查看"&gt;https://github.com/vfhky/General_Makefile&lt;/a&gt;。&lt;/p&gt;</content><category term="sed"></category><category term="awk"></category><category term="Makefile"></category></entry><entry><title>使用C++ STL库统计一散文中单词出现次数和行号</title><link href="https://typecodes.com/cseries/stlcalcarticlewordlines1.html" rel="alternate"></link><published>2017-04-16T16:44:00+08:00</published><updated>2017-04-16T16:44:00+08:00</updated><author><name>vfhky</name></author><id>tag:typecodes.com,2017-04-16:/cseries/stlcalcarticlewordlines1.html</id><summary type="html">&lt;p&gt;在开发过程中经常会遇到文件处理的情形，例如统计一篇文章单词的数量、行数、出现频率最高的几个单词等等。这篇文章主要通过C++来解析一篇文章，实现每个单词（不区分大小写）出现的总次数和出现的行号的统计。&lt;/p&gt;
 &lt;p&gt;&lt;img alt="使用C++ STL库统计一散文中单词出现次数和行号" src="https://o3cex9zsl.qnssl.com/2017/04/stlcalcarticlewordlines1_1.png" title="使用C++ STL库统计一散文中单词出现次数和行号"&gt;&lt;/p&gt;
 </summary><content type="html">&lt;p&gt;在开发过程中经常会遇到文件处理的情形，例如统计一篇文章单词的数量、行数、出现频率最高的几个单词等等。这篇文章主要通过C++来解析一篇文章，实现每个单词（不区分大小写）出现的总次数和出现的行号的统计。&lt;/p&gt;
 &lt;p&gt;&lt;img alt="使用C++ STL库统计一散文中单词出现次数和行号" src="https://o3cex9zsl.qnssl.com/2017/04/stlcalcarticlewordlines1_1.png" title="使用C++ STL库统计一散文中单词出现次数和行号"&gt;&lt;/p&gt;
