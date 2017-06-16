@@ -69,35 +69,13 @@ Excuteable Files 主路径: $(CFRoot)\mingw\bin、$(CFRoot)\mingw\mingw32\bin
 
 <h5>4问题解决</h5>
 <p>既然可能是gcc版本不够新引起的编译问题，那么将MinGW编译器中的GCC版本，也即将 C:\MinGW 下面的<code>所有</code>文件（当然包括 <code>C:\MinGW\bin\ld.ex</code> 和 <code>C:\MinGW\mingw32\bin\ld.exe</code>）复制到 C-FREE 5 安装目录中的 D:\C-Free 5\mingw 目录下面。这样c-free中旧的 GCC 版本文件就被替换成新的了。然后重启c-free，问题解决。</p>
-</div>		    	<div class="donate_div_container">
-					<div class="donate_div">
-						<p><a href="javascript:void(0)" onclick="donateToggle()" class="donate_word" title="打赏，支持一下">打赏</a></p>
-						<div class="hide_box"></div>
-						<div class="donate_box">
-							<a class="donate_close" href="javascript:void(0)" onclick="donateToggle()" title="关闭"><img src="https://o3cex9zsl.qnssl.com/libs/img/donate_close.png" width="11" height="10" alt="取消" /></a>
-							<div class="donate_thk">
-								<p>感谢您的支持，我会继续努力的!</p>
-							</div>
-							<div class="donate_payimg">
-								<img src="https://o3cex9zsl.qnssl.com/libs/img/donate_weipayqr.png" width="140" height="140" alt="扫码支持" title="扫一扫" />
-							</div>
-								<div class="pay_explain">扫码打赏，你说多少就多少</div>
-							<div class="donate_way">
-								<div class="donate_way_item checked" data-id="weipay">
-									<span class="donate_radio"></span>
-									<img src="https://o3cex9zsl.qnssl.com/libs/img/donate_wechat.png" width="112" height="28" alt="微信" />
-								</div>
-								<div class="donate_way_item" data-id="alipay">
-									<span class="donate_radio"></span>
-									<img src="https://o3cex9zsl.qnssl.com/libs/img/donate_alipay.png" width="85" height="28" alt="支付宝" />
-								</div>
-							</div>
-							<div class="shang_info">
-								<p>打开<span id="shang_pay_txt">微信</span>扫一扫，即可进行扫码打赏哦</p>
-							</div>
-						</div>
-					</div>
-				</div>
+</div>		    	<div class="post-reward">
+		    		<span id="post-reward-btn" for="reward">打赏支持</span>
+		    	</div>
+		    	<div id="post-reward-img" class="center hidden">
+		    		<img class="image" src="https://o3cex9zsl.qnssl.com/libs/img/donate_weipayqr.png" title="微信打赏" width="200px" height="200px">
+		    		<img class="image" src="https://o3cex9zsl.qnssl.com/libs/img/donate_alipay.png" title="支付宝打赏" width="200px" height="200px">
+		    	</div>
 		    	<div class="tags">
 					<div class="post_tags">
 						Tags: <a href="https://typecodes.com/tag/ldexe-dwarf-error.html">ld.exe: dwarf error</a>					</div>
