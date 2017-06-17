@@ -92,6 +92,16 @@ define(&#39;AUTOSAVE_INTERVAL&#39;, false);
 		    		<img class="image" src="https://o3cex9zsl.qnssl.com/libs/img/donate_weipayqr.png" title="微信打赏" width="200px" height="200px">
 		    		<img class="image" src="https://o3cex9zsl.qnssl.com/libs/img/donate_alipay.png" title="支付宝打赏" width="200px" height="200px">
 		    	</div>
+		    	<script type="text/javascript">
+		    		document.getElementById('post-reward-btn').onclick = function() {
+		    			$('.post-reward').addClass('hidden');
+		    			$('#post-reward-img').removeClass('hidden');
+				    }
+				    document.getElementById('post-reward-img').onclick = function() {
+				    	$('#post-reward-img').addClass('hidden');
+				    	$('.post-reward').removeClass('hidden');
+				    }
+				</script>
 		    	<div class="tags">
 					<div class="post_tags">
 						Tags: <a href="https://typecodes.com/tag/wordpresszi-dong-bao-cun.html">wordpress自动保存</a>					</div>
@@ -235,6 +245,6 @@ define(&#39;AUTOSAVE_INTERVAL&#39;, false);
 		(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
 	 })();
 </script>
-		<script src="https://o3cex9zsl.qnssl.com/libs/js/jquery_1.5.2.min_v1.1.js"></script>
+		<script src="https://o3cex9zsl.qnssl.com/libs/js/jquery-1.0.pack.js"></script>
 	</body>
 </html>
