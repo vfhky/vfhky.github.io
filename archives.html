@@ -38,6 +38,14 @@
 			<div class="row">		<!--2. left sider begin-->
 		<div class="gsearch">
 			<h2>Archives</h2>
+			<script type="text/javascript">
+				function showhidden() {
+					$("#expand_collapse,.archives-yearmonth").css({cursor:"pointer"}),$("#archives ul li ul.archives-monthlisting").hide(),$("#archives ul li ul.archives-monthlisting:first").show(),$("#archives ul li span.archives-yearmonth").click(function(){return $(this).next().slideToggle("fast"),!1}),$("#expand_collapse").toggle(function(){$("#archives ul li ul.archives-monthlisting").slideDown("fast")},function(){$("#archives ul li ul.archives-monthlisting").slideUp("fast")})
+				}
+				window.onload = function(){
+					showhidden();  
+		        }
+			</script>
 			<div id="expand_collapse">全部展开/收缩</div>
 			<div id="archives">
 		            <h3 class="al_year">2017 年</h3>
@@ -488,14 +496,6 @@
 		                </li>
 		            </ul>
 		    </div>
-			<script type="text/javascript">
-				function showhidden() {
-					$("#expand_collapse,.archives-yearmonth").css({cursor:"pointer"}),$("#archives ul li ul.archives-monthlisting").hide(),$("#archives ul li ul.archives-monthlisting:first").show(),$("#archives ul li span.archives-yearmonth").click(function(){return $(this).next().slideToggle("fast"),!1}),$("#expand_collapse").toggle(function(){$("#archives ul li ul.archives-monthlisting").slideDown("fast")},function(){$("#archives ul li ul.archives-monthlisting").slideUp("fast")})
-				}
-				window.onload = function(){
-					showhidden();  
-		        }
-			</script>
 		</div>
 			</div>
 		</div>
