@@ -88,12 +88,12 @@ if (!isset($_GET[&#39;finish&#39;]) &amp;&amp; file_exists(__TYPECHO_ROOT_DIR__ 
 		    	</div>
 		    	<script type="text/javascript">
 		    		document.getElementById('post-reward-btn').onclick = function() {
-		    			$('.post-reward').addClass('hidden');
+		    			$('#post-reward-btn').addClass('hidden');
 		    			$('#post-reward-img').removeClass('hidden');
 				    }
 				    document.getElementById('post-reward-img').onclick = function() {
 				    	$('#post-reward-img').addClass('hidden');
-				    	$('.post-reward').removeClass('hidden');
+				    	$('#post-reward-btn').removeClass('hidden');
 				    }
 				</script>
 		    	<div class="tags">
