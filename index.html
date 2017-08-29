@@ -37,98 +37,7 @@
 		<div class="container">
 			<div class="row">		<!--2. left sider begin-->
 		<div class="col-md-9" id="blog-main" role="main">
-		  	<!--article recycle-->
-			<article class="post">
-<h2 class="post-title"><a href="https://typecodes.com/linux/sedawkfindreplace3.html">使用sed和awk查找和替换字符串处理Makefile文件（三）</a></h2>
-<ul class="post-meta">
-	<li>作者：vfhky | 时间：2017-05-22 23:45 | 分类：<a href="https://typecodes.com/linux/index.html">linux</a></li>
-</ul>
-<div class="post-content fmt">
-	<p>在<a href="https://typecodes.com/linux/sedawkfindreplace2.html" title="《使用sed和awk查找和替换字符串处理Makefile文件（二）》">前文</a>中演示了使用awk和sed命令正则查找和替换<a href="https://typecodes.com/cseries/cppgeneralmakefile.html" title="《Linux C/C++工程中可生成ELF、动/静态库文件的通用Makefile》">Makefile</a>文件中的<code>make clean</code>操作规则：把<code>-$(RM) $(ULT_BIN)</code>和<code>-$(RM) $(ULT_BIN)</code>这两句写成一句<code>-$(RM)  $(ULT_BIN) $(ULT_BIN)</code>，这篇文件主要是通过<code>sed</code>和<code>awk</code>命令继续优化该Makefile文件。</p>
-<p><img alt="使用sed和awk查找和替换字符串处理Makefile文件（三）" src="https://o3cex9zsl.qnssl.com/2017/05/sedawkfindreplace3_awk_sed_find_1.png" title="使用sed和awk查找和替换字符串处理Makefile文件（三）"></p>
-
-	<p class="more"><a href="https://typecodes.com/linux/sedawkfindreplace3.html" title="使用sed和awk查找和替换字符串处理Makefile文件（三）">- 阅读剩余部分 -</a></p>
-</div>			</article>
-			<article class="post">
-<h2 class="post-title"><a href="https://typecodes.com/cseries/stlcalcarticlewordlines1.html">使用C++ STL库统计一散文中单词出现次数和行号</a></h2>
-<ul class="post-meta">
-	<li>作者：vfhky | 时间：2017-04-16 16:44 | 分类：<a href="https://typecodes.com/cseries/index.html">cseries</a></li>
-</ul>
-<div class="post-content fmt">
-	<p>在开发过程中经常会遇到文件处理的情形，例如统计一篇文章单词的数量、行数、出现频率最高的几个单词等等。这篇文章主要通过C++来解析一篇文章，实现每个单词（不区分大小写）出现的总次数和出现的行号的统计。</p>
-<p><img alt="使用C++ STL库统计一散文中单词出现次数和行号" src="https://o3cex9zsl.qnssl.com/2017/04/stlcalcarticlewordlines1_1.png" title="使用C++ STL库统计一散文中单词出现次数和行号"></p>
-
-	<p class="more"><a href="https://typecodes.com/cseries/stlcalcarticlewordlines1.html" title="使用C++ STL库统计一散文中单词出现次数和行号">- 阅读剩余部分 -</a></p>
-</div>			</article>
-			<article class="post">
-<h2 class="post-title"><a href="https://typecodes.com/cseries/templatejsoncpp2file1.html">Linux C++使用函数模板实现JSON数据快速和完整写入到文件</a></h2>
-<ul class="post-meta">
-	<li>作者：vfhky | 时间：2017-04-16 15:54 | 分类：<a href="https://typecodes.com/cseries/index.html">cseries</a></li>
-</ul>
-<div class="post-content fmt">
-	<p>昨天在自己的CentOS7机器上编译了JSONCPP库，然后根据api写了下面这个简单的测试程序。代码涉及了文件流数据读取和写入、jsoncpp库的读写api的使用。整个处理流程是先读取一个json格式文件的内容，然后把这些内容分别用jsoncpp库的<code>Json::FastWriter</code>（快速写入）和<code>Json::StyledWriter</code>（完整写入）这两个方式写入到两个文件中，最后读取这两个文件并输出。</p>
-<p><img alt="Linux C++使用函数模板实现JSON数据快速和完整写入到文件" src="https://o3cex9zsl.qnssl.com/2017/04/jsoncpp_basic_4_1.png" title="Linux C++使用函数模板实现JSON数据快速和完整写入到文件"></p>
-
-	<p class="more"><a href="https://typecodes.com/cseries/templatejsoncpp2file1.html" title="Linux C++使用函数模板实现JSON数据快速和完整写入到文件">- 阅读剩余部分 -</a></p>
-</div>			</article>
-			<article class="post">
-<h2 class="post-title"><a href="https://typecodes.com/mix/gitsubtree1.html">Git多仓库作子目录的双向同步：一次Git Subtree的实践</a></h2>
-<ul class="post-meta">
-	<li>作者：vfhky | 时间：2017-03-22 18:30 | 分类：<a href="https://typecodes.com/mix/index.html">mix</a></li>
-</ul>
-<div class="post-content fmt">
-	<p>今年1月中旬的时候BZ在GitHub上收到Typecho社区组织<a href="https://github.com/typecho-fans" title="GitHub的Organizations名">typecho-fans</a>的成员邀请，原来是想把所有TP的开源插件都整合到<a href="https://github.com/typecho-fans/plugins" title="点击查看">GitHub</a>上进行维护。之前BLOG在使用Typecho的时候写了3个插件：<a href="https://typecodes.com/web/scsfortypecho.html" title="《新浪云存储(SCS) for Typecho 插件》">新浪云存储SCS插件</a>、<a href="https://typecodes.com/web/typechomp3player.html" title="《音乐播放器PlayAtWill for typecho插件（移植自wordpress）》">移植自WordPress的音乐播放器插件</a>和<a href="https://typecodes.com/mix/synweibophpmarkdownimgurl.html" title="《升级博客文章同步微博的插件：PHP正则提取Markdown的图片地址》">新浪微博同步插件</a>，那如果放到typecho-fans上进行维护的话对使用者和开发者来说都是挺方便的。但是当时不知道怎么把之前这3个已经放在GitHub上进行维护的插件仓库作为子目录/仓库同步到typecho-fans的插件仓库中，所以一直都没有行动。</p>
-<p><img alt="Git多仓库作子目录的双向同步：一次Git Subtree的实践" src="https://o3cex9zsl.qnssl.com/2017/03/gitsubtree1_typecho_fans.png" title="Git多仓库作子目录的双向同步：一次Git Subtree的实践"></p>
-
-	<p class="more"><a href="https://typecodes.com/mix/gitsubtree1.html" title="Git多仓库作子目录的双向同步：一次Git Subtree的实践">- 阅读剩余部分 -</a></p>
-</div>			</article>
-			<article class="post">
-<h2 class="post-title"><a href="https://typecodes.com/cseries/gccvsheapnewinit1.html">C++中使用vs2015和g++对new开辟的堆内存是否初始化的分析</a></h2>
-<ul class="post-meta">
-	<li>作者：vfhky | 时间：2017-03-14 23:24 | 分类：<a href="https://typecodes.com/cseries/index.html">cseries</a></li>
-</ul>
-<div class="post-content fmt">
-	<p>在C++中使用<code>new</code>运算符在堆中申请一内存块的使用权的同时还可以执行对该内存块的初始化工作。下面通过使用2个类对象和2个基本数据类型来分析使用<code>new class_object</code>、<code>new class_object()</code>和<code>new int</code>、<code>new int()</code>对这块内存的初始化情况。</p>
-
-	<p class="more"><a href="https://typecodes.com/cseries/gccvsheapnewinit1.html" title="C++中使用vs2015和g++对new开辟的堆内存是否初始化的分析">- 阅读剩余部分 -</a></p>
-</div>			</article>
-			<article class="post">
-<h2 class="post-title"><a href="https://typecodes.com/cseries/tcpclosewaitfinwaitrst1.html">Linux TCP客户端出现CLOSE_WAIT后进入死循环</a></h2>
-<ul class="post-meta">
-	<li>作者：vfhky | 时间：2017-03-10 13:49 | 分类：<a href="https://typecodes.com/cseries/index.html">cseries</a></li>
-</ul>
-<div class="post-content fmt">
-	<p>在<a href="https://typecodes.com/cseries/tcpclosewaitsigpipe.html" title="《Linux TCP通信出现CLOSE_WAIT后导致服务端进程挂掉》">前文</a>中讲述了Linux服务端TCP的某个链路变成<code>CLOSE_WAIT</code>状态，然后由于客户端已经关闭了（发送了<code>RST</code>标志的报文），那么服务端如果继续向这个链路中写入数据的话就会收到<code>SIGPIPE</code>信号而终止，这篇文章主要通过客户端进入<code>CLOSE_WAIT</code>后由于收到服务端产生的<code>RST</code>标志报文进入死循环的情况。注：<code>RST</code>表示复位，用来关闭异常的连接。</p>
-<p><img alt="CentOS服务端建立监听" src="https://o3cex9zsl.qnssl.com/2017/03/tcpclosewaitfinwaitrst1_server_process.png" title="CentOS服务端建立监听"></p>
-
-	<p class="more"><a href="https://typecodes.com/cseries/tcpclosewaitfinwaitrst1.html" title="Linux TCP客户端出现CLOSE_WAIT后进入死循环">- 阅读剩余部分 -</a></p>
-</div>			</article>
-			<article class="post">
-<h2 class="post-title"><a href="https://typecodes.com/linux/sedawkfindreplace2.html">使用sed和awk查找和替换字符串处理Makefile文件（二）</a></h2>
-<ul class="post-meta">
-	<li>作者：vfhky | 时间：2017-03-09 16:45 | 分类：<a href="https://typecodes.com/linux/index.html">linux</a></li>
-</ul>
-<div class="post-content fmt">
-	<p>在<a href="https://typecodes.com/linux/sedawkfindreplace1.html" title="《使用sed和awk查找和替换字符串处理Makefile文件（一）》">前文</a>中演示了使用awk和sed命令正则查找和替换<a href="https://typecodes.com/cseries/cppgeneralmakefile.html" title="《Linux C/C++工程中可生成ELF、动/静态库文件的通用Makefile》">Makefile</a>文件的匹配内容，这篇文章依然使用这个Makefile文件作为awk和sed命令正则匹配查找、替换和删除操作。</p>
-
-	<p class="more"><a href="https://typecodes.com/linux/sedawkfindreplace2.html" title="使用sed和awk查找和替换字符串处理Makefile文件（二）">- 阅读剩余部分 -</a></p>
-</div>			</article>
-			<article class="post">
-<h2 class="post-title"><a href="https://typecodes.com/linux/sedawkfindreplace1.html">使用sed和awk查找和替换字符串处理Makefile文件（一）</a></h2>
-<ul class="post-meta">
-	<li>作者：vfhky | 时间：2017-02-22 16:39 | 分类：<a href="https://typecodes.com/linux/index.html">linux</a></li>
-</ul>
-<div class="post-content fmt">
-	<p>在<a href="https://typecodes.com/linux/handlemakefilebysed.html" title="查看原文">《使用sed命令批量处理Makefile文件的脚本》</a>文中使用sed命令对<a href="https://typecodes.com/cseries/cppgeneralmakefile.html" title="《Linux C/C++工程中可生成ELF、动/静态库文件的通用Makefile》">前文</a>中的Makefile文件进行了替换、追加和删除操作，这篇文章通过使用sed和awk命令对该Makefile文件的某个字符串进行正则匹配查找以及替换。</p>
-
-	<p class="more"><a href="https://typecodes.com/linux/sedawkfindreplace1.html" title="使用sed和awk查找和替换字符串处理Makefile文件（一）">- 阅读剩余部分 -</a></p>
-</div>			</article>
-		  	<!--page navigation-->
-<ol class="page-navigator">
-<li class="current"><a href="https://typecodes.com/index.html">1</a></li>
-       <li><a href="https://typecodes.com/index2.html">2</a></li><li><a href="https://typecodes.com/index3.html">3</a></li><li><a href="https://typecodes.com/index4.html">4</a></li><li><a href="https://typecodes.com/index5.html">5</a></li><li><a href="https://typecodes.com/index6.html">6</a></li><li><a href="https://typecodes.com/index7.html">7</a></li><li><span>...</span></li><li><a href="https://typecodes.com/index28.html">28</a></li><li><a href="https://typecodes.com/index29.html">29</a></li><li class="next">
-       		<a href="https://typecodes.com/index2.html">后一页 &raquo;</a>
-       </li></ol>		</div>
+		</div>
 		<!--3. right sider begin-->
 <div class="col-md-3" id="blog-secondary" role="complementary">
 	<div class="widget">
@@ -139,53 +48,11 @@
 	<div class="widget">
 		<h3 class="widget-title">Categories</h3>
 		<ul class="widget-list">
-		      <li class="current">
-		        <a href="https://typecodes.com/cseries/index.html">Cseries</a> (43)
-		      </li>
-		      <li class="current">
-		        <a href="https://typecodes.com/csharp/index.html">Csharp</a> (6)
-		      </li>
-		      <li class="current">
-		        <a href="https://typecodes.com/database/index.html">Database</a> (11)
-		      </li>
-		      <li class="current">
-		        <a href="https://typecodes.com/java/index.html">Java</a> (1)
-		      </li>
-		      <li class="current">
-		        <a href="https://typecodes.com/linux/index.html">Linux</a> (25)
-		      </li>
-		      <li class="current">
-		        <a href="https://typecodes.com/mix/index.html">Mix</a> (55)
-		      </li>
-		      <li class="current">
-		        <a href="https://typecodes.com/web/index.html">Web</a> (88)
-		      </li>
 		</ul>
 	</div>
 	<div class="widget">
 		<h3 class="widget-title">Recent Posts</h3>
 		<ul class="widget-list">
-			<li class="post">
-				<a href="https://typecodes.com/linux/sedawkfindreplace3.html">使用sed和awk查找和替换字符串处理Makefile文件（三）</a>
-			</li>
-			<li class="post">
-				<a href="https://typecodes.com/cseries/stlcalcarticlewordlines1.html">使用C++ STL库统计一散文中单词出现次数和行号</a>
-			</li>
-			<li class="post">
-				<a href="https://typecodes.com/cseries/templatejsoncpp2file1.html">Linux C++使用函数模板实现JSON数据快速和完整写入到文件</a>
-			</li>
-			<li class="post">
-				<a href="https://typecodes.com/mix/gitsubtree1.html">Git多仓库作子目录的双向同步：一次Git Subtree的实践</a>
-			</li>
-			<li class="post">
-				<a href="https://typecodes.com/cseries/gccvsheapnewinit1.html">C++中使用vs2015和g++对new开辟的堆内存是否初始化的分析</a>
-			</li>
-			<li class="post">
-				<a href="https://typecodes.com/cseries/tcpclosewaitfinwaitrst1.html">Linux TCP客户端出现CLOSE_WAIT后进入死循环</a>
-			</li>
-			<li class="post">
-				<a href="https://typecodes.com/linux/sedawkfindreplace2.html">使用sed和awk查找和替换字符串处理Makefile文件（二）</a>
-			</li>
 		</ul>
 	</div>
 	<div class="widget widget-feed">
@@ -200,7 +67,7 @@
 	<div class="row" role="contentinfo">
 		<section class="col-md-2 col-md-offset-1">
 			<h3>Links</h3>
-			<ul><li><a href="http://blog.vmeila.com/" title="墨迹的Blog" target="_blank">vmeila</a></li><li><a href="https://edi.wang/" title="Edi Wang" target="_blank">Edi Wang</a></li></ul>
+			<ul><li><a href="https://edi.wang/" title="Edi Wang" target="_blank">Edi Wang</a></li><li><a href="http://blog.vmeila.com/" title="墨迹的Blog" target="_blank">vmeila</a></li></ul>
 		</section>
 		<section class="col-md-2">
 			<h3>&nbsp;</h3>
@@ -228,7 +95,7 @@
 		<div class="col-md-12 copyright">
 			<a href="#top"><i class="i-logo-s">TOP</i></a>
 			<p>
-				&copy;  2012-2017 							<a href="https://typecodes.com">TypeCodes</a>. All Rights Reserved<br>Powered by <a href="http://getpelican.com" rel="external" target="_blank">Pelican</a>. <a href="http://www.miitbeian.gov.cn" rel="external nofollow" target="_blank">粤ICP备14050695号</a>
+				&copy;  2012 							<a href="https://typecodes.com">TypeCodes</a>. All Rights Reserved<br>Powered by <a href="http://getpelican.com" rel="external" target="_blank">Pelican</a>. <a href="http://www.miitbeian.gov.cn" rel="external nofollow" target="_blank">粤ICP备14050695号</a>
 			</p>
 		</div>
 	</div>
